@@ -1,6 +1,7 @@
 # Created by .ignore support plugin (hsz.mobi)
 ### project settings
 logs/
+*.imi
 
 ### Maven template
 target/
