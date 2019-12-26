@@ -21,7 +21,7 @@ public class CommonRestControllerAop {
      * @return
      * @throws Throwable
      */
-    @Around("execution(* com.demo.sample.controller.rest.*.*(..))")
+    @Around("execution(* com.demo.*.controller.*.*(..))")
     public Object restControllerLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();

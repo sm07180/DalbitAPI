@@ -21,7 +21,7 @@ public class CommonServiceAop {
      * @return
      * @throws Throwable
      */
-    @Around("execution(* com.demo.photo.service.*.*(..))")
+    @Around("execution(* com.demo.*.service.*.*(..))")
     public Object serviceLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();

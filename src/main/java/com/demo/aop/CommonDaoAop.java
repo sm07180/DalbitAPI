@@ -21,7 +21,7 @@ public class CommonDaoAop {
      * @return
      * @throws Throwable
      */
-    @Around("execution(* com.demo.dao.*.*(..))")
+    @Around("execution(* com.demo.*.dao.*.*(..))")
     public Object daoLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
