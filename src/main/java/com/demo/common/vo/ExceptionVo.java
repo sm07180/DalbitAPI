@@ -1,13 +1,10 @@
-package com.demo.vo.helper;
+package com.demo.common.vo;
 
 import com.demo.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 
 import java.util.HashMap;
-import java.util.Locale;
 
 /**
  * 예외처리를 위한 VO

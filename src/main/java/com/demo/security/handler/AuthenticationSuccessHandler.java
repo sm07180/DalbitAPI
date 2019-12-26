@@ -1,12 +1,10 @@
-package com.demo.security;
+package com.demo.security.handler;
 
-import com.demo.code.Status;
+import com.demo.common.code.Status;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
-import com.demo.vo.helper.JsonOutputVo;
+import com.demo.common.vo.JsonOutputVo;
 import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;

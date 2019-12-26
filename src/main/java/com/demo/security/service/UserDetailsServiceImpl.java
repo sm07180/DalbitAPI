@@ -1,15 +1,14 @@
-package com.demo.security;
+package com.demo.security.service;
 
-import com.demo.dao.LoginDao;
-import com.demo.vo.UserVo;
-import com.demo.vo.helper.SecurityUserVo;
+import com.demo.security.dao.LoginDao;
+import com.demo.common.vo.UserVo;
+import com.demo.security.vo.SecurityUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

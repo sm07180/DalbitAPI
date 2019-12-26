@@ -1,7 +1,7 @@
-package com.demo.service;
+package com.demo.sample.service;
 
-import com.demo.dao.SampleDao;
-import com.demo.vo.SampleVo;
+import com.demo.sample.dao.SampleDao;
+import com.demo.common.vo.SampleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

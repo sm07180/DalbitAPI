@@ -9,7 +9,7 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="com.demo.vo.SampleVo" alias="SampleVo" />
+		<typeAlias type="com.demo.common.vo.SampleVo" alias="SampleVo" />
 	</typeAliases>
 
 </configuration>

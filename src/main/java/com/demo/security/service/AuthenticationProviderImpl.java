@@ -1,7 +1,6 @@
-package com.demo.security;
+package com.demo.security.service;
 
-import com.demo.util.CipherUtil;
-import com.demo.vo.helper.SecurityUserVo;
+import com.demo.security.vo.SecurityUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;

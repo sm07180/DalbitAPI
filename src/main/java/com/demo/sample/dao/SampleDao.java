@@ -1,6 +1,6 @@
-package com.demo.dao;
+package com.demo.sample.dao;
 
-import com.demo.vo.SampleVo;
+import com.demo.common.vo.SampleVo;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;

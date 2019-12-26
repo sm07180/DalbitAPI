@@ -1,6 +1,6 @@
 package com.demo.exception.handler;
 
-import com.demo.code.ErrorStatus;
+import com.demo.common.code.ErrorStatus;
 import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;

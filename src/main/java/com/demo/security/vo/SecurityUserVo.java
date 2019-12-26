@@ -1,6 +1,6 @@
-package com.demo.vo.helper;
+package com.demo.security.vo;
 
-import com.demo.vo.UserVo;
+import com.demo.common.vo.UserVo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 

@@ -1,11 +1,9 @@
-package com.demo.vo.helper;
+package com.demo.common.vo;
 
-import com.demo.code.Status;
+import com.demo.common.code.Status;
 import com.demo.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.HashMap;
 
 /**
  * JSON output을 위한 VO

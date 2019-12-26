@@ -1,9 +1,9 @@
 package com.demo.util;
 
-import com.demo.code.ErrorStatus;
+import com.demo.common.code.ErrorStatus;
 import com.demo.exception.GlobalException;
-import com.demo.vo.helper.ExceptionVo;
-import com.demo.vo.helper.JsonOutputVo;
+import com.demo.common.vo.ExceptionVo;
+import com.demo.common.vo.JsonOutputVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;

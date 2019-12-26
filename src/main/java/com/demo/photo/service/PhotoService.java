@@ -1,4 +1,4 @@
-package com.demo.service;
+package com.demo.photo.service;
 
 import com.demo.util.Base64Util;
 import lombok.extern.slf4j.Slf4j;

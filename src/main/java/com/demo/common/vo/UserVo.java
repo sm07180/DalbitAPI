@@ -1,7 +1,6 @@
-package com.demo.vo;
+package com.demo.common.vo;
 
-import com.demo.vo.helper.BaseVo;
-import com.demo.vo.helper.SecurityUserVo;
+import com.demo.security.vo.SecurityUserVo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;

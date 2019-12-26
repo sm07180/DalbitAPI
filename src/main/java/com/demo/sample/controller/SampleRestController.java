@@ -1,11 +1,11 @@
-package com.demo.controller.rest;
+package com.demo.sample.controller;
 
-import com.demo.code.ErrorStatus;
-import com.demo.code.Status;
-import com.demo.service.SampleService;
+import com.demo.common.code.ErrorStatus;
+import com.demo.common.code.Status;
+import com.demo.sample.service.SampleService;
 import com.demo.util.MessageUtil;
-import com.demo.vo.SampleVo;
-import com.demo.vo.helper.JsonOutputVo;
+import com.demo.common.vo.SampleVo;
+import com.demo.common.vo.JsonOutputVo;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

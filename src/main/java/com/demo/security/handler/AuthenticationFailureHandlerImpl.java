@@ -1,13 +1,11 @@
-package com.demo.security;
+package com.demo.security.handler;
 
-import com.demo.code.Status;
+import com.demo.common.code.Status;
 import com.demo.util.MessageUtil;
-import com.demo.vo.helper.JsonOutputVo;
+import com.demo.common.vo.JsonOutputVo;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.web.DefaultRedirectStrategy;
-import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;

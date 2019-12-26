@@ -1,7 +1,7 @@
-package com.demo.controller;
+package com.demo.photo.controller;
 
 
-import com.demo.service.PhotoService;
+import com.demo.photo.service.PhotoService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

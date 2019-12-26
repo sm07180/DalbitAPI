@@ -1,4 +1,4 @@
-package com.demo.code;
+package com.demo.common.code;
 
 public enum ErrorStatus {
 
