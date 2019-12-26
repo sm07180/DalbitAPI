@@ -24,16 +24,22 @@ public class JsonOutputVo {
         setTimestamp(StringUtil.getTimeStamp());
     }
 
-    private String code;
-    private String message;
-    private String messageKey;
-    private Object data;
+    private String result;
+
     private Status status;
+
+    private String messageCode;
+    private String messageKey;
+    private String message;
+
+    private Object data;
+
     private String timestamp;
 
     public void setStatus(Status status){
-        this.code = status.getName();
+        //this.messageCode = status.getMessageCode();
         this.messageKey = status.getMessageKey();
+        this.result = status.getResult();
     }
 
 }

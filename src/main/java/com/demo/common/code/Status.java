@@ -1,5 +1,8 @@
 package com.demo.common.code;
 
+import lombok.Getter;
+
+@Getter
 public enum Status {
 
     //로그인
@@ -11,24 +14,16 @@ public enum Status {
 
     ;
 
-    final private String code;
+    final private String SUCCESS_RESULT = "success";
+
+    final private String result;
+    final private String messageCode;
     final private String messageKey;
     final private String desc;
 
-    public String getName() {
-        return code;
-    }
-
-    public String getMessageKey() {
-        return messageKey;
-    }
-
-    public String getDesc() {
-        return desc;
-    }
-
-    Status(String code, String messageKey, String desc){
-        this.code = code;
+    Status(String messageCode, String messageKey, String desc){
+        this.result = SUCCESS_RESULT;
+        this.messageCode = messageCode;
         this.messageKey = messageKey;
         this.desc = desc;
     }

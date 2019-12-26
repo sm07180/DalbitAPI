@@ -1,5 +1,6 @@
 package com.demo.common.vo;
 
+import com.demo.common.code.ErrorStatus;
 import com.demo.util.StringUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -15,14 +16,24 @@ public class ExceptionVo {
 
     ExceptionVo(){}
 
-    public ExceptionVo(String code, String messageKey, HashMap data){
-        setCode(code);
+
+    public ExceptionVo(ErrorStatus errorStatus, HashMap data){
+        setResult(errorStatus.getResult());
+        setErrorCode(errorStatus.getErrorCode());
+        setMessageKey(errorStatus.getMessageKey());
+        setData(data);
+        setTimestamp(StringUtil.getTimeStamp());
+    }
+
+    public ExceptionVo(String errorCode, String messageKey, HashMap data){
+        setErrorCode(errorCode);
         setMessageKey(messageKey);
         setData(data);
         setTimestamp(StringUtil.getTimeStamp());
     }
 
-    private String code;
+    private String result;
+    private String errorCode;
     private String message;
     private String messageKey;
     private HashMap data;

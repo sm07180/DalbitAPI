@@ -1,5 +1,8 @@
 package com.demo.common.code;
 
+import lombok.Getter;
+
+@Getter
 public enum ErrorStatus {
 
     권한없음("E403", "http.error.accessDenied", "권한이 없는 페이지 접근 시"),
@@ -7,21 +10,17 @@ public enum ErrorStatus {
 
     ;
 
-    final private String code;
+    final private String ERROR_RESULT = "fail";
+
+    final private String result;
+
+    final private String errorCode;
     final private String messageKey;
     final private String desc;
 
-    public String getCode() {
-        return code;
-    }
-
-    public String getMessageKey() {
-        return messageKey;
-    }
-
-
-    ErrorStatus(String code, String message, String desc){
-        this.code = code;
+    ErrorStatus(String errorCode, String message, String desc){
+        this.result = ERROR_RESULT;
+        this.errorCode = errorCode;
         this.messageKey = message;
         this.desc = desc;
     }

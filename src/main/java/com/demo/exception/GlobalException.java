@@ -16,7 +16,7 @@ public class GlobalException extends Exception {
     }
 
     public static ExceptionVo throwException(ErrorStatus errorStatus, HashMap data){
-        return new ExceptionVo(errorStatus.getCode(), errorStatus.getMessageKey(), data);
+        return new ExceptionVo(errorStatus, data);
     }
 
     public static ExceptionVo throwException(String message){
