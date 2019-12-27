@@ -169,7 +169,7 @@ public class SampleRestController {
      *
      * @return
      */
-    @GetMapping(value = "/version", params = "v=1")
+    @GetMapping(value = "/v1.0")
     public String version1(){
 
         HashMap map = new HashMap();
@@ -178,7 +178,7 @@ public class SampleRestController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
 
-    @GetMapping(value = "/version", params = "v=2")
+    @GetMapping(value = {"/v2.0", "/v2.1"})
     public String version2(){
 
         HashMap map = new HashMap();

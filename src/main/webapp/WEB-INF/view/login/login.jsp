@@ -148,12 +148,12 @@
                 data: $("#loginFrm").serialize(),
                 success: function (response) {
                     console.log(response);
-                    if(response.code == '0001'){    //로그인성공
+                    if(response.result == 'success'){    //로그인성공
                         alert(response.message);
                         if(response.data.returnUrl != undefined){
                             location.href = response.data.returnUrl;
                         }
-                    }else if(response.code == '0002'){   //로그인실패
+                    }else if(response.result == 'fail'){
                         alert(response.message);
                     }
                 }, error: function (xhr, textStatus) {
