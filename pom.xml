@@ -35,8 +35,8 @@
             <version>${spring-boot-version}</version>
         </dependency>
         <dependency>
-            <groupId>org.springframework.hateoas</groupId>
-            <artifactId>spring-hateoas</artifactId>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring starter-hateoas</artifactId>
         </dependency>
 
         <!-- json -->

@@ -7,11 +7,16 @@ import com.demo.util.MessageUtil;
 import com.demo.common.vo.SampleVo;
 import com.demo.common.vo.JsonOutputVo;
 import com.google.gson.Gson;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -123,16 +128,36 @@ public class SampleRestController {
         return new Gson().toJson(messageUtil.setExceptionInfo(ErrorStatus.권한없음, null));
     }
 
-    @GetMapping("brodTest")
+    /**
+     * Swagger Sample
+     * @param gubun
+     * @param gubunNM
+     * @param title
+     * @return
+     */
+    @ApiOperation(value = "방송정보입니다.")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "title", value = "제목", required = false, dataType = "string", paramType = "header", defaultValue = "asfasf"),
+
+            @ApiImplicitParam(name = "gubun", value = "방송종류", required = true, dataType = "string", paramType = "query", defaultValue = "1"),
+            @ApiImplicitParam(name = "gubunNM", value = "방송종류명", required = true, dataType = "string", paramType = "path", defaultValue = "2"),
+            @ApiImplicitParam(name = "intro", value = "환영인사말", required = true, dataType = "string", paramType = "path", defaultValue = "3")
+
+    })
+    @PostMapping("brodTest")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
-    public String brodTest(){
+    public String brodTest(@RequestParam(value = "gubun", required = true) String gubun,
+                           @RequestParam(value = "gubunNM", required = true) String gubunNM,
+                           @RequestParam(value = "title", required = true) String title,
+                           @RequestParam(value = "intro", required = false) String intro){
 
         HashMap map = new HashMap();
         map.put("result", "success");
-        map.put("gubun", "BROD00100");
-        map.put("gubunNM", "일상");
+        map.put("gubun", gubun);
+        map.put("gubunNM", gubunNM);
         map.put("bgImg", "방송배경이미지");
-        map.put("title", "방 제목입니다.이렇게!");
+        map.put("title", title);
+        map.put("intro", intro);
 
         String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
 

@@ -9,11 +9,13 @@ import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
+@ApiIgnore
 @Slf4j
 @RestController
 public class CommonErrorController implements ErrorController {
