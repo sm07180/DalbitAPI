@@ -18,10 +18,10 @@ public enum ErrorStatus {
     final private String messageKey;
     final private String desc;
 
-    ErrorStatus(String errorCode, String message, String desc){
+    ErrorStatus(String errorCode, String messageKey, String desc){
         this.result = ERROR_RESULT;
         this.errorCode = errorCode;
-        this.messageKey = message;
+        this.messageKey = messageKey;
         this.desc = desc;
     }
 }
