@@ -10,7 +10,10 @@ public enum Status {
     로그인실패("0002", "login.fail", "로그인 실패 시"),
 
     //CRUD
-    조회("1001", "read.success", "조회");
+    조회("1001", "read.success", "조회"),
+    수정("1002", "update.success", "수정"),
+    생성("1003", "create.success", "생성"),
+    삭제("1004", "delete.success", "삭제");
 
     ;
 
