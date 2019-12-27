@@ -26,9 +26,10 @@ public class ContentController {
     public String getNotice(@PathVariable String brodNo){
 
         HashMap map = new HashMap();
-        map.put("result", "success");
-        map.put("brodNo", "BRD00121");
+        map.put("brodNo", brodNo);
 
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
+
+
 }
