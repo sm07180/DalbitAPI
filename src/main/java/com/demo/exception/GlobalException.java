@@ -1,7 +1,7 @@
 package com.demo.exception;
 
 import com.demo.common.code.ErrorStatus;
-import com.demo.common.vo.ExceptionVo;
+import com.demo.exception.vo.ExceptionVo;
 import lombok.ToString;
 
 import java.util.HashMap;

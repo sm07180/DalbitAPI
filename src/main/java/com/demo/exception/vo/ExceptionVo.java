@@ -1,4 +1,4 @@
-package com.demo.common.vo;
+package com.demo.exception.vo;
 
 import com.demo.common.code.ErrorStatus;
 import com.demo.util.StringUtil;
