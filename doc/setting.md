@@ -90,4 +90,23 @@
     7.keytool -import -trustcacerts -alias root -file fullchain.pem -keystore local_ssl_cert.jks 를 입력한다.
     
     
-    
+### Swagger UI 개발 가이드
+
+ > SampleRestController 주석 Swagger Sample 참고(서버가동 후 URL: 개별호스트/swagger-ui.html)
+ 
+    * 사용하지 않는 컨트롤러 또는 메소드명에 어노테이션 @ApiIgnore 추가 -> swagger-ui.html 에 비노출
+    * @ApiOperation(value = "방송정보입니다.") -> 메소드 설명
+      @ApiImplicitParams({
+          @ApiImplicitParam(name = "title", value = "제목", required = false, dataType = "string", paramType = "header", defaultValue = "asfasf"),
+
+          @ApiImplicitParam(name = "gubun", value = "방송종류", required = true, dataType = "string", paramType = "query", defaultValue = "1"),
+          @ApiImplicitParam(name = "gubunNM", value = "방송종류명", required = true, dataType = "string", paramType = "path", defaultValue = "2"),
+          @ApiImplicitParam(name = "intro", value = "환영인사말", required = true, dataType = "string", paramType = "path", defaultValue = "3")
+  
+      })
+      -> Parameter 설정: @ApiImplicitParam 에 paramType 를 구분, header는 우선순위로 가장 먼저 작성하는걸로..
+         - paramType = "query" 는 Curl에 /brodTest?gubun=1' parameter 표시, 그 외 path 기본값 
+         - required 설정은 true, false 로 필수값 구분
+         - defaultValue 에 값 설정시 Value 자동입력  
+      
+   
