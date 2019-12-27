@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ public class SampleRestController {
      * USER, ADMIN 접근가능
      * @return
      */
+    @ApiIgnore
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("rest")
     public String rest(){
@@ -53,6 +55,7 @@ public class SampleRestController {
      * USER만 접근 가능
      * @return
      */
+    @ApiIgnore
     @GetMapping("allowRest")
     @PreAuthorize("hasRole('ROLE_USER')")
     public String allowRest(){
@@ -137,11 +140,11 @@ public class SampleRestController {
      */
     @ApiOperation(value = "방송정보입니다.")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "title", value = "제목", required = false, dataType = "string", paramType = "header", defaultValue = "asfasf"),
+            @ApiImplicitParam(name = "title", value = "제목", required = false, dataType = "string", paramType = "query", defaultValue = "asfasf"),
 
             @ApiImplicitParam(name = "gubun", value = "방송종류", required = true, dataType = "string", paramType = "query", defaultValue = "1"),
-            @ApiImplicitParam(name = "gubunNM", value = "방송종류명", required = true, dataType = "string", paramType = "path", defaultValue = "2"),
-            @ApiImplicitParam(name = "intro", value = "환영인사말", required = true, dataType = "string", paramType = "path", defaultValue = "3")
+            @ApiImplicitParam(name = "gubunNM", value = "방송종류명", required = true, dataType = "string", paramType = "query", defaultValue = "2"),
+            @ApiImplicitParam(name = "intro", value = "환영인사말", required = true, dataType = "string", paramType = "query", defaultValue = "3")
 
     })
     @PostMapping("brodTest")
@@ -151,6 +154,12 @@ public class SampleRestController {
                            @RequestParam(value = "title", required = true) String title,
                            @RequestParam(value = "intro", required = false) String intro){
 
+        log.debug("gubun: {} ", gubun);
+        log.debug("gubunNM: {} ", gubunNM);
+        log.debug("title: {} ", title);
+        log.debug("intro: {} ", intro);
+
+
         HashMap map = new HashMap();
         map.put("result", "success");
         map.put("gubun", gubun);
@@ -159,9 +168,7 @@ public class SampleRestController {
         map.put("title", title);
         map.put("intro", intro);
 
-        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
-
-        return result;
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
 
 
@@ -169,6 +176,7 @@ public class SampleRestController {
      *
      * @return
      */
+    @ApiIgnore
     @GetMapping(value = "/version", params = "v=1")
     public String version1(){
 
@@ -178,6 +186,7 @@ public class SampleRestController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
 
+    @ApiIgnore
     @GetMapping(value = "/version", params = "v=2")
     public String version2(){
 
@@ -187,6 +196,7 @@ public class SampleRestController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
 
+    @ApiIgnore
     @GetMapping(value = "/null")
     public String errorNull(){
 
