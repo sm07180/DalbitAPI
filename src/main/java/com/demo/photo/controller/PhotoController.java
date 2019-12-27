@@ -35,7 +35,7 @@ public class PhotoController {
      * @param response
      * @throws IOException 저장된 이미지 요청
      */
-    @GetMapping(value = {"/**/*.jpeg", "/**/*.jpg", "/**/*.png"})
+    //@GetMapping(value = {"/**/*.jpeg", "/**/*.jpg", "/**/*.png"})
     public void getImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         log.info("get Image - request ImageUrl : {}", request.getRequestURI());
 
