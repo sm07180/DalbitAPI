@@ -13,7 +13,13 @@ public enum Status {
     조회("1001", "read.success", "조회"),
     수정("1002", "update.success", "수정"),
     생성("1003", "create.success", "생성"),
-    삭제("1004", "delete.success", "삭제");
+    삭제("1004", "delete.success", "삭제"),
+
+    //방송
+    방송참여("2001", "broadcast.in", "방송 참여 시"),
+    방송나가기("2002", "broadcast.out", "방송 나가기 시"),
+    방송생성("2003", "broadcast.start", "방송 생성 시"),
+    방송종료("2004", "broadcast.end", "방송 종료 시"),
 
     ;
 
