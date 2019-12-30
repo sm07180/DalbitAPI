@@ -25,7 +25,13 @@ public enum Status {
     매니저지정("3001", "broduser.manager.add", "매니저 지정 시"),
     게스트초대("3003", "broduser.guest.invite", "게스트 초대 시"),
     게스트초대수락("3005", "broduser.guest.join", "게스트 초대 수락 시"),
-    게스트신청("3006", "broduser.guest.apply", "게스트 신청 시")
+    게스트신청("3006", "broduser.guest.apply", "게스트 신청 시"),
+    //방송 행위
+
+    좋아요("2101", "broadcast.like", "좋아요 선택 시"),
+    좋아요취소("2102", "broadcast.unlike", "좋아요 취소 시"),
+    부스트("2103", "broadcast.boost", "부스트 선택 시"),
+
     ;
 
     final private String SUCCESS_RESULT = "success";

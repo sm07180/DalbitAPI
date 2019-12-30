@@ -1,7 +1,7 @@
-package com.demo.brodcast.dao;
+package com.demo.broadcast.dao;
 
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ContentDao {
+public class UserDao {
 }
