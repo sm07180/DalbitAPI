@@ -31,11 +31,10 @@ public class RoomController {
                         @RequestParam(value = "s_fan", required = true, defaultValue = "N") String s_fan,
                         @RequestParam(value = "s_over20", required = true, defaultValue = "N") String s_over20){
 
-        HashMap map = new HashMap();
-        map.put("result", "success");
-        map.put("brodNo", "BRD00121");
+        HashMap data = new HashMap();
+        data.put("brodNo", "BRD00121");
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, map)));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, data)));
     }
 
     /**
@@ -45,10 +44,9 @@ public class RoomController {
     @DeleteMapping("/{brodNo}")
     public String deleteBrod(@PathVariable String brodNo ){
 
-        HashMap map = new HashMap();
-        map.put("result", "success");
+        HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송종료, map)));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송종료, data)));
     }
 
     /**
@@ -58,10 +56,9 @@ public class RoomController {
     @PostMapping("/{brodNo}/in")
     public String inBrod(@PathVariable String brodNo ){
 
-        HashMap map = new HashMap();
-        map.put("result", "success");
+        HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여, map)));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여, data)));
     }
 
     /**
@@ -71,10 +68,9 @@ public class RoomController {
     @PostMapping("/{brodNo}/out")
     public String outBrod(@PathVariable String brodNo){
 
-        HashMap map = new HashMap();
-        map.put("result", "success");
+        HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, map)));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, data)));
     }
 
     /**
@@ -84,44 +80,59 @@ public class RoomController {
     @GetMapping("/{brodNo}")
     public String getBrod(@PathVariable String brodNo){
 
-        HashMap result = new HashMap();
-        result.put("result", "success");
-
         HashMap data = new HashMap();
         data.put("gubun", "BROD00100");
         data.put("gubunNM", "일상");
-        data.put("bgImg", " ");
         data.put("title", "방 제목입니다.이렇게!");
         data.put("intro", "안녕하세요! \n 제 방송 즐겁게 즐기다 가세요!");
         data.put("isFan", true);
         data.put("isOver20", false);
 
+        HashMap bgImg = new HashMap();
+        bgImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
+        bgImg.put("path","/2019/12/05/15");
+        bgImg.put("name","1231567454123.jpg");
+
+        data.put("bgImg", bgImg);
+
         HashMap owner = new HashMap();
-        owner.put("owner", "방장정보");
-        owner.put("img", "대표이미지");
         owner.put("memNo", "M000125");
         owner.put("nickNm", "방장닉네임");
 
+        HashMap ownerImg = new HashMap();
+        ownerImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
+        ownerImg.put("path","/2019/12/05/15");
+        ownerImg.put("name","1231567454123.jpg");
+
+        owner.put("img", ownerImg);
+        data.put("owner", owner);
+
         HashMap guest = new HashMap();
-        guest.put("guest", "게스트정보");
-        guest.put("img", "대표이미지");
         guest.put("memNo", "M000125");
         guest.put("nickNm", "게스트닉네임");
 
+        HashMap guestImg = new HashMap();
+        guestImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
+        guestImg.put("path","/2019/12/05/15");
+        guestImg.put("name","1231567454123.jpg");
+
+        guest.put("img", guestImg);
+        data.put("guest", guest);
+
         HashMap managers = new HashMap();
         managers.put("guest", "매니저정보");
-        managers.put("img", "대표이미지");
         managers.put("memNo", "M000125");
         managers.put("nickNm", "매니저닉네임");
 
-        ArrayList list = new ArrayList();
-        list.add(result);
-        list.add(data);
-        list.add(owner);
-        list.add(guest);
-        list.add(managers);
+        HashMap managersImg = new HashMap();
+        managersImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
+        managersImg.put("path","/2019/12/05/15");
+        managersImg.put("name","1231567454123.jpg");
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, list)));
+        managers.put("img", managersImg);
+        data.put("managers", managers);
+
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
     }
 
     /**
@@ -131,17 +142,8 @@ public class RoomController {
     @PostMapping("/{brodNo}")
     public String updateBrod(@PathVariable String brodNo){
 
-        HashMap map = new HashMap();
-        map.put("result", "success");
-
-//        map.put("s_gubun", "BROD00100");
-//        map.put("s_bgPath", "/2019/12/05/15");
-//        map.put("s_bgNm", "1231567454123.jpg");
-//        map.put("title", "방 제목입니다.이렇게!");
-//        map.put("s_intro", "안녕하세요! \n 제 방송 즐겁게 즐기다 가세요!");
-//        map.put("s_over20", "N");
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, map)));
+        HashMap data = new HashMap();
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, data)));
     }
 }
 
