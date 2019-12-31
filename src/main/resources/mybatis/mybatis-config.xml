@@ -10,6 +10,7 @@
 
 	<typeAliases>
 		<typeAlias type="com.demo.common.vo.SampleVo" alias="SampleVo" />
+		<typeAlias type="com.demo.common.vo.ProcedureVo" alias="ProcedureVo" />
 	</typeAliases>
 
 </configuration>

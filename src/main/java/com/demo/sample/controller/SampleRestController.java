@@ -2,7 +2,9 @@ package com.demo.sample.controller;
 
 import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
+import com.demo.common.vo.ProcedureVo;
 import com.demo.sample.service.SampleService;
+import com.demo.config.JwtTokenUtil;
 import com.demo.util.MessageUtil;
 import com.demo.common.vo.SampleVo;
 import com.demo.common.vo.JsonOutputVo;
@@ -12,12 +14,15 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.HashMap;
@@ -32,6 +37,12 @@ public class SampleRestController {
 
     @Autowired
     MessageUtil messageUtil;
+
+    @Autowired
+    JwtTokenUtil jwtTokenUtil;
+
+    @Autowired
+    AuthenticationManager authenticationManager;
 
     /**
      * 권한 처리 테스트
@@ -204,4 +215,46 @@ public class SampleRestController {
 
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
+
+    @PostMapping(value = "/authenticate")
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
+        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+        final UserDetails userDetails = sampleService
+                .loadUserByUsername(authenticationRequest.getUsername());
+        final String token = jwtTokenUtil.generateToken(userDetails);
+        return ResponseEntity.ok(new JwtResponse(token));
+    }
+
+
+
+
+    private void authenticate(String username, String password) throws Exception {
+        try {
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        } catch (DisabledException e) {
+            throw new Exception("USER_DISABLED", e);
+        } catch (BadCredentialsException e) {
+            throw new Exception("INVALID_CREDENTIALS", e);
+        }
+    }
+
+    @GetMapping("nick")
+    public String sp_checkDuplicateNickName(ProcedureVo procedureVo){
+        procedureVo.setData("NickName");
+        sampleService.getNickNameCheck(procedureVo);
+        log.info("sp_checkDuplicateNickName: {}", procedureVo.getRet());
+        log.info("sp_checkDuplicateNickName: {}", procedureVo.getExt());
+
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, procedureVo)));
+    }
+
+    @GetMapping("log")
+    public String selectLogData(){
+        List<SampleVo> list = sampleService.selectLogData();
+        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, list)));
+        log.debug("selectLogData {}", result);
+
+        return result;
+    }
+
 }
