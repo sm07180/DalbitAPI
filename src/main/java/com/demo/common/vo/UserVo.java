@@ -18,4 +18,5 @@ public class UserVo extends BaseVo {
     private String name;
     private String birth;
     private String phone;
+    private String userToken;
 }

@@ -1,5 +1,6 @@
 package com.demo.config;
 
+import com.demo.security.filter.SsoAuthenticationFilter;
 import com.demo.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired private AuthenticationFailureHandler authFailureHandler;
     @Autowired private UserDetailsServiceImpl userDetailsService;
     @Autowired private AuthenticationProvider authProvider;
+    @Autowired private SsoAuthenticationFilter ssoAuthenticationFilter;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
