@@ -113,8 +113,8 @@ public class UserController {
      * 게스트신청
      */
     @ApiOperation(value = "게스트신청")
-    @PostMapping("/{brodNo}/gst/apply")
-    public String applyGuest(@PathVariable String brodNo){
+    @PostMapping("/{brodNo}/gst/{memNo}/apply")
+    public String applyGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
         HashMap data = new HashMap();
 
