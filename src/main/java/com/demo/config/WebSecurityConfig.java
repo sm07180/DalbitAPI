@@ -17,6 +17,7 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
  * spring Security 설정
@@ -69,6 +70,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .successHandler(authSuccessHandler) //로그인 성공 시 처리
             .failureHandler(authFailureHandler) //로그인 실패 시 처리
+
+            .and()
+            .addFilterBefore(ssoAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)   //cookie 기반 sso 필터 추가
+            .exceptionHandling().accessDeniedPage("/login")
 
             .and()
                 .userDetailsService(userDetailsService)
