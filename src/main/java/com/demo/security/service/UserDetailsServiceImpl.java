@@ -1,8 +1,10 @@
 package com.demo.security.service;
 
+import com.demo.common.code.Status;
 import com.demo.common.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
 import com.demo.security.vo.SecurityUserVo;
+import com.demo.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,13 +22,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private LoginDao loginDao;
 
+    @Autowired
+    private MessageUtil messageUtil;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
     	MemberVo memberVo = loginDao.login(username);
 
         if(memberVo == null) {
-            throw new UsernameNotFoundException("아이디와 비밀번호를 확인하신 후 다시 로그인해 주세요.");
+            throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
         if(!"Y".equals(userInfo.getCareerauth()) && userInfo.getDuty().length() > 0){

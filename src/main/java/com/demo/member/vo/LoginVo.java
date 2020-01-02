@@ -1,6 +1,5 @@
 package com.demo.member.vo;
 
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

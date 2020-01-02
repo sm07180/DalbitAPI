@@ -1,7 +1,14 @@
 package com.demo.security.service;
 
+import com.demo.common.code.ProcedureStatus;
+import com.demo.common.code.Status;
+import com.demo.common.vo.MemberVo;
+import com.demo.common.vo.ProcedureVo;
 import com.demo.member.service.MemberService;
+import com.demo.member.vo.LoginVo;
 import com.demo.security.vo.SecurityUserVo;
+import com.demo.util.MessageUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -23,6 +30,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     @Autowired
     private MemberService memberService;
 
+    @Autowired
+    private MessageUtil messageUtil;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
@@ -35,18 +45,25 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             
             if(securityUserVo == null) {
             	log.debug(securityUserVo.getUsername());
-                throw new UsernameNotFoundException("아이디와 비밀번호를 확인하고 다시 로그인해 주세요.");
+                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
             }
 
-            /*
-            //passwordEncoder.encode(password);
-            if (!passwordEncoder.matches(password, securityUserVo.getPassword())) {
-            	log.debug(securityUserVo.getPassword());
-                throw new UsernameNotFoundException("아이디와 비밀번호를 확인하고 다시 로그인해 주세요.");
+            MemberVo memberVo = securityUserVo.getUserInfo();
+            LoginVo loginVo = LoginVo.builder()
+                .memSlct(memberVo.getMemSlct())
+                .id(userName)
+                .pw(password)
+                .os("1")
+                .deviceUuid("123456")
+                .deviceToken("3123123123")
+                .appVersion("1.0.0.1")
+                .build();
+
+            ProcedureVo procedureVo = memberService.callMemberLogin(loginVo);
+            log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
+            if(procedureVo.getRet() != ProcedureStatus.성공.getResultCode()){
+                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
             }
-            */
-            //memberService.callMemberLogin(new LoginVo(userName, password));
-            memberService.callMemberLogin(null);
         }
         return new UsernamePasswordAuthenticationToken(securityUserVo, password, securityUserVo.getAuthorities());
     }

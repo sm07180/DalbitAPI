@@ -3,6 +3,7 @@ package com.demo.security.handler;
 import com.demo.common.code.Status;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.CookieUtil;
+import com.demo.util.JwtUtil;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
 import com.demo.common.vo.JsonOutputVo;
@@ -26,8 +27,9 @@ import java.util.HashMap;
 @Component("authSuccessHandler")
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired
-    MessageUtil messageUtil;
+    @Autowired MessageUtil messageUtil;
+    @Autowired JwtUtil jwtUtil;
+
 
     @Value("${sso.domain}")
     private String SSO_DOMAIN;
@@ -42,13 +44,21 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
-        SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+         SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         //String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getUserToken();
         String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getMemId();
 
+        /*
         ssoToken = new String(java.util.Base64.getEncoder().encode(ssoToken.getBytes()));
 
         Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, ssoToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+        response.addCookie(ssoCookie);
+        */
+
+
+        // SSO Cookie update
+        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(loginUser.getUsername()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+        //HttpServletResponse response = (HttpServletResponse)servletResponse;
         response.addCookie(ssoCookie);
 
         boolean isEmptyRedirectUrl = StringUtil.isEmpty(request.getParameter("redirectUrl"));
