@@ -1,15 +1,13 @@
 package com.demo.security.filter;
 
-import com.demo.common.vo.UserVo;
+import com.demo.common.vo.MemberVo;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.Base64Util;
 import com.demo.util.CookieUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +17,6 @@ import javax.servlet.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 /**
@@ -72,12 +69,12 @@ public class SsoAuthenticationFilter implements Filter {
                         UserDetails userDetails = userDetailsService.loadUserByUsername(ssoInfo[0]);
                         if (userDetails != null) {
                             SecurityUserVo securityUserVo = (SecurityUserVo) userDetails;
-                            UserVo userVo = securityUserVo.getUserInfo();
+                            MemberVo memberVo = securityUserVo.getUserInfo();
 
                             isTokenValid = true;
 
                             // Verify SSO token value
-                            if (userVo.getUserToken().equals(ssoInfo[1])) {
+                            /*if (memberVo.getMem_id().equals(ssoInfo[1])) {
                                 authentication = new UsernamePasswordAuthenticationToken(securityUserVo, securityUserVo.getPassword(), userDetails.getAuthorities());
 
                                 SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -86,7 +83,7 @@ public class SsoAuthenticationFilter implements Filter {
                                 HttpSession session = request.getSession(true);
                                 session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
 
-                            }
+                            }*/
 
                             // SSO Cookie update
                             Cookie ssoCookie = cookieUtil.createCookie(SSO_COOKIE_NAME, cookieUtil.getValue(SSO_COOKIE_NAME), SSO_DOMAIN, "/", isTokenValid ? SSO_COOKIE_MAX_AGE : 0); // 60 * 60 * 24 * 30 = 30days

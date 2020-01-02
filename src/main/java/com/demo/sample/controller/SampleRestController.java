@@ -2,12 +2,14 @@ package com.demo.sample.controller;
 
 import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
-import com.demo.common.vo.ProcedureVo;
-import com.demo.sample.service.SampleService;
-import com.demo.config.JwtTokenUtil;
-import com.demo.util.MessageUtil;
-import com.demo.common.vo.SampleVo;
 import com.demo.common.vo.JsonOutputVo;
+import com.demo.common.vo.ProcedureVo;
+import com.demo.common.vo.SampleVo;
+import com.demo.config.JwtTokenUtil;
+import com.demo.member.service.MemberService;
+import com.demo.member.vo.LoginVo;
+import com.demo.sample.service.SampleService;
+import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -34,6 +36,9 @@ public class SampleRestController {
 
     @Autowired
     SampleService sampleService;
+
+    @Autowired
+    MemberService memberService;
 
     @Autowired
     MessageUtil messageUtil;
@@ -248,6 +253,22 @@ public class SampleRestController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, procedureVo)));
     }
 
+    @GetMapping("loginTest")
+    public String sp_member_login(){
+
+        LoginVo apiSample = LoginVo.builder().build();
+
+        ProcedureVo procedureVo = memberService.callMemberLogin(apiSample);
+        log.info("sp_checkDuplicateNickName: {}", procedureVo.getRet());
+        log.info("sp_checkDuplicateNickName: {}", procedureVo.getExt());
+
+        if(0 == procedureVo.getRet()){
+            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인, procedureVo.getData())));
+        }else{
+            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인실패, procedureVo.getData())));
+        }
+    }
+
     @GetMapping("log")
     public String selectLogData(){
         List<SampleVo> list = sampleService.selectLogData();
@@ -257,4 +278,19 @@ public class SampleRestController {
         return result;
     }
 
+    @GetMapping(value = "/db")
+    public String procedureCallTest(){
+
+        sampleService.getCount();
+
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, null)));
+    }
+
+    @GetMapping(value = "/jwt")
+    public String jwtTokenSample(){
+
+        //UserVo loginUserVo = UserVo.getUserInfo();
+
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, null)));
+    }
 }

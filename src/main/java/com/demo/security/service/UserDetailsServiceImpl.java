@@ -1,7 +1,7 @@
 package com.demo.security.service;
 
+import com.demo.common.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
-import com.demo.common.vo.UserVo;
 import com.demo.security.vo.SecurityUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,9 +23,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
-    	UserVo userVo = loginDao.login(username);
+    	MemberVo memberVo = loginDao.login(username);
 
-        if(userVo == null) {
+        if(memberVo == null) {
             throw new UsernameNotFoundException("아이디와 비밀번호를 확인하신 후 다시 로그인해 주세요.");
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
@@ -72,8 +72,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        SecurityUserVo securityUserVo = new SecurityUserVo(userVo.getId(), userVo.getPassword(), authorities);
-        securityUserVo.setUserInfo(userVo);
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
+        securityUserVo.setUserInfo(memberVo);
 
         return securityUserVo;
     }

@@ -43,7 +43,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
         SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getUserToken();
+        //String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getUserToken();
+        String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getMemId();
 
         ssoToken = new String(java.util.Base64.getEncoder().encode(ssoToken.getBytes()));
 

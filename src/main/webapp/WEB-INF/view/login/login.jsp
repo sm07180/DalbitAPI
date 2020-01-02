@@ -101,7 +101,7 @@
     <form id="loginFrm" method="post">
         <div class="box">
             <h1>Dashboard</h1>
-            <input type="text" name="id" id="id" value="test" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
+            <input type="text" name="id" id="id" value="010-1234-4568" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
             <input type="password" name="password" id="password" value="1234" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
             <a href="javascript://" id="loginBtn"><div class="btn">Sign In</div></a> <!-- End Btn -->
             <a href="javascript://"><div id="btn2">Sign Up</div></a> <!-- End Btn2 -->

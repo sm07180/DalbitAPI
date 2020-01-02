@@ -1,8 +1,8 @@
 package com.demo.sample.service;
 
 import com.demo.common.vo.ProcedureVo;
-import com.demo.sample.dao.SampleDao;
 import com.demo.common.vo.SampleVo;
+import com.demo.sample.dao.SampleDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -53,6 +53,10 @@ public class SampleService implements UserDetailsService {
 
     public ProcedureVo getNickNameCheck(ProcedureVo procedureVo) {
         return sampleDao.getNickNameCheck(procedureVo);
+    }
+
+    public ProcedureVo callMemberLogin(ProcedureVo procedureVo) {
+        return sampleDao.callMemberLogin(procedureVo);
     }
 
     public List<SampleVo> selectLogData() {

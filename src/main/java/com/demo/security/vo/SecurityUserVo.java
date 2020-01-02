@@ -1,6 +1,6 @@
 package com.demo.security.vo;
 
-import com.demo.common.vo.UserVo;
+import com.demo.common.vo.MemberVo;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -11,7 +11,7 @@ import java.util.Collection;
  */
 public class SecurityUserVo extends User {
 
-    private UserVo userVo;
+    private MemberVo memberVo;
 
     public SecurityUserVo(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -21,11 +21,11 @@ public class SecurityUserVo extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public UserVo getUserInfo() {
-        return userVo;
+    public MemberVo getUserInfo() {
+        return memberVo;
     }
 
-    public void setUserInfo(UserVo userVo) {
-        this.userVo = userVo;
+    public void setUserInfo(MemberVo memberVo) {
+        this.memberVo = memberVo;
     }
 }

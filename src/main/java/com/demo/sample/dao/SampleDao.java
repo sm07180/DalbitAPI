@@ -13,5 +13,6 @@ public interface SampleDao {
     List<SampleVo> getList();
     int insertSample(SampleVo sampleVo);
     ProcedureVo getNickNameCheck(ProcedureVo procedureVo);
+    ProcedureVo callMemberLogin(ProcedureVo procedureVo);
     List<SampleVo> selectLogData();
 }

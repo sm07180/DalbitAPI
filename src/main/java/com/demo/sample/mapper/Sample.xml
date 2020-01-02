@@ -3,7 +3,7 @@
 <mapper namespace="com.demo.sample.dao.SampleDao" >
 
     <select id="getCount" resultType="int">
-    /* Sample.xml - getCount12345 */
+    /* Sample.xml - getCount */
         SELECT
             count(*)
         FROM tb_log_data
@@ -33,6 +33,10 @@
 
       call sp_checkDuplicateNickName(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
 
+    </select>
+
+    <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo">
+        call sp_member_login(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="selectLogData" resultType="SampleVo">

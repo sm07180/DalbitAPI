@@ -27,7 +27,7 @@ public class SampleController {
         List<SampleVo> list = sampleService.getList();
         log.debug("리스트 ? : {}", list);
 
-        model.addAttribute("userInfo", UserVo.getUserInfo());
+        //model.addAttribute("userInfo", UserVo.getUserInfo());
 
         return "welcome";
     }

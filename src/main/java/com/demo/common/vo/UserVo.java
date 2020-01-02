@@ -8,10 +8,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 @Getter @Setter
 public class UserVo extends BaseVo {
 
-    public static UserVo getUserInfo() {
+    /*public static UserVo getUserInfo() {
         SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return user.getUserInfo();
-    }
+    }*/
 
     private String id;
     private String password;
