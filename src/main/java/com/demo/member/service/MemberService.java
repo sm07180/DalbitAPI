@@ -19,21 +19,18 @@ public class MemberService {
     SampleDao sampleDao;
 
     public ProcedureVo callMemberLogin(LoginVo loginVo) {
-        ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setData(new Gson().toJson(loginVo));
-        sampleDao.callMemberLogin(procedureVo);
+        ProcedureVo procedureVo = new ProcedureVo(loginVo);
+         sampleDao.callMemberLogin(procedureVo);
         return procedureVo;
     }
 
     public ProcedureVo callMemberJoin(JoinVo joinVo) {
-        ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setData(new Gson().toJson(joinVo));
+        ProcedureVo procedureVo = new ProcedureVo(joinVo);
         sampleDao.callMemberJoin(procedureVo);
         return procedureVo;
     }
 
     public ProcedureVo callNickNameCheck(ProcedureVo procedureVo) {
-        procedureVo.setData(new Gson().toJson(procedureVo));
         sampleDao.callNickNameCheck(procedureVo);
         return procedureVo;
     }

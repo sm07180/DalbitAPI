@@ -1,5 +1,6 @@
 package com.demo.common.vo;
 
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,11 @@ import lombok.Setter;
 @Setter
 public class ProcedureVo {
 
+    public ProcedureVo(){}
+
+    public ProcedureVo(Object paramVo){
+        setData(new Gson().toJson(paramVo));
+    }
 
     private String data;
 
