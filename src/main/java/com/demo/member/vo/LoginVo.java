@@ -11,7 +11,7 @@ import lombok.Getter;
 public class LoginVo{
 
     @Builder.Default private String memSlct = "p";
-    @Builder.Default private String id = "010-1234-45683";
+    @Builder.Default private String id = "010-1234-4568";
     @Builder.Default private String pw = "1234";
     @Builder.Default private String os = "1";
     @Builder.Default private String deviceUuid = "123";
