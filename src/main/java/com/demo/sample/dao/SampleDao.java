@@ -12,7 +12,10 @@ public interface SampleDao {
     int getCount();
     List<SampleVo> getList();
     int insertSample(SampleVo sampleVo);
-    ProcedureVo getNickNameCheck(ProcedureVo procedureVo);
+    ProcedureVo callNickNameCheck(ProcedureVo procedureVo);
     ProcedureVo callMemberLogin(ProcedureVo procedureVo);
+    ProcedureVo callMemberJoin(ProcedureVo procedureVo);
     List<SampleVo> selectLogData();
+
+
 }

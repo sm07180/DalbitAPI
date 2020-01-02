@@ -51,8 +51,8 @@ public class SampleService implements UserDetailsService {
         }
     }
 
-    public ProcedureVo getNickNameCheck(ProcedureVo procedureVo) {
-        return sampleDao.getNickNameCheck(procedureVo);
+    public ProcedureVo callNickNameCheck(ProcedureVo procedureVo) {
+        return sampleDao.callNickNameCheck(procedureVo);
     }
 
     public ProcedureVo callMemberLogin(ProcedureVo procedureVo) {
