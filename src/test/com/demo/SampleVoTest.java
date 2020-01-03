@@ -11,9 +11,16 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 import java.security.Security;
+import java.time.LocalDate;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
 @SpringBootTest
@@ -89,7 +96,7 @@ public class SampleVoTest {
 
     @Test
     public void restApiPOST테스트(){
-        RestApiUtil.sendPost("https://devm-leejaeho1144.wawatoc.com/sample", "");
+        RestApiUtil.sendPost("https://devm-leejaeho1144.wawatoc.com:4431/xssTest", "memid=<script>12345dd</script>");
     }
 
     @Test
@@ -134,5 +141,54 @@ public class SampleVoTest {
         isValid = jwtUtil.validateToken(token);
         log.debug("isValid : " + isValid);
     }
+
+
+
+        private TestRestTemplate restTemplate;
+
+   /*     @Test
+        public void 태그_치환() {
+            String content = "<li>content</li>";
+            String expected = "&lt;li&gt;content&lt;/li&gt;";
+            ResponseEntity<XssRequestDto> response = restTemplate.postForEntity(
+                    "/xss",
+                    new XssRequestDto(content),
+                    XssRequestDto.class);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getBody().getContent()).isEqualTo(expected);
+        }*/
+
+        @Test
+        public void application_form_전송() {
+            String content = "<li>content</li>";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+            MultiValueMap<String, String> map = new LinkedMultiValueMap<>();
+            map.add("content", content);
+
+            HttpEntity<MultiValueMap<String, String>> entity = new HttpEntity<>(map, headers);
+
+            ResponseEntity<String> response = restTemplate.exchange("/form",
+                    HttpMethod.POST,
+                    entity,
+                    String.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getBody()).isEqualTo(content);
+        }
+
+        /*@Test
+        public void LocalDate가_치환된다() throws Exception {
+            String content = "<li>content</li>";
+            String expected = "&lt;li&gt;content&lt;/li&gt;";
+            LocalDate requestDate = LocalDate.of(2019,12,29);
+            ResponseEntity<XssRequestDto2> response = restTemplate.postForEntity(
+                    "/xss2",
+                    new XssRequestDto2(content, requestDate),
+                    XssRequestDto2.class);
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+            assertThat(response.getBody().getContent()).isEqualTo(expected);
+            assertThat(response.getBody().getRequestDate()).isEqualTo(requestDate);
+        }*/
 
 }

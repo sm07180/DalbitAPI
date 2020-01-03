@@ -9,8 +9,8 @@ import com.demo.member.service.MemberService;
 import com.demo.member.vo.JoinVo;
 import com.demo.member.vo.LoginVo;
 import com.demo.sample.service.SampleService;
+import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
-import com.google.gson.Gson;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,6 +49,9 @@ public class SampleRestController {
     @Autowired
     AuthenticationManager authenticationManager;
 
+    @Autowired
+    GsonUtil gsonUtil;
+
     /**
      * 권한 처리 테스트
      * USER, ADMIN 접근가능
@@ -58,7 +63,7 @@ public class SampleRestController {
     public String rest(){
 
         List<SampleVo> list = sampleService.getList();
-        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, list)));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
 
         log.debug(result);
 
@@ -75,7 +80,7 @@ public class SampleRestController {
         List<SampleVo> list = sampleService.getList();
         list.addAll(list);
 
-        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, list)));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
 
         log.debug(result);
 
@@ -92,7 +97,7 @@ public class SampleRestController {
     public String rejectNotUserRest(){
         List<SampleVo> list = sampleService.getList();
 
-        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, list)));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
 
         log.debug(result);
 
@@ -107,7 +112,7 @@ public class SampleRestController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public String rejectNotAdminRest(){
         List<SampleVo> list = sampleService.getList();
-        String result = new Gson().toJson(new JsonOutputVo(Status.조회, list));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
 
         log.debug(result);
 
@@ -116,7 +121,7 @@ public class SampleRestController {
 
     @GetMapping("errorTest")
     public String errorTest(){
-        return new Gson().toJson(messageUtil.setExceptionInfo(ErrorStatus.권한없음, null));
+        return gsonUtil.toJson(ErrorStatus.권한없음, null);
     }
 
 
@@ -128,7 +133,7 @@ public class SampleRestController {
         map.put("bb", "비비");
         map.put("cc", "씨씨");
 
-        return new Gson().toJson(messageUtil.setExceptionInfo(ErrorStatus.잘못된호출, map));
+        return gsonUtil.toJson(ErrorStatus.잘못된호출, map);
     }
 
     @GetMapping("exception1")
@@ -141,7 +146,7 @@ public class SampleRestController {
 
         sampleService.transactionTest(sampleVo);
 
-        return new Gson().toJson(messageUtil.setExceptionInfo(ErrorStatus.권한없음, null));
+        return gsonUtil.toJson(ErrorStatus.권한없음, null);
     }
 
     /**
@@ -181,7 +186,7 @@ public class SampleRestController {
         map.put("title", title);
         map.put("intro", intro);
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
 
@@ -196,7 +201,7 @@ public class SampleRestController {
         HashMap map = new HashMap();
         map.put("version", "1");
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
     @ApiIgnore
@@ -206,7 +211,7 @@ public class SampleRestController {
         HashMap map = new HashMap();
         map.put("version", "2");
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
     @ApiIgnore
@@ -216,7 +221,7 @@ public class SampleRestController {
         HashMap map = new HashMap();
         map.put("value", Integer.parseInt("asd"));
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
 
@@ -238,9 +243,9 @@ public class SampleRestController {
         log.info("sp_checkDuplicateNickName: {}", procedureVo.getExt());
 
         if(0 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.닉네임중복, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
         }else{
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData()));
         }
 
     }
@@ -255,15 +260,15 @@ public class SampleRestController {
         log.info("sp_member_login: {}", procedureVo.getExt());
 
         if(0 == procedureVo.getRet()) {
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인, procedureVo.getData()));
         }else if (1 == procedureVo.getRet()){
-                return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원가입필요, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.회원가입필요, procedureVo.getData()));
         }else if (-1 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.패스워드틀림, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.패스워드틀림, procedureVo.getData()));
         }else if (-2 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.파라미터오류, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
         }else {
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인실패, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패, procedureVo.getData()));
         }
     }
 
@@ -277,22 +282,28 @@ public class SampleRestController {
         log.info("sp_member_join: {}", procedureVo.getExt());
 
         if(0 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원가입, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.회원가입, procedureVo.getData()));
         }else if (-1 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.중복가입, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.중복가입, procedureVo.getData()));
         }else if (-2 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.닉네임중복, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
         }else if (-3 == procedureVo.getRet()){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.파라미터오류, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
         }else{
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원가입오류, procedureVo.getData())));
+            return gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
         }
     }
 
     @GetMapping("log")
-    public String selectLogData(){
-        List<SampleVo> list = sampleService.selectLogData();
-        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, list)));
+    public String selectLogData(HttpServletRequest request, HttpServletResponse response){
+        //List<SampleVo> list = sampleService.selectLogData();
+
+        HashMap data = new HashMap();
+        data.put("스크립트", "<script>alert();</script>");
+        data.put("DIV", "<div>12345</div>");
+        data.put("TAG", request.getParameter("tag"));
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
         log.debug("selectLogData {}", result);
 
         return result;
@@ -303,7 +314,7 @@ public class SampleRestController {
 
         sampleService.getCount();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, null)));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, null));
     }
 
     @GetMapping(value = "/jwt")
@@ -311,6 +322,6 @@ public class SampleRestController {
 
         //UserVo loginUserVo = UserVo.getUserInfo();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, null)));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, null));
     }
 }
