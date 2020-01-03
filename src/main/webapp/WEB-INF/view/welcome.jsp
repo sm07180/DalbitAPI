@@ -15,6 +15,6 @@ Hello, Spring Boot Login Welcome Page!
 
 로그인 정보
 <br />
-${userInfo}
+${memberInfo}
 </body>
 </html>

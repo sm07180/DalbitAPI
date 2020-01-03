@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Profile;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Contact;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
@@ -31,7 +32,7 @@ public class SwaggerConfig {
                 "Some custom description of API.",
                 "API TOS",
                 "Terms of service",
-                "Inforex Dev Team",
+                new Contact("Inforex Dev Team", "", ""),
                 "License of API",
                 "API license URL");
     }

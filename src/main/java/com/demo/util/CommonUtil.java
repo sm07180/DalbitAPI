@@ -9,7 +9,7 @@ import java.util.Random;
 
 @Slf4j
 @Component
-public class CommonUtils {
+public class CommonUtil {
 
     public static boolean isNullBlank(String checkValue) {
         return checkValue == null || "".equals(checkValue);

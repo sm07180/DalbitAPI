@@ -8,6 +8,7 @@ import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
 import com.demo.common.vo.JsonOutputVo;
 import com.google.gson.Gson;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -42,30 +43,34 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Value("${sso.cookie.max.age}")
     private int SSO_COOKIE_MAX_AGE;
 
+    /**
+     * 로그인 성공 시
+     * @param request
+     * @param response
+     * @param authentication
+     * @throws ServletException
+     * @throws IOException
+     */
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
-         SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getUserToken();
-        String ssoToken = SSO_MEMBER_ID_KEY + "=" + loginUser.getUsername() + "&" + SSO_MEMBER_TOKEN_NAME + "=" + loginUser.getUserInfo().getMemId();
-
-        /*
-        ssoToken = new String(java.util.Base64.getEncoder().encode(ssoToken.getBytes()));
-
-        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, ssoToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
-        response.addCookie(ssoCookie);
-        */
-
-
-        // SSO Cookie update
-        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(loginUser.getUsername()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
-        //HttpServletResponse response = (HttpServletResponse)servletResponse;
-        response.addCookie(ssoCookie);
+        saveSsoCookie(response);
 
         boolean isEmptyRedirectUrl = StringUtil.isEmpty(request.getParameter("redirectUrl"));
-        HashMap map = new HashMap();
-        map.put("returnUrl", isEmptyRedirectUrl ? "/sample" : request.getParameter("redirectUrl"));
+        HashMap resultJsonData = new HashMap();
+        resultJsonData.put("returnUrl", isEmptyRedirectUrl ? "/sample" : request.getParameter("redirectUrl"));
 
-        loginResult(response, new JsonOutputVo(Status.로그인, map));
+        returnLoginResult(response, new JsonOutputVo(Status.로그인, resultJsonData));
+    }
+
+    /**
+     * SSO 쿠키 저장
+     * @param response
+     * @throws IOException
+     */
+    public void saveSsoCookie(HttpServletResponse response) throws IOException {
+        SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(loginUser.getUsername()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+        response.addCookie(ssoCookie);
     }
 
     /**
@@ -74,7 +79,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
      * @param jsonOutputVo
      * @throws IOException
      */
-    public void loginResult(HttpServletResponse response, JsonOutputVo jsonOutputVo) throws IOException {
+    public void returnLoginResult(HttpServletResponse response, JsonOutputVo jsonOutputVo) throws IOException {
         PrintWriter out = response.getWriter();
         out.print(new Gson().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
         out.flush();

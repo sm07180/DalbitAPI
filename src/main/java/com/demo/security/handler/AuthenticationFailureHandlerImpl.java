@@ -26,7 +26,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        String url = "/index";
+        String url = "/login";
 
         HttpSession session = request.getSession(false);
         if(session != null) {
@@ -34,7 +34,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         }
 
         HashMap map = new HashMap();
-        map.put("returnUrl", "/index");
+        map.put("returnUrl", url);
 
         PrintWriter out = response.getWriter();
         out.print(new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인실패, map))));

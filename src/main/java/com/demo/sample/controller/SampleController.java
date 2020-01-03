@@ -1,8 +1,8 @@
 package com.demo.sample.controller;
 
-import com.demo.sample.service.SampleService;
+import com.demo.common.vo.MemberVo;
 import com.demo.common.vo.SampleVo;
-import com.demo.common.vo.UserVo;
+import com.demo.sample.service.SampleService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +27,7 @@ public class SampleController {
         List<SampleVo> list = sampleService.getList();
         log.debug("리스트 ? : {}", list);
 
-        //model.addAttribute("userInfo", UserVo.getUserInfo());
+        model.addAttribute("memberInfo", MemberVo.getUserInfo());
 
         return "welcome";
     }
