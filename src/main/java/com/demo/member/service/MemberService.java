@@ -4,7 +4,6 @@ import com.demo.common.vo.ProcedureVo;
 import com.demo.member.vo.JoinVo;
 import com.demo.member.vo.LoginVo;
 import com.demo.sample.dao.SampleDao;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

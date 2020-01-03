@@ -5,7 +5,6 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.common.vo.SampleVo;
-import com.demo.config.JwtTokenUtil;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.JoinVo;
 import com.demo.member.vo.LoginVo;
@@ -43,9 +42,6 @@ public class SampleRestController {
 
     @Autowired
     MessageUtil messageUtil;
-
-    @Autowired
-    JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -221,17 +217,6 @@ public class SampleRestController {
 
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
     }
-
-    @PostMapping(value = "/authenticate")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-        final UserDetails userDetails = sampleService
-                .loadUserByUsername(authenticationRequest.getUsername());
-        final String token = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new JwtResponse(token));
-    }
-
-
 
 
     private void authenticate(String username, String password) throws Exception {

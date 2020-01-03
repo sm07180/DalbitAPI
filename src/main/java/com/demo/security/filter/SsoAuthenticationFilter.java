@@ -55,48 +55,24 @@ public class SsoAuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
+        HttpServletResponse response = (HttpServletResponse)servletResponse;
 
         if(!isIgnore(request)) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null) {
                 try {
                     CookieUtil cookieUtil = new CookieUtil(request);
-                    boolean isTokenValid = false;
-
                     if (cookieUtil.exists(SSO_COOKIE_NAME)) {
-                        String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-                        log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
+                        boolean isJwtTokenAvailable = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
+                        if(isJwtTokenAvailable){
 
-                        boolean jwtTokenIsValid = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
-                        String newJwtToken = "";
-                        if(jwtTokenIsValid){
-                            newJwtToken= jwtUtil.generateToken(userId);
-                            isTokenValid = true;
+                            String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+                            log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
 
-                            // Inquiry member information
-                            UserDetails userDetails = userDetailsService.loadUserByUsername(userId);
-                            if (userDetails != null) {
-                                SecurityUserVo securityUserVo = (SecurityUserVo) userDetails;
-                                MemberVo memberVo = securityUserVo.getUserInfo();
-
-                                // Verify SSO token value
-                                if (memberVo.getMemId().equals(userId)) {
-                                    authentication = new UsernamePasswordAuthenticationToken(securityUserVo, securityUserVo.getPassword(), userDetails.getAuthorities());
-
-                                    SecurityContext securityContext = SecurityContextHolder.getContext();
-                                    securityContext.setAuthentication(authentication);
-
-                                    HttpSession session = request.getSession(true);
-                                    session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-
-                                }
-                            }
+                            saveSecuritySession(request, userDetailsService.loadUserByUsername(userId));
                         }
 
-                        // SSO Cookie update
-                        Cookie ssoCookie = cookieUtil.createCookie(SSO_COOKIE_NAME, newJwtToken, SSO_DOMAIN, "/", isTokenValid ? SSO_COOKIE_MAX_AGE : 0); // 60 * 60 * 24 * 30 = 30days
-                        HttpServletResponse response = (HttpServletResponse)servletResponse;
-                        response.addCookie(ssoCookie);
+                        ssoCookieUpdate(request, response, isJwtTokenAvailable);
 
                     }
                 } catch (Exception e) {
@@ -130,5 +106,50 @@ public class SsoAuthenticationFilter implements Filter {
         }
 
         return result;
+    }
+
+    /**
+     * spring security에 session 저장
+     */
+    private void saveSecuritySession(HttpServletRequest request, UserDetails userDetails){
+        if (userDetails != null) {
+            SecurityUserVo securityUserVo = (SecurityUserVo) userDetails;
+            MemberVo memberVo = securityUserVo.getUserInfo();
+
+            // Verify SSO token value
+            if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
+                Authentication authentication = new UsernamePasswordAuthenticationToken(securityUserVo, securityUserVo.getPassword(), userDetails.getAuthorities());
+
+                SecurityContext securityContext = SecurityContextHolder.getContext();
+                securityContext.setAuthentication(authentication);
+
+                HttpSession session = request.getSession(true);
+                session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+            }
+        }
+    }
+
+    /**
+     * sso cookie 갱신
+     */
+    public void ssoCookieUpdate(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable){
+        try {
+            Cookie ssoCookie;
+            if(!isJwtTokenAvailable){
+                ssoCookie = CookieUtil.deleteCookie(SSO_COOKIE_NAME, SSO_DOMAIN, "/", 0);
+
+            }else{
+                CookieUtil cookieUtil = new CookieUtil(request);
+
+                String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+                String jwtToken = jwtUtil.generateToken(userId);
+
+                ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+            }
+            response.addCookie(ssoCookie);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

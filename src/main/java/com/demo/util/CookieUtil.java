@@ -49,6 +49,15 @@ public class CookieUtil {
         return cookie;
     }
 
+    public static Cookie deleteCookie(String name, String domain,
+                                      String path, int maxAge) throws IOException {
+        Cookie cookie = new Cookie(name, null);
+        cookie.setDomain(domain);
+        cookie.setPath(path);
+        cookie.setMaxAge(maxAge);
+        return cookie;
+    }
+
     public Cookie getCookie(String name) {
         return (Cookie) cookieMap.get(name);
     }
