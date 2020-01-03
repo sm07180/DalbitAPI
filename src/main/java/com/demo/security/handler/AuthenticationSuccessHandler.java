@@ -1,14 +1,13 @@
 package com.demo.security.handler;
 
 import com.demo.common.code.Status;
+import com.demo.common.vo.JsonOutputVo;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.CookieUtil;
 import com.demo.util.JwtUtil;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
-import com.demo.common.vo.JsonOutputVo;
 import com.google.gson.Gson;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
