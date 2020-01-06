@@ -12,7 +12,7 @@ public enum Status {
     로그인("0001", "login.success", "로그인 성공 시"),
     로그인실패("0002", "login.fail", "로그인 실패 시"),
     회원가입필요("0003", "login.join.need", "회원가입 필요 시"),
-    패스워드틀림("0004", "login.fail", "로그인 실패 시"),
+    패스워드틀림("0004", "login.password.fail", "패스워드 틀림 시"),
 
     //회원가입
     회원가입("4001", "member.join.success", "회원가입 성공 시"),
@@ -32,6 +32,19 @@ public enum Status {
     방송나가기("2002", "broadcast.out", "방송 나가기 시"),
     방송생성("2003", "broadcast.start", "방송 생성 시"),
     방송종료("2004", "broadcast.end", "방송 종료 시"),
+    회원아님("2005", "broadcast.member.no", "회원이 아닐 시"),
+    방송중인방존재("2006", "broadcast.room.existence", "방송중인 방이 있을 시"),
+    방생성실패("2007", "broadcast.fail", "방송 생성 실패 시"),
+    방참가성공("2008", "broadcast.room.join.success", "방송 참가 성공 시"),
+    방참가실패("2009", "broadcast.room.join.fail", "방송 참가 실패 시"),
+    해당방이없음("2010", "broadcast.room.no", "해당 방이 없을 시"),
+    종료된방송("2011", "broadcast.room.end", "종료된 방송일 시"),
+    이미참가("2012", "broadcast.room.join.already", "이미 참가 되어있을 시"),
+    입장제한("2013", "broadcast.room.join.no", "입장제한 시"),
+    나이제한("2014", "broadcast.room.join.no.age", "나이제한 시"),
+    방참가자아님("2015", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
+    방송나가기실패("2016", "broadcast.out.fail", "방송 나가기 실패 시"),
+
 
     //방송 행위
     좋아요("2101", "broadcast.like", "좋아요 선택 시"),
