@@ -13,4 +13,5 @@ public class SampleVo extends BaseVo {
     private String sp_name;
     private String data;
     private String upd_date;
+
 }
