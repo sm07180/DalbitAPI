@@ -264,7 +264,7 @@ public class SampleRestController {
         }else if ("1" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.회원가입필요, procedureVo.getData()));
         }else if ("-1" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.패스워드틀림, procedureVo.getData()));
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패, procedureVo.getData()));
         }else if ("-2" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
         }else {
