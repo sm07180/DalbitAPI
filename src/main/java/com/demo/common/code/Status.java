@@ -8,6 +8,12 @@ public enum Status {
     //공통
     파라미터오류("0000", "param.error", "파라미터 오류 시"),
 
+    //CRUD
+    조회("1001", "read.success", "조회"),
+    수정("1002", "update.success", "수정"),
+    생성("1003", "create.success", "생성"),
+    삭제("1004", "delete.success", "삭제"),
+
     //로그인
     로그인("0001", "login.success", "로그인 성공 시"),
     로그인실패("0002", "login.fail", "로그인 실패 시"),
@@ -21,11 +27,14 @@ public enum Status {
     닉네임사용가능("4004", "member.join.nick.possible", "닉네임 사용가능 시"),
     회원가입오류("4005", "member.join.error", "회원가입 오류 시"),
 
-    //CRUD
-    조회("1001", "read.success", "조회"),
-    수정("1002", "update.success", "수정"),
-    생성("1003", "create.success", "생성"),
-    삭제("1004", "delete.success", "삭제"),
+    //비밀번호변경
+    비밀번호변경성공("임시", "member.change.password.success", "비밀번호 변경 성공 시"),
+    비밀번호변경실패("임시", "member.change.password.fail", "비밀번호 변경 실패 시"),
+
+    //프로필편집
+    프로필편집성공("임시", "member.edit.profile.success", "프로필 편집 성공 시"),
+    프로필편집실패_회원아님("임시", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
+    프로필편집실패_닉네임중복("임시", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
 
     //방송
     방송참여("2001", "broadcast.in", "방송 참여 시"),
