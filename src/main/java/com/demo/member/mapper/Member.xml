@@ -2,23 +2,23 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.demo.member.dao.MemberDao" >
 
-    <select id="callNickNameCheck" statementType="CALLABLE" parameterType="ProcedureVo">
+    <select id="callNickNameCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_checkDuplicateNickName(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo">
+    <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_login(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callMemberJoin" statementType="CALLABLE" parameterType="ProcedureVo">
+    <select id="callMemberJoin" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_join(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callChangePassword" statementType="CALLABLE" parameterType="ProcedureVo">
+    <select id="callChangePassword" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_changePassword(#{box._phoneNo, mode=IN, jdbcType=VARCHAR}, #{box._password, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callProfileEdit" statementType="CALLABLE" parameterType="ProcedureVo">
+    <select id="callProfileEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_profile_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
