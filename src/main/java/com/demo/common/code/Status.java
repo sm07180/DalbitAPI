@@ -36,24 +36,32 @@ public enum Status {
     프로필편집실패_회원아님("임시", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
     프로필편집실패_닉네임중복("임시", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
 
-    //방송
-    방송참여("2001", "broadcast.in", "방송 참여 시"),
-    방송나가기("2002", "broadcast.out", "방송 나가기 시"),
-    방송생성("2003", "broadcast.start", "방송 생성 시"),
-    방송종료("2004", "broadcast.end", "방송 종료 시"),
-    회원아님("2005", "broadcast.member.no", "회원이 아닐 시"),
-    방송중인방존재("2006", "broadcast.room.existence", "방송중인 방이 있을 시"),
-    방생성실패("2007", "broadcast.fail", "방송 생성 실패 시"),
-    방참가성공("2008", "broadcast.room.join.success", "방송 참가 성공 시"),
-    방참가실패("2009", "broadcast.room.join.fail", "방송 참가 실패 시"),
-    해당방이없음("2010", "broadcast.room.no", "해당 방이 없을 시"),
-    종료된방송("2011", "broadcast.room.end", "종료된 방송일 시"),
-    이미참가("2012", "broadcast.room.join.already", "이미 참가 되어있을 시"),
-    입장제한("2013", "broadcast.room.join.no", "입장제한 시"),
-    나이제한("2014", "broadcast.room.join.no.age", "나이제한 시"),
-    방참가자아님("2015", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
-    방송나가기실패("2016", "broadcast.out.fail", "방송 나가기 실패 시"),
+    //방송생성
+    방송생성("0", "broadcast.room.start", "방송 생성 시"),
+    방송생성_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
+    방송중인방존재("-2", "broadcast.room.existence", "방송중인 방이 있을 시"),
+    방생성실패("-3", "broadcast.room.fail", "방송 생성 실패 시"),
 
+    //방송참여
+    방참가성공("0", "broadcast.room.join.success", "방송 참가 성공 시"),
+    방송참여_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
+    방송참여_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
+    방송참여_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
+    이미참가("-4", "broadcast.room.join.already", "이미 참가 되어있을 시"),
+    입장제한("-5", "broadcast.room.join.no", "입장제한 시"),
+    나이제한("-6", "broadcast.room.join.no.age", "나이제한 시"),
+    방참가실패("-7", "broadcast.room.join.fail", "방송 참가 실패 시"),
+
+    //방송나가기
+    방송나가기("0", "broadcast.room.out", "방송 나가기 시"),
+    방송나가기_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
+    방송나가기_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
+    방송나가기_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
+    방참가자아님("-4", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
+    방송나가기실패("-5", "broadcast.out.fail", "방송 나가기 실패 시"),
+
+    //방송종료
+    방송종료("2004", "broadcast.end", "방송 종료 시"),
 
     //방송 행위
     좋아요("2101", "broadcast.like", "좋아요 선택 시"),
@@ -61,10 +69,10 @@ public enum Status {
     부스트("2103", "broadcast.boost", "부스트 선택 시"),
 
     //유저
-    매니저지정("3001", "broduser.manager.add", "매니저 지정 시"),
-    게스트초대("3003", "broduser.guest.invite", "게스트 초대 시"),
-    게스트초대수락("3005", "broduser.guest.join", "게스트 초대 수락 시"),
-    게스트신청("3006", "broduser.guest.apply", "게스트 신청 시"),
+    매니저지정("3001", "broadcast.user.manager.add", "매니저 지정 시"),
+    게스트초대("3003", "broadcast.user.guest.invite", "게스트 초대 시"),
+    게스트초대수락("3005", "broadcast.user.guest.join", "게스트 초대 수락 시"),
+    게스트신청("3006", "broadcast.user.guest.apply", "게스트 신청 시"),
 
     ;
 
