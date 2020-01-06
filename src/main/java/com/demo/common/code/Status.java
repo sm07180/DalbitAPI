@@ -15,10 +15,10 @@ public enum Status {
     삭제("1004", "delete.success", "삭제"),
 
     //로그인
-    로그인("0001", "login.success", "로그인 성공 시"),
+    로그인("0", "login.success", "로그인 성공 시"),
     로그인실패("0002", "login.fail", "로그인 실패 시"),
-    회원가입필요("0003", "login.join.need", "회원가입 필요 시"),
-    패스워드틀림("0004", "login.password.fail", "패스워드 틀림 시"),
+    회원가입필요("1", "login.join.need", "회원가입 필요 시"),
+    패스워드틀림("-1", "login.password.fail", "패스워드 틀림 시"),
 
     //회원가입
     회원가입("4001", "member.join.success", "회원가입 성공 시"),

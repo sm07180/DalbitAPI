@@ -35,11 +35,11 @@ public class BroadCastTest {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
-        if(0 == procedureVo.getRet()){
+        if("0" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
-        }else if(-1 == procedureVo.getRet()){
+        }else if("-1" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원아님, procedureVo.getData())));
-        }else if(-2 == procedureVo.getRet()) {
+        }else if("-2" == procedureVo.getRet()) {
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송중인방존재, procedureVo.getData())));
         } else{
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방생성실패, procedureVo.getData())));
@@ -57,19 +57,19 @@ public class BroadCastTest {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
-        if(0 == procedureVo.getRet()){
+        if("0" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가성공, procedureVo.getData())));
-        }else if(-1 == procedureVo.getRet()){
+        }else if("-1" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원아님, procedureVo.getData())));
-        }else if(-2 == procedureVo.getRet()) {
+        }else if("-2" == procedureVo.getRet()) {
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.해당방이없음, procedureVo.getData())));
-        }else if(-3 == procedureVo.getRet()){
+        }else if("-3" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.종료된방송, procedureVo.getData())));
-        }else if(-4 == procedureVo.getRet()){
+        }else if("-4" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.이미참가, procedureVo.getData())));
-        }else if(-5 == procedureVo.getRet()){
+        }else if("-5" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.입장제한, procedureVo.getData())));
-        }else if(-6 == procedureVo.getRet()){
+        }else if("-6" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.나이제한, procedureVo.getData())));
         }else{
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가실패, procedureVo.getData())));
@@ -87,15 +87,15 @@ public class BroadCastTest {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
-        if(0 == procedureVo.getRet()){
+        if("0" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, procedureVo.getData())));
-        }else if(-1 == procedureVo.getRet()){
+        }else if("-1" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원아님, procedureVo.getData())));
-        }else if(-2 == procedureVo.getRet()) {
+        }else if("-2" == procedureVo.getRet()) {
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.해당방이없음, procedureVo.getData())));
-        }else if(-3 == procedureVo.getRet()){
+        }else if("-3" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.종료된방송, procedureVo.getData())));
-        }else if(-4 == procedureVo.getRet()){
+        }else if("-4" == procedureVo.getRet()){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가자아님, procedureVo.getData())));
         }else{
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패, procedureVo.getData())));

@@ -23,7 +23,7 @@ public class ProcedureVo {
 
     private Object box;
 
-    private int ret;
+    private String ret;
     private String ext;
 
 
