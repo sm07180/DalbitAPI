@@ -11,4 +11,5 @@ public interface RoomDao {
 
     ProcedureVo callBroadCastRoomCreate(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomJoin(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomOut(ProcedureVo procedureVo);
 }

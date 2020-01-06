@@ -12,15 +12,30 @@ public class RoomService {
     @Autowired
     RoomDao roomDao;
 
+    /**
+     * 방송방 생성
+     */
     public ProcedureVo callBroadCastRoomCreate(RoomVo roomVo) {
         ProcedureVo procedureVo = new ProcedureVo(roomVo);
         roomDao.callBroadCastRoomCreate(procedureVo);
         return procedureVo;
     }
 
+    /**
+     * 방송방 참여하기
+     */
     public ProcedureVo callBroadCastRoomJoin(RoomVo roomVo) {
         ProcedureVo procedureVo = new ProcedureVo(roomVo);
         roomDao.callBroadCastRoomJoin(procedureVo);
+        return procedureVo;
+    }
+
+    /**
+     * 방송방 나가기
+     */
+    public ProcedureVo callBroadCastRoomOut(RoomVo roomVo) {
+        ProcedureVo procedureVo = new ProcedureVo(roomVo);
+        roomDao.callBroadCastRoomOut(procedureVo);
         return procedureVo;
     }
 }

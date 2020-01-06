@@ -82,7 +82,7 @@ public class BroadCastTest {
         log.debug(RoomVo.builder().build().toString());
 
         RoomVo apiSample = RoomVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomJoin(apiSample);
+        ProcedureVo procedureVo = roomService.callBroadCastRoomOut(apiSample);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
