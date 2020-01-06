@@ -1,6 +1,5 @@
 package com.demo.security.service;
 
-import com.demo.common.code.ProcedureStatus;
 import com.demo.common.code.Status;
 import com.demo.common.vo.MemberVo;
 import com.demo.common.vo.ProcedureVo;
