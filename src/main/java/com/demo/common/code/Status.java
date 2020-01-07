@@ -59,13 +59,34 @@ public enum Status {
     방참가자아님("-4", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
     방송나가기실패("-5", "broadcast.out.fail", "방송 나가기 실패 시"),
 
+    //방송정보수정
+    방송정보수정성공("0", "broadcast.room.edit.success", "방송정보 수정 성공 시"),
+    방송정보수정_회원아님("-1", "broadcast.room.edit.member.no", "회원이 아닐 시"),
+    방송정보수정_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
+    방송정보수정_해당방에없는회원번호("-3", "broadcast.room.member.number.no", "해당 방에 없는 회원번호일 시"),
+    방송정보수정_수정권이없는회원("-4", "broadcast.room.member.edit.no", "수정권한이 없는 회원일 시"),
+    방송정보수정실패("-5", "broadcast.room.edit.fail", "방송정보 수정 실패 시"),
+
+    //방송리스트
+    방송리스트없음("0", "broadcast.room.list.no", "방송리스트가 없을 시"),
+    방송리스트_회원아님("-1", "broadcast.room.list.member.number.no", "회원번호가 아닐 시"),
+    방송리스트_조회("select", "broadcast.room.list.select", "방송리스트 정보 조회 시"),
+
+    //방송리스트
+    방송참여자리스트없음("0", "broadcast.room.member.list.no", "방송참여자 리스트가 없을 시"),
+    방송참여자리스트_회원아님("-1", "broadcast.room.list.member.number", "회원번호가 아닐 시"),
+    방송참여자리스트_조회("select", "broadcast.room.list.member.select", "방송참여자리스트 정보 조회 시"),
+
     //방송종료
     방송종료("2004", "broadcast.end", "방송 종료 시"),
 
-    //방송 행위
-    좋아요("2101", "broadcast.like", "좋아요 선택 시"),
-    좋아요취소("2102", "broadcast.unlike", "좋아요 취소 시"),
-    부스트("2103", "broadcast.boost", "부스트 선택 시"),
+    //방송좋아요
+    좋아요("0", "broadcast.like", "좋아요 성공 시"),
+    좋아요_회원아님("-1", "broadcast.like.member.no", "회원이 아닐 시"),
+    좋아요_해당방송없음("-2", "broadcast.like.room.no", "해당 방송이 없을 시"),
+    좋아요_방송참가자아님("-3", "broadcast.like.room.in.no", "방송 참가자가 아닐 시"),
+    좋아요_이미했음("-4", "broadcast.like.already", "좋아요 이미 했을 시"),
+    좋아요_실패("-4", "broadcast.like.fail", "좋아요 실패 시"),
 
     //유저
     매니저지정("3001", "broadcast.user.manager.add", "매니저 지정 시"),

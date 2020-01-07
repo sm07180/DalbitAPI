@@ -26,5 +26,4 @@ public class ProcedureVo {
     private String ret;
     private String ext;
 
-
 }
