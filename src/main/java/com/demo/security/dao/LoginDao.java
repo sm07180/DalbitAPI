@@ -1,6 +1,6 @@
 package com.demo.security.dao;
 
-import com.demo.common.vo.MemberVo;
+import com.demo.member.vo.MemberVo;
 import org.springframework.stereotype.Repository;
 
 @Repository

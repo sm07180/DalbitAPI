@@ -1,6 +1,6 @@
 package com.demo.sample.controller;
 
-import com.demo.common.vo.MemberVo;
+import com.demo.member.vo.MemberVo;
 import com.demo.sample.vo.SampleVo;
 import com.demo.sample.service.SampleService;
 import lombok.extern.slf4j.Slf4j;

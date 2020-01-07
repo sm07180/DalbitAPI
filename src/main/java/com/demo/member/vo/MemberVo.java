@@ -1,5 +1,6 @@
-package com.demo.common.vo;
+package com.demo.member.vo;
 
+import com.demo.common.vo.BaseVo;
 import com.demo.security.vo.SecurityUserVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,6 +10,8 @@ import java.sql.Date;
 
 @Getter @Setter
 public class MemberVo extends BaseVo {
+
+    private static final long serialVersionUID = 1L;
 
     public static MemberVo getUserInfo() {
         SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

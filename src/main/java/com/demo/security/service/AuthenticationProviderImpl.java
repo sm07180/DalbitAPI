@@ -1,7 +1,7 @@
 package com.demo.security.service;
 
 import com.demo.common.code.Status;
-import com.demo.common.vo.MemberVo;
+import com.demo.member.vo.MemberVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.LoginVo;

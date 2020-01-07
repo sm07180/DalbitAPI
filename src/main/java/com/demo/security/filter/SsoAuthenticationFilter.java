@@ -1,6 +1,6 @@
 package com.demo.security.filter;
 
-import com.demo.common.vo.MemberVo;
+import com.demo.member.vo.MemberVo;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.Base64Util;
 import com.demo.util.CookieUtil;

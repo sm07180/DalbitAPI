@@ -1,8 +1,10 @@
 package com.demo.config;
 
 import com.demo.security.filter.SsoAuthenticationFilter;
+import com.demo.security.handler.LogoutSuccessHandlerImpl;
 import com.demo.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -19,6 +21,7 @@ import org.springframework.security.crypto.password.DelegatingPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 
 /**
  * spring Security 설정
@@ -33,9 +36,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private AuthenticationSuccessHandler authSuccessHandler;
     @Autowired private AuthenticationFailureHandler authFailureHandler;
+    @Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
     @Autowired private UserDetailsServiceImpl userDetailsService;
     @Autowired private AuthenticationProvider authProvider;
     @Autowired private SsoAuthenticationFilter ssoAuthenticationFilter;
+
+    @Value("${server.servlet.session.cookie.name}")
+    private String SECURITY_COOKIE_NAME;
+
+    @Value("${sso.cookie.name}")
+    private String SSO_COOKIE_NAME;
 
     @Bean
     public DelegatingPasswordEncoder passwordEncoder() {
@@ -95,13 +105,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
             .and()
                 .logout()
-                    .deleteCookies("SESSION")
+                    //.logoutUrl("/logout")
+                    .deleteCookies(SECURITY_COOKIE_NAME, SSO_COOKIE_NAME)
                     .invalidateHttpSession(true)
+                    .logoutSuccessUrl("/")
+                    .logoutSuccessHandler(logoutSuccessHandler)
 
             .and()
                 .sessionManagement()
                 .maximumSessions(1)
-                .expiredUrl("/login")
+                .expiredUrl("/logout")
 
 
 

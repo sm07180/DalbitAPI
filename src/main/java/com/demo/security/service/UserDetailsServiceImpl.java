@@ -1,7 +1,7 @@
 package com.demo.security.service;
 
 import com.demo.common.code.Status;
-import com.demo.common.vo.MemberVo;
+import com.demo.member.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.MessageUtil;
