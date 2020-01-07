@@ -15,25 +15,31 @@ public enum Status {
     삭제("1004", "delete.success", "삭제"),
 
     //로그인
-    로그인("0", "login.success", "로그인 성공 시"),
-    로그인실패("-1", "login.fail", "로그인 실패 시 - 아이디/비밀번호가 틀릴 시"),
-    회원가입필요("1", "login.join.need", "회원가입 필요 시"),
+    로그인성공("0", "login.success", "로그인 성공 시"),
+    로그인실패_회원가입필요("1", "login.join.need", "회원가입 필요 시"),
+    로그인실패_패스워드틀림("-1", "login.fail", "로그인 실패 시 - 아이디/비밀번호가 틀릴 시"),
+    로그인실패_파라메터이상("-2", "param.error", "로그인 실패 시 - 파라메터이상"),
+
 
     //회원가입
-    회원가입("4001", "member.join.success", "회원가입 성공 시"),
-    중복가입("4002", "member.join.already", "이미 회원가입된 상태 시"),
-    닉네임중복("4003", "member.join.nick.duplicate", "닉네임 중복 시"),
-    닉네임사용가능("4004", "member.join.nick.possible", "닉네임 사용가능 시"),
+    회원가입성공("0", "member.join.success", "회원가입 성공 시"),
+    회원가입실패_중복가입("-1", "member.join.already", "이미 회원가입된 상태 시"),
+    회원가입실패_닉네임중복("-2", "member.join.nick.duplicate", "닉네임 중복 시"),
+    회원가입실패_파라미터오류("-3", "param.error", "파라미터 오류 시"),
     회원가입오류("4005", "member.join.error", "회원가입 오류 시"),
 
+    //닉네임중복체크
+    닉네임중복("0", "member.join.nick.duplicate", "닉네임 중복 시"),
+    닉네임사용가능("1", "member.join.nick.possible", "닉네임 사용가능 시"),
+
     //비밀번호변경
-    비밀번호변경성공("임시", "member.change.password.success", "비밀번호 변경 성공 시"),
-    비밀번호변경실패("임시", "member.change.password.fail", "비밀번호 변경 실패 시"),
+    비밀번호변경실패_회원아님("0", "member.change.password.fail", "비밀번호 변경 실패 시"),
+    비밀번호변경성공("1", "member.change.password.success", "비밀번호 변경 성공 시"),
 
     //프로필편집
-    프로필편집성공("임시", "member.edit.profile.success", "프로필 편집 성공 시"),
-    프로필편집실패_회원아님("임시", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
-    프로필편집실패_닉네임중복("임시", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
+    프로필편집성공("0", "member.edit.profile.success", "프로필 편집 성공 시"),
+    프로필편집실패_회원아님("-1", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
+    프로필편집실패_닉네임중복("-2", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
 
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),

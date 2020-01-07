@@ -1,10 +1,7 @@
 package com.demo;
 
 import com.demo.sample.service.SampleService;
-import com.demo.util.AES;
-import com.demo.util.CipherUtil;
-import com.demo.util.JwtUtil;
-import com.demo.util.RestApiUtil;
+import com.demo.util.*;
 import com.demo.sample.vo.SampleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -189,5 +186,29 @@ public class SampleVoTest {
             assertThat(response.getBody().getContent()).isEqualTo(expected);
             assertThat(response.getBody().getRequestDate()).isEqualTo(requestDate);
         }*/
+
+    @Test
+    public void 랜덤문자열생성_테스트(){
+
+        log.warn("string");
+        log.info(CommonUtil.randomValue("string", 4));
+        log.info(CommonUtil.randomValue("string", 4));
+
+        log.warn("p");
+        log.info(CommonUtil.randomValue("p", 4));
+        log.info(CommonUtil.randomValue("p", 4));
+
+        log.warn("c");
+        log.info(CommonUtil.randomValue("c", 4));
+        log.info(CommonUtil.randomValue("c", 4));
+
+        log.warn("a");
+        log.info(CommonUtil.randomValue("a", 4));
+        log.info(CommonUtil.randomValue("a", 4));
+
+        log.warn("number");
+        log.info(CommonUtil.randomValue("number", 4));
+        log.info(CommonUtil.randomValue("number", 4));
+    }
 
 }

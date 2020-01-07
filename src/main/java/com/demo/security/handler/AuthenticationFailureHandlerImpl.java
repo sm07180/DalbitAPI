@@ -37,7 +37,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         map.put("returnUrl", url);
 
         PrintWriter out = response.getWriter();
-        out.print(new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인실패, map))));
+        out.print(new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.로그인실패_패스워드틀림, map))));
         out.flush();
         out.close();
     }
