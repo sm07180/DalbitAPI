@@ -1,6 +1,7 @@
 package com.demo.member.service;
 
 import com.demo.common.vo.ProcedureVo;
+import com.demo.member.dao.MemberDao;
 import com.demo.member.vo.JoinVo;
 import com.demo.member.vo.LoginVo;
 import com.demo.sample.dao.SampleDao;
@@ -15,24 +16,31 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
     @Autowired
-    SampleDao sampleDao;
+    MemberDao memberDao;
 
     public ProcedureVo callMemberLogin(LoginVo loginVo) {
         ProcedureVo procedureVo = new ProcedureVo(loginVo);
-         sampleDao.callMemberLogin(procedureVo);
+        memberDao.callMemberLogin(procedureVo);
         return procedureVo;
     }
 
     public ProcedureVo callMemberJoin(JoinVo joinVo) {
         ProcedureVo procedureVo = new ProcedureVo(joinVo);
-        sampleDao.callMemberJoin(procedureVo);
+        memberDao.callMemberJoin(procedureVo);
         return procedureVo;
     }
 
     public ProcedureVo callNickNameCheck(ProcedureVo procedureVo) {
-        sampleDao.callNickNameCheck(procedureVo);
+        memberDao.callNickNameCheck(procedureVo);
         return procedureVo;
     }
 
+    public ProcedureVo callChangePassword(ProcedureVo procedureVo){
+        memberDao.callChangePassword(procedureVo);
+        return procedureVo;
+    }
 
+    public ProcedureVo callProfileEdit(ProcedureVo procedureVo){
+        return memberDao.callProfileEdit(procedureVo);
+    }
 }

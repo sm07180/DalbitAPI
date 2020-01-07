@@ -57,7 +57,7 @@ public class RoomController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여, data)));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가성공, data)));
     }
 
     /**

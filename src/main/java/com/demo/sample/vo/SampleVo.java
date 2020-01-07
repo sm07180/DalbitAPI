@@ -1,5 +1,6 @@
-package com.demo.common.vo;
+package com.demo.sample.vo;
 
+import com.demo.common.vo.BaseVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,4 +14,5 @@ public class SampleVo extends BaseVo {
     private String sp_name;
     private String data;
     private String upd_date;
+
 }

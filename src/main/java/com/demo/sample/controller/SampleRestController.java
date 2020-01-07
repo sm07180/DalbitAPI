@@ -4,7 +4,7 @@ import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
-import com.demo.common.vo.SampleVo;
+import com.demo.sample.vo.SampleVo;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.JoinVo;
 import com.demo.member.vo.LoginVo;
@@ -242,7 +242,7 @@ public class SampleRestController {
         log.info("sp_checkDuplicateNickName: {}", procedureVo.getRet());
         log.info("sp_checkDuplicateNickName: {}", procedureVo.getExt());
 
-        if(0 == procedureVo.getRet()){
+        if(procedureVo.getRet().equals(Status.닉네임중복.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
         }else{
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData()));
@@ -259,13 +259,13 @@ public class SampleRestController {
         log.info("sp_member_login: {}", procedureVo.getRet());
         log.info("sp_member_login: {}", procedureVo.getExt());
 
-        if(0 == procedureVo.getRet()) {
+        if("0" == procedureVo.getRet()) {
             return gsonUtil.toJson(new JsonOutputVo(Status.로그인, procedureVo.getData()));
-        }else if (1 == procedureVo.getRet()){
+        }else if ("1" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.회원가입필요, procedureVo.getData()));
-        }else if (-1 == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.패스워드틀림, procedureVo.getData()));
-        }else if (-2 == procedureVo.getRet()){
+        }else if ("-1" == procedureVo.getRet()){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패, procedureVo.getData()));
+        }else if ("-2" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
         }else {
             return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패, procedureVo.getData()));
@@ -281,13 +281,13 @@ public class SampleRestController {
         log.info("sp_member_join: {}", procedureVo.getRet());
         log.info("sp_member_join: {}", procedureVo.getExt());
 
-        if(0 == procedureVo.getRet()){
+        if("0" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.회원가입, procedureVo.getData()));
-        }else if (-1 == procedureVo.getRet()){
+        }else if ("-1" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.중복가입, procedureVo.getData()));
-        }else if (-2 == procedureVo.getRet()){
+        }else if ("-2" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
-        }else if (-3 == procedureVo.getRet()){
+        }else if ("-3" == procedureVo.getRet()){
             return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
         }else{
             return gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
@@ -319,8 +319,6 @@ public class SampleRestController {
 
     @GetMapping(value = "/jwt")
     public String jwtTokenSample(){
-
-        //UserVo loginUserVo = UserVo.getUserInfo();
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, null));
     }

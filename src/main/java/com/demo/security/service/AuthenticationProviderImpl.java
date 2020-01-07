@@ -1,6 +1,5 @@
 package com.demo.security.service;
 
-import com.demo.common.code.ProcedureStatus;
 import com.demo.common.code.Status;
 import com.demo.common.vo.MemberVo;
 import com.demo.common.vo.ProcedureVo;
@@ -61,7 +60,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
             ProcedureVo procedureVo = memberService.callMemberLogin(loginVo);
             log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
-            if(procedureVo.getRet() != ProcedureStatus.성공.getResultCode()){
+            if(!procedureVo.getRet().equals(Status.로그인.getMessageCode())){
                 throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
             }
         }

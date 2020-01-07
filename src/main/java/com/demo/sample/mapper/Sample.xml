@@ -29,18 +29,6 @@
         )
     </insert>
 
-    <select id="callNickNameCheck" statementType="CALLABLE" parameterType="ProcedureVo">
-      call sp_checkDuplicateNickName(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo">
-        call sp_member_login(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callMemberJoin" statementType="CALLABLE" parameterType="ProcedureVo">
-        call sp_member_join(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <select id="selectLogData" resultType="SampleVo">
     /* Sample.xml - selectLogData */
       SELECT
