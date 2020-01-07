@@ -20,8 +20,8 @@ public class GlobalException extends Exception {
     private String messageKey;
     private ErrorStatus errorStatus;
 
-    GlobalException(){}
-    GlobalException(ErrorStatus errorStatus){
+    public GlobalException(){}
+    public GlobalException(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
     }
 
