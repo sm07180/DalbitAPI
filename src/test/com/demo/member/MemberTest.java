@@ -36,6 +36,15 @@ public class MemberTest {
     }
 
     @Test
+    public void 닉네임중복체크(){
+        ProcedureVo procedureVo = new ProcedureVo();
+        procedureVo.setData("123123123");
+        memberService.callNickNameCheck(procedureVo);
+
+        log.info("닉네임 중복 체크 결과 : {}", procedureVo);
+    }
+
+    @Test
     public void 비밀번호변경_성공(){
         ProcedureVo procedureVo = new ProcedureVo();
         procedureVo.setBox(ChangePasswordVo.builder().build());

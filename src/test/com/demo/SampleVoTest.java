@@ -5,7 +5,7 @@ import com.demo.util.AES;
 import com.demo.util.CipherUtil;
 import com.demo.util.JwtUtil;
 import com.demo.util.RestApiUtil;
-import com.demo.common.vo.SampleVo;
+import com.demo.sample.vo.SampleVo;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,6 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
 import java.security.Security;
-import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
