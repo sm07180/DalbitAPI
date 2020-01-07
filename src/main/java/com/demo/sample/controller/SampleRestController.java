@@ -3,12 +3,9 @@ package com.demo.sample.controller;
 import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
-import com.demo.common.vo.ProcedureVo;
-import com.demo.sample.vo.SampleVo;
 import com.demo.member.service.MemberService;
-import com.demo.member.vo.P_JoinVo;
-import com.demo.member.vo.P_LoginVo;
 import com.demo.sample.service.SampleService;
+import com.demo.sample.vo.SampleVo;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import io.swagger.annotations.ApiImplicitParam;
@@ -232,65 +229,6 @@ public class SampleRestController {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
-        }
-    }
-
-    @GetMapping("nick")
-    public String sp_checkDuplicateNickName(ProcedureVo procedureVo){
-        procedureVo.setData("NickName");
-        memberService.callNickNameCheck(procedureVo);
-        log.info("sp_checkDuplicateNickName: {}", procedureVo.getRet());
-        log.info("sp_checkDuplicateNickName: {}", procedureVo.getExt());
-
-        if(procedureVo.getRet().equals(Status.닉네임중복.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
-        }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData()));
-        }
-
-    }
-
-    @GetMapping("loginTest")
-    public String sp_member_login(){
-
-        P_LoginVo apiSample = P_LoginVo.builder().build();
-
-        ProcedureVo procedureVo = memberService.callMemberLogin(apiSample);
-        log.info("sp_member_login: {}", procedureVo.getRet());
-        log.info("sp_member_login: {}", procedureVo.getExt());
-
-        if("0" == procedureVo.getRet()) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인, procedureVo.getData()));
-        }else if ("1" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.회원가입필요, procedureVo.getData()));
-        }else if ("-1" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패, procedureVo.getData()));
-        }else if ("-2" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
-        }else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패, procedureVo.getData()));
-        }
-    }
-
-    @GetMapping("joinTest")
-    public String sp_member_join(){
-
-        P_JoinVo apiSample = P_JoinVo.builder().build();
-
-        ProcedureVo procedureVo = memberService.callMemberJoin(apiSample);
-        log.info("sp_member_join: {}", procedureVo.getRet());
-        log.info("sp_member_join: {}", procedureVo.getExt());
-
-        if("0" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.회원가입, procedureVo.getData()));
-        }else if ("-1" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.중복가입, procedureVo.getData()));
-        }else if ("-2" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
-        }else if ("-3" == procedureVo.getRet()){
-            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
-        }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
         }
     }
 

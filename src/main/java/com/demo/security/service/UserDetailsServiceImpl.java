@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     	MemberVo memberVo = loginDao.login(username);
 
         if(memberVo == null) {
-            throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
+            throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
         if(!"Y".equals(userInfo.getCareerauth()) && userInfo.getDuty().length() > 0){

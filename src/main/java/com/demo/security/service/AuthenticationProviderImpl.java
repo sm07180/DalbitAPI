@@ -44,7 +44,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             
             if(securityUserVo == null) {
             	log.debug(securityUserVo.getUsername());
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
+                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
             }
 
             MemberVo memberVo = securityUserVo.getUserInfo();
@@ -60,8 +60,8 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
-            if(!procedureVo.getRet().equals(Status.로그인.getMessageCode())){
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));
+            if(!procedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
+                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
             }
         }
         return new UsernamePasswordAuthenticationToken(securityUserVo, password, securityUserVo.getAuthorities());

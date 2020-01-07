@@ -57,7 +57,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         HashMap resultJsonData = new HashMap();
         resultJsonData.put("returnUrl", isEmptyRedirectUrl ? "/sample" : request.getParameter("redirectUrl"));
 
-        returnLoginResult(response, new JsonOutputVo(Status.로그인, resultJsonData));
+        returnLoginResult(response, new JsonOutputVo(Status.로그인성공, resultJsonData));
     }
 
     /**
