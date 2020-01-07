@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ProfileEditVo {
+public class P_ProfileEditVo {
 
     @Builder.Default private String mem_no = "11577931027280";
     @Builder.Default private String memSex = "m";

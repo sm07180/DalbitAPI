@@ -6,8 +6,8 @@ import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.sample.vo.SampleVo;
 import com.demo.member.service.MemberService;
-import com.demo.member.vo.JoinVo;
-import com.demo.member.vo.LoginVo;
+import com.demo.member.vo.P_JoinVo;
+import com.demo.member.vo.P_LoginVo;
 import com.demo.sample.service.SampleService;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
@@ -253,7 +253,7 @@ public class SampleRestController {
     @GetMapping("loginTest")
     public String sp_member_login(){
 
-        LoginVo apiSample = LoginVo.builder().build();
+        P_LoginVo apiSample = P_LoginVo.builder().build();
 
         ProcedureVo procedureVo = memberService.callMemberLogin(apiSample);
         log.info("sp_member_login: {}", procedureVo.getRet());
@@ -275,7 +275,7 @@ public class SampleRestController {
     @GetMapping("joinTest")
     public String sp_member_join(){
 
-        JoinVo apiSample = JoinVo.builder().build();
+        P_JoinVo apiSample = P_JoinVo.builder().build();
 
         ProcedureVo procedureVo = memberService.callMemberJoin(apiSample);
         log.info("sp_member_join: {}", procedureVo.getRet());

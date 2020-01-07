@@ -4,7 +4,7 @@ import com.demo.common.code.Status;
 import com.demo.member.vo.MemberVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.member.service.MemberService;
-import com.demo.member.vo.LoginVo;
+import com.demo.member.vo.P_LoginVo;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
@@ -48,7 +48,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             }
 
             MemberVo memberVo = securityUserVo.getUserInfo();
-            LoginVo loginVo = LoginVo.builder()
+            P_LoginVo pLoginVo = P_LoginVo.builder()
                 .memSlct(memberVo.getMemSlct())
                 .id(userName)
                 .pw(password)
@@ -58,7 +58,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 .appVersion("1.0.0.1")
                 .build();
 
-            ProcedureVo procedureVo = memberService.callMemberLogin(loginVo);
+            ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
             if(!procedureVo.getRet().equals(Status.로그인.getMessageCode())){
                 throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패.getMessageKey()));

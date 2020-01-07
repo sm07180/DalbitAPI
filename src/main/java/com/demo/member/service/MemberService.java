@@ -2,9 +2,8 @@ package com.demo.member.service;
 
 import com.demo.common.vo.ProcedureVo;
 import com.demo.member.dao.MemberDao;
-import com.demo.member.vo.JoinVo;
-import com.demo.member.vo.LoginVo;
-import com.demo.sample.dao.SampleDao;
+import com.demo.member.vo.P_JoinVo;
+import com.demo.member.vo.P_LoginVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,14 +17,14 @@ public class MemberService {
     @Autowired
     MemberDao memberDao;
 
-    public ProcedureVo callMemberLogin(LoginVo loginVo) {
-        ProcedureVo procedureVo = new ProcedureVo(loginVo);
+    public ProcedureVo callMemberLogin(P_LoginVo pLoginVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberLogin(procedureVo);
         return procedureVo;
     }
 
-    public ProcedureVo callMemberJoin(JoinVo joinVo) {
-        ProcedureVo procedureVo = new ProcedureVo(joinVo);
+    public ProcedureVo callMemberJoin(P_JoinVo pLoginVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
         return procedureVo;
     }

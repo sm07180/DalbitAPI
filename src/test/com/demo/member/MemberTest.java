@@ -4,9 +4,9 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.member.service.MemberService;
-import com.demo.member.vo.ChangePasswordVo;
-import com.demo.member.vo.LoginVo;
-import com.demo.member.vo.ProfileEditVo;
+import com.demo.member.vo.P_ChangePasswordVo;
+import com.demo.member.vo.P_LoginVo;
+import com.demo.member.vo.P_ProfileEditVo;
 import com.demo.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class MemberTest {
     @Test
     public void build테스트(){
         log.debug("ㅁ니ㅏ어림넝리ㅏㅓ밍러미어");
-        log.debug(LoginVo.builder().build().toString());
+        log.debug(P_LoginVo.builder().build().toString());
     }
 
     @Test
@@ -47,7 +47,7 @@ public class MemberTest {
     @Test
     public void 비밀번호변경_성공(){
         ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setBox(ChangePasswordVo.builder().build());
+        procedureVo.setBox(P_ChangePasswordVo.builder().build());
 
         memberService.callChangePassword(procedureVo);
 
@@ -59,7 +59,7 @@ public class MemberTest {
     @Test
     public void 비밀번호변경_실패(){
         ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setBox(ChangePasswordVo.builder().build());
+        procedureVo.setBox(P_ChangePasswordVo.builder().build());
 
         memberService.callChangePassword(procedureVo);
 
@@ -72,7 +72,7 @@ public class MemberTest {
     @Test
     public void 프로필편집_성공(){
 
-        ProcedureVo procedureVo = new ProcedureVo(ProfileEditVo.builder().build());
+        ProcedureVo procedureVo = new ProcedureVo(P_ProfileEditVo.builder().build());
 
         memberService.callProfileEdit(procedureVo);
 
@@ -83,7 +83,7 @@ public class MemberTest {
 
     @Test
     public void 프로필편집_실패_회원아님(){
-        ProcedureVo procedureVo = new ProcedureVo(ProfileEditVo.builder().mem_no("12345").build());
+        ProcedureVo procedureVo = new ProcedureVo(P_ProfileEditVo.builder().mem_no("12345").build());
 
         memberService.callProfileEdit(procedureVo);
 
@@ -93,7 +93,7 @@ public class MemberTest {
 
     @Test
     public void 프로필편집_실패_닉네임중복(){
-        ProcedureVo procedureVo = new ProcedureVo(ProfileEditVo.builder().nickName("radio").build());
+        ProcedureVo procedureVo = new ProcedureVo(P_ProfileEditVo.builder().nickName("radio").build());
 
         memberService.callProfileEdit(procedureVo);
 

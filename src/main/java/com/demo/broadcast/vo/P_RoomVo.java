@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class RoomVo {
+public class P_RoomVo {
 
     @Builder.Default private String mem_no = "11577950701317";                                       //회원번호
     @Builder.Default private String subjectType = "1";                                              //방송종류

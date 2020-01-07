@@ -1,7 +1,7 @@
 package com.demo.broadcast;
 
 import com.demo.broadcast.service.RoomService;
-import com.demo.broadcast.vo.RoomVo;
+import com.demo.broadcast.vo.P_RoomVo;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
@@ -27,9 +27,9 @@ public class BroadCastTest {
     public void 방송방생성테스트(){
 
         log.debug("방송방생성 테스트");
-        log.debug(RoomVo.builder().build().toString());
+        log.debug(P_RoomVo.builder().build().toString());
 
-        RoomVo apiSample = RoomVo.builder().build();
+        P_RoomVo apiSample = P_RoomVo.builder().build();
         ProcedureVo procedureVo = roomService.callBroadCastRoomCreate(apiSample);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -49,9 +49,9 @@ public class BroadCastTest {
     @Test
     public void 방송방참여하기(){
         log.debug("방송방 참여하기 테스트");
-        log.debug(RoomVo.builder().build().toString());
+        log.debug(P_RoomVo.builder().build().toString());
 
-        RoomVo apiSample = RoomVo.builder().build();
+        P_RoomVo apiSample = P_RoomVo.builder().build();
         ProcedureVo procedureVo = roomService.callBroadCastRoomJoin(apiSample);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -79,9 +79,9 @@ public class BroadCastTest {
     @Test
     public void 방송방나가기(){
         log.debug("방송방 나가기 테스트");
-        log.debug(RoomVo.builder().build().toString());
+        log.debug(P_RoomVo.builder().build().toString());
 
-        RoomVo apiSample = RoomVo.builder().build();
+        P_RoomVo apiSample = P_RoomVo.builder().build();
         ProcedureVo procedureVo = roomService.callBroadCastRoomOut(apiSample);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());

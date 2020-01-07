@@ -7,7 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class ChangePasswordVo {
+public class P_ChangePasswordVo {
 
     @Builder.Default private String _phoneNo = "010-1234-4568";
     @Builder.Default private String _password = "1234";
