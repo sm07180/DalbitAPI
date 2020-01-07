@@ -4,7 +4,7 @@ import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
-import com.demo.common.vo.SampleVo;
+import com.demo.sample.vo.SampleVo;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.JoinVo;
 import com.demo.member.vo.LoginVo;
@@ -319,8 +319,6 @@ public class SampleRestController {
 
     @GetMapping(value = "/jwt")
     public String jwtTokenSample(){
-
-        //UserVo loginUserVo = UserVo.getUserInfo();
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, null));
     }

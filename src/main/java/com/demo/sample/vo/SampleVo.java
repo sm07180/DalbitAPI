@@ -1,5 +1,6 @@
-package com.demo.common.vo;
+package com.demo.sample.vo;
 
+import com.demo.common.vo.BaseVo;
 import lombok.Getter;
 import lombok.Setter;
 

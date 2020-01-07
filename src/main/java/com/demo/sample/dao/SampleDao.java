@@ -1,7 +1,6 @@
 package com.demo.sample.dao;
 
-import com.demo.common.vo.ProcedureVo;
-import com.demo.common.vo.SampleVo;
+import com.demo.sample.vo.SampleVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
