@@ -21,7 +21,7 @@ public class RoomController {
     /**
      * 방송생성
      */
-    @ApiOperation(value = "방송생성", notes="설명 테스트 <br>"+"1.줄바꿈테스트<br>"+"2.Good!")
+    @ApiOperation(value = "방송생성", notes="설명 테스트 <br>1.줄바꿈테스트<br>2.Good!")
     @PostMapping("")
     public String createBrod( @RequestParam(value = "s_gubun", required = true, defaultValue = "BROD00100") String s_gubun,
                         @RequestParam(value = "s_bgPath", required = false) String s_bgPath,
