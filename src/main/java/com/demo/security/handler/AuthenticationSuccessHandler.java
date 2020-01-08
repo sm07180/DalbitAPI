@@ -3,11 +3,7 @@ package com.demo.security.handler;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.security.vo.SecurityUserVo;
-import com.demo.util.CookieUtil;
-import com.demo.util.JwtUtil;
-import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
-import com.google.gson.Gson;
+import com.demo.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -20,7 +16,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 
 @Component("authSuccessHandler")
@@ -28,6 +23,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
     @Autowired MessageUtil messageUtil;
     @Autowired JwtUtil jwtUtil;
+    @Autowired GsonUtil gsonUtil;
 
 
     @Value("${sso.domain}")
@@ -57,7 +53,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         HashMap resultJsonData = new HashMap();
         resultJsonData.put("returnUrl", isEmptyRedirectUrl ? "/sample" : request.getParameter("redirectUrl"));
 
-        returnLoginResult(response, new JsonOutputVo(Status.로그인성공, resultJsonData));
+        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인성공, resultJsonData));
     }
 
     /**
@@ -69,18 +65,5 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(loginUser.getUsername()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
         response.addCookie(ssoCookie);
-    }
-
-    /**
-     * 로그인 결과 리턴
-     * @param response
-     * @param jsonOutputVo
-     * @throws IOException
-     */
-    public void returnLoginResult(HttpServletResponse response, JsonOutputVo jsonOutputVo) throws IOException {
-        PrintWriter out = response.getWriter();
-        out.print(new Gson().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
-        out.flush();
-        out.close();
     }
 }
