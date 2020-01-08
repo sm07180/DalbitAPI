@@ -31,6 +31,10 @@ public class MessageUtil{
      */
     public ExceptionVo setExceptionInfo(ErrorStatus errorStatus, HashMap map){
         ExceptionVo exceptionVo = GlobalException.throwException(errorStatus, map);
+        return this.setExceptionInfo(exceptionVo);
+    }
+
+    public ExceptionVo setExceptionInfo(ExceptionVo exceptionVo){
         exceptionVo.setMessage(messageSource.getMessage(exceptionVo.getMessageKey(), null, LocaleContextHolder.getLocale()));
         return exceptionVo;
     }

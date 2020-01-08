@@ -18,11 +18,11 @@
       call sp_broadcast_room_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callBroadCastRoomList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callBroadCastRoomList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="RoomVo">
       call sp_broadcast_room_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callBroadCastRoomMemberList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callBroadCastRoomMemberList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="RoomMemberVo">
       call sp_broadcast_room_member_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 

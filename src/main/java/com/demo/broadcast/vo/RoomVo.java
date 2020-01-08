@@ -1,0 +1,30 @@
+package com.demo.broadcast.vo;
+
+import com.demo.common.vo.BaseVo;
+import com.demo.common.vo.ProcedureVo;
+import lombok.*;
+
+@Getter @Setter @ToString
+public class RoomVo extends ProcedureVo {
+
+    private String roomNo;                 //방번호
+    private String subjectType;            //방주제
+    private String title;                  //방제목
+    private String imageBackground;        //방배경이미지
+    private String msgWelcom;              //환영메세지
+    private String restrictEntry;          //입장제한
+    private String restrictAge;            //나이제한
+    private String notice;                 //공지사항
+    private String state;                  //방상태
+    private String codeLink;               //방공유코드
+    private String countEntry;             //참여자수
+    private String countGood;              //좋아요수
+    private String startDate;              //방송시작시간
+    private String airtime;                //방송시간
+    private String bjMemNo;                //bj회원번호
+    private String bjNickName;             //bj닉네임
+    private String bjMemSex;               //bj성별
+    private String bjBirthYear;            //bj생년
+    private String bjProfileImage;         //bj프로필이미지
+
+}
