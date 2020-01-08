@@ -6,6 +6,7 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.util.GsonUtil;
+import com.demo.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,17 +135,20 @@ public class BroadCastTest {
         log.debug(P_RoomListVo.builder().build().toString());
 
         P_RoomListVo apiSample = P_RoomListVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomList(apiSample);
+        RoomVo roomVo = roomService.callBroadCastRoomList(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+        log.info("프로시저 응답 코드: {}", roomVo.getRet());
+        log.info("프로시저 응답 데이타: {}", roomVo.getExt());
+        log.info("방송방 리스트: {}", roomVo.toString());
+        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_회원아님, procedureVo.getData())));
+        if(roomVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, roomVo.getData())));
+        }else if(roomVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_회원아님, roomVo.getData())));
         }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_조회, procedureVo.getData())));
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_조회, roomVo.getData())));
         }
     }
 
@@ -154,18 +158,23 @@ public class BroadCastTest {
         log.debug(P_RoomMemberListVo.builder().build().toString());
 
         P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomMemberList(apiSample);
+        RoomMemberVo roomMemberVo = roomService.callBroadCastRoomMemberList(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
+        log.info("프로시저 응답 코드: {}", roomMemberVo.getRet());
+        log.info("프로시저 응답 데이타: {}", roomMemberVo.getExt());
+        log.info("방송방 참여자 리스트: {}", roomMemberVo.toString());
+        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, procedureVo.getData())));
+        if(roomMemberVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberVo.getData())));
+        }else if(roomMemberVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, roomMemberVo.getData())));
         }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, procedureVo.getData())));
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberVo.getData())));
         }
+
+
     }
 
     @Test
