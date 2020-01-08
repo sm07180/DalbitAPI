@@ -2,7 +2,9 @@ package com.demo.broadcast.service;
 
 import com.demo.broadcast.dao.RoomDao;
 import com.demo.broadcast.vo.*;
+import com.demo.common.code.Status;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,19 +53,26 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    public ProcedureVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
+    public RoomVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
+        RoomVo roomVo = new RoomVo();
         roomDao.callBroadCastRoomList(procedureVo);
-        return procedureVo;
+        roomVo.setRet(procedureVo.getRet());
+        roomVo.setExt(procedureVo.getExt());
+        return roomVo;
     }
+
 
     /**
      * 방송방 참여자 리스트
      */
-    public ProcedureVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
+    public RoomMemberVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
-        roomDao.callBroadCastRoomMemberList(pRoomMemberListVo);
-        return procedureVo;
+        RoomMemberVo roomMemberVo = new RoomMemberVo();
+        roomDao.callBroadCastRoomMemberList(procedureVo);
+        roomMemberVo.setRet(procedureVo.getRet());
+        roomMemberVo.setExt(procedureVo.getExt());
+        return roomMemberVo;
     }
 
     /**
@@ -71,7 +80,7 @@ public class RoomService {
      */
     public ProcedureVo callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGoodVo);
-        roomDao.callBroadCastRoomGood(pRoomGoodVo);
+        roomDao.callBroadCastRoomGood(procedureVo);
         return procedureVo;
     }
 }
