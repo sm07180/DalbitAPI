@@ -55,8 +55,10 @@ public class RoomService {
      */
     public RoomVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
-        RoomVo roomVo = new RoomVo();
-        roomDao.callBroadCastRoomList(procedureVo);
+        RoomVo roomVo = roomDao.callBroadCastRoomList(procedureVo);
+        if(!procedureVo.getRet().equals(Status.방송리스트_조회.getMessageCode())){
+            roomVo = new RoomVo();
+        }
         roomVo.setRet(procedureVo.getRet());
         roomVo.setExt(procedureVo.getExt());
         return roomVo;
@@ -68,8 +70,10 @@ public class RoomService {
      */
     public RoomMemberVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
-        RoomMemberVo roomMemberVo = new RoomMemberVo();
-        roomDao.callBroadCastRoomMemberList(procedureVo);
+        RoomMemberVo roomMemberVo = roomDao.callBroadCastRoomMemberList(procedureVo);
+        if(!procedureVo.getRet().equals(Status.방송참여자리스트_조회.getMessageCode())){
+            roomMemberVo = new RoomMemberVo();
+        }
         roomMemberVo.setRet(procedureVo.getRet());
         roomMemberVo.setExt(procedureVo.getExt());
         return roomMemberVo;

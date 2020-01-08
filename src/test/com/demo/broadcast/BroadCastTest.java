@@ -134,7 +134,9 @@ public class BroadCastTest {
         log.debug("방송방 리스트 테스트");
         log.debug(P_RoomListVo.builder().build().toString());
 
-        P_RoomListVo apiSample = P_RoomListVo.builder().build();
+        P_RoomListVo apiSample = P_RoomListVo.builder()
+                .mem_no("1111111")
+                .build();
         RoomVo roomVo = roomService.callBroadCastRoomList(apiSample);
 
         log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
