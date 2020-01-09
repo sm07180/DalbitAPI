@@ -13,12 +13,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new ParamCheckInterceptor())
-                .addPathPatterns("/*");
+                .addPathPatterns("/**");
     }
 
     @Override
     public void addCorsMappings(CorsRegistry registry){
-        registry.addMapping("/*")
+        registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowedMethods(HttpMethod.POST.name())
                 .allowCredentials(false)
