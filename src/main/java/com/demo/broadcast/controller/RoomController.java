@@ -163,7 +163,15 @@ public class RoomController {
     public String selectBrodList(){
         P_RoomListVo apiSample = P_RoomListVo.builder().build();
         ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomList(apiSample);
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송리스트_조회, procedureOutputVo.getOutputBox())));
+        Status msg;
+        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
+            msg = Status.방송리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
+            msg = Status.방송리스트없음;
+        } else {
+            msg = Status.방송리스트_조회;
+        }
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(msg, procedureOutputVo.getOutputBox())));
     }
 
     /**
@@ -174,7 +182,15 @@ public class RoomController {
     public String selectBrodMemberList(){
         P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
         ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomMemberList(apiSample);
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여자리스트_조회, procedureOutputVo.getOutputBox())));
+        Status msg;
+        if(procedureOutputVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())){
+            msg = Status.방송참여자리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
+            msg = Status.방송참여자리스트없음;
+        } else {
+            msg = Status.방송참여자리스트_조회;
+        }
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(msg, procedureOutputVo.getOutputBox())));
     }
 }
 
