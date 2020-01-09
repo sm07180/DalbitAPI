@@ -1,22 +1,31 @@
 package com.demo.broadcast.controller;
 
+import com.demo.broadcast.service.RoomService;
+import com.demo.broadcast.vo.P_RoomListVo;
+import com.demo.broadcast.vo.P_RoomMemberListVo;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
+import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 
+@Slf4j
 @RestController
 @RequestMapping("/brod")
 public class RoomController {
 
     @Autowired
     MessageUtil messageUtil;
+
+    @Autowired
+    RoomService roomService;
 
     /**
      * 방송생성
@@ -144,6 +153,44 @@ public class RoomController {
 
         HashMap data = new HashMap();
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, data)));
+    }
+
+    /**
+     * 방송방 리스트
+     */
+    @ApiOperation(value = "방송방 리스트")
+    @PostMapping("/brodList")
+    public String selectBrodList(){
+        P_RoomListVo apiSample = P_RoomListVo.builder().build();
+        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomList(apiSample);
+        Status msg;
+        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
+            msg = Status.방송리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
+            msg = Status.방송리스트없음;
+        } else {
+            msg = Status.방송리스트_조회;
+        }
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(msg, procedureOutputVo.getOutputBox())));
+    }
+
+    /**
+     * 방송방 참여자 리스트
+     */
+    @ApiOperation(value = "방송방 참여자 리스트")
+    @PostMapping("/brodMemberList")
+    public String selectBrodMemberList(){
+        P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
+        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomMemberList(apiSample);
+        Status msg;
+        if(procedureOutputVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())){
+            msg = Status.방송참여자리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
+            msg = Status.방송참여자리스트없음;
+        } else {
+            msg = Status.방송참여자리스트_조회;
+        }
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(msg, procedureOutputVo.getOutputBox())));
     }
 }
 

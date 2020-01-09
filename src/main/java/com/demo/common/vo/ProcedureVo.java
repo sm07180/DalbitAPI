@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 /**
  * Procedure 조회를 위한 VO
  */
@@ -20,9 +22,7 @@ public class ProcedureVo {
     }
 
     private String data;
-
     private Object box;
-
     private String ret;
     private String ext;
 

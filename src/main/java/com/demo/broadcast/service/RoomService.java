@@ -2,11 +2,12 @@ package com.demo.broadcast.service;
 
 import com.demo.broadcast.dao.RoomDao;
 import com.demo.broadcast.vo.*;
-import com.demo.common.code.Status;
+import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
-import com.demo.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class RoomService {
@@ -53,30 +54,26 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    public RoomVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
+    public ProcedureOutputVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
-        RoomVo roomVo = roomDao.callBroadCastRoomList(procedureVo);
-        if(!procedureVo.getRet().equals(Status.방송리스트_조회.getMessageCode())){
-            roomVo = new RoomVo();
-        }
-        roomVo.setRet(procedureVo.getRet());
-        roomVo.setExt(procedureVo.getExt());
-        return roomVo;
+        List<RoomVo> roomVo = roomDao.callBroadCastRoomList(procedureVo);
+        roomVo = (roomVo.size() <= 0) ? null : roomVo;
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
+        procedureOutputVo.setOutputBox(roomVo);
+        return procedureOutputVo;
     }
 
 
     /**
      * 방송방 참여자 리스트
      */
-    public RoomMemberVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
+    public ProcedureOutputVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
-        RoomMemberVo roomMemberVo = roomDao.callBroadCastRoomMemberList(procedureVo);
-        if(!procedureVo.getRet().equals(Status.방송참여자리스트_조회.getMessageCode())){
-            roomMemberVo = new RoomMemberVo();
-        }
-        roomMemberVo.setRet(procedureVo.getRet());
-        roomMemberVo.setExt(procedureVo.getExt());
-        return roomMemberVo;
+        List<RoomMemberVo> roomMemberVo = roomDao.callBroadCastRoomMemberList(procedureVo);
+        roomMemberVo = (roomMemberVo.size() <= 0) ? null : roomMemberVo;
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
+        procedureOutputVo.setOutputBox(roomMemberVo);
+        return procedureOutputVo;
     }
 
     /**
