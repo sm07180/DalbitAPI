@@ -85,7 +85,7 @@ public class SsoAuthenticationFilter implements Filter {
             }
         }
 
-        filterChain.doFilter(servletRequest, servletResponse);
+        filterChain.doFilter(request, response);
     }
 
     @Override
