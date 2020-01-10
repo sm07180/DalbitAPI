@@ -41,6 +41,26 @@ public enum Status {
     프로필편집실패_회원아님("-1", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
     프로필편집실패_닉네임중복("-2", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
 
+    //회원팬등록
+    팬등록성공("0", "member.insert.fanstar.success", "회원 팬 등록 성공 시"),
+    팬등록_회원아님("-1", "member.insert.fan.no", "회원이 아닐 시"),
+    팬등록_스타회원번호이상("-2", "member.insert.star.number.strange", "스타회원번호 이상 시"),
+    팬등록_이미팬등록됨("-3", "member.insert.fan.already", "이미 팬 등록되어있을 시"),
+    팬등록실패("-4", "member.insert.fanstar.fail", "회원 팬 등록 실패 시 "),
+
+    //회원팬해제
+    팬해제성공("0", "member.delete.fanstar.success", "팬 해제 성공 시"),
+    팬해제_회원아님("-1", "member.delete.fan.no", "회원이 아닐 시"),
+    팬해제_스타회원번호이상("-2", "member.delete.star.number.strange", "스타회원번호 이상 시"),
+    팬해제_팬아님("-3", "member.delete.fan.not", "팬이 아닐 시"),
+    팬해제실패("-4", "member.delete.fanstar.fail", "팬 해제 실패 시"),
+
+    //회원정보보기
+    회원정보보기성공("0", "member.info.view.success", "회원정보보기 성공 시"),
+    회원정보_회원아님("-1", "member.no", "회원이 아닐 시"),
+    회원정보_대상회원아님("-2", "member.this.no", "대상회원이 아닐 시"),
+    회원정보보기실패("-3", "member.info.view.fail", "회원정보보기 실패 시"),
+
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),
     방송생성_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),

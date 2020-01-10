@@ -11,4 +11,7 @@ public interface MemberDao {
     ProcedureVo callMemberJoin(ProcedureVo procedureVo);
     ProcedureVo callChangePassword(ProcedureVo procedureVo);
     ProcedureVo callProfileEdit(ProcedureVo procedureVo);
+    ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
+    ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
+    ProcedureVo callMemberInfoView(ProcedureVo procedureVo);
 }
