@@ -4,6 +4,7 @@ import com.demo.broadcast.dao.RoomDao;
 import com.demo.broadcast.vo.*;
 import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.util.CommonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -56,10 +57,8 @@ public class RoomService {
      */
     public ProcedureOutputVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
-        List<RoomVo> roomVo = roomDao.callBroadCastRoomList(procedureVo);
-        roomVo = (roomVo.size() <= 0) ? null : roomVo;
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
-        procedureOutputVo.setOutputBox(roomVo);
+        List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmptyList(roomVoList) ? null : roomVoList);
         return procedureOutputVo;
     }
 
@@ -69,10 +68,8 @@ public class RoomService {
      */
     public ProcedureOutputVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
-        List<RoomMemberVo> roomMemberVo = roomDao.callBroadCastRoomMemberList(procedureVo);
-        roomMemberVo = (roomMemberVo.size() <= 0) ? null : roomMemberVo;
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
-        procedureOutputVo.setOutputBox(roomMemberVo);
+        List<RoomMemberVo> roomMemberVoList = roomDao.callBroadCastRoomMemberList(procedureVo);
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmptyList(roomMemberVoList) ? null : roomMemberVoList);
         return procedureOutputVo;
     }
 

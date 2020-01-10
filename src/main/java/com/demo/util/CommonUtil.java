@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 @Slf4j
@@ -120,4 +121,16 @@ public class CommonUtil {
         return result;
     }
 
+
+    /**
+     * 리스트 값이 있는지 체크
+     * @param list
+     * @return
+     */
+    public static boolean isEmptyList(List list){
+        if(list == null){
+            return true;
+        }
+        return 0 < list.size() ? true : false;
+    }
 }

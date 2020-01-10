@@ -15,7 +15,14 @@ public class ProcedureOutputVo extends ProcedureVo {
     private Object outputBox;
 
     public ProcedureOutputVo(ProcedureVo procedureVo) {
-        this.setRet(procedureVo.getRet());
-        this.setExt(procedureVo.getExt());
+        setRet(procedureVo.getRet());
+        setExt(procedureVo.getExt());
+    }
+
+    public ProcedureOutputVo(ProcedureVo procedureVo, Object outputBox) {
+        setRet(procedureVo.getRet());
+        setExt(procedureVo.getExt());
+        setOutputBox(outputBox);
+
     }
 }
