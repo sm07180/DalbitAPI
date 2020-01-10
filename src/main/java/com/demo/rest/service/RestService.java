@@ -208,4 +208,40 @@ public class RestService {
 
         return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0);
     }
+
+    /**
+     * Ant Media 토큰 삭제
+     *
+     * @param roomId : 룸아이디
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> deleteAntToken(String roomId) throws Exception{
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcast" + roomId + "/getToken", "", 2);
+    }
+
+    /**
+     * Ant Media 방 삭제
+     *
+     * @param roomId : 룸아이디
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> deleteAntRoom(String roomId) throws Exception{
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcast" + roomId, "", 2);
+    }
+
+    /**
+     * Ant Media 방/토큰 삭제
+     *
+     * @param roomId : 룸아이디
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> deleteAntAll(String roomId) throws Exception{
+        Map<String, Object> result = new HashMap<>();
+        result.put("token", deleteAntToken(roomId));
+        result.put("room", deleteAntRoom(roomId));
+        return result;
+    }
 }
