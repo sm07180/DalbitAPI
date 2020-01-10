@@ -31,7 +31,7 @@ public class DatabaseConfig {
     @Value("${spring.datasource.driver-class-name}")
     private String jdbcDriverClassName;
 
-    @Value("${spring.datasource.jdbc-url}")
+    @Value("${spring.datasource.url}")
     private String jdbcUrl;
 
     @Value("${spring.datasource.username}")
