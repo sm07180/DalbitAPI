@@ -42,4 +42,16 @@ public class MemberService {
     public ProcedureVo callProfileEdit(ProcedureVo procedureVo){
         return memberDao.callProfileEdit(procedureVo);
     }
+
+    public ProcedureVo callFanstarInsert(ProcedureVo procedureVo) {
+        return memberDao.callFanstarInsert(procedureVo);
+    }
+
+    public ProcedureVo callFanstarDelete(ProcedureVo procedureVo) {
+        return memberDao.callFanstarDelete(procedureVo);
+    }
+
+    public ProcedureVo callMemberInfoView(ProcedureVo procedureVo) {
+        return memberDao.callMemberInfoView(procedureVo);
+    }
 }

@@ -34,6 +34,7 @@ public class SampleController {
 
     @GetMapping("login")
     public String login(){
+        log.debug("로그인입니다.");
         return "/login/login";
     }
 }
