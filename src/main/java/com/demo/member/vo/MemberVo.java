@@ -11,7 +11,7 @@ import java.sql.Date;
 @Getter @Setter
 public class MemberVo extends BaseVo {
 
-    private static final long serialVersionUID = 7177554574505979750L;
+    private static final long serialVersionUID = 1L;
 
     public static MemberVo getUserInfo() {
         SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
