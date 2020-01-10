@@ -35,6 +35,7 @@ public class JsonOutputVo {
     private Object data;
 
     private String timestamp;
+    private String errorCode;
 
     public void setStatus(Status status){
         //this.messageCode = status.getMessageCode();

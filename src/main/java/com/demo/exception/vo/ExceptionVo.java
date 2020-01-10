@@ -23,6 +23,7 @@ public class ExceptionVo {
         setMessageKey(errorStatus.getMessageKey());
         setData(data);
         setTimestamp(StringUtil.getTimeStamp());
+        setStatus(errorStatus);
     }
 
     public ExceptionVo(String errorCode, String messageKey, HashMap data){
@@ -34,7 +35,9 @@ public class ExceptionVo {
 
     private String result;
     private String errorCode;
+    private ErrorStatus status;
     private String message;
+    private String messageCode;
     private String messageKey;
     private HashMap data;
     private String timestamp;
