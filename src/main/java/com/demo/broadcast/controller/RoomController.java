@@ -1,49 +1,113 @@
 package com.demo.broadcast.controller;
 
 import com.demo.broadcast.service.RoomService;
+import com.demo.broadcast.vo.P_RoomCreateVo;
 import com.demo.broadcast.vo.P_RoomListVo;
 import com.demo.broadcast.vo.P_RoomMemberListVo;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
+import com.demo.common.vo.ProcedureVo;
+import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.SwaggerDefinition;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @Slf4j
 @RestController
-@RequestMapping("/brod")
+@RequestMapping("/broad")
 public class RoomController {
 
     @Autowired
     MessageUtil messageUtil;
-
+    @Autowired
+    GsonUtil gsonUtil;
     @Autowired
     RoomService roomService;
 
     /**
-     * 방송생성
+     * 방송방 생성
      */
-    @ApiOperation(value = "방송생성", notes="설명 테스트 <br>1.줄바꿈테스트<br>2.Good!")
-    @PostMapping("")
-    public String createBrod( @RequestParam(value = "s_gubun", required = true, defaultValue = "BROD00100") String s_gubun,
-                        @RequestParam(value = "s_bgPath", required = false) String s_bgPath,
-                        @RequestParam(value = "s_bgNm", required = false) String s_bgNm,
-                        @RequestParam(value = "s_title", required = true, defaultValue = "제목") String s_title,
-                        @RequestParam(value = "s_intro", required = true, defaultValue = "안녕하세요!") String s_intro,
-                        @RequestParam(value = "s_fan", required = true, defaultValue = "N") String s_fan,
-                        @RequestParam(value = "s_over20", required = true, defaultValue = "N") String s_over20){
+    @ApiOperation(value = "방송방 생성")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "i_type",          value = "방송종류",                      required = true,   dataType = "int",    paramType = "query"),
+            @ApiImplicitParam(name = "s_title",         value = "제목",                          required = true,   dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "s_bgImg",         value = "백그라운드 이미지 경로",        required = false,  dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "s_welcome",       value = "환영 메시지",                   required = true,   dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "s_notice",        value = "공지사항",                      required = false,  dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "i_entry",         value = "입장 (0:전체, 1:팬)",           required = true,   dataType = "int",    paramType = "query"),
+            @ApiImplicitParam(name = "i_age",           value = "나이제한(0:전체, 1: 20세이상)", required = true,   dataType = "int",    paramType = "query"),
+            @ApiImplicitParam(name = "i_os",            value = "OS 구분",                       required = true,   dataType = "int",    paramType = "query"),
+            @ApiImplicitParam(name = "s_deviceId",      value = "디바이스 고유아이디",           required = false,  dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "s_deviceToken",   value = "디바이스 토큰",                 required = false,  dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "s_appVer",        value = "앱 버전",                       required = false,  dataType = "string", paramType = "query")
+    })
+    @PostMapping("/create")
+    public String createBrod(HttpServletRequest request){
+
+        P_RoomCreateVo apiSample = P_RoomCreateVo.builder()
+                .subjectType(StringUtils.defaultIfEmpty(request.getParameter("i_type"), "").trim())
+                .title(StringUtils.defaultIfEmpty(request.getParameter("i_type"), "").trim())
+                .backgroundImage(StringUtils.defaultIfEmpty(request.getParameter("s_bgImg"), "").trim())
+                .welcomMsg(StringUtils.defaultIfEmpty(request.getParameter("s_welcome"), "").trim())
+                .notice(StringUtils.defaultIfEmpty(request.getParameter("s_notice"), "").trim())
+                .entry(StringUtils.defaultIfEmpty(request.getParameter("i_entry"), "").trim())
+                .age(StringUtils.defaultIfEmpty(request.getParameter("i_age"), "").trim())
+                .os(StringUtils.defaultIfEmpty(request.getParameter("i_os"), "").trim())
+                .deviceUuid(StringUtils.defaultIfEmpty(request.getParameter("s_deviceId"), "").trim())
+                .deviceToken(StringUtils.defaultIfEmpty(request.getParameter("s_deviceToken"), "").trim())
+                .appVersion(StringUtils.defaultIfEmpty(request.getParameter("s_appVer"), "").trim())
+                .build();
+        ProcedureVo procedureVo = roomService.callBroadCastRoomCreate(apiSample);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+        String result;
+        if(procedureVo.getRet().equals(Status.방송생성.getMessageKey())){
+            result =  new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageKey())){
+            result =  new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성_회원아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.방송중인방존재.getMessageKey())) {
+            result =  new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송중인방존재, procedureVo.getData())));
+        } else{
+            result =  new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방생성실패)));
+        }
+        return result;
+    }
+
+    /**
+     * 방송방 참여하기
+     */
+    @ApiOperation(value = "방송방 참여하기")
+    @PostMapping("/{brodNo}/join")
+    public String inBrod(@PathVariable String brodNo ){
 
         HashMap data = new HashMap();
-        data.put("brodNo", "BRD00121");
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, data)));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가성공, data)));
+    }
+
+    /**
+     * 방송방 나가기
+     */
+    @ApiOperation(value = "방송방 나가기")
+    @PostMapping("/{brodNo}/exit")
+    public String outBrod(@PathVariable String brodNo){
+
+        HashMap data = new HashMap();
+
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, data)));
     }
 
     /**
@@ -58,29 +122,9 @@ public class RoomController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송종료, data)));
     }
 
-    /**
-     * 방송참여
-     */
-    @ApiOperation(value = "방송참여")
-    @PostMapping("/{brodNo}/in")
-    public String inBrod(@PathVariable String brodNo ){
 
-        HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가성공, data)));
-    }
 
-    /**
-     * 방송 나가기
-     */
-    @ApiOperation(value = "방송나가기")
-    @PostMapping("/{brodNo}/out")
-    public String outBrod(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, data)));
-    }
 
     /**
      * 방송 정보조회

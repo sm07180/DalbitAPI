@@ -17,4 +17,8 @@ public class P_RoomCreateVo {
     @Builder.Default private String notice = "공지사항";                                            //공지사항
     @Builder.Default private String entry = "0";                                                    //입장제한
     @Builder.Default private String age = "0";                                                      //나이제한
+    @Builder.Default private String os = "1";                                                       //OS구분
+    @Builder.Default private String deviceUuid = "2200DDD1-77A";                                    //디바이스 고유아이디
+    @Builder.Default private String deviceToken = "45E3156FDE20E7F11AF";                            //디바이스 토큰
+    @Builder.Default private String appVersion = "1.0.0.1";                                         //앱 버전
 }
