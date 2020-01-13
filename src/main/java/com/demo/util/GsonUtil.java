@@ -1,6 +1,7 @@
 package com.demo.util;
 
 import com.demo.common.vo.JsonOutputVo;
+import com.demo.util.adapter.*;
 import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Component;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Date;
 
 @Component
 public class GsonUtil {
@@ -15,7 +17,14 @@ public class GsonUtil {
     @Autowired MessageUtil messageUtil;
 
     public static GsonBuilder getGsonBuilder(){
-        return new GsonBuilder().disableHtmlEscaping();
+        return new GsonBuilder().disableHtmlEscaping()
+                .serializeNulls()
+                .registerTypeAdapter(String.class, new StringAdapter())
+                .registerTypeAdapter(Integer.class, new IntegerAdapter())
+                .registerTypeAdapter(Float.class, new FloatAdapter())
+                .registerTypeAdapter(Double.class, new DoubleAdapter())
+                .registerTypeAdapter(Boolean.class, new BooleanAdapter())
+                .registerTypeAdapter(Date.class, new DateAdapter());
     }
 
     /**
