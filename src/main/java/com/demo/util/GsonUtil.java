@@ -33,6 +33,7 @@ public class GsonUtil {
      *      * @return
      */
     public String toJson(Object object){
+        object = object == null ? "" : object;
         return StringUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(object));
     }
 
@@ -42,6 +43,9 @@ public class GsonUtil {
      * @return
      */
     public String toJson(JsonOutputVo jsonOutputVo){
+        if(jsonOutputVo.getData() == null){
+            jsonOutputVo.setData("");
+        }
         return StringUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
     }
 

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@RADIO_DEV - rd_data@121.134.5.160" uuid="f3122c78-6943-473a-9e4f-e3a2ab8b8206">
-      <driver-ref>mysql</driver-ref>
+    <data-source source="LOCAL" name="사내 개발 DB" uuid="f52eda76-8b33-4fe2-83df-a3dcf1b01f7f">
+      <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://121.134.5.160:3306/rd_data</jdbc-url>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://125.141.223.157:13306/rd_data</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />
