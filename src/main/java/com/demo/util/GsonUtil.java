@@ -15,7 +15,7 @@ public class GsonUtil {
     @Autowired MessageUtil messageUtil;
 
     public static GsonBuilder getGsonBuilder(){
-        return new GsonBuilder().disableHtmlEscaping().serializeNulls();
+        return new GsonBuilder().disableHtmlEscaping();
     }
 
     /**
