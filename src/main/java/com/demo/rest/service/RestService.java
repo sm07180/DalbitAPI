@@ -193,23 +193,23 @@ public class RestService {
     /**
      * Ant Media 방토큰 가져오기 (publish)
      *
-     * @param roomId : 룸아이디
+     * @param streamId : 스트리밍아이디
      * @return
      * @throws Exception
      */
-    public Map<String, Object> antToken(String roomId) throws GlobalException{
-        return antToken(roomId, "publish");
+    public Map<String, Object> antToken(String streamId) throws GlobalException{
+        return antToken(streamId, "publish");
     }
 
     /**
      * Ant Media 방토큰 가져오기
      *
-     * @param roomId : 룸아이디
+     * @param streamId : 스트리밍아이디
      * @param type : 타입 (publish/play)
      * @return
      * @throws Exception
      */
-    public Map<String, Object> antToken(String roomId, String type) throws GlobalException{
+    public Map<String, Object> antToken(String streamId, String type) throws GlobalException{
         if(!"play".equals(type)){
             type = "publish";
         }
@@ -218,7 +218,7 @@ public class RestService {
         cal.add(Calendar.HOUR, antExpire);
         long expire = cal.getTime().getTime() / 1000;
 
-        String params = "id=" + roomId + "&expireDate=" + expire + "&type=" + type;
+        String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
 
         return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0);
     }
@@ -226,36 +226,36 @@ public class RestService {
     /**
      * Ant Media 토큰 삭제
      *
-     * @param roomId : 룸아이디
+     * @param streamId : 룸아이디
      * @return
      * @throws Exception
      */
-    public Map<String, Object> deleteAntToken(String roomId) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcast" + roomId + "/getToken", "", 2);
+    public Map<String, Object> deleteAntToken(String streamId) throws GlobalException{
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2);
     }
 
     /**
      * Ant Media 방 삭제
      *
-     * @param roomId : 룸아이디
+     * @param streamId : 스트리밍아이디
      * @return
      * @throws Exception
      */
-    public Map<String, Object> deleteAntRoom(String roomId) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcast" + roomId, "", 2);
+    public Map<String, Object> deleteAntRoom(String streamId) throws GlobalException{
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2);
     }
 
     /**
      * Ant Media 방/토큰 삭제
      *
-     * @param roomId : 룸아이디
+     * @param streamId : 스트리밍아이디
      * @return
      * @throws Exception
      */
-    public Map<String, Object> deleteAntAll(String roomId) throws GlobalException{
+    public Map<String, Object> deleteAntAll(String streamId) throws GlobalException{
         Map<String, Object> result = new HashMap<>();
-        result.put("token", deleteAntToken(roomId));
-        result.put("room", deleteAntRoom(roomId));
+        result.put("token", deleteAntToken(streamId));
+        result.put("room", deleteAntRoom(streamId));
         return result;
     }
 }
