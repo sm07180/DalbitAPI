@@ -17,6 +17,7 @@ public class JsonOutputVo {
 
     public JsonOutputVo(Status status){
         setStatus(status);
+        setTimestamp(StringUtil.getTimeStamp());
     }
 
     public JsonOutputVo(Status status, Object data){
@@ -27,6 +28,7 @@ public class JsonOutputVo {
 
     public JsonOutputVo(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
+        setTimestamp(StringUtil.getTimeStamp());
     }
 
     public JsonOutputVo(ErrorStatus errorStatus, Object data){
