@@ -110,13 +110,10 @@ public class RoomController {
         if(procedureVo.getRet().equals(Status.방송생성.getMessageCode())) {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
-            restService.deleteAntAll(streamId);
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성_회원아님, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
-            restService.deleteAntAll(streamId);
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송중인방존재, procedureVo.getData())));
         } else {
-            restService.deleteAntAll(streamId);
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방생성실패)));
         }
 
