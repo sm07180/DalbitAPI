@@ -78,7 +78,21 @@ public class SsoAuthenticationFilter implements Filter {
 
                         ssoCookieUpdate(request, response, isJwtTokenAvailable);
 
+                    }else if(request.getHeader("sso_cookie") != null){
+
+                        String headerCookie = request.getHeader("sso_cookie");
+
+                        boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
+                        if(isJwtTokenAvailable){
+
+                            String userId = jwtUtil.getUserNameFromJwt(headerCookie);
+                            log.debug("SsoAuthenticationFilter get request header > JWT FROM ID : " + userId);
+
+                            saveSecuritySession(request, userDetailsService.loadUserByUsername(userId));
+                            ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
+                        }
                     }
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -146,6 +160,29 @@ public class SsoAuthenticationFilter implements Filter {
                 CookieUtil cookieUtil = new CookieUtil(request);
 
                 String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+                String jwtToken = jwtUtil.generateToken(userId);
+
+                ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+            }
+            response.addCookie(ssoCookie);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * sso cookie 갱신
+     */
+    public void ssoCookieUpdateFromRequestHeader(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable){
+        try {
+            Cookie ssoCookie;
+            if(!isJwtTokenAvailable){
+                ssoCookie = CookieUtil.deleteCookie(SSO_COOKIE_NAME, SSO_DOMAIN, "/", 0);
+
+            }else{
+                String cookieValue = request.getHeader("sso_cookie");
+                String userId = jwtUtil.getUserNameFromJwt(cookieValue);
                 String jwtToken = jwtUtil.generateToken(userId);
 
                 ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
