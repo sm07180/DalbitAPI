@@ -58,7 +58,7 @@ public class RoomService {
     public ProcedureOutputVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmptyList(roomVoList) ? null : roomVoList);
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmpty(roomVoList) ? null : roomVoList);
         return procedureOutputVo;
     }
 
@@ -69,7 +69,7 @@ public class RoomService {
     public ProcedureOutputVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
         List<RoomMemberVo> roomMemberVoList = roomDao.callBroadCastRoomMemberList(procedureVo);
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmptyList(roomMemberVoList) ? null : roomMemberVoList);
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmpty(roomMemberVoList) ? null : roomMemberVoList);
         return procedureOutputVo;
     }
 

@@ -127,10 +127,19 @@ public class CommonUtil {
      * @param list
      * @return
      */
-    public static boolean isEmptyList(List list){
+    public static boolean isEmpty(List list){
         if(list == null){
             return true;
         }
         return 0 < list.size() ? true : false;
+    }
+
+    /**
+     * Object 값이 있는지 체크
+     * @param object
+     * @return
+     */
+    public static boolean isEmpty(Object object) {
+        return object != null ? false : true;
     }
 }

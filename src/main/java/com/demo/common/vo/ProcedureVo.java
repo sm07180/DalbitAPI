@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -21,7 +22,7 @@ public class ProcedureVo {
         setData(new Gson().toJson(paramVo));
     }
 
-    private String data;
+    private Object data;
     private Object box;
     private String ret;
     private String ext;
