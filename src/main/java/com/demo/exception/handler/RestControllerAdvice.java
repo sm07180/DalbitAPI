@@ -1,6 +1,8 @@
 package com.demo.exception.handler;
 
 import com.demo.common.code.ErrorStatus;
+import com.demo.common.vo.JsonOutputVo;
+import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
+import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +26,9 @@ public class RestControllerAdvice {
     @Autowired
     MessageUtil messageUtil;
 
+    @Autowired
+    GsonUtil gsonUtil;
+
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String exceptionAdvice(HttpServletRequest httpServletRequest, Exception exception, HandlerMethod handlerMethod){
@@ -31,7 +37,7 @@ public class RestControllerAdvice {
         Object errorRequestUrl = httpServletRequest.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
         Object errorMessage = httpServletRequest.getAttribute(RequestDispatcher.ERROR_MESSAGE);
 
-        String result = new Gson().toJson(messageUtil.setExceptionInfo(ErrorStatus.권한없음, null));
+        String result = gsonUtil.toJson(new JsonOutputVo(ErrorStatus.권한없음));
         log.error(result);
 
         return result;

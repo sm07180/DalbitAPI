@@ -1,5 +1,6 @@
 package com.demo.exception.conrtoller;
 
+import com.demo.common.vo.JsonOutputVo;
 import com.demo.exception.GlobalException;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
@@ -40,7 +41,7 @@ public class CommonErrorController{
         log.error(new Gson().toJson(map));
 
         //return new Gson().toJson(messageUtil.setExceptionInfo(globalException.getErrorStatus(), null));
-        return gsonUtil.toJson(globalException.getErrorStatus(), null);
+        return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus()));
         //return new ModelAndView("error/"+errorStatus);
     }
 }

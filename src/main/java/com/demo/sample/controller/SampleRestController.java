@@ -4,6 +4,7 @@ import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.member.service.MemberService;
+import com.demo.member.vo.MemberVo;
 import com.demo.sample.service.SampleService;
 import com.demo.sample.vo.SampleVo;
 import com.demo.util.GsonUtil;
@@ -118,7 +119,7 @@ public class SampleRestController {
 
     @GetMapping("errorTest")
     public String errorTest(){
-        return gsonUtil.toJson(ErrorStatus.권한없음, null);
+        return gsonUtil.toJson(new JsonOutputVo(ErrorStatus.권한없음));
     }
 
 
@@ -130,7 +131,7 @@ public class SampleRestController {
         map.put("bb", "비비");
         map.put("cc", "씨씨");
 
-        return gsonUtil.toJson(ErrorStatus.잘못된호출, map);
+        return gsonUtil.toJson(new JsonOutputVo(ErrorStatus.잘못된호출, map));
     }
 
     @GetMapping("exception1")
@@ -143,7 +144,7 @@ public class SampleRestController {
 
         sampleService.transactionTest(sampleVo);
 
-        return gsonUtil.toJson(ErrorStatus.권한없음, null);
+        return gsonUtil.toJson(new JsonOutputVo(ErrorStatus.권한없음, null));
     }
 
     /**
@@ -215,10 +216,7 @@ public class SampleRestController {
     @GetMapping(value = "/null")
     public String errorNull(){
 
-        HashMap map = new HashMap();
-        map.put("value", Integer.parseInt("asd"));
-
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, new MemberVo()));
     }
 
 
@@ -260,4 +258,5 @@ public class SampleRestController {
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, null));
     }
+
 }

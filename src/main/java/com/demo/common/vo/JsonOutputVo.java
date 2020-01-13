@@ -1,5 +1,6 @@
 package com.demo.common.vo;
 
+import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
 import com.demo.util.StringUtil;
 import lombok.Getter;
@@ -24,23 +25,36 @@ public class JsonOutputVo {
         setTimestamp(StringUtil.getTimeStamp());
     }
 
+    public JsonOutputVo(ErrorStatus errorStatus){
+        setErrorStatus(errorStatus);
+    }
+
+    public JsonOutputVo(ErrorStatus errorStatus, Object data){
+        setErrorStatus(errorStatus);
+        setData(data);
+        setTimestamp(StringUtil.getTimeStamp());
+    }
+
     private String result;
 
-    private Status status;
-
-    private String messageCode;
+    private String code;
     private String messageKey;
     private String message;
 
     private Object data;
 
     private String timestamp;
-    private String errorCode;
 
     public void setStatus(Status status){
-        //this.messageCode = status.getMessageCode();
-        this.messageKey = status.getMessageKey();
-        this.result = status.getResult();
+        setCode(status.getMessageCode());
+        setMessageKey(status.getMessageKey());
+        setResult(status.getResult());
+    }
+
+    public void setErrorStatus(ErrorStatus errorStatus){
+        setCode(errorStatus.getErrorCode());
+        setMessageKey(errorStatus.getMessageKey());
+        setResult(errorStatus.getResult());
     }
 
 }
