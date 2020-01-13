@@ -18,7 +18,6 @@ public class GsonUtil {
 
     public static GsonBuilder getGsonBuilder(){
         return new GsonBuilder().disableHtmlEscaping()
-                .serializeNulls()
                 .registerTypeAdapter(String.class, new StringAdapter())
                 .registerTypeAdapter(Integer.class, new IntegerAdapter())
                 .registerTypeAdapter(Float.class, new FloatAdapter())
@@ -33,7 +32,6 @@ public class GsonUtil {
      *      * @return
      */
     public String toJson(Object object){
-        object = object == null ? "" : object;
         return StringUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(object));
     }
 
@@ -43,9 +41,6 @@ public class GsonUtil {
      * @return
      */
     public String toJson(JsonOutputVo jsonOutputVo){
-        if(jsonOutputVo.getData() == null){
-            jsonOutputVo.setData("");
-        }
         return StringUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
     }
 
