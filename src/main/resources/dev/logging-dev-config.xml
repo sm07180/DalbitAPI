@@ -65,4 +65,24 @@
         <appender-ref ref="FILE" />
         <appender-ref ref="ERROR_FILE" />
     </logger>
+
+    <logger name="com.demo" additivity="false" level="DEBUG">
+        <appender-ref ref="FILE" />
+    </logger>
+
+    <logger name="jdbc" level="OFF" />
+    <logger name="jdbc.sqlonly" level="INFO" />
+    <logger name="jdbc.sqltiming" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="jdbc.resultsettable" level="INFO" />
+    <logger name="jdbc.connection" level="WARN" />
+    <logger name="log4jdbc.log4j2" level="OFF" />
+    <logger name="io.lettuce" level="WARN" />
+    <logger name="com.zaxxer.hikari" level="WARN" />
+
+    <root level="DEBUG">
+        <appender-ref ref="FILE"/>
+    </root>
+
 </configuration>
