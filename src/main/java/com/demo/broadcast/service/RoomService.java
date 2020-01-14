@@ -6,6 +6,7 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.exception.GlobalException;
 import com.demo.member.vo.MemberVo;
 import com.demo.util.CommonUtil;
 import com.demo.util.MessageUtil;
@@ -135,10 +136,28 @@ public class RoomService {
     /**
      * 방송방 정보 수정
      */
-    public ProcedureVo callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) {
+    public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomEditVo);
         roomDao.callBroadCastRoomEdit(procedureVo);
-        return procedureVo;
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정성공)));
+        } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정_회원아님)));
+        } else if (procedureVo.getRet().equals(Status.방송정보수정_해당방에없는회원번호.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정_해당방에없는회원번호)));
+        } else if (procedureVo.getRet().equals(Status.방송정보수정_수정권이없는회원.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정_수정권이없는회원)));
+        } else {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정실패)));
+        }
+
+        return result;
     }
 
     /**
@@ -174,7 +193,7 @@ public class RoomService {
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
      */
-    public HashMap callBroadCastRoomStreamIdRequest(String roomNo) {
+    public HashMap callBroadCastRoomStreamIdRequest(String roomNo) throws GlobalException {
         P_RoomJoinTokenVo apiData = P_RoomJoinTokenVo.builder()
                 .room_no(roomNo)
                 .build();
@@ -185,19 +204,22 @@ public class RoomService {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
 
-        String result;
-        if(procedureVo.getRet().equals(Status.방송참여토큰발급.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여토큰_해당방이없음.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰_해당방이없음, procedureVo.getData())));
+        String tokenFailData = "";
+
+        if (procedureVo.getRet().equals(Status.방송참여토큰_해당방이없음.getMessageCode())) {
+            throw new GlobalException(Status.방송참여토큰_해당방이없음, procedureVo.getData());
         } else if (procedureVo.getRet().equals(Status.방송참여토큰_방장이없음.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰_방장이없음, procedureVo.getData())));
-        } else {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급_실패)));
+            throw new GlobalException(Status.방송참여토큰_방장이없음, procedureVo.getData());
+        } else if(procedureVo.getRet().equals(Status.방송참여토큰발급_실패.getMessageCode())){
+            //tokenFailData = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급_실패)));
+            throw new GlobalException(Status.방송참여토큰발급_실패, procedureVo.getData());
         }
 
-        log.debug("방송방 참여 토큰발급 결과: {}", result);
-        resultMap.put("resultCd", procedureVo.getRet());
+        boolean isTokenSuccess = procedureVo.getRet().equals(Status.방송참여토큰발급.getMessageCode());
+        resultMap.put("isTokenSuccess", isTokenSuccess);
+        resultMap.put("tokenFailData", tokenFailData);
+
+        log.debug("방송방 참여 토큰발급 결과 [{}]: {}", isTokenSuccess, tokenFailData);
 
         return resultMap;
     }

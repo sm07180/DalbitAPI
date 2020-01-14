@@ -29,19 +29,11 @@ public class CommonErrorController{
     @ExceptionHandler(GlobalException.class)
     public String exceptionHandle(GlobalException globalException){
 
-        /*Object errorStatus = request.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
-        Object errorRequestUrl = request.getAttribute(RequestDispatcher.ERROR_REQUEST_URI);
-        Object errorMessage = request.getAttribute(RequestDispatcher.ERROR_MESSAGE);*/
+        if(globalException.getErrorStatus() != null){
+            return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus(), globalException.getData()));
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData()));
+        }
 
-        HashMap map = new HashMap();
-        /*map.put("httpErrorCode", errorStatus);
-        map.put("requestUrl", errorRequestUrl);
-        map.put("message", errorMessage);*/
-
-        log.error(new Gson().toJson(map));
-
-        //return new Gson().toJson(messageUtil.setExceptionInfo(globalException.getErrorStatus(), null));
-        return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus()));
-        //return new ModelAndView("error/"+errorStatus);
     }
 }

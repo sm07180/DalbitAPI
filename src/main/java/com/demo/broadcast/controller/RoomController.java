@@ -99,13 +99,10 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 참여하기")
     @PostMapping("/{roomNo}/join")
-    public String inBrod(@PathVariable String roomNo){
+    public String inBrod(@PathVariable String roomNo) throws GlobalException{
 
         //참가를 위한 토큰 받기
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
-        if(!resultMap.get("resultCd").equals(Status.방송참여토큰발급)){
-            return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급_실패)));
-        }
 
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMemNo())
@@ -135,6 +132,24 @@ public class RoomController {
                 .room_no(roomNo)
                 .build();
         String result = roomService.callBroadCastRoomExit(apiData);
+
+        return result;
+    }
+
+    /**
+     * 방송 정보수정
+     */
+    @ApiOperation(value = "방송 정보수정")
+    @PostMapping("/{roomNo}/edit")
+    public String updateBrod(@PathVariable String roomNo){
+
+        //TODO-방송 정보 조회 ? 서버? ...
+
+        P_RoomEditVo apiData = P_RoomEditVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .room_no(roomNo)
+                .build();
+        String result = roomService.callBroadCastRoomEdit(apiData);
 
         return result;
     }
@@ -212,17 +227,6 @@ public class RoomController {
         data.put("managers", managers);
 
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
-    }
-
-    /**
-     * 방송 정보수정
-     */
-    @ApiOperation(value = "방송 정보수정")
-    @PostMapping("/{brodNo}")
-    public String updateBrod(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, data)));
     }
 
     /**

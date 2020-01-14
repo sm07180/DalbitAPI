@@ -1,6 +1,7 @@
 package com.demo.exception;
 
 import com.demo.common.code.ErrorStatus;
+import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,11 +20,19 @@ public class GlobalException extends Exception {
     private String errorCode;
     private String messageKey;
     private ErrorStatus errorStatus;
-
-    public GlobalException(){}
+    private Status status;
+    private Object data;
 
     public GlobalException(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
+    }
+    public GlobalException(Status status){
+        setStatus(status);
+    }
+
+    public GlobalException(Status status, Object data){
+        setStatus(status);
+        setData(data);
     }
 
     public static JsonOutputVo throwException(ErrorStatus errorStatus){
@@ -33,4 +42,9 @@ public class GlobalException extends Exception {
     public static JsonOutputVo throwException(ErrorStatus errorStatus, HashMap data){
         return new JsonOutputVo(errorStatus, data);
     }
+
+    public static JsonOutputVo throwException(Status status, Object data){
+        return throwException(status, data);
+    }
+
 }
