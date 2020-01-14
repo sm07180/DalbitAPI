@@ -7,11 +7,14 @@ import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.util.GsonUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+
+import java.util.HashMap;
 
 @Slf4j
 @SpringBootTest
@@ -58,8 +61,8 @@ public class BroadCastTest {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방참가성공.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가성공, procedureVo.getData())));
+        if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여성공, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_회원아님, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.방송참여_해당방이없음.getMessageCode())) {
@@ -201,6 +204,18 @@ public class BroadCastTest {
         }else{
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패, procedureVo.getData())));
         }
+    }
+
+    @Test
+    public void 방송방참여토큰가져오기(){
+        log.debug("방송방 참여 토큰 가져오기");
+        log.debug(P_RoomJoinTokenVo.builder().build().toString());
+        P_RoomJoinTokenVo apiSample = P_RoomJoinTokenVo.builder().build();
+        ProcedureVo procedureVo = roomService.callBroadCastRoomStreamIdRequest(apiSample);
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info("프로시저 응답 resultMap: {}", resultMap);
     }
 }
 

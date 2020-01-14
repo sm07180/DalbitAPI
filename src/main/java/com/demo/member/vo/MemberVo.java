@@ -19,7 +19,7 @@ public class MemberVo extends BaseVo {
     }
 
     private int idx;
-    private long memNo;
+    private String memNo;
     private String memId;
     private String memPhone;
     private String memPasswd;

@@ -81,4 +81,13 @@ public class RoomService {
         roomDao.callBroadCastRoomGood(procedureVo);
         return procedureVo;
     }
+
+    /**
+     * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
+     */
+    public ProcedureVo callBroadCastRoomStreamIdRequest(P_RoomJoinTokenVo pRoomJoinTokenVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomJoinTokenVo);
+        roomDao.callBroadCastRoomStreamIdRequest(procedureVo);
+        return procedureVo;
+    }
 }

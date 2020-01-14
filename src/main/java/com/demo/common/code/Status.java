@@ -67,8 +67,14 @@ public enum Status {
     방송중인방존재("-2", "broadcast.room.existence", "방송중인 방이 있을 시"),
     방생성실패("-3", "broadcast.room.fail", "방송 생성 실패 시"),
 
+    //방송방 참가를 위한 스트림아이디, 토큰받아오기
+    방송참여토큰발급("0", "broadcast.token.success", "토큰 발급(방참가) 성공 시"),
+    방송참여토큰_해당방이없음("-1", "broadcast.token.room.no", "해당 방이 없을 시"),
+    방송참여토큰_방장이없음("-2", "broadcast.token.bj.no", "BJ가 없을 시"),
+    방송참여토큰발급_실패("-3", "broadcast.token.fail", "토큰 발급 실패 시"),
+
     //방송참여
-    방참가성공("0", "broadcast.room.join.success", "방송 참가 성공 시"),
+    방송참여성공("0", "broadcast.room.join.success", "방송 참가 성공 시"),
     방송참여_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송참여_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
     방송참여_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
