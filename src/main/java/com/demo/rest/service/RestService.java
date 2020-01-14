@@ -58,8 +58,7 @@ public class RestService {
 
             return callRest(server_url, url_path, paramString.toString(), method);
         }catch (Exception e){
-            //TODO - 에러메시지 세팅
-            throw new GlobalException(ErrorStatus.잘못된파람);
+            throw new GlobalException(ErrorStatus.호출에러);
         }
     }
 
@@ -112,11 +111,11 @@ public class RestService {
                 out.flush();
             }
 
-            result = readStream(con.getInputStream());
+            result = readStream(con.getInputStream(), server_url, url_path, params);
         }catch(IOException e){
             log.debug("{} error {}", request_uri, e.getMessage());
             if(con != null){
-                result = readStream(con.getErrorStream());
+                result = readStream(con.getErrorStream(), server_url, url_path, params);
             }
         }
 
@@ -125,7 +124,7 @@ public class RestService {
         //return result;
     }
 
-    private String readStream(InputStream stream) throws GlobalException{
+    private String readStream(InputStream stream, String server_url, String url_path, String params) throws GlobalException{
 
         try {
             StringBuffer pageContents = new StringBuffer();
@@ -142,8 +141,12 @@ public class RestService {
 
             return pageContents.toString();
         }catch (Exception e){
-            //TODO - 에러세팅
-            throw new GlobalException(ErrorStatus.잘못된파람);
+            //방송 생성 후 publish token 생성시 오류 일때 방송방 삭제
+            if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
+                String stream_id = params.substring(3, params.indexOf("&"));
+                deleteAntRoom(stream_id);
+            }
+            throw new GlobalException(ErrorStatus.호출에러);
         }
     }
 
