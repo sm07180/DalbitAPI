@@ -97,7 +97,7 @@ public class SampleVoTest {
 
     @Test
     public void jwt토큰생성(){
-        String token = jwtUtil.generateToken("test");
+        String token = jwtUtil.generateToken("010-1234-4568");
         log.info("JWT 토큰 : " + token);
         String userId = jwtUtil.getUserNameFromJwt(token);
         log.info("JWT FROM ID : " + userId);
@@ -105,7 +105,7 @@ public class SampleVoTest {
         log.debug("isValid : " + isValid);
 
 
-        token = jwtUtil.generateToken("leejaeho114");
+        token = jwtUtil.generateToken("010-1234-4568");
         log.info("JWT 토큰 : " + token);
         userId = jwtUtil.getUserNameFromJwt(token);
         log.info("JWT FROM ID : " + userId);
@@ -114,7 +114,7 @@ public class SampleVoTest {
 
 
 
-        token = jwtUtil.generateToken("yosi");
+        token = jwtUtil.generateToken("010-1234-4568");
         log.info("JWT 토큰 : " + token);
         userId = jwtUtil.getUserNameFromJwt(token);
         log.info("JWT FROM ID : " + userId);
@@ -124,18 +124,19 @@ public class SampleVoTest {
 
     @Test
     public void jwt토큰검증(){
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ0ZXN0IiwiaWF0IjoxNTc3OTI1NDA4LCJleHAiOjE1Nzc5MjU0MTh9.m2BLN9HTWgAq0nFR7iO2wUnd8uYpO2Bic5ccMSq-hkM";
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwMTAtMTIzNC00NTY4IiwiaWF0IjoxNTc4ODkyODQ3LCJleHAiOjE1Nzg4OTU0Mzl9.D7KMNYeBi-3VyhVyhcFc7H2Ap9MVKD3OTgpaPe_bBjw";
         boolean isValid = jwtUtil.validateToken(token);
-        log.debug("isValid : " + isValid);
+        log.debug("isValid : {}", isValid);
+        log.debug("가져온 이름 : " + jwtUtil.getUserNameFromJwt(token));
 
 
-        token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJsZWVqYWVobzExNCIsImlhdCI6MTU3NzkyNTQwOSwiZXhwIjoxNTc3OTI1NDE5fQ.uJqwwmAVYM-yQGrAl3rXv3NpBO6s66MzeB1DCo-CfC4";
+       /* token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJsZWVqYWVobzExNCIsImlhdCI6MTU3NzkyNTQwOSwiZXhwIjoxNTc3OTI1NDE5fQ.uJqwwmAVYM-yQGrAl3rXv3NpBO6s66MzeB1DCo-CfC4";
         isValid = jwtUtil.validateToken(token);
         log.debug("isValid : " + isValid);
 
         token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiJ5b3NpIiwiaWF0IjoxNTc3OTI1NDA5LCJleHAiOjE1Nzc5MjU0MTl9.re1RUadDovgL6dCOJPHwReenhwV4uRK6pcfXwG5oUj0";
         isValid = jwtUtil.validateToken(token);
-        log.debug("isValid : " + isValid);
+        log.debug("isValid : " + isValid);*/
     }
 
 

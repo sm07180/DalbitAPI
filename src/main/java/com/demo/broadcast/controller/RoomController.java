@@ -66,7 +66,7 @@ public class RoomController {
     public String createBrod(HttpServletRequest request) throws GlobalException {
         //토큰생성
         HashMap map = new HashMap();
-        String streamId = (String) restService.antCreate(request.getParameter("s_title")).get("streamId");
+        String streamId = (String) restService.antCreate(StringUtil.convertRequestParamToString(request, "s_title")).get("streamId");
         String publishToken = (String) restService.antToken((String) map.get("streamId"), "publish").get("tokenId");
         String playToken = (String) restService.antToken((String) map.get("streamId"), "play").get("tokenId");
         log.info("streamId: {}", streamId);
@@ -74,50 +74,25 @@ public class RoomController {
         log.info("playToken: {}", playToken);
 
         P_RoomCreateVo apiData = P_RoomCreateVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
-                .subjectType(StringUtil.convertRequestParamToString(request, "i_type"))
-                .title(StringUtil.convertRequestParamToString(request, "s_title"))
-                .backgroundImage(IMG_URL+StringUtil.convertRequestParamToString(request, "s_bgImg"))
-                .backgroundImageGrade(StringUtil.convertRequestParamToString(request, "i_bgRacy"))
-                .welcomMsg(StringUtil.convertRequestParamToString(request,"s_welcome"))
-                .notice(StringUtil.convertRequestParamToString(request,"s_notice"))
-                .entry(StringUtil.convertRequestParamToString(request,"i_entry"))
-                .age(StringUtil.convertRequestParamToString(request,"i_age"))
-                .os(StringUtil.convertRequestParamToString(request,"i_os"))
-                .deviceUuid(StringUtil.convertRequestParamToString(request,"s_deviceId"))
-                .deviceToken(StringUtil.convertRequestParamToString(request,"s_deviceToken"))
-                .appVersion(StringUtil.convertRequestParamToString(request,"s_appVer"))
-                .bj_streamid(streamId)
-                .bj_publish_tokenid(publishToken)
-                .bj_play_tokenid(playToken)
-                .build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomCreate(apiData);
+            .mem_no(MemberVo.getUserInfo().getMemNo())
+            .subjectType(StringUtil.convertRequestParamToString(request, "i_type"))
+            .title(StringUtil.convertRequestParamToString(request, "s_title"))
+            .backgroundImage(IMG_URL+StringUtil.convertRequestParamToString(request, "s_bgImg"))
+            .backgroundImageGrade(StringUtil.convertRequestParamToString(request, "i_bgRacy"))
+            .welcomMsg(StringUtil.convertRequestParamToString(request,"s_welcome"))
+            .notice(StringUtil.convertRequestParamToString(request,"s_notice"))
+            .entry(StringUtil.convertRequestParamToString(request,"i_entry"))
+            .age(StringUtil.convertRequestParamToString(request,"i_age"))
+            .os(StringUtil.convertRequestParamToString(request,"i_os"))
+            .deviceUuid(StringUtil.convertRequestParamToString(request,"s_deviceId"))
+            .deviceToken(StringUtil.convertRequestParamToString(request,"s_deviceToken"))
+            .appVersion(StringUtil.convertRequestParamToString(request,"s_appVer"))
+            .bj_streamid(streamId)
+            .bj_publish_tokenid(publishToken)
+            .bj_play_tokenid(playToken)
+            .build();
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String roomNo = CommonUtil.isEmpty(resultMap) ? null : (String) resultMap.get("room_no");
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", resultMap);
-        log.info("방번호 추출: {}", roomNo);
-        log.info(" ### 프로시저 호출결과 ###");
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("room_no", StringUtil.isNullToString(roomNo));
-        returnMap.put("bj_streamid",streamId);
-        returnMap.put("bj_publish_tokenid", publishToken);
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
-
-        String result;
-        if(procedureVo.getRet().equals(Status.방송생성.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성_회원아님, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송중인방존재, procedureVo.getData())));
-        } else {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방생성실패)));
-        }
-
+        String result = roomService.callBroadCastRoomCreate(apiData);
         return result;
     }
 

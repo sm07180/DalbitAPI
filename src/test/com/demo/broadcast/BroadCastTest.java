@@ -34,20 +34,10 @@ public class BroadCastTest {
         log.debug(P_RoomCreateVo.builder().build().toString());
 
         P_RoomCreateVo apiSample = P_RoomCreateVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomCreate(apiSample);
+        String result = roomService.callBroadCastRoomCreate(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방송생성.getMessageKey())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageKey())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송생성_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송중인방존재.getMessageKey())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송중인방존재, procedureVo.getData())));
-        } else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방생성실패, procedureVo.getData())));
-        }
+        log.info(" ### 방송방생성 결과 ###");
+        log.info(result);
     }
 
     @Test
