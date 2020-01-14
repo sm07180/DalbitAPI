@@ -24,8 +24,8 @@ public class SampleController {
         int cnt = sampleService.getCount();
         log.debug("카운트는 ? : {}", cnt);
 
-        List<SampleVo> list = sampleService.getList();
-        log.debug("리스트 ? : {}", list);
+        //List<SampleVo> list = sampleService.getList();
+        //log.debug("리스트 ? : {}", list);
 
         model.addAttribute("memberInfo", MemberVo.getUserInfo());
 

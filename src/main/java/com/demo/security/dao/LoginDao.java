@@ -5,5 +5,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface LoginDao {
-    MemberVo login(String userId);
+    MemberVo loginUseMemId(String userId);
+    MemberVo loginUseMemNo(String userId);
 }

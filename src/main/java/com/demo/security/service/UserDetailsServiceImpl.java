@@ -5,6 +5,7 @@ import com.demo.member.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.MessageUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collection;
 
+@Slf4j
 @Service("userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
 
@@ -28,9 +30,15 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
-    	MemberVo memberVo = loginDao.login(username);
+    	MemberVo memberVo = loginDao.loginUseMemId(username);
+        log.debug("memId로 로그인 결과 : {}", memberVo);
 
         if(memberVo == null) {
+            memberVo = loginDao.loginUseMemNo(username);
+            log.debug("memNo로 로그인 결과 : {}", memberVo);
+        }
+
+        if(memberVo == null){
             throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
