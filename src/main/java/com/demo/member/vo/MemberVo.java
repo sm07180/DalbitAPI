@@ -14,8 +14,8 @@ public class MemberVo extends BaseVo {
     private static final long serialVersionUID = 1L;
 
     public static MemberVo getUserInfo() {
-        SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return user.getUserInfo();
+        //SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (MemberVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     private int idx;

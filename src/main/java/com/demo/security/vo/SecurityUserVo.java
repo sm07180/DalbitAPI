@@ -1,6 +1,8 @@
 package com.demo.security.vo;
 
 import com.demo.member.vo.MemberVo;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
@@ -9,9 +11,13 @@ import java.util.Collection;
 /**
  * spring security 사용자를 보관할 VO
  */
+@Getter
+@Setter
 public class SecurityUserVo extends User {
 
     private static final long serialVersionUID = 1L;
+
+    private long memNo;
 
     private MemberVo memberVo;
 

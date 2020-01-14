@@ -1,7 +1,7 @@
 package com.demo.config;
 
 import com.demo.security.filter.SsoAuthenticationFilter;
-import com.demo.security.handler.LogoutSuccessHandlerImpl;
+//import com.demo.security.handler.LogoutSuccessHandlerImpl;
 import com.demo.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private AuthenticationSuccessHandler authSuccessHandler;
     @Autowired private AuthenticationFailureHandler authFailureHandler;
-    @Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
+    //@Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
     @Autowired private UserDetailsServiceImpl userDetailsService;
     @Autowired private AuthenticationProvider authProvider;
     @Autowired private SsoAuthenticationFilter ssoAuthenticationFilter;
@@ -108,8 +108,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     //.logoutUrl("/logout")
                     .deleteCookies(SECURITY_COOKIE_NAME, SSO_COOKIE_NAME)
                     .invalidateHttpSession(true)
-                    .logoutSuccessUrl("/")
-                    .logoutSuccessHandler(logoutSuccessHandler)
+                    //.logoutSuccessUrl("/")
+                    //.logoutSuccessHandler(logoutSuccessHandler)
 
             .and()
                 .sessionManagement()

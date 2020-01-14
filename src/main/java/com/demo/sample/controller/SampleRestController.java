@@ -256,7 +256,7 @@ public class SampleRestController {
     @GetMapping(value = "/jwt")
     public String jwtTokenSample(){
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, null));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, new MemberVo()));
     }
 
 }

@@ -64,7 +64,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
             }
         }
-        return new UsernamePasswordAuthenticationToken(securityUserVo, password, securityUserVo.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(securityUserVo.getUserInfo(), password, securityUserVo.getAuthorities());
     }
 
     @Override

@@ -136,12 +136,13 @@ public class SsoAuthenticationFilter implements Filter {
 
             // Verify SSO token value
             if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(securityUserVo, securityUserVo.getPassword(), userDetails.getAuthorities());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(securityUserVo.getUserInfo(), securityUserVo.getPassword(), userDetails.getAuthorities());
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authentication);
 
                 HttpSession session = request.getSession(true);
+                session.setAttribute("SESSION_DETAILS", memberVo);
                 session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
             }
         }
@@ -159,8 +160,8 @@ public class SsoAuthenticationFilter implements Filter {
             }else{
                 CookieUtil cookieUtil = new CookieUtil(request);
 
-                String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-                String jwtToken = jwtUtil.generateToken(userId);
+                String memNo = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+                String jwtToken = jwtUtil.generateToken(memNo);
 
                 ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
             }
