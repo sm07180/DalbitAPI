@@ -318,6 +318,15 @@ public class StringUtil {
         return "";
     }
 
+    public static int convertRequestParamToInteger(HttpServletRequest request, String parameterName){
+        try{
+            return Integer.valueOf(request.getParameter(parameterName));
+        }catch (Exception e){
+            return -1;
+        }
+
+    }
+
     /**
      *<pre>
      * 인자로 받은 String이 null일 경우 &quot;&quot;로 리턴한다.

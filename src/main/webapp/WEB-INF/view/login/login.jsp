@@ -101,8 +101,15 @@
     <form id="loginFrm" method="post">
         <div class="box">
             <h1>Dashboard</h1>
-            <input type="text" name="id" id="id" value="010-1234-4568" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
-            <input type="password" name="password" id="password" value="1234" onFocus="field_focus(this, 'email');" onblur="field_blur(this, 'email');" class="email" />
+            <input type="text" name="s_mem" id="s_mem" value="p" class="email" />
+            <input type="text" name="s_id" id="s_id" value="010-1234-4568" class="email" />
+            <input type="text" name="s_pwd" id="s_pwd" value="1234" class="email" />
+            <input type="text" name="i_os" id="i_os" value="1" class="email" />
+            <input type="text" name="s_deviceId" id="s_deviceId" value="2200DDD1-77A" class="email" />
+            <input type="text" name="s_deviceToken" id="s_deviceToken" value="45E3156FDE20E7F11AF" class="email" />
+            <input type="text" name="s_appVer" id="s_appVer" value="1.0.0.1" class="email" />
+            <input type="text" name="s_appAdId" id="s_appAdId" value="asd123asdas1" class="email" />
+
             <a href="javascript://" id="loginBtn"><div class="btn">Sign In</div></a> <!-- End Btn -->
             <a href="javascript://"><div id="btn2">Sign Up</div></a> <!-- End Btn2 -->
         </div> <!-- End Box -->
@@ -110,22 +117,6 @@
     <p>Forgot your password? <u style="color:#f1c40f;">Click Here!</u></p>
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js" type="text/javascript"></script>
     <script type="text/javascript">
-        function field_focus(field, email)
-        {
-            if(field.value == email)
-            {
-                field.value = '';
-            }
-        }
-
-        function field_blur(field, email)
-        {
-            if(field.value == '')
-            {
-                field.value = email;
-            }
-        }
-
         //Fade in dashboard box
         $(document).ready(function(){
             $('.box').hide().fadeIn(1000);
@@ -143,7 +134,7 @@
         function ajaxLogin(){
             $.ajax({
                 type: "POST",
-                url: "/login/authenticate",
+                url: "/member/login",
                 dataType: "json",
                 data: $("#loginFrm").serialize(),
                 success: function (response) {
