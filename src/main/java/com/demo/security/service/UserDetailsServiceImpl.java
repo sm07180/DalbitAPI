@@ -29,13 +29,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-    	
-    	MemberVo memberVo = loginDao.loginUseMemId(username);
-        log.debug("memId로 로그인 결과 : {}", memberVo);
 
-        if(memberVo == null) {
+        MemberVo memberVo;
+        if(username.contains("-")){
+            memberVo = loginDao.loginUseMemId(username);
+        }else{
             memberVo = loginDao.loginUseMemNo(username);
-            log.debug("memNo로 로그인 결과 : {}", memberVo);
         }
 
         if(memberVo == null){
