@@ -9,7 +9,6 @@ import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.vo.MemberVo;
 import com.demo.rest.service.RestService;
-import com.demo.util.CommonUtil;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
@@ -18,13 +17,12 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
-import org.springframework.beans.factory.annotation.Value;
 
 
 @Slf4j
@@ -101,10 +99,10 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 참여하기")
     @PostMapping("/{roomNo}/join")
-    public String inBrod(@PathVariable String roomNo){
+    public String inBrod(@PathVariable String roomNo) throws GlobalException{
 
         //참가를 위한 토큰 받기
-        HashMap resultMap = callBroadCastRoomStreamIdRequest(roomNo);
+        HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMemNo())
@@ -116,40 +114,8 @@ public class RoomController {
                 .bj_publish_tokenid((String) resultMap.get("bj_publish_tokenid"))
                 .bj_play_tokenid((String) resultMap.get("bj_play_tokenid"))
                 .build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomJoin(apiData);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("mem_no",MemberVo.getUserInfo().getMemNo());
-        returnMap.put("room_no",roomNo);
-        returnMap.put("guest_streamid",apiData.getGuest_streamid());
-        returnMap.put("guest_publish_tokenid",apiData.getGuest_publish_tokenid());
-        returnMap.put("guest_play_tokenid",apiData.getGuest_play_tokenid());
-        returnMap.put("bj_streamid",apiData.getBj_streamid());
-        returnMap.put("bj_publish_tokenid",apiData.getBj_publish_tokenid());
-        returnMap.put("bj_play_tokenid",apiData.getBj_play_tokenid());
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
-
-        String result;
-        if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여성공, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_회원아님, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여_해당방이없음.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_해당방이없음, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여_종료된방송.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_종료된방송, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여_이미참가.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_이미참가, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_입장제한, procedureVo.getData())));
-        } else {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가실패)));
-        }
+        String result = roomService.callBroadCastRoomJoin(apiData);
 
         return result;
     }
@@ -165,24 +131,25 @@ public class RoomController {
                 .mem_no(MemberVo.getUserInfo().getMemNo())
                 .room_no(roomNo)
                 .build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomExit(apiData);
+        String result = roomService.callBroadCastRoomExit(apiData);
 
-        String result;
-        if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_회원아님, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_해당방이없음, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_종료된방송, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_방참가자아님, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송나가기실패.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기실패, procedureVo.getData())));
-        } else {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가실패)));
-        }
+        return result;
+    }
+
+    /**
+     * 방송 정보수정
+     */
+    @ApiOperation(value = "방송 정보수정")
+    @PostMapping("/{roomNo}/edit")
+    public String updateBrod(@PathVariable String roomNo){
+
+        //TODO-방송 정보 조회 ? 서버? ...
+
+        P_RoomEditVo apiData = P_RoomEditVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .room_no(roomNo)
+                .build();
+        String result = roomService.callBroadCastRoomEdit(apiData);
 
         return result;
     }
@@ -263,17 +230,6 @@ public class RoomController {
     }
 
     /**
-     * 방송 정보수정
-     */
-    @ApiOperation(value = "방송 정보수정")
-    @PostMapping("/{brodNo}")
-    public String updateBrod(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, data)));
-    }
-
-    /**
      * 방송방 리스트
      */
     @ApiOperation(value = "방송방 리스트")
@@ -309,36 +265,6 @@ public class RoomController {
             status = Status.방송참여자리스트_조회;
         }
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
-    }
-
-    /**
-     * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
-     */
-    public HashMap callBroadCastRoomStreamIdRequest(String roomNo){
-        // 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
-
-        P_RoomJoinTokenVo apiData = P_RoomJoinTokenVo.builder()
-                .room_no(roomNo)
-                .build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomStreamIdRequest(apiData);
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", resultMap);
-
-        String result;
-        if(procedureVo.getRet().equals(Status.방송참여토큰발급.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여토큰_해당방이없음.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰_해당방이없음, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.방송참여토큰_방장이없음.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰_방장이없음, procedureVo.getData())));
-        } else {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급_실패)));
-        }
-
-        log.debug("방송방 참여 토큰발급 결과: {}", result);
-
-        return resultMap;
     }
 }
 

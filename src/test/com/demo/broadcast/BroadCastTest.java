@@ -6,6 +6,7 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.exception.GlobalException;
 import com.demo.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -46,28 +47,10 @@ public class BroadCastTest {
         log.debug(P_RoomJoinVo.builder().build().toString());
 
         P_RoomJoinVo apiSample = P_RoomJoinVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomJoin(apiSample);
+        String result = roomService.callBroadCastRoomJoin(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여성공, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여_해당방이없음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_해당방이없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여_종료된방송.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_종료된방송, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여_이미참가.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_입장제한, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송참여_나이제한.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_나이제한, procedureVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가실패, procedureVo.getData())));
-        }
+        log.info(" ### 방송방참여하기 결과 ###");
+        log.info(result);
     }
 
     @Test
@@ -76,24 +59,10 @@ public class BroadCastTest {
         log.debug(P_RoomExitVo.builder().build().toString());
 
         P_RoomExitVo apiSample = P_RoomExitVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomExit(apiSample);
+        String result = roomService.callBroadCastRoomExit(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_해당방이없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_종료된방송, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님, procedureVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패, procedureVo.getData())));
-        }
+        log.info(" ### 방송방나가기 결과 ###");
+        log.info(result);
     }
 
     @Test
@@ -102,24 +71,10 @@ public class BroadCastTest {
         log.debug(P_RoomEditVo.builder().build().toString());
 
         P_RoomEditVo apiSample = P_RoomEditVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomEdit(apiSample);
+        String result = roomService.callBroadCastRoomEdit(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송정보수정_해당방이없음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_해당방이없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송정보수정_해당방에없는회원번호.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_해당방에없는회원번호, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방송정보수정_수정권이없는회원.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_수정권이없는회원, procedureVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정실패, procedureVo.getData())));
-        }
+        log.info(" ### 방송방정보수정 결과 ###");
+        log.info(result);
     }
 
     @Test
@@ -197,15 +152,13 @@ public class BroadCastTest {
     }
 
     @Test
-    public void 방송방참여토큰가져오기(){
+    public void 방송방참여토큰가져오기() throws GlobalException {
         log.debug("방송방 참여 토큰 가져오기");
         log.debug(P_RoomJoinTokenVo.builder().build().toString());
         P_RoomJoinTokenVo apiSample = P_RoomJoinTokenVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomStreamIdRequest(apiSample);
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info("프로시저 응답 resultMap: {}", resultMap);
+        HashMap resultMap =  roomService.callBroadCastRoomStreamIdRequest(apiSample.getRoom_no());
+        //HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        log.info("방송방참여토큰가져오기 resultMap: {}", resultMap);
     }
 
     @Test
