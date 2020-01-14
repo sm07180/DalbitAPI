@@ -22,6 +22,7 @@ public enum Status {
 
 
     //회원가입
+    회원가입안됨("1","member.join.not", "회원가입 안된 상태 시"),
     회원가입성공("0", "member.join.success", "회원가입 성공 시"),
     회원가입실패_중복가입("-1", "member.join.already", "이미 회원가입된 상태 시"),
     회원가입실패_닉네임중복("-2", "member.join.nick.duplicate", "닉네임 중복 시"),
