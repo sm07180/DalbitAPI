@@ -168,10 +168,10 @@ public class RoomController {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_해당방이없음, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.방송참여_종료된방송.getMessageCode())) {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_종료된방송, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.이미참가.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.이미참가, procedureVo.getData())));
-        } else if (procedureVo.getRet().equals(Status.입장제한.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.입장제한, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송참여_이미참가.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_이미참가, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_입장제한, procedureVo.getData())));
         } else {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가실패)));
         }
@@ -183,12 +183,33 @@ public class RoomController {
      * 방송방 나가기
      */
     @ApiOperation(value = "방송방 나가기")
-    @PostMapping("/{brodNo}/exit")
-    public String outBrod(@PathVariable String brodNo){
+    @PostMapping("/{roomNo}/exit")
+    public String outBrod(@PathVariable String roomNo){
 
-        HashMap data = new HashMap();
+        P_RoomExitVo apiData = P_RoomExitVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .room_no(roomNo)
+                .build();
+        ProcedureVo procedureVo = roomService.callBroadCastRoomExit(apiData);
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, data)));
+        String result;
+        if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_회원아님, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_해당방이없음, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_종료된방송, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_방참가자아님, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송나가기실패.getMessageCode())) {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기실패, procedureVo.getData())));
+        } else {
+            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가실패)));
+        }
+
+        return result;
     }
 
     /**

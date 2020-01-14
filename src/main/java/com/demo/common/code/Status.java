@@ -78,9 +78,9 @@ public enum Status {
     방송참여_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송참여_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
     방송참여_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
-    이미참가("-4", "broadcast.room.join.already", "이미 참가 되어있을 시"),
-    입장제한("-5", "broadcast.room.join.no", "입장제한 시"),
-    나이제한("-6", "broadcast.room.join.no.age", "나이제한 시"),
+    방송참여_이미참가("-4", "broadcast.room.join.already", "이미 참가 되어있을 시"),
+    방송참여_입장제한("-5", "broadcast.room.join.no", "입장제한 시"),
+    방송참여_나이제한("-6", "broadcast.room.join.no.age", "나이제한 시"),
     방참가실패("-7", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기
@@ -88,7 +88,7 @@ public enum Status {
     방송나가기_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송나가기_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
     방송나가기_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
-    방참가자아님("-4", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
+    방송나가기_방참가자아님("-4", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
     방송나가기실패("-5", "broadcast.out.fail", "방송 나가기 실패 시"),
 
     //방송정보수정
@@ -119,6 +119,28 @@ public enum Status {
     좋아요_방송참가자아님("-3", "broadcast.like.room.in.no", "방송 참가자가 아닐 시"),
     좋아요_이미했음("-4", "broadcast.like.already", "좋아요 이미 했을 시"),
     좋아요_실패("-4", "broadcast.like.fail", "좋아요 실패 시"),
+
+    //방송방 게스트지정
+    게스트지정("0", "broadcast.guest.add.success", "게스트 지정 성공 시"),
+    게스트지정_회원아님("-1", "broadcast.guest.add.member.no", "회원이 아닐 시"),
+    게스트지정_해당방이없음("-2", "broadcast.guest.add.room.no", "해당 방송이 없을 시"),
+    게스트지정_방이종료되었음("-3", "broadcast.guest.add.room.end", "방이 종료되어 있을 시"),
+    게스트지정_방소속_회원아님("-4", "broadcast.guest.add.room.join.no", "방에 소속된 회원이 아닐 시"),
+    게스트지정_방장아님("-5", "broadcast.guest.add.bj.no", "방장이 아닐 시"),
+    게스트지정_방소속_회원아이디아님("-6", "broadcast.guest.add.room.join.id.no", "방에 소속된 회원아이디가 아닐 시"),
+    게스트지정_불가("-7", "broadcast.guest.add.no", "게스트 지정(이미 게스트 또는 방장 권한) 안될 시 "),
+    게스트지정_실패("-8", "broadcast.guest.add.fail", "게스트 지정 실패 시"),
+
+    //방송방 게스트 취소
+    게스트취소("0", "broadcast.guest.cancel.success", "게스트 취소 성공 시"),
+    게스트취소_회원아님("-1", "broadcast.guest.cancel.member.no", "회원이 아닐 시"),
+    게스트취소_해당방이없음("-2", "broadcast.guest.cancel.room.no", "해당 방송이 없을 시"),
+    게스트취소_방이종료되었음("-3", "broadcast.guest.cancel.room.end", "방이 종료되어 있을 시"),
+    게스트취소_방소속_회원아님("-4", "broadcast.guest.cancel.room.join.no", "방에 소속된 회원이 아닐 시"),
+    게스트취소_방장아님("-5", "broadcast.guest.cancel.bj.no", "방장이 아닐 시"),
+    게스트취소_방소속_회원아이디아님("-6", "broadcast.guest.cancel.room.join.id.no", "방에 소속된 회원아이디가 아닐 시"),
+    게스트취소_불가("-7", "broadcast.guest.cancel.no", "게스트가 아닐 시 "),
+    게스트취소_실패("-8", "broadcast.guest.cancel.fail", "게스트 취소 실패 시"),
 
     //유저
     매니저지정("3001", "broadcast.user.manager.add", "매니저 지정 시"),

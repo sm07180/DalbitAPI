@@ -69,12 +69,12 @@ public class BroadCastTest {
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_해당방이없음, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.방송참여_종료된방송.getMessageCode())){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_종료된방송, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.이미참가.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.이미참가, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.입장제한.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.입장제한, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.나이제한.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.나이제한, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.방송참여_이미참가.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_입장제한, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.방송참여_나이제한.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여_나이제한, procedureVo.getData())));
         }else{
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가실패, procedureVo.getData())));
         }
@@ -99,8 +99,8 @@ public class BroadCastTest {
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_해당방이없음, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())){
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_종료된방송, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.방참가자아님.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방참가자아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님, procedureVo.getData())));
         }else{
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패, procedureVo.getData())));
         }
@@ -216,6 +216,66 @@ public class BroadCastTest {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info("프로시저 응답 resultMap: {}", resultMap);
+    }
+
+    @Test
+    public void 방송방게스트지정하기(){
+        log.debug("방송방 게스트 지정하기");
+        P_RoomGuestAddVo apiSample = P_RoomGuestAddVo.builder().build();
+        ProcedureVo procedureVo = roomService.callBroadCastRoomGuestAdd(apiSample);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        log.info(" ### 프로시저 호출결과 ###");
+        if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가, procedureVo.getData())));
+        }else{
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패, procedureVo.getData())));
+        }
+    }
+
+    @Test
+    public void 방송방게스트취소하기(){
+        log.debug("방송방 게스트 취소하기");
+        P_RoomGuestDeleteVo apiSample = P_RoomGuestDeleteVo.builder().build();
+        ProcedureVo procedureVo = roomService.callBroadCastRoomGuestDelete(apiSample);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        log.info(" ### 프로시저 호출결과 ###");
+        if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가, procedureVo.getData())));
+        }else{
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, procedureVo.getData())));
+        }
     }
 }
 

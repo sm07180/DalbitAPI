@@ -90,4 +90,22 @@ public class RoomService {
         roomDao.callBroadCastRoomStreamIdRequest(procedureVo);
         return procedureVo;
     }
+
+    /**
+     * 방송방 게스트 지정하기
+     */
+    public ProcedureVo callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGuestAddVo);
+        roomDao.callBroadCastRoomGuestAdd(procedureVo);
+        return procedureVo;
+    }
+
+    /**
+     * 방송방 게스트 취소
+     */
+    public ProcedureVo callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGuestDeleteVo);
+        roomDao.callBroadCastRoomGuestDelete(procedureVo);
+        return procedureVo;
+    }
 }

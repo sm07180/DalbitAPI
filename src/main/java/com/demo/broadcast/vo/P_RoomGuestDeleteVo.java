@@ -7,10 +7,11 @@ import lombok.Getter;
 @Getter
 @Builder
 @AllArgsConstructor
-public class P_RoomJoinVo {
+public class P_RoomGuestDeleteVo {
 
-    @Builder.Default private String mem_no = "11578531441954";                                      //참가하려는 회원번호
-    @Builder.Default private String room_no = "91578033988651";                                     //참가하려는 방 번호
+    @Builder.Default private String mem_no = "11578531329289";                                      //요청 회원번호
+    @Builder.Default private String room_no = "91578898402918";                                     //참가하려는 방 번호
+    @Builder.Default private String guest_mem_no = "11577950643615";                                //게스트 지정할 회원번호
     @Builder.Default private String guest_streamid = "guest_streamid00001";                         //guest 스트림아이디
     @Builder.Default private String guest_publish_tokenid = "guest_publish_tokenid00001";           //guest 토큰아이디
     @Builder.Default private String guest_play_tokenid = "guest_play_tokenid00001";                 //guest play토큰
