@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
@@ -308,6 +309,13 @@ public class StringUtil {
         }
 
         return string;
+    }
+
+    public static String convertRequestParamToString(HttpServletRequest request, String parameterName){
+        if(request != null && parameterName != null){
+            return StringUtil.isNullToString(request.getParameter(parameterName)).trim();
+        }
+        return "";
     }
 
     /**
