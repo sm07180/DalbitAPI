@@ -128,10 +128,10 @@ public class CommonUtil {
      * @return
      */
     public static boolean isEmpty(List list){
-        if(list == null){
-            return true;
+        if(list != null){
+            return false;
         }
-        return 0 < list.size() ? true : false;
+        return 0 < list.size() ? false : true;
     }
 
     /**

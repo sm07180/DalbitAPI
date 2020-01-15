@@ -92,12 +92,12 @@ public class RoomController {
      * 방송방 참여하기
      */
     @ApiOperation(value = "방송방 참여하기")
-    @PostMapping("/{roomNo}/join")
-    public String roomJoin(@PathVariable String roomNo) throws GlobalException{
+    @PostMapping("/join")
+    public String roomJoin(HttpServletRequest request) throws GlobalException{
+        String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
 
         //참가를 위한 토큰 받기
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
-
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMemNo())
                 .room_no(roomNo)
@@ -118,9 +118,9 @@ public class RoomController {
      * 방송방 나가기
      */
     @ApiOperation(value = "방송방 나가기")
-    @PostMapping("/{roomNo}/exit")
-    public String roomExit(@PathVariable String roomNo){
-
+    @PostMapping("/exit")
+    public String roomExit(HttpServletRequest request){
+        String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
         P_RoomExitVo apiData = P_RoomExitVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMemNo())
                 .room_no(roomNo)
@@ -135,8 +135,10 @@ public class RoomController {
      * 방송 정보수정
      */
     @ApiOperation(value = "방송 정보수정")
-    @PostMapping("/{roomNo}/edit")
-    public String roomEdit(@PathVariable String roomNo){
+    @PostMapping("/edit")
+    public String roomEdit(HttpServletRequest request){
+
+        String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
 
         //TODO-방송 정보 조회 ? 서버? ...
 
