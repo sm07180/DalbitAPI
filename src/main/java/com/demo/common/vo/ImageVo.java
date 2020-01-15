@@ -21,9 +21,11 @@ public class ImageVo {
     private String thumbs9;
 
     public void setPath(String path, String photoServerUrl){
-        this.path = path;
-        this.url = photoServerUrl + this.path;
-        setThumbs();
+        if(path != null){
+            this.path = path;
+            this.url = photoServerUrl + this.path;
+            setThumbs();
+        }
     }
 
     public void setPath(String path, String gender, String photoServerUrl){

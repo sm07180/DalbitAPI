@@ -106,7 +106,7 @@ public class MemberService {
 
             ImageVo profileImage = new ImageVo();
             //profileImage.setUrl(map.get("profileImage").toString());
-            profileImage.setPath(map.get("profileImage").toString(), SERVER_PHOTO_URL);
+            profileImage.setPath(map.get("profileImage").toString(), map.get("memSex").toString(), SERVER_PHOTO_URL);
             memberVo.setProfileImage(profileImage);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
