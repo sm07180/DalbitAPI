@@ -5,7 +5,6 @@ import com.demo.broadcast.vo.*;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
-import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.vo.MemberVo;
 import com.demo.rest.service.RestService;
@@ -50,18 +49,15 @@ public class RoomController {
             @ApiImplicitParam(name = "i_type",          value = "방송종류",                      required = true,   dataType = "int",    paramType = "query"),
             @ApiImplicitParam(name = "s_title",         value = "제목",                          required = true,   dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "s_bgImg",         value = "백그라운드 이미지 경로",        required = false,  dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "i_bgRacy",        value = "백그라운드 선정성 등급",        required = false,  dataType = "string", paramType = "query"),
+            @ApiImplicitParam(name = "i_bgRacy",        value = "백그라운드 선정성 등급",        required = false,  dataType = "int", paramType = "query"),
             @ApiImplicitParam(name = "s_welcome",       value = "환영 메시지",                   required = true,   dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "s_notice",        value = "공지사항",                      required = false,  dataType = "string", paramType = "query"),
             @ApiImplicitParam(name = "i_entry",         value = "입장 (0:전체, 1:팬)",           required = true,   dataType = "int",    paramType = "query"),
             @ApiImplicitParam(name = "i_age",           value = "나이제한(0:전체, 1: 20세이상)", required = true,   dataType = "int",    paramType = "query"),
             @ApiImplicitParam(name = "i_os",            value = "OS 구분",                       required = true,   dataType = "int",    paramType = "query"),
-            @ApiImplicitParam(name = "s_deviceId",      value = "디바이스 고유아이디",           required = false,  dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "s_deviceToken",   value = "디바이스 토큰",                 required = false,  dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "s_appVer",        value = "앱 버전",                       required = false,  dataType = "string", paramType = "query")
     })
     @PostMapping("/create")
-    public String createBrod(HttpServletRequest request) throws GlobalException {
+    public String roomCreate(HttpServletRequest request) throws GlobalException {
         //토큰생성
         HashMap map = new HashMap();
         String streamId = (String) restService.antCreate(StringUtil.convertRequestParamToString(request, "s_title")).get("streamId");
@@ -73,18 +69,15 @@ public class RoomController {
 
         P_RoomCreateVo apiData = P_RoomCreateVo.builder()
             .mem_no(MemberVo.getUserInfo().getMemNo())
-            .subjectType(StringUtil.convertRequestParamToString(request, "i_type"))
+            .subjectType(StringUtil.convertRequestParamToInteger(request, "i_type"))
             .title(StringUtil.convertRequestParamToString(request, "s_title"))
-            .backgroundImage(IMG_URL+StringUtil.convertRequestParamToString(request, "s_bgImg"))
-            .backgroundImageGrade(StringUtil.convertRequestParamToString(request, "i_bgRacy"))
+            .backgroundImage(IMG_URL+"/"+StringUtil.convertRequestParamToString(request, "s_bgImg"))
+            .backgroundImageGrade(StringUtil.convertRequestParamToInteger(request, "i_bgRacy"))
             .welcomMsg(StringUtil.convertRequestParamToString(request,"s_welcome"))
             .notice(StringUtil.convertRequestParamToString(request,"s_notice"))
-            .entry(StringUtil.convertRequestParamToString(request,"i_entry"))
-            .age(StringUtil.convertRequestParamToString(request,"i_age"))
-            .os(StringUtil.convertRequestParamToString(request,"i_os"))
-            .deviceUuid(StringUtil.convertRequestParamToString(request,"s_deviceId"))
-            .deviceToken(StringUtil.convertRequestParamToString(request,"s_deviceToken"))
-            .appVersion(StringUtil.convertRequestParamToString(request,"s_appVer"))
+            .entry(StringUtil.convertRequestParamToInteger(request,"i_entry"))
+            .age(StringUtil.convertRequestParamToInteger(request,"i_age"))
+            .os(StringUtil.convertRequestParamToInteger(request,"i_os"))
             .bj_streamid(streamId)
             .bj_publish_tokenid(publishToken)
             .bj_play_tokenid(playToken)
@@ -99,7 +92,7 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 참여하기")
     @PostMapping("/{roomNo}/join")
-    public String inBrod(@PathVariable String roomNo) throws GlobalException{
+    public String roomJoin(@PathVariable String roomNo) throws GlobalException{
 
         //참가를 위한 토큰 받기
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
@@ -125,7 +118,7 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 나가기")
     @PostMapping("/{roomNo}/exit")
-    public String outBrod(@PathVariable String roomNo){
+    public String roomExit(@PathVariable String roomNo){
 
         P_RoomExitVo apiData = P_RoomExitVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMemNo())
@@ -141,7 +134,7 @@ public class RoomController {
      */
     @ApiOperation(value = "방송 정보수정")
     @PostMapping("/{roomNo}/edit")
-    public String updateBrod(@PathVariable String roomNo){
+    public String roomEdit(@PathVariable String roomNo){
 
         //TODO-방송 정보 조회 ? 서버? ...
 
@@ -153,6 +146,27 @@ public class RoomController {
 
         return result;
     }
+
+    /**
+     * 방송방 리스트
+     */
+    @ApiOperation(value = "방송방 리스트")
+    @PostMapping("/list")
+    public String roomList(){
+        P_RoomListVo apiSample = P_RoomListVo.builder().build();
+        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomList(apiSample);
+        Status status;
+        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
+            status = Status.방송리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
+            status = Status.방송리스트없음;
+        } else {
+            status = Status.방송리스트_조회;
+        }
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
+    }
+
+
 
     /**
      * 방송종료
@@ -229,24 +243,7 @@ public class RoomController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
     }
 
-    /**
-     * 방송방 리스트
-     */
-    @ApiOperation(value = "방송방 리스트")
-    @PostMapping("/brodList")
-    public String selectBrodList(){
-        P_RoomListVo apiSample = P_RoomListVo.builder().build();
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomList(apiSample);
-        Status status;
-        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
-            status = Status.방송리스트_회원아님;
-        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
-            status = Status.방송리스트없음;
-        } else {
-            status = Status.방송리스트_조회;
-        }
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
-    }
+
 
     /**
      * 방송방 참여자 리스트

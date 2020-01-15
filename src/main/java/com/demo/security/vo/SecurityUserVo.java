@@ -17,8 +17,6 @@ public class SecurityUserVo extends User {
 
     private static final long serialVersionUID = 1L;
 
-    private long memNo;
-
     private MemberVo memberVo;
 
     public SecurityUserVo(String username, String password, Collection<? extends GrantedAuthority> authorities) {
