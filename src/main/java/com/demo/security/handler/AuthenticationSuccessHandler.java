@@ -50,9 +50,8 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         saveSsoCookie(response);
 
-        boolean isEmptyRedirectUrl = StringUtil.isEmpty(request.getParameter("redirectUrl"));
         HashMap resultJsonData = new HashMap();
-        resultJsonData.put("returnUrl", isEmptyRedirectUrl ? "/sample" : request.getParameter("redirectUrl"));
+        resultJsonData.put("authToken", jwtUtil.generateToken(MemberVo.getUserInfo().getMemNo()));
 
         gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인성공, resultJsonData));
     }
