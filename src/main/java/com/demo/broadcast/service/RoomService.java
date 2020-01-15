@@ -9,6 +9,7 @@ import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.vo.MemberVo;
 import com.demo.util.CommonUtil;
+import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
 import com.google.gson.Gson;
@@ -25,9 +26,10 @@ public class RoomService {
 
     @Autowired
     RoomDao roomDao;
-
     @Autowired
     MessageUtil messageUtil;
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 방송방 생성
@@ -168,6 +170,9 @@ public class RoomService {
         List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmpty(roomVoList) ? null : roomVoList);
 
+        RoomVo roomList = new RoomVo();
+        roomList.setList((List) procedureOutputVo.getOutputBox());
+
         Status status;
         if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
             status = Status.방송리스트_회원아님;
@@ -177,7 +182,7 @@ public class RoomService {
             status = Status.방송리스트_조회;
         }
 
-        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
+        String result = gsonUtil.toJson(new JsonOutputVo(status, roomList));
 
         return result;
     }
