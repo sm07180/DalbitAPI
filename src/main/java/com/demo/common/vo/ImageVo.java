@@ -23,6 +23,19 @@ public class ImageVo {
     public void setPath(String path, String photoServerUrl){
         this.path = path;
         this.url = photoServerUrl + this.path;
+        setThumbs();
+    }
+
+    public void setPath(String path, String gender, String photoServerUrl){
+        if(path == null){
+            this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
+            setThumbs();
+        }else{
+            setPath(path, photoServerUrl);
+        }
+    }
+
+    public void setThumbs(){
         this.thumbs1 = url + "?20x20";
         this.thumbs2 = url + "?30x30";
         this.thumbs3 = url + "?50x50";

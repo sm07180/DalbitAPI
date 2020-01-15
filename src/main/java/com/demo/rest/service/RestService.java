@@ -124,8 +124,17 @@ public class RestService {
         //return result;
     }
 
+    /**
+     * http 연결 읽기
+     *
+     * @param stream : 연결 스트림
+     * @param server_url : 요청 서버 도메임 (Exception 처리)
+     * @param url_path : 요청 URL 도메임 (Exception 처리)
+     * @param params : 요청 파라메터 도메임 (Exception 처리)
+     * @return
+     * @throws GlobalException
+     */
     private String readStream(InputStream stream, String server_url, String url_path, String params) throws GlobalException{
-
         try {
             StringBuffer pageContents = new StringBuffer();
             InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
@@ -146,6 +155,21 @@ public class RestService {
                 String stream_id = params.substring(3, params.indexOf("&"));
                 deleteAntRoom(stream_id);
             }
+            throw new GlobalException(ErrorStatus.호출에러);
+        }
+    }
+
+    /**
+     * 포토서버 imageURL 업로드
+     *
+     * @param url : 이미지 URL
+     * @return
+     * @throws GlobalException
+     */
+    public Map<String, Object> urlImgSave(String url) throws GlobalException {
+        try {
+            return callRest(photoServer, "/upload", "imageUrl=" + URLEncoder.encode(url, "UTF-8"), 1);
+        }catch (Exception e){
             throw new GlobalException(ErrorStatus.호출에러);
         }
     }
