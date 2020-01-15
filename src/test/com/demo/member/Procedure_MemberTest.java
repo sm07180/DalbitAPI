@@ -194,20 +194,10 @@ public class Procedure_MemberTest {
     @Test
     public void 회원정보보기(){
 
-        ProcedureVo procedureVo = new ProcedureVo(P_InfoVo.builder().build());
-        memberService.callMemberInfoView(procedureVo);
+        P_InfoVo apiSample = P_InfoVo.builder().build();
+        String result = memberService.callMemberInfoView(apiSample);
 
-        log.debug("회원정보보기 결과 : {}", procedureVo.toString());
+        log.debug("회원정보보기 결과 : {}", result);
 
-        if(Status.회원정보보기성공.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
-        }else if(Status.회원정보_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원정보_회원아님, procedureVo.getData())));
-        }else if(Status.회원정보_대상회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원정보_대상회원아님, procedureVo.getData())));
-        }else {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기실패, procedureVo.getData())));
-        }
-        //Assert.assertEquals(Status.회원정보보기성공.getMessageCode(), procedureVo.getRet());
     }
 }

@@ -22,7 +22,7 @@ public class ImageVo {
     private String thumbs8;
     private String thumbs9;
 
-    private void setPath(String path){
+    public void setPath(String path){
         this.path = path;
         this.url = photoServer + this.path;
         this.thumbs1 = url + "?20x20";

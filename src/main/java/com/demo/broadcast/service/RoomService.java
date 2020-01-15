@@ -163,11 +163,23 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    public ProcedureOutputVo callBroadCastRoomList(P_RoomListVo pRoomListVo) {
+    public String callBroadCastRoomList(P_RoomListVo pRoomListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmpty(roomVoList) ? null : roomVoList);
-        return procedureOutputVo;
+
+        Status status;
+        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
+            status = Status.방송리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
+            status = Status.방송리스트없음;
+        } else {
+            status = Status.방송리스트_조회;
+        }
+
+        String result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
+
+        return result;
     }
 
 

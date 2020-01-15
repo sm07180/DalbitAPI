@@ -84,6 +84,7 @@ public class RoomController {
             .build();
 
         String result = roomService.callBroadCastRoomCreate(apiData);
+
         return result;
     }
 
@@ -124,6 +125,7 @@ public class RoomController {
                 .mem_no(MemberVo.getUserInfo().getMemNo())
                 .room_no(roomNo)
                 .build();
+
         String result = roomService.callBroadCastRoomExit(apiData);
 
         return result;
@@ -142,6 +144,7 @@ public class RoomController {
                 .mem_no(MemberVo.getUserInfo().getMemNo())
                 .room_no(roomNo)
                 .build();
+
         String result = roomService.callBroadCastRoomEdit(apiData);
 
         return result;
@@ -152,18 +155,21 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 리스트")
     @PostMapping("/list")
-    public String roomList(){
-        P_RoomListVo apiSample = P_RoomListVo.builder().build();
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomList(apiSample);
-        Status status;
-        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
-            status = Status.방송리스트_회원아님;
-        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
-            status = Status.방송리스트없음;
-        } else {
-            status = Status.방송리스트_조회;
-        }
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
+    public String roomList(HttpServletRequest request){
+
+        int pageNo = (StringUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : StringUtil.convertRequestParamToInteger(request, "i_page");
+        int pageCnt = (StringUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : StringUtil.convertRequestParamToInteger(request, "i_records");
+
+        P_RoomListVo apiData = P_RoomListVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .subjectType(StringUtil.convertRequestParamToInteger(request, "i_type"))
+                .pageNo(pageNo)
+                .pageCnt(pageCnt)
+                .build();
+
+        String result = roomService.callBroadCastRoomList(apiData);
+
+        return result;
     }
 
 

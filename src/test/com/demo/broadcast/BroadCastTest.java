@@ -8,7 +8,6 @@ import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.util.GsonUtil;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -83,21 +82,11 @@ public class BroadCastTest {
         log.debug(P_RoomListVo.builder().build().toString());
 
         P_RoomListVo apiSample = P_RoomListVo.builder().build();
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomList(apiSample);
+        String result = roomService.callBroadCastRoomList(apiSample);
 
-        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
-        log.info("방송방 리스트: {}", procedureOutputVo.getOutputBox());
-        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-        log.info(" ### 프로시저 호출결과 ###");
-        if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, procedureOutputVo.getData())));
-        }else if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_회원아님, procedureOutputVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_조회, procedureOutputVo.getData())));
-        }
+        log.info(" ### 방송방리스트 결과 ###");
+        log.info(result);
+
     }
 
     @Test
