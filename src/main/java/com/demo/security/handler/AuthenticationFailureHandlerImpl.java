@@ -25,16 +25,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
 
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        String url = "/login";
 
-        HttpSession session = request.getSession(false);
-        if(session != null) {
-            session.setAttribute(WebAttributes.AUTHENTICATION_EXCEPTION, exception.getMessage());
-        }
-
-        HashMap data = new HashMap();
-        data.put("returnUrl", url);
-
-        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인실패_패스워드틀림, data));
+        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인실패_패스워드틀림));
     }
 }
