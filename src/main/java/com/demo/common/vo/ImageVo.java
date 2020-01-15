@@ -2,14 +2,12 @@ package com.demo.common.vo;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.beans.factory.annotation.Value;
 
 @Getter
 @Setter
 public class ImageVo {
-    @Value("${server.photo.url}")
-    private String photoServer;
 
+    private String photoServer;
     private String url;
     private String path;
     private String thumbs1;
@@ -22,9 +20,9 @@ public class ImageVo {
     private String thumbs8;
     private String thumbs9;
 
-    public void setPath(String path){
+    public void setPath(String path, String photoServerUrl){
         this.path = path;
-        this.url = photoServer + this.path;
+        this.url = photoServerUrl + this.path;
         this.thumbs1 = url + "?20x20";
         this.thumbs2 = url + "?30x30";
         this.thumbs3 = url + "?50x50";

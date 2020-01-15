@@ -14,6 +14,7 @@ import com.demo.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import springfox.documentation.spring.web.json.Json;
@@ -31,6 +32,9 @@ public class MemberService {
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
+
+    @Value("${server.photo.url}")
+    private String SERVER_PHOTO_URL;
 
     public ProcedureVo callMemberLogin(P_LoginVo pLoginVo) {
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
@@ -96,13 +100,13 @@ public class MemberService {
             memberVo.setEnableFan(Boolean.valueOf(map.get("enableFan").toString()));
 
             ImageVo backgroundImage = new ImageVo();
-            backgroundImage.setUrl(map.get("backgroundImage").toString());
-            backgroundImage.setPath(map.get("backgroundImage").toString());
+            //backgroundImage.setUrl(map.get("backgroundImage").toString());
+            backgroundImage.setPath(map.get("backgroundImage").toString(), SERVER_PHOTO_URL);
             memberVo.setBackgroundImage(backgroundImage);
 
             ImageVo profileImage = new ImageVo();
-            profileImage.setUrl(map.get("profileImage").toString());
-            profileImage.setPath(map.get("profileImage").toString());
+            //profileImage.setUrl(map.get("profileImage").toString());
+            profileImage.setPath(map.get("profileImage").toString(), SERVER_PHOTO_URL);
             memberVo.setProfileImage(profileImage);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
