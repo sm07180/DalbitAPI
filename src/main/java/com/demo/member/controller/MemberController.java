@@ -3,6 +3,7 @@ package com.demo.member.controller;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.exception.GlobalException;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.MemberVo;
 import com.demo.member.vo.P_InfoVo;
@@ -29,17 +30,33 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-
     /**
      * 회원정보 조회
      */
     @ApiOperation(value = "회원정보 조회")
     @GetMapping("/mypage")
-    public String infoView(){
+    public String infoView() throws GlobalException {
 
         P_InfoVo apiData = P_InfoVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMemNo())
                 .target_mem_no(MemberVo.getUserInfo().getMemNo())
+                .build();
+
+        String result = memberService.callMemberInfoView(apiData);
+
+        return result;
+    }
+
+    /**
+     * 회원정보 조회
+     */
+    @ApiOperation(value = "회원정보 조회")
+    @GetMapping("/profile/{memNo}")
+    public String infoView(@PathVariable String memNo) throws GlobalException{
+
+        P_InfoVo apiData = P_InfoVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .target_mem_no(memNo)
                 .build();
 
         String result = memberService.callMemberInfoView(apiData);

@@ -3,6 +3,7 @@ package com.demo.member;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.exception.GlobalException;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.*;
 import com.demo.util.CommonUtil;
@@ -192,7 +193,7 @@ public class Procedure_MemberTest {
     }
 
     @Test
-    public void 회원정보보기(){
+    public void 회원정보보기() throws GlobalException {
 
         P_InfoVo apiSample = P_InfoVo.builder().build();
         String result = memberService.callMemberInfoView(apiSample);
