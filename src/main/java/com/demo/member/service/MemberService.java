@@ -101,12 +101,12 @@ public class MemberService {
 
             ImageVo backgroundImage = new ImageVo();
             //backgroundImage.setUrl(map.get("backgroundImage").toString());
-            backgroundImage.setPath(map.get("backgroundImage").toString(), SERVER_PHOTO_URL);
+            backgroundImage.setPath(map.get("backgroundImage"), SERVER_PHOTO_URL);
             memberVo.setBackgroundImage(backgroundImage);
 
             ImageVo profileImage = new ImageVo();
             //profileImage.setUrl(map.get("profileImage").toString());
-            profileImage.setPath(map.get("profileImage").toString(), map.get("memSex").toString(), SERVER_PHOTO_URL);
+            profileImage.setPath(map.get("profileImage"), map.get("memSex").toString(), SERVER_PHOTO_URL);
             memberVo.setProfileImage(profileImage);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));

@@ -20,6 +20,12 @@ public class ImageVo {
     private String thumbs8;
     private String thumbs9;
 
+    public void setPath(Object path, String photoServerUrl){
+        if(path != null){
+            setPath(path.toString(), photoServerUrl);
+        }
+
+    }
     public void setPath(String path, String photoServerUrl){
         if(path != null){
             this.path = path;
@@ -28,12 +34,12 @@ public class ImageVo {
         }
     }
 
-    public void setPath(String path, String gender, String photoServerUrl){
+    public void setPath(Object path, String gender, String photoServerUrl){
         if(path == null){
             this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
             setThumbs();
         }else{
-            setPath(path, photoServerUrl);
+            setPath(path.toString(), photoServerUrl);
         }
     }
 
