@@ -142,7 +142,6 @@ public class SsoAuthenticationFilter implements Filter {
                 securityContext.setAuthentication(authentication);
 
                 HttpSession session = request.getSession(true);
-                session.setAttribute("SESSION_DETAILS", memberVo);
                 session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
             }
         }
