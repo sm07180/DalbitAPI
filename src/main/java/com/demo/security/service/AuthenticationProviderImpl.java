@@ -1,6 +1,7 @@
 package com.demo.security.service;
 
 import com.demo.common.code.Status;
+import com.demo.exception.CustomUsernameNotFoundException;
 import com.demo.member.vo.MemberVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.member.service.MemberService;
@@ -17,11 +18,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Slf4j
 @Component("authProvider")
@@ -50,7 +49,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
             
             if(securityUserVo == null) {
             	log.debug(securityUserVo.getUsername());
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
+                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
             }
 
             MemberVo memberVo = securityUserVo.getUserInfo();
@@ -71,11 +70,11 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
             }*/
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_회원가입필요.getMessageKey()));
+                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
             }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
+                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
             }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_파라메터이상.getMessageKey()));
+                throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
             }
         }
         return new UsernamePasswordAuthenticationToken(securityUserVo.getUserInfo(), password, securityUserVo.getAuthorities());

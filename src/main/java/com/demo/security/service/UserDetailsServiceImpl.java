@@ -1,6 +1,7 @@
 package com.demo.security.service;
 
 import com.demo.common.code.Status;
+import com.demo.exception.CustomUsernameNotFoundException;
 import com.demo.member.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
 import com.demo.security.vo.SecurityUserVo;
@@ -38,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         if(memberVo == null){
-            throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
+            throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
         if(!"Y".equals(userInfo.getCareerauth()) && userInfo.getDuty().length() > 0){
