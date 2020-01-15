@@ -31,15 +31,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        MemberVo memberVo;
-        if(username.contains("-")){
-            memberVo = loginDao.loginUseMemId(username);
-        }else{
-            memberVo = loginDao.loginUseMemNo(username);
-        }
-
+        MemberVo memberVo = loginDao.loginUseMemId(username);
         if(memberVo == null){
-            throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            memberVo = loginDao.loginUseMemNo(username);
+            if(memberVo == null) {
+                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            }
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
         if(!"Y".equals(userInfo.getCareerauth()) && userInfo.getDuty().length() > 0){
