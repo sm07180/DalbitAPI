@@ -4,6 +4,7 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.ImageVo;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.exception.GlobalException;
 import com.demo.member.dao.MemberDao;
 import com.demo.member.vo.MemberVo;
 import com.demo.member.vo.P_InfoVo;
@@ -74,7 +75,7 @@ public class MemberService {
     /**
      * 회원 정보 보기
      */
-    public String callMemberInfoView(P_InfoVo pInfoVo) {
+    public String callMemberInfoView(P_InfoVo pInfoVo) throws GlobalException{
         ProcedureVo procedureVo = new ProcedureVo(pInfoVo);
         memberDao.callMemberInfoView(procedureVo);
 
@@ -111,13 +112,13 @@ public class MemberService {
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
 
-        }/*else if(Status.회원정보_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님, procedureVo.getData())));
+        }else if(Status.회원정보_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            throw new GlobalException(Status.회원정보_회원아님, procedureVo.getData());
         }else if(Status.회원정보_대상회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상회원아님, procedureVo.getData())));
+            throw new GlobalException(Status.회원정보_대상회원아님, procedureVo.getData());
         }else {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기실패, procedureVo.getData())));
-        }*/
+            throw new GlobalException(Status.회원정보보기실패, procedureVo.getData());
+        }
 
         return result;
     }
