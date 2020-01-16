@@ -9,11 +9,11 @@
 	</settings>
 
 	<typeAliases>
-		<typeAlias type="com.demo.sample.vo.SampleVo" alias="SampleVo" />
-		<typeAlias type="com.demo.common.vo.ProcedureVo" alias="ProcedureVo" />
-		<typeAlias type="com.demo.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
-		<typeAlias type="com.demo.broadcast.vo.RoomVo" alias="RoomVo" />
-		<typeAlias type="com.demo.broadcast.vo.RoomMemberVo" alias="RoomMemberVo" />
+		<typeAlias type="com.dalbit.sample.vo.SampleVo" alias="SampleVo" />
+		<typeAlias type="com.dalbit.common.vo.ProcedureVo" alias="ProcedureVo" />
+		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.RoomVo" alias="RoomVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.RoomMemberVo" alias="RoomMemberVo" />
 	</typeAliases>
 
 </configuration>

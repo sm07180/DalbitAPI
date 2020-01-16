@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.sample.dao.SampleDao" >
+
+    <select id="getCount" resultType="int">
+    /* Sample.xml - getCount */
+        SELECT
+            count(*)
+        FROM tb_log_data
+    </select>
+
+    <select id="getList" resultType="SampleVo">
+    /* Sample.xml - getList */
+        SELECT
+           *
+        FROM tb_log_data
+    </select>
+    
+    <insert id="insertSample" parameterType="SampleVo">
+    /* Sample.xml - insertSample */
+        INSERT INTO TEST(
+          ID
+          , NAME
+          , AGE
+        ) VALUES (
+          #{id}
+          , #{name}
+          , #{age}
+        )
+    </insert>
+
+    <select id="selectLogData" resultType="SampleVo">
+    /* Sample.xml - selectLogData */
+      SELECT
+        idx
+        , sp_name
+        , data
+        , upd_date
+      FROM tb_log_data
+    </select>
+
+</mapper>

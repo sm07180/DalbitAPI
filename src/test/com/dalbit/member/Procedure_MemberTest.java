@@ -1,0 +1,162 @@
+/*
+package com.dalbit.member;
+
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MemberService;
+import com.dalbit.member.vo.*;
+import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.Assert;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+
+@Slf4j
+@SpringBootTest
+@ActiveProfiles({"local"})
+public class Procedure_MemberTest {
+
+    @Autowired
+    private MemberService memberService;
+    @Autowired
+    private GsonUtil gsonUtil;
+
+    @Test
+    public void 회원_로그인(){
+        P_LoginVo apiSample = P_LoginVo.builder().build();
+
+        ProcedureVo procedureVo = memberService.callMemberLogin(apiSample);
+
+        log.debug("회원_로그인 결과 : {}", procedureVo.toString());
+
+        if(Status.로그인성공.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.로그인성공, procedureVo.getData())));
+
+        }else if (Status.로그인실패_회원가입필요.getMessageCode().equals(procedureVo.getRet())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요, procedureVo.getData())));
+
+        }else if (Status.로그인실패_패스워드틀림.getMessageCode().equals(procedureVo.getRet())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림, procedureVo.getData())));
+
+        }else if (Status.파라미터오류.equals(procedureVo.getRet())){
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData())));
+
+        }else {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림, procedureVo.getData())));
+        }
+
+        Assert.assertEquals(Status.로그인성공.getMessageCode(), procedureVo.getRet());
+    }
+
+    @Test
+    public void 회원가입(){
+
+        P_JoinVo joinVo = P_JoinVo.builder()
+            .memSlct("p")
+            .id("010-" + DalbitUtil.randomValue("number", 4) + "-" + DalbitUtil.randomValue("number", 4))
+            .nickName("T_" + DalbitUtil.randomValue("string", 6) + DalbitUtil.randomValue("number", 2))
+        .build();
+
+        memberService.signup(joinVo);
+    }
+
+    @Test
+    public void 닉네임중복체크(){
+        ProcedureVo procedureVo = new ProcedureVo();
+        procedureVo.setData("test0005");
+
+        String result = memberService.callNickNameCheck(procedureVo);
+
+        log.debug("닉네임중복체크 결과 : {}", result);
+
+    }
+
+
+    @Test
+    public void 비밀번호변경(){
+        String result = memberService.callChangePassword(P_ChangePasswordVo.builder().build());
+        log.debug("비밀번호 변경 결과 : {}", result);
+    }
+
+    @Test
+    public void 프로필편집(){
+
+        ProcedureVo procedureVo = new ProcedureVo(P_ProfileEditVo.builder().build());
+
+        memberService.callProfileEdit(procedureVo);
+
+        log.debug("프로필편집 결과 : {}", procedureVo.toString());
+
+        if(Status.프로필편집성공.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
+
+        }else if(Status.프로필편집실패_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_회원아님, procedureVo.getData())));
+
+        }else if(Status.프로필편집실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복, procedureVo.getData())));
+        }
+
+        Assert.assertEquals(Status.프로필편집성공.getMessageCode(), procedureVo.getRet());
+
+    }
+
+    @Test
+    public void 회원팬등록(){
+
+        ProcedureVo procedureVo = new ProcedureVo(P_FanstarInsertVo.builder().build());
+        memberService.callFanstarInsert(procedureVo);
+
+        log.debug("회원팬등록 결과 : {}", procedureVo.toString());
+
+        if(Status.팬등록성공.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
+        }else if(Status.팬등록_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록_회원아님, procedureVo.getData())));
+        }else if(Status.팬등록_스타회원번호이상.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록_스타회원번호이상, procedureVo.getData())));
+        }else if(Status.팬등록_이미팬등록됨.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록_이미팬등록됨, procedureVo.getData())));
+        }else {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록실패, procedureVo.getData())));
+        }
+        //Assert.assertEquals(Status.팬등록성공.getMessageCode(), procedureVo.getRet());
+    }
+
+    @Test
+    public void 회원팬해제(){
+
+        ProcedureVo procedureVo = new ProcedureVo(P_FanstarDeleteVo.builder().build());
+        memberService.callFanstarDelete(procedureVo);
+
+        log.debug("회원팬해제 결과 : {}", procedureVo.toString());
+
+        if(Status.팬해제성공.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공, procedureVo.getData())));
+        }else if(Status.팬해제_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제_회원아님, procedureVo.getData())));
+        }else if(Status.팬해제_스타회원번호이상.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제_스타회원번호이상, procedureVo.getData())));
+        }else if(Status.팬해제_팬아님.getMessageCode().equals(procedureVo.getRet())) {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제_팬아님, procedureVo.getData())));
+        }else {
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제실패, procedureVo.getData())));
+        }
+        //Assert.assertEquals(Status.팬해제성공.getMessageCode(), procedureVo.getRet());
+    }
+
+    @Test
+    public void 회원정보보기() throws GlobalException {
+
+        P_InfoVo apiSample = P_InfoVo.builder().build();
+        String result = memberService.getMemberInfo(apiSample);
+
+        log.debug("회원정보보기 결과 : {}", result);
+
+    }
+}*/

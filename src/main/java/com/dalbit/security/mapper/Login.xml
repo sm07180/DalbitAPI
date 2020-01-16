@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.security.dao.LoginDao" >
+
+    <select id="loginUseMemId" parameterType="com.dalbit.member.vo.MemberVo" resultType="com.dalbit.member.vo.MemberVo">
+    /* Login.xml - loginUseMemId */
+        SELECT
+            *
+        FROM tb_member_basic
+        WHERE mem_id = #{mem_id}
+            AND mem_slct = #{mem_slct}
+    </select>
+
+    <select id="loginUseMemNo" parameterType="com.dalbit.member.vo.MemberVo" resultType="com.dalbit.member.vo.MemberVo">
+    /* Login.xml - loginUseMemNo */
+        SELECT
+            *
+        FROM tb_member_basic
+        WHERE mem_no = #{memNo}
+    </select>
+
+</mapper>

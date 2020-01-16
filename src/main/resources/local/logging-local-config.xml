@@ -14,7 +14,7 @@
     <logger name="org.springframework" additivity="false" level="INFO">
         <appender-ref ref="console" />
     </logger>
-    <logger name="com.demo" additivity="false" level="DEBUG">
+    <logger name="com.dalbit" additivity="false" level="DEBUG">
         <appender-ref ref="console" />
     </logger>
 
