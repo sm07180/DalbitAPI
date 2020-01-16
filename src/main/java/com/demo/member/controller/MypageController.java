@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestController
 @RequestMapping("mypage")
@@ -42,8 +44,17 @@ public class MypageController {
 
     @ApiOperation(value = "프로필편집")
     @PostMapping("profile")
-    public String profile() throws GlobalException {
+    public String profile(HttpServletRequest request) throws GlobalException {
 
        return "프로필편집";
     }
+
+    @ApiOperation(value = "팬 등록")
+    @PostMapping("pan")
+    public String pan(HttpServletRequest request) throws GlobalException {
+
+        return "팬 등록";
+    }
+
+
 }
