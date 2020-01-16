@@ -1,7 +1,6 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.exception.GlobalException;
-import com.dalbit.member.service.MemberService;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -23,7 +22,7 @@ public class MypageController {
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
-    MemberService memberService;
+    MypageService mypageService;
 
 
     /**
@@ -46,7 +45,7 @@ public class MypageController {
 
         log.info("playToken: {}", apiData.getName());
 
-        String result = memberService.callProfileEdit(apiData);
+        String result = mypageService.callProfileEdit(apiData);
         return result;
     }
 
@@ -62,7 +61,7 @@ public class MypageController {
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
-        String result = memberService.callFanstarInsert(apiData);
+        String result = mypageService.callFanstarInsert(apiData);
 
         return result;
     }
@@ -79,7 +78,7 @@ public class MypageController {
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
-        String result = memberService.callFanstarDelete(apiData);
+        String result = mypageService.callFanstarDelete(apiData);
 
         return result;
     }
