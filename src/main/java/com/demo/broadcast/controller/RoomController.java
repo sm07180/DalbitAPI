@@ -62,10 +62,10 @@ public class RoomController {
         HashMap map = new HashMap();
         String streamId = (String) restService.antCreate(StringUtil.convertRequestParamToString(request, "s_title")).get("streamId");
         String publishToken = (String) restService.antToken((String) map.get("streamId"), "publish").get("tokenId");
-        String playToken = (String) restService.antToken((String) map.get("streamId"), "play").get("tokenId");
+        //String playToken = (String) restService.antToken((String) map.get("streamId"), "play").get("tokenId");
         log.info("streamId: {}", streamId);
         log.info("publishToken: {}", publishToken);
-        log.info("playToken: {}", playToken);
+        //log.info("playToken: {}", playToken);
 
         P_RoomCreateVo apiData = P_RoomCreateVo.builder()
             .mem_no(MemberVo.getUserInfo().getMem_no())
@@ -80,7 +80,6 @@ public class RoomController {
             .os(StringUtil.convertRequestParamToInteger(request,"i_os"))
             .bj_streamid(streamId)
             .bj_publish_tokenid(publishToken)
-            .bj_play_tokenid(playToken)
             .build();
 
         String result = roomService.callBroadCastRoomCreate(apiData);
@@ -96,17 +95,22 @@ public class RoomController {
     public String roomJoin(HttpServletRequest request) throws GlobalException{
         String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
 
-        //참가를 위한 토큰 받기
+        //방참가를 위한 토큰 조회
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
+
+        //Play 토큰 생성
+        String bj_playToken = (String) restService.antToken((String) resultMap.get("bj_streamid"), "play").get("tokenId");
+        String guest_playToken = (String) restService.antToken((String) resultMap.get("guest_streamid"), "play").get("tokenId");
+
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
-                .guest_streamid((String) resultMap.get("guest_streamid"))
-                .guest_publish_tokenid((String) resultMap.get("guest_publish_tokenid"))
-                .guest_play_tokenid((String) resultMap.get("guest_play_tokenid"))
-                .bj_streamid((String) resultMap.get("bj_streamid"))
-                .bj_publish_tokenid((String) resultMap.get("bj_publish_tokenid"))
-                .bj_play_tokenid((String) resultMap.get("bj_play_tokenid"))
+                .guest_streamid(StringUtil.getStringMap(resultMap,"guest_streamid"))
+                .guest_publish_tokenid(StringUtil.getStringMap(resultMap,"guest_publish_tokenid"))
+                .guest_play_tokenid(guest_playToken)
+                .bj_streamid(StringUtil.getStringMap(resultMap,"bj_streamid"))
+                .bj_publish_tokenid(StringUtil.getStringMap(resultMap,"bj_publish_tokenid"))
+                .bj_play_tokenid(bj_playToken)
                 .build();
 
         String result = roomService.callBroadCastRoomJoin(apiData);
