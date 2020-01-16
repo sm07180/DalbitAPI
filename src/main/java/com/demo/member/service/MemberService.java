@@ -90,25 +90,25 @@ public class MemberService {
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             MemberVo memberVo = new MemberVo();//new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
 
-            memberVo.setMemNo(MemberVo.getUserInfo().getMemNo());
-            memberVo.setNickName(map.get("nickName").toString());
-            memberVo.setMemSex(map.get("memSex").toString());
+            memberVo.setMem_no(MemberVo.getUserInfo().getMem_no());
+            memberVo.setNick_name(map.get("nickName").toString());
+            memberVo.setMem_sex(map.get("memSex").toString());
             memberVo.setAge(Integer.valueOf(map.get("age").toString()));
-            memberVo.setMemId(map.get("memId").toString());
+            memberVo.setMem_id(map.get("memId").toString());
             memberVo.setLevel(Integer.valueOf(map.get("level").toString()));
-            memberVo.setFanCount(Integer.valueOf(map.get("fanCount").toString()));
-            memberVo.setStarCount(Integer.valueOf(map.get("starCount").toString()));
-            memberVo.setEnableFan(Boolean.valueOf(map.get("enableFan").toString()));
+            memberVo.setFan_count(Integer.valueOf(map.get("fanCount").toString()));
+            memberVo.setStar_count(Integer.valueOf(map.get("starCount").toString()));
+            memberVo.setEnable_fan(Boolean.valueOf(map.get("enableFan").toString()));
 
             ImageVo backgroundImage = new ImageVo();
             //backgroundImage.setUrl(map.get("backgroundImage").toString());
             backgroundImage.setPath(map.get("backgroundImage"), SERVER_PHOTO_URL);
-            memberVo.setBackgroundImage(backgroundImage);
+            memberVo.setBackground_image(backgroundImage);
 
             ImageVo profileImage = new ImageVo();
             //profileImage.setUrl(map.get("profileImage").toString());
             profileImage.setPath(map.get("profileImage"), map.get("memSex").toString(), SERVER_PHOTO_URL);
-            memberVo.setProfileImage(profileImage);
+            memberVo.setProfile_image(profileImage);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
 

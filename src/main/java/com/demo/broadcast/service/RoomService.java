@@ -78,7 +78,7 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        returnMap.put("mem_no",MemberVo.getUserInfo().getMemNo());
+        returnMap.put("mem_no",MemberVo.getUserInfo().getMem_no());
         returnMap.put("room_no",pRoomJoinVo.getRoom_no());
         returnMap.put("guest_streamid",pRoomJoinVo.getGuest_streamid());
         returnMap.put("guest_publish_tokenid",pRoomJoinVo.getGuest_publish_tokenid());

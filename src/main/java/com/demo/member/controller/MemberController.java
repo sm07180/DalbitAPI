@@ -40,8 +40,8 @@ public class MemberController {
     public String infoView() throws GlobalException {
 
         P_InfoVo apiData = P_InfoVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
-                .target_mem_no(MemberVo.getUserInfo().getMemNo())
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .target_mem_no(MemberVo.getUserInfo().getMem_no())
                 .build();
 
         String result = memberService.callMemberInfoView(apiData);
@@ -57,7 +57,7 @@ public class MemberController {
     public String infoView(HttpServletRequest request) throws GlobalException{
 
         P_InfoVo apiData = P_InfoVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .mem_no(MemberVo.getUserInfo().getMem_no())
                 .target_mem_no(StringUtil.convertRequestParamToString(request, "s_mem_no"))
                 .build();
 

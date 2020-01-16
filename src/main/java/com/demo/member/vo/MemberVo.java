@@ -21,30 +21,29 @@ public class MemberVo extends BaseVo {
     }
 
 
-    private String memNo;
-    private String nickName;
-    private String memSex;
+    private String mem_no;
+    private String nick_name;
+    private String mem_sex;
     private int age;
-    private String memId;
-    private ImageVo backgroundImage;
-    private ImageVo profileImage;
-    private String profileMsg;
+    private String mem_id;
+    private ImageVo background_image;
+    private ImageVo profile_image;
+    private String profile_msg;
     private int level;
-    private int fanCount;
-    private int starCount;
-    private boolean enableFan;
+    private int fan_count;
+    private int star_count;
+    private boolean enable_fan;
 
-    //TODO - 삭제 확인
     private int idx;
-    private String memPhone;
-    private String memPasswd;
-    private int memBirthYear;
-    private int memBirthMonth;
-    private int memBirthDay;
-    private String memSlct;
-    private String memState;
-    private Date memJoinDate;
-    private Date lastUpdDate;
+    private String mem_phone;
+    private String mem_passwd;
+    private int mem_birth_year;
+    private int mem_birth_month;
+    private int mem_birth_day;
+    private String mem_slct;
+    private String mem_state;
+    private Date mem_join_date;
+    private Date last_upd_date;
 
     //TODO - 추후 DB에서 정보 추가
     private int exp = 50;

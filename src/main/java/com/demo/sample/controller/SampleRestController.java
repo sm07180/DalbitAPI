@@ -14,6 +14,7 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,6 +50,9 @@ public class SampleRestController {
 
     @Autowired
     GsonUtil gsonUtil;
+
+    @Autowired
+    RedisTemplate redisTemplate;
 
     /**
      * 권한 처리 테스트
@@ -254,7 +258,11 @@ public class SampleRestController {
     }
 
     @GetMapping(value = "/jwt")
-    public String jwtTokenSample(){
+    public String jwtTokenSample(HttpServletRequest request){
+
+        request.getSession().setAttribute(request.getParameter("key"), request.getParameter("value"));
+
+        //redisTemplate.
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, new MemberVo()));
     }

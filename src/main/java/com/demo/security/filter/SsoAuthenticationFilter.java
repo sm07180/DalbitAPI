@@ -135,7 +135,7 @@ public class SsoAuthenticationFilter implements Filter {
             MemberVo memberVo = securityUserVo.getUserInfo();
 
             // Verify SSO token value
-            if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
+            if (memberVo.getMem_id().equals(securityUserVo.getUsername())) {
                 Authentication authentication = new UsernamePasswordAuthenticationToken(securityUserVo.getUserInfo(), securityUserVo.getPassword(), userDetails.getAuthorities());
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();

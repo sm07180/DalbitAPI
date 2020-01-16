@@ -35,7 +35,8 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     @Autowired
     private MessageUtil messageUtil;
 
-    @Autowired HttpServletRequest request;
+    @Autowired
+    HttpServletRequest request;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -66,13 +67,13 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
-            /*if(!procedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
-                throw new UsernameNotFoundException(messageUtil.get(Status.로그인실패_패스워드틀림.getMessageKey()));
-            }*/
+
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
                 throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+
             }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
                 throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+
             }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
                 throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
             }

@@ -68,7 +68,7 @@ public class RoomController {
         log.info("playToken: {}", playToken);
 
         P_RoomCreateVo apiData = P_RoomCreateVo.builder()
-            .mem_no(MemberVo.getUserInfo().getMemNo())
+            .mem_no(MemberVo.getUserInfo().getMem_no())
             .subjectType(StringUtil.convertRequestParamToInteger(request, "i_type"))
             .title(StringUtil.convertRequestParamToString(request, "s_title"))
             .backgroundImage(IMG_URL+"/"+StringUtil.convertRequestParamToString(request, "s_bgImg"))
@@ -99,7 +99,7 @@ public class RoomController {
         //참가를 위한 토큰 받기
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
                 .guest_streamid((String) resultMap.get("guest_streamid"))
                 .guest_publish_tokenid((String) resultMap.get("guest_publish_tokenid"))
@@ -122,7 +122,7 @@ public class RoomController {
     public String roomExit(HttpServletRequest request){
         String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
         P_RoomExitVo apiData = P_RoomExitVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
                 .build();
 
@@ -143,7 +143,7 @@ public class RoomController {
         //TODO-방송 정보 조회 ? 서버? ...
 
         P_RoomEditVo apiData = P_RoomEditVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
                 .build();
 
@@ -163,7 +163,7 @@ public class RoomController {
         int pageCnt = (StringUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : StringUtil.convertRequestParamToInteger(request, "i_records");
 
         P_RoomListVo apiData = P_RoomListVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMemNo())
+                .mem_no(MemberVo.getUserInfo().getMem_no())
                 .subjectType(StringUtil.convertRequestParamToInteger(request, "i_type"))
                 .pageNo(pageNo)
                 .pageCnt(pageCnt)
