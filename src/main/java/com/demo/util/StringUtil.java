@@ -15,6 +15,7 @@ import java.util.regex.Pattern;
 
 @Slf4j
 @Component
+@Deprecated
 public class StringUtil {
 
     /**

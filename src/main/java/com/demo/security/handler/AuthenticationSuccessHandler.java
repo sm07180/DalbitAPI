@@ -3,12 +3,13 @@ package com.demo.security.handler;
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.member.vo.MemberVo;
-import com.demo.security.vo.SecurityUserVo;
-import com.demo.util.*;
+import com.demo.util.CookieUtil;
+import com.demo.util.GsonUtil;
+import com.demo.util.JwtUtil;
+import com.demo.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 

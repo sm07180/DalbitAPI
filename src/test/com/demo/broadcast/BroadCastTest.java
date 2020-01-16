@@ -7,7 +7,7 @@ import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
-import com.demo.util.CommonUtil;
+import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -15,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.Locale;
 
 @Slf4j
 @SpringBootTest
@@ -217,7 +214,7 @@ public class BroadCastTest {
     @Test
     public void 나이계산(){
         int year = 1990;
-        int age = CommonUtil.ageCalculation(year);
+        int age = DalbitUtil.ageCalculation(year);
         log.info("나이대: {}", age);
     }
 }

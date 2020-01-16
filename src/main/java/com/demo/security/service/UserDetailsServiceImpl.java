@@ -5,7 +5,7 @@ import com.demo.exception.CustomUsernameNotFoundException;
 import com.demo.member.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
 import com.demo.security.vo.SecurityUserVo;
-import com.demo.util.StringUtil;
+import com.demo.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -34,7 +34,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         MemberVo paramMemberVo = new MemberVo();
         paramMemberVo.setMem_id(username);
-        paramMemberVo.setMem_slct(StringUtil.convertRequestParamToString(request, "s_mem"));
+        paramMemberVo.setMem_slct(DalbitUtil.convertRequestParamToString(request, "s_mem"));
 
         MemberVo memberVo = loginDao.loginUseMemId(paramMemberVo);
         if(memberVo == null) {

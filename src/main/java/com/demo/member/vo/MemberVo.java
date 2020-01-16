@@ -2,7 +2,7 @@ package com.demo.member.vo;
 
 import com.demo.common.vo.BaseVo;
 import com.demo.common.vo.ImageVo;
-import com.demo.util.StringUtil;
+import com.demo.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +19,7 @@ public class MemberVo extends BaseVo {
     public static MemberVo getUserInfo() {
         //SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         HashMap memberInfoMap = (HashMap)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MemberVo sessionMemberVo = new Gson().fromJson(StringUtil.getStringMap(memberInfoMap, "memberInfo"), MemberVo.class);
+        MemberVo sessionMemberVo = new Gson().fromJson(DalbitUtil.getStringMap(memberInfoMap, "memberInfo"), MemberVo.class);
 
         return sessionMemberVo;
     }

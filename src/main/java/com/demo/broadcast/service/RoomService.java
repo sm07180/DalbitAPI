@@ -9,20 +9,15 @@ import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.vo.MemberVo;
-import com.demo.util.CommonUtil;
+import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -47,7 +42,7 @@ public class RoomService {
         roomDao.callBroadCastRoomCreate(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String roomNo = StringUtil.isNullToString(resultMap.get("room_no"));
+        String roomNo = DalbitUtil.isNullToString(resultMap.get("room_no"));
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info("방번호 추출: {}", roomNo);
@@ -178,7 +173,7 @@ public class RoomService {
         List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
 
         ProcedureOutputVo procedureOutputVo;
-        if(CommonUtil.isEmpty(roomVoList)){
+        if(DalbitUtil.isEmpty(roomVoList)){
             procedureOutputVo = null;
         }else{
             ImageVo image_background = new ImageVo();
@@ -189,8 +184,8 @@ public class RoomService {
                 bj_profileImage.setPath(roomVoList.get(i).getBj_profileImage(), roomVoList.get(i).getBj_memSex(), SERVER_PHOTO_URL);
                 roomVoList.get(i).setBj_profileImage(bj_profileImage);
 
-                int bj_age = CommonUtil.ageCalculation(roomVoList.get(i).getBj_birthYear());
-                int guest_age = CommonUtil.ageCalculation(roomVoList.get(i).getGuest_birthYear());
+                int bj_age = DalbitUtil.ageCalculation(roomVoList.get(i).getBj_birthYear());
+                int guest_age = DalbitUtil.ageCalculation(roomVoList.get(i).getGuest_birthYear());
                 roomVoList.get(i).setBj_age(bj_age);
                 roomVoList.get(i).setGuest_age(guest_age);
             }
@@ -220,7 +215,7 @@ public class RoomService {
     public ProcedureOutputVo callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
         List<RoomMemberVo> roomMemberVoList = roomDao.callBroadCastRoomMemberList(procedureVo);
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmpty(roomMemberVoList) ? null : roomMemberVoList);
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, DalbitUtil.isEmpty(roomMemberVoList) ? null : roomMemberVoList);
         return procedureOutputVo;
     }
 

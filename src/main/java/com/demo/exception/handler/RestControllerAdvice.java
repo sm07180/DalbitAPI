@@ -4,7 +4,6 @@ import com.demo.common.code.ErrorStatus;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
-import com.google.gson.Gson;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.method.HandlerMethod;
 import org.springframework.web.servlet.ModelAndView;
-import springfox.documentation.spring.web.json.Json;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;

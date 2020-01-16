@@ -32,7 +32,7 @@ public class GsonUtil {
      *      * @return
      */
     public String toJson(Object object){
-        return StringUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(object));
+        return DalbitUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(object));
     }
 
     /**
@@ -41,7 +41,7 @@ public class GsonUtil {
      * @return
      */
     public String toJson(JsonOutputVo jsonOutputVo){
-        return StringUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
+        return DalbitUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
     }
 
     /**

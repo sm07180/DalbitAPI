@@ -2,15 +2,12 @@ package com.demo.interceptor;
 
 import com.demo.common.code.ErrorStatus;
 import com.demo.exception.GlobalException;
-import com.demo.util.DateUtil;
-
+import com.demo.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.Enumeration;
 import java.util.regex.Pattern;
 
@@ -88,6 +85,6 @@ public class ParamCheckInterceptor extends HandlerInterceptorAdapter {
     }
 
     public boolean checkDate(String value) {
-        return (Pattern.matches(datePattern1, value) || Pattern.matches(datePattern2, value)) &&  DateUtil.isDate(value);
+        return (Pattern.matches(datePattern1, value) || Pattern.matches(datePattern2, value)) &&  DalbitUtil.isDate(value);
     }
 }

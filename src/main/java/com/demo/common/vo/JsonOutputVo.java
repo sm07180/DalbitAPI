@@ -2,7 +2,7 @@ package com.demo.common.vo;
 
 import com.demo.common.code.ErrorStatus;
 import com.demo.common.code.Status;
-import com.demo.util.StringUtil;
+import com.demo.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,24 +17,24 @@ public class JsonOutputVo {
 
     public JsonOutputVo(Status status){
         setStatus(status);
-        setTimestamp(StringUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.getTimeStamp());
     }
 
     public JsonOutputVo(Status status, Object data){
         setStatus(status);
         setData(data);
-        setTimestamp(StringUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.getTimeStamp());
     }
 
     public JsonOutputVo(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
-        setTimestamp(StringUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.getTimeStamp());
     }
 
     public JsonOutputVo(ErrorStatus errorStatus, Object data){
         setErrorStatus(errorStatus);
         setData(data);
-        setTimestamp(StringUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.getTimeStamp());
     }
 
     private String result;

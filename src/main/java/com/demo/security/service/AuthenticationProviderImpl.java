@@ -1,14 +1,14 @@
 package com.demo.security.service;
 
 import com.demo.common.code.Status;
-import com.demo.exception.CustomUsernameNotFoundException;
-import com.demo.member.vo.MemberVo;
 import com.demo.common.vo.ProcedureVo;
+import com.demo.exception.CustomUsernameNotFoundException;
 import com.demo.member.service.MemberService;
+import com.demo.member.vo.MemberVo;
 import com.demo.member.vo.P_LoginVo;
 import com.demo.security.vo.SecurityUserVo;
+import com.demo.util.DalbitUtil;
 import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +56,13 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
             MemberVo memberVo = securityUserVo.getMemberVo();
             P_LoginVo pLoginVo = P_LoginVo.builder()
-                .memSlct(StringUtil.convertRequestParamToString(request,"s_mem"))
+                .memSlct(DalbitUtil.convertRequestParamToString(request,"s_mem"))
                 .id(userName)
                 .pw(password)
-                .os(StringUtil.convertRequestParamToInteger(request,"i_os"))
-                .deviceUuid(StringUtil.convertRequestParamToString(request,"s_deviceId"))
-                .deviceToken(StringUtil.convertRequestParamToString(request,"s_deviceToken"))
-                .appVersion(StringUtil.convertRequestParamToString(request,"s_appVer"))
+                .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
+                .deviceUuid(DalbitUtil.convertRequestParamToString(request,"s_deviceId"))
+                .deviceToken(DalbitUtil.convertRequestParamToString(request,"s_deviceToken"))
+                .appVersion(DalbitUtil.convertRequestParamToString(request,"s_appVer"))
                 //광고 아이디 없음..
                 .build();
 

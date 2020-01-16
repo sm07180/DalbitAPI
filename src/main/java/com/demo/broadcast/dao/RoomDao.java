@@ -2,7 +2,6 @@ package com.demo.broadcast.dao;
 
 import com.demo.broadcast.vo.RoomMemberVo;
 import com.demo.broadcast.vo.RoomVo;
-import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 

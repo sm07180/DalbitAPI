@@ -10,16 +10,15 @@ import com.demo.member.vo.MemberVo;
 import com.demo.member.vo.P_InfoVo;
 import com.demo.member.vo.P_JoinVo;
 import com.demo.member.vo.P_LoginVo;
+import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import springfox.documentation.spring.web.json.Json;
 
 import java.util.HashMap;
 
@@ -125,21 +124,21 @@ public class MemberService {
             MemberVo memberVo = new MemberVo(); //new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
 
             memberVo.setMem_no(MemberVo.getUserInfo().getMem_no());
-            memberVo.setMem_nick(StringUtil.getStringMap(map, "nickName"));
-            memberVo.setMem_sex(StringUtil.getStringMap(map, "memSex"));
-            memberVo.setAge(StringUtil.getIntMap(map, "age"));
-            memberVo.setMem_id(StringUtil.getStringMap(map, "memId"));
-            memberVo.setLevel(StringUtil.getIntMap(map, "level"));
-            memberVo.setFan_count(StringUtil.getIntMap(map, "fanCount"));
-            memberVo.setStar_count(StringUtil.getIntMap(map, "starCount"));
-            memberVo.setEnable_fan(StringUtil.getBooleanMap(map, "enableFan"));
+            memberVo.setMem_nick(DalbitUtil.getStringMap(map, "nickName"));
+            memberVo.setMem_sex(DalbitUtil.getStringMap(map, "memSex"));
+            memberVo.setAge(DalbitUtil.getIntMap(map, "age"));
+            memberVo.setMem_id(DalbitUtil.getStringMap(map, "memId"));
+            memberVo.setLevel(DalbitUtil.getIntMap(map, "level"));
+            memberVo.setFan_count(DalbitUtil.getIntMap(map, "fanCount"));
+            memberVo.setStar_count(DalbitUtil.getIntMap(map, "starCount"));
+            memberVo.setEnable_fan(DalbitUtil.getBooleanMap(map, "enableFan"));
 
             ImageVo backgroundImage = new ImageVo();
-            backgroundImage.setPath(StringUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL);
+            backgroundImage.setPath(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL);
             memberVo.setBackground_image(backgroundImage);
 
             ImageVo profileImage = new ImageVo();
-            profileImage.setPath(StringUtil.getStringMap(map, "profileImage"), StringUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL);
+            profileImage.setPath(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL);
             memberVo.setProfile_image(profileImage);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));

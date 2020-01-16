@@ -5,9 +5,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.util.HashMap;
-import java.util.List;
-
 /**
  * Procedure 조회를 위한 VO
  */

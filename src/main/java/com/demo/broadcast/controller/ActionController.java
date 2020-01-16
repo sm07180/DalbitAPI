@@ -2,8 +2,8 @@ package com.demo.broadcast.controller;
 
 import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
+import com.demo.util.DalbitUtil;
 import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +36,7 @@ public class ActionController {
         data.put("gift", "치킨");
         data.put("combos", 3);
         data.put("golds", 30);
-        data.put("date", StringUtil.getTimeStamp());
+        data.put("date", DalbitUtil.getTimeStamp());
 
         HashMap paging = new HashMap();
         paging.put("total", 102);

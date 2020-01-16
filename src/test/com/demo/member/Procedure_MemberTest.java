@@ -6,7 +6,7 @@ import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.*;
-import com.demo.util.CommonUtil;
+import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
@@ -57,8 +57,8 @@ public class Procedure_MemberTest {
 
         P_JoinVo joinVo = P_JoinVo.builder()
             .memSlct("p")
-            .id("010-" + CommonUtil.randomValue("number", 4) + "-" + CommonUtil.randomValue("number", 4))
-            .nickName("T_" + CommonUtil.randomValue("string", 6) + CommonUtil.randomValue("number", 2))
+            .id("010-" + DalbitUtil.randomValue("number", 4) + "-" + DalbitUtil.randomValue("number", 4))
+            .nickName("T_" + DalbitUtil.randomValue("string", 6) + DalbitUtil.randomValue("number", 2))
         .build();
 
         memberService.signup(joinVo);

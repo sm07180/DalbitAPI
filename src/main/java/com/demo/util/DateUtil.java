@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+@Deprecated
 public class DateUtil {
 	
 	/**

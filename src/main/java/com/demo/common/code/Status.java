@@ -102,7 +102,7 @@ public enum Status {
     방송정보수정실패("-5", "broadcast.room.edit.fail", "방송정보 수정 실패 시"),
 
     //방송리스트
-    방송리스트조회("select", "broadcast.room.list.select.success", "방송리스트 정보 조회 성공 시"),
+    방송리스트조회("00000", "broadcast.room.list.select.success", "방송리스트 정보 조회 성공 시"),
     방송리스트없음("0", "broadcast.room.list.no", "방송리스트가 없을 시"),
     방송리스트_회원아님("-1", "broadcast.room.list.member.number.no", "회원번호가 아닐 시"),
     방송리스트조회_실패("-2", "broadcast.room.list.select.fail", "방송리스트 정보 조회 실패 시"),
@@ -121,7 +121,7 @@ public enum Status {
     좋아요_해당방송없음("-2", "broadcast.like.room.no", "해당 방송이 없을 시"),
     좋아요_방송참가자아님("-3", "broadcast.like.room.in.no", "방송 참가자가 아닐 시"),
     좋아요_이미했음("-4", "broadcast.like.already", "좋아요 이미 했을 시"),
-    좋아요_실패("-4", "broadcast.like.fail", "좋아요 실패 시"),
+    좋아요_실패("-5", "broadcast.like.fail", "좋아요 실패 시"),
 
     //방송방 게스트지정
     게스트지정("0", "broadcast.guest.add.success", "게스트 지정 성공 시"),

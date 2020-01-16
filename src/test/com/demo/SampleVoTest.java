@@ -192,24 +192,24 @@ public class SampleVoTest {
     public void 랜덤문자열생성_테스트(){
 
         log.warn("string");
-        log.info(CommonUtil.randomValue("string", 4));
-        log.info(CommonUtil.randomValue("string", 4));
+        log.info(DalbitUtil.randomValue("string", 4));
+        log.info(DalbitUtil.randomValue("string", 4));
 
         log.warn("p");
-        log.info(CommonUtil.randomValue("p", 4));
-        log.info(CommonUtil.randomValue("p", 4));
+        log.info(DalbitUtil.randomValue("p", 4));
+        log.info(DalbitUtil.randomValue("p", 4));
 
         log.warn("c");
-        log.info(CommonUtil.randomValue("c", 4));
-        log.info(CommonUtil.randomValue("c", 4));
+        log.info(DalbitUtil.randomValue("c", 4));
+        log.info(DalbitUtil.randomValue("c", 4));
 
         log.warn("a");
-        log.info(CommonUtil.randomValue("a", 4));
-        log.info(CommonUtil.randomValue("a", 4));
+        log.info(DalbitUtil.randomValue("a", 4));
+        log.info(DalbitUtil.randomValue("a", 4));
 
         log.warn("number");
-        log.info(CommonUtil.randomValue("number", 4));
-        log.info(CommonUtil.randomValue("number", 4));
+        log.info(DalbitUtil.randomValue("number", 4));
+        log.info(DalbitUtil.randomValue("number", 4));
     }
 
 }

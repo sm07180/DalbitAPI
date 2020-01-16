@@ -4,9 +4,9 @@ import com.demo.exception.GlobalException;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.MemberVo;
 import com.demo.member.vo.P_InfoVo;
+import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +33,7 @@ public class ProfileController {
 
         P_InfoVo apiData = P_InfoVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
-                .target_mem_no(StringUtil.convertRequestParamToString(request, "s_mem_no"))
+                .target_mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
                 .build();
 
         String result = memberService.getMemberInfo(apiData);

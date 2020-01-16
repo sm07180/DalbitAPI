@@ -8,6 +8,7 @@ import java.util.*;
 
 @Slf4j
 @Component
+@Deprecated
 public class CommonUtil {
 
     public static boolean isNullBlank(String checkValue) {

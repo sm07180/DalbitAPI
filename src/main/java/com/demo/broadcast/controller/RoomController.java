@@ -8,9 +8,9 @@ import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.vo.MemberVo;
 import com.demo.rest.service.RestService;
+import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
-import com.demo.util.StringUtil;
 import com.google.gson.Gson;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -60,7 +60,7 @@ public class RoomController {
     public String roomCreate(HttpServletRequest request) throws GlobalException {
         //토큰생성
         HashMap map = new HashMap();
-        String streamId = (String) restService.antCreate(StringUtil.convertRequestParamToString(request, "s_title")).get("streamId");
+        String streamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
         String publishToken = (String) restService.antToken((String) map.get("streamId"), "publish").get("tokenId");
         //String playToken = (String) restService.antToken((String) map.get("streamId"), "play").get("tokenId");
         log.info("streamId: {}", streamId);
@@ -69,15 +69,15 @@ public class RoomController {
 
         P_RoomCreateVo apiData = P_RoomCreateVo.builder()
             .mem_no(MemberVo.getUserInfo().getMem_no())
-            .subjectType(StringUtil.convertRequestParamToInteger(request, "i_type"))
-            .title(StringUtil.convertRequestParamToString(request, "s_title"))
-            .backgroundImage(IMG_URL+"/"+StringUtil.convertRequestParamToString(request, "s_bgImg"))
-            .backgroundImageGrade(StringUtil.convertRequestParamToInteger(request, "i_bgRacy"))
-            .welcomMsg(StringUtil.convertRequestParamToString(request,"s_welcome"))
-            .notice(StringUtil.convertRequestParamToString(request,"s_notice"))
-            .entry(StringUtil.convertRequestParamToInteger(request,"i_entry"))
-            .age(StringUtil.convertRequestParamToInteger(request,"i_age"))
-            .os(StringUtil.convertRequestParamToInteger(request,"i_os"))
+            .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
+            .title(DalbitUtil.convertRequestParamToString(request, "s_title"))
+            .backgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "s_bgImg"))
+            .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"))
+            .welcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"))
+            .notice(DalbitUtil.convertRequestParamToString(request,"s_notice"))
+            .entry(DalbitUtil.convertRequestParamToInteger(request,"i_entry"))
+            .age(DalbitUtil.convertRequestParamToInteger(request,"i_age"))
+            .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
             .bj_streamid(streamId)
             .bj_publish_tokenid(publishToken)
             .build();
@@ -93,7 +93,7 @@ public class RoomController {
     @ApiOperation(value = "방송방 참여하기")
     @PostMapping("/join")
     public String roomJoin(HttpServletRequest request) throws GlobalException{
-        String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
 
         //방참가를 위한 토큰 조회
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
@@ -105,11 +105,11 @@ public class RoomController {
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
-                .guest_streamid(StringUtil.getStringMap(resultMap,"guest_streamid"))
-                .guest_publish_tokenid(StringUtil.getStringMap(resultMap,"guest_publish_tokenid"))
+                .guest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"))
+                .guest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"))
                 .guest_play_tokenid(guest_playToken)
-                .bj_streamid(StringUtil.getStringMap(resultMap,"bj_streamid"))
-                .bj_publish_tokenid(StringUtil.getStringMap(resultMap,"bj_publish_tokenid"))
+                .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
+                .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
                 .bj_play_tokenid(bj_playToken)
                 .build();
 
@@ -124,7 +124,7 @@ public class RoomController {
     @ApiOperation(value = "방송방 나가기")
     @PostMapping("/exit")
     public String roomExit(HttpServletRequest request){
-        String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
         P_RoomExitVo apiData = P_RoomExitVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
@@ -142,7 +142,7 @@ public class RoomController {
     @PostMapping("/edit")
     public String roomEdit(HttpServletRequest request){
 
-        String roomNo = StringUtil.convertRequestParamToString(request, "s_room_no");
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
 
         //TODO-방송 정보 조회 ? 서버? ...
 
@@ -163,12 +163,12 @@ public class RoomController {
     @GetMapping("/list")
     public String roomList(HttpServletRequest request){
 
-        int pageNo = (StringUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : StringUtil.convertRequestParamToInteger(request, "i_page");
-        int pageCnt = (StringUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : StringUtil.convertRequestParamToInteger(request, "i_records");
+        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
+        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
 
         P_RoomListVo apiData = P_RoomListVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
-                .subjectType(StringUtil.convertRequestParamToInteger(request, "i_type"))
+                .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
                 .pageNo(pageNo)
                 .pageCnt(pageCnt)
                 .build();
