@@ -91,7 +91,7 @@ public class SsoAuthenticationFilter implements Filter {
                             String userId = jwtUtil.getUserNameFromJwt(headerCookie);
                             log.debug("SsoAuthenticationFilter get request header > JWT FROM ID : " + userId);
 
-                            saveSecuritySession(request, userDetailsService.loadUserByUsername(userId));
+                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
                             ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
                         }
                     }
