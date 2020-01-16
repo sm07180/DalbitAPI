@@ -4,9 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.io.UnsupportedEncodingException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Slf4j
 @Component
@@ -142,4 +140,21 @@ public class CommonUtil {
     public static boolean isEmpty(Object object) {
         return object != null ? false : true;
     }
+
+
+    /**
+     * 나이계산
+     */
+    public static int ageCalculation(int year){
+        Calendar calendar = new GregorianCalendar(Locale.KOREA);
+        int currentYear = calendar.get(Calendar.YEAR);
+        int age = currentYear - year + 1;
+
+        String integerAge = Integer.toString(age);
+        String stringAge = integerAge.substring(0,1)+"0";
+        age = Integer.parseInt(stringAge);
+
+        return age;
+    }
+
 }

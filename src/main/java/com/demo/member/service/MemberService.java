@@ -83,12 +83,10 @@ public class MemberService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.debug("회원정보보기 결과 : {}", pInfoVo.toString());
 
-
         String result = "";
         if(Status.회원정보보기성공.getMessageCode().equals(procedureVo.getRet())) {
-            //result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            MemberVo memberVo = new MemberVo();//new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
+            MemberVo memberVo = new MemberVo();
 
             memberVo.setMem_no(MemberVo.getUserInfo().getMem_no());
             memberVo.setNick_name(map.get("nickName").toString());
@@ -101,12 +99,10 @@ public class MemberService {
             memberVo.setEnable_fan(Boolean.valueOf(map.get("enableFan").toString()));
 
             ImageVo backgroundImage = new ImageVo();
-            //backgroundImage.setUrl(map.get("backgroundImage").toString());
             backgroundImage.setPath(map.get("backgroundImage"), SERVER_PHOTO_URL);
             memberVo.setBackground_image(backgroundImage);
 
             ImageVo profileImage = new ImageVo();
-            //profileImage.setUrl(map.get("profileImage").toString());
             profileImage.setPath(map.get("profileImage"), map.get("memSex").toString(), SERVER_PHOTO_URL);
             memberVo.setProfile_image(profileImage);
 

@@ -156,8 +156,8 @@ public class RoomController {
      * 방송방 리스트
      */
     @ApiOperation(value = "방송방 리스트")
-    @PostMapping("/list")
-    public String roomList(HttpServletRequest request){
+    @GetMapping("/list")
+    public String roomList(HttpServletRequest request) throws GlobalException{
 
         int pageNo = (StringUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : StringUtil.convertRequestParamToInteger(request, "i_page");
         int pageCnt = (StringUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : StringUtil.convertRequestParamToInteger(request, "i_records");
@@ -172,6 +172,25 @@ public class RoomController {
         String result = roomService.callBroadCastRoomList(apiData);
 
         return result;
+    }
+
+    /**
+     * 방송방 참여자 리스트
+     */
+    @ApiOperation(value = "방송방 참여자 리스트")
+    @GetMapping("/listeners")
+    public String roomMemberList(){
+        P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
+        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomMemberList(apiSample);
+        Status status;
+        if(procedureOutputVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())){
+            status = Status.방송참여자리스트_회원아님;
+        } else if(procedureOutputVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
+            status = Status.방송참여자리스트없음;
+        } else {
+            status = Status.방송참여자리스트_조회;
+        }
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
     }
 
 
@@ -253,23 +272,6 @@ public class RoomController {
 
 
 
-    /**
-     * 방송방 참여자 리스트
-     */
-    @ApiOperation(value = "방송방 참여자 리스트")
-    @PostMapping("/brodMemberList")
-    public String selectBrodMemberList(){
-        P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomMemberList(apiSample);
-        Status status;
-        if(procedureOutputVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())){
-            status = Status.방송참여자리스트_회원아님;
-        } else if(procedureOutputVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
-            status = Status.방송참여자리스트없음;
-        } else {
-            status = Status.방송참여자리스트_조회;
-        }
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
-    }
+
 }
 
