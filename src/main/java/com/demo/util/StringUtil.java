@@ -10,6 +10,7 @@ import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -910,6 +911,33 @@ public class StringUtil {
             return StringPhone;
         }
         return StringPhone.replaceAll(regEx, "$1-$2-$3");
+    }
+
+    public static String getStringMap(HashMap map, String key){
+        try{
+            return map.get(key).toString();
+        }catch (Exception e){
+            log.error("StringUtil.getStringMap error - key name is [{}]", key);
+            return "";
+        }
+    }
+
+    public static int getIntMap(HashMap map, String key) {
+        try{
+            return Integer.valueOf(getStringMap(map, key));
+        }catch (Exception e){
+            log.error("StringUtil.getIntMap error - key name is [{}]", key);
+            return -1;
+        }
+    }
+
+    public static boolean getBooleanMap(HashMap map, String key) {
+        try{
+            return Boolean.valueOf(getStringMap(map, key));
+        }catch (Exception e){
+            log.error("StringUtil.getBooleanMap error - key name is [{}]", key);
+            return false;
+        }
     }
 
 }

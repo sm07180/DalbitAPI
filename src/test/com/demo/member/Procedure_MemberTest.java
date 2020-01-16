@@ -61,48 +61,18 @@ public class Procedure_MemberTest {
             .nickName("T_" + CommonUtil.randomValue("string", 6) + CommonUtil.randomValue("number", 2))
         .build();
 
-        ProcedureVo procedureVo = memberService.callMemberJoin(joinVo);
-        log.info("sp_member_join: {}", procedureVo.getRet());
-        log.info("sp_member_join: {}", procedureVo.getExt());
-
-        log.debug("회원가입 결과 : {}", procedureVo.toString());
-
-        if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, procedureVo.getData())));
-
-        }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입, procedureVo.getData())));
-
-        }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복, procedureVo.getData())));
-
-        }else if (Status.회원가입실패_파라미터오류.getMessageCode().equals(procedureVo.getRet())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData())));
-
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData())));
-        }
-
-        Assert.assertEquals(Status.회원가입성공.getMessageCode(), procedureVo.getRet());
+        memberService.signup(joinVo);
     }
 
     @Test
     public void 닉네임중복체크(){
         ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setData("123123123");
+        procedureVo.setData("test0005");
 
-        ProcedureVo resultProcedureVo = memberService.callNickNameCheck(procedureVo);
+        String result = memberService.callNickNameCheck(procedureVo);
 
-        log.debug("닉네임중복체크 결과 : {}", procedureVo.toString());
+        log.debug("닉네임중복체크 결과 : {}", result);
 
-        if(Status.닉네임중복.getMessageCode().equals(resultProcedureVo.getRet())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData())));
-
-        }else if(Status.닉네임사용가능.getMessageCode().equals(resultProcedureVo.getRet())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData())));
-        }
-
-        Assert.assertEquals(Status.닉네임사용가능.getMessageCode(), procedureVo.getRet());
     }
 
 
@@ -196,7 +166,7 @@ public class Procedure_MemberTest {
     public void 회원정보보기() throws GlobalException {
 
         P_InfoVo apiSample = P_InfoVo.builder().build();
-        String result = memberService.callMemberInfoView(apiSample);
+        String result = memberService.getMemberInfo(apiSample);
 
         log.debug("회원정보보기 결과 : {}", result);
 

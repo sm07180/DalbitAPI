@@ -26,12 +26,13 @@ public enum Status {
     회원가입성공("0", "member.join.success", "회원가입 성공 시"),
     회원가입실패_중복가입("-1", "member.join.already", "이미 회원가입된 상태 시"),
     회원가입실패_닉네임중복("-2", "member.join.nick.duplicate", "닉네임 중복 시"),
-    회원가입실패_파라미터오류("-3", "param.error", "파라미터 오류 시"),
+    회원가입실패_파라메터오류("-3", "param.error", "파라메터 오류 시"),
     회원가입오류("4005", "member.join.error", "회원가입 오류 시"),
 
     //닉네임중복체크
     닉네임중복("0", "member.join.nick.duplicate", "닉네임 중복 시"),
     닉네임사용가능("1", "member.join.nick.possible", "닉네임 사용가능 시"),
+    닉네임_파라메터오류("10001", "param.error", "닉네임 파라메터 오류 시"),
 
     //비밀번호변경
     비밀번호변경실패_회원아님("0", "member.change.password.fail", "비밀번호 변경 실패 시"),
