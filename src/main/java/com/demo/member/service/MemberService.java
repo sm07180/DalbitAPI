@@ -44,15 +44,48 @@ public class MemberService {
         return procedureVo;
     }
 
-    public ProcedureVo callMemberJoin(P_JoinVo pLoginVo) {
+    public String signup(P_JoinVo pLoginVo) {
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
-        return procedureVo;
+
+        log.info("sp_member_join: {}", procedureVo.getRet());
+        log.info("sp_member_join: {}", procedureVo.getExt());
+
+        log.debug("회원가입 결과 : {}", procedureVo.toString());
+
+        String result;
+        if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공));
+
+        }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입, procedureVo.getData()));
+
+        }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복, procedureVo.getData()));
+
+        }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
+
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
+        }
+
+        return result;
     }
 
-    public ProcedureVo callNickNameCheck(ProcedureVo procedureVo) {
+    public String callNickNameCheck(ProcedureVo procedureVo) {
         memberDao.callNickNameCheck(procedureVo);
-        return procedureVo;
+
+        log.debug("닉네임중복체크 결과 : {}", procedureVo.toString());
+
+        String result = "";
+        if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
+
+        }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData()));
+        }
+        return result;
     }
 
     public ProcedureVo callChangePassword(ProcedureVo procedureVo){
