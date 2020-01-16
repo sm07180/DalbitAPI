@@ -1,4 +1,3 @@
-/*
 package com.dalbit.member;
 
 import com.dalbit.common.code.Status;
@@ -86,68 +85,22 @@ public class Procedure_MemberTest {
     @Test
     public void 프로필편집(){
 
-        ProcedureVo procedureVo = new ProcedureVo(P_ProfileEditVo.builder().build());
-
-        memberService.callProfileEdit(procedureVo);
-
-        log.debug("프로필편집 결과 : {}", procedureVo.toString());
-
-        if(Status.프로필편집성공.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
-
-        }else if(Status.프로필편집실패_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_회원아님, procedureVo.getData())));
-
-        }else if(Status.프로필편집실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복, procedureVo.getData())));
-        }
-
-        Assert.assertEquals(Status.프로필편집성공.getMessageCode(), procedureVo.getRet());
-
+        String result = memberService.callProfileEdit(P_ProfileEditVo.builder().build());
+        log.debug("프로필편집 결과 : {}", result);
     }
 
     @Test
     public void 회원팬등록(){
 
-        ProcedureVo procedureVo = new ProcedureVo(P_FanstarInsertVo.builder().build());
-        memberService.callFanstarInsert(procedureVo);
-
-        log.debug("회원팬등록 결과 : {}", procedureVo.toString());
-
-        if(Status.팬등록성공.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
-        }else if(Status.팬등록_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록_회원아님, procedureVo.getData())));
-        }else if(Status.팬등록_스타회원번호이상.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록_스타회원번호이상, procedureVo.getData())));
-        }else if(Status.팬등록_이미팬등록됨.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록_이미팬등록됨, procedureVo.getData())));
-        }else {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬등록실패, procedureVo.getData())));
-        }
-        //Assert.assertEquals(Status.팬등록성공.getMessageCode(), procedureVo.getRet());
+        String result = memberService.callFanstarInsert(P_FanstarInsertVo.builder().build());
+        log.debug("회원팬등록 결과 : {}", result);
     }
 
     @Test
-    public void 회원팬해제(){
+    public void 회원팬해제() {
 
-        ProcedureVo procedureVo = new ProcedureVo(P_FanstarDeleteVo.builder().build());
-        memberService.callFanstarDelete(procedureVo);
-
-        log.debug("회원팬해제 결과 : {}", procedureVo.toString());
-
-        if(Status.팬해제성공.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공, procedureVo.getData())));
-        }else if(Status.팬해제_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제_회원아님, procedureVo.getData())));
-        }else if(Status.팬해제_스타회원번호이상.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제_스타회원번호이상, procedureVo.getData())));
-        }else if(Status.팬해제_팬아님.getMessageCode().equals(procedureVo.getRet())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제_팬아님, procedureVo.getData())));
-        }else {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.팬해제실패, procedureVo.getData())));
-        }
-        //Assert.assertEquals(Status.팬해제성공.getMessageCode(), procedureVo.getRet());
+        String result = memberService.callFanstarDelete(P_FanstarDeleteVo.builder().build());
+        log.debug("회원팬해제 결과 : {}", result);
     }
 
     @Test
@@ -159,4 +112,4 @@ public class Procedure_MemberTest {
         log.debug("회원정보보기 결과 : {}", result);
 
     }
-}*/
+}
