@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,5 +38,12 @@ public class MypageController {
         String result = memberService.getMemberInfo(apiData);
 
         return result;
+    }
+
+    @ApiOperation(value = "프로필편집")
+    @PostMapping("profile")
+    public String profile() throws GlobalException {
+
+       return "프로필편집";
     }
 }

@@ -75,7 +75,7 @@ public class MemberController {
     }
 
     @ApiOperation(value = "비밀번호변경")
-    @GetMapping("pwd")
+    @PostMapping("pwd")
     public String pwd(HttpServletRequest request){
 
         return "비밀번호변경";
