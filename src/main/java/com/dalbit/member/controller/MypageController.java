@@ -2,17 +2,14 @@ package com.dalbit.member.controller;
 
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
-import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.P_InfoVo;
+import com.dalbit.member.vo.*;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -28,32 +25,63 @@ public class MypageController {
     @Autowired
     MemberService memberService;
 
-    @ApiOperation(value = "회원정보 조회")
-    @GetMapping("")
-    public String mypage() throws GlobalException {
 
-        P_InfoVo apiData = P_InfoVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .target_mem_no(MemberVo.getUserInfo().getMem_no())
+    /**
+     * 프로필편집
+     */
+    @ApiOperation(value = "프로필편집")
+    @PostMapping("/profile")
+    public String editProfile(HttpServletRequest request){
+        P_ProfileEditVo apiData = P_ProfileEditVo.builder()
+                .memSex(DalbitUtil.convertRequestParamToString(request,"s_gender"))
+                .nickName(DalbitUtil.convertRequestParamToString(request,"s_nickNm"))
+                .name(DalbitUtil.convertRequestParamToString(request,"s_name"))
+                .birthYear(DalbitUtil.convertRequestParamToInteger(request,"i_birthYY"))
+                .birthMonth(DalbitUtil.convertRequestParamToInteger(request,"i_birthMM"))
+                .birthDay(DalbitUtil.convertRequestParamToInteger(request,"i_birthDD"))
+                .profileImage(DalbitUtil.convertRequestParamToString(request,"s_profImg"))
+                .profileImage(DalbitUtil.convertRequestParamToString(request,"s_bgImg"))
+                .profileMsg(DalbitUtil.convertRequestParamToString(request,"s_message"))
                 .build();
 
-        String result = memberService.getMemberInfo(apiData);
+        log.info("playToken: {}", apiData.getName());
+
+        String result = memberService.callProfileEdit(apiData);
+        return result;
+    }
+
+    /**
+     * 팬가입
+     */
+    @ApiOperation(value = "팬가입")
+    @PostMapping("/fan")
+    public String fanstarInsert(HttpServletRequest request){
+        //참가를 위한 토큰 받기
+        P_FanstarInsertVo apiData = P_FanstarInsertVo.builder()
+                .fanMemNo(MemberVo.getUserInfo().getMem_no())
+                .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .build();
+
+        String result = memberService.callFanstarInsert(apiData);
 
         return result;
     }
 
-    @ApiOperation(value = "프로필편집")
-    @PostMapping("profile")
-    public String profile(HttpServletRequest request) throws GlobalException {
+    /**
+     * 팬해제
+     */
+    @ApiOperation(value = "팬 해제")
+    @DeleteMapping("/fan")
+    public String fanstarDelete(HttpServletRequest request){
+        //참가를 위한 토큰 받기
+        P_FanstarDeleteVo apiData = P_FanstarDeleteVo.builder()
+                .fanMemNo(MemberVo.getUserInfo().getMem_no())
+                .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .build();
 
-       return "프로필편집";
-    }
+        String result = memberService.callFanstarDelete(apiData);
 
-    @ApiOperation(value = "팬 등록")
-    @PostMapping("pan")
-    public String pan(HttpServletRequest request) throws GlobalException {
-
-        return "팬 등록";
+        return result;
     }
 
 
