@@ -41,6 +41,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             memberVo = loginDao.loginUseMemNo(username);
         }else{
             MemberVo paramMemberVo = new MemberVo();
+            //TODO 임시 코드 - DB mem_id가 varchar(20)이라 소셜로그인 시 문제가 있음..
+            if(20 < username.length()){
+                username = username.substring(0, 20);
+            }
             paramMemberVo.setMem_id(username);
             paramMemberVo.setMem_slct(s_mem);
 
