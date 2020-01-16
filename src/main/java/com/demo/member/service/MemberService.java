@@ -6,10 +6,7 @@ import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.dao.MemberDao;
-import com.demo.member.vo.MemberVo;
-import com.demo.member.vo.P_InfoVo;
-import com.demo.member.vo.P_JoinVo;
-import com.demo.member.vo.P_LoginVo;
+import com.demo.member.vo.*;
 import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
@@ -87,9 +84,18 @@ public class MemberService {
         return result;
     }
 
-    public ProcedureVo callChangePassword(ProcedureVo procedureVo){
+    public String callChangePassword(P_ChangePasswordVo pChangePasswordVo){
+        ProcedureVo procedureVo = new ProcedureVo();
+        procedureVo.setBox(pChangePasswordVo);
         memberDao.callChangePassword(procedureVo);
-        return procedureVo;
+        String result;
+
+        if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공, procedureVo.getData())));
+        } else {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경실패_회원아님)));
+        }
+        return result;
     }
 
     public ProcedureVo callProfileEdit(ProcedureVo procedureVo){

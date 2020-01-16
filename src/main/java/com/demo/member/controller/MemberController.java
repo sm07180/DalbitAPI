@@ -4,6 +4,7 @@ import com.demo.common.code.Status;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureVo;
 import com.demo.member.service.MemberService;
+import com.demo.member.vo.P_ChangePasswordVo;
 import com.demo.member.vo.P_JoinVo;
 import com.demo.util.DalbitUtil;
 import com.demo.util.GsonUtil;
@@ -78,5 +79,22 @@ public class MemberController {
         return "비밀번호변경";
     }
 
+
+    /**
+     * 비밀번호 변경
+     */
+    @ApiOperation(value = "비밀번호 변경")
+    @PostMapping("/pwd")
+    public String changePassword(HttpServletRequest request){
+
+        P_ChangePasswordVo apiData = P_ChangePasswordVo.builder()
+                ._phoneNo(DalbitUtil.convertRequestParamToString(request,"s_phoneNo"))
+                ._password(DalbitUtil.convertRequestParamToString(request,"s_pwd"))
+                .build();
+        String result = memberService.callChangePassword(apiData);
+
+        log.info("result: {}", result);
+        return result;
+    }
 
 }
