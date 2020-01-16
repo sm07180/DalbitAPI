@@ -2,12 +2,10 @@ package com.demo.member.vo;
 
 import com.demo.common.vo.BaseVo;
 import com.demo.common.vo.ImageVo;
-import com.demo.security.vo.SecurityUserVo;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import java.awt.*;
 import java.sql.Date;
 
 @Getter @Setter

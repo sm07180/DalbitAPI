@@ -89,7 +89,7 @@ public class Procedure_MemberTest {
     @Test
     public void 닉네임중복체크(){
         ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setData("123123123");
+        procedureVo.setData("test0005");
 
         ProcedureVo resultProcedureVo = memberService.callNickNameCheck(procedureVo);
 
@@ -196,7 +196,7 @@ public class Procedure_MemberTest {
     public void 회원정보보기() throws GlobalException {
 
         P_InfoVo apiSample = P_InfoVo.builder().build();
-        String result = memberService.callMemberInfoView(apiSample);
+        String result = memberService.getMemberInfo(apiSample);
 
         log.debug("회원정보보기 결과 : {}", result);
 

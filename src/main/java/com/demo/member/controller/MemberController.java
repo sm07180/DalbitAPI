@@ -1,25 +1,18 @@
 package com.demo.member.controller;
 
-import com.demo.common.code.Status;
-import com.demo.common.vo.JsonOutputVo;
-import com.demo.common.vo.ProcedureVo;
 import com.demo.exception.GlobalException;
 import com.demo.member.service.MemberService;
 import com.demo.member.vo.MemberVo;
 import com.demo.member.vo.P_InfoVo;
-import com.demo.member.vo.P_LoginVo;
-import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
-import com.google.gson.Gson;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -27,8 +20,6 @@ public class MemberController {
 
     @Autowired
     MessageUtil messageUtil;
-    @Autowired
-    private GsonUtil gsonUtil;
     @Autowired
     MemberService memberService;
 
@@ -44,7 +35,7 @@ public class MemberController {
                 .target_mem_no(MemberVo.getUserInfo().getMem_no())
                 .build();
 
-        String result = memberService.callMemberInfoView(apiData);
+        String result = memberService.getMemberInfo(apiData);
 
         return result;
     }
@@ -61,7 +52,7 @@ public class MemberController {
                 .target_mem_no(StringUtil.convertRequestParamToString(request, "s_mem_no"))
                 .build();
 
-        String result = memberService.callMemberInfoView(apiData);
+        String result = memberService.getMemberInfo(apiData);
 
         return result;
     }

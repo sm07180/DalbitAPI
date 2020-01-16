@@ -264,7 +264,7 @@ public class SampleRestController {
 
         //redisTemplate.
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, new MemberVo()));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
     }
 
 }
