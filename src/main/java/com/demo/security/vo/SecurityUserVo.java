@@ -1,6 +1,7 @@
 package com.demo.security.vo;
 
 import com.demo.member.vo.MemberVo;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -18,6 +19,7 @@ public class SecurityUserVo extends User {
     private static final long serialVersionUID = 1L;
 
     private MemberVo memberVo;
+    private String memberJsonInfo;
 
     public SecurityUserVo(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -27,11 +29,12 @@ public class SecurityUserVo extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public MemberVo getUserInfo() {
-        return memberVo;
+    public void setMemberJsonInfo(MemberVo memberVo){
+        this.memberJsonInfo = new Gson().toJson(memberVo);
     }
 
-    public void setUserInfo(MemberVo memberVo) {
+    public void setMemberVo(MemberVo memberVo){
         this.memberVo = memberVo;
+        this.memberJsonInfo = new Gson().toJson(memberVo);
     }
 }

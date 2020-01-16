@@ -45,7 +45,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMem_id(), memberVo.getMem_passwd(), authorities);
-        securityUserVo.setUserInfo(memberVo);
+        securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
     }
@@ -63,7 +63,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
         SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMem_id(), memberVo.getMem_passwd(), authorities);
-        securityUserVo.setUserInfo(memberVo);
+        securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
     }

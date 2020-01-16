@@ -125,7 +125,7 @@ public class MemberService {
             MemberVo memberVo = new MemberVo(); //new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
 
             memberVo.setMem_no(MemberVo.getUserInfo().getMem_no());
-            memberVo.setNick_name(StringUtil.getStringMap(map, "nickName"));
+            memberVo.setMem_nick(StringUtil.getStringMap(map, "nickName"));
             memberVo.setMem_sex(StringUtil.getStringMap(map, "memSex"));
             memberVo.setAge(StringUtil.getIntMap(map, "age"));
             memberVo.setMem_id(StringUtil.getStringMap(map, "memId"));

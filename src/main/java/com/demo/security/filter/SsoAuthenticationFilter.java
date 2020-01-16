@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 
 /**
  * 쿠키기반 sso 필터
@@ -134,11 +135,13 @@ public class SsoAuthenticationFilter implements Filter {
     private void saveSecuritySession(HttpServletRequest request, UserDetails userDetails){
         if (userDetails != null) {
             SecurityUserVo securityUserVo = (SecurityUserVo) userDetails;
-            MemberVo memberVo = securityUserVo.getUserInfo();
+            MemberVo memberVo = securityUserVo.getMemberVo();
 
             // Verify SSO token value
             if (memberVo.getMem_id().equals(securityUserVo.getUsername())) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(securityUserVo.getUserInfo(), securityUserVo.getPassword(), userDetails.getAuthorities());
+                HashMap map = new HashMap();
+                map.put("memberInfo", securityUserVo.getMemberJsonInfo());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(map, securityUserVo.getPassword(), userDetails.getAuthorities());
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authentication);

@@ -21,6 +21,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @Slf4j
 @Component("authProvider")
@@ -53,7 +54,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
             }
 
-            MemberVo memberVo = securityUserVo.getUserInfo();
+            MemberVo memberVo = securityUserVo.getMemberVo();
             P_LoginVo pLoginVo = P_LoginVo.builder()
                 .memSlct(StringUtil.convertRequestParamToString(request,"s_mem"))
                 .id(userName)
@@ -78,7 +79,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
                 throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
             }
         }
-        return new UsernamePasswordAuthenticationToken(securityUserVo.getUserInfo(), password, securityUserVo.getAuthorities());
+        HashMap map = new HashMap();
+        map.put("memberInfo", securityUserVo.getMemberJsonInfo());
+        return new UsernamePasswordAuthenticationToken(map, password, securityUserVo.getAuthorities());
     }
 
     @Override

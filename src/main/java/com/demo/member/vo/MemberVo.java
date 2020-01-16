@@ -2,11 +2,14 @@ package com.demo.member.vo;
 
 import com.demo.common.vo.BaseVo;
 import com.demo.common.vo.ImageVo;
+import com.demo.util.StringUtil;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Date;
+import java.util.HashMap;
 
 @Getter @Setter
 public class MemberVo extends BaseVo {
@@ -15,12 +18,15 @@ public class MemberVo extends BaseVo {
 
     public static MemberVo getUserInfo() {
         //SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (MemberVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        HashMap memberInfoMap = (HashMap)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberVo sessionMemberVo = new Gson().fromJson(StringUtil.getStringMap(memberInfoMap, "memberInfo"), MemberVo.class);
+
+        return sessionMemberVo;
     }
 
 
     private String mem_no;
-    private String nick_name;
+    private String mem_nick;
     private String mem_sex;
     private int age;
     private String mem_id;
