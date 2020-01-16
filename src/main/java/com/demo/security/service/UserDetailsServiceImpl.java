@@ -6,6 +6,7 @@ import com.demo.member.vo.MemberVo;
 import com.demo.security.dao.LoginDao;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.MessageUtil;
+import com.demo.util.StringUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -32,12 +33,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        MemberVo memberVo = loginDao.loginUseMemId(username);
-        if(memberVo == null){
+        MemberVo memberVo;
+        String s_mem = StringUtil.convertRequestParamToString(request, "s_mem");
+
+        if(s_mem.equals("")){
+            //쿠키를 이용한 로그인 처리 시 사용
             memberVo = loginDao.loginUseMemNo(username);
-            if(memberVo == null) {
-                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-            }
+        }else{
+            MemberVo paramMemberVo = new MemberVo();
+            paramMemberVo.setMem_id(username);
+            paramMemberVo.setMem_slct(s_mem);
+
+            memberVo = loginDao.loginUseMemId(paramMemberVo);
+        }
+
+        if(memberVo == null) {
+            throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
         }
         /*//직책이 있는 사용자의 경우 MANAGER 등급 부여
         if(!"Y".equals(userInfo.getCareerauth()) && userInfo.getDuty().length() > 0){
