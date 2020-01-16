@@ -81,7 +81,7 @@ public class BroadCastTest {
     }
 
     @Test
-    public void 방송방리스트() throws GlobalException{
+    public void 방송방리스트(){
         log.debug("방송방 리스트 테스트");
         log.debug(P_RoomListVo.builder().build().toString());
 

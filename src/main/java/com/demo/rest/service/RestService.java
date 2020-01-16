@@ -237,6 +237,9 @@ public class RestService {
      * @throws Exception
      */
     public Map<String, Object> antToken(String streamId, String type) throws GlobalException{
+        if (streamId == null) {
+            return null;
+        }
         if(!"play".equals(type)){
             type = "publish";
         }
