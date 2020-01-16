@@ -173,7 +173,7 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    public String callBroadCastRoomList(P_RoomListVo pRoomListVo) throws GlobalException {
+    public String callBroadCastRoomList(P_RoomListVo pRoomListVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
 
@@ -196,20 +196,19 @@ public class RoomService {
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, roomVoList);
         }
-        JSONArray array = new JSONArray();
-        JSONObject object = new JSONObject();
-        object.put("list", procedureOutputVo.getOutputBox());
-        array.add(object);
+        HashMap roomList = new HashMap();
+        roomList.put("list", procedureOutputVo.getOutputBox());
+
 
         String result = "";
-        if(Status.방송리스트조회.getMessageCode().equals(procedureOutputVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회, array));
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회, roomList));
         }else if(Status.방송리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            throw new GlobalException(Status.방송리스트_회원아님, array);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_회원아님, roomList));
         }else if(Status.방송리스트없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            throw new GlobalException(Status.방송리스트없음, array);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, roomList));
         }else{
-            throw new GlobalException(Status.방송리스트조회_실패, array);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회_실패, roomList));
         }
         return result;
     }

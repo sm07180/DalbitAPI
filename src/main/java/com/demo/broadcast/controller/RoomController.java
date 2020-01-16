@@ -161,7 +161,7 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 리스트")
     @GetMapping("/list")
-    public String roomList(HttpServletRequest request) throws GlobalException{
+    public String roomList(HttpServletRequest request){
 
         int pageNo = (StringUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : StringUtil.convertRequestParamToInteger(request, "i_page");
         int pageCnt = (StringUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : StringUtil.convertRequestParamToInteger(request, "i_records");
