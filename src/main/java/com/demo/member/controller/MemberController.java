@@ -74,7 +74,12 @@ public class MemberController {
         return memberService.callNickNameCheck(new ProcedureVo(nickName));
     }
 
+    @ApiOperation(value = "비밀번호변경")
+    @GetMapping("pwd")
+    public String pwd(HttpServletRequest request){
 
+        return "비밀번호변경";
+    }
 
 
 }
