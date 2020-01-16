@@ -22,9 +22,9 @@ public class P_RoomCreateVo {
     @Builder.Default private String guest_streamid = "";                                                        //guest 스트림아이디
     @Builder.Default private String guest_publish_tokenid = "";                                                 //guest 토큰아이디
     @Builder.Default private String guest_play_tokenid = "";                                                    //guest play토큰
-    @Builder.Default private String bj_streamid = "bj_streamid00001";                                           //bj스트림아이디
-    @Builder.Default private String bj_publish_tokenid = "bj_publish_tokenid00001";                             //bj토큰아이디
-    @Builder.Default private String bj_play_tokenid = "bj_play_tokenid00001";                                   //play토큰
+    @Builder.Default private String bj_streamid = "";                                                           //bj 스트림아이디
+    @Builder.Default private String bj_publish_tokenid = "";                                                    //bj 토큰아이디
+    @Builder.Default private String bj_play_tokenid = "";                                                       //bj play토큰
 
     @Builder.Default private String deviceUuid = "2200DDD1-77A";                                    //디바이스 고유아이디
     @Builder.Default private String deviceToken = "45E3156FDE20E7F11AF";                            //디바이스 토큰

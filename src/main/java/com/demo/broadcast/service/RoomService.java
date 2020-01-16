@@ -3,6 +3,7 @@ package com.demo.broadcast.service;
 import com.demo.broadcast.dao.RoomDao;
 import com.demo.broadcast.vo.*;
 import com.demo.common.code.Status;
+import com.demo.common.vo.ImageVo;
 import com.demo.common.vo.JsonOutputVo;
 import com.demo.common.vo.ProcedureOutputVo;
 import com.demo.common.vo.ProcedureVo;
@@ -13,10 +14,15 @@ import com.demo.util.GsonUtil;
 import com.demo.util.MessageUtil;
 import com.demo.util.StringUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -30,6 +36,8 @@ public class RoomService {
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
+    @Value("${server.photo.url}")
+    private String SERVER_PHOTO_URL;
 
     /**
      * 방송방 생성
@@ -165,25 +173,43 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    public String callBroadCastRoomList(P_RoomListVo pRoomListVo) {
+    public String callBroadCastRoomList(P_RoomListVo pRoomListVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, CommonUtil.isEmpty(roomVoList) ? null : roomVoList);
 
-        RoomVo roomList = new RoomVo();
-        roomList.setList((List) procedureOutputVo.getOutputBox());
+        ProcedureOutputVo procedureOutputVo;
+        if(CommonUtil.isEmpty(roomVoList)){
+            procedureOutputVo = null;
+        }else{
+            ImageVo image_background = new ImageVo();
+            ImageVo bj_profileImage = new ImageVo();
+            for (int i=0; i<roomVoList.size(); i++){
+                image_background.setPath(roomVoList.get(i).getImage_background(), SERVER_PHOTO_URL);
+                roomVoList.get(i).setImage_background(image_background);
+                bj_profileImage.setPath(roomVoList.get(i).getBj_profileImage(), roomVoList.get(i).getBj_memSex(), SERVER_PHOTO_URL);
+                roomVoList.get(i).setBj_profileImage(bj_profileImage);
 
-        Status status;
-        if(procedureOutputVo.getRet().equals(Status.방송리스트_회원아님.getMessageCode())){
-            status = Status.방송리스트_회원아님;
-        } else if(procedureOutputVo.getRet().equals(Status.방송리스트없음.getMessageCode())){
-            status = Status.방송리스트없음;
-        } else {
-            status = Status.방송리스트_조회;
+                int bj_age = CommonUtil.ageCalculation(roomVoList.get(i).getBj_birthYear());
+                int guest_age = CommonUtil.ageCalculation(roomVoList.get(i).getGuest_birthYear());
+                roomVoList.get(i).setBj_age(bj_age);
+                roomVoList.get(i).setGuest_age(guest_age);
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, roomVoList);
         }
+        HashMap roomList = new HashMap();
+        roomList.put("list", procedureOutputVo.getOutputBox());
 
-        String result = gsonUtil.toJson(new JsonOutputVo(status, roomList));
 
+        String result = "";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회, roomList));
+        }else if(Status.방송리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_회원아님, roomList));
+        }else if(Status.방송리스트없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, roomList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회_실패, roomList));
+        }
         return result;
     }
 

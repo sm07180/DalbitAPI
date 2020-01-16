@@ -1,6 +1,7 @@
 package com.demo.security.filter;
 
 import com.demo.member.vo.MemberVo;
+import com.demo.security.service.UserDetailsServiceImpl;
 import com.demo.security.vo.SecurityUserVo;
 import com.demo.util.Base64Util;
 import com.demo.util.CookieUtil;
@@ -30,7 +31,8 @@ import java.io.IOException;
 @Component
 public class SsoAuthenticationFilter implements Filter {
 
-    @Autowired UserDetailsService userDetailsService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
     @Autowired Base64Util base64Util;
     @Autowired JwtUtil jwtUtil;
 
@@ -73,7 +75,7 @@ public class SsoAuthenticationFilter implements Filter {
                             String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
                             log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
 
-                            saveSecuritySession(request, userDetailsService.loadUserByUsername(userId));
+                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
                         }
 
                         ssoCookieUpdate(request, response, isJwtTokenAvailable);

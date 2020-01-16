@@ -102,9 +102,10 @@ public enum Status {
     방송정보수정실패("-5", "broadcast.room.edit.fail", "방송정보 수정 실패 시"),
 
     //방송리스트
+    방송리스트조회("select", "broadcast.room.list.select.success", "방송리스트 정보 조회 성공 시"),
     방송리스트없음("0", "broadcast.room.list.no", "방송리스트가 없을 시"),
     방송리스트_회원아님("-1", "broadcast.room.list.member.number.no", "회원번호가 아닐 시"),
-    방송리스트_조회("select", "broadcast.room.list.select", "방송리스트 정보 조회 시"),
+    방송리스트조회_실패("-2", "broadcast.room.list.select.fail", "방송리스트 정보 조회 실패 시"),
 
     //방송리스트
     방송참여자리스트없음("0", "broadcast.room.member.list.no", "방송참여자 리스트가 없을 시"),
