@@ -39,6 +39,22 @@ public class MypageVo extends BaseVo {
     private String fanMemNo;
     private String starMemNo;
 
+    private int subject_type;
+    private String title;
+    private String image_background;
+    private String msg_welcom;
+    private Boolean restrict_entry;
+    private Boolean restrict_age;
 
 
+    private String memNo;
+    private int age;
+    private String memId;
+    private int level;
+    private int fanCount;
+    private int starCount;
+    private int enableFan;
+    private int exp;
+    private int expNext;
+    private String grade;
 }

@@ -34,14 +34,9 @@ public class MypageController {
     @ApiOperation(value = "프로필편집")
     @PostMapping("/profile")
     public String editProfile(HttpServletRequest request){
-        request.getHeader("sso_cookie");
-        String cookieValue = request.getHeader("sso_cookie");
-        String userId = jwtUtil.getUserNameFromJwt(cookieValue);
-        log.info("sso_cookie: {}" + request.getHeader("sso_cookie"));
-        log.info("userId: {}" + userId);
 
         P_ProfileEditVo apiData = P_ProfileEditVo.builder()
-                .mem_no(userId)
+                .mem_no(MemberVo.getUserInfo().getMem_no())
                 .memSex(DalbitUtil.convertRequestParamToString(request,"s_gender"))
                 .nickName(DalbitUtil.convertRequestParamToString(request,"s_nickNm"))
                 .name(DalbitUtil.convertRequestParamToString(request,"s_name"))
@@ -53,8 +48,6 @@ public class MypageController {
                 .profileMsg(DalbitUtil.convertRequestParamToString(request,"s_message"))
                 .build();
 
-        log.info("playToken: {}", apiData.getName());
-
         String result = mypageService.callProfileEdit(apiData);
         return result;
     }
@@ -65,15 +58,9 @@ public class MypageController {
     @ApiOperation(value = "팬가입")
     @PostMapping("/fan")
     public String fanstarInsert(HttpServletRequest request){
-        request.getHeader("sso_cookie");
-        String cookieValue = request.getHeader("sso_cookie");
-        String userId = jwtUtil.getUserNameFromJwt(cookieValue);
-        log.info("sso_cookie: {}" + request.getHeader("sso_cookie"));
-        log.info("userId: {}" + userId);
-        //참가를 위한 토큰 받기
         P_FanstarInsertVo apiData = P_FanstarInsertVo.builder()
-                .fanMemNo(userId)
-                .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .fanMemNo(MemberVo.getUserInfo().getMem_no())       //11577690655946
+                .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))  //11577931027280
                 .build();
 
         String result = mypageService.callFanstarInsert(apiData);
@@ -87,14 +74,8 @@ public class MypageController {
     @ApiOperation(value = "팬 해제")
     @DeleteMapping("/fan")
     public String fanstarDelete(HttpServletRequest request){
-        request.getHeader("sso_cookie");
-        String cookieValue = request.getHeader("sso_cookie");
-        String userId = jwtUtil.getUserNameFromJwt(cookieValue);
-        log.info("sso_cookie: {}" + request.getHeader("sso_cookie"));
-        log.info("userId: {}" + userId);
-        //참가를 위한 토큰 받기
         P_FanstarDeleteVo apiData = P_FanstarDeleteVo.builder()
-                .fanMemNo(userId)
+                .fanMemNo(MemberVo.getUserInfo().getMem_no())
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
@@ -103,5 +84,67 @@ public class MypageController {
         return result;
     }
 
+
+    /**
+     * 회원 정보 조회
+     */
+    @ApiOperation(value = "회원 정보 조회")
+    @GetMapping("")
+    public String memverInfo(HttpServletRequest request){
+        P_MemberInfo apiData = P_MemberInfo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .target_mem_no(DalbitUtil.convertRequestParamToString(request,"target_mem_no"))
+                .build();
+
+        String result = mypageService.callMemberInfo(apiData);
+        return result;
+    }
+
+    /**
+     * 회원 방송방 기본설정 조회
+     */
+    @ApiOperation(value = "회원 방송방 기본설정 조회하기")
+    @PostMapping("/broad")
+    public String broadBasic(){
+        P_BroadBasic apiData = P_BroadBasic.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .build();
+
+        String result = mypageService.callBroadBasic(apiData);
+        return result;
+    }
+
+
+
+
+
+//
+//    /**
+//     * 회원 방송방 기본설정 조회
+//     */
+//    @ApiOperation(value = "회원 방송방 기본설정 조회하기")
+//    @GetMapping("/broad")
+//    public String broadBasic(HttpServletRequest request){
+//        P_BroadBasic apiData = P_BroadBasic.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .build();
+//
+//        String result = mypageService.callBroadBasic(apiData);
+//        return result;
+//    }
+//
+//    /**
+//     * 회원 방송방 기본설정 조회
+//     */
+//    @ApiOperation(value = "회원 방송방 기본설정 조회하기")
+//    @GetMapping("/broad")
+//    public String broadBasic(HttpServletRequest request){
+//        P_BroadBasic apiData = P_BroadBasic.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .build();
+//
+//        String result = mypageService.callBroadBasic(apiData);
+//        return result;
+//    }
 
 }

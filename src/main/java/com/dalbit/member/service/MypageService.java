@@ -37,11 +37,11 @@ public class MypageService {
         mypageDao.callProfileEdit(procedureVo);
         String result;
         if(procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
         } else if(procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_닉네임중복)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_닉네임중복)));
         } else{
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_회원아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_회원아님)));
         }
         return result;
     }
@@ -54,15 +54,15 @@ public class MypageService {
         mypageDao.callFanstarInsert(procedureVo);
         String result;
         if(procedureVo.getRet().equals(Status.팬등록성공.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
         } else if(procedureVo.getRet().equals(Status.팬등록_회원아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_회원아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_회원아님)));
         } else if(procedureVo.getRet().equals(Status.팬등록_스타회원번호이상.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_스타회원번호이상)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_스타회원번호이상)));
         } else if(procedureVo.getRet().equals(Status.팬등록_이미팬등록됨.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_이미팬등록됨)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_이미팬등록됨)));
         } else{
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록실패)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록실패)));
         }
         return result;
     }
@@ -76,16 +76,63 @@ public class MypageService {
         String result;
 
         if(procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제성공, procedureVo.getData())));
         } else if(procedureVo.getRet().equals(Status.팬해제_회원아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_회원아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_회원아님)));
         } else if(procedureVo.getRet().equals(Status.팬해제_스타회원번호이상.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_스타회원번호이상)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_스타회원번호이상)));
         } else if(procedureVo.getRet().equals(Status.팬해제_팬아님.getMessageCode())) {
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_팬아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_팬아님)));
         } else{
-            result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제실패)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제실패)));
         }
+        return result;
+    }
+
+    /**
+     * 회원 정보 조회
+     */
+    public String callMemberInfo(P_MemberInfo pMemberInfo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMemberInfo);
+        mypageDao.callMemberInfo(procedureVo);
+        String result;
+
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        if(procedureVo.getRet().equals(Status.회원정보보기성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
+        }else if(procedureVo.getRet().equals(Status.회원정보_대상회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상회원아님)));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기실패)));
+        }
+        log.info("result:{}" + result);
+        return result;
+    }
+
+    /**
+     * 회원 방송방 기본설정 조회하기
+     */
+    public String callBroadBasic(P_BroadBasic pBroadBasic) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadBasic);
+        mypageDao.callBroadBasic(procedureVo);
+        String result;
+
+        if(procedureVo.getRet().equals(Status.회원정보보기성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
+        }else if(procedureVo.getRet().equals(Status.회원정보_대상회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상회원아님)));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기실패)));
+        }
+        log.info("result:{}" + result);
         return result;
     }
 }
