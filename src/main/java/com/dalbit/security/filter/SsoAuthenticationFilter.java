@@ -68,19 +68,8 @@ public class SsoAuthenticationFilter implements Filter {
             if (authentication == null) {
                 try {
                     CookieUtil cookieUtil = new CookieUtil(request);
-                    if (cookieUtil.exists(SSO_COOKIE_NAME)) {
-                        boolean isJwtTokenAvailable = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
-                        if(isJwtTokenAvailable){
 
-                            String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-                            log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
-
-                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
-                        }
-
-                        ssoCookieUpdate(request, response, isJwtTokenAvailable);
-
-                    }else if(request.getHeader("sso_cookie") != null){
+                    if(request.getHeader("sso_cookie") != null){
 
                         String headerCookie = request.getHeader("sso_cookie");
 
@@ -93,6 +82,18 @@ public class SsoAuthenticationFilter implements Filter {
                             saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
                             ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
                         }
+                    }else if (cookieUtil.exists(SSO_COOKIE_NAME)) {
+                        boolean isJwtTokenAvailable = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
+                        if(isJwtTokenAvailable){
+
+                            String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+                            log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
+
+                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
+                        }
+
+                        ssoCookieUpdate(request, response, isJwtTokenAvailable);
+
                     }
 
                 } catch (Exception e) {

@@ -82,26 +82,6 @@ public class Procedure_MemberTest {
         log.debug("비밀번호 변경 결과 : {}", result);
     }
 
-    @Test
-    public void 프로필편집(){
-
-        String result = memberService.callProfileEdit(P_ProfileEditVo.builder().build());
-        log.debug("프로필편집 결과 : {}", result);
-    }
-
-    @Test
-    public void 회원팬등록(){
-
-        String result = memberService.callFanstarInsert(P_FanstarInsertVo.builder().build());
-        log.debug("회원팬등록 결과 : {}", result);
-    }
-
-    @Test
-    public void 회원팬해제() {
-
-        String result = memberService.callFanstarDelete(P_FanstarDeleteVo.builder().build());
-        log.debug("회원팬해제 결과 : {}", result);
-    }
 
     @Test
     public void 회원정보보기() throws GlobalException {
