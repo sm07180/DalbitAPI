@@ -27,7 +27,7 @@ public class ProfileController {
     @Autowired
     MemberService memberService;
 
-    @ApiOperation(value = "프로필편집")
+    @ApiOperation(value = "회원 팬보드 등록하기")
     @PostMapping("")
     public String profile(HttpServletRequest request) throws GlobalException {
 
