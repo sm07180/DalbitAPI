@@ -94,8 +94,7 @@ public class MemberService {
      * 비밀번호 변경
      */
     public String callChangePassword(P_ChangePasswordVo pChangePasswordVo){
-        ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setBox(pChangePasswordVo);
+        ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo);
         memberDao.callChangePassword(procedureVo);
         String result;
 
@@ -135,13 +134,8 @@ public class MemberService {
             memberVo.setStar_count(DalbitUtil.getIntMap(map, "starCount"));
             memberVo.setEnable_fan(DalbitUtil.getBooleanMap(map, "enableFan"));
 
-            ImageVo backgroundImage = new ImageVo();
-            backgroundImage.setPath(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL);
-            memberVo.setBackground_image(backgroundImage);
-
-            ImageVo profileImage = new ImageVo();
-            profileImage.setPath(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL);
-            memberVo.setProfile_image(profileImage);
+            memberVo.setBackground_image(new ImageVo(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL));
+            memberVo.setProfile_image(new ImageVo(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
 
