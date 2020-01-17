@@ -102,14 +102,14 @@ public class MypageService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        if(procedureVo.getRet().equals(Status.회원정보보기성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
-        }else if(procedureVo.getRet().equals(Status.회원정보_대상회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상회원아님)));
+        if(procedureVo.getRet().equals(Status.회원정보조회성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원정보조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회_회원아님)));
+        }else if(procedureVo.getRet().equals(Status.회원정보조회_대상회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회_대상회원아님)));
         }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기실패)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회_실패)));
         }
         log.info("result:{}" + result);
         return result;
@@ -125,10 +125,10 @@ public class MypageService {
 
         if(procedureVo.getRet().equals(Status.회원정보보기성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
-        }else if(procedureVo.getRet().equals(Status.회원정보_대상회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상회원아님)));
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_회원아님)));
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_회원아님)));
         }else{
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기실패)));
         }
