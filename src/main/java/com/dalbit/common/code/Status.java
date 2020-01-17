@@ -59,9 +59,15 @@ public enum Status {
 
     //회원정보보기
     회원정보보기성공("0", "member.info.view.success", "회원정보보기 성공 시"),
-    회원정보_회원아님("-1", "member.no", "회원이 아닐 시"),
+    회원정보보기_회원아님("-1", "member.no", "회원이 아닐 시"),
     회원정보_대상회원아님("-2", "member.this.no", "대상회원이 아닐 시"),
     회원정보보기실패("-3", "member.info.view.fail", "회원정보보기 실패 시"),
+
+    //회원정보조회
+    회원정보조회성공("0", "member.info.view.success", "회원정보보기 성공 시"),
+    회원정보조회_회원아님("-1", "member.no", "회원이 아닐 시"),
+    회원정보조회_대상회원아님("-2", "member.this.no", "대상회원이 아닐 시"),
+    회원정보조회_실패("-3", "member.info.view.fail", "회원정보보기 실패 시"),
 
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),
