@@ -117,7 +117,7 @@ public enum Status {
     방송종료("2004", "broadcast.end", "방송 종료 시"),
 
     //방송좋아요
-    좋아요("0", "broadcast.like", "좋아요 성공 시"),
+    좋아요("0", "broadcast.like.success", "좋아요 성공 시"),
     좋아요_회원아님("-1", "broadcast.like.member.no", "회원이 아닐 시"),
     좋아요_해당방송없음("-2", "broadcast.like.room.no", "해당 방송이 없을 시"),
     좋아요_방송참가자아님("-3", "broadcast.like.room.in.no", "방송 참가자가 아닐 시"),
