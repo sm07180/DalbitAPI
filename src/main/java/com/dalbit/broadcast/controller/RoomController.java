@@ -4,7 +4,6 @@ import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
@@ -100,7 +99,7 @@ public class RoomController {
 
         //Play 토큰 생성
         String bj_playToken = (String) restService.antToken((String) resultMap.get("bj_streamid"), "play").get("tokenId");
-        String guest_playToken = (String) restService.antToken((String) resultMap.get("guest_streamid"), "play").get("tokenId");
+        String guest_playToken =  (String) restService.antToken((String) resultMap.get("guest_streamid"), "play").get("tokenId");
 
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
@@ -205,6 +204,24 @@ public class RoomController {
         return result;
     }
 
+    /**
+     * 방송방 좋아요 추가
+     */
+    @ApiOperation(value = "방송방 좋아요 추가")
+    @PostMapping("/likes")
+    public String roomGood(HttpServletRequest request){
+
+        P_RoomGoodVo adiData = P_RoomGoodVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
+                .build();
+
+        String result = roomService.callBroadCastRoomGood(adiData);
+
+        return result;
+    }
+
+
 
 
     /**
@@ -281,9 +298,6 @@ public class RoomController {
 
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
     }
-
-
-
 
 }
 

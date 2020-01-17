@@ -119,6 +119,10 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
         roomDao.callBroadCastRoomExit(procedureVo);
 
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
         String result;
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기)));
@@ -190,6 +194,10 @@ public class RoomService {
         HashMap roomList = new HashMap();
         roomList.put("list", procedureOutputVo.getOutputBox());
 
+        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
         String result = "";
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회, roomList));
@@ -226,6 +234,10 @@ public class RoomService {
         HashMap roomMemberList = new HashMap();
         roomMemberList.put("list", procedureOutputVo.getOutputBox());
 
+        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
         String result="";
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberList));
@@ -243,10 +255,36 @@ public class RoomService {
     /**
      * 방송방 좋아요 추가
      */
-    public ProcedureVo callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo) {
+    public String callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGoodVo);
         roomDao.callBroadCastRoomGood(procedureVo);
-        return procedureVo;
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String likes = DalbitUtil.isNullToString(resultMap.get("good_count"));
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("likes", likes);
+        procedureVo.setData(returnMap);
+
+        String result="";
+        if(Status.좋아요.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData()));
+        }else if(Status.좋아요_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_회원아님,procedureVo.getData()));
+        }else if(Status.좋아요_해당방송없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_해당방송없음, procedureVo.getData()));
+        }else if(Status.좋아요_방송참가자아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_방송참가자아님, procedureVo.getData()));
+        }else if(Status.좋아요_이미했음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_이미했음, procedureVo.getData()));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패));
+        }
+
+        return result;
     }
 
     /**

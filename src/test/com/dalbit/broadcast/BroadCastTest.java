@@ -108,24 +108,10 @@ public class BroadCastTest {
         log.debug(P_RoomGoodVo.builder().build().toString());
 
         P_RoomGoodVo apiSample = P_RoomGoodVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomGood(apiSample);
+        String result = roomService.callBroadCastRoomGood(apiSample);
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.좋아요.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.좋아요_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.좋아요_해당방송없음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요_해당방송없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.좋아요_방송참가자아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요_방송참가자아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.좋아요_이미했음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요_이미했음, procedureVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패, procedureVo.getData())));
-        }
     }
 
     @Test
