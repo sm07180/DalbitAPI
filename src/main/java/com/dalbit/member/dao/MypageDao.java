@@ -8,4 +8,6 @@ public interface MypageDao {
     ProcedureVo callProfileEdit(ProcedureVo procedureVo);
     ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
+    ProcedureVo callMemberInfo(ProcedureVo procedureVo);
+    ProcedureVo callBroadBasic(ProcedureVo procedureVo);
 }
