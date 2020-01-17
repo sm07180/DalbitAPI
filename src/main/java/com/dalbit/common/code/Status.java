@@ -108,9 +108,10 @@ public enum Status {
     방송리스트조회_실패("-2", "broadcast.room.list.select.fail", "방송리스트 정보 조회 실패 시"),
 
     //방송리스트
+    방송참여자리스트_조회("00000", "broadcast.room.list.member.select.success", "방송참여자리스트 정보 조회 시"),
     방송참여자리스트없음("0", "broadcast.room.member.list.no", "방송참여자 리스트가 없을 시"),
     방송참여자리스트_회원아님("-1", "broadcast.room.list.member.number", "회원번호가 아닐 시"),
-    방송참여자리스트_조회("select", "broadcast.room.list.member.select", "방송참여자리스트 정보 조회 시"),
+    방송참여자리스트조회_실패("-2", "broadcast.room.list.member.select.fail", "방송참여자 리스트 조회 실패 시"),
 
     //방송종료
     방송종료("2004", "broadcast.end", "방송 종료 시"),
