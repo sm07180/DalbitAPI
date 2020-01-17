@@ -176,13 +176,9 @@ public class RoomService {
         if(DalbitUtil.isEmpty(roomVoList)){
             procedureOutputVo = null;
         }else{
-            ImageVo image_background = new ImageVo();
-            ImageVo bj_profileImage = new ImageVo();
             for (int i=0; i<roomVoList.size(); i++){
-                image_background.setPath(roomVoList.get(i).getImage_background(), SERVER_PHOTO_URL);
-                roomVoList.get(i).setImage_background(image_background);
-                bj_profileImage.setPath(roomVoList.get(i).getBj_profileImage(), roomVoList.get(i).getBj_memSex(), SERVER_PHOTO_URL);
-                roomVoList.get(i).setBj_profileImage(bj_profileImage);
+                roomVoList.get(i).setImage_background(new ImageVo(roomVoList.get(i).getImage_background(), SERVER_PHOTO_URL));
+                roomVoList.get(i).setBj_profileImage(new ImageVo(roomVoList.get(i).getBj_profileImage(), roomVoList.get(i).getBj_memSex(), SERVER_PHOTO_URL));
 
                 int bj_age = DalbitUtil.ageCalculation(roomVoList.get(i).getBj_birthYear());
                 int guest_age = DalbitUtil.ageCalculation(roomVoList.get(i).getGuest_birthYear());

@@ -94,8 +94,7 @@ public class MemberService {
      * 비밀번호 변경
      */
     public String callChangePassword(P_ChangePasswordVo pChangePasswordVo){
-        ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setBox(pChangePasswordVo);
+        ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo);
         memberDao.callChangePassword(procedureVo);
         String result;
 
@@ -103,6 +102,66 @@ public class MemberService {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공, procedureVo.getData())));
         } else {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경실패_회원아님)));
+        }
+        return result;
+    }
+
+    /**
+     * 프로필 편집
+     */
+    public String callProfileEdit(P_ProfileEditVo pProfileEditVo){
+        ProcedureVo procedureVo = new ProcedureVo(pProfileEditVo);
+        memberDao.callProfileEdit(procedureVo);
+        String result;
+        if(procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
+        } else if(procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_닉네임중복)));
+        } else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_회원아님)));
+        }
+        return result;
+    }
+
+    /**
+     * 팬가입
+     */
+    public String callFanstarInsert(P_FanstarInsertVo pFanstarInsertVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanstarInsertVo);
+        memberDao.callFanstarInsert(procedureVo);
+        String result;
+        if(procedureVo.getRet().equals(Status.팬등록성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
+        } else if(procedureVo.getRet().equals(Status.팬등록_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_회원아님)));
+        } else if(procedureVo.getRet().equals(Status.팬등록_스타회원번호이상.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_스타회원번호이상)));
+        } else if(procedureVo.getRet().equals(Status.팬등록_이미팬등록됨.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록_이미팬등록됨)));
+        } else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록실패)));
+        }
+        return result;
+    }
+
+    /**
+     * 팬해제
+     */
+    public String callFanstarDelete(P_FanstarDeleteVo pFanstarDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanstarDeleteVo);
+        memberDao.callFanstarDelete(procedureVo);
+        String result;
+
+        if(procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제성공, procedureVo.getData())));
+        } else if(procedureVo.getRet().equals(Status.팬해제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_회원아님)));
+        } else if(procedureVo.getRet().equals(Status.팬해제_스타회원번호이상.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_스타회원번호이상)));
+        } else if(procedureVo.getRet().equals(Status.팬해제_팬아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제_팬아님)));
+        } else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제실패)));
         }
         return result;
     }
@@ -135,13 +194,8 @@ public class MemberService {
             memberVo.setStar_count(DalbitUtil.getIntMap(map, "starCount"));
             memberVo.setEnable_fan(DalbitUtil.getBooleanMap(map, "enableFan"));
 
-            ImageVo backgroundImage = new ImageVo();
-            backgroundImage.setPath(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL);
-            memberVo.setBackground_image(backgroundImage);
-
-            ImageVo profileImage = new ImageVo();
-            profileImage.setPath(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL);
-            memberVo.setProfile_image(profileImage);
+            memberVo.setBackground_image(new ImageVo(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL));
+            memberVo.setProfile_image(new ImageVo(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
 

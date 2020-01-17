@@ -7,6 +7,23 @@ import lombok.Setter;
 @Setter
 public class ImageVo {
 
+    public ImageVo(){}
+
+    public ImageVo(Object path, String photoServerUrl){
+        if(path != null){
+            setPath(path.toString(), photoServerUrl);
+        }
+    }
+
+    public ImageVo(Object path, String gender, String photoServerUrl){
+        if(path == null){
+            this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
+            setThumbs();
+        }else{
+            setPath(path.toString(), photoServerUrl);
+        }
+    }
+
     private String photoServer;
     private String url;
     private String path;
@@ -20,26 +37,11 @@ public class ImageVo {
     private String thumbs8;
     private String thumbs9;
 
-    public void setPath(Object path, String photoServerUrl){
-        if(path != null){
-            setPath(path.toString(), photoServerUrl);
-        }
-
-    }
     public void setPath(String path, String photoServerUrl){
         if(path != null){
             this.path = path;
             this.url = photoServerUrl + this.path;
             setThumbs();
-        }
-    }
-
-    public void setPath(Object path, String gender, String photoServerUrl){
-        if(path == null){
-            this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
-            setThumbs();
-        }else{
-            setPath(path.toString(), photoServerUrl);
         }
     }
 
