@@ -260,7 +260,7 @@ public class RoomService {
         roomDao.callBroadCastRoomGood(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String likes = DalbitUtil.isNullToString(resultMap.get("good_count"));
+        int likes = DalbitUtil.getIntMap(resultMap, "good_count");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");

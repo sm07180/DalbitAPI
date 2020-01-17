@@ -434,7 +434,7 @@ public class DalbitUtil {
             return Integer.valueOf(getStringMap(map, key));
         }catch (Exception e){
             log.error("StringUtil.getIntMap error - key name is [{}]", key);
-            return -1;
+            return 0;
         }
     }
 
