@@ -1,13 +1,10 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.exception.GlobalException;
-import com.dalbit.member.dao.MemberDao;
+import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
-import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
@@ -17,15 +14,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
-
 @Slf4j
 @Service
 @Transactional
 public class MypageService {
 
     @Autowired
-    MemberDao memberDao;
+    MypageDao mypageDao;
     @Autowired
     MessageUtil messageUtil;
     @Autowired
@@ -34,18 +29,12 @@ public class MypageService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
-    public ProcedureVo callMemberLogin(P_LoginVo pLoginVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
-        memberDao.callMemberLogin(procedureVo);
-        return procedureVo;
-    }
-
     /**
      * 프로필 편집
      */
     public String callProfileEdit(P_ProfileEditVo pProfileEditVo){
         ProcedureVo procedureVo = new ProcedureVo(pProfileEditVo);
-        memberDao.callProfileEdit(procedureVo);
+        mypageDao.callProfileEdit(procedureVo);
         String result;
         if(procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
@@ -62,7 +51,7 @@ public class MypageService {
      */
     public String callFanstarInsert(P_FanstarInsertVo pFanstarInsertVo) {
         ProcedureVo procedureVo = new ProcedureVo(pFanstarInsertVo);
-        memberDao.callFanstarInsert(procedureVo);
+        mypageDao.callFanstarInsert(procedureVo);
         String result;
         if(procedureVo.getRet().equals(Status.팬등록성공.getMessageCode())) {
             result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
@@ -83,7 +72,7 @@ public class MypageService {
      */
     public String callFanstarDelete(P_FanstarDeleteVo pFanstarDeleteVo) {
         ProcedureVo procedureVo = new ProcedureVo(pFanstarDeleteVo);
-        memberDao.callFanstarDelete(procedureVo);
+        mypageDao.callFanstarDelete(procedureVo);
         String result;
 
         if(procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {

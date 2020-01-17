@@ -57,7 +57,7 @@ public class MypageController {
     public String fanstarInsert(HttpServletRequest request){
         //참가를 위한 토큰 받기
         P_FanstarInsertVo apiData = P_FanstarInsertVo.builder()
-                .fanMemNo(MemberVo.getUserInfo().getMem_no())
+//                .fanMemNo(MemberVo.getUserInfo().getMem_no())
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
@@ -74,7 +74,7 @@ public class MypageController {
     public String fanstarDelete(HttpServletRequest request){
         //참가를 위한 토큰 받기
         P_FanstarDeleteVo apiData = P_FanstarDeleteVo.builder()
-                .fanMemNo(MemberVo.getUserInfo().getMem_no())
+//                .fanMemNo(MemberVo.getUserInfo().getMem_no())
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
