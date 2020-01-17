@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.member.dao.ProfileDao" >
+
+    <select id = "callMemberFanboardAdd" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fanboard_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callFanboardAdd" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR}
+    </select>
+
+    <select id = "callFanboardList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR}
+    </select>
+
+    <select id = "callFanboardDelete" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR}
+    </select>
+
+    <select id = "callFanboardReply" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR}
+    </select>
+
+
+
+</mapper>

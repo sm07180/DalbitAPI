@@ -139,8 +139,8 @@ public class MemberService {
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
 
-        }else if(Status.회원정보_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            throw new GlobalException(Status.회원정보_회원아님, procedureVo.getData());
+        }else if(Status.회원정보보기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            throw new GlobalException(Status.회원정보보기_회원아님, procedureVo.getData());
         }else if(Status.회원정보_대상회원아님.getMessageCode().equals(procedureVo.getRet())) {
             throw new GlobalException(Status.회원정보_대상회원아님, procedureVo.getData());
         }else {
