@@ -4,7 +4,6 @@ import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
@@ -96,22 +95,10 @@ public class BroadCastTest {
         log.debug(P_RoomMemberListVo.builder().build().toString());
 
         P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomMemberList(apiSample);
+        String result = roomService.callBroadCastRoomMemberList(apiSample);
 
-        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
-        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
-        log.info("방송방 참여자 리스트: {}", procedureOutputVo.toString());
-        log.info("ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ");
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureOutputVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, procedureOutputVo.getData())));
-        }else if(procedureOutputVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, procedureOutputVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, procedureOutputVo.getData())));
-        }
-
+        log.info(result);
 
     }
 

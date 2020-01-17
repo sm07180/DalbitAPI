@@ -142,13 +142,18 @@ public class RoomController {
     @PostMapping("/edit")
     public String roomEdit(HttpServletRequest request){
 
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
-
         //TODO-방송 정보 조회 ? 서버? ...
 
         P_RoomEditVo apiData = P_RoomEditVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(roomNo)
+                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
+                .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
+                .title(DalbitUtil.convertRequestParamToString(request, "s_title"))
+                .backgroundImage(DalbitUtil.convertRequestParamToString(request, "s_bgImg"))
+                .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"))
+                .welcomMsg(DalbitUtil.convertRequestParamToString(request, "s_welcome"))
+                .entry(DalbitUtil.convertRequestParamToInteger(request, "i_entry"))
+                .age(DalbitUtil.convertRequestParamToInteger(request, "i_age"))
                 .build();
 
         String result = roomService.callBroadCastRoomEdit(apiData);
@@ -183,18 +188,21 @@ public class RoomController {
      */
     @ApiOperation(value = "방송방 참여자 리스트")
     @GetMapping("/listeners")
-    public String roomMemberList(){
-        P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomMemberList(apiSample);
-        Status status;
-        if(procedureOutputVo.getRet().equals(Status.방송참여자리스트_회원아님.getMessageCode())){
-            status = Status.방송참여자리스트_회원아님;
-        } else if(procedureOutputVo.getRet().equals(Status.방송참여자리스트없음.getMessageCode())){
-            status = Status.방송참여자리스트없음;
-        } else {
-            status = Status.방송참여자리스트_조회;
-        }
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(status, procedureOutputVo.getOutputBox())));
+    public String roomMemberList(HttpServletRequest request){
+
+        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
+        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
+
+        P_RoomMemberListVo apiData = P_RoomMemberListVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
+                .pageNo(pageNo)
+                .pageCnt(pageCnt)
+                .build();
+
+        String result = roomService.callBroadCastRoomMemberList(apiData);
+
+        return result;
     }
 
 
