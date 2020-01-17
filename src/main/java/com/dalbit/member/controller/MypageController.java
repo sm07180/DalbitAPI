@@ -4,6 +4,7 @@ import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,8 @@ public class MypageController {
     @Autowired
     MypageService mypageService;
 
+    @Autowired
+    JwtUtil jwtUtil;
 
     /**
      * 프로필편집
@@ -31,7 +34,14 @@ public class MypageController {
     @ApiOperation(value = "프로필편집")
     @PostMapping("/profile")
     public String editProfile(HttpServletRequest request){
+        request.getHeader("sso_cookie");
+        String cookieValue = request.getHeader("sso_cookie");
+        String userId = jwtUtil.getUserNameFromJwt(cookieValue);
+        log.info("sso_cookie: {}" + request.getHeader("sso_cookie"));
+        log.info("userId: {}" + userId);
+
         P_ProfileEditVo apiData = P_ProfileEditVo.builder()
+                .mem_no(userId)
                 .memSex(DalbitUtil.convertRequestParamToString(request,"s_gender"))
                 .nickName(DalbitUtil.convertRequestParamToString(request,"s_nickNm"))
                 .name(DalbitUtil.convertRequestParamToString(request,"s_name"))
@@ -55,9 +65,14 @@ public class MypageController {
     @ApiOperation(value = "팬가입")
     @PostMapping("/fan")
     public String fanstarInsert(HttpServletRequest request){
+        request.getHeader("sso_cookie");
+        String cookieValue = request.getHeader("sso_cookie");
+        String userId = jwtUtil.getUserNameFromJwt(cookieValue);
+        log.info("sso_cookie: {}" + request.getHeader("sso_cookie"));
+        log.info("userId: {}" + userId);
         //참가를 위한 토큰 받기
         P_FanstarInsertVo apiData = P_FanstarInsertVo.builder()
-//                .fanMemNo(MemberVo.getUserInfo().getMem_no())
+                .fanMemNo(userId)
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
@@ -72,9 +87,14 @@ public class MypageController {
     @ApiOperation(value = "팬 해제")
     @DeleteMapping("/fan")
     public String fanstarDelete(HttpServletRequest request){
+        request.getHeader("sso_cookie");
+        String cookieValue = request.getHeader("sso_cookie");
+        String userId = jwtUtil.getUserNameFromJwt(cookieValue);
+        log.info("sso_cookie: {}" + request.getHeader("sso_cookie"));
+        log.info("userId: {}" + userId);
         //참가를 위한 토큰 받기
         P_FanstarDeleteVo apiData = P_FanstarDeleteVo.builder()
-//                .fanMemNo(MemberVo.getUserInfo().getMem_no())
+                .fanMemNo(userId)
                 .starMemNo(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
                 .build();
 
