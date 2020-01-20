@@ -10,4 +10,5 @@ public interface MypageDao {
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
     ProcedureVo callBroadBasic(ProcedureVo procedureVo);
+    ProcedureVo callBroadBasicEdit(ProcedureVo procedureVo);
 }

@@ -24,7 +24,6 @@ public class MypageVo extends BaseVo {
         return sessionMypageVo;
     }
 
-
     private String mem_no;
     private String memSex;
     private String nickName;
@@ -39,13 +38,11 @@ public class MypageVo extends BaseVo {
     private String fanMemNo;
     private String starMemNo;
 
-    private int subject_type;
     private String title;
     private String image_background;
     private String msg_welcom;
     private Boolean restrict_entry;
     private Boolean restrict_age;
-
 
     private String memNo;
     private int age;
@@ -57,4 +54,10 @@ public class MypageVo extends BaseVo {
     private int exp;
     private int expNext;
     private String grade;
+
+    private String subjectType;
+    private int backgroundImageGrade;
+    private String welcomMsg;
+    private String notice;
+    private int entry;
 }
