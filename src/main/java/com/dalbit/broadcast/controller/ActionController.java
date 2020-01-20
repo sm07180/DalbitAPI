@@ -1,21 +1,56 @@
 package com.dalbit.broadcast.controller;
 
+import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.vo.P_RoomGoodVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("brod")
+@RequestMapping("broad")
 public class ActionController {
 
     @Autowired
     private MessageUtil messageUtil;
+    @Autowired
+    private RoomService roomService;
+
+    /**
+     * 방송방 좋아요 추가
+     */
+    @PostMapping("/likes")
+    public String roomGood(HttpServletRequest request){
+
+        P_RoomGoodVo adiData = P_RoomGoodVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
+                .build();
+
+        String result = roomService.callBroadCastRoomGood(adiData);
+
+        return result;
+    }
+
+
+
+
+    /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
+
+
+
+
+
+
+
+
 
     /**
      * 받은선물내역

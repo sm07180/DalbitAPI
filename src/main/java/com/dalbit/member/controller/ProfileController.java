@@ -75,7 +75,17 @@ public class ProfileController {
     @GetMapping("/board")
     public String fanboardList(HttpServletRequest request){
 
-        return "회원 팬보드 목록조회";
+        P_FanboardListVo fanboardListVo = P_FanboardListVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
+                .pageNo(DalbitUtil.convertRequestParamToInteger(request, "i_page"))
+                .pageCnt(DalbitUtil.convertRequestParamToInteger(request, "i_records"))
+                .build();
+
+        String result = profileService.callMemberFanboardList(fanboardListVo);
+
+
+        return result;
     }
 
     /**

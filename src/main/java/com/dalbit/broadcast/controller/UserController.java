@@ -1,51 +1,94 @@
 package com.dalbit.broadcast.controller;
 
+import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
+import com.dalbit.broadcast.vo.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.rest.service.RestService;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
+@Slf4j
 @RestController
-@RequestMapping("/brod")
+@RequestMapping("/broad")
 public class UserController {
 
     @Autowired
     MessageUtil messageUtil;
+    @Autowired
+    RoomService roomService;
+    @Autowired
+    RestService restService;
 
     /**
-     * 참여자목록
+     * 방송방 참여자 리스트
      */
-    @PostMapping("/{brodNo}/users")
-    public String selectUsers(@PathVariable String brodNo){
+    @GetMapping("/listeners")
+    public String roomMemberList(HttpServletRequest request){
 
-        HashMap data = new HashMap(); //유저정보
-        data.put("memNo", "M000125");
-        data.put("nickNm", "하늘하늘이에요");
-        data.put("grade", "dj");
-        data.put("isFan", true);
+        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
+        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
 
-        HashMap img = new HashMap(); //이미지 정보
-        img.put("url", "https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
-        img.put("path", "/2019/12/05/15/1231567454123.jpg");
-        img.put("name", "/1231567454123.jpg");
+        P_RoomMemberListVo apiData = P_RoomMemberListVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
+                .pageNo(pageNo)
+                .pageCnt(pageCnt)
+                .build();
 
-        HashMap paging = new HashMap(); //페이징정보
-        paging.put("total ", "102");
-        paging.put("recordperpage  ", "10");
-        paging.put("page  ", "1");
-        paging.put("prev  ", "0");
-        paging.put("next   ", "2");
-        paging.put("totalpage   ", "21");
+        String result = roomService.callBroadCastRoomMemberList(apiData);
 
-        data.put("img", img);
-        data.put("paging", paging);
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
+        return result;
     }
+
+    /**
+     * 게스트 지정하기
+     */
+    @PostMapping("/guest")
+    public String roomGuestAdd(HttpServletRequest request) throws GlobalException {
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
+        //게스트 지정을 위한 BJ토큰 조회
+        HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
+
+        //Guest 토큰생성
+        String guestStreamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
+        String guestPublishToken = (String) restService.antToken(guestStreamId, "publish").get("tokenId");
+        String guestPlayToken = (String) restService.antToken(guestStreamId, "play").get("tokenId");
+
+        log.info("guest_streamid: {}", guestStreamId);
+        log.info("guest_publish_tokenid: {}", guestPublishToken);
+        log.info("guest_play_tokenid: {}", guestPlayToken);
+
+
+        P_RoomGuestAddVo apiData = P_RoomGuestAddVo.builder()
+                .mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
+                .room_no(roomNo)
+                .guest_streamid(guestStreamId)
+                .guest_publish_tokenid(guestPublishToken)
+                .guest_play_tokenid(guestPlayToken)
+                .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
+                .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
+                .bj_play_tokenid(DalbitUtil.getStringMap(resultMap, "bj_playToken"))
+                .build();
+
+        String result = roomService.callBroadCastRoomGuestAdd(apiData);
+
+        return result;
+    }
+
+
+    /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
+
 
     /**
      * 매니저지정

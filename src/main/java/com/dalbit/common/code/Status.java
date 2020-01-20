@@ -63,12 +63,33 @@ public enum Status {
     회원정보_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
     회원정보보기실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
 
+
+
+
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.suceess", "댓글달기 성공 시"),
     팬보드_댓글달기실패_스타회원번호_회원아님("-1", "fanboard.add.fail.StarNo.notMember", "스타 회원번호가 회원이 아님"),
     팬보드_댓글달기실패_작성자회원번호_회원아님("-2", "fanboard.add.fail.writerNo.notMember", "작성자 회원번호가 회원이 아님"),
     팬보드_댓글달기실패_잘못된댓글그룹번호("-3", "fanboard.add.fail.wrong.groupNo", "댓글 그룹번호가 잘못된 번호"),
     팬보드_댓글달기실패_depth값_오류("-4", "fanboard.add.fail.wrong.depth", " depth 값 잘못됨"),
+
+    //회원 마이페이지 팬보드 댓글 리스트
+    팬보드조회성공("00000", "fanboard.list.comment.success", "팬보드 정보 조회 시"),
+    팬보드_댓글없음("0", "fanboard.list.comment.no", "댓글이 없음"),
+    팬보드_요청회원번호_회원아님("-1", "fanboard.list.requestNo.notMember", "요청 회원번호가 회원이 아님"),
+    팬보드_스타회원번호_회원아님("-2", "fanboard.list.starNo.notMember","스타 회원번호가 회원이 아님"),
+
+
+
+
+
+
+
+
+
+
+
+
 
     //회원정보조회
     회원정보조회성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
