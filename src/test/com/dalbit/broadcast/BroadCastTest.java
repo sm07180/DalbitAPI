@@ -128,30 +128,10 @@ public class BroadCastTest {
     public void 방송방게스트지정하기(){
         log.debug("방송방 게스트 지정하기");
         P_RoomGuestAddVo apiSample = P_RoomGuestAddVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomGuestAdd(apiSample);
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        String result = roomService.callBroadCastRoomGuestAdd(apiSample);
 
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가, procedureVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패, procedureVo.getData())));
-        }
+        log.info(result);
     }
 
     @Test

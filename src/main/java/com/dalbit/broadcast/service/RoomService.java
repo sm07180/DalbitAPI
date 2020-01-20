@@ -324,10 +324,48 @@ public class RoomService {
     /**
      * 방송방 게스트 지정하기
      */
-    public ProcedureVo callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo) {
+    public String callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGuestAddVo);
         roomDao.callBroadCastRoomGuestAdd(procedureVo);
-        return procedureVo;
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("mem_no",MemberVo.getUserInfo().getMem_no());
+        returnMap.put("room_no",pRoomGuestAddVo.getRoom_no());
+        returnMap.put("guest_streamid",pRoomGuestAddVo.getGuest_streamid());
+        returnMap.put("guest_publish_tokenid",pRoomGuestAddVo.getGuest_publish_tokenid());
+        returnMap.put("guest_play_tokenid",pRoomGuestAddVo.getGuest_play_tokenid());
+        returnMap.put("bj_streamid",pRoomGuestAddVo.getBj_streamid());
+        returnMap.put("bj_publish_tokenid",pRoomGuestAddVo.getBj_publish_tokenid());
+        returnMap.put("bj_play_tokenid",pRoomGuestAddVo.getBj_play_tokenid());
+        log.info("returnMap: {}",returnMap);
+        procedureVo.setData(returnMap);
+
+        String result="";
+        if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가, procedureVo.getData()));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패, procedureVo.getData()));
+        }
+
+        return result;
     }
 
     /**

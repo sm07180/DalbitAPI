@@ -8,7 +8,6 @@ import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,6 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    @ApiOperation(value = "회원가입")
     @PostMapping("signup")
     public String signup(HttpServletRequest request){
 
@@ -56,7 +54,6 @@ public class MemberController {
         return result;
     }
 
-    @ApiOperation(value = "닉네임 중복체크")
     @GetMapping("nick")
     public String nick(HttpServletRequest request){
 
@@ -71,7 +68,6 @@ public class MemberController {
     /**
      * 비밀번호 변경
      */
-    @ApiOperation(value = "비밀번호 변경")
     @PostMapping("/pwd")
     public String pwd(HttpServletRequest request){
 
