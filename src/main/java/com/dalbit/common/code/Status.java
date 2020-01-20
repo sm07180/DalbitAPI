@@ -123,6 +123,11 @@ public enum Status {
     회원차단해제_신고회원번호_정상아님("-2", "mypage.member.block.blocked.del.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단안된상태("-3", "mypage.member.block.no", "차단 안된 상태 시"),
 
+    //회원 알림설정 조회하기
+    알림설정조회성공("0", "mypage.member.notify.sel.suceess", "알림 설정조회 성공 시"),
+    알림설정_회원아님("-3", "mypage.member.notify.no", "알림설정 회원아닐 시"),
+    알림설정수정성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),
+
     //회원 방송방 기본설정 수정
     방송방기본설정_수정성공("0", "myprofile.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
     방송방기본설정_회원아님("-1", "myprofile.broad.basic.edit.no", "회원이 아닐 시"),
