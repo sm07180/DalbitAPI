@@ -17,6 +17,10 @@ public class FanboardVo {
     private int replyCnt;
     private int status;
     private String writeDate;
+
+    private String mem_no;
+    private String star_mem_no;
+
 }
 
 
