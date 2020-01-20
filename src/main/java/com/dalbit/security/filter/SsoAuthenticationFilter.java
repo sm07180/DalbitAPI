@@ -46,6 +46,8 @@ public class SsoAuthenticationFilter implements Filter {
     private String SSO_MEMBER_TOKEN_NAME;
     @Value("${sso.cookie.max.age}")
     private int SSO_COOKIE_MAX_AGE;
+    @Value("${sso.header.cookie.name}")
+    private String SSO_HEADER_COOKIE_NAME;
 
     private final String[] IGNORE_URLS = {/*"/login", */"/logout"};
 
@@ -69,7 +71,7 @@ public class SsoAuthenticationFilter implements Filter {
                 try {
                     CookieUtil cookieUtil = new CookieUtil(request);
 
-                    if(request.getHeader("sso_cookie") != null){
+                    if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
 
                         String headerCookie = request.getHeader("sso_cookie");
 
@@ -186,7 +188,7 @@ public class SsoAuthenticationFilter implements Filter {
                 ssoCookie = CookieUtil.deleteCookie(SSO_COOKIE_NAME, SSO_DOMAIN, "/", 0);
 
             }else{
-                String cookieValue = request.getHeader("sso_cookie");
+                String cookieValue = request.getHeader(SSO_HEADER_COOKIE_NAME);
                 String userId = jwtUtil.getUserNameFromJwt(cookieValue);
                 String jwtToken = jwtUtil.generateToken(userId);
 
