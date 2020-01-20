@@ -6,7 +6,6 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +30,6 @@ public class MypageController {
     /**
      * 프로필편집
      */
-    @ApiOperation(value = "프로필편집")
     @PostMapping("/profile")
     public String editProfile(HttpServletRequest request){
 
@@ -55,7 +53,6 @@ public class MypageController {
     /**
      * 팬가입
      */
-    @ApiOperation(value = "팬가입")
     @PostMapping("/fan")
     public String fanstarInsert(HttpServletRequest request){
         P_FanstarInsertVo apiData = P_FanstarInsertVo.builder()
@@ -71,7 +68,6 @@ public class MypageController {
     /**
      * 팬해제
      */
-    @ApiOperation(value = "팬 해제")
     @DeleteMapping("/fan")
     public String fanstarDelete(HttpServletRequest request){
         P_FanstarDeleteVo apiData = P_FanstarDeleteVo.builder()
@@ -88,7 +84,6 @@ public class MypageController {
     /**
      * 회원 정보 조회
      */
-    @ApiOperation(value = "회원 정보 조회")
     @GetMapping("")
     public String memverInfo(HttpServletRequest request){
         P_MemberInfo apiData = P_MemberInfo.builder()
@@ -103,7 +98,6 @@ public class MypageController {
     /**
      * 회원 방송방 기본설정 조회
      */
-    @ApiOperation(value = "회원 방송방 기본설정 조회하기")
     @PostMapping("/broad")
     public String broadBasic(){
         P_BroadBasic apiData = P_BroadBasic.builder()
@@ -122,7 +116,6 @@ public class MypageController {
 //    /**
 //     * 회원 방송방 기본설정 조회
 //     */
-//    @ApiOperation(value = "회원 방송방 기본설정 조회하기")
 //    @GetMapping("/broad")
 //    public String broadBasic(HttpServletRequest request){
 //        P_BroadBasic apiData = P_BroadBasic.builder()
@@ -136,7 +129,6 @@ public class MypageController {
 //    /**
 //     * 회원 방송방 기본설정 조회
 //     */
-//    @ApiOperation(value = "회원 방송방 기본설정 조회하기")
 //    @GetMapping("/broad")
 //    public String broadBasic(HttpServletRequest request){
 //        P_BroadBasic apiData = P_BroadBasic.builder()

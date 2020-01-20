@@ -7,7 +7,6 @@ import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +54,6 @@ public class ProfileController {
     /**
      * 회원 팬보드 등록하기
      */
-    @ApiOperation(value = "회원 팬보드 등록하기")
     @PostMapping("/board")
     public String fanboardAdd(HttpServletRequest request){
 
@@ -74,7 +72,6 @@ public class ProfileController {
     /**
      * 회원 팬보드 목록조회
      */
-    @ApiOperation(value = "회원 팬보드 목록조회")
     @GetMapping("/board")
     public String fanboardList(HttpServletRequest request){
 
@@ -84,7 +81,6 @@ public class ProfileController {
     /**
      * 회원 팬보드 삭제하기
      */
-    @ApiOperation(value = "회원 팬보드 삭제하기")
     @DeleteMapping("/board")
     public String fanboardDelete(HttpServletRequest request){
 
@@ -94,7 +90,6 @@ public class ProfileController {
     /**
      * 회원 팬보드 대댓글 조회하기
      */
-    @ApiOperation(value = "회원 팬보드 대댓글 조회하기")
     @GetMapping("/board/reply")
     public String fanboardReply(HttpServletRequest request){
 

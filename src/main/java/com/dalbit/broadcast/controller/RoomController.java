@@ -11,9 +11,6 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,43 +40,31 @@ public class RoomController {
     /**
      * 방송방 생성
      */
-    @ApiOperation(value = "방송방 생성")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "i_type",          value = "방송종류",                      required = true,   dataType = "int",    paramType = "query"),
-            @ApiImplicitParam(name = "s_title",         value = "제목",                          required = true,   dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "s_bgImg",         value = "백그라운드 이미지 경로",        required = false,  dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "i_bgRacy",        value = "백그라운드 선정성 등급",        required = false,  dataType = "int", paramType = "query"),
-            @ApiImplicitParam(name = "s_welcome",       value = "환영 메시지",                   required = true,   dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "s_notice",        value = "공지사항",                      required = false,  dataType = "string", paramType = "query"),
-            @ApiImplicitParam(name = "i_entry",         value = "입장 (0:전체, 1:팬)",           required = true,   dataType = "int",    paramType = "query"),
-            @ApiImplicitParam(name = "i_age",           value = "나이제한(0:전체, 1: 20세이상)", required = true,   dataType = "int",    paramType = "query"),
-            @ApiImplicitParam(name = "i_os",            value = "OS 구분",                       required = true,   dataType = "int",    paramType = "query"),
-    })
     @PostMapping("/create")
     public String roomCreate(HttpServletRequest request) throws GlobalException {
         //토큰생성
-        HashMap map = new HashMap();
         String streamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
-        String publishToken = (String) restService.antToken((String) map.get("streamId"), "publish").get("tokenId");
-        //String playToken = (String) restService.antToken((String) map.get("streamId"), "play").get("tokenId");
-        log.info("streamId: {}", streamId);
-        log.info("publishToken: {}", publishToken);
-        //log.info("playToken: {}", playToken);
+        String publishToken = (String) restService.antToken(streamId, "publish").get("tokenId");
+        String playToken = (String) restService.antToken(streamId, "play").get("tokenId");
+        log.info("bj_streamId: {}", streamId);
+        log.info("bj_publishToken: {}", publishToken);
+        log.info("bj_playToken: {}", playToken);
 
         P_RoomCreateVo apiData = P_RoomCreateVo.builder()
-            .mem_no(MemberVo.getUserInfo().getMem_no())
-            .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
-            .title(DalbitUtil.convertRequestParamToString(request, "s_title"))
-            .backgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "s_bgImg"))
-            .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"))
-            .welcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"))
-            .notice(DalbitUtil.convertRequestParamToString(request,"s_notice"))
-            .entry(DalbitUtil.convertRequestParamToInteger(request,"i_entry"))
-            .age(DalbitUtil.convertRequestParamToInteger(request,"i_age"))
-            .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
-            .bj_streamid(streamId)
-            .bj_publish_tokenid(publishToken)
-            .build();
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
+                .title(DalbitUtil.convertRequestParamToString(request, "s_title"))
+                .backgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "s_bgImg"))
+                .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"))
+                .welcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"))
+                .notice(DalbitUtil.convertRequestParamToString(request,"s_notice"))
+                .entry(DalbitUtil.convertRequestParamToInteger(request,"i_entry"))
+                .age(DalbitUtil.convertRequestParamToInteger(request,"i_age"))
+                .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
+                .bj_streamid(streamId)
+                .bj_publish_tokenid(publishToken)
+                .bj_play_tokenid(playToken)
+                .build();
 
         String result = roomService.callBroadCastRoomCreate(apiData);
 
@@ -89,7 +74,6 @@ public class RoomController {
     /**
      * 방송방 참여하기
      */
-    @ApiOperation(value = "방송방 참여하기")
     @PostMapping("/join")
     public String roomJoin(HttpServletRequest request) throws GlobalException{
         String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
@@ -97,19 +81,15 @@ public class RoomController {
         //방참가를 위한 토큰 조회
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
 
-        //Play 토큰 생성
-        String bj_playToken = (String) restService.antToken((String) resultMap.get("bj_streamid"), "play").get("tokenId");
-        String guest_playToken =  (String) restService.antToken((String) resultMap.get("guest_streamid"), "play").get("tokenId");
-
         P_RoomJoinVo apiData = P_RoomJoinVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .room_no(roomNo)
                 .guest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"))
                 .guest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"))
-                .guest_play_tokenid(guest_playToken)
+                .guest_play_tokenid(DalbitUtil.getStringMap(resultMap,"guest_play_tokenid"))
                 .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
                 .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
-                .bj_play_tokenid(bj_playToken)
+                .bj_play_tokenid(DalbitUtil.getStringMap(resultMap,"bj_play_tokenid"))
                 .build();
 
         String result = roomService.callBroadCastRoomJoin(apiData);
@@ -120,7 +100,6 @@ public class RoomController {
     /**
      * 방송방 나가기
      */
-    @ApiOperation(value = "방송방 나가기")
     @PostMapping("/exit")
     public String roomExit(HttpServletRequest request){
         String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
@@ -137,7 +116,6 @@ public class RoomController {
     /**
      * 방송 정보수정
      */
-    @ApiOperation(value = "방송 정보수정")
     @PostMapping("/edit")
     public String roomEdit(HttpServletRequest request){
 
@@ -163,7 +141,6 @@ public class RoomController {
     /**
      * 방송방 리스트
      */
-    @ApiOperation(value = "방송방 리스트")
     @GetMapping("/list")
     public String roomList(HttpServletRequest request){
 
@@ -185,7 +162,6 @@ public class RoomController {
     /**
      * 방송방 참여자 리스트
      */
-    @ApiOperation(value = "방송방 참여자 리스트")
     @GetMapping("/listeners")
     public String roomMemberList(HttpServletRequest request){
 
@@ -207,7 +183,6 @@ public class RoomController {
     /**
      * 방송방 좋아요 추가
      */
-    @ApiOperation(value = "방송방 좋아요 추가")
     @PostMapping("/likes")
     public String roomGood(HttpServletRequest request){
 
@@ -222,12 +197,45 @@ public class RoomController {
     }
 
 
+    /**
+     * 게스트 지정하기
+     */
+    @PostMapping("/guest")
+    public String roomGuestAdd(HttpServletRequest request) throws GlobalException{
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
+        //게스트 지정을 위한 BJ토큰 조회
+        HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
+
+        //Guest 토큰생성
+        String guestStreamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
+        String guestPublishToken = (String) restService.antToken(guestStreamId, "publish").get("tokenId");
+        String guestPlayToken = (String) restService.antToken(guestStreamId, "play").get("tokenId");
+
+        log.info("guest_streamid: {}", guestStreamId);
+        log.info("guest_publish_tokenid: {}", guestPublishToken);
+        log.info("guest_play_tokenid: {}", guestPlayToken);
+
+
+        P_RoomGuestAddVo apiData = P_RoomGuestAddVo.builder()
+                .mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
+                .room_no(roomNo)
+                .guest_streamid(guestStreamId)
+                .guest_publish_tokenid(guestPublishToken)
+                .guest_play_tokenid(guestPlayToken)
+                .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
+                .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
+                .bj_play_tokenid(DalbitUtil.getStringMap(resultMap, "bj_playToken"))
+                .build();
+
+        String result = roomService.callBroadCastRoomGuestAdd(apiData);
+
+        return result;
+    }
 
 
     /**
      * 방송종료
      */
-    @ApiOperation(value = "방송종료")
     @DeleteMapping("/{brodNo}")
     public String deleteBrod(@PathVariable String brodNo ){
 
@@ -240,7 +248,6 @@ public class RoomController {
     /**
      * 방송 정보조회
      */
-    @ApiOperation(value = "방송 정보조회")
     @GetMapping("/{brodNo}")
     public String getBrod(@PathVariable String brodNo){
 

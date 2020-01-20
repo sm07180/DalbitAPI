@@ -4,7 +4,6 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
-import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +19,6 @@ public class UserController {
     /**
      * 참여자목록
      */
-    @ApiOperation(value = "참여자목록")
     @PostMapping("/{brodNo}/users")
     public String selectUsers(@PathVariable String brodNo){
 
@@ -52,7 +50,6 @@ public class UserController {
     /**
      * 매니저지정
      */
-    @ApiOperation(value = "매니저지정")
     @PostMapping("/{brodNo}/mgr/{memNo}")
     public String addManager(@PathVariable String brodNo, @PathVariable String memNo){
 
@@ -64,7 +61,6 @@ public class UserController {
     /**
      * 매니저해제
      */
-    @ApiOperation(value = "매니저해제")
     @DeleteMapping("/{brodNo}/mgr/{memNo}")
     public String deleteManager(@PathVariable String brodNo, @PathVariable String memNo){
 
@@ -76,7 +72,6 @@ public class UserController {
     /**
      * 게스트초대
      */
-    @ApiOperation(value = "게스트초대")
     @PostMapping("/{brodNo}/gst/{memNo}/invite")
     public String inviteGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
@@ -88,7 +83,6 @@ public class UserController {
     /**
      * 게스트초대취소
      */
-    @ApiOperation(value = "게스트초대취소")
     @DeleteMapping("/{brodNo}/gst/{memNo}/invite")
     public String deleteInviteGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
@@ -100,7 +94,6 @@ public class UserController {
     /**
      * 게스트초대수락
      */
-    @ApiOperation(value = "게스트초대수락")
     @PostMapping("/{brodNo}/gst")
     public String joinGuest(@PathVariable String brodNo){
 
@@ -112,7 +105,6 @@ public class UserController {
     /**
      * 게스트신청
      */
-    @ApiOperation(value = "게스트신청")
     @PostMapping("/{brodNo}/gst/{memNo}/apply")
     public String applyGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
@@ -124,7 +116,6 @@ public class UserController {
     /**
      * 게스트해제
      */
-    @ApiOperation(value = "게스트해제")
     @DeleteMapping("/{brodNo}/gst")
     public String deleteGuest(@PathVariable String brodNo){
 
@@ -136,7 +127,6 @@ public class UserController {
     /**
      * 게스트나가기
      */
-    @ApiOperation(value = "게스트나가기")
     @DeleteMapping("/{brodNo}/gst/out")
     public String outGuest(@PathVariable String brodNo){
 
