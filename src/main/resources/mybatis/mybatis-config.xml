@@ -14,6 +14,7 @@
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.RoomVo" alias="RoomVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.RoomMemberVo" alias="RoomMemberVo" />
+		<typeAlias type="com.dalbit.member.vo.FanboardVo" alias="FanboardVo" />
 	</typeAliases>
 
 </configuration>
