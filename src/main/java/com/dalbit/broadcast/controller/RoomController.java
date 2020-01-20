@@ -159,78 +159,11 @@ public class RoomController {
         return result;
     }
 
-    /**
-     * 방송방 참여자 리스트
-     */
-    @GetMapping("/listeners")
-    public String roomMemberList(HttpServletRequest request){
-
-        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
-        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
-
-        P_RoomMemberListVo apiData = P_RoomMemberListVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
-                .pageNo(pageNo)
-                .pageCnt(pageCnt)
-                .build();
-
-        String result = roomService.callBroadCastRoomMemberList(apiData);
-
-        return result;
-    }
-
-    /**
-     * 방송방 좋아요 추가
-     */
-    @PostMapping("/likes")
-    public String roomGood(HttpServletRequest request){
-
-        P_RoomGoodVo adiData = P_RoomGoodVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
-                .build();
-
-        String result = roomService.callBroadCastRoomGood(adiData);
-
-        return result;
-    }
 
 
-    /**
-     * 게스트 지정하기
-     */
-    @PostMapping("/guest")
-    public String roomGuestAdd(HttpServletRequest request) throws GlobalException{
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
-        //게스트 지정을 위한 BJ토큰 조회
-        HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
-
-        //Guest 토큰생성
-        String guestStreamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
-        String guestPublishToken = (String) restService.antToken(guestStreamId, "publish").get("tokenId");
-        String guestPlayToken = (String) restService.antToken(guestStreamId, "play").get("tokenId");
-
-        log.info("guest_streamid: {}", guestStreamId);
-        log.info("guest_publish_tokenid: {}", guestPublishToken);
-        log.info("guest_play_tokenid: {}", guestPlayToken);
+    /* ####################### 여기까지 API명세서 기준 작업완료 ######################## */
 
 
-        P_RoomGuestAddVo apiData = P_RoomGuestAddVo.builder()
-                .mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
-                .room_no(roomNo)
-                .guest_streamid(guestStreamId)
-                .guest_publish_tokenid(guestPublishToken)
-                .guest_play_tokenid(guestPlayToken)
-                .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
-                .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
-                .bj_play_tokenid(DalbitUtil.getStringMap(resultMap, "bj_playToken"))
-                .build();
-
-        String result = roomService.callBroadCastRoomGuestAdd(apiData);
-
-        return result;
-    }
 
 
     /**

@@ -57,15 +57,6 @@ public enum Status {
     팬해제_팬아님("-3", "member.delete.fan.not", "팬이 아닐 시"),
     팬해제실패("-4", "member.delete.fanstar.fail", "팬 해제 실패 시"),
 
-    //회원정보보기
-    회원정보보기성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
-    회원정보보기_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
-    회원정보_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
-    회원정보보기실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
-
-
-
-
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.suceess", "댓글달기 성공 시"),
     팬보드_댓글달기실패_스타회원번호_회원아님("-1", "fanboard.add.fail.StarNo.notMember", "스타 회원번호가 회원이 아님"),
@@ -88,25 +79,37 @@ public enum Status {
     팬보드_댓글삭제실패_이미삭제됨("-5", "fanboard.delete.already.delete", "이미 삭제됨"),
     팬보드_댓글삭제실패_삭제권한없음("-6", "fanboard.delete.authorization.not", "삭제 권한이 없음"),
 
-
-
-
-
-
-
-
-
-
-
     //회원정보조회
-    회원정보조회성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
-    회원정보조회_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
-    회원정보조회_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
-    회원정보조회_실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
+    회원정보조회성공("0", "mypage.info.view.success", "회원정보보기 성공 시"),
+    회원정보조회_회원아님("-1", "mypage.no", "회원이 아닐 시"),
+    회원정보조회_대상회원아님("-2", "mypage.this.no", "대상회원이 아닐 시"),
+    회원정보조회_실패("-3", "mypage.info.view.fail", "회원정보보기 실패 시"),
 
-    //회원 방송방 기본설정 수정callcEdit
-    방송방기본설정_수정성공("0", "myprofile.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
-    방송방기본설정_회원아님("-1", "myprofile.broad.basic.edit.no", "회원이 아닐 시"),
+    //회원 방송방 기본설정 조회
+    방송방기본설정조회_성공("0", "mypage.broad.basic.suceess", "방송방 기본설정 조회 성공 시"),
+    방송방기본설정조회_회원아님("-1", "mypage.broad.basic.no", "회원이 아닐 시"),
+
+    //회원 방송방 기본설정 수정
+    방송방기본설정수정_성공("0", "mypage.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
+    방송방기본설정수정_회원아님("-1", "mypage.broad.basic.edit.no", "회원이 아닐 시"),
+
+    //회원 신고하기
+    회원신고성공("0", "mypage.member.report.add.suceess", "회원 신고 성공 시"),
+    회원신고_요청회원번호_정상아님("-1", "mypage.member.report.add.mem.no", "요청 회원번호 정상 아닐 시"),
+    회원신고_신고회원번호_정상아님("-2", "mypage.member.report.add.reported.no", "신고 회원번호 정상 아닐 시"),
+    회원신고_이미_신고상태("-3", "mypage.member.reported", "이미 신고 상태 시"),
+
+    //회원 차단하기
+    회원차단성공("0", "mypage.member.block.suceess", "회원 차단 성공 시"),
+    회원차단_요청회원번호_정상아님("-1", "mypage.member.block.mem.no", "요청 회원번호 정상 아닐 시"),
+    회원차단_신고회원번호_정상아님("-2", "mypage.member.block.blocked.mem.no", "차단 회원번호 정상 아닐 시"),
+    회원차단_이미_신고상태("-3", "mypage.member.block.blocked", "이미 차단 상태 시"),
+
+    //회원 차단해제하기
+    회원차단해제성공("0", "mypage.member.block.del.suceess", "회원 차단 해제 성공 시"),
+    회원차단해제_요청회원번호_정상아님("-1", "mypage.member.block.del.mem.no", "요청 회원번호 정상 아닐 시"),
+    회원차단해제_신고회원번호_정상아님("-2", "mypage.member.block.blocked.del.mem.no", "차단 회원번호 정상 아닐 시"),
+    회원차단안된상태("-3", "mypage.member.block.no", "차단 안된 상태 시"),
 
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),
