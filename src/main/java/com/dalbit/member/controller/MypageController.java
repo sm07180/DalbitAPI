@@ -85,7 +85,7 @@ public class MypageController {
      */
     @GetMapping("/broad")
     public String broadBasic(){
-        P_BroadBasic apiData = P_BroadBasic.builder()
+        P_BroadBasicVo apiData = P_BroadBasicVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .build();
 
@@ -98,7 +98,7 @@ public class MypageController {
      */
     @GetMapping("")
     public String memverInfo(HttpServletRequest request){
-        P_MemberInfo apiData = P_MemberInfo.builder()
+        P_MemberInfoVo apiData = P_MemberInfoVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .target_mem_no(DalbitUtil.convertRequestParamToString(request,"target_mem_no"))
                 .build();
@@ -112,7 +112,7 @@ public class MypageController {
      */
     @PostMapping("/broad")
     public String broadBasicEdit(HttpServletRequest request){
-        P_BroadBasicEdit apiData = P_BroadBasicEdit.builder()
+        P_BroadBasicEditVo apiData = P_BroadBasicEditVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .subjectType(DalbitUtil.convertRequestParamToInteger(request,"i_type"))
                 .title(DalbitUtil.convertRequestParamToString(request,"s_title"))
@@ -128,53 +128,55 @@ public class MypageController {
         return result;
     }
 
+    /**
+     * 회원 신고하기
+     */
+    @PostMapping("/declar")
+    public String memberReportAdd(HttpServletRequest request){
+        P_MemberReportAddVo apiData = P_MemberReportAddVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .reported_mem_no(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .reason(DalbitUtil.convertRequestParamToInteger(request,"i_reason"))
+                .etc(DalbitUtil.convertRequestParamToString(request,"s_cont"))
+                .build();
 
+        String result = mypageService.callMemberReportAdd(apiData);
+        return result;
+    }
 
+    /**
+     * 회원 차단하기
+     */
+    @PostMapping("/block")
+    public String broadBlock_Add(HttpServletRequest request){
+        P_MemberBlockAddVo apiData = P_MemberBlockAddVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .blocked_mem_no(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .build();
 
+        String result = mypageService.callBlockAdd(apiData);
+        return result;
+    }
 
-//
-//    /**
-//     * 회원 신고하기
-//     */
-//    @GetMapping("/broad")
-//    public String broadBasic(HttpServletRequest request){
-//        P_BroadBasic apiData = P_BroadBasic.builder()
-//                .mem_no(MemberVo.getUserInfo().getMem_no())
-//                .build();
-//
-//        String result = mypageService.callBroadBasic(apiData);
-//        return result;
-//    }
-//    /**
-//     * 회원 차단하기
-//     */
-//    @GetMapping("/broad")
-//    public String broadBasic(HttpServletRequest request){
-//        P_BroadBasic apiData = P_BroadBasic.builder()
-//                .mem_no(MemberVo.getUserInfo().getMem_no())
-//                .build();
-//
-//        String result = mypageService.callBroadBasic(apiData);
-//        return result;
-//    }
-//    /**
-//     * 회원 차단 해제하기
-//     */
-//    @GetMapping("/broad")
-//    public String broadBasic(HttpServletRequest request){
-//        P_BroadBasic apiData = P_BroadBasic.builder()
-//                .mem_no(MemberVo.getUserInfo().getMem_no())
-//                .build();
-//
-//        String result = mypageService.callBroadBasic(apiData);
-//        return result;
-//    }
+    /**
+     * 회원 차단 해제하기
+     */
+    @DeleteMapping("/block")
+    public String broadBlock_Del(HttpServletRequest request){
+        P_MemberBlockDelVo apiData = P_MemberBlockDelVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .blocked_mem_no(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .build();
+
+        String result = mypageService.callMemBerBlocklDel(apiData);
+        return result;
+    }
 //    /**
 //     * 회원 알림설정 조회하기
 //     */
-//    @GetMapping("/broad")
+//    @GetMapping("/notify")
 //    public String broadBasic(HttpServletRequest request){
-//        P_BroadBasic apiData = P_BroadBasic.builder()
+//        P_BroadBasicVo apiData = P_BroadBasicVo.builder()
 //                .mem_no(MemberVo.getUserInfo().getMem_no())
 //                .build();
 //
@@ -184,9 +186,9 @@ public class MypageController {
 //    /**
 //     * 회원 알림설정 수정하기
 //     */
-//    @GetMapping("/broad")
+//    @GetMapping("/notify")
 //    public String broadBasic(HttpServletRequest request){
-//        P_BroadBasic apiData = P_BroadBasic.builder()
+//        P_BroadBasicVo apiData = P_BroadBasicVo.builder()
 //                .mem_no(MemberVo.getUserInfo().getMem_no())
 //                .build();
 //

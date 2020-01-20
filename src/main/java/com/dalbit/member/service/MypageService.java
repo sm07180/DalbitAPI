@@ -95,7 +95,7 @@ public class MypageService {
     /**
      * 회원 방송방 기본설정 조회하기
      */
-    public String callBroadBasic(P_BroadBasic pBroadBasic) {
+    public String callBroadBasic(P_BroadBasicVo pBroadBasic) {
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasic);
         mypageDao.callBroadBasic(procedureVo);
 
@@ -117,23 +117,18 @@ public class MypageService {
         procedureVo.setData(returnMap);
 
         String result;
-        if(procedureVo.getRet().equals(Status.회원정보보기성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_회원아님)));
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_회원아님)));
-        }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기실패)));
+        if(procedureVo.getRet().equals(Status.방송방기본설정조회_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정조회_성공, procedureVo.getData())));
+        } else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정조회_회원아님)));
         }
-        log.info("result:{}" + result);
         return result;
     }
 
     /**
      * 회원 정보 조회
      */
-    public String callMemberInfo(P_MemberInfo pMemberInfo) {
+    public String callMemberInfo(P_MemberInfoVo pMemberInfo) {
         ProcedureVo procedureVo = new ProcedureVo(pMemberInfo);
         mypageDao.callMemberInfo(procedureVo);
 
@@ -172,19 +167,76 @@ public class MypageService {
         return result;
     }
 
-
-
     /**
      * 회원 방송방 기본설정 수정하기
      */
-    public String callBroadBasicEdit(P_BroadBasicEdit pBroadBasicEdit){
+    public String callBroadBasicEdit(P_BroadBasicEditVo pBroadBasicEdit){
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasicEdit);
         mypageDao.callBroadBasicEdit(procedureVo);
         String result;
-        if(procedureVo.getRet().equals(Status.방송방기본설정_수정성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정_수정성공, procedureVo.getData())));
+        if(procedureVo.getRet().equals(Status.방송방기본설정수정_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정수정_성공, procedureVo.getData())));
         } else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정_회원아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정수정_회원아님)));
+        }
+        return result;
+    }
+
+    /**
+     * 회원 신고
+     */
+    public String callMemberReportAdd(P_MemberReportAddVo pMemberReportAdd){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberReportAdd);
+        mypageDao.callMemberReportAdd(procedureVo);
+        String result;
+        if(procedureVo.getRet().equals(Status.회원신고성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원신고성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원신고_요청회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원신고_요청회원번호_정상아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원신고_신고회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원신고_신고회원번호_정상아님, procedureVo.getData())));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원신고_이미_신고상태)));
+        }
+        return result;
+    }
+
+    /**
+     * 회원 차단하기
+     */
+    public String callBlockAdd(P_MemberBlockAddVo pMemberBlockAdd){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberBlockAdd);
+        mypageDao.callMemberBlockAdd(procedureVo);
+        String result;
+
+        if(procedureVo.getRet().equals(Status.회원차단성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원차단_요청회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_요청회원번호_정상아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원차단_신고회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_신고회원번호_정상아님, procedureVo.getData())));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_이미_신고상태)));
+        }
+        return result;
+    }
+
+    /**
+     * 회원 차단 해제
+     */
+    public String callMemBerBlocklDel(P_MemberBlockDelVo pMemberBlockDel){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberBlockDel);
+        mypageDao.callMemberBlockDel(procedureVo);
+        String result;
+
+        if(procedureVo.getRet().equals(Status.회원차단해제성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단해제성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원차단해제_요청회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단해제_요청회원번호_정상아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원차단해제_신고회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단해제_신고회원번호_정상아님, procedureVo.getData())));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단안된상태)));
         }
         return result;
     }

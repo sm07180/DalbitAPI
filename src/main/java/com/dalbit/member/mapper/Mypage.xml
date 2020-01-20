@@ -20,5 +20,14 @@
     <select id="callBroadBasicEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_broadcast_basic_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+    <select id="callMemberReportAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_report_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+    <select id="callMemberBlockAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_block_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+    <select id="callMemberBlockDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_block_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
 </mapper>
