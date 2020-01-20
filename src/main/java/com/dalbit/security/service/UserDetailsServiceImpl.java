@@ -1,11 +1,15 @@
 package com.dalbit.security.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
+import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.P_LoginVo;
 import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,10 +31,38 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private LoginDao loginDao;
 
     @Autowired
+    private MemberService memberService;
+
+    @Autowired
     HttpServletRequest request;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        //MemberVo memberVo;
+        P_LoginVo pLoginVo = P_LoginVo.builder()
+            .memSlct(DalbitUtil.convertRequestParamToString(request,"s_mem"))
+            .id(username)
+            .pw(DalbitUtil.convertRequestParamToString(request,"s_pwd"))
+            .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
+            .deviceUuid(DalbitUtil.convertRequestParamToString(request,"s_deviceId"))
+            .deviceToken(DalbitUtil.convertRequestParamToString(request,"s_deviceToken"))
+            .appVersion(DalbitUtil.convertRequestParamToString(request,"s_appVer"))
+            //광고 아이디 없음..
+            .build();
+
+        ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
+        log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
+
+        if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+
+        }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+
+        }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
+        }
 
         MemberVo paramMemberVo = new MemberVo();
         paramMemberVo.setMem_id(username);
