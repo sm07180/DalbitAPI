@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
@@ -7,11 +8,13 @@ import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -94,7 +97,13 @@ public class ProfileController {
     @DeleteMapping("/board")
     public String fanboardDelete(HttpServletRequest request){
 
-        return "회원 팬보드 삭제하기";
+        P_FanboardDeleteVo fanboardDeleteVo = P_FanboardDeleteVo.builder()
+                .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
+                .delete_mem_no(MemberVo.getUserInfo().getMem_no())
+                .board_idx(DalbitUtil.convertRequestParamToInteger(request,"i_board"))
+                .build();
+        String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
+        return result;
     }
 
     /**
@@ -103,7 +112,15 @@ public class ProfileController {
     @GetMapping("/board/reply")
     public String fanboardReply(HttpServletRequest request){
 
-        return "회원 팬보드 대댓글 조회하기";
+        P_FanboardReplyVo fanboardReplyVo = P_FanboardReplyVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
+                .board_no(DalbitUtil.convertRequestParamToInteger(request, "board_no"))
+                .build();
+
+        String result = profileService.callMemberFanboardReply(fanboardReplyVo);
+        return result;
+
     }
 
 

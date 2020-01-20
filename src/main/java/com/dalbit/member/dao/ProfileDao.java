@@ -14,6 +14,6 @@ public interface ProfileDao {
     ProcedureVo callMemberFanboardAdd(ProcedureVo procedureVo);
     List<FanboardVo> callMemberFanboardList(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardDelete(ProcedureVo procedureVo);
-    ProcedureVo callMemberFanboardReply(ProcedureVo procedureVo);
+    List<FanboardVo> callMemberFanboardReply(ProcedureVo procedureVo);
 
 }
