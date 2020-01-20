@@ -241,48 +241,48 @@ public class MypageService {
         return result;
     }
 
-    /**
-     * 회원 알림설정 조회하기
-     */
-    public String callMemberNotify(P_MemberNotifyVo pMemberNotifyVo){
-        ProcedureVo procedureVo = new ProcedureVo(pMemberNotifyVo);
-        mypageDao.callMemberNotify(procedureVo);
-
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("all_ok",DalbitUtil.getStringMap(resultMap,"all_ok"));
-        returnMap.put("fan_reg",DalbitUtil.getStringMap(resultMap,"fan_reg"));
-        returnMap.put("fan_board",DalbitUtil.getStringMap(resultMap,"fan_board"));
-        returnMap.put("star_broadcast",DalbitUtil.getStringMap(resultMap,"star_broadcast"));
-        returnMap.put("star_notice",DalbitUtil.getStringMap(resultMap,"star_notice"));
-        returnMap.put("event_notice",DalbitUtil.getStringMap(resultMap,"event_notice"));
-        returnMap.put("search",DalbitUtil.getStringMap(resultMap,"search"));
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
-
-        String result;
-        if(procedureVo.getRet().equals(Status.알림설정조회성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정조회성공, procedureVo.getData())));
-        }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정_회원아님)));
-        }
-        return result;
-    }
-
-    /**
-     * 회원 알림설정 수정하기
-     */
-    public String callMemberNotifyEdit(P_MemberNotifyEditVo pMemberNotifyEditVo){
-        ProcedureVo procedureVo = new ProcedureVo(pMemberNotifyEditVo);
-        mypageDao.callMemberNotifyEdit(procedureVo);
-
-        String result;
-        if(procedureVo.getRet().equals(Status.알림설정수정성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정성공, procedureVo.getData())));
-        }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정_회원아님)));
-        }
-        return result;
-    }
+//    /**
+//     * 회원 알림설정 조회하기
+//     */
+//    public String callMemberNotify(P_MemberNotifyVo pMemberNotifyVo){
+//        ProcedureVo procedureVo = new ProcedureVo(pMemberNotifyVo);
+//        mypageDao.callMemberNotify(procedureVo);
+//
+//        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+//        HashMap returnMap = new HashMap();
+//        returnMap.put("all_ok",DalbitUtil.getStringMap(resultMap,"all_ok"));
+//        returnMap.put("fan_reg",DalbitUtil.getStringMap(resultMap,"fan_reg"));
+//        returnMap.put("fan_board",DalbitUtil.getStringMap(resultMap,"fan_board"));
+//        returnMap.put("star_broadcast",DalbitUtil.getStringMap(resultMap,"star_broadcast"));
+//        returnMap.put("star_notice",DalbitUtil.getStringMap(resultMap,"star_notice"));
+//        returnMap.put("event_notice",DalbitUtil.getStringMap(resultMap,"event_notice"));
+//        returnMap.put("search",DalbitUtil.getStringMap(resultMap,"search"));
+//        log.info("returnMap: {}",returnMap);
+//        procedureVo.setData(returnMap);
+//
+//        String result;
+//        if(procedureVo.getRet().equals(Status.알림설정조회성공.getMessageCode())) {
+//            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정조회성공, procedureVo.getData())));
+//        }else{
+//            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정_회원아님)));
+//        }
+//        return result;
+//    }
+//
+//    /**
+//     * 회원 알림설정 수정하기
+//     */
+//    public String callMemberNotifyEdit(P_MemberNotifyEditVo pMemberNotifyEditVo){
+//        ProcedureVo procedureVo = new ProcedureVo(pMemberNotifyEditVo);
+//        mypageDao.callMemberNotifyEdit(procedureVo);
+//
+//        String result;
+//        if(procedureVo.getRet().equals(Status.알림설정수정성공.getMessageCode())) {
+//            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정성공, procedureVo.getData())));
+//        }else{
+//            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정_회원아님)));
+//        }
+//        return result;
+//    }
 
 }

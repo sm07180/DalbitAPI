@@ -135,13 +135,13 @@ public class ProfileService {
     /**
      * 팬보드 대댓글 조회하기
      */
-    public String callMemberFanboardReply(P_FanboardReplyVo p_fanboardReplyVo) {
-        ProcedureVo procedureVo = new ProcedureVo(p_fanboardReplyVo);
-        List<FanboardVo> FanboardReply = profileDao.callMemberFanboardReply(procedureVo);
+    public String callMemberFanboardReply(P_FanboardReplyVo p_FanboardReplyVo) {
+        ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
+        List<FanboardVo> fanboardVoReply = profileDao.callMemberFanboardReply(procedureVo);
 
         String result = null;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardVoReply));
         } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, procedureVo.getData()));
         } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {

@@ -1,9 +1,12 @@
 package com.dalbit.member.vo;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
+@Builder
 public class FanboardVo {
     private int board_idx;
     private int board_no;
