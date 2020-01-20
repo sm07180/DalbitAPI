@@ -10,9 +10,9 @@ import lombok.Getter;
 public class P_MemberNotifyEditVo {
 
     @Builder.Default private String mem_no = "11577690655946";      //ID
-    @Builder.Default private int all_ok = 1;                        //전체알림
-    @Builder.Default private int fan_reg = 1;                       //팬등록알림
-    @Builder.Default private int fan_board = 1;                     //팬보드알림
+    @Builder.Default private int all_ok = 0;                        //전체알림
+    @Builder.Default private int fan_reg = 0;                       //팬등록알림
+    @Builder.Default private int fan_board = 0;                     //팬보드알림
     @Builder.Default private int star_broadcast = 1;                //스타방송알림
     @Builder.Default private int star_notice = 1;                   //스타공지사항알림
     @Builder.Default private int event_notice = 1;                  //이벤트공지알림

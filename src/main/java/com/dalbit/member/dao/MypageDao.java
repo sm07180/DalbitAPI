@@ -14,4 +14,6 @@ public interface MypageDao {
     ProcedureVo callMemberReportAdd(ProcedureVo procedureVo);
     ProcedureVo callMemberBlockAdd(ProcedureVo procedureVo);
     ProcedureVo callMemberBlockDel(ProcedureVo procedureVo);
+    ProcedureVo callMemberNotify(ProcedureVo procedureVo);
+    ProcedureVo callMemberNotifyEdit(ProcedureVo procedureVo);
 }
