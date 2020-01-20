@@ -1,6 +1,7 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
@@ -142,8 +143,8 @@ public class MypageService {
         returnMap.put("nickName",DalbitUtil.isNullToString(resultMap.get("nickName")));
         returnMap.put("memSex",DalbitUtil.isNullToString(resultMap.get("memSex")));
         returnMap.put("age",DalbitUtil.isNullToString(resultMap.get("age")));
-        returnMap.put("backgroundImage",DalbitUtil.isNullToString(resultMap.get("backgroundImage")));
-        returnMap.put("profileImage",DalbitUtil.isNullToString(resultMap.get("profileImage")));
+        returnMap.put("bgImg",new ImageVo(DalbitUtil.getStringMap(resultMap, "backgroundImage"), SERVER_PHOTO_URL));
+        returnMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), SERVER_PHOTO_URL));
         returnMap.put("profileMsg",DalbitUtil.isNullToString(resultMap.get("profileMsg")));
         returnMap.put("level",DalbitUtil.isNullToString(resultMap.get("level")));
         returnMap.put("grade",DalbitUtil.isNullToString(resultMap.get("grade")));

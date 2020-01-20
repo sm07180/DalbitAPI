@@ -141,8 +141,8 @@ public class MemberService {
 
         }else if(Status.회원정보보기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             throw new GlobalException(Status.회원정보보기_회원아님, procedureVo.getData());
-        }else if(Status.회원정보_대상회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            throw new GlobalException(Status.회원정보_대상회원아님, procedureVo.getData());
+        }else if(Status.회원정보보기_대상회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            throw new GlobalException(Status.회원정보보기_대상회원아님, procedureVo.getData());
         }else {
             throw new GlobalException(Status.회원정보보기실패, procedureVo.getData());
         }
