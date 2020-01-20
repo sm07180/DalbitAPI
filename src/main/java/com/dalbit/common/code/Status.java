@@ -79,6 +79,12 @@ public enum Status {
     팬보드_댓글삭제실패_이미삭제됨("-5", "fanboard.delete.already.delete", "이미 삭제됨"),
     팬보드_댓글삭제실패_삭제권한없음("-6", "fanboard.delete.authorization.not", "삭제 권한이 없음"),
 
+    //회원 마이페이지 팬보드 대댓글 보기
+    팬보드_대댓글조회성공("00001", "fanboard.reply.comment.success", "팬보드 대댓글 조회 시"),
+    팬보드_대댓글조회실패_대댓글없음("0", "fanboard.reply.comment.no", "대댓글 없음"),
+    팬보드_대댓글조회실패_요청회원번호_회원아님("-1", "fanboard.reply.requestNo.notMember", "요청 회원번호가 회원이 아님"),
+    팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아님"),
+
     //회원정보보기
     회원정보보기성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
     회원정보보기_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
