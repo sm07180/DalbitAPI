@@ -3,9 +3,11 @@ package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.*;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.Value;
@@ -109,22 +111,22 @@ public class ProfileService {
             result = gsonUtil.toJson(new JsonOutputVo(Status. 팬보드_댓글삭제성공));
 
         } else if(Status.팬보드_댓글삭제실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_스타회원번호_회원아님, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_스타회원번호_회원아님));
 
         } else if(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님));
 
         } else if(Status.팬보드_댓글삭제실패_댓글인덱스번호_잘못된번호.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
 
         } else if(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
 
         } else if(Status.팬보드_댓글삭제실패_이미삭제됨.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_이미삭제됨, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_이미삭제됨));
 
         } else if(Status.팬보드_댓글삭제실패_삭제권한없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제권한없음, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제권한없음));
         }
 
         return result;
@@ -138,6 +140,15 @@ public class ProfileService {
     public String callMemberFanboardReply(P_FanboardReplyVo p_FanboardReplyVo) {
         ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
         List<FanboardVo> fanboardVoReply = profileDao.callMemberFanboardReply(procedureVo);
+
+//        ProcedureOutputVo procedureOutputVo;
+//        if(DalbitUtil.isEmpty(fanboardVoReply)) {
+//            procedureOutputVo = null;
+//        } else {
+//            for(int i=0; i<fanboardVoReply.size(); i++)
+//                fanboardVoReply.get(i).setProfileImage(new FanboardVo(fanboardVoReply.get(i).getProfileImage(), SERVER_PHOTO_URL));
+//
+//        }
 
         String result = null;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {

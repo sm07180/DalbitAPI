@@ -29,30 +29,7 @@ public class ProfileController {
     @Autowired
     MemberService memberService;
 
-//    @ApiOperation(value = "회원 팬보드 등록하기")
-//    @PostMapping("/board")
-//    public String profile(HttpServletRequest request) throws GlobalException {
-//
-//        P_InfoVo apiData = P_InfoVo.builder()
-//                .mem_no(MemberVo.getUserInfo().getMem_no())
-//                .target_mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
-//                .build();
-//
-//        String result = memberService.getMemberInfo(apiData);
-//
-//        return result;
-//    }
 
-    /**
-     * 정보 조회
-     */
-/*    @ApiOperation(value = "정보 조회")
-    @GetMapping("/{조회회원번호}")
-    public String information(@PathVariable String 조회회원번호){
-
-
-        return "정보 조회";
-    }*/
 
     /**
      * 회원 팬보드 등록하기
@@ -115,9 +92,8 @@ public class ProfileController {
         P_FanboardReplyVo fanboardReplyVo = P_FanboardReplyVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
-                .board_no(DalbitUtil.convertRequestParamToInteger(request, "board_no"))
+                .board_no(DalbitUtil.convertRequestParamToInteger(request, "i_board"))
                 .build();
-
         String result = profileService.callMemberFanboardReply(fanboardReplyVo);
         return result;
 
