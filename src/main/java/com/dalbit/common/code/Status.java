@@ -79,6 +79,12 @@ public enum Status {
     팬보드_댓글삭제실패_이미삭제됨("-5", "fanboard.delete.already.delete", "이미 삭제됨"),
     팬보드_댓글삭제실패_삭제권한없음("-6", "fanboard.delete.authorization.not", "삭제 권한이 없음"),
 
+    //회원정보보기
+    회원정보보기성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
+    회원정보보기_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
+    회원정보_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
+    회원정보보기실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
+
     //회원정보조회
     회원정보조회성공("0", "mypage.info.view.success", "회원정보보기 성공 시"),
     회원정보조회_회원아님("-1", "mypage.no", "회원이 아닐 시"),
@@ -110,6 +116,10 @@ public enum Status {
     회원차단해제_요청회원번호_정상아님("-1", "mypage.member.block.del.mem.no", "요청 회원번호 정상 아닐 시"),
     회원차단해제_신고회원번호_정상아님("-2", "mypage.member.block.blocked.del.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단안된상태("-3", "mypage.member.block.no", "차단 안된 상태 시"),
+
+    //회원 방송방 기본설정 수정
+    방송방기본설정_수정성공("0", "myprofile.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
+    방송방기본설정_회원아님("-1", "myprofile.broad.basic.edit.no", "회원이 아닐 시"),
 
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),
