@@ -80,6 +80,18 @@ public class MypageController {
         return result;
     }
 
+    /**
+     * 회원 방송방 기본설정 조회
+     */
+    @GetMapping("/broad")
+    public String broadBasic(){
+        P_BroadBasic apiData = P_BroadBasic.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .build();
+
+        String result = mypageService.callBroadBasic(apiData);
+        return result;
+    }
 
     /**
      * 회원 정보 조회
@@ -96,15 +108,23 @@ public class MypageController {
     }
 
     /**
-     * 회원 방송방 기본설정 조회
+     * 회원 방송방 기본설정 수정하기
      */
     @PostMapping("/broad")
-    public String broadBasic(){
-        P_BroadBasic apiData = P_BroadBasic.builder()
+    public String broadBasicEdit(HttpServletRequest request){
+        P_BroadBasicEdit apiData = P_BroadBasicEdit.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
+                .subjectType(DalbitUtil.convertRequestParamToInteger(request,"i_type"))
+                .title(DalbitUtil.convertRequestParamToString(request,"s_title"))
+                .backgroundImage(DalbitUtil.convertRequestParamToString(request,"s_bgImg"))
+                .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request,"i_bgRacy"))
+                .welcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"))
+                .notice(DalbitUtil.convertRequestParamToString(request,"s_notice"))
+                .entry(DalbitUtil.convertRequestParamToInteger(request,"i_entry"))
+                .age(DalbitUtil.convertRequestParamToInteger(request,"i_age"))
                 .build();
 
-        String result = mypageService.callBroadBasic(apiData);
+        String result = mypageService.callBroadBasicEdit(apiData);
         return result;
     }
 
@@ -114,7 +134,7 @@ public class MypageController {
 
 //
 //    /**
-//     * 회원 방송방 기본설정 조회
+//     * 회원 신고하기
 //     */
 //    @GetMapping("/broad")
 //    public String broadBasic(HttpServletRequest request){
@@ -125,9 +145,8 @@ public class MypageController {
 //        String result = mypageService.callBroadBasic(apiData);
 //        return result;
 //    }
-//
 //    /**
-//     * 회원 방송방 기본설정 조회
+//     * 회원 차단하기
 //     */
 //    @GetMapping("/broad")
 //    public String broadBasic(HttpServletRequest request){
@@ -138,5 +157,40 @@ public class MypageController {
 //        String result = mypageService.callBroadBasic(apiData);
 //        return result;
 //    }
-
+//    /**
+//     * 회원 차단 해제하기
+//     */
+//    @GetMapping("/broad")
+//    public String broadBasic(HttpServletRequest request){
+//        P_BroadBasic apiData = P_BroadBasic.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .build();
+//
+//        String result = mypageService.callBroadBasic(apiData);
+//        return result;
+//    }
+//    /**
+//     * 회원 알림설정 조회하기
+//     */
+//    @GetMapping("/broad")
+//    public String broadBasic(HttpServletRequest request){
+//        P_BroadBasic apiData = P_BroadBasic.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .build();
+//
+//        String result = mypageService.callBroadBasic(apiData);
+//        return result;
+//    }
+//    /**
+//     * 회원 알림설정 수정하기
+//     */
+//    @GetMapping("/broad")
+//    public String broadBasic(HttpServletRequest request){
+//        P_BroadBasic apiData = P_BroadBasic.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .build();
+//
+//        String result = mypageService.callBroadBasic(apiData);
+//        return result;
+//    }
 }
