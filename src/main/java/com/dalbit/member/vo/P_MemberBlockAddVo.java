@@ -10,5 +10,5 @@ import lombok.Getter;
 public class P_MemberBlockAddVo {
 
     @Builder.Default private String mem_no = "11577931027280";
-    @Builder.Default private String blocked_mem_no = "11577690655946";
+    @Builder.Default private String blocked_mem_no = "11577690655946";          //차단회원번호
 }
