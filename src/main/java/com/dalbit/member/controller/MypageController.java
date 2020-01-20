@@ -173,35 +173,35 @@ public class MypageController {
     }
 
 
-    /**
-     * 회원 알림설정 조회하기
-     */
-    @GetMapping("/notify")
-    public String memberNotify(HttpServletRequest request){
-        P_MemberNotifyVo apiData = P_MemberNotifyVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .build();
-
-        String result = mypageService.callMemberNotify(apiData);
-        return result;
-    }
-    /**
-     * 회원 알림설정 수정하기
-     */
-    @PostMapping("/notify")
-    public String memberNotifyEdit(HttpServletRequest request){
-        P_MemberNotifyEditVo apiData = P_MemberNotifyEditVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .all_ok(DalbitUtil.convertRequestParamToInteger(request,"i_all"))
-                .fan_reg(DalbitUtil.convertRequestParamToInteger(request,"i_fan"))
-                .fan_board(DalbitUtil.convertRequestParamToInteger(request,"i_board"))
-                .star_broadcast(DalbitUtil.convertRequestParamToInteger(request,"i_cast"))
-                .star_notice(DalbitUtil.convertRequestParamToInteger(request,"i_notice"))
-                .event_notice(DalbitUtil.convertRequestParamToInteger(request,"i_event"))
-                .search(DalbitUtil.convertRequestParamToInteger(request,"i_search"))
-                .build();
-
-        String result = mypageService.callMemberNotifyEdit(apiData);
-        return result;
-    }
+//    /**
+//     * 회원 알림설정 조회하기
+//     */
+//    @GetMapping("/notify")
+//    public String memberNotify(HttpServletRequest request){
+//        P_MemberNotifyVo apiData = P_MemberNotifyVo.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .build();
+//
+//        String result = mypageService.callMemberNotify(apiData);
+//        return result;
+//    }
+//    /**
+//     * 회원 알림설정 수정하기
+//     */
+//    @PostMapping("/notify")
+//    public String memberNotifyEdit(HttpServletRequest request){
+//        P_MemberNotifyEditVo apiData = P_MemberNotifyEditVo.builder()
+//                .mem_no(MemberVo.getUserInfo().getMem_no())
+//                .all_ok(DalbitUtil.convertRequestParamToInteger(request,"i_all"))
+//                .fan_reg(DalbitUtil.convertRequestParamToInteger(request,"i_fan"))
+//                .fan_board(DalbitUtil.convertRequestParamToInteger(request,"i_board"))
+//                .star_broadcast(DalbitUtil.convertRequestParamToInteger(request,"i_cast"))
+//                .star_notice(DalbitUtil.convertRequestParamToInteger(request,"i_notice"))
+//                .event_notice(DalbitUtil.convertRequestParamToInteger(request,"i_event"))
+//                .search(DalbitUtil.convertRequestParamToInteger(request,"i_search"))
+//                .build();
+//
+//        String result = mypageService.callMemberNotifyEdit(apiData);
+//        return result;
+//    }
 }
