@@ -58,10 +58,10 @@ public enum Status {
     팬해제실패("-4", "member.delete.fanstar.fail", "팬 해제 실패 시"),
 
     //회원정보보기
-    회원정보보기성공("0", "member.info.view.success", "회원정보보기 성공 시"),
-    회원정보보기_회원아님("-1", "member.no", "회원이 아닐 시"),
-    회원정보_대상회원아님("-2", "member.this.no", "대상회원이 아닐 시"),
-    회원정보보기실패("-3", "member.info.view.fail", "회원정보보기 실패 시"),
+    회원정보보기성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
+    회원정보보기_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
+    회원정보_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
+    회원정보보기실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
 
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.suceess", "댓글달기 성공 시"),
@@ -71,10 +71,14 @@ public enum Status {
     팬보드_댓글달기실패_depth값_오류("-4", "fanboard.add.fail.wrong.depth", " depth 값 잘못됨"),
 
     //회원정보조회
-    회원정보조회성공("0", "member.info.view.success", "회원정보보기 성공 시"),
-    회원정보조회_회원아님("-1", "member.no", "회원이 아닐 시"),
-    회원정보조회_대상회원아님("-2", "member.this.no", "대상회원이 아닐 시"),
-    회원정보조회_실패("-3", "member.info.view.fail", "회원정보보기 실패 시"),
+    회원정보조회성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
+    회원정보조회_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
+    회원정보조회_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
+    회원정보조회_실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
+
+    //회원 방송방 기본설정 수정callcEdit
+    방송방기본설정_수정성공("0", "myprofile.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
+    방송방기본설정_회원아님("-1", "myprofile.broad.basic.edit.no", "회원이 아닐 시"),
 
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),
