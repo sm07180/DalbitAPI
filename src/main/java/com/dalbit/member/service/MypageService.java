@@ -105,13 +105,12 @@ public class MypageService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        resultMap.put("image_background",new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), SERVER_PHOTO_URL));
-        procedureVo.setData(resultMap);
+        P_BroadBasicVo BroadBasic = new Gson().fromJson(procedureVo.getExt(), P_BroadBasicVo.class);
+        BroadBasicOutVo broadBasicOutVo = new BroadBasicOutVo(BroadBasic);
 
         String result;
         if(procedureVo.getRet().equals(Status.방송방기본설정조회_성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정조회_성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정조회_성공, broadBasicOutVo)));
         } else{
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정조회_회원아님)));
         }
