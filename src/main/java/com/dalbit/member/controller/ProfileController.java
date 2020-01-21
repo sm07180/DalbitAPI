@@ -103,12 +103,12 @@ public class ProfileController {
     @GetMapping("/board/reply")
     public String fanboardReply(HttpServletRequest request){
 
-        P_FanboardReplyVo fanboardReplyVo = P_FanboardReplyVo.builder()
+        P_FanboardReplyVo apiData = P_FanboardReplyVo.builder()
                 .mem_no(MemberVo.getUserInfo().getMem_no())
                 .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
                 .board_no(DalbitUtil.convertRequestParamToInteger(request, "i_board"))
                 .build();
-        String result = profileService.callMemberFanboardReply(fanboardReplyVo);
+        String result = profileService.callMemberFanboardReply(apiData);
         return result;
 
     }
