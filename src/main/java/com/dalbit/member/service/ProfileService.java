@@ -173,16 +173,16 @@ public class ProfileService {
      */
     public String callMemberFanboardReply(P_FanboardReplyVo p_FanboardReplyVo) {
         ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
-        List<FanboardVo> fanboardVoReply = profileDao.callMemberFanboardReply(procedureVo);
+        List<FanboardVo> fanboardVoReplyList = profileDao.callMemberFanboardReply(procedureVo);
 
         ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(fanboardVoReply)){
+        if(DalbitUtil.isEmpty(fanboardVoReplyList)){
             procedureOutputVo = null;
         }else{
-//            for (int i=0; i<fanboardVoReply.size(); i++){
-//                fanboardVoReply.get(i).setProfileImage(new ImageVo(fanboardVoReply.get(i).getProfileImage(), SERVER_PHOTO_URL));
+//            for (int i=0; i<fanboardVoReplyList.size(); i++){
+//                fanboardVoReplyList.get(i).setProfileImage(new ImageVo(fanboardVoReplyList.get(i).getProfileImage(), SERVER_PHOTO_URL));
 //            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, fanboardVoReply);
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, fanboardVoReplyList);
         }
         HashMap fanboardReply = new HashMap();
         fanboardReply.put("list", procedureOutputVo.getOutputBox());
