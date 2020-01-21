@@ -1,9 +1,12 @@
 package com.dalbit.util;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -14,6 +17,16 @@ import java.util.*;
 @Slf4j
 @Component
 public class DalbitUtil {
+
+    private static Environment environment;
+
+    @Autowired
+    private Environment activeEnvironment;
+
+    @PostConstruct
+    private void init () {
+        environment = this.activeEnvironment;
+    }
 
     public static boolean isNullBlank(String checkValue) {
         return checkValue == null || "".equals(checkValue);
@@ -445,6 +458,11 @@ public class DalbitUtil {
             log.error("StringUtil.getBooleanMap error - key name is [{}]", key);
             return false;
         }
+    }
+
+    public static String getProperty(String key){
+        return environment.getProperty(key);
+
     }
 
 }
