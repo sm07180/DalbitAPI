@@ -1,7 +1,9 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
+import com.dalbit.broadcast.vo.P_RoomGuestDeleteVo;
 import com.dalbit.broadcast.vo.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -26,7 +28,7 @@ public class UserController {
     @Autowired
     MessageUtil messageUtil;
     @Autowired
-    RoomService roomService;
+    UserService userService;
     @Autowired
     RestService restService;
 
@@ -39,14 +41,13 @@ public class UserController {
         int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
         int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
 
-        P_RoomMemberListVo apiData = P_RoomMemberListVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
-                .pageNo(pageNo)
-                .pageCnt(pageCnt)
-                .build();
+        P_RoomMemberListVo apiData = new P_RoomMemberListVo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"));
+        apiData.setPageNo(pageNo);
+        apiData.setPageCnt(pageCnt);
 
-        String result = roomService.callBroadCastRoomMemberList(apiData);
+        String result = userService.callBroadCastRoomMemberList(apiData);
 
         return result;
     }
@@ -58,7 +59,7 @@ public class UserController {
     public String roomGuestAdd(HttpServletRequest request) throws GlobalException {
         String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
         //게스트 지정을 위한 BJ토큰 조회
-        HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
+        //HashMap resultMap = userService.callBroadCastRoomStreamIdRequest(roomNo);
 
         //Guest 토큰생성
         String guestStreamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
@@ -70,7 +71,7 @@ public class UserController {
         log.info("guest_play_tokenid: {}", guestPlayToken);
 
 
-        P_RoomGuestAddVo apiData = P_RoomGuestAddVo.builder()
+       /* P_RoomGuestAddVo apiData = P_RoomGuestAddVo.builder()
                 .mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
                 .room_no(roomNo)
                 .guest_streamid(guestStreamId)
@@ -81,11 +82,41 @@ public class UserController {
                 .bj_play_tokenid(DalbitUtil.getStringMap(resultMap, "bj_playToken"))
                 .build();
 
-        String result = roomService.callBroadCastRoomGuestAdd(apiData);
+        String result = userService.callBroadCastRoomGuestAdd(apiData);*/
 
-        return result;
+        //return result;
+        return "";
     }
 
+
+    /**
+     * 게스트 취소하기
+     */
+    @DeleteMapping
+    public String roomGuestDelete(HttpServletRequest request) throws GlobalException{
+
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
+
+        //게스트 지정을 위한 BJ토큰 조회
+        //HashMap resultMap = userService.callBroadCastRoomStreamIdRequest(roomNo);
+
+        /*P_RoomGuestDeleteVo apiData = P_RoomGuestDeleteVo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .guest_mem_no(DalbitUtil.convertRequestParamToString(request, "s_mem_no"))
+                .room_no(roomNo)
+                .guest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"))
+                .guest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"))
+                .guest_play_tokenid(DalbitUtil.getStringMap(resultMap,"guest_play_tokenid"))
+                .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
+                .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
+                .bj_play_tokenid(DalbitUtil.getStringMap(resultMap,"bj_play_tokenid"))
+                .build();
+
+        String result = userService.callBroadCastRoomGuestDelete(apiData);*/
+
+        //return  result;
+        return "";
+    }
 
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
 

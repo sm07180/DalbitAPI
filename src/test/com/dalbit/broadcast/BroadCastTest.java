@@ -30,75 +30,74 @@ public class BroadCastTest {
     @Test
     public void 방송방생성테스트(){
 
-        log.debug("방송방생성 테스트");
-        log.debug(P_RoomCreateVo.builder().build().toString());
+        /*log.debug("방송방생성 테스트");
 
         P_RoomCreateVo apiSample = P_RoomCreateVo.builder().build();
         String result = roomService.callBroadCastRoomCreate(apiSample);
 
         log.info(" ### 방송방생성 결과 ###");
-        log.info(result);
+        log.info(result);*/
     }
 
     @Test
     public void 방송방참여하기(){
-        log.debug("방송방 참여하기 테스트");
+        /*log.debug("방송방 참여하기 테스트");
         log.debug(P_RoomJoinVo.builder().build().toString());
 
         P_RoomJoinVo apiSample = P_RoomJoinVo.builder().build();
         String result = roomService.callBroadCastRoomJoin(apiSample);
 
         log.info(" ### 방송방참여하기 결과 ###");
-        log.info(result);
+        log.info(result);*/
     }
 
     @Test
     public void 방송방나가기(){
-        log.debug("방송방 나가기 테스트");
+        /*log.debug("방송방 나가기 테스트");
         log.debug(P_RoomExitVo.builder().build().toString());
 
         P_RoomExitVo apiSample = P_RoomExitVo.builder().build();
         String result = roomService.callBroadCastRoomExit(apiSample);
 
         log.info(" ### 방송방나가기 결과 ###");
-        log.info(result);
+        log.info(result);*/
     }
 
     @Test
     public void 방송방정보수정(){
-        log.debug("방송방 정보 수정 테스트");
+        /*log.debug("방송방 정보 수정 테스트");
         log.debug(P_RoomEditVo.builder().build().toString());
 
         P_RoomEditVo apiSample = P_RoomEditVo.builder().build();
         String result = roomService.callBroadCastRoomEdit(apiSample);
 
         log.info(" ### 방송방정보수정 결과 ###");
-        log.info(result);
+        log.info(result);*/
     }
 
     @Test
     public void 방송방리스트(){
-        log.debug("방송방 리스트 테스트");
+        /*log.debug("방송방 리스트 테스트");
         log.debug(P_RoomListVo.builder().build().toString());
 
         P_RoomListVo apiSample = P_RoomListVo.builder().build();
         String result = roomService.callBroadCastRoomList(apiSample);
 
         log.info(" ### 방송방리스트 결과 ###");
-        log.info(result);
+        log.info(result);*/
 
     }
 
     @Test
     public void 방송방참여자리스트 (){
-        log.debug("방송방 참여자 리스트");
+        /*log.debug("방송방 참여자 리스트");
         log.debug(P_RoomMemberListVo.builder().build().toString());
 
         P_RoomMemberListVo apiSample = P_RoomMemberListVo.builder().build();
         String result = roomService.callBroadCastRoomMemberList(apiSample);
 
         log.info(" ### 프로시저 호출결과 ###");
-        log.info(result);
+        log.info(result);*/
 
     }
 
@@ -138,30 +137,10 @@ public class BroadCastTest {
     public void 방송방게스트취소하기(){
         log.debug("방송방 게스트 취소하기");
         P_RoomGuestDeleteVo apiSample = P_RoomGuestDeleteVo.builder().build();
-        ProcedureVo procedureVo = roomService.callBroadCastRoomGuestDelete(apiSample);
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        String result = roomService.callBroadCastRoomGuestDelete(apiSample);
 
         log.info(" ### 프로시저 호출결과 ###");
-        if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가, procedureVo.getData())));
-        }else{
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, procedureVo.getData())));
-        }
+        log.info(result);
     }
 
     @Test

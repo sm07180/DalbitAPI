@@ -1,16 +1,26 @@
 package com.dalbit.broadcast.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Date;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_RoomMemberListVo {
 
-    @Builder.Default private String mem_no = "11577950701317";                                  //방참여자 리스트 요청 회원번호
-    @Builder.Default private String room_no = "91578033988651";                                 //방번호
-    @Builder.Default private int pageNo = 1;                                                    //현재 페이지 번호
-    @Builder.Default private int pageCnt = 10;                                                  //페이지당 리스트 개수
+    /* Input */
+    private String mem_no;      //방참여자 리스트 요청 회원번호
+    private String room_no;     //방번호
+    private int pageNo;         //현재 페이지 번호
+    private int pageCnt;        //페이지당 리스트 개수
+
+    /* Output */
+    private String nickName;
+    private String memSex;
+    private int birthYear;
+    private Object profileImage;
+    private int auth;
+    private String controlRole;
+    private Date join_date;
 }

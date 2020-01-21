@@ -50,21 +50,20 @@ public class RoomController {
         log.info("bj_publishToken: {}", publishToken);
         log.info("bj_playToken: {}", playToken);
 
-        P_RoomCreateVo apiData = P_RoomCreateVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
-                .title(DalbitUtil.convertRequestParamToString(request, "s_title"))
-                .backgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "s_bgImg"))
-                .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"))
-                .welcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"))
-                .notice(DalbitUtil.convertRequestParamToString(request,"s_notice"))
-                .entry(DalbitUtil.convertRequestParamToInteger(request,"i_entry"))
-                .age(DalbitUtil.convertRequestParamToInteger(request,"i_age"))
-                .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
-                .bj_streamid(streamId)
-                .bj_publish_tokenid(publishToken)
-                .bj_play_tokenid(playToken)
-                .build();
+        P_RoomCreateVo apiData = new P_RoomCreateVo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
+        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "s_title"));
+        apiData.setBackgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "s_bgImg"));
+        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"));
+        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"));
+        apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"s_notice"));
+        apiData.setEntry(DalbitUtil.convertRequestParamToInteger(request,"entryType") == 1 ? 1: 0);
+        apiData.setAge(DalbitUtil.convertRequestParamToInteger(request,"entryType") == 2 ? 1 : 0);
+        apiData.setOs(DalbitUtil.convertRequestParamToInteger(request,"i_os"));
+        apiData.setBj_streamid(streamId);
+        apiData.setBj_publish_tokenid(publishToken);
+        apiData.setBj_play_tokenid(playToken);
 
         String result = roomService.callBroadCastRoomCreate(apiData);
 
@@ -81,16 +80,15 @@ public class RoomController {
         //방참가를 위한 토큰 조회
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
 
-        P_RoomJoinVo apiData = P_RoomJoinVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(roomNo)
-                .guest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"))
-                .guest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"))
-                .guest_play_tokenid(DalbitUtil.getStringMap(resultMap,"guest_play_tokenid"))
-                .bj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"))
-                .bj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"))
-                .bj_play_tokenid(DalbitUtil.getStringMap(resultMap,"bj_play_tokenid"))
-                .build();
+        P_RoomJoinVo apiData = new P_RoomJoinVo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setRoom_no(roomNo);
+        apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
+        apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
+        apiData.setGuest_play_tokenid(DalbitUtil.getStringMap(resultMap,"guest_play_tokenid"));
+        apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
+        apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
+        apiData.setBj_play_tokenid(DalbitUtil.getStringMap(resultMap,"bj_play_tokenid"));
 
         String result = roomService.callBroadCastRoomJoin(apiData);
 
@@ -103,10 +101,9 @@ public class RoomController {
     @PostMapping("/exit")
     public String roomExit(HttpServletRequest request){
         String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
-        P_RoomExitVo apiData = P_RoomExitVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(roomNo)
-                .build();
+        P_RoomExitVo apiData = new P_RoomExitVo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setRoom_no(roomNo);
 
         String result = roomService.callBroadCastRoomExit(apiData);
 
@@ -121,17 +118,16 @@ public class RoomController {
 
         //TODO-방송 정보 조회 ? 서버? ...
 
-        P_RoomEditVo apiData = P_RoomEditVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
-                .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
-                .title(DalbitUtil.convertRequestParamToString(request, "s_title"))
-                .backgroundImage(DalbitUtil.convertRequestParamToString(request, "s_bgImg"))
-                .backgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"))
-                .welcomMsg(DalbitUtil.convertRequestParamToString(request, "s_welcome"))
-                .entry(DalbitUtil.convertRequestParamToInteger(request, "i_entry"))
-                .age(DalbitUtil.convertRequestParamToInteger(request, "i_age"))
-                .build();
+        P_RoomEditVo apiData = new P_RoomEditVo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
+        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "s_title"));
+        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request, "s_bgImg"));
+        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"));
+        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request, "s_welcome"));
+        apiData.setEntry(DalbitUtil.convertRequestParamToInteger(request, "i_entry"));
+        apiData.setAge(DalbitUtil.convertRequestParamToInteger(request, "i_age"));
 
         String result = roomService.callBroadCastRoomEdit(apiData);
 
@@ -147,12 +143,11 @@ public class RoomController {
         int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
         int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
 
-        P_RoomListVo apiData = P_RoomListVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .subjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"))
-                .pageNo(pageNo)
-                .pageCnt(pageCnt)
-                .build();
+        P_RoomListVo apiData = new P_RoomListVo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
+        apiData.setPageNo(pageNo);
+        apiData.setPageCnt(pageCnt);
 
         String result = roomService.callBroadCastRoomList(apiData);
 

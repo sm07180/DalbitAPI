@@ -3,7 +3,6 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -18,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -174,22 +174,18 @@ public class RoomService {
      */
     public String callBroadCastRoomList(P_RoomListVo pRoomListVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
-        List<RoomVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+
+        List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
 
         ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(roomVoList)){
             procedureOutputVo = null;
         }else{
+            List<RoomOutVo> outVoList = new ArrayList<>();
             for (int i=0; i<roomVoList.size(); i++){
-                roomVoList.get(i).setImage_background(new ImageVo(roomVoList.get(i).getImage_background(), SERVER_PHOTO_URL));
-                roomVoList.get(i).setBj_profileImage(new ImageVo(roomVoList.get(i).getBj_profileImage(), roomVoList.get(i).getBj_memSex(), SERVER_PHOTO_URL));
-
-                int bj_age = DalbitUtil.ageCalculation(roomVoList.get(i).getBj_birthYear());
-                int guest_age = DalbitUtil.ageCalculation(roomVoList.get(i).getGuest_birthYear());
-                roomVoList.get(i).setBj_age(bj_age);
-                roomVoList.get(i).setGuest_age(guest_age);
+                outVoList.add(new RoomOutVo(roomVoList.get(i)));
             }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, roomVoList);
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
         HashMap roomList = new HashMap();
         roomList.put("list", procedureOutputVo.getOutputBox());
@@ -211,46 +207,6 @@ public class RoomService {
         return result;
     }
 
-
-    /**
-     * 방송방 참여자 리스트
-     */
-    public String callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
-        List<RoomMemberVo> roomMemberVoList = roomDao.callBroadCastRoomMemberList(procedureVo);
-
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(roomMemberVoList)){
-            procedureOutputVo = null;
-        }else{
-            for (int i=0; i<roomMemberVoList.size(); i++){
-                roomMemberVoList.get(i).setProfileImage(new ImageVo(roomMemberVoList.get(i).getProfileImage(), SERVER_PHOTO_URL));
-
-                int age = DalbitUtil.ageCalculation(roomMemberVoList.get(i).getBirthYear());
-                roomMemberVoList.get(i).setAge(age);
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, roomMemberVoList);
-        }
-        HashMap roomMemberList = new HashMap();
-        roomMemberList.put("list", procedureOutputVo.getOutputBox());
-
-        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
-        String result="";
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberList));
-        }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, roomMemberList));
-        }else if(Status.방송참여자리스트없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
-        }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트조회_실패, roomMemberList));
-        }
-
-        return result;
-    }
 
     /**
      * 방송방 좋아요 추가
@@ -333,14 +289,9 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        returnMap.put("mem_no",MemberVo.getUserInfo().getMem_no());
         returnMap.put("room_no",pRoomGuestAddVo.getRoom_no());
         returnMap.put("guest_streamid",pRoomGuestAddVo.getGuest_streamid());
-        returnMap.put("guest_publish_tokenid",pRoomGuestAddVo.getGuest_publish_tokenid());
-        returnMap.put("guest_play_tokenid",pRoomGuestAddVo.getGuest_play_tokenid());
         returnMap.put("bj_streamid",pRoomGuestAddVo.getBj_streamid());
-        returnMap.put("bj_publish_tokenid",pRoomGuestAddVo.getBj_publish_tokenid());
-        returnMap.put("bj_play_tokenid",pRoomGuestAddVo.getBj_play_tokenid());
         log.info("returnMap: {}",returnMap);
         procedureVo.setData(returnMap);
 
@@ -371,9 +322,41 @@ public class RoomService {
     /**
      * 방송방 게스트 취소
      */
-    public ProcedureVo callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo) {
+    public String callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGuestDeleteVo);
         roomDao.callBroadCastRoomGuestDelete(procedureVo);
-        return procedureVo;
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("room_no",pRoomGuestDeleteVo.getRoom_no());
+        returnMap.put("guest_streamid",pRoomGuestDeleteVo.getGuest_streamid());
+        returnMap.put("bj_streamid",pRoomGuestDeleteVo.getBj_streamid());
+        log.info("returnMap: {}",returnMap);
+        procedureVo.setData(returnMap);
+
+        String result = "";
+        if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가, procedureVo.getData()));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, procedureVo.getData()));
+        }
+        return result;
     }
 }
