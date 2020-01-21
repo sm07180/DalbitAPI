@@ -17,58 +17,58 @@
                         <div class="card-body">
                             <form id="loginFrm" method="post">
                                 <div class="form-group row">
-                                    <label for="s_mem" class="col-md-4 col-form-label text-md-right">s_mem</label>
+                                    <label for="memType" class="col-md-4 col-form-label text-md-right">memType</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_mem" id="s_mem" class="form-control" autofocus value="p" />
+                                        <input type="text" name="memType" id="memType" class="form-control" autofocus value="p" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="s_id" class="col-md-4 col-form-label text-md-right">s_id</label>
+                                    <label for="memId" class="col-md-4 col-form-label text-md-right">memId</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_id" id="s_id" class="form-control" value="010-1234-4568" />
+                                        <input type="text" name="memId" id="memId" class="form-control" value="010-1234-4568" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="s_id" class="col-md-4 col-form-label text-md-right">s_pwd</label>
+                                    <label for="memId" class="col-md-4 col-form-label text-md-right">memPwd</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_pwd" id="s_pwd" class="form-control" value="1234" />
+                                        <input type="text" name="memPwd" id="memPwd" class="form-control" value="1234" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="i_os" class="col-md-4 col-form-label text-md-right">i_os</label>
+                                    <label for="os" class="col-md-4 col-form-label text-md-right">os</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="i_os" id="i_os" class="form-control" value="1" />
+                                        <input type="text" name="os" id="os" class="form-control" value="1" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="s_deviceId" class="col-md-4 col-form-label text-md-right">s_deviceId</label>
+                                    <label for="deviceId" class="col-md-4 col-form-label text-md-right">deviceId</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_deviceId" id="s_deviceId" class="form-control" value="2200DDD1-77A" />
+                                        <input type="text" name="deviceId" id="deviceId" class="form-control" value="2200DDD1-77A" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="s_deviceToken" class="col-md-4 col-form-label text-md-right">s_deviceToken</label>
+                                    <label for="deviceToken" class="col-md-4 col-form-label text-md-right">deviceToken</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_deviceToken" id="s_deviceToken" class="form-control" value="45E3156FDE20E7F11AF" />
+                                        <input type="text" name="deviceToken" id="deviceToken" class="form-control" value="45E3156FDE20E7F11AF" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="s_appVer" class="col-md-4 col-form-label text-md-right">s_appVer</label>
+                                    <label for="appVer" class="col-md-4 col-form-label text-md-right">appVer</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_appVer" id="s_appVer" class="form-control" value="1.0.0.1" />
+                                        <input type="text" name="appVer" id="appVer" class="form-control" value="1.0.0.1" />
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
-                                    <label for="s_appAdId" class="col-md-4 col-form-label text-md-right">s_appVer</label>
+                                    <label for="appAdId" class="col-md-4 col-form-label text-md-right">appAdId</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="s_appAdId" id="s_appAdId" class="form-control" value="asd123asdas1" />
+                                        <input type="text" name="appAdId" id="appAdId" class="form-control" value="asd123asdas1" />
                                     </div>
                                 </div>
 
