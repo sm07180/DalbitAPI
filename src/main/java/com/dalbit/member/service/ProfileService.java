@@ -54,7 +54,6 @@ public class ProfileService {
         HashMap returnMap = new HashMap();
 
         returnMap.put("memNo",MemberVo.getUserInfo().getMem_no());
-
         returnMap.put("nickName",DalbitUtil.isNullToString(resultMap.get("nickName")));
         returnMap.put("memSex",DalbitUtil.isNullToString(resultMap.get("memSex")));
         returnMap.put("age",DalbitUtil.isNullToString(resultMap.get("age")));

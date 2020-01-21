@@ -36,11 +36,9 @@ public class ProfileController {
     @GetMapping("")
     public String memberInfo(HttpServletRequest request){
 
-        P_ProfileInfo apiData = P_ProfileInfo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .target_mem_no(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
-                .build();
-
+        P_ProfileInfo apiData = new P_ProfileInfo();
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setTarget_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = profileService.callMemberInfo(apiData);
         return result;
     }
