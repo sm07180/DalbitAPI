@@ -27,7 +27,7 @@ public class Procedure_MemberTest {
 
     @Test
     public void 회원_로그인(){
-        P_LoginVo apiSample = P_LoginVo.builder().build();
+        P_LoginVo apiSample = new P_LoginVo();
 
         ProcedureVo procedureVo = memberService.callMemberLogin(apiSample);
 
@@ -55,11 +55,7 @@ public class Procedure_MemberTest {
     @Test
     public void 회원가입(){
 
-        P_JoinVo joinVo = P_JoinVo.builder()
-            .memSlct("p")
-            .id("010-" + DalbitUtil.randomValue("number", 4) + "-" + DalbitUtil.randomValue("number", 4))
-            .nickName("T_" + DalbitUtil.randomValue("string", 6) + DalbitUtil.randomValue("number", 2))
-        .build();
+        P_JoinVo joinVo = new P_JoinVo();
 
         memberService.signup(joinVo);
     }
