@@ -52,11 +52,10 @@ public class ProfileService {
         P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
         profileInfo.setTarget_mem_no(pProfileInfo.getTarget_mem_no());
         ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo);
-        procedureVo.setData(ProfileInfoOutVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보_성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_성공, ProfileInfoOutVo)));
         }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
         }else{
