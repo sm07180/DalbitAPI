@@ -176,72 +176,72 @@ public class ProfileService {
      */
     public String callMemberFanboardReply(P_FanboardReplyVo p_FanboardReplyVo) {
         ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
-//        List<FanboardVo> fanboardVoReply = profileDao.callMemberFanboardReply(procedureVo);
+        List<FanboardVo> fanboardVoReply = profileDao.callMemberFanboardReply(procedureVo);
 
-//        ProcedureOutputVo procedureOutputVo;
-//        if(DalbitUtil.isEmpty(fanboardVoReply)){
-//            procedureOutputVo = null;
-//        }else{
-////            for (int i=0; i<fanboardVoReply.size(); i++){
-////                fanboardVoReply.get(i).setProfileImage(new ImageVo(fanboardVoReply.get(i).getProfileImage(), SERVER_PHOTO_URL));
-////            }
-//            procedureOutputVo = new ProcedureOutputVo(procedureVo, fanboardVoReply);
-//        }
-//        HashMap fanboardReply = new HashMap();
-//        fanboardReply.put("list", procedureOutputVo.getOutputBox());
-//
-//        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
-//        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
-//        log.info(" ### 프로시저 호출결과 ###");
-//
-//        String result="";
-//
-//        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-//            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReply));
-//        } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureOutputVo.getRet())) {
-//            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, procedureOutputVo.getData()));
-//        } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
-//            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_요청회원번호_회원아님, procedureOutputVo.getData())));
-//        } else if(Status.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
-//            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_스타회원번호_회원아님, procedureOutputVo.getData())));
-//        }
-//
-//        return result;
-//        }
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(fanboardVoReply)){
+            procedureOutputVo = null;
+        }else{
+//            for (int i=0; i<fanboardVoReply.size(); i++){
+//                fanboardVoReply.get(i).setProfileImage(new ImageVo(fanboardVoReply.get(i).getProfileImage(), SERVER_PHOTO_URL));
+//            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, fanboardVoReply);
+        }
+        HashMap fanboardReply = new HashMap();
+        fanboardReply.put("list", procedureOutputVo.getOutputBox());
 
-        profileDao.callMemberFanboardReply(procedureVo);
+        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
 
-        log.info("프로시저 응답 코드 : {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이터 : {}", procedureVo.getExt());
+        String result="";
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-
-        returnMap.put("board_idx", DalbitUtil.isNullToString(resultMap.get("board_idx")));
-        returnMap.put("board_no", DalbitUtil.isNullToString(resultMap.get("board_no")));
-        returnMap.put("writer_mem_no", DalbitUtil.isNullToString(resultMap.get("writer_mem_no")));
-        returnMap.put("nickName", DalbitUtil.isNullToString(resultMap.get("nickName")));
-        returnMap.put("profileImage", DalbitUtil.isNullToString(resultMap.get("profileImage")));
-        returnMap.put("contents", DalbitUtil.isNullToString(resultMap.get("contents")));
-        returnMap.put("status", DalbitUtil.isNullToString(resultMap.get("status")));
-        returnMap.put("writeDate", DalbitUtil.isNullToString(resultMap.get("writerDate")));
-
-        log.info("returnMap: {}", returnMap);
-        procedureVo.setData(returnMap);
-
-        String result ="";
-
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, procedureVo.getData()));
-        } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, procedureVo.getData()));
-        } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_요청회원번호_회원아님, procedureVo.getData())));
-        } else if(Status.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_스타회원번호_회원아님, procedureVo.getData())));
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReply));
+        } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureOutputVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, procedureOutputVo.getData()));
+        } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
+            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_요청회원번호_회원아님, procedureOutputVo.getData())));
+        } else if(Status.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
+            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_스타회원번호_회원아님, procedureOutputVo.getData())));
         }
 
         return result;
         }
+
+//        profileDao.callMemberFanboardReply(procedureVo);
+//
+//        log.info("프로시저 응답 코드 : {}", procedureVo.getRet());
+//        log.info("프로시저 응답 데이터 : {}", procedureVo.getExt());
+//
+//        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+//        HashMap returnMap = new HashMap();
+//
+//        returnMap.put("board_idx", DalbitUtil.isNullToString(resultMap.get("board_idx")));
+//        returnMap.put("board_no", DalbitUtil.isNullToString(resultMap.get("board_no")));
+//        returnMap.put("writer_mem_no", DalbitUtil.isNullToString(resultMap.get("writer_mem_no")));
+//        returnMap.put("nickName", DalbitUtil.isNullToString(resultMap.get("nickName")));
+//        returnMap.put("profileImage", DalbitUtil.isNullToString(resultMap.get("profileImage")));
+//        returnMap.put("contents", DalbitUtil.isNullToString(resultMap.get("contents")));
+//        returnMap.put("status", DalbitUtil.isNullToString(resultMap.get("status")));
+//        returnMap.put("writeDate", DalbitUtil.isNullToString(resultMap.get("writerDate")));
+//
+//        log.info("returnMap: {}", returnMap);
+//        procedureVo.setData(returnMap);
+//
+//        String result ="";
+//
+//        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, procedureVo.getData()));
+//        } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureVo.getRet())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, procedureVo.getData()));
+//        } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+//            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_요청회원번호_회원아님, procedureVo.getData())));
+//        } else if(Status.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+//            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_스타회원번호_회원아님, procedureVo.getData())));
+//        }
+//
+//        return result;
+//        }
 
 }
