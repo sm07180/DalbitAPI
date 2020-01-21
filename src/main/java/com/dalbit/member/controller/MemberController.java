@@ -29,26 +29,28 @@ public class MemberController {
     @PostMapping("signup")
     public String signup(HttpServletRequest request){
 
-        P_JoinVo joinVo = P_JoinVo.builder()
-            .memSlct(DalbitUtil.convertRequestParamToString(request,"s_mem"))
-            .id(DalbitUtil.convertRequestParamToString(request,"s_id"))
-            .pw(DalbitUtil.convertRequestParamToString(request,"s_pwd"))
-            .memSex(DalbitUtil.convertRequestParamToString(request,"s_gender"))
-            .nickName(DalbitUtil.convertRequestParamToString(request,"s_nickNm"))
-            .birthYear(DalbitUtil.convertRequestParamToInteger(request,"i_birthYY"))
-            .birthMonth(DalbitUtil.convertRequestParamToInteger(request,"i_birthMM"))
-            .birthDay(DalbitUtil.convertRequestParamToInteger(request,"i_birthDD"))
-            .terms1(DalbitUtil.convertRequestParamToString(request,"s_term1"))
-            .terms2(DalbitUtil.convertRequestParamToString(request,"s_term2"))
-            .terms3(DalbitUtil.convertRequestParamToString(request,"s_term3"))
-            .name(DalbitUtil.convertRequestParamToString(request,"s_name"))
-            .profileImage(DalbitUtil.convertRequestParamToString(request,"s_profImg"))
-            .email(DalbitUtil.convertRequestParamToString(request,"s_email"))
-            .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
-            .deviceUuid(DalbitUtil.convertRequestParamToString(request,"s_deviceId"))
-            .deviceToken(DalbitUtil.convertRequestParamToString(request,"s_deviceToken"))
-            .appVersion(DalbitUtil.convertRequestParamToString(request,"s_appVer"))
-            .build();
+        P_JoinVo joinVo = new P_JoinVo(
+            DalbitUtil.convertRequestParamToString(request,"memType")
+            , DalbitUtil.convertRequestParamToString(request,"memId")
+            , DalbitUtil.convertRequestParamToString(request,"memPwd")
+            , DalbitUtil.convertRequestParamToString(request,"gender")
+            , DalbitUtil.convertRequestParamToString(request,"nickNm")
+            , DalbitUtil.convertRequestParamToInteger(request,"birthYY")
+            , DalbitUtil.convertRequestParamToInteger(request,"birthMM")
+            , DalbitUtil.convertRequestParamToInteger(request,"birthDD")
+            , DalbitUtil.convertRequestParamToString(request,"term1")
+            , DalbitUtil.convertRequestParamToString(request,"term2")
+            , DalbitUtil.convertRequestParamToString(request,"term3")
+            , DalbitUtil.convertRequestParamToString(request,"name")
+            , DalbitUtil.convertRequestParamToString(request,"profImg")
+            , DalbitUtil.convertRequestParamToInteger(request,"profImgRacy")
+            , DalbitUtil.convertRequestParamToString(request,"email")
+            , DalbitUtil.convertRequestParamToInteger(request,"os")
+            , DalbitUtil.convertRequestParamToString(request,"deviceId")
+            , DalbitUtil.convertRequestParamToString(request,"deviceToken")
+            , DalbitUtil.convertRequestParamToString(request,"appVer")
+            , DalbitUtil.convertRequestParamToString(request,"appAdId")
+        );
 
         String result = memberService.signup(joinVo);
         return result;
