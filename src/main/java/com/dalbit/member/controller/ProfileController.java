@@ -30,6 +30,20 @@ public class ProfileController {
     MemberService memberService;
 
 
+    /**
+     * 정보 조회
+     */
+    @GetMapping("")
+    public String memberInfo(HttpServletRequest request){
+
+        P_ProfileInfo apiData = P_ProfileInfo.builder()
+                .mem_no(MemberVo.getUserInfo().getMem_no())
+                .target_mem_no(DalbitUtil.convertRequestParamToString(request,"s_mem_no"))
+                .build();
+
+        String result = profileService.callMemberInfo(apiData);
+        return result;
+    }
 
     /**
      * 회원 팬보드 등록하기

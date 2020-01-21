@@ -11,6 +11,7 @@ import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
+import com.google.gson.Gson;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +37,49 @@ public class ProfileService {
     @org.springframework.beans.factory.annotation.Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
-
+    @org.springframework.beans.factory.annotation.Value("${server.photo.url}")
+    private String SERVER_PHOTO_URL;
     /**
      * 정보 조회
      */
-//    public String callMemberInfoView(ProcedureVo procedurevo) {
-//        return "";
-//    }
-//
-//
 
+    public String callMemberInfo(P_ProfileInfo pProfileInfo) {
+        ProcedureVo procedureVo = new ProcedureVo(pProfileInfo);
+        profileDao.callMemberInfo(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+
+        returnMap.put("memNo",MemberVo.getUserInfo().getMem_no());
+
+        returnMap.put("nickName",DalbitUtil.isNullToString(resultMap.get("nickName")));
+        returnMap.put("memSex",DalbitUtil.isNullToString(resultMap.get("memSex")));
+        returnMap.put("age",DalbitUtil.isNullToString(resultMap.get("age")));
+        returnMap.put("memId",DalbitUtil.isNullToString(resultMap.get("memId")));
+        returnMap.put("profileMsg",DalbitUtil.isNullToString(resultMap.get("profileMsg")));
+        returnMap.put("level",DalbitUtil.isNullToString(resultMap.get("level")));
+        returnMap.put("fanCount",DalbitUtil.isNullToString(resultMap.get("fanCount")));
+        returnMap.put("starCount",DalbitUtil.isNullToString(resultMap.get("starCount")));
+        returnMap.put("enableFan",DalbitUtil.isNullToString(resultMap.get("enableFan")));
+        returnMap.put("backgroundImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "backgroundImage"), SERVER_PHOTO_URL));
+        returnMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), SERVER_PHOTO_URL));
+
+        log.info("returnMap: {}",returnMap);
+        procedureVo.setData(returnMap);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.회원정보_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상아님)));
+        }
+        return result;
+    }
 
 
     /**

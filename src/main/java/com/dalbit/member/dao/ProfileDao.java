@@ -9,8 +9,7 @@ import java.util.List;
 @Repository
 public interface ProfileDao {
 
-    ProcedureVo callMemberInfoView(ProcedureVo procedureVo);
-
+    ProcedureVo callMemberInfo(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardAdd(ProcedureVo procedureVo);
     List<FanboardVo> callMemberFanboardList(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardDelete(ProcedureVo procedureVo);
