@@ -15,6 +15,7 @@
 		<typeAlias type="com.dalbit.broadcast.vo.P_RoomListVo" alias="P_RoomListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.P_RoomMemberListVo" alias="P_RoomMemberListVo" />
 		<typeAlias type="com.dalbit.member.vo.P_FanboardListVo" alias="P_FanboardListVo" />
+		<typeAlias type="com.dalbit.member.vo.P_FanboardReplyVo" alias="P_FanboardReplyVo" />
 	</typeAliases>
 
 </configuration>

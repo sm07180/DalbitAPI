@@ -51,15 +51,15 @@ public class ProfileController {
     @PostMapping("/board")
     public String fanboardAdd(HttpServletRequest request){
 
-        P_FanboardAddVo fanboardAddVo = P_FanboardAddVo.builder()
-            .star_mem_no(DalbitUtil.convertRequestParamToString(request,"s_startNo"))
-            .writer_mem_no(MemberVo.getUserInfo().getMem_no())
-            .depth(DalbitUtil.convertRequestParamToInteger(request,"i_depth"))
-            .board_no(DalbitUtil.convertRequestParamToInteger(request,"i_board"))
-            .contents(DalbitUtil.convertRequestParamToString(request,"s_contents"))
-            .build();
+        P_FanboardAddVo fanboardAddVo = new P_FanboardAddVo();
+        fanboardAddVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        fanboardAddVo.setWriter_mem_no(DalbitUtil.convertRequestParamToString(request, "writerNo"));
+        fanboardAddVo.setDepth(DalbitUtil.convertRequestParamToInteger(request, "depth"));
+        fanboardAddVo.setBoard_no(DalbitUtil.convertRequestParamToInteger(request, "boardNo"));
+        fanboardAddVo.setContents(DalbitUtil.convertRequestParamToString(request, "content"));
 
         String result = profileService.callMemberFanboardAdd(fanboardAddVo);
+
         return result;
     }
 
@@ -71,9 +71,9 @@ public class ProfileController {
 
         P_FanboardListVo fanboardListVo = new P_FanboardListVo();
         fanboardListVo.setMem_no(MemberVo.getUserInfo().getMem_no());
-        fanboardListVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"));
-        fanboardListVo.setPageNo(DalbitUtil.convertRequestParamToInteger(request, "i_page"));
-        fanboardListVo.setPageCnt(DalbitUtil.convertRequestParamToInteger(request, "i_records"));
+        fanboardListVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        fanboardListVo.setPageNo(DalbitUtil.convertRequestParamToInteger(request, "page"));
+        fanboardListVo.setPageCnt(DalbitUtil.convertRequestParamToInteger(request, "records"));
 
         String result = profileService.callMemberFanboardList(fanboardListVo);
 
@@ -86,11 +86,11 @@ public class ProfileController {
     @DeleteMapping("/board")
     public String fanboardDelete(HttpServletRequest request){
 
-        P_FanboardDeleteVo fanboardDeleteVo = P_FanboardDeleteVo.builder()
-                .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
-                .delete_mem_no(MemberVo.getUserInfo().getMem_no())
-                .board_idx(DalbitUtil.convertRequestParamToInteger(request,"i_board"))
-                .build();
+        P_FanboardDeleteVo fanboardDeleteVo = new P_FanboardDeleteVo();
+        fanboardDeleteVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        fanboardDeleteVo.setDelete_mem_no(MemberVo.getUserInfo().getMem_no());  // 물어보기
+        fanboardDeleteVo.setBoard_idx(DalbitUtil.convertRequestParamToInteger(request, "boardIdx"));
+
         String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
         return result;
     }
@@ -101,12 +101,12 @@ public class ProfileController {
     @GetMapping("/board/reply")
     public String fanboardReply(HttpServletRequest request){
 
-        P_FanboardReplyVo apiData = P_FanboardReplyVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
-                .board_no(DalbitUtil.convertRequestParamToInteger(request, "i_board"))
-                .build();
-        String result = profileService.callMemberFanboardReply(apiData);
+        P_FanboardReplyVo fanboardReplyVo = new P_FanboardReplyVo();
+        fanboardReplyVo.setMem_no(MemberVo.getUserInfo().getMem_no());
+        fanboardReplyVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        fanboardReplyVo.setBoard_no(DalbitUtil.convertRequestParamToInteger(request, "boardNo"));
+
+        String result = profileService.callMemberFanboardReply(fanboardReplyVo);
         return result;
 
     }
