@@ -1,15 +1,13 @@
 package com.dalbit.member.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_FanstarInsertVo {
 
-    @Builder.Default private String fanMemNo = "11577690655946";
-    @Builder.Default private String starMemNo = "11577931027280";
+    private String fan_mem_no;                    //팬번호
+    private String star_mem_no;                   //스타번호
 
 }

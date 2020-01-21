@@ -1,20 +1,18 @@
 package com.dalbit.member.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_MemberNotifyEditVo {
 
-    @Builder.Default private String mem_no = "11577690655946";      //ID
-    @Builder.Default private int all_ok = 0;                        //전체알림
-    @Builder.Default private int fan_reg = 0;                       //팬등록알림
-    @Builder.Default private int fan_board = 0;                     //팬보드알림
-    @Builder.Default private int star_broadcast = 1;                //스타방송알림
-    @Builder.Default private int star_notice = 1;                   //스타공지사항알림
-    @Builder.Default private int event_notice = 1;                  //이벤트공지알림
-    @Builder.Default private int search = 1;                        //검색허용
+    private String mem_no;                     //ID
+    private int all_ok;                        //전체알림
+    private int fan_reg;                       //팬등록알림
+    private int fan_board;                     //팬보드알림
+    private int star_broadcast;                //스타방송알림
+    private int star_notice;                   //스타공지사항알림
+    private int event_notice;                  //이벤트공지알림
+    private int search;                        //검색허용
 }

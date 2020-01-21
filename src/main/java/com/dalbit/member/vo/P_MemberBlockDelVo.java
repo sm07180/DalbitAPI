@@ -1,14 +1,12 @@
 package com.dalbit.member.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_MemberBlockDelVo {
 
-    @Builder.Default private String mem_no = "11577931027280";
-    @Builder.Default private String blocked_mem_no = "11577690655946";          //차단회원번호
+    private String mem_no;
+    private String blocked_mem_no;                    //차단회원번호
 }
