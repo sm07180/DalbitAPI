@@ -40,16 +40,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         //MemberVo memberVo;
-        P_LoginVo pLoginVo = P_LoginVo.builder()
-            .memSlct(DalbitUtil.convertRequestParamToString(request,"s_mem"))
-            .id(username)
-            .pw(DalbitUtil.convertRequestParamToString(request,"s_pwd"))
-            .os(DalbitUtil.convertRequestParamToInteger(request,"i_os"))
-            .deviceUuid(DalbitUtil.convertRequestParamToString(request,"s_deviceId"))
-            .deviceToken(DalbitUtil.convertRequestParamToString(request,"s_deviceToken"))
-            .appVersion(DalbitUtil.convertRequestParamToString(request,"s_appVer"))
-            //광고 아이디 없음..
-            .build();
+        P_LoginVo pLoginVo = new P_LoginVo(
+            DalbitUtil.convertRequestParamToString(request,"memType")
+            , DalbitUtil.convertRequestParamToString(request,"memId")
+            , DalbitUtil.convertRequestParamToString(request,"memPwd")
+            , DalbitUtil.convertRequestParamToInteger(request,"os")
+            , DalbitUtil.convertRequestParamToString(request,"deviceId")
+            , DalbitUtil.convertRequestParamToString(request,"deviceToken")
+            , DalbitUtil.convertRequestParamToString(request,"appVer")
+            , DalbitUtil.convertRequestParamToString(request,"appAdId")
+        );
 
         ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
         log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
@@ -65,8 +65,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         MemberVo paramMemberVo = new MemberVo();
-        paramMemberVo.setMem_id(username);
-        paramMemberVo.setMem_slct(DalbitUtil.convertRequestParamToString(request, "s_mem"));
+        paramMemberVo.setMem_id(DalbitUtil.convertRequestParamToString(request,"memId"));
+        paramMemberVo.setMem_slct(DalbitUtil.convertRequestParamToString(request, "memType"));
 
         MemberVo memberVo = loginDao.loginUseMemId(paramMemberVo);
         if(memberVo == null) {

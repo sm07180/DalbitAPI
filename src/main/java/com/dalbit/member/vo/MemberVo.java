@@ -2,14 +2,11 @@ package com.dalbit.member.vo;
 
 import com.dalbit.common.vo.BaseVo;
 import com.dalbit.common.vo.ImageVo;
-import com.dalbit.util.DalbitUtil;
-import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Date;
-import java.util.HashMap;
 
 @Getter @Setter
 public class MemberVo extends BaseVo {
@@ -18,12 +15,14 @@ public class MemberVo extends BaseVo {
 
     public static MemberVo getUserInfo() {
         //SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        HashMap memberInfoMap = (HashMap)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MemberVo sessionMemberVo = new Gson().fromJson(DalbitUtil.getStringMap(memberInfoMap, "memberInfo"), MemberVo.class);
+        //HashMap memberInfoMap = (HashMap)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        //MemberVo sessionMemberVo = new Gson().fromJson(DalbitUtil.getStringMap(memberInfoMap, "memberInfo"), MemberVo.class);
 
-        return sessionMemberVo;
+        String memNo = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        MemberVo memberVo = new MemberVo();
+        memberVo.setMem_no(memNo);
+        return memberVo;
     }
-
 
     private String mem_no;
     private String mem_nick;
