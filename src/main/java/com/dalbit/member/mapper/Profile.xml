@@ -18,7 +18,7 @@
             call sp_member_fanboard_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardReply" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanboardReplyVo">
+    <select id = "callMemberFanboardReply" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanboardVo">
             call sp_member_fanboard_reply(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 

@@ -17,7 +17,6 @@ public class P_FanboardReplyVo {
 
     /* Output */
     private int board_idx;      // 댓글 인덱스번호
-    //private int board_no;     // 댓글 그룹번호
     private String writer_mem_no;// 작성자 회원번호
     private String nickName;    // 작성자 닉네임
     private String memSex;      // 작성자 성별
