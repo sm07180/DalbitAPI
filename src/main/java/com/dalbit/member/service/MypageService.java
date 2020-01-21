@@ -100,25 +100,14 @@ public class MypageService {
      */
     public String callBroadBasic(P_BroadBasicVo pBroadBasic) {
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasic);
-//        List<P_BroadBasicVo> BroadBasic = mypageDao.callBroadBasic(procedureVo);
-
-
-//        log.info("프로시저 응답 코드: @@@@@ >  {}", BroadBasic);
-
+        mypageDao.callBroadBasic(procedureVo);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("subject_type",DalbitUtil.isNullToString(resultMap.get("subject_type")));
-        returnMap.put("title",DalbitUtil.isNullToString(resultMap.get("title")));
-        returnMap.put("image_background",new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), SERVER_PHOTO_URL));
-        returnMap.put("msg_welcom",DalbitUtil.isNullToString(resultMap.get("msg_welcom")));
-        returnMap.put("restrict_entry",DalbitUtil.getIntMap(resultMap,"restrict_entry"));
-        returnMap.put("restrict_age",DalbitUtil.getIntMap(resultMap,"restrict_age"));
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
+        resultMap.put("image_background",new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), SERVER_PHOTO_URL));
+        procedureVo.setData(resultMap);
 
         String result;
         if(procedureVo.getRet().equals(Status.방송방기본설정조회_성공.getMessageCode())) {
@@ -141,21 +130,10 @@ public class MypageService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("memNo",MemberVo.getUserInfo().getMem_no());
-        returnMap.put("nickName",DalbitUtil.isNullToString(resultMap.get("nickName")));
-        returnMap.put("memSex",DalbitUtil.isNullToString(resultMap.get("memSex")));
-        returnMap.put("age",DalbitUtil.isNullToString(resultMap.get("age")));
-        returnMap.put("bgImg",new ImageVo(DalbitUtil.getStringMap(resultMap, "backgroundImage"), SERVER_PHOTO_URL));
-        returnMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), SERVER_PHOTO_URL));
-        returnMap.put("profileMsg",DalbitUtil.isNullToString(resultMap.get("profileMsg")));
-        returnMap.put("level",DalbitUtil.isNullToString(resultMap.get("level")));
-        returnMap.put("grade",DalbitUtil.isNullToString(resultMap.get("grade")));
-        returnMap.put("fanCount",DalbitUtil.isNullToString(resultMap.get("fanCount")));
-        returnMap.put("starCount",DalbitUtil.isNullToString(resultMap.get("starCount")));
-        returnMap.put("enableFan",DalbitUtil.isNullToString(resultMap.get("enableFan")));
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
+        resultMap.put("bgImg",new ImageVo(DalbitUtil.getStringMap(resultMap, "backgroundImage"), SERVER_PHOTO_URL));
+        resultMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), SERVER_PHOTO_URL));
+        log.info("returnMap: {}",resultMap);
+        procedureVo.setData(resultMap);
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보조회성공.getMessageCode())) {
@@ -253,16 +231,7 @@ public class MypageService {
         mypageDao.callMemberNotify(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("all_ok",DalbitUtil.getStringMap(resultMap,"all_ok"));
-        returnMap.put("fan_reg",DalbitUtil.getStringMap(resultMap,"fan_reg"));
-        returnMap.put("fan_board",DalbitUtil.getStringMap(resultMap,"fan_board"));
-        returnMap.put("star_broadcast",DalbitUtil.getStringMap(resultMap,"star_broadcast"));
-        returnMap.put("star_notice",DalbitUtil.getStringMap(resultMap,"star_notice"));
-        returnMap.put("event_notice",DalbitUtil.getStringMap(resultMap,"event_notice"));
-        returnMap.put("search",DalbitUtil.getStringMap(resultMap,"search"));
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
+        procedureVo.setData(resultMap);
 
         String result;
         if(procedureVo.getRet().equals(Status.알림설정조회성공.getMessageCode())) {
