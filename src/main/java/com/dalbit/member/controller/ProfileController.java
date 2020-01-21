@@ -1,17 +1,20 @@
 package com.dalbit.member.controller;
 
-
+import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -34,9 +37,8 @@ public class ProfileController {
     public String memberInfo(HttpServletRequest request){
 
         P_ProfileInfo apiData = new P_ProfileInfo();
-        apiData.getMem_no(MemberVo.getUserInfo().getMem_no());
-        apiData.getTarget_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-
+        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setTarget_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = profileService.callMemberInfo(apiData);
         return result;
     }
