@@ -100,10 +100,10 @@ public class MypageService {
      */
     public String callBroadBasic(P_BroadBasicVo pBroadBasic) {
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasic);
-        List<P_BroadBasicVo> BroadBasic = mypageDao.callBroadBasic(procedureVo);
+//        List<P_BroadBasicVo> BroadBasic = mypageDao.callBroadBasic(procedureVo);
 
 
-        log.info("프로시저 응답 코드: @@@@@ >  {}", BroadBasic);
+//        log.info("프로시저 응답 코드: @@@@@ >  {}", BroadBasic);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
