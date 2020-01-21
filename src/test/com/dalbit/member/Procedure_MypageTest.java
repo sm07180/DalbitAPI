@@ -29,21 +29,21 @@ public class Procedure_MypageTest {
     @Test
     public void 프로필편집(){
 
-        String result = mypageService.callProfileEdit(P_ProfileEditVo.builder().build());
-        log.debug("프로필편집 결과 : {}", result);
+        /*String result = mypageService.callProfileEdit(P_ProfileEditVo.builder().build());
+        log.debug("프로필편집 결과 : {}", result);*/
     }
 
     @Test
     public void 회원팬등록(){
 
-        String result = mypageService.callFanstarInsert(P_FanstarInsertVo.builder().build());
-        log.debug("회원팬등록 결과 : {}", result);
+        /*String result = mypageService.callFanstarInsert(P_FanstarInsertVo.builder().build());
+        log.debug("회원팬등록 결과 : {}", result);*/
     }
 
     @Test
     public void 회원팬해제() {
 
-        String result = mypageService.callFanstarDelete(P_FanstarDeleteVo.builder().build());
-        log.debug("회원팬해제 결과 : {}", result);
+        /*String result = mypageService.callFanstarDelete(P_FanstarDeleteVo.builder().build());
+        log.debug("회원팬해제 결과 : {}", result);*/
     }
 }
