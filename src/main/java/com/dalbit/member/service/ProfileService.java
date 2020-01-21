@@ -13,9 +13,9 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,7 +36,7 @@ public class ProfileService {
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
-    @org.springframework.beans.factory.annotation.Value("${server.photo.url}")
+    @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
     /**

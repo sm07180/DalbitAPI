@@ -3,12 +3,12 @@ package com.dalbit.member.vo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_ChangePasswordVo {
 
-    @Builder.Default private String _phoneNo = "010-1234-4568";
-    @Builder.Default private String _password = "1234";
+    private String _phoneNo;    // 핸드폰 번호
+    private String _password;   // 변경할 비밀 번호
 }

@@ -59,13 +59,15 @@ public class MemberController {
     @GetMapping("nick")
     public String nick(HttpServletRequest request){
 
-        String nickName = DalbitUtil.convertRequestParamToString(request,"s_nickNm");
-        if(nickName.equals("")){
+        String _data = DalbitUtil.convertRequestParamToString(request,"nickNm");
+        if(_data.equals("")){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
         }
 
-        return memberService.callNickNameCheck(new ProcedureVo(nickName));
+        return memberService.callNickNameCheck(new ProcedureVo(_data));
     }
+
+
 
     /**
      * 비밀번호 변경
@@ -73,11 +75,12 @@ public class MemberController {
     @PostMapping("/pwd")
     public String pwd(HttpServletRequest request){
 
-        P_ChangePasswordVo apiData = P_ChangePasswordVo.builder()
-                ._phoneNo(DalbitUtil.convertRequestParamToString(request,"s_phoneNo"))
-                ._password(DalbitUtil.convertRequestParamToString(request,"s_pwd"))
-                .build();
-        String result = memberService.callChangePassword(apiData);
+        P_ChangePasswordVo pChangePasswordVo = new P_ChangePasswordVo();
+        pChangePasswordVo.set_phoneNo(DalbitUtil.convertRequestParamToString(request, "memId"));
+        pChangePasswordVo.set_password(DalbitUtil.convertRequestParamToString(request, "memPwd"));
+
+
+        String result = memberService.callChangePassword(pChangePasswordVo);
 
         log.info("result: {}", result);
         return result;

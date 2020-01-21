@@ -72,11 +72,11 @@ public class Procedure_MemberTest {
     }
 
 
-    @Test
-    public void 비밀번호변경(){
-        String result = memberService.callChangePassword(P_ChangePasswordVo.builder().build());
-        log.debug("비밀번호 변경 결과 : {}", result);
-    }
+//    @Test
+//    public void 비밀번호변경(){
+//        String result = memberService.callChangePassword(P_ChangePasswordVo.builder().build());
+//        log.debug("비밀번호 변경 결과 : {}", result);
+//    }
 
 //    @Test
 //    public void 프로필편집(){
