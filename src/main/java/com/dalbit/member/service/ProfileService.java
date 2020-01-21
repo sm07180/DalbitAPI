@@ -173,7 +173,7 @@ public class ProfileService {
      */
     public String callMemberFanboardReply(P_FanboardReplyVo p_FanboardReplyVo) {
         ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
-        List<FanboardVo> fanboardVoReplyList = profileDao.callMemberFanboardReply(procedureVo);
+        List<P_FanboardReplyVo> fanboardVoReplyList = profileDao.callMemberFanboardReply(procedureVo);
 
         ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(fanboardVoReplyList)){
