@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dalbit.member.dao.ProfileDao" >
 
-    <select id = "callMemberInfoView" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+    <select id = "callMemberInfo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
         call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
