@@ -69,15 +69,13 @@ public class ProfileController {
     @GetMapping("/board")
     public String fanboardList(HttpServletRequest request){
 
-        P_FanboardListVo fanboardListVo = P_FanboardListVo.builder()
-                .mem_no(MemberVo.getUserInfo().getMem_no())
-                .star_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"))
-                .pageNo(DalbitUtil.convertRequestParamToInteger(request, "i_page"))
-                .pageCnt(DalbitUtil.convertRequestParamToInteger(request, "i_records"))
-                .build();
+        P_FanboardListVo fanboardListVo = new P_FanboardListVo();
+        fanboardListVo.setMem_no(MemberVo.getUserInfo().getMem_no());
+        fanboardListVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "s_startNo"));
+        fanboardListVo.setPageNo(DalbitUtil.convertRequestParamToInteger(request, "i_page"));
+        fanboardListVo.setPageCnt(DalbitUtil.convertRequestParamToInteger(request, "i_records"));
 
         String result = profileService.callMemberFanboardList(fanboardListVo);
-
 
         return result;
     }

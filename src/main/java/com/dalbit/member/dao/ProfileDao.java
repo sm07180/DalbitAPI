@@ -2,6 +2,7 @@ package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.FanboardVo;
+import com.dalbit.member.vo.P_FanboardListVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,7 +12,7 @@ public interface ProfileDao {
 
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardAdd(ProcedureVo procedureVo);
-    List<FanboardVo> callMemberFanboardList(ProcedureVo procedureVo);
+    List<P_FanboardListVo> callMemberFanboardList(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardDelete(ProcedureVo procedureVo);
     List<FanboardVo> callMemberFanboardReply(ProcedureVo procedureVo);
 

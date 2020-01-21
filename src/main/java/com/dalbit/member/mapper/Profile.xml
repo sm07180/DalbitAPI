@@ -10,7 +10,7 @@
         call sp_member_fanboard_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="FanboardVo">
+    <select id = "callMemberFanboardList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanboardListVo">
             call sp_member_fanboard_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
@@ -18,9 +18,9 @@
             call sp_member_fanboard_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardReply" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="FanboardVo">
+    <!--select id = "callMemberFanboardReply" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="FanboardVo">
             call sp_member_fanboard_reply(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
+    </select>-->
 
 
 
