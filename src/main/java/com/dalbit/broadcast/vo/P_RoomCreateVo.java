@@ -14,8 +14,7 @@ public class P_RoomCreateVo {
     private int backgroundImageGrade;       //배경이미지 선전성 등급
     private String welcomMsg;               //환영메시지
     private String notice;                  //공지사항
-    private int entry;                      //입장제한
-    private int age;                        //나이제한
+    private int entryType;                  //입장제한(0: 전체, 1: 팬만, 2: 20세이상)
     private int os;                         //OS구분
     private String guest_streamid;          //guest 스트림아이디
     private String guest_publish_tokenid;   //guest 토큰아이디
