@@ -7,7 +7,6 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
@@ -49,9 +48,9 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        returnMap.put("room_no", roomNo);
-        returnMap.put("bj_streamid",pRoomCreateVo.getBj_streamid());
-        returnMap.put("bj_publish_tokenid", pRoomCreateVo.getBj_publish_tokenid());
+        returnMap.put("roomNo", roomNo);
+        returnMap.put("bjStreamId",pRoomCreateVo.getBj_streamid());
+        returnMap.put("bjPubToken", pRoomCreateVo.getBj_publish_tokenid());
         log.info("returnMap: {}",returnMap);
         procedureVo.setData(returnMap);
 
@@ -81,14 +80,11 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        returnMap.put("mem_no",MemberVo.getUserInfo().getMem_no());
-        returnMap.put("room_no",pRoomJoinVo.getRoom_no());
-        returnMap.put("guest_streamid",pRoomJoinVo.getGuest_streamid());
-        returnMap.put("guest_publish_tokenid",pRoomJoinVo.getGuest_publish_tokenid());
-        returnMap.put("guest_play_tokenid",pRoomJoinVo.getGuest_play_tokenid());
-        returnMap.put("bj_streamid",pRoomJoinVo.getBj_streamid());
-        returnMap.put("bj_publish_tokenid",pRoomJoinVo.getBj_publish_tokenid());
-        returnMap.put("bj_play_tokenid",pRoomJoinVo.getBj_play_tokenid());
+        returnMap.put("roomNo",pRoomJoinVo.getRoom_no());
+        returnMap.put("bjStreamId",pRoomJoinVo.getBj_streamid());
+        returnMap.put("bgPlayToken",pRoomJoinVo.getBj_play_tokenid());
+        returnMap.put("gstStreamId",pRoomJoinVo.getGuest_streamid());
+        returnMap.put("gstPlayToken",pRoomJoinVo.getGuest_play_tokenid());
         log.info("returnMap: {}",returnMap);
         procedureVo.setData(returnMap);
 

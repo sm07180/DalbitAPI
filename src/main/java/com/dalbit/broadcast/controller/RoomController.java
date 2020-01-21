@@ -52,18 +52,24 @@ public class RoomController {
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
         apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
-        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "s_title"));
-        apiData.setBackgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "s_bgImg"));
-        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"));
-        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"s_welcome"));
-        apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"s_notice"));
-        apiData.setEntry(DalbitUtil.convertRequestParamToInteger(request,"entryType") == 1 ? 1: 0);
-        apiData.setAge(DalbitUtil.convertRequestParamToInteger(request,"entryType") == 2 ? 1 : 0);
-        apiData.setOs(DalbitUtil.convertRequestParamToInteger(request,"i_os"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
+        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
+        apiData.setBackgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "bgImg"));
+        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy"));
+        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"welcomMsg"));
+        apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
+        apiData.setEntryType(DalbitUtil.convertRequestParamToInteger(request,"entryType"));
+        apiData.setOs(DalbitUtil.convertRequestParamToInteger(request,"os"));
+        apiData.setDeviceUuid(DalbitUtil.convertRequestParamToString(request, "deviceId"));
+        apiData.setDeviceToken(DalbitUtil.convertRequestParamToString(request, "deviceToken"));
+        apiData.setAppVersion(DalbitUtil.convertRequestParamToString(request, "appVer"));
         apiData.setBj_streamid(streamId);
         apiData.setBj_publish_tokenid(publishToken);
         apiData.setBj_play_tokenid(playToken);
+
+        //apiData.setDeviceUuid("2200DDD1-77A");
+        //apiData.setDeviceToken("45E3156FDE20E7F11AF");
+        //apiData.setAppVersion("1.0.0.1");
 
         String result = roomService.callBroadCastRoomCreate(apiData);
 
@@ -75,7 +81,7 @@ public class RoomController {
      */
     @PostMapping("/join")
     public String roomJoin(HttpServletRequest request) throws GlobalException{
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
 
         //방참가를 위한 토큰 조회
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);

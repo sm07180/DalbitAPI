@@ -43,30 +43,15 @@ public class ProfileService {
      * 정보 조회
      */
 
-    public String callMemberInfo(P_ProfileInfo pProfileInfo) {
+    public String callMemberInfo(P_ProfileInfoVo pProfileInfo) {
         ProcedureVo procedureVo = new ProcedureVo(pProfileInfo);
         profileDao.callMemberInfo(procedureVo);
-
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-
-        returnMap.put("memNo",MemberVo.getUserInfo().getMem_no());
-        returnMap.put("nickName",DalbitUtil.isNullToString(resultMap.get("nickName")));
-        returnMap.put("memSex",DalbitUtil.isNullToString(resultMap.get("memSex")));
-        returnMap.put("age",DalbitUtil.isNullToString(resultMap.get("age")));
-        returnMap.put("memId",DalbitUtil.isNullToString(resultMap.get("memId")));
-        returnMap.put("profileMsg",DalbitUtil.isNullToString(resultMap.get("profileMsg")));
-        returnMap.put("level",DalbitUtil.isNullToString(resultMap.get("level")));
-        returnMap.put("fanCount",DalbitUtil.isNullToString(resultMap.get("fanCount")));
-        returnMap.put("starCount",DalbitUtil.isNullToString(resultMap.get("starCount")));
-        returnMap.put("enableFan",DalbitUtil.isNullToString(resultMap.get("enableFan")));
-        returnMap.put("backgroundImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "backgroundImage"), SERVER_PHOTO_URL));
-        returnMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), SERVER_PHOTO_URL));
-
-        log.info("returnMap: {}",returnMap);
+        log.info(" ### 프로시저 호출결과 ###");
+        HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        returnMap.put("backgroundImage",new ImageVo(DalbitUtil.getStringMap(returnMap, "backgroundImage"), SERVER_PHOTO_URL));
+        returnMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(returnMap, "profileImage"), SERVER_PHOTO_URL));
         procedureVo.setData(returnMap);
 
         String result;
@@ -79,7 +64,6 @@ public class ProfileService {
         }
         return result;
     }
-
 
     /**
      * 팬보드 등록하기
@@ -123,7 +107,7 @@ public class ProfileService {
         }else{
             List<FanboardVo> outVoList = new ArrayList<>();
             for (int i=0; i<fanboardVoList.size(); i++){
-                outVoList.add(new FanboardVo(fanboardVoList.get(i)));
+                //outVoList.add(new FanboardVo(fanboardVoList.get(i)));
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
