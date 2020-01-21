@@ -49,10 +49,10 @@ public class ProfileService {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
-        HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        returnMap.put("backgroundImage",new ImageVo(DalbitUtil.getStringMap(returnMap, "backgroundImage"), SERVER_PHOTO_URL));
-        returnMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(returnMap, "profileImage"), SERVER_PHOTO_URL));
-        procedureVo.setData(returnMap);
+        P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
+        profileInfo.setTarget_mem_no(pProfileInfo.getTarget_mem_no());
+        ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo);
+        procedureVo.setData(ProfileInfoOutVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보_성공.getMessageCode())) {
