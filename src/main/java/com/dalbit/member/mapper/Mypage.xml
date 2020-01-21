@@ -14,7 +14,7 @@
     <select id="callMemberInfo" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
-    <select id="callBroadBasic" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callBroadBasic" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_BroadBasicVo">
         call sp_member_broadcast_basic_request(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
     <select id="callBroadBasicEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

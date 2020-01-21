@@ -3,6 +3,7 @@ package com.dalbit.member.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -41,7 +43,7 @@ public class MypageService {
         mypageDao.callProfileEdit(procedureVo);
         String result;
         if(procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공)));
         } else if(procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_닉네임중복)));
         } else{
@@ -98,7 +100,10 @@ public class MypageService {
      */
     public String callBroadBasic(P_BroadBasicVo pBroadBasic) {
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasic);
-        mypageDao.callBroadBasic(procedureVo);
+        List<P_BroadBasicVo> BroadBasic = mypageDao.callBroadBasic(procedureVo);
+
+
+        log.info("프로시저 응답 코드: @@@@@ >  {}", BroadBasic);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
@@ -108,12 +113,10 @@ public class MypageService {
         HashMap returnMap = new HashMap();
         returnMap.put("subject_type",DalbitUtil.isNullToString(resultMap.get("subject_type")));
         returnMap.put("title",DalbitUtil.isNullToString(resultMap.get("title")));
-        returnMap.put("image_background",DalbitUtil.isNullToString(resultMap.get("image_background")));
+        returnMap.put("image_background",new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), SERVER_PHOTO_URL));
         returnMap.put("msg_welcom",DalbitUtil.isNullToString(resultMap.get("msg_welcom")));
-        if(DalbitUtil.getStringMap(resultMap,"restrict_entry").equals("0")) returnMap.put("restrict_entry","False");
-        else returnMap.put("restrict_entry","True");
-        if(DalbitUtil.getStringMap(resultMap,"restrict_age").equals("0")) returnMap.put("restrict_age","False");
-        else returnMap.put("restrict_age","True");
+        returnMap.put("restrict_entry",DalbitUtil.getIntMap(resultMap,"restrict_entry"));
+        returnMap.put("restrict_age",DalbitUtil.getIntMap(resultMap,"restrict_age"));
         log.info("returnMap: {}",returnMap);
         procedureVo.setData(returnMap);
 
