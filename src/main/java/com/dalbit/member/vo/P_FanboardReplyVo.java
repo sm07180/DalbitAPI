@@ -1,6 +1,7 @@
 package com.dalbit.member.vo;
 
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,9 +21,10 @@ public class P_FanboardReplyVo {
     private String writer_mem_no;// 작성자 회원번호
     private String nickName;    // 작성자 닉네임
     private String memSex;      // 작성자 성별
-    private String profileImage; // 작성자 프로필 이미지
+    private ImageVo profileImage; // 작성자 프로필 이미지
     private String contents;    // 댓글내용
     private int status;         // 상태값 1. 정상 2. 삭제됨
-    private Date writeDate;     // 작성일자
+    private String writeDate;     // 작성일자
+    private long writeTs;       // 작성일자 timestamp
 
 }
