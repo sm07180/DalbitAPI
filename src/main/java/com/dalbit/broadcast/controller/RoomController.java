@@ -83,6 +83,7 @@ public class RoomController {
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomJoinVo apiData = new P_RoomJoinVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
@@ -104,6 +105,7 @@ public class RoomController {
     public String roomExit(HttpServletRequest request){
         String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
         P_RoomExitVo apiData = new P_RoomExitVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(roomNo);
 
@@ -147,6 +149,7 @@ public class RoomController {
         int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "records");
 
         P_RoomListVo apiData = new P_RoomListVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
         apiData.setPageNo(pageNo);

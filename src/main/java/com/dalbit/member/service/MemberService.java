@@ -105,8 +105,10 @@ public class MemberService {
 
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공, procedureVo.getData())));
-        } else {
+        } else if(procedureVo.getRet().equals(Status.비밀번호변경실패_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경실패_회원아님)));
+        } else {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경오류)));
         }
         return result;
     }
