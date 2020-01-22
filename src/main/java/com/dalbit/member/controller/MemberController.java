@@ -12,20 +12,12 @@ import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
 @Slf4j
@@ -46,27 +38,38 @@ public class MemberController {
     @GetMapping("token")
     public String token(HttpServletRequest request){
 
-        TokenVo tokenVo = null;
-        ProcedureVo procedureVo;
-        if(DalbitUtil.isLogin()){
-            tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), DalbitUtil.isLogin()), MemberVo.getMyMemNo(), DalbitUtil.isLogin());
+        TokenVo tokenVo;
+        boolean isLogin = DalbitUtil.isLogin();
+
+        if(isLogin){
+            tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
         }else{
-            P_LoginVo pLoginVo = new P_LoginVo("a", 1, "uuid", "deviceToken", "1.0.0.1", "adId");
-            procedureVo = memberService.callMemberLogin(pLoginVo);
+            P_LoginVo pLoginVo = new P_LoginVo(
+                    //DalbitUtil.convertRequestParamToString(request,"memType")
+                    "a"
+                    , DalbitUtil.convertRequestParamToInteger(request,"os")
+                    , DalbitUtil.convertRequestParamToString(request,"deviceId")
+                    , DalbitUtil.convertRequestParamToString(request,"deviceToken")
+                    , DalbitUtil.convertRequestParamToString(request,"appVer")
+                    , DalbitUtil.convertRequestParamToString(request,"appAdId")
+            );
+
+            ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
+            if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
+
+            }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림));
+
+            }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_파라메터이상));
+            }
 
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            tokenVo = new TokenVo(jwtUtil.generateToken((String)map.get("mem_no"), DalbitUtil.isLogin()), (String)map.get("mem_no"), DalbitUtil.isLogin());
+            String memNo = DalbitUtil.getStringMap(map,"mem_no");
+            tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
 
-            Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-            authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    (String)map.get("mem_no")
-                    , ""
-                    , authorities);
-
-            SecurityContext securityContext = SecurityContextHolder.getContext();
-            securityContext.setAuthentication(authentication);
+            memberService.refreshAnonymousSecuritySession(memNo);
         }
 
 
