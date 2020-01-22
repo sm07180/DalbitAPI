@@ -83,7 +83,7 @@ public enum Status {
     //회원 차단하기
     회원차단성공("0", "mypage.member.block.suceess", "회원 차단 성공 시"),
     회원차단_요청회원번호_정상아님("-1", "mypage.member.block.mem.no", "요청 회원번호 정상 아닐 시"),
-    회원차단_차단단원번호_정상아님("-2", "mypage.member.block.blocked.mem.no", "차단 회원번호 정상 아닐 시"),
+    회원차단_차단회원번호_정상아님("-2", "mypage.member.block.blocked.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단_이미_차단상태("-3", "mypage.member.block.blocked", "이미 차단 상태 시"),
     회원차단오류("C006", "mypage.member.block.error", "회원 차단 신청중 오류"),
 

@@ -191,10 +191,10 @@ public class MypageService {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단성공, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.회원차단_요청회원번호_정상아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_요청회원번호_정상아님, procedureVo.getData())));
-        }else if(procedureVo.getRet().equals(Status.회원차단_신고회원번호_정상아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_신고회원번호_정상아님, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.회원차단_차단회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_차단회원번호_정상아님, procedureVo.getData())));
         }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_이미_신고상태)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단_이미_차단상태)));
         }
         return result;
     }
