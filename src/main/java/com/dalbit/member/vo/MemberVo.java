@@ -14,15 +14,8 @@ public class MemberVo extends BaseVo {
 
     private static final long serialVersionUID = 1L;
 
-    public static MemberVo getUserInfo() {
-        //SecurityUserVo user = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //HashMap memberInfoMap = (HashMap)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        //MemberVo sessionMemberVo = new Gson().fromJson(DalbitUtil.getStringMap(memberInfoMap, "memberInfo"), MemberVo.class);
-
-        String memNo = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        MemberVo memberVo = new MemberVo();
-        memberVo.setMemNo(memNo);
-        return memberVo;
+    public static String getMemNo() {
+        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 
     private String memNo;

@@ -34,7 +34,7 @@ public class MypageController {
     public String editProfile(HttpServletRequest request){
         P_ProfileEditVo apiData = new P_ProfileEditVo();
 
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setMemSex(DalbitUtil.convertRequestParamToString(request,"gender"));
         apiData.setNickName(DalbitUtil.convertRequestParamToString(request,"nickNm"));
         apiData.setName(DalbitUtil.convertRequestParamToString(request,"name"));
@@ -57,7 +57,7 @@ public class MypageController {
     @PostMapping("/fan")
     public String fanstarInsert(HttpServletRequest request){
         P_FanstarInsertVo apiData = new P_FanstarInsertVo();
-        apiData.setFan_mem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setFan_mem_no(MemberVo.getMemNo());
         apiData.setStar_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = mypageService.callFanstarInsert(apiData);
 
@@ -70,7 +70,7 @@ public class MypageController {
     @DeleteMapping("/fan")
     public String fanstarDelete(HttpServletRequest request){
         P_FanstarDeleteVo apiData = new P_FanstarDeleteVo();
-        apiData.setFan_mem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setFan_mem_no(MemberVo.getMemNo());
         apiData.setStar_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = mypageService.callFanstarDelete(apiData);
 
@@ -83,7 +83,7 @@ public class MypageController {
     @GetMapping("")
     public String memberInfo(HttpServletRequest request){
         P_MemberInfoVo apiData = new P_MemberInfoVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setTarget_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = mypageService.callMemberInfo(apiData);
         return result;
@@ -95,7 +95,7 @@ public class MypageController {
     @GetMapping("/broad")
     public String broadBasic(){
         P_BroadBasicVo apiData = new P_BroadBasicVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         String result = mypageService.callBroadBasic(apiData);
         return result;
     }
@@ -106,7 +106,7 @@ public class MypageController {
     @PostMapping("/broad")
     public String broadBasicEdit(HttpServletRequest request){
         P_BroadBasicEditVo apiData = new P_BroadBasicEditVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request,"roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request,"title"));
         apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request,"bgImg"));
@@ -126,7 +126,7 @@ public class MypageController {
     @PostMapping("/declar")
     public String memberReportAdd(HttpServletRequest request){
         P_MemberReportAddVo apiData = new P_MemberReportAddVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setReported_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         apiData.setReason(DalbitUtil.convertRequestParamToInteger(request,"reason"));
         apiData.setEtc(DalbitUtil.convertRequestParamToString(request,"cont"));
@@ -140,7 +140,7 @@ public class MypageController {
     @PostMapping("/block")
     public String broadBlock_Add(HttpServletRequest request){
         P_MemberBlockAddVo apiData = new P_MemberBlockAddVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setBlocked_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = mypageService.callBlockAdd(apiData);
         return result;
@@ -152,7 +152,7 @@ public class MypageController {
     @DeleteMapping("/block")
     public String broadBlock_Del(HttpServletRequest request){
         P_MemberBlockDelVo apiData = new P_MemberBlockDelVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setBlocked_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = mypageService.callMemBerBlocklDel(apiData);
         return result;
@@ -164,7 +164,7 @@ public class MypageController {
     @GetMapping("/notify")
     public String memberNotify(HttpServletRequest request){
         P_MemberNotifyVo apiData = new P_MemberNotifyVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         String result = mypageService.callMemberNotify(apiData);
         return result;
     }
@@ -176,7 +176,7 @@ public class MypageController {
     public String memberNotifyEdit(HttpServletRequest request){
         P_MemberNotifyEditVo apiData = new P_MemberNotifyEditVo();
 
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setAll_ok(DalbitUtil.convertRequestParamToInteger(request,"isAll"));
         apiData.setFan_reg(DalbitUtil.convertRequestParamToInteger(request,"isFanReg"));
         apiData.setFan_board(DalbitUtil.convertRequestParamToInteger(request,"isBoard"));

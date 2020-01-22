@@ -7,12 +7,16 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
+
 @Slf4j
 @Component
 public class RedisUtil {
 
     @Autowired
     RedisTemplate redisTemplate;
+    @Autowired
+    HttpSession httpSession;
 
     @Value("${spring.redis.user.index.prefix}")
     String SPRING_REDIS_USER_INDEX_PREFIX;
@@ -53,6 +57,13 @@ public class RedisUtil {
     public MemberVo getMemberInfoFromRedis(String memNo){
         String SessionId = getSessionId(memNo);
         MemberVo memberVo = getMemberInfo(SessionId);
+        return memberVo;
+    }
+
+    public MemberVo getMemberInfo(){
+        String memNo = MemberVo.getMemNo();
+        String sessionId = getSessionId(memNo);
+        MemberVo memberVo = getMemberInfo(sessionId);
         return memberVo;
     }
 }
