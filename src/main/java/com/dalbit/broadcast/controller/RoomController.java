@@ -67,10 +67,6 @@ public class RoomController {
         apiData.setBj_publish_tokenid(publishToken);
         apiData.setBj_play_tokenid(playToken);
 
-        //apiData.setDeviceUuid("2200DDD1-77A");
-        //apiData.setDeviceToken("45E3156FDE20E7F11AF");
-        //apiData.setAppVersion("1.0.0.1");
-
         String result = roomService.callBroadCastRoomCreate(apiData);
 
         return result;
@@ -106,7 +102,7 @@ public class RoomController {
      */
     @PostMapping("/exit")
     public String roomExit(HttpServletRequest request){
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
         P_RoomExitVo apiData = new P_RoomExitVo();
         apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
         apiData.setRoom_no(roomNo);
@@ -122,18 +118,19 @@ public class RoomController {
     @PostMapping("/edit")
     public String roomEdit(HttpServletRequest request){
 
-        //TODO-방송 정보 조회 ? 서버? ...
-
         P_RoomEditVo apiData = new P_RoomEditVo();
         apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
-        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"));
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
-        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "s_title"));
-        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request, "s_bgImg"));
-        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "i_bgRacy"));
-        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request, "s_welcome"));
-        apiData.setEntry(DalbitUtil.convertRequestParamToInteger(request, "i_entry"));
-        apiData.setAge(DalbitUtil.convertRequestParamToInteger(request, "i_age"));
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
+        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
+        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request, "bgImg"));
+        //apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));
+        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy"));
+        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request, "welcomMsg"));
+        apiData.setOs(DalbitUtil.convertRequestParamToInteger(request,"os"));
+        apiData.setDeviceUuid(DalbitUtil.convertRequestParamToString(request, "deviceId"));
+        apiData.setDeviceToken(DalbitUtil.convertRequestParamToString(request, "deviceToken"));
+        apiData.setAppVersion(DalbitUtil.convertRequestParamToString(request, "appVer"));
 
         String result = roomService.callBroadCastRoomEdit(apiData);
 
@@ -146,12 +143,12 @@ public class RoomController {
     @GetMapping("/list")
     public String roomList(HttpServletRequest request){
 
-        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "i_page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "i_page");
-        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
+        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "page");
+        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "records");
 
         P_RoomListVo apiData = new P_RoomListVo();
         apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 
