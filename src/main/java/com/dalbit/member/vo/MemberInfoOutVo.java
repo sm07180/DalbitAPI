@@ -6,29 +6,27 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter
-@Setter
+@Getter @Setter
 @ToString
-public class ProfileInfoOutVo {
+public class MemberInfoOutVo {
 
-    private String nickNm;
+    String  memNo;
+    String  nickNm;
+    String  gender;
+    int     age;
+    String  memId;
+    ImageVo bgImg;
+    ImageVo profImg;
+    String  profMsg;
+    int     level;
+    int     fanCnt;
+    int     starCnt;
+    int     exp;
+    int     expNext;
+    String  grade;
 
-    private ImageVo profImg;
-    private String  memNo;
-    private String  gender;
-    private int     age;
-    private String  memId;
-    private ImageVo bgImg;
-    private String  profMsg;
-    private int     level;
-    private int     fanCnt;
-    private int     starCnt;
-    private int     isFan;
-    private int     exp;
-    private int     expNext;
-    private String  grade;
 
-    public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no) {
+    public MemberInfoOutVo(P_MemberInfoVo target, String target_mem_no) {
         this.memNo=target_mem_no;
         this.nickNm=target.getNickName();
         this.gender=target.getMemSex();
@@ -40,7 +38,6 @@ public class ProfileInfoOutVo {
         this.level=target.getLevel();
         this.fanCnt=target.getFanCount();
         this.starCnt=target.getStarCount();
-        this.isFan=target.getEnableFan();
         this.exp=target.getExp();
         this.expNext=target.getExpNext();
         this.grade=target.getGrade();

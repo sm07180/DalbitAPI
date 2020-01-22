@@ -49,8 +49,7 @@ public class MemberVo extends BaseVo {
     private Date memJoinDate;
     private Date lastUpdDate;
 
-    //TODO - 추후 DB에서 정보 추가
-    private int exp = 50;
-    private int expNext = 100;
-    private String grade = "골드";
+    private int exp;
+    private int expNext;
+    private String grade;
 }

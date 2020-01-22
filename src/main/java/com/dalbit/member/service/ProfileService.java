@@ -50,8 +50,7 @@ public class ProfileService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
         P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
-        profileInfo.setTarget_mem_no(pProfileInfo.getTarget_mem_no());
-        ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo);
+        ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보_성공.getMessageCode())) {
