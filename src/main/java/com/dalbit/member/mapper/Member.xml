@@ -18,17 +18,17 @@
         call sp_member_changePassword(#{box._phoneNo, mode=IN, jdbcType=VARCHAR}, #{box._password, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callProfileEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-        call sp_member_profile_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
+    <!--<select id="callProfileEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">-->
+        <!--call sp_member_profile_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})-->
+    <!--</select>-->
 
-    <select id="callFanstarInsert" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-        call sp_member_fanstar_insert(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
+    <!--<select id="callFanstarInsert" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">-->
+        <!--call sp_member_fanstar_insert(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})-->
+    <!--</select>-->
 
-    <select id="callFanstarDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-        call sp_member_fanstar_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
+    <!--<select id="callFanstarDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">-->
+        <!--call sp_member_fanstar_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})-->
+    <!--</select>-->
 
     <select id="callMemberInfoView" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})

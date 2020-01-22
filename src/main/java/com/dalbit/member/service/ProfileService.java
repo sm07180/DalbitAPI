@@ -1,9 +1,8 @@
 package com.dalbit.member.service;
 
 
-import com.dalbit.broadcast.vo.RoomOutVo;
+
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.dalbit.common.code.Status.삭제;
 
 @Slf4j
 @Service
@@ -70,7 +68,7 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanboardAddVo);
         profileDao.callMemberFanboardAdd(procedureVo);
 
-        String result;
+        String result="";
         if(Status.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공));
 
@@ -83,7 +81,7 @@ public class ProfileService {
         }else if (Status.팬보드_댓글달기실패_잘못된댓글그룹번호.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_잘못된댓글그룹번호, procedureVo.getData()));
 
-        }else{
+        }else if (Status.팬보드_댓글달기실패_depth값_오류.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_depth값_오류, procedureVo.getData()));
         }
 
