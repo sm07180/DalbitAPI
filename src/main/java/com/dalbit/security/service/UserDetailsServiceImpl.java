@@ -9,6 +9,7 @@ import com.dalbit.member.vo.P_LoginVo;
 import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.RedisUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Autowired
     HttpServletRequest request;
@@ -83,12 +87,29 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
 
-    public UserDetails loadUserBySsoCookie(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserBySsoCookieFromDb(String memNo) throws UsernameNotFoundException {
 
-        MemberVo memberVo = loginDao.loginUseMemNo(username);
+        MemberVo memberVo = loginDao.loginUseMemNo(memNo);
 
         if(memberVo == null) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+        }
+
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
+        securityUserVo.setMemberVo(memberVo);
+
+        return securityUserVo;
+    }
+
+    public UserDetails loadUserBySsoCookieFromRedis(String memNo) throws UsernameNotFoundException {
+
+        MemberVo memberVo = redisUtil.getMemberInfoFromRedis(memNo);
+
+        if(memberVo == null) {
+            return null;
         }
 
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();

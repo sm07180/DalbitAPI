@@ -3,9 +3,7 @@ package com.dalbit.security.filter;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
 import com.dalbit.security.vo.SecurityUserVo;
-import com.dalbit.util.Base64Util;
-import com.dalbit.util.CookieUtil;
-import com.dalbit.util.JwtUtil;
+import com.dalbit.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,10 +29,10 @@ import java.util.HashMap;
 @Component
 public class SsoAuthenticationFilter implements Filter {
 
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
+    @Autowired UserDetailsServiceImpl userDetailsService;
     @Autowired Base64Util base64Util;
     @Autowired JwtUtil jwtUtil;
+    @Autowired RedisUtil redisUtil;
 
     @Value("${sso.domain}")
     private String SSO_DOMAIN;
@@ -78,10 +76,19 @@ public class SsoAuthenticationFilter implements Filter {
                         boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
                         if(isJwtTokenAvailable){
 
-                            String userId = jwtUtil.getUserNameFromJwt(headerCookie);
-                            log.debug("SsoAuthenticationFilter get request header > JWT FROM ID : " + userId);
+                            String memNo = jwtUtil.getUserNameFromJwt(headerCookie);
+                            log.debug("SsoAuthenticationFilter get request header > JWT FROM ID : " + memNo);
 
-                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
+                            UserDetails userDetails = null;
+                            if(redisUtil.isExistLoginSession(memNo)){
+                                userDetails = userDetailsService.loadUserBySsoCookieFromRedis(memNo);
+                            }
+
+                            if(DalbitUtil.isEmpty(userDetails)){
+                                userDetails = userDetailsService.loadUserBySsoCookieFromDb(memNo);
+                            }
+
+                            saveSecuritySession(request, userDetails);
                             ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
                         }
                     }else if (cookieUtil.exists(SSO_COOKIE_NAME)) {
@@ -91,7 +98,7 @@ public class SsoAuthenticationFilter implements Filter {
                             String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
                             log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
 
-                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookie(userId));
+                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookieFromDb(userId));
                         }
 
                         ssoCookieUpdate(request, response, isJwtTokenAvailable);
@@ -141,8 +148,6 @@ public class SsoAuthenticationFilter implements Filter {
 
             // Verify SSO token value
             if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
-                HashMap map = new HashMap();
-                map.put("memberInfo", securityUserVo.getMemberJsonInfo());
                 Authentication authentication = new UsernamePasswordAuthenticationToken(memberVo.getMemNo(), securityUserVo.getPassword(), userDetails.getAuthorities());
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -150,6 +155,7 @@ public class SsoAuthenticationFilter implements Filter {
 
                 HttpSession session = request.getSession(true);
                 session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+                session.setAttribute("MEMBER_INFO", memberVo);
             }
         }
     }
