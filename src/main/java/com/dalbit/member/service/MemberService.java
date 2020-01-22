@@ -105,48 +105,4 @@ public class MemberService {
         }
         return result;
     }
-
-    /**
-     * 회원 정보 보기
-     */
-    public String getMemberInfo(P_InfoVo pInfoVo) throws GlobalException{
-        ProcedureVo procedureVo = new ProcedureVo(pInfoVo);
-        memberDao.callMemberInfoView(procedureVo);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.debug("회원정보보기 결과 : {}", pInfoVo.toString());
-
-
-        String result = "";
-        if(Status.회원정보보기성공.getMessageCode().equals(procedureVo.getRet())) {
-            //result = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기성공, procedureVo.getData())));
-            HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            MemberVo memberVo = new MemberVo(); //new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
-
-            memberVo.setMemNo(MemberVo.getMemNo());
-            memberVo.setMemNick(DalbitUtil.getStringMap(map, "nickName"));
-            memberVo.setMemSex(DalbitUtil.getStringMap(map, "memSex"));
-            memberVo.setAge(DalbitUtil.getIntMap(map, "age"));
-            memberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));
-            memberVo.setLevel(DalbitUtil.getIntMap(map, "level"));
-            memberVo.setFanCount(DalbitUtil.getIntMap(map, "fanCount"));
-            memberVo.setStarCount(DalbitUtil.getIntMap(map, "starCount"));
-            memberVo.setEnableFan(DalbitUtil.getBooleanMap(map, "enableFan"));
-
-            memberVo.setBackgroundImage(new ImageVo(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL));
-            memberVo.setProfileImage(new ImageVo(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL));
-
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
-
-        }else if(Status.회원정보보기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            throw new GlobalException(Status.회원정보보기_회원아님, procedureVo.getData());
-        }else if(Status.회원정보보기_대상회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            throw new GlobalException(Status.회원정보보기_대상회원아님, procedureVo.getData());
-        }else {
-            throw new GlobalException(Status.회원정보보기실패, procedureVo.getData());
-        }
-
-        return result;
-    }
 }

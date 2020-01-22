@@ -84,7 +84,7 @@ public class MypageController {
     public String memberInfo(HttpServletRequest request){
         P_MemberInfoVo apiData = new P_MemberInfoVo();
         apiData.setMem_no(MemberVo.getMemNo());
-        apiData.setTarget_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
+        apiData.setTarget_mem_no(MemberVo.getMemNo());
         String result = mypageService.callMemberInfo(apiData);
         return result;
     }
