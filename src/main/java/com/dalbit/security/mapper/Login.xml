@@ -5,16 +5,44 @@
     <select id="loginUseMemId" parameterType="com.dalbit.member.vo.MemberVo" resultType="com.dalbit.member.vo.MemberVo">
     /* Login.xml - loginUseMemId */
         SELECT
-            *
+            idx
+            , mem_no memNo
+            , mem_id memId
+            , mem_phone memPhone
+            , mem_passwd memPasswd
+            , mem_nick memNick
+            , mem_sex memSex
+            , mem_birth_year memBirthYear
+            , mem_birth_month memBirthMonth
+            , mem_birth_day memBirthDay
+            , mem_slct memSlct
+            , mem_adid memAdid
+            , mem_state memState
+            , mem_join_date memJoinDate
+            , last_upd_date lastUpdDate
         FROM tb_member_basic
-        WHERE mem_id = #{mem_id}
-            AND mem_slct = #{mem_slct}
+        WHERE mem_id = #{memId}
+            AND mem_slct = #{memSlct}
     </select>
 
     <select id="loginUseMemNo" parameterType="com.dalbit.member.vo.MemberVo" resultType="com.dalbit.member.vo.MemberVo">
     /* Login.xml - loginUseMemNo */
         SELECT
-            *
+            idx
+            , mem_no memNo
+            , mem_id memId
+            , mem_phone memPhone
+            , mem_passwd memPasswd
+            , mem_nick memNick
+            , mem_sex memSex
+            , mem_birth_year memBirthYear
+            , mem_birth_month memBirthMonth
+            , mem_birth_day memBirthDay
+            , mem_slct memSlct
+            , mem_adid memAdid
+            , mem_state memState
+            , mem_join_date memJoinDate
+            , last_upd_date lastUpdDate
         FROM tb_member_basic
         WHERE mem_no = #{memNo}
     </select>
