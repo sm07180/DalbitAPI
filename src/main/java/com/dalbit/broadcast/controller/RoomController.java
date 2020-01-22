@@ -51,7 +51,7 @@ public class RoomController {
         log.info("bj_playToken: {}", playToken);
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
         apiData.setBackgroundImage(IMG_URL+"/"+DalbitUtil.convertRequestParamToString(request, "bgImg"));
@@ -87,7 +87,7 @@ public class RoomController {
         HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomJoinVo apiData = new P_RoomJoinVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
         apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
@@ -108,7 +108,7 @@ public class RoomController {
     public String roomExit(HttpServletRequest request){
         String roomNo = DalbitUtil.convertRequestParamToString(request, "s_room_no");
         P_RoomExitVo apiData = new P_RoomExitVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setRoom_no(roomNo);
 
         String result = roomService.callBroadCastRoomExit(apiData);
@@ -125,7 +125,7 @@ public class RoomController {
         //TODO-방송 정보 조회 ? 서버? ...
 
         P_RoomEditVo apiData = new P_RoomEditVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"));
         apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "s_title"));
@@ -150,7 +150,7 @@ public class RoomController {
         int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
 
         P_RoomListVo apiData = new P_RoomListVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
+        apiData.setMem_no(MemberVo.getMemNo());
         apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "i_type"));
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);

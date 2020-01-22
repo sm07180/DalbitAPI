@@ -3,10 +3,7 @@ package com.dalbit.security.handler;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.util.CookieUtil;
-import com.dalbit.util.GsonUtil;
-import com.dalbit.util.JwtUtil;
-import com.dalbit.util.MessageUtil;
+import com.dalbit.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -26,6 +23,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
     @Autowired MessageUtil messageUtil;
     @Autowired JwtUtil jwtUtil;
     @Autowired GsonUtil gsonUtil;
+    @Autowired RedisUtil redisUtil;
 
 
     @Value("${sso.domain}")
@@ -52,7 +50,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         saveSsoCookie(response);
 
         HashMap resultJsonData = new HashMap();
-        resultJsonData.put("authToken", jwtUtil.generateToken(MemberVo.getUserInfo().getMemNo()));
+        resultJsonData.put("authToken", jwtUtil.generateToken(MemberVo.getMemNo()));
 
         gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인성공, resultJsonData));
     }
@@ -64,7 +62,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
      */
     public void saveSsoCookie(HttpServletResponse response) throws IOException {
         //SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(MemberVo.getUserInfo().getMemNo()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(MemberVo.getMemNo()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
         response.addCookie(ssoCookie);
     }
 }

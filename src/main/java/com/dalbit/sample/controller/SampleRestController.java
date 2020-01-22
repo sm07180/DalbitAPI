@@ -9,6 +9,7 @@ import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
+import com.dalbit.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -51,6 +52,9 @@ public class SampleRestController {
 
     @Autowired
     RedisTemplate redisTemplate;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     /**
      * 권한 처리 테스트
@@ -245,8 +249,9 @@ public class SampleRestController {
     @GetMapping(value = "/jwt")
     public String jwtTokenSample(HttpServletRequest request, HttpSession httpSession){
 
-        MemberVo memberVo = (MemberVo)httpSession.getAttribute("MEMBER_INFO");
+        log.debug("test");
 
+        log.debug(redisUtil.getMemberInfo().toString());
         return gsonUtil.toJson(new JsonOutputVo(Status.조회));
     }
 

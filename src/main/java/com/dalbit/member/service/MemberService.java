@@ -124,7 +124,7 @@ public class MemberService {
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             MemberVo memberVo = new MemberVo(); //new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
 
-            memberVo.setMemNo(MemberVo.getUserInfo().getMemNo());
+            memberVo.setMemNo(MemberVo.getMemNo());
             memberVo.setMemNick(DalbitUtil.getStringMap(map, "nickName"));
             memberVo.setMemSex(DalbitUtil.getStringMap(map, "memSex"));
             memberVo.setAge(DalbitUtil.getIntMap(map, "age"));

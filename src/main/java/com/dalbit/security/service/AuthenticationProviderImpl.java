@@ -10,6 +10,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 
 @Slf4j
@@ -19,6 +20,9 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     @Autowired
     private UserDetailsService userDetailsService;
 
+    @Autowired
+    private HttpSession httpSession;
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         String userName = authentication.getName();
@@ -26,8 +30,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
         SecurityUserVo securityUserVo = (SecurityUserVo)userDetailsService.loadUserByUsername(userName);
 
-        HashMap map = new HashMap();
-        map.put("memberInfo", securityUserVo.getMemberJsonInfo());
+        httpSession.setAttribute("MEMBER_INFO", securityUserVo.getMemberVo());
         return new UsernamePasswordAuthenticationToken(securityUserVo.getMemberVo().getMemNo(), password, securityUserVo.getAuthorities());
     }
 

@@ -19,7 +19,6 @@ public class SecurityUserVo extends User {
     private static final long serialVersionUID = 1L;
 
     private MemberVo memberVo;
-    private String memberJsonInfo;
 
     public SecurityUserVo(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);
@@ -29,12 +28,4 @@ public class SecurityUserVo extends User {
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public void setMemberJsonInfo(MemberVo memberVo){
-        this.memberJsonInfo = new Gson().toJson(memberVo);
-    }
-
-    public void setMemberVo(MemberVo memberVo){
-        this.memberVo = memberVo;
-        this.memberJsonInfo = new Gson().toJson(memberVo);
-    }
 }
