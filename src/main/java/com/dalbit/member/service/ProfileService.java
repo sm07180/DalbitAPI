@@ -50,15 +50,13 @@ public class ProfileService {
         P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
         ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
 
-        String result="";
+        String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_성공, ProfileInfoOutVo)));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_회원아님)));
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_대상아님.getMessageCode())){
+        }else{
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_대상아님)));
-        } else {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_실패)));
         }
         return result;
     }
@@ -92,8 +90,6 @@ public class ProfileService {
         return result;
     }
 
-
-
     /**
      * 팬보드 목록조회
      */
@@ -119,7 +115,7 @@ public class ProfileService {
         log.info(" ### 프로시저 호출결과 ###");
 
 
-        String result = "";
+        String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드조회성공, fanBoardList));
         }else if(Status.팬보드_댓글없음.getMessageCode().equals(procedureVo.getRet())) {
