@@ -102,10 +102,10 @@ public class Procedure_MemberTest {
     @Test
     public void 회원정보보기() throws GlobalException {
 
-        P_InfoVo apiSample = P_InfoVo.builder().build();
+        /*P_InfoVo apiSample = P_InfoVo.builder().build();
         String result = memberService.getMemberInfo(apiSample);
 
-        log.debug("회원정보보기 결과 : {}", result);
+        log.debug("회원정보보기 결과 : {}", result);*/
 
     }
 }
