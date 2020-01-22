@@ -27,15 +27,15 @@ public class ImageVo {
     private String photoServer;
     private String url;
     private String path;
-    private String thumbs1;
-    private String thumbs2;
-    private String thumbs3;
-    private String thumbs4;
-    private String thumbs5;
-    private String thumbs6;
-    private String thumbs7;
-    private String thumbs8;
-    private String thumbs9;
+    private String thumb62x62;
+    private String thumb80x80;
+    private String thumb88x88;
+    private String thumb120x120;
+    private String thumb150x150;
+    private String thumb190x190;
+    private String thumb292x292;
+    private String thumb336x336;
+    private String thumb700x700;
 
     public void setPath(String path, String photoServerUrl){
         if(path != null){
@@ -46,14 +46,14 @@ public class ImageVo {
     }
 
     public void setThumbs(){
-        this.thumbs1 = url + "?20x20";
-        this.thumbs2 = url + "?30x30";
-        this.thumbs3 = url + "?50x50";
-        this.thumbs4 = url + "?100x100";
-        this.thumbs5 = url + "?100x120";
-        this.thumbs6 = url + "?120x120";
-        this.thumbs7 = url + "?160x120";
-        this.thumbs8 = url + "?200x150";
-        this.thumbs9 = url + "?200x200";
+        this.thumb62x62 = url + "?62x62";
+        this.thumb80x80 = url + "?80x80";
+        this.thumb88x88 = url + "?88x88";
+        this.thumb120x120 = url + "?120x120";
+        this.thumb150x150 = url + "?150x150";
+        this.thumb190x190 = url + "?190x190";
+        this.thumb292x292 = url + "?292x292";
+        this.thumb336x336 = url + "?336x336";
+        this.thumb700x700 = url + "?700x700";
     }
 }
