@@ -188,4 +188,20 @@ public class MypageController {
         String result = mypageService.callMemberNotifyEdit(apiData);
         return result;
     }
+
+
+
+
+    /**
+     * 회원 방송방 빠른말 가져오기
+     */
+    @PostMapping("/shortcut")
+    public String memberShortCut(HttpServletRequest request){
+        P_MemberShortCut apiData = new P_MemberShortCut();
+
+        apiData.setMem_no("11578531441954");
+
+        String result = mypageService.callMemberShortCut(apiData);
+        return result;
+    }
 }

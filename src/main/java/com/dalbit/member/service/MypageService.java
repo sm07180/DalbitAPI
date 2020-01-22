@@ -12,11 +12,14 @@ import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -230,10 +233,12 @@ public class MypageService {
         procedureVo.setData(resultMap);
 
         String result;
-        if(procedureVo.getRet().equals(Status.알림설정조회성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정조회성공, procedureVo.getData())));
+        if(procedureVo.getRet().equals(Status.알림설정조회_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정조회_성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.알림설정조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정조회_회원아님)));
         }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정_회원아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정조회오류)));
         }
         return result;
     }
@@ -246,12 +251,38 @@ public class MypageService {
         mypageDao.callMemberNotifyEdit(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.알림설정수정성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정성공, procedureVo.getData())));
+        if(procedureVo.getRet().equals(Status.알림설정수정_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정_성공, procedureVo.getData())));
+        }else if(procedureVo.getRet().equals(Status.알림설정수정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정_회원아님)));
         }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정_회원아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정오류)));
         }
         return result;
     }
 
+    /**
+     * 회원 방송방 빠른말 가져오기
+     */
+    public String callMemberShortCut(P_MemberShortCut pMemberShortCut){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
+        mypageDao.callMemberShortCut(procedureVo);
+        List<P_MemberShortCut> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        procedureOutputVo = new ProcedureOutputVo(procedureVo, memberShortCutList);
+
+        HashMap shortCutList = new HashMap();
+        shortCutList.put("list",procedureOutputVo.getOutputBox());
+
+        String result;
+        if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말조회_성공, shortCutList)));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님)));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말조회오류)));
+        }
+        return result;
+    }
 }

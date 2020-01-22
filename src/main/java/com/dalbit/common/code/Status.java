@@ -35,13 +35,13 @@ public enum Status {
     //비밀번호변경
     비밀번호변경실패_회원아님("0", "member.change.password.fail", "비밀번호 변경 실패 시"),
     비밀번호변경성공("1", "member.change.password.success", "비밀번호 변경 성공 시"),
-    비밀번호변경오류("C006", "member.change.password.error", "비밀번호 변경 오류"),
+    비밀번호변경오류("C006", "member.change.password.error", "비밀번호 변경 오류 시"),
 
     //프로필편집
     프로필편집성공("0", "member.edit.profile.success", "프로필 편집 성공 시"),
     프로필편집실패_회원아님("-1", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
     프로필편집실패_닉네임중복("-2", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
-    프로필편집오류("C006", "member.edit.profile.error", "프로필 편집 오류"),
+    프로필편집오류("C006", "member.edit.profile.error", "프로필 편집 오류 시"),
 
     //회원팬등록
     팬등록성공("0", "member.insert.fanstar.success", "회원 팬 등록 성공 시"),
@@ -66,45 +66,63 @@ public enum Status {
     //회원 방송방 기본설정 조회
     방송방기본설정조회_성공("0", "mypage.broad.basic.suceess", "방송방 기본설정 조회 성공 시"),
     방송방기본설정조회_회원아님("-1", "mypage.broad.basic.no", "회원이 아닐 시"),
-    방송방기본설정조회_오류("C006", "mypage.broad.basic.error", "회원 방송방 기본설정 조회 오류"),
+    방송방기본설정조회_오류("C006", "mypage.broad.basic.error", "회원 방송방 기본설정 조회 오류 시"),
 
     //회원 방송방 기본설정 수정
     방송방기본설정수정_성공("0", "mypage.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
     방송방기본설정수정_회원아님("-1", "mypage.broad.basic.edit.no", "회원이 아닐 시"),
-    방송방기본설정수정_오류("C006", "mypage.broad.basic.edit.error", "회원 방송방 기본설정 수정 오류"),
+    방송방기본설정수정_오류("C006", "mypage.broad.basic.edit.error", "회원 방송방 기본설정 수정 오류 시"),
 
     //회원 신고하기
     회원신고성공("0", "mypage.member.report.add.suceess", "회원 신고 성공 시"),
     회원신고_요청회원번호_정상아님("-1", "mypage.member.report.add.mem.no", "요청 회원번호 정상 아닐 시"),
     회원신고_신고회원번호_정상아님("-2", "mypage.member.report.add.reported.no", "신고 회원번호 정상 아닐 시"),
     회원신고_이미_신고상태("-3", "mypage.member.reported", "이미 신고 상태 시"),
-    회원신고오류("C006", "mypage.member.reported.error", "회원 신고 신청 중 오류"),
+    회원신고오류("C006", "mypage.member.reported.error", "회원 신고 신청 중 오류 시"),
 
     //회원 차단하기
     회원차단성공("0", "mypage.member.block.suceess", "회원 차단 성공 시"),
     회원차단_요청회원번호_정상아님("-1", "mypage.member.block.mem.no", "요청 회원번호 정상 아닐 시"),
     회원차단_차단회원번호_정상아님("-2", "mypage.member.block.blocked.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단_이미_차단상태("-3", "mypage.member.block.blocked", "이미 차단 상태 시"),
-    회원차단오류("C006", "mypage.member.block.error", "회원 차단 신청중 오류"),
+    회원차단오류("C006", "mypage.member.block.error", "회원 차단 신청중 오류 시"),
 
     //회원 차단해제하기
     회원차단해제성공("0", "mypage.member.block.del.suceess", "회원 차단 해제 성공 시"),
     회원차단해제_요청회원번호_정상아님("-1", "mypage.member.block.del.mem.no", "요청 회원번호 정상 아닐 시"),
     회원차단해제_신고회원번호_정상아님("-2", "mypage.member.block.blocked.del.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단안된상태("-3", "mypage.member.block.no", "차단 안된 상태 시"),
-    회원차단해제오류("C006", "mypage.member.block.error", "차단 해제 신청중 오류"),
+    회원차단해제오류("C006", "mypage.member.block.error", "차단 해제 신청중 오류 시"),
 
     //회원 알림설정 조회하기
-    알림설정조회성공("0", "mypage.member.notify.sel.suceess", "알림 설정조회 성공 시"),
-    알림설정_회원아님("-3", "mypage.member.notify.no", "알림설정 회원아닐 시"),
-    알림설정수정성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),
-    알림설정에러("C006", "mypage.member.notify.error", "알림 설정 에러"),
+    알림설정조회_성공("0", "mypage.member.notify.sel.suceess", "알림 설정조회 성공 시"),
+    알림설정조회_회원아님("-1", "mypage.member.notify.no", "알림설정 회원아닐 시"),
+    알림설정조회오류("C006", "mypage.member.notify.error", "알림 설정 오류 시"),
+
+    //회원 방송방 빠른말 가져오기
+    회원방송방빠른말조회_성공("0", "mypage.member.shorucut.suceess", "회원 방송방 빠른말 가져오기 성공 시"),
+    회원방송방빠른말조회_회원아님("-1", "mypage.member.shorucut.no", "요청번호가 회원이 아닐 시"),
+    회원방송방빠른말조회오류("C006", "mypage.member.shorucut.error", "회원 방송방 빠른말 가져오기 오류 시"),
+
+    //회원방송방 빠른말 설정 수정/저장 하기
+    회원방송방빠른말조회수정_성공("0", "mypage.member.shorucut.edit.suceess", "회원 방송방 빠른말 수정 성공 시"),
+    회원방송방빠른말조회수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
+    회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
+
+    // 알림 설정
+    알림설정수정_성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),
+    알림설정수정_회원아님("-1", "mypage.member.notify.edit.no", "알림 설정수정 회원아닐 시"),
+    알림설정수정오류("C006", "mypage.member.notify.edit.error", "알림 설정 오류 시"),
 
     //회원 방송방 기본설정 수정
     방송방기본설정_수정성공("0", "myprofile.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
     방송방기본설정_회원아님("-1", "myprofile.broad.basic.edit.no", "회원이 아닐 시"),
     방송방기본설정_수정에러("C006", "myprofile.broad.basic.edit.error", "방송방 기본설정 수정 에러"),
 
+    //회원 방송방 빠른말 가져오기
+    빠른말가져오기_성공("0", "myprofile.broad.shortcut.suceess", "빠른말 가져오기 성공 시"),
+    빠른말가져오기_회원아님("-1", "myprofile.broad.shortcut.mamber.no", "빠른말 가져오기 회원이 아닐 시"),
+    빠른말가져오기_오류("C006", "myprofile.broad.shortcut.error", "빠른말 가져오기 오류 시"),
 
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.suceess", "댓글달기 성공 시"),

@@ -1,15 +1,11 @@
 package com.dalbit.member.vo;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
+
 public class P_InfoVo {
-
-    @Builder.Default private String mem_no = "11577931027280";
-    @Builder.Default private String target_mem_no = "11577931027280";
-
+    private String mem_no;
 }
