@@ -16,7 +16,6 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 
@@ -25,7 +24,6 @@ import javax.sql.DataSource;
  */
 @Configuration
 @MapperScan(basePackages= "com.dalbit")
-@EnableTransactionManagement
 public class DatabaseConfig {
 
     @Value("${spring.datasource.driverClassName}")
