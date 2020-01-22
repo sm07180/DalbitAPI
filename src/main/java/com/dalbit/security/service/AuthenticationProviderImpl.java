@@ -28,7 +28,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
         HashMap map = new HashMap();
         map.put("memberInfo", securityUserVo.getMemberJsonInfo());
-        return new UsernamePasswordAuthenticationToken(securityUserVo.getMemberVo().getMem_no(), password, securityUserVo.getAuthorities());
+        return new UsernamePasswordAuthenticationToken(securityUserVo.getMemberVo().getMemNo(), password, securityUserVo.getAuthorities());
     }
 
     @Override

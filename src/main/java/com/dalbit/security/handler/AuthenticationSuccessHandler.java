@@ -52,7 +52,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
         saveSsoCookie(response);
 
         HashMap resultJsonData = new HashMap();
-        resultJsonData.put("authToken", jwtUtil.generateToken(MemberVo.getUserInfo().getMem_no()));
+        resultJsonData.put("authToken", jwtUtil.generateToken(MemberVo.getUserInfo().getMemNo()));
 
         gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인성공, resultJsonData));
     }
@@ -64,7 +64,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
      */
     public void saveSsoCookie(HttpServletResponse response) throws IOException {
         //SecurityUserVo loginUser = (SecurityUserVo) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(MemberVo.getUserInfo().getMem_no()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
+        Cookie ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtUtil.generateToken(MemberVo.getUserInfo().getMemNo()), SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
         response.addCookie(ssoCookie);
     }
 }

@@ -65,8 +65,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         MemberVo paramMemberVo = new MemberVo();
-        paramMemberVo.setMem_id(DalbitUtil.convertRequestParamToString(request,"memId"));
-        paramMemberVo.setMem_slct(DalbitUtil.convertRequestParamToString(request, "memType"));
+        paramMemberVo.setMemId(DalbitUtil.convertRequestParamToString(request,"memId"));
+        paramMemberVo.setMemSlct(DalbitUtil.convertRequestParamToString(request, "memType"));
 
         MemberVo memberVo = loginDao.loginUseMemId(paramMemberVo);
         if(memberVo == null) {
@@ -76,7 +76,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMem_id(), memberVo.getMem_passwd(), authorities);
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
@@ -94,7 +94,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMem_id(), memberVo.getMem_passwd(), authorities);
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;

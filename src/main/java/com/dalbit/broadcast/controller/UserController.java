@@ -42,7 +42,7 @@ public class UserController {
         int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "i_records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "i_records");
 
         P_RoomMemberListVo apiData = new P_RoomMemberListVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
         apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"));
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);

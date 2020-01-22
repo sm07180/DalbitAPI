@@ -1,5 +1,6 @@
 package com.dalbit.common.vo;
 
+import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,5 +22,7 @@ public class RedisData implements Serializable {
 
     private String sourceId;
     private String itemId;
+
+    private MemberVo memberVo;
 
 }

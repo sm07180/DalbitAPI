@@ -37,7 +37,7 @@ public class ProfileController {
     public String memberInfo(HttpServletRequest request){
 
         P_ProfileInfoVo apiData = new P_ProfileInfoVo();
-        apiData.setMem_no(MemberVo.getUserInfo().getMem_no());
+        apiData.setMem_no(MemberVo.getUserInfo().getMemNo());
         apiData.setTarget_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = profileService.callMemberInfo(apiData);
         return result;
@@ -68,7 +68,7 @@ public class ProfileController {
     public String fanboardList(HttpServletRequest request){
 
         P_FanboardListVo fanboardListVo = new P_FanboardListVo();
-        fanboardListVo.setMem_no(MemberVo.getUserInfo().getMem_no());
+        fanboardListVo.setMem_no(MemberVo.getUserInfo().getMemNo());
         fanboardListVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
         fanboardListVo.setPageNo(DalbitUtil.convertRequestParamToInteger(request, "page"));
         fanboardListVo.setPageCnt(DalbitUtil.convertRequestParamToInteger(request, "records"));
@@ -86,7 +86,7 @@ public class ProfileController {
 
         P_FanboardDeleteVo fanboardDeleteVo = new P_FanboardDeleteVo();
         fanboardDeleteVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        fanboardDeleteVo.setDelete_mem_no(MemberVo.getUserInfo().getMem_no());  // 물어보기
+        fanboardDeleteVo.setDelete_mem_no(MemberVo.getUserInfo().getMemNo());  // 물어보기
         fanboardDeleteVo.setBoard_idx(DalbitUtil.convertRequestParamToInteger(request, "boardIdx"));
 
         String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
@@ -100,7 +100,7 @@ public class ProfileController {
     public String fanboardReply(HttpServletRequest request){
 
         P_FanboardReplyVo fanboardReplyVo = new P_FanboardReplyVo();
-        fanboardReplyVo.setMem_no(MemberVo.getUserInfo().getMem_no());
+        fanboardReplyVo.setMem_no(MemberVo.getUserInfo().getMemNo());
         fanboardReplyVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
         fanboardReplyVo.setBoard_no(DalbitUtil.convertRequestParamToInteger(request, "boardNo"));
 

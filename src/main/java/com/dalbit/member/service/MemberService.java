@@ -124,18 +124,18 @@ public class MemberService {
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             MemberVo memberVo = new MemberVo(); //new Gson().fromJson(procedureVo.getExt(), MemberVo.class);
 
-            memberVo.setMem_no(MemberVo.getUserInfo().getMem_no());
-            memberVo.setMem_nick(DalbitUtil.getStringMap(map, "nickName"));
-            memberVo.setMem_sex(DalbitUtil.getStringMap(map, "memSex"));
+            memberVo.setMemNo(MemberVo.getUserInfo().getMemNo());
+            memberVo.setMemNick(DalbitUtil.getStringMap(map, "nickName"));
+            memberVo.setMemSex(DalbitUtil.getStringMap(map, "memSex"));
             memberVo.setAge(DalbitUtil.getIntMap(map, "age"));
-            memberVo.setMem_id(DalbitUtil.getStringMap(map, "memId"));
+            memberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));
             memberVo.setLevel(DalbitUtil.getIntMap(map, "level"));
-            memberVo.setFan_count(DalbitUtil.getIntMap(map, "fanCount"));
-            memberVo.setStar_count(DalbitUtil.getIntMap(map, "starCount"));
-            memberVo.setEnable_fan(DalbitUtil.getBooleanMap(map, "enableFan"));
+            memberVo.setFanCount(DalbitUtil.getIntMap(map, "fanCount"));
+            memberVo.setStarCount(DalbitUtil.getIntMap(map, "starCount"));
+            memberVo.setEnableFan(DalbitUtil.getBooleanMap(map, "enableFan"));
 
-            memberVo.setBackground_image(new ImageVo(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL));
-            memberVo.setProfile_image(new ImageVo(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL));
+            memberVo.setBackgroundImage(new ImageVo(DalbitUtil.getStringMap(map, "backgroundImage"), SERVER_PHOTO_URL));
+            memberVo.setProfileImage(new ImageVo(DalbitUtil.getStringMap(map, "profileImage"), DalbitUtil.getStringMap(map, "memSex"), SERVER_PHOTO_URL));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기성공, memberVo));
 

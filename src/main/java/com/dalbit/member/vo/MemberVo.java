@@ -8,7 +8,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.sql.Date;
 
-@Getter @Setter
+@Getter
+@Setter
 public class MemberVo extends BaseVo {
 
     private static final long serialVersionUID = 1L;
@@ -20,33 +21,33 @@ public class MemberVo extends BaseVo {
 
         String memNo = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         MemberVo memberVo = new MemberVo();
-        memberVo.setMem_no(memNo);
+        memberVo.setMemNo(memNo);
         return memberVo;
     }
 
-    private String mem_no;
-    private String mem_nick;
-    private String mem_sex;
+    private String memNo;
+    private String memNick;
+    private String memSex;
     private int age;
-    private String mem_id;
-    private ImageVo background_image;
-    private ImageVo profile_image;
-    private String profile_msg;
+    private String memId;
+    private ImageVo backgroundImage;
+    private ImageVo profileImage;
+    private String profileMsg;
     private int level;
-    private int fan_count;
-    private int star_count;
-    private boolean enable_fan;
+    private int fanCount;
+    private int starCount;
+    private boolean enableFan;
 
     private int idx;
-    private String mem_phone;
-    private String mem_passwd;
-    private int mem_birth_year;
-    private int mem_birth_month;
-    private int mem_birth_day;
-    private String mem_slct;
-    private String mem_state;
-    private Date mem_join_date;
-    private Date last_upd_date;
+    private String memPhone;
+    private String memPasswd;
+    private int memBirthYear;
+    private int memBirthMonth;
+    private int memBirthDay;
+    private String memSlct;
+    private String memState;
+    private Date memJoinDate;
+    private Date lastUpdDate;
 
     //TODO - 추후 DB에서 정보 추가
     private int exp = 50;

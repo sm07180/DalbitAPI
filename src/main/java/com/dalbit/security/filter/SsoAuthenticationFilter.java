@@ -140,10 +140,10 @@ public class SsoAuthenticationFilter implements Filter {
             MemberVo memberVo = securityUserVo.getMemberVo();
 
             // Verify SSO token value
-            if (memberVo.getMem_id().equals(securityUserVo.getUsername())) {
+            if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
                 HashMap map = new HashMap();
                 map.put("memberInfo", securityUserVo.getMemberJsonInfo());
-                Authentication authentication = new UsernamePasswordAuthenticationToken(memberVo.getMem_no(), securityUserVo.getPassword(), userDetails.getAuthorities());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(memberVo.getMemNo(), securityUserVo.getPassword(), userDetails.getAuthorities());
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authentication);
