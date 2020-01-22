@@ -30,7 +30,7 @@ public class ActionController {
     public String roomGood(HttpServletRequest request){
 
         P_RoomGoodVo adiData = P_RoomGoodVo.builder()
-                .mem_no(MemberVo.getMemNo())
+                .mem_no(MemberVo.getMyMemNo())
                 .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
                 .build();
 

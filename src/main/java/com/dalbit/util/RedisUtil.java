@@ -61,7 +61,7 @@ public class RedisUtil {
     }
 
     public MemberVo getMemberInfo(){
-        String memNo = MemberVo.getMemNo();
+        String memNo = MemberVo.getMyMemNo();
         String sessionId = getSessionId(memNo);
         MemberVo memberVo = getMemberInfo(sessionId);
         return memberVo;

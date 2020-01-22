@@ -1,5 +1,6 @@
 package com.dalbit.util;
 
+import com.dalbit.member.vo.TokenVo;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,8 @@ public class JwtUtil {
     @Value("${sso.cookie.max.age}")
     private long SSO_COOKIE_MAX_AGE;
 
+    final String JWT_SEPARATOR = "@";
+
     /**
      * 이름으로 Jwt Token을 생성한다.
      */
@@ -32,11 +35,28 @@ public class JwtUtil {
                 .compact();
     }
 
+    public String generateToken(String memNo, boolean isLogin) {
+        return generateToken(memNo + JWT_SEPARATOR + isLogin);
+    }
+
     /**
      * Jwt Token을 복호화 하여 이름을 얻는다.
      */
     public String getUserNameFromJwt(String jwt) {
         return getClaims(jwt).getBody().getId();
+    }
+
+    public TokenVo getTokenVoFromJwt(String jwt){
+        try {
+            String[] splitStrArr = getUserNameFromJwt(jwt).split(JWT_SEPARATOR);
+            if (splitStrArr.length == 2) {
+                boolean isLogin = Boolean.valueOf(splitStrArr[1]);
+                return new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin);
+            }
+        }catch (Exception e){
+            return null;
+        }
+        return null;
     }
 
     /**

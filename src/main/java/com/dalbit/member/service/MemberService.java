@@ -21,7 +21,6 @@ import java.util.HashMap;
 
 @Slf4j
 @Service
-@Transactional
 public class MemberService {
 
     @Autowired
@@ -43,6 +42,7 @@ public class MemberService {
     /**
      * 회원 가입
      */
+    @Transactional
     public String signup(P_JoinVo pLoginVo) {
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
