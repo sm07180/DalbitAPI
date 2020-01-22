@@ -18,6 +18,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -244,9 +245,7 @@ public class SampleRestController {
     @GetMapping(value = "/jwt")
     public String jwtTokenSample(HttpServletRequest request, HttpSession httpSession){
 
-        request.getSession().setAttribute(request.getParameter("key"), request.getParameter("value"));
-
-        //redisTemplate.
+        MemberVo memberVo = (MemberVo)httpSession.getAttribute("MEMBER_INFO");
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회));
     }
