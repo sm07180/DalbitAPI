@@ -85,18 +85,12 @@ public enum Status {
     팬보드_대댓글조회실패_요청회원번호_회원아님("-1", "fanboard.reply.requestNo.notMember", "요청 회원번호가 회원이 아님"),
     팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아님"),
 
-    //회원정보보기
+    //회원정보보기    profileService
     회원정보_성공("0", "member.info.view.success", "회원 팬 등록 성공 시"),
     회원정보_회원아님("-1", "member.no", "회원이 아닐 시"),
     회원정보_대상아님("-2", "member.info.view.fail", "회원 팬 등록 실패 시 "),
 
-    //회원정보보기
-    회원정보보기성공("0", "myprofile.info.view.success", "회원정보보기 성공 시"),
-    회원정보보기_회원아님("-1", "myprofile.no", "회원이 아닐 시"),
-    회원정보보기_대상회원아님("-2", "myprofile.this.no", "대상회원이 아닐 시"),
-    회원정보보기실패("-3", "myprofile.info.view.fail", "회원정보보기 실패 시"),
-
-    //회원정보조회
+    //회원정보조회    mypage
     회원정보조회성공("0", "mypage.info.view.success", "회원정보보기 성공 시"),
     회원정보조회_회원아님("-1", "mypage.no", "회원이 아닐 시"),
     회원정보조회_대상회원아님("-2", "mypage.this.no", "대상회원이 아닐 시"),
