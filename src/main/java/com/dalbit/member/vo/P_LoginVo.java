@@ -10,10 +10,21 @@ public class P_LoginVo extends BaseVo {
 
     public P_LoginVo(){}
 
+    //회원용
     public P_LoginVo(String memSlct, String id, String pw, int os, String deviceUuid, String deviceToken, String appVersion, String adId){
         setMemSlct(memSlct);
         setId(id);
         setPw(pw);
+        setOs(os);
+        setDeviceUuid(deviceUuid);
+        setDeviceToken(deviceToken);
+        setAppVersion(appVersion);
+        setAdId(adId);
+    }
+
+    //비회원용
+    public P_LoginVo(String memSlct, int os, String deviceUuid, String deviceToken, String appVersion, String adId){
+        setMemSlct(memSlct);
         setOs(os);
         setDeviceUuid(deviceUuid);
         setDeviceToken(deviceToken);

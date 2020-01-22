@@ -1,6 +1,7 @@
 package com.dalbit.security.filter;
 
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.*;
@@ -76,16 +77,16 @@ public class SsoAuthenticationFilter implements Filter {
                         boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
                         if(isJwtTokenAvailable){
 
-                            String memNo = jwtUtil.getUserNameFromJwt(headerCookie);
-                            log.debug("SsoAuthenticationFilter get request header > JWT FROM ID : " + memNo);
+                            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerCookie);
+                            log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
 
                             UserDetails userDetails = null;
-                            if(redisUtil.isExistLoginSession(memNo)){
-                                userDetails = userDetailsService.loadUserBySsoCookieFromRedis(memNo);
+                            if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
+                                userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
                             }
 
                             if(DalbitUtil.isEmpty(userDetails)){
-                                userDetails = userDetailsService.loadUserBySsoCookieFromDb(memNo);
+                                userDetails = userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo());
                             }
 
                             saveSecuritySession(request, userDetails);
@@ -95,10 +96,10 @@ public class SsoAuthenticationFilter implements Filter {
                         boolean isJwtTokenAvailable = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
                         if(isJwtTokenAvailable){
 
-                            String userId = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-                            log.debug("SsoAuthenticationFilter > JWT FROM ID : " + userId);
+                            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+                            log.debug("SsoAuthenticationFilter > JWT FROM TokenVo : {}", tokenVo.toString());
 
-                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookieFromDb(userId));
+                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo()));
                         }
 
                         ssoCookieUpdate(request, response, isJwtTokenAvailable);
@@ -148,7 +149,10 @@ public class SsoAuthenticationFilter implements Filter {
 
             // Verify SSO token value
             if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(), userDetails.getAuthorities());
+                Authentication authentication = new UsernamePasswordAuthenticationToken(
+                        securityUserVo.getMemberVo().getMemNo()
+                        , securityUserVo.getMemberVo().getMemPasswd()
+                        , userDetails.getAuthorities());
 
                 SecurityContext securityContext = SecurityContextHolder.getContext();
                 securityContext.setAuthentication(authentication);
@@ -171,8 +175,9 @@ public class SsoAuthenticationFilter implements Filter {
             }else{
                 CookieUtil cookieUtil = new CookieUtil(request);
 
-                String memNo = jwtUtil.getUserNameFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-                String jwtToken = jwtUtil.generateToken(memNo);
+                TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
+
+                String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), tokenVo.isLogin());
 
                 ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
             }
@@ -195,7 +200,7 @@ public class SsoAuthenticationFilter implements Filter {
             }else{
                 String cookieValue = request.getHeader(SSO_HEADER_COOKIE_NAME);
                 String userId = jwtUtil.getUserNameFromJwt(cookieValue);
-                String jwtToken = jwtUtil.generateToken(userId);
+                String jwtToken = jwtUtil.generateToken(userId, true);
 
                 ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
             }

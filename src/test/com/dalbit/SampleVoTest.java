@@ -212,6 +212,14 @@ public class SampleVoTest {
         log.info(DalbitUtil.randomValue("number", 4));
     }
 
+    @Test
+    public void 테스트(){
+        String memNo = "21319823013231";
+        boolean isLogin = true;
+
+
+    }
+
 }
 
 

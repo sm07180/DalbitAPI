@@ -1,27 +1,31 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
-import com.dalbit.member.vo.*;
-import com.dalbit.util.DalbitUtil;
+import com.dalbit.member.vo.P_ChangePasswordVo;
+import com.dalbit.member.vo.P_JoinVo;
+import com.dalbit.member.vo.P_LoginVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.Collection;
 
 @Slf4j
 @Service
-@Transactional
 public class MemberService {
 
     @Autowired
@@ -43,6 +47,7 @@ public class MemberService {
     /**
      * 회원 가입
      */
+    @Transactional
     public String signup(P_JoinVo pLoginVo) {
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
@@ -100,9 +105,24 @@ public class MemberService {
 
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공, procedureVo.getData())));
-        } else {
+        } else if(procedureVo.getRet().equals(Status.비밀번호변경실패_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경실패_회원아님)));
+        } else {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경오류)));
         }
         return result;
+    }
+
+    public void refreshAnonymousSecuritySession(String memNo){
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+
+        Authentication authentication = new UsernamePasswordAuthenticationToken(
+                memNo
+                , ""
+                , authorities);
+
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        securityContext.setAuthentication(authentication);
     }
 }

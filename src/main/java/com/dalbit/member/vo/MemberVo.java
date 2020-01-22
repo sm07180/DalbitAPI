@@ -14,7 +14,7 @@ public class MemberVo extends BaseVo {
 
     private static final long serialVersionUID = 1L;
 
-    public static String getMemNo() {
+    public static String getMyMemNo() {
         return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
 

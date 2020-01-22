@@ -4,12 +4,12 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.service.MemberService;
-import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.P_ChangePasswordVo;
-import com.dalbit.member.vo.P_JoinVo;
+import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -25,21 +26,55 @@ import javax.servlet.http.HttpServletRequest;
 public class MemberController {
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
-    MemberService memberService;
+    JwtUtil jwtUtil;
 
     @GetMapping("token")
     public String token(HttpServletRequest request){
 
-        if(DalbitUtil.isLogin()){
-            log.info("로그인 : {}", MemberVo.getMemNo());
+        TokenVo tokenVo;
+        boolean isLogin = DalbitUtil.isLogin();
+
+        if(isLogin){
+            tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
         }else{
-            log.info("비로그인 : {}", MemberVo.getMemNo());
+            P_LoginVo pLoginVo = new P_LoginVo(
+                    //DalbitUtil.convertRequestParamToString(request,"memType")
+                    "a"
+                    , DalbitUtil.convertRequestParamToInteger(request,"os")
+                    , DalbitUtil.convertRequestParamToString(request,"deviceId")
+                    , DalbitUtil.convertRequestParamToString(request,"deviceToken")
+                    , DalbitUtil.convertRequestParamToString(request,"appVer")
+                    , DalbitUtil.convertRequestParamToString(request,"appAdId")
+            );
+
+            ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
+            if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
+
+            }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림));
+
+            }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_파라메터이상));
+            }
+
+            HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String memNo = DalbitUtil.getStringMap(map,"mem_no");
+            tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
+
+            memberService.refreshAnonymousSecuritySession(memNo);
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+
+
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
     }
 
     @PostMapping("signup")

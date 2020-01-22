@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
 
 @Slf4j
 @Component("authProvider")
@@ -25,13 +24,17 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        String userName = authentication.getName();
-        String password = (String)authentication.getCredentials();
+        //String userName = authentication.getName();
+        //String password = (String)authentication.getCredentials();
 
-        SecurityUserVo securityUserVo = (SecurityUserVo)userDetailsService.loadUserByUsername(userName);
+        SecurityUserVo securityUserVo = (SecurityUserVo)userDetailsService.loadUserByUsername("");
 
         httpSession.setAttribute("MEMBER_INFO", securityUserVo.getMemberVo());
-        return new UsernamePasswordAuthenticationToken(securityUserVo.getMemberVo().getMemNo(), password, securityUserVo.getAuthorities());
+
+        return new UsernamePasswordAuthenticationToken(
+                securityUserVo.getMemberVo().getMemNo()
+                , securityUserVo.getMemberVo().getMemPasswd()
+                , securityUserVo.getAuthorities());
     }
 
     @Override
