@@ -128,15 +128,12 @@ public class MypageService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        resultMap.put("bgImg",new ImageVo(DalbitUtil.getStringMap(resultMap, "backgroundImage"), SERVER_PHOTO_URL));
-        resultMap.put("profileImage",new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), SERVER_PHOTO_URL));
-        log.info("returnMap: {}",resultMap);
-        procedureVo.setData(resultMap);
+        P_MemberInfoVo MemberInfo = new Gson().fromJson(procedureVo.getExt(), P_MemberInfoVo.class);
+        MemberInfoOutVo memberInfoOutVo = new MemberInfoOutVo(MemberInfo, pMemberInfo.getTarget_mem_no());
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보조회성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회성공, memberInfoOutVo)));
         }else if(procedureVo.getRet().equals(Status.회원정보조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보조회_회원아님)));
         }else if(procedureVo.getRet().equals(Status.회원정보조회_대상회원아님.getMessageCode())) {
