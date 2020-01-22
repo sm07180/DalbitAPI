@@ -112,12 +112,14 @@ public enum Status {
     팬보드_댓글달기실패_작성자회원번호_회원아님("-2", "fanboard.add.fail.writerNo.notMember", "작성자 회원번호가 회원이 아님"),
     팬보드_댓글달기실패_잘못된댓글그룹번호("-3", "fanboard.add.fail.wrong.groupNo", "댓글 그룹번호가 잘못된 번호"),
     팬보드_댓글달기실패_depth값_오류("-4", "fanboard.add.fail.wrong.depth", " depth 값 잘못됨"),
+    팬보드_댓글달기실패_등록오류("C006", "fanboard.add.error", "팬보드 댓글 등록 실패"),
 
     //회원 마이페이지 팬보드 댓글 리스트
     팬보드조회성공("C001", "fanboard.list.comment.success", "팬보드 정보 조회 시"),
     팬보드_댓글없음("0", "fanboard.list.comment.no", "댓글이 없음"),
     팬보드_요청회원번호_회원아님("-1", "fanboard.list.requestNo.notMember", "요청 회원번호가 회원이 아님"),
     팬보드_스타회원번호_회원아님("-2", "fanboard.list.starNo.notMember","스타 회원번호가 회원이 아님"),
+    팬보드_조회오류("C006", "fanboard.list.error", "팬보드 댓글 리스트 조회 실패"),
 
     //회원 마이페이지 팬보드 댓글 삭제
     팬보드_댓글삭제성공("0", "fanboard.delete.comment.success", "댓글 삭제 성공"),
@@ -127,15 +129,14 @@ public enum Status {
     팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름("-4", "fanboard.delete.notSame.IndexNoStarNo", "요청 인덱스번호의 스타 회원번호가 다름"),
     팬보드_댓글삭제실패_이미삭제됨("-5", "fanboard.delete.already.delete", "이미 삭제됨"),
     팬보드_댓글삭제실패_삭제권한없음("-6", "fanboard.delete.authorization.not", "삭제 권한이 없음"),
+    팬보드_댓글삭제오류("C006", "fanboard.delete.error", "팬보드 댓글 삭제 실패"),
 
     //회원 마이페이지 팬보드 대댓글 보기
     팬보드_대댓글조회성공("C001", "fanboard.reply.comment.success", "팬보드 대댓글 조회 시"),
     팬보드_대댓글조회실패_대댓글없음("0", "fanboard.reply.comment.no", "대댓글 없음"),
     팬보드_대댓글조회실패_요청회원번호_회원아님("-1", "fanboard.reply.requestNo.notMember", "요청 회원번호가 회원이 아님"),
     팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아님"),
-    팬보드_대댓글조회오류("C006", "fanboard.reply.starNo.error", "스타 회원번호가 회원 조회오류"),
-
-
+    팬보드_대댓글조회오류("C006", "fanboard.reply.error", "팬보드 대댓글 보기 실패"),
 
     //방송생성
     방송생성("0", "broadcast.room.start", "방송 생성 시"),
