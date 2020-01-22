@@ -189,13 +189,10 @@ public class MypageController {
         return result;
     }
 
-
-
-
     /**
      * 회원 방송방 빠른말 가져오기
      */
-    @PostMapping("/shortcut")
+    @GetMapping("/shortcut")
     public String memberShortCut(HttpServletRequest request){
         P_MemberShortCut apiData = new P_MemberShortCut();
 
