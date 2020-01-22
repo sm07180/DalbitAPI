@@ -28,26 +28,34 @@ import javax.sql.DataSource;
 @EnableTransactionManagement
 public class DatabaseConfig {
 
-    @Value("${spring.datasource.driver-class-name}")
-    private String jdbcDriverClassName;
+    @Value("${spring.datasource.driverClassName}")
+    private String JDBC_DRIVER_CLASS_NAME;
 
     @Value("${spring.datasource.url}")
-    private String jdbcUrl;
+    private String JDBC_URL;
 
     @Value("${spring.datasource.username}")
-    private String jdbcUsername;
+    private String JDBC_USERNAME;
 
     @Value("${spring.datasource.password}")
-    private String jdbcPassword;
+    private String JDBC_PASSWORD;
+
+    @Value("${spring.datasource.connection.timeout}")
+    private String CONNECTION_TIMEOUT;
+
+    @Value("${spring.datasource.idle.timeout}")
+    private String IDLE_TIMEOUT;
 
     @Bean
     public HikariConfig hikariConfig() {
         HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName(jdbcDriverClassName);
-        hikariConfig.setJdbcUrl(jdbcUrl);
-        hikariConfig.setUsername(jdbcUsername);
-        hikariConfig.setPassword(jdbcPassword);
-
+        hikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
+        hikariConfig.setJdbcUrl(JDBC_URL);
+        hikariConfig.setUsername(JDBC_USERNAME);
+        hikariConfig.setPassword(JDBC_PASSWORD);
+        hikariConfig.setConnectionTimeout(Long.valueOf(CONNECTION_TIMEOUT));
+        hikariConfig.setIdleTimeout(Long.valueOf(IDLE_TIMEOUT));
+        hikariConfig.setMaxLifetime(Long.valueOf(IDLE_TIMEOUT));
         return hikariConfig;
     }
 

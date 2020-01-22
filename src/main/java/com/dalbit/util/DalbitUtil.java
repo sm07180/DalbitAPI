@@ -1,5 +1,6 @@
 package com.dalbit.util;
 
+import com.dalbit.member.vo.MemberVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -463,6 +464,10 @@ public class DalbitUtil {
     public static String getProperty(String key){
         return environment.getProperty(key);
 
+    }
+
+    public static boolean isLogin(){
+        return !"anonymousUser".equals(MemberVo.getMemNo());
     }
 
 }

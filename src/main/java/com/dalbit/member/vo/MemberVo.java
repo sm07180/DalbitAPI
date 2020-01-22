@@ -27,6 +27,10 @@ public class MemberVo extends BaseVo {
     private ImageVo profileImage;
     private String profileMsg;
     private int level;
+    private String grade;
+    private int exp;
+    private int expNext;
+
     private int fanCount;
     private int starCount;
     private boolean enableFan;
@@ -41,8 +45,4 @@ public class MemberVo extends BaseVo {
     private String memState;
     private Date memJoinDate;
     private Date lastUpdDate;
-
-    private int exp;
-    private int expNext;
-    private String grade;
 }
