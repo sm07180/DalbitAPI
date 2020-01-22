@@ -4,13 +4,18 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.service.MemberService;
-import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.P_ChangePasswordVo;
+import com.dalbit.member.vo.P_JoinVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -25,6 +30,17 @@ public class MemberController {
     GsonUtil gsonUtil;
     @Autowired
     MemberService memberService;
+
+    @GetMapping("token")
+    public String token(HttpServletRequest request){
+
+        if(DalbitUtil.isLogin()){
+            log.info("로그인 : {}", MemberVo.getMemNo());
+        }else{
+            log.info("비로그인 : {}", MemberVo.getMemNo());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+    }
 
     @PostMapping("signup")
     public String signup(HttpServletRequest request){
