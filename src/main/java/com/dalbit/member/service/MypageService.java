@@ -1,25 +1,19 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
-import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import net.minidev.json.JSONArray;
-import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

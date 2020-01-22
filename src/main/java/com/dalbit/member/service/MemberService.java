@@ -19,7 +19,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -47,7 +46,6 @@ public class MemberService {
     /**
      * 회원 가입
      */
-    @Transactional
     public String signup(P_JoinVo pLoginVo) {
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
