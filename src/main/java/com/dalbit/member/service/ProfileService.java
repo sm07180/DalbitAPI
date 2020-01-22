@@ -51,12 +51,12 @@ public class ProfileService {
         ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
 
         String result;
-        if(procedureVo.getRet().equals(Status.회원정보_성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_성공, ProfileInfoOutVo)));
-        }else if(procedureVo.getRet().equals(Status.회원정보_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_회원아님)));
+        if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_성공, ProfileInfoOutVo)));
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_회원아님)));
         }else{
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보_대상아님)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원정보보기_대상아님)));
         }
         return result;
     }

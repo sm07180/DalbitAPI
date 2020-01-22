@@ -56,10 +56,12 @@ public class UserService {
         String result="";
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberList));
-        }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, roomMemberList));
         }else if(Status.방송참여자리스트없음.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
+        }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, roomMemberList));
+        }else if(Status.방송참여자리스트_방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_방없음, roomMemberList));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트조회_실패, roomMemberList));
         }
