@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo;
 
 import com.dalbit.common.vo.ImageVo;
+import com.dalbit.common.vo.PagingVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,6 +36,7 @@ public class RoomOutVo {
     private String gstGender;
     private int gstAge;
     private ImageVo gstProfImg;
+    private PagingVo paging;
 
     public RoomOutVo(P_RoomListVo target) {
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
@@ -63,5 +65,4 @@ public class RoomOutVo {
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());
         this.gstProfImg = new ImageVo(target.getGuest_profileImage(), target.getGuest_memSex(), DalbitUtil.getProperty("server.photo.url"));
     }
-
 }
