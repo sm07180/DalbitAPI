@@ -4,6 +4,7 @@ import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
@@ -184,6 +185,7 @@ public class RoomService {
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
         HashMap roomList = new HashMap();
+        roomList.put("paging ", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
         roomList.put("list", procedureOutputVo.getOutputBox());
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());

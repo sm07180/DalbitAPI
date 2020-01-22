@@ -1,9 +1,8 @@
 package com.dalbit.member.service;
 
 
-import com.dalbit.broadcast.vo.RoomOutVo;
+
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -23,7 +22,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static com.dalbit.common.code.Status.삭제;
 
 @Slf4j
 @Service
@@ -70,7 +68,7 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanboardAddVo);
         profileDao.callMemberFanboardAdd(procedureVo);
 
-        String result;
+        String result="";
         if(Status.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공));
 
@@ -83,7 +81,7 @@ public class ProfileService {
         }else if (Status.팬보드_댓글달기실패_잘못된댓글그룹번호.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_잘못된댓글그룹번호, procedureVo.getData()));
 
-        }else{
+        }else if (Status.팬보드_댓글달기실패_depth값_오류.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_depth값_오류, procedureVo.getData()));
         }
 
@@ -174,17 +172,19 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
         List<P_FanboardReplyVo> fanboardVoReplyList = profileDao.callMemberFanboardReply(procedureVo);
 
+
         ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(fanboardVoReplyList)){
             procedureOutputVo = null;
         }else{
-//            for (int i=0; i<fanboardVoReplyList.size(); i++){
-//                fanboardVoReplyList.get(i).setProfileImage(new ImageVo(fanboardVoReplyList.get(i).getProfileImage(), SERVER_PHOTO_URL));
-//            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, fanboardVoReplyList);
+            List<FanboardReplyOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<fanboardVoReplyList.size(); i++){
+                outVoList.add(new FanboardReplyOutVo(fanboardVoReplyList.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
-        HashMap fanboardReply = new HashMap();
-        fanboardReply.put("list", procedureOutputVo.getOutputBox());
+        HashMap fanboardReplyList = new HashMap();
+        fanboardReplyList.put("list", procedureOutputVo.getOutputBox());
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
@@ -193,7 +193,7 @@ public class ProfileService {
         String result="";
 
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReply));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReplyList));
         } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureOutputVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, procedureOutputVo.getData()));
         } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {

@@ -23,9 +23,9 @@ public class P_JoinVo extends BaseVo {
         setBirthYear(birthYear);
         setBirthMonth(birthMonth);
         setBirthDay(birthDay);
-        setTerm1(term1);
-        setTerm2(term2);
-        setTerm3(term3);
+        setTerms1(term1);
+        setTerms2(term2);
+        setTerms3(term3);
         setName(name);
         setProfileImage(profileImage);
         setProfileImageGrade(profileImageGrade);
@@ -45,9 +45,9 @@ public class P_JoinVo extends BaseVo {
     private int birthYear;
     private int birthMonth;
     private int birthDay;
-    private String term1;
-    private String term2;
-    private String term3;
+    private String terms1;
+    private String terms2;
+    private String terms3;
     private String name;
     private String profileImage;
     private int profileImageGrade;

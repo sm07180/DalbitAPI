@@ -11,14 +11,13 @@ import lombok.ToString;
 @ToString
 public class ProfileInfoOutVo {
 
-    private String nickNm;
-
-    private ImageVo profImg;
     private String  memNo;
+    private String  nickNm;
     private String  gender;
     private int     age;
     private String  memId;
     private ImageVo bgImg;
+    private ImageVo profImg;
     private String  profMsg;
     private int     level;
     private int     fanCnt;
