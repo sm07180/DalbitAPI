@@ -107,7 +107,7 @@ public enum Status {
     //회원방송방 빠른말 설정 수정/저장 하기
     회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.suceess", "회원 방송방 빠른말 수정 성공 시"),
     회원방송방빠른말수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
-    회원방송방빠른말오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
+    회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
 
     // 알림 설정
     알림설정수정_성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),

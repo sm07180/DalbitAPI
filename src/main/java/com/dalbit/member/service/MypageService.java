@@ -278,4 +278,23 @@ public class MypageService {
         }
         return result;
     }
+
+    /**
+     * 회원 방송방 빠른말 수정하기
+     */
+    public String callMemberShortCutEdit(P_MemberShortCutEdit pMemberShortCutEdit){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberShortCutEdit);
+        mypageDao.callMemberShortCutEdit(procedureVo);
+
+        String result;
+
+        if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_성공.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말수정_성공)));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말수정_회원아님)));
+        }else{
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말수정오류)));
+        }
+        return result;
+    }
 }
