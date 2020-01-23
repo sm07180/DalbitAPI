@@ -86,9 +86,10 @@ public class MemberService {
         String result = "";
         if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
-
         }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData()));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류, procedureVo.getData()));
         }
         return result;
     }
