@@ -236,6 +236,15 @@ public enum Status {
     게스트초대수락("3005", "broadcast.user.guest.join", "게스트 초대 수락 시"),
     게스트신청("3006", "broadcast.user.guest.apply", "게스트 신청 시"),
 
+    //방송방 공지사항 가져오기
+    공지가져오기성공("0", "broadcast.room.notice.select.success", "공지 가져오기 성공"),
+    공지가져오기실패_정상회원이아님("-1", "broadcast.room.notice.member.no", "정상회원이 아님"),
+    공지가져오기실패_해당방이없음("-2", "broadcast.room.notice.room.no", "해당 방이 없음"),
+    공지가져오기실패_방참가자가아님("-3", "broadcast.room.join.member.no", "방 참가자가 아님"),
+    공지가져오기실패_조회에러("C006", "broadcast.room.notice.fail", "공지 가져오기 실패 시"),
+
+
+
     ;
 
     final private String SUCCESS_RESULT = "success";

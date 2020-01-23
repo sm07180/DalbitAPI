@@ -1,31 +1,43 @@
 package com.dalbit.broadcast.controller;
 
+import com.dalbit.broadcast.service.ContentService;
+import com.dalbit.broadcast.vo.P_RoomNoticeSelectVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.util.HashMap;
 
 @RestController
-@RequestMapping("brod")
+@RequestMapping("broad")
 public class ContentController {
 
     @Autowired
-    private MessageUtil messageUtil;
+    MessageUtil messageUtil;
+
+    @Autowired
+    ContentService contentService;
 
     /**
      * 공지조회
      */
-    @GetMapping("{brodNo}/notice")
-    public String getNotice(@PathVariable String brodNo){
+    @GetMapping("/notice")
+    public String noticeSelect(HttpServletRequest request){
 
-        HashMap map = new HashMap();
-        map.put("brodNo", brodNo);
+        P_RoomNoticeSelectVo apiData = new P_RoomNoticeSelectVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request,"roomNo"));
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
+        String result = contentService.callBroadCastRoomNoticeSelect(apiData);
+        return result;
     }
 
     /**
