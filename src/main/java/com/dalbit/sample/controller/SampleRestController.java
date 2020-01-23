@@ -98,9 +98,9 @@ public class SampleRestController {
     @GetMapping("rejectNotUserRest")
     @PreAuthorize("hasAnyRole('ROLE_USER')")
     public String rejectNotUserRest(){
-        List<SampleVo> list = sampleService.getList();
+        //List<SampleVo> list = sampleService.getList();
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회));
 
         log.debug(result);
 

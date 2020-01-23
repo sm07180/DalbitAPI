@@ -2,6 +2,7 @@ package com.dalbit.config;
 
 import com.dalbit.security.filter.SsoAuthenticationFilter;
 //import com.dalbit.security.handler.LogoutSuccessHandlerImpl;
+import com.dalbit.security.handler.LogoutSuccessHandlerImpl;
 import com.dalbit.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,7 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private AuthenticationSuccessHandler authSuccessHandler;
     @Autowired private AuthenticationFailureHandler authFailureHandler;
-    //@Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
+    @Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
     @Autowired private UserDetailsServiceImpl userDetailsService;
     @Autowired private AuthenticationProvider authProvider;
     @Autowired private SsoAuthenticationFilter ssoAuthenticationFilter;
@@ -108,7 +109,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .deleteCookies(SECURITY_COOKIE_NAME, SSO_COOKIE_NAME)
                     .invalidateHttpSession(true)
                     //.logoutSuccessUrl("/")
-                    //.logoutSuccessHandler(logoutSuccessHandler)
+                    .logoutSuccessHandler(logoutSuccessHandler)
 
             .and()
                 .sessionManagement()

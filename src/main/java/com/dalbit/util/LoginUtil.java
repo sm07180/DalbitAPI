@@ -74,7 +74,7 @@ public class LoginUtil {
             }else{
                 CookieUtil cookieUtil = new CookieUtil(request);
 
-                TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(DalbitUtil.getProperty("sso.header.cookie.name")));
+                TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(DalbitUtil.getProperty("sso.cookie.name")));
 
                 String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), tokenVo.isLogin());
 
