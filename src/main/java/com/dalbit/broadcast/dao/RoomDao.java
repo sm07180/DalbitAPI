@@ -15,7 +15,4 @@ public interface RoomDao {
     ProcedureVo callBroadCastRoomEdit(ProcedureVo procedureVo);
     List<P_RoomListVo> callBroadCastRoomList(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomGood(ProcedureVo procedureVo);
-    ProcedureVo callBroadCastRoomStreamIdRequest(ProcedureVo procedureVo);
-    ProcedureVo callBroadCastRoomGuestAdd(ProcedureVo procedureVo);
-    ProcedureVo callBroadCastRoomGuestDelete(ProcedureVo procedureVo);
 }

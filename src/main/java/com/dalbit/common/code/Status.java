@@ -99,30 +99,20 @@ public enum Status {
     알림설정조회_회원아님("-1", "mypage.member.notify.no", "알림설정 회원아닐 시"),
     알림설정조회오류("C006", "mypage.member.notify.error", "알림 설정 오류 시"),
 
+    // 알림 설정
+    알림설정수정_성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),
+    알림설정수정_회원아님("-1", "mypage.member.notify.edit.no", "알림 설정수정 회원아닐 시"),
+    알림설정수정오류("C006", "mypage.member.notify.edit.error", "알림 설정 오류 시"),
+
     //회원 방송방 빠른말 가져오기
     회원방송방빠른말조회_성공("0", "mypage.member.shorucut.suceess", "회원 방송방 빠른말 가져오기 성공 시"),
     회원방송방빠른말조회_회원아님("-1", "mypage.member.shorucut.no", "요청번호가 회원이 아닐 시"),
     회원방송방빠른말조회오류("C006", "mypage.member.shorucut.error", "회원 방송방 빠른말 가져오기 오류 시"),
 
     //회원방송방 빠른말 설정 수정/저장 하기
-    회원방송방빠른말조회수정_성공("0", "mypage.member.shorucut.edit.suceess", "회원 방송방 빠른말 수정 성공 시"),
-    회원방송방빠른말조회수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
+    회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.suceess", "회원 방송방 빠른말 수정 성공 시"),
+    회원방송방빠른말수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
     회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
-
-    // 알림 설정
-    알림설정수정_성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),
-    알림설정수정_회원아님("-1", "mypage.member.notify.edit.no", "알림 설정수정 회원아닐 시"),
-    알림설정수정오류("C006", "mypage.member.notify.edit.error", "알림 설정 오류 시"),
-
-    //회원 방송방 기본설정 수정
-    방송방기본설정_수정성공("0", "myprofile.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
-    방송방기본설정_회원아님("-1", "myprofile.broad.basic.edit.no", "회원이 아닐 시"),
-    방송방기본설정_수정에러("C006", "myprofile.broad.basic.edit.error", "방송방 기본설정 수정 에러"),
-
-    //회원 방송방 빠른말 가져오기
-    빠른말가져오기_성공("0", "myprofile.broad.shortcut.suceess", "빠른말 가져오기 성공 시"),
-    빠른말가져오기_회원아님("-1", "myprofile.broad.shortcut.mamber.no", "빠른말 가져오기 회원이 아닐 시"),
-    빠른말가져오기_오류("C006", "myprofile.broad.shortcut.error", "빠른말 가져오기 오류 시"),
 
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.suceess", "댓글달기 성공 시"),
@@ -224,7 +214,7 @@ public enum Status {
     게스트지정_해당방이없음("-2", "broadcast.guest.add.room.no", "해당 방송이 없을 시"),
     게스트지정_방이종료되었음("-3", "broadcast.guest.add.room.end", "방이 종료되어 있을 시"),
     게스트지정_방소속_회원아님("-4", "broadcast.guest.add.room.join.no", "방에 소속된 회원이 아닐 시"),
-    게스트지정_방장아님("-5", "broadcast.guest.add.bj.no", "방장이 아닐 시"),
+    게스트지정_방장아님("-5", "broadcast.guest.add.bj.no", "요청회원이 방장이 아닐 시"),
     게스트지정_방소속_회원아이디아님("-6", "broadcast.guest.add.room.join.id.no", "방에 소속된 회원아이디가 아닐 시"),
     게스트지정_불가("-7", "broadcast.guest.add.no", "게스트 지정(이미 게스트 또는 방장 권한) 안될 시 "),
     게스트지정_실패("C006", "broadcast.guest.add.fail", "게스트 지정 실패 시"),
@@ -235,7 +225,7 @@ public enum Status {
     게스트취소_해당방이없음("-2", "broadcast.guest.cancel.room.no", "해당 방송이 없을 시"),
     게스트취소_방이종료되었음("-3", "broadcast.guest.cancel.room.end", "방이 종료되어 있을 시"),
     게스트취소_방소속_회원아님("-4", "broadcast.guest.cancel.room.join.no", "방에 소속된 회원이 아닐 시"),
-    게스트취소_방장아님("-5", "broadcast.guest.cancel.bj.no", "방장이 아닐 시"),
+    게스트취소_방장아님("-5", "broadcast.guest.cancel.bj.no", "요청회원이 방장이 아닐 시"),
     게스트취소_방소속_회원아이디아님("-6", "broadcast.guest.cancel.room.join.id.no", "방에 소속된 회원아이디가 아닐 시"),
     게스트취소_불가("-7", "broadcast.guest.cancel.no", "게스트가 아닐 시 "),
     게스트취소_실패("C006", "broadcast.guest.cancel.fail", "게스트 취소 실패 시"),

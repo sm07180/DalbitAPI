@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.controller;
 
+import com.dalbit.broadcast.service.CommonService;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
@@ -30,6 +31,8 @@ public class RoomController {
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
+    CommonService commonService;
+    @Autowired
     RoomService roomService;
     @Autowired
     RestService restService;
@@ -43,7 +46,7 @@ public class RoomController {
     @PostMapping("/create")
     public String roomCreate(HttpServletRequest request) throws GlobalException {
         //토큰생성
-        String streamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "s_title")).get("streamId");
+        String streamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "title")).get("streamId");
         String publishToken = (String) restService.antToken(streamId, "publish").get("tokenId");
         String playToken = (String) restService.antToken(streamId, "play").get("tokenId");
         log.info("bj_streamId: {}", streamId);
@@ -80,7 +83,7 @@ public class RoomController {
         String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
 
         //방참가를 위한 토큰 조회
-        HashMap resultMap = roomService.callBroadCastRoomStreamIdRequest(roomNo);
+        HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomJoinVo apiData = new P_RoomJoinVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
@@ -101,7 +104,7 @@ public class RoomController {
     /**
      * 방송방 나가기
      */
-    @PostMapping("/exit")
+    @DeleteMapping("/exit")
     public String roomExit(HttpServletRequest request){
         String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
         P_RoomExitVo apiData = new P_RoomExitVo();

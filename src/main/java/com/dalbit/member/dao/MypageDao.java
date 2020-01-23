@@ -21,4 +21,5 @@ public interface MypageDao {
     ProcedureVo callMemberNotify(ProcedureVo procedureVo);
     ProcedureVo callMemberNotifyEdit(ProcedureVo procedureVo);
     List<P_MemberShortCut> callMemberShortCut(ProcedureVo procedureVo);
+    ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
 }

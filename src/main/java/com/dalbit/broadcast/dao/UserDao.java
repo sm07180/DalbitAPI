@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface UserDao {
     List<P_RoomMemberListVo> callBroadCastRoomMemberList(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomGuestAdd(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomGuestDelete(ProcedureVo procedureVo);
 }

@@ -7,7 +7,6 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
@@ -185,8 +184,8 @@ public class RoomService {
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
         HashMap roomList = new HashMap();
-        roomList.put("paging ", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
         roomList.put("list", procedureOutputVo.getOutputBox());
+        roomList.put("paging ", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
@@ -241,120 +240,6 @@ public class RoomService {
         return result;
     }
 
-    /**
-     * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
-     */
-    public HashMap callBroadCastRoomStreamIdRequest(String roomNo) throws GlobalException {
-        P_RoomJoinTokenVo apiData = P_RoomJoinTokenVo.builder()
-                .room_no(roomNo)
-                .build();
-        ProcedureVo procedureVo = new ProcedureVo(apiData);
-        roomDao.callBroadCastRoomStreamIdRequest(procedureVo);
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", resultMap);
 
-        String tokenFailData = "";
-
-        if (procedureVo.getRet().equals(Status.방송참여토큰_해당방이없음.getMessageCode())) {
-            throw new GlobalException(Status.방송참여토큰_해당방이없음, procedureVo.getData());
-        } else if (procedureVo.getRet().equals(Status.방송참여토큰_방장이없음.getMessageCode())) {
-            throw new GlobalException(Status.방송참여토큰_방장이없음, procedureVo.getData());
-        } else if(procedureVo.getRet().equals(Status.방송참여토큰발급_실패.getMessageCode())){
-            //tokenFailData = new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여토큰발급_실패)));
-            throw new GlobalException(Status.방송참여토큰발급_실패, procedureVo.getData());
-        }
-
-        boolean isTokenSuccess = procedureVo.getRet().equals(Status.방송참여토큰발급.getMessageCode());
-        resultMap.put("isTokenSuccess", isTokenSuccess);
-        resultMap.put("tokenFailData", tokenFailData);
-
-        log.debug("방송방 참여 토큰발급 결과 [{}]: {}", isTokenSuccess, tokenFailData);
-
-        return resultMap;
-    }
-
-    /**
-     * 방송방 게스트 지정하기
-     */
-    public String callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pRoomGuestAddVo);
-        roomDao.callBroadCastRoomGuestAdd(procedureVo);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("room_no",pRoomGuestAddVo.getRoom_no());
-        returnMap.put("guest_streamid",pRoomGuestAddVo.getGuest_streamid());
-        returnMap.put("bj_streamid",pRoomGuestAddVo.getBj_streamid());
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
-
-        String result="";
-        if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가, procedureVo.getData()));
-        }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패, procedureVo.getData()));
-        }
-
-        return result;
-    }
-
-    /**
-     * 방송방 게스트 취소
-     */
-    public String callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pRoomGuestDeleteVo);
-        roomDao.callBroadCastRoomGuestDelete(procedureVo);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("room_no",pRoomGuestDeleteVo.getRoom_no());
-        returnMap.put("guest_streamid",pRoomGuestDeleteVo.getGuest_streamid());
-        returnMap.put("bj_streamid",pRoomGuestDeleteVo.getBj_streamid());
-        log.info("returnMap: {}",returnMap);
-        procedureVo.setData(returnMap);
-
-        String result = "";
-        if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가, procedureVo.getData()));
-        }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, procedureVo.getData()));
-        }
-        return result;
-    }
 }

@@ -197,8 +197,32 @@ public class MypageController {
         P_MemberShortCut apiData = new P_MemberShortCut();
 
         apiData.setMem_no("11578531441954");
+//        apiData.setMem_no(MemberVo.getMyMemNo());
 
         String result = mypageService.callMemberShortCut(apiData);
+        return result;
+    }
+
+    /**
+     * 회원 방송방 빠른말 수정하기
+     */
+    @PostMapping("/shortcut")
+    public String memberShortCutEdit(HttpServletRequest request){
+        P_MemberShortCutEdit apiData = new P_MemberShortCutEdit();
+
+        apiData.setMem_no("11578531441954");
+//        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setOrder_1(DalbitUtil.convertRequestParamToString(request,"order_1"));
+        apiData.setText_1(DalbitUtil.convertRequestParamToString(request,"text_1"));
+        apiData.setOnOff_1(DalbitUtil.convertRequestParamToString(request,"onOff_1"));
+        apiData.setOrder_2(DalbitUtil.convertRequestParamToString(request,"order_2"));
+        apiData.setText_2(DalbitUtil.convertRequestParamToString(request,"text_2"));
+        apiData.setOnOff_2(DalbitUtil.convertRequestParamToString(request,"onOff_2"));
+        apiData.setOrder_3(DalbitUtil.convertRequestParamToString(request,"order_3"));
+        apiData.setText_3(DalbitUtil.convertRequestParamToString(request,"text_3"));
+        apiData.setOnOff_3(DalbitUtil.convertRequestParamToString(request,"onOff_3"));
+
+        String result = mypageService.callMemberShortCutEdit(apiData);
         return result;
     }
 }

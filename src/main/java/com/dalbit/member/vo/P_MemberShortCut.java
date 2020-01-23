@@ -11,6 +11,6 @@ public class P_MemberShortCut {
 
     private String orderNo;                             //순서번호
     private String order;                               //명령어
-    private String test;                                //내용
+    private String text;                                //내용
     private String onOff;                               //사용여부
 }

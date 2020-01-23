@@ -3,20 +3,20 @@ package com.dalbit.broadcast.vo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_RoomGuestAddVo {
 
-    @Builder.Default private String mem_no = "11578531329289";                                      //요청 회원번호
-    @Builder.Default private String room_no = "91578898402918";                                     //참가하려는 방 번호
-    @Builder.Default private String guest_mem_no = "11577950643615";                                //게스트 지정할 회원번호
-    @Builder.Default private String guest_streamid = "guest_streamid00001";                         //guest 스트림아이디
-    @Builder.Default private String guest_publish_tokenid = "guest_publish_tokenid00001";           //guest 토큰아이디
-    @Builder.Default private String guest_play_tokenid = "guest_play_tokenid00001";                 //guest play토큰
-    @Builder.Default private String bj_streamid = "bj_streamid00001";                               //bj 스트림아이디
-    @Builder.Default private String bj_publish_tokenid = "bj_publish_tokenid00001";                 //bj 토큰아이디
-    @Builder.Default private String bj_play_tokenid = "bj_play_tokenid00001";                       //bj play토큰
+    private String mem_no;                      //요청 회원번호
+    private String room_no;                     //참가하려는 방 번호
+    private String guest_mem_no;                //게스트 지정할 회원번호
+    private String guest_streamid;              //guest 스트림아이디
+    private String guest_publish_tokenid;       //guest 토큰아이디
+    private String guest_play_tokenid;          //guest play토큰
+    private String bj_streamid;                 //bj 스트림아이디
+    private String bj_publish_tokenid;          //bj 토큰아이디
+    private String bj_play_tokenid;             //bj play토큰
 
 }
