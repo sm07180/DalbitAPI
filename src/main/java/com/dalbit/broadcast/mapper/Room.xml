@@ -26,16 +26,4 @@
       call sp_broadcast_room_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callBroadCastRoomStreamIdRequest" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_streamid_request(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callBroadCastRoomGuestAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_guest_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callBroadCastRoomGuestDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_guest_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
 </mapper>

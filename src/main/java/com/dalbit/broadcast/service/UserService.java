@@ -1,10 +1,13 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.UserDao;
+import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
+import com.dalbit.broadcast.vo.P_RoomGuestDeleteVo;
 import com.dalbit.broadcast.vo.P_RoomMemberListVo;
 import com.dalbit.broadcast.vo.RoomMemberOutVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.util.DalbitUtil;
@@ -48,6 +51,7 @@ public class UserService {
         }
         HashMap roomMemberList = new HashMap();
         roomMemberList.put("list", procedureOutputVo.getOutputBox());
+        roomMemberList.put("paging ", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
@@ -66,6 +70,90 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트조회_실패, roomMemberList));
         }
 
+        return result;
+    }
+
+    /**
+     * 방송방 게스트 지정하기
+     */
+    public String callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGuestAddVo);
+        userDao.callBroadCastRoomGuestAdd(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("roomNo",pRoomGuestAddVo.getRoom_no());
+        returnMap.put("gstStreamId",pRoomGuestAddVo.getGuest_streamid());
+        returnMap.put("gstPubToken",pRoomGuestAddVo.getGuest_publish_tokenid());
+        returnMap.put("gstPlayToken",pRoomGuestAddVo.getGuest_play_tokenid());
+        returnMap.put("bjStreamId",pRoomGuestAddVo.getBj_streamid());
+        returnMap.put("bjPubToken",pRoomGuestAddVo.getBj_publish_tokenid());
+        log.info("returnMap: {}",returnMap);
+
+        String result="";
+        if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가, returnMap));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패, returnMap));
+        }
+
+        return result;
+    }
+
+    /**
+     * 방송방 게스트 취소
+     */
+    public String callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGuestDeleteVo);
+        userDao.callBroadCastRoomGuestDelete(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("roomNo",pRoomGuestDeleteVo.getRoom_no());
+        returnMap.put("gstStreamId",pRoomGuestDeleteVo.getGuest_streamid());
+        returnMap.put("bjStreamId",pRoomGuestDeleteVo.getBj_streamid());
+        log.info("returnMap: {}",returnMap);
+
+        String result = "";
+        if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님, returnMap));
+        }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가, returnMap));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, returnMap));
+        }
         return result;
     }
 }
