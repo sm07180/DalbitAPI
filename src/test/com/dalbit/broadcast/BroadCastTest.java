@@ -1,5 +1,6 @@
 package com.dalbit.broadcast;
 
+import com.dalbit.broadcast.service.ActionService;
 import com.dalbit.broadcast.service.CommonService;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.service.UserService;
@@ -28,11 +29,13 @@ public class BroadCastTest {
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
-    private RoomService roomService;
+    RoomService roomService;
     @Autowired
     UserService userService;
     @Autowired
-    private CommonService commonService;
+    CommonService commonService;
+    @Autowired
+    ActionService  actionService;
     @Autowired
     RestService restService;
 
@@ -132,10 +135,10 @@ public class BroadCastTest {
     @Test
     public void 방송방좋아요 (){
         log.debug("방송방 좋아요 추가");
-        log.debug(P_RoomGoodVo.builder().build().toString());
+        //log.debug(P_RoomGoodVo.builder().build().toString());
 
-        P_RoomGoodVo apiSample = P_RoomGoodVo.builder().build();
-        String result = roomService.callBroadCastRoomGood(apiSample);
+        //P_RoomGoodVo apiSample = P_RoomGoodVo.builder().build();
+        //String result = actionService.callBroadCastRoomGood(apiSample);
 
 
         log.info(" ### 프로시저 호출결과 ###");

@@ -3,14 +3,13 @@ package com.dalbit.broadcast.vo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
-@Builder
-@AllArgsConstructor
+@Setter
 public class P_RoomGoodVo {
 
-    @Builder.Default private String mem_no = "11577950643615";                                       //좋아요 누른 회원번호
-    @Builder.Default private String room_no = "91578033988651";                                      //좋아요 방 번호
-
-    private String good_count;  //좋아요 누적 총 개수
+    private String mem_no;          //좋아요 누른 회원번호
+    private String room_no;         //좋아요 방 번호
+    private String good_count;      //좋아요 누적 총 개수
 }

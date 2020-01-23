@@ -14,5 +14,4 @@ public interface RoomDao {
     ProcedureVo callBroadCastRoomExit(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomEdit(ProcedureVo procedureVo);
     List<P_RoomListVo> callBroadCastRoomList(ProcedureVo procedureVo);
-    ProcedureVo callBroadCastRoomGood(ProcedureVo procedureVo);
 }
