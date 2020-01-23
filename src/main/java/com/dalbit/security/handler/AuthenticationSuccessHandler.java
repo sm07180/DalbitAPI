@@ -21,20 +21,13 @@ import java.util.HashMap;
 @Component("authSuccessHandler")
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired MessageUtil messageUtil;
     @Autowired JwtUtil jwtUtil;
     @Autowired GsonUtil gsonUtil;
-    @Autowired RedisUtil redisUtil;
-
 
     @Value("${sso.domain}")
     private String SSO_DOMAIN;
     @Value("${sso.cookie.name}")
     private String SSO_COOKIE_NAME;
-    @Value("${sso.member.id.key}")
-    private String SSO_MEMBER_ID_KEY;
-    @Value("${sso.member.token.key}")
-    private String SSO_MEMBER_TOKEN_NAME;
     @Value("${sso.cookie.max.age}")
     private int SSO_COOKIE_MAX_AGE;
 

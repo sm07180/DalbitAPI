@@ -3,21 +3,22 @@ package com.dalbit.member.controller;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.*;
-import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
-import com.dalbit.util.JwtUtil;
-import com.dalbit.util.MessageUtil;
+import com.dalbit.security.service.UserDetailsServiceImpl;
+import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @Slf4j
@@ -27,6 +28,8 @@ public class MemberController {
 
     @Autowired
     MemberService memberService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     @Autowired
     MessageUtil messageUtil;
@@ -34,6 +37,8 @@ public class MemberController {
     GsonUtil gsonUtil;
     @Autowired
     JwtUtil jwtUtil;
+    @Autowired
+    LoginUtil loginUtil;
 
     @GetMapping("token")
     public String token(HttpServletRequest request){
@@ -45,13 +50,13 @@ public class MemberController {
             tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
         }else{
             P_LoginVo pLoginVo = new P_LoginVo(
-                    //DalbitUtil.convertRequestParamToString(request,"memType")
-                    "a"
-                    , DalbitUtil.convertRequestParamToInteger(request,"os")
-                    , DalbitUtil.convertRequestParamToString(request,"deviceId")
-                    , DalbitUtil.convertRequestParamToString(request,"deviceToken")
-                    , DalbitUtil.convertRequestParamToString(request,"appVer")
-                    , DalbitUtil.convertRequestParamToString(request,"appAdId")
+                //DalbitUtil.convertRequestParamToString(request,"memType")
+                "a"
+                , DalbitUtil.convertRequestParamToInteger(request,"os")
+                , DalbitUtil.convertRequestParamToString(request,"deviceId")
+                , DalbitUtil.convertRequestParamToString(request,"deviceToken")
+                , DalbitUtil.convertRequestParamToString(request,"appVer")
+                , DalbitUtil.convertRequestParamToString(request,"appAdId")
             );
 
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
@@ -78,7 +83,7 @@ public class MemberController {
     }
 
     @PostMapping("signup")
-    public String signup(HttpServletRequest request){
+    public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
         P_JoinVo joinVo = new P_JoinVo(
             DalbitUtil.convertRequestParamToString(request,"memType")
@@ -103,7 +108,35 @@ public class MemberController {
             , DalbitUtil.convertRequestParamToString(request,"appAdId")
         );
 
-        String result = memberService.signup(joinVo);
+        String result = "";
+        ProcedureVo procedureVo = memberService.signup(joinVo);
+        if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
+            //new JsonOutputVo(Status.회원가입성공);
+
+            HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String memNo = DalbitUtil.getStringMap(map, "mem_no");
+            String jwtToken = jwtUtil.generateToken(memNo, true);
+
+            UserDetails userDetails = userDetailsService.loadUserBySsoCookieFromDb(memNo);
+
+            loginUtil.saveSecuritySession(request, userDetails);
+            loginUtil.ssoCookieRenerate(response, jwtToken);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
+
+        }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입, procedureVo.getData()));
+
+        }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복, procedureVo.getData()));
+
+        }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
+
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
+        }
+
         return result;
     }
 

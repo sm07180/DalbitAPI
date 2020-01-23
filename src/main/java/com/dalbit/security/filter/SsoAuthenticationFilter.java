@@ -1,27 +1,20 @@
 package com.dalbit.security.filter;
 
-import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
-import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 
 /**
  * 쿠키기반 sso 필터
@@ -34,17 +27,10 @@ public class SsoAuthenticationFilter implements Filter {
     @Autowired Base64Util base64Util;
     @Autowired JwtUtil jwtUtil;
     @Autowired RedisUtil redisUtil;
+    @Autowired LoginUtil loginUtil;
 
-    @Value("${sso.domain}")
-    private String SSO_DOMAIN;
     @Value("${sso.cookie.name}")
     private String SSO_COOKIE_NAME;
-    @Value("${sso.member.id.key}")
-    private String SSO_MEMBER_ID_KEY;
-    @Value("${sso.member.token.key}")
-    private String SSO_MEMBER_TOKEN_NAME;
-    @Value("${sso.cookie.max.age}")
-    private int SSO_COOKIE_MAX_AGE;
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
 
@@ -72,7 +58,7 @@ public class SsoAuthenticationFilter implements Filter {
 
                     if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
 
-                        String headerCookie = request.getHeader("sso_cookie");
+                        String headerCookie = request.getHeader(SSO_HEADER_COOKIE_NAME);
 
                         boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
                         if(isJwtTokenAvailable){
@@ -89,8 +75,8 @@ public class SsoAuthenticationFilter implements Filter {
                                 userDetails = userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo());
                             }
 
-                            saveSecuritySession(request, userDetails);
-                            ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
+                            loginUtil.saveSecuritySession(request, userDetails);
+                            loginUtil.ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
                         }
                     }else if (cookieUtil.exists(SSO_COOKIE_NAME)) {
                         boolean isJwtTokenAvailable = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
@@ -99,10 +85,10 @@ public class SsoAuthenticationFilter implements Filter {
                             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
                             log.debug("SsoAuthenticationFilter > JWT FROM TokenVo : {}", tokenVo.toString());
 
-                            saveSecuritySession(request, userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo()));
+                            loginUtil.saveSecuritySession(request, userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo()));
                         }
 
-                        ssoCookieUpdate(request, response, isJwtTokenAvailable);
+                        loginUtil.ssoCookieUpdate(request, response, isJwtTokenAvailable);
 
                     }
 
@@ -137,77 +123,5 @@ public class SsoAuthenticationFilter implements Filter {
         }
 
         return result;
-    }
-
-    /**
-     * spring security에 session 저장
-     */
-    private void saveSecuritySession(HttpServletRequest request, UserDetails userDetails){
-        if (userDetails != null) {
-            SecurityUserVo securityUserVo = (SecurityUserVo) userDetails;
-            MemberVo memberVo = securityUserVo.getMemberVo();
-
-            // Verify SSO token value
-            if (memberVo.getMemId().equals(securityUserVo.getUsername())) {
-                Authentication authentication = new UsernamePasswordAuthenticationToken(
-                        securityUserVo.getMemberVo().getMemNo()
-                        , securityUserVo.getMemberVo().getMemPasswd()
-                        , userDetails.getAuthorities());
-
-                SecurityContext securityContext = SecurityContextHolder.getContext();
-                securityContext.setAuthentication(authentication);
-
-                HttpSession session = request.getSession(true);
-                session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
-            }
-        }
-    }
-
-    /**
-     * sso cookie 갱신
-     */
-    public void ssoCookieUpdate(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable){
-        try {
-            Cookie ssoCookie;
-            if(!isJwtTokenAvailable){
-                ssoCookie = CookieUtil.deleteCookie(SSO_COOKIE_NAME, SSO_DOMAIN, "/", 0);
-
-            }else{
-                CookieUtil cookieUtil = new CookieUtil(request);
-
-                TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-
-                String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), tokenVo.isLogin());
-
-                ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
-            }
-            response.addCookie(ssoCookie);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * sso cookie 갱신
-     */
-    public void ssoCookieUpdateFromRequestHeader(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable){
-        try {
-            Cookie ssoCookie;
-            if(!isJwtTokenAvailable){
-                ssoCookie = CookieUtil.deleteCookie(SSO_COOKIE_NAME, SSO_DOMAIN, "/", 0);
-
-            }else{
-                String cookieValue = request.getHeader(SSO_HEADER_COOKIE_NAME);
-                String userId = jwtUtil.getUserNameFromJwt(cookieValue);
-                String jwtToken = jwtUtil.generateToken(userId, true);
-
-                ssoCookie = CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE); // 60 * 60 * 24 * 30 = 30days
-            }
-            response.addCookie(ssoCookie);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 }

@@ -46,33 +46,10 @@ public class MemberService {
     /**
      * 회원 가입
      */
-    public String signup(P_JoinVo pLoginVo) {
+    public ProcedureVo signup(P_JoinVo pLoginVo) {
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
-
-        log.info("sp_member_join: {}", procedureVo.getRet());
-        log.info("sp_member_join: {}", procedureVo.getExt());
-
-        log.debug("회원가입 결과 : {}", procedureVo.toString());
-
-        String result;
-        if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공));
-
-        }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입, procedureVo.getData()));
-
-        }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복, procedureVo.getData()));
-
-        }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
-
-        }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
-        }
-
-        return result;
+        return procedureVo;
     }
 
     /**
