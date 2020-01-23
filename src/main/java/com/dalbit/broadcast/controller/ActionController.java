@@ -1,6 +1,6 @@
 package com.dalbit.broadcast.controller;
 
-import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.service.ActionService;
 import com.dalbit.broadcast.vo.P_RoomGoodVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -21,7 +21,7 @@ public class ActionController {
     @Autowired
     private MessageUtil messageUtil;
     @Autowired
-    private RoomService roomService;
+    private ActionService actionService;
 
     /**
      * 방송방 좋아요 추가
@@ -29,12 +29,11 @@ public class ActionController {
     @PostMapping("/likes")
     public String roomGood(HttpServletRequest request){
 
-        P_RoomGoodVo adiData = P_RoomGoodVo.builder()
-                .mem_no(MemberVo.getMyMemNo())
-                .room_no(DalbitUtil.convertRequestParamToString(request, "s_room_no"))
-                .build();
+        P_RoomGoodVo adiData = new P_RoomGoodVo();
+        adiData.setMem_no(MemberVo.getMyMemNo());
+        adiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
 
-        String result = roomService.callBroadCastRoomGood(adiData);
+        String result = actionService.callBroadCastRoomGood(adiData);
 
         return result;
     }

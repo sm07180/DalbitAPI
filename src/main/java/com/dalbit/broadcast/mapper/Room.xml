@@ -22,8 +22,4 @@
       call sp_broadcast_room_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callBroadCastRoomGood" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
 </mapper>
