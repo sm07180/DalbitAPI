@@ -104,7 +104,7 @@ public class RoomController {
     /**
      * 방송방 나가기
      */
-    @PostMapping("/exit")
+    @DeleteMapping("/exit")
     public String roomExit(HttpServletRequest request){
         String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
         P_RoomExitVo apiData = new P_RoomExitVo();
