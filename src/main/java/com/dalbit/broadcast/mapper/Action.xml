@@ -5,8 +5,8 @@
     <select id="callBroadCastRoomGood" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_broadcast_room_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
-
     <select id="callBroadCastRoomShareLink" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_RoomShareLinkVo">
       call sp_broadcast_room_link_check(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
 </mapper>

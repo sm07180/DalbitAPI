@@ -1,9 +1,9 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ContentDao;
-import com.dalbit.broadcast.vo.P_RoomNoticeEditVo;
-import com.dalbit.broadcast.vo.P_RoomNoticeVo;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
 @Slf4j
@@ -116,15 +118,107 @@ public class ContentService {
     }
 
     /**
-     *  방송방 사연 등록
+     * 방송방 사연 등록
      */
+    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
+        contentDao.callInsertStory(procedureVo);
+
+        log.info("프로시저 응답 ret: {}", procedureVo.getRet());
+        log.info("프로시저 응답 exit: {}", procedureVo.getExt());
+        log.info("프로시저 응답 data: {}", procedureVo.getData());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if(Status.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공));
+        }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님));
+        }else if(Status.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음));
+        }else if(Status.방송방사연등록_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님));
+        }else if(Status.방송방사연등록_10분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류));
+        }
+
+        return result;
+    }
 
     /**
-     *  방송방 사연 목록 조회
+     * 방송방 사연 조회
      */
+    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomStoryListVo);
+        List<P_RoomStoryListVo> storyVoList = contentDao.callGetStory(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(storyVoList)){
+            procedureOutputVo = null;
+        }else{
+            List<RoomStoryListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<storyVoList.size(); i++){
+                outVoList.add(new RoomStoryListOutVo(storyVoList.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+        HashMap storyList = new HashMap();
+        storyList.put("list", procedureOutputVo.getOutputBox());
+
+        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if(Status.방송방사연조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회성공, storyList));
+        }else if(Status.방송방사연조회_등록된사연없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_등록된사연없음));
+        }else if(Status.방송방사연조회_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_회원아님));
+        }else if(Status.방송방사연조회_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_해당방이없음));
+        }else if(Status.방송방사연조회_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_방참가자가아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회오류));
+        }
+        return result;
+    }
 
     /**
-     *  방송방 사연 삭제
+     * 방송방 사연 삭제
      */
+    public String callDeleteStory(P_RoomStoryDeleteVo pRoomStoryDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomStoryDeleteVo);
+        contentDao.callDeletetStory(procedureVo);
+
+        log.info("프로시저 응답 ret: {}", procedureVo.getRet());
+        log.info("프로시저 응답 exit: {}", procedureVo.getExt());
+        log.info("프로시저 응답 data: {}", procedureVo.getData());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+
+        if(Status.방송방사연삭제성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제성공));
+        }else if(Status.방송방사연삭제_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_회원아님));
+        }else if(Status.방송방사연삭제_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_해당방이없음));
+        }else if(Status.방송방사연삭제_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_방참가자가아님));
+        }else if(Status.방송방사연삭제_삭제권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_삭제권한없음));
+        }else if(Status.방송방사연삭제_사연인덱스오류.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_사연인덱스오류));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제오류));
+        }
+
+        return result;
+    }
 
 }

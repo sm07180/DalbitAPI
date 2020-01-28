@@ -1,19 +1,13 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ContentService;
-import com.dalbit.broadcast.vo.P_RoomNoticeEditVo;
-import com.dalbit.broadcast.vo.P_RoomNoticeVo;
-import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("broad")
@@ -69,26 +63,51 @@ public class ContentController {
     }
 
     /**
-     * 사연조회
+     * 방송방 사연 등록
      */
-    @GetMapping("{brodNo}/story")
-    public String getStory(@PathVariable String brodNo){
+    @PostMapping("/story")
+    public String insertStory(HttpServletRequest request){
+        P_RoomStoryAddVo apiData = new P_RoomStoryAddVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setContents(DalbitUtil.convertRequestParamToString(request, "contents"));
 
-        HashMap map = new HashMap();
-        map.put("brodNo", brodNo);
+        String result = contentService.callInsertStory(apiData);
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, map)));
+        return result;
     }
 
     /**
-     * 사연등록
+     * 방송방 사연 조회
      */
-    @PostMapping("{brodNo}/story")
-    public String insertStory(@PathVariable String brodNo){
+    @GetMapping("/story")
+    public String getStory(HttpServletRequest request){
+        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "page");
+        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "records");
 
-        HashMap map = new HashMap();
-        map.put("brodNo", brodNo);
+        P_RoomStoryListVo apiData = new P_RoomStoryListVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setPageNo(pageNo);
+        apiData.setPageCnt(pageCnt);
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.생성, map)));
+        String result = contentService.callGetStory(apiData);
+
+        return result;
+    }
+
+    /**
+     * 방송방 사연 삭제
+     */
+    @DeleteMapping("/story")
+    public String deleteStory(HttpServletRequest request){
+        P_RoomStoryDeleteVo apiData = new P_RoomStoryDeleteVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setStory_idx(DalbitUtil.convertRequestParamToInteger(request, "storyIdx"));
+
+        String result = contentService.callDeleteStory(apiData);
+
+        return result;
     }
 }

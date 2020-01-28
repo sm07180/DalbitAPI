@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -273,9 +274,19 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
         mypageDao.callMemberShortCut(procedureVo);
         List<P_MemberShortCut> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+        ArrayList<HashMap<String,String>> list = new ArrayList<>();
+        for(int i=0;i<memberShortCutList.size();i++) {
+            HashMap<String, String> map = new HashMap<>();
+            map.put("mem_no", pMemberShortCut.getMem_no());
+            map.put("orderNo", memberShortCutList.get(i).getOrderNo());
+            map.put("order", memberShortCutList.get(i).getOrder());
+            map.put("onOff", memberShortCutList.get(i).getOnOff());
+            map.put("text", memberShortCutList.get(i).getText());
+            list.add(map);
+        }
 
         ProcedureOutputVo procedureOutputVo;
-        procedureOutputVo = new ProcedureOutputVo(procedureVo, memberShortCutList);
+        procedureOutputVo = new ProcedureOutputVo(procedureVo, list);
 
         HashMap shortCutList = new HashMap();
         shortCutList.put("list",procedureOutputVo.getOutputBox());

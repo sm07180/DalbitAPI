@@ -1,15 +1,17 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ActionService;
-import com.dalbit.broadcast.vo.P_RoomGoodVo;
-import com.dalbit.broadcast.vo.P_RoomShareLinkVo;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +25,12 @@ public class ActionController {
     private MessageUtil messageUtil;
     @Autowired
     private ActionService actionService;
+    @Autowired
+    GsonUtil gsonUtil;
+    @Autowired
+    RestService restService;
+    @Value("${server.img.url}")
+    private String IMG_URL;
 
     /**
      * 방송방 좋아요 추가
@@ -56,9 +64,8 @@ public class ActionController {
     }
 
 
+
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
-
-
 
 
     /**
