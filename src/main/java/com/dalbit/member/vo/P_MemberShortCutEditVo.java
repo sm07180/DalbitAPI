@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class P_MemberShortCutEdit {
+public class P_MemberShortCutEditVo {
 
     private String mem_no;
 

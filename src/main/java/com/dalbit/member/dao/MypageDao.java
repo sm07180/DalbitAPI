@@ -1,8 +1,7 @@
 package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.member.vo.P_BroadBasicVo;
-import com.dalbit.member.vo.P_MemberShortCut;
+import com.dalbit.member.vo.P_MemberShortCutVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,6 +19,6 @@ public interface MypageDao {
     ProcedureVo callMemberBlockDel(ProcedureVo procedureVo);
     ProcedureVo callMemberNotify(ProcedureVo procedureVo);
     ProcedureVo callMemberNotifyEdit(ProcedureVo procedureVo);
-    List<P_MemberShortCut> callMemberShortCut(ProcedureVo procedureVo);
+    List<P_MemberShortCutVo> callMemberShortCut(ProcedureVo procedureVo);
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
 }

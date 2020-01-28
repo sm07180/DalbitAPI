@@ -6,6 +6,7 @@ import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
@@ -270,25 +271,36 @@ public class MypageService {
     /**
      * 회원 방송방 빠른말 가져오기
      */
-    public String callMemberShortCut(P_MemberShortCut pMemberShortCut){
+    public String callMemberShortCut(P_MemberShortCutVo pMemberShortCut){
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
         mypageDao.callMemberShortCut(procedureVo);
-        List<P_MemberShortCut> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+        List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
 
-        ArrayList<HashMap<String,String>> list = new ArrayList<>();
-        for(int i=0;i<memberShortCutList.size();i++) {
-            HashMap<String, String> map = new HashMap<>();
-            map.put("mem_no", pMemberShortCut.getMem_no());
-            map.put("orderNo", memberShortCutList.get(i).getOrderNo());
-            map.put("order", memberShortCutList.get(i).getOrder());
-            map.put("onOff", memberShortCutList.get(i).getOnOff());
-            map.put("text", memberShortCutList.get(i).getText());
-            list.add(map);
-        }
+//        ArrayList<HashMap<String,String>> list = new ArrayList<>();
+//        for(int i=0;i<memberShortCutList.size();i++) {
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put("mem_no", pMemberShortCut.getMem_no());
+//            map.put("orderNo", memberShortCutList.get(i).getOrderNo());
+//            map.put("order", memberShortCutList.get(i).getOrder());
+//            map.put("onOff", memberShortCutList.get(i).getOnOff());
+//            map.put("text", memberShortCutList.get(i).getText());
+//            list.add(map);
+//        }
+//
+//        ProcedureOutputVo procedureOutputVo;
+//        procedureOutputVo = new ProcedureOutputVo(procedureVo, list);
+
 
         ProcedureOutputVo procedureOutputVo;
-        procedureOutputVo = new ProcedureOutputVo(procedureVo, list);
-
+        if(DalbitUtil.isEmpty(memberShortCutList)){
+            procedureOutputVo = null;
+        }else{
+            List<MemberShortCutOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<memberShortCutList.size(); i++){
+                outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i), pMemberShortCut.getMem_no()));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
         HashMap shortCutList = new HashMap();
         shortCutList.put("list",procedureOutputVo.getOutputBox());
 
@@ -306,7 +318,7 @@ public class MypageService {
     /**
      * 회원 방송방 빠른말 수정하기
      */
-    public String callMemberShortCutEdit(P_MemberShortCutEdit pMemberShortCutEdit){
+    public String callMemberShortCutEdit(P_MemberShortCutEditVo pMemberShortCutEdit){
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCutEdit);
         mypageDao.callMemberShortCutEdit(procedureVo);
 
