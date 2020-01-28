@@ -147,10 +147,9 @@ public class BroadCastTest {
     @Test
     public void 방송방참여토큰가져오기() throws GlobalException {
         log.debug("방송방 참여 토큰 가져오기");
-        log.debug(P_RoomJoinTokenVo.builder().build().toString());
-        P_RoomJoinTokenVo apiSample = P_RoomJoinTokenVo.builder().build();
+        //log.debug(P_RoomJoinTokenVo.builder().build().toString());
+        P_RoomJoinTokenVo apiSample = new P_RoomJoinTokenVo();
         HashMap resultMap =  commonService.callBroadCastRoomStreamIdRequest(apiSample.getRoom_no());
-        //HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         log.info("방송방참여토큰가져오기 resultMap: {}", resultMap);
     }
 

@@ -1,7 +1,6 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.CommonDao;
-import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.ProcedureVo;
@@ -24,9 +23,8 @@ public class CommonService {
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
      */
     public HashMap callBroadCastRoomStreamIdRequest(String roomNo) throws GlobalException {
-        P_RoomJoinTokenVo apiData = P_RoomJoinTokenVo.builder()
-                .room_no(roomNo)
-                .build();
+        P_RoomJoinTokenVo apiData = new P_RoomJoinTokenVo();
+        apiData.setRoom_no(roomNo);
         ProcedureVo procedureVo = new ProcedureVo(apiData);
         commonDao.callBroadCastRoomStreamIdRequest(procedureVo);
 

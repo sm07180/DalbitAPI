@@ -2,6 +2,7 @@ package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ActionService;
 import com.dalbit.broadcast.vo.P_RoomGoodVo;
+import com.dalbit.broadcast.vo.P_RoomShareLinkVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.MemberVo;
@@ -29,24 +30,33 @@ public class ActionController {
     @PostMapping("/likes")
     public String roomGood(HttpServletRequest request){
 
-        P_RoomGoodVo adiData = new P_RoomGoodVo();
-        adiData.setMem_no(MemberVo.getMyMemNo());
-        adiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        P_RoomGoodVo apiData = new P_RoomGoodVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
 
-        String result = actionService.callBroadCastRoomGood(adiData);
+        String result = actionService.callBroadCastRoomGood(apiData);
 
         return result;
     }
 
 
+    /**
+     * 방송방 공유링크 확인
+     */
+    @GetMapping("/link")
+    public String roomShareLink(HttpServletRequest request){
+        P_RoomShareLinkVo apiData = new P_RoomShareLinkVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setLinkCode(DalbitUtil.convertRequestParamToString(request, "link"));
+
+        String result = actionService.callBroadCastShareLink(apiData);
+
+        return result;
+    }
 
 
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
-
-
-
-
-
 
 
 

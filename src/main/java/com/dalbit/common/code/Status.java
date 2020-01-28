@@ -208,6 +208,13 @@ public enum Status {
     좋아요_이미했음("-4", "broadcast.like.already", "좋아요 이미 했을 시"),
     좋아요_실패("C006", "broadcast.like.fail", "좋아요 실패 시"),
 
+    //방송방 공유하기 링크체크
+    링크체크_성공("0", "broadcast.share.link.success", "링크체크 성공 시"),
+    링크체크_회원아님("-1", "broadcast.share.link.member.no", "회원 아닐 시"),
+    링크체크_해당방이없음("-2", "broadcast.share.link.room.no", "해당 방이 없을 시"),
+    링크체크_방이종료되어있음("-3", "broadcast.share.link.room.end", "방이 종료 되어 있을시"),
+    링크체크_실패("C006", "broadcast.share.link.fail", "링크체크 실패 시"),
+
     //방송방 게스트지정
     게스트지정("0", "broadcast.guest.add.success", "게스트 지정 성공 시"),
     게스트지정_회원아님("-1", "broadcast.guest.add.member.no", "회원이 아닐 시"),
