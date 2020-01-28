@@ -2,10 +2,9 @@ package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ContentService;
 import com.dalbit.broadcast.vo.P_RoomNoticeEditVo;
-import com.dalbit.broadcast.vo.P_RoomNoticeSelectVo;
+import com.dalbit.broadcast.vo.P_RoomNoticeVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.util.HashMap;
 
 @RestController
@@ -33,7 +31,7 @@ public class ContentController {
     @GetMapping("/notice")
     public String noticeSelect(HttpServletRequest request){
 
-        P_RoomNoticeSelectVo apiData = new P_RoomNoticeSelectVo();
+        P_RoomNoticeVo apiData = new P_RoomNoticeVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request,"roomNo"));
 
@@ -62,7 +60,7 @@ public class ContentController {
     @DeleteMapping("/notice")
     public String noticeDelete(HttpServletRequest request){
 
-        P_RoomNoticeSelectVo apiData = new P_RoomNoticeSelectVo();
+        P_RoomNoticeVo apiData = new P_RoomNoticeVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request,"roomNo"));
 

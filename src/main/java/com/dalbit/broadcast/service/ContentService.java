@@ -2,7 +2,7 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ContentDao;
 import com.dalbit.broadcast.vo.P_RoomNoticeEditVo;
-import com.dalbit.broadcast.vo.P_RoomNoticeSelectVo;
+import com.dalbit.broadcast.vo.P_RoomNoticeVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.util.DalbitUtil;
@@ -34,7 +34,7 @@ public class ContentService {
     /**
      *  방송방 공지사항 조회
      */
-    public String callBroadCastRoomNoticeSelect(P_RoomNoticeSelectVo pRoomNoticeSelectVo) {
+    public String callBroadCastRoomNoticeSelect(P_RoomNoticeVo pRoomNoticeSelectVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeSelectVo);
         contentDao.callBroadCastRoomNoticeSelect(procedureVo);
 
@@ -92,7 +92,7 @@ public class ContentService {
     /**
      *  방송방 공지사항 삭제
      */
-    public String callBroadCastRoomNoticeDelete(P_RoomNoticeSelectVo pRoomNoticeSelectVo) {
+    public String callBroadCastRoomNoticeDelete(P_RoomNoticeVo pRoomNoticeSelectVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeSelectVo);
         contentDao.callBroadCastRoomNoticeDelete(procedureVo);
 
