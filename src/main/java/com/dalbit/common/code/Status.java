@@ -247,12 +247,26 @@ public enum Status {
     공지가져오기성공("0", "broadcast.room.notice.select.success", "공지 가져오기 성공"),
     공지가져오기실패_정상회원이아님("-1", "broadcast.room.notice.member.no", "정상회원이 아님"),
     공지가져오기실패_해당방이없음("-2", "broadcast.room.notice.room.no", "해당 방이 없음"),
-    공지가져오기실패_방참가자가아님("-3", "broadcast.room.join.member.no", "방 참가자가 아님"),
+    공지가져오기실패_방참가자가아님("-3", "broadcast.room.notice.join.member.no", "방 참가자가 아님"),
     공지가져오기실패_조회에러("C006", "broadcast.room.notice.fail", "공지 가져오기 실패 시"),
 
+    //방송방 공지사항 입력/수정
+    공지입력수정성공("0", "broadcast.room.notice.edit.success", "공지 입력/수정 성공"),
+    공지입력수정실패_정상회원이아님("-1", "broadcast.room.notice.edit.member.no", "정상회원이 아님"),
+    공지입력수정실패_해당방이없음("-2", "broadcast.room.notice.edit.room.no", "해당 방이 없음"),
+    공지입력수정실패_방참가자가아님("-3", "broadcast.room.notice.edit.join.member.no", "방 참가자가 아님"),
+    공지입력수정실패_공지권한없음("-4", "broadcast.room.notice.edit.authorization.not", "공지 권한이 없음"),
+    공지입력수정실패_입력수정에러("C006", "broadcast.room.notice.edit.fail", "공지 입력/수정 실패 시"),
 
+    //방송방 공지사항 삭제
+    공지삭제하기성공("0", "broadcast.room.notice.delete.success", "공지 입력/수정 성공"),
+    공지삭제하기실패_정상회원이아님("-1", "broadcast.room.notice.delete.member.no", "정상회원이 아님"),
+    공지삭제하기실패_해당방이없음("-2", "broadcast.room.notice.delete.room.no", "해당 방이 없음"),
+    공지삭제하기실패_방참가자가아님("-3", "broadcast.room.notice.delete.join.member.no", "방 참가자가 아님"),
+    공지삭제하기실패_공지삭제권한없음("-4", "broadcast.room.notice.delete.authorization.not", "공지 권한이 없음"),
+    공지삭제하기실패_삭제에러("C006", "broadcast.room.notice.delete.fail", "공지 입력/수정 실패 시"),
 
-    ;
+   ;
 
     final private String SUCCESS_RESULT = "success";
 

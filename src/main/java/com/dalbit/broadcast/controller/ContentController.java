@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ContentService;
+import com.dalbit.broadcast.vo.P_RoomNoticeEditVo;
 import com.dalbit.broadcast.vo.P_RoomNoticeSelectVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -41,27 +42,32 @@ public class ContentController {
     }
 
     /**
-     * 공지등록/수정
+     * 공지사항 입력/수정
      */
-    @PostMapping("{brodNo}/notice")
-    public String postNotice(@PathVariable String brodNo){
+    @PostMapping("/notice")
+    public String noticeEdit(HttpServletRequest request){
 
-        HashMap map = new HashMap();
-        map.put("brodNo", brodNo);
+        P_RoomNoticeEditVo apiData = new P_RoomNoticeEditVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, map)));
+        String result = contentService.callBroadCastRoomNoticeEdit(apiData);
+        return result;
     }
 
     /**
      * 공지삭제
      */
-    @DeleteMapping("{brodNo}/notice")
-    public String deleteNotice(@PathVariable String brodNo){
+    @DeleteMapping("/notice")
+    public String noticeDelete(HttpServletRequest request){
 
-        HashMap map = new HashMap();
-        map.put("brodNo", brodNo);
+        P_RoomNoticeSelectVo apiData = new P_RoomNoticeSelectVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request,"roomNo"));
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.수정, map)));
+        String result = contentService.callBroadCastRoomNoticeDelete(apiData);
+        return result;
     }
 
     /**
