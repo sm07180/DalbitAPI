@@ -4,7 +4,9 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
-import com.dalbit.util.*;
+import com.dalbit.util.CookieUtil;
+import com.dalbit.util.GsonUtil;
+import com.dalbit.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -12,11 +14,9 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationSu
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.HashMap;
 
 @Component("authSuccessHandler")
 public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
