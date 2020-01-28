@@ -274,6 +274,7 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
         mypageDao.callMemberShortCut(procedureVo);
         List<P_MemberShortCut> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+
         ArrayList<HashMap<String,String>> list = new ArrayList<>();
         for(int i=0;i<memberShortCutList.size();i++) {
             HashMap<String, String> map = new HashMap<>();

@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 public class RoomStoryListOutVo {
 
     private String memNo;
-    private String roomNo;
+//    private String roomNo;
     private String contents;
 
     private int storyIdx;						//댓글 인덱스번호
@@ -22,9 +22,9 @@ public class RoomStoryListOutVo {
     private String writeDt;                     //작성일자
     private Long writeTs;                       //작성일자 timestamp
 
-    public RoomStoryListOutVo(P_RoomStoryListVo target){
+    public RoomStoryListOutVo(P_RoomStoryListVo target, String mem_no){
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-        this.memNo = target.getMem_no();
+        this.memNo = mem_no;
         this.storyIdx = target.getStory_idx();
         this.writerNo = target.getWriter_mem_no();
         this.nickNm = target.getNickName();
