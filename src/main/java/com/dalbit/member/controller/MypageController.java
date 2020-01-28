@@ -195,10 +195,7 @@ public class MypageController {
     @GetMapping("/shortcut")
     public String memberShortCut(HttpServletRequest request){
         P_MemberShortCut apiData = new P_MemberShortCut();
-
-        apiData.setMem_no("11578531441954");
-//        apiData.setMem_no(MemberVo.getMyMemNo());
-
+        apiData.setMem_no(MemberVo.getMyMemNo());
         String result = mypageService.callMemberShortCut(apiData);
         return result;
     }
@@ -209,9 +206,7 @@ public class MypageController {
     @PostMapping("/shortcut")
     public String memberShortCutEdit(HttpServletRequest request){
         P_MemberShortCutEdit apiData = new P_MemberShortCutEdit();
-
-        apiData.setMem_no("11578531441954");
-//        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setOrder_1(DalbitUtil.convertRequestParamToString(request,"order_1"));
         apiData.setText_1(DalbitUtil.convertRequestParamToString(request,"text_1"));
         apiData.setOnOff_1(DalbitUtil.convertRequestParamToString(request,"onOff_1"));
