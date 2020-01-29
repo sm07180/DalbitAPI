@@ -62,11 +62,11 @@ public class MemberService {
 
         String result = "";
         if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복));
         }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
         }
         return result;
     }
@@ -80,7 +80,7 @@ public class MemberService {
         String result;
 
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공)));
         } else if(procedureVo.getRet().equals(Status.비밀번호변경실패_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경실패_회원아님)));
         } else {
