@@ -1,12 +1,12 @@
 package com.dalbit.broadcast.controller;
 
-import com.dalbit.broadcast.service.CommonService;
 import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
 import com.dalbit.broadcast.vo.P_RoomGuestDeleteVo;
 import com.dalbit.broadcast.vo.P_RoomKickoutVo;
 import com.dalbit.broadcast.vo.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;

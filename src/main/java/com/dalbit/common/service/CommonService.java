@@ -1,8 +1,8 @@
-package com.dalbit.broadcast.service;
+package com.dalbit.common.service;
 
-import com.dalbit.broadcast.dao.CommonDao;
 import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.google.gson.Gson;
@@ -50,4 +50,5 @@ public class CommonService {
 
         return resultMap;
     }
+
 }
