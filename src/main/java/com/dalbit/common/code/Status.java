@@ -306,8 +306,8 @@ public enum Status {
 
    ;
 
-    final private String SUCCESS_RESULT = "success";
-    final private String SUCCESS_FAIL = "fail";
+    final private String RESULT_SUCCESS = "success";
+    final private String RESULT_FAIL = "fail";
 
     final private String result;
     final private String messageCode;
@@ -315,7 +315,7 @@ public enum Status {
     final private String desc;
 
     Status(String messageCode, String messageKey, String desc){
-        this.result = messageKey.contains("success") ? SUCCESS_RESULT : SUCCESS_FAIL;
+        this.result = messageKey.contains("success") ? RESULT_SUCCESS : RESULT_FAIL;
         this.messageCode = messageCode;
         this.messageKey = messageKey;
         this.desc = desc;
