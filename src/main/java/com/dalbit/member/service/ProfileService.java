@@ -103,7 +103,7 @@ public class ProfileService {
         }else{
             List<FanboardVo> outVoList = new ArrayList<>();
             for (int i=0; i<fanboardVoList.size(); i++){
-                //outVoList.add(new FanboardVo(fanboardVoList.get(i)));
+                outVoList.add(new FanboardVo(fanboardVoList.get(i)));
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
