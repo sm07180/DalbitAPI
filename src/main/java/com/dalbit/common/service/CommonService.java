@@ -3,14 +3,20 @@ package com.dalbit.common.service;
 import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
+import com.dalbit.common.vo.CodeVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -51,4 +57,39 @@ public class CommonService {
         return resultMap;
     }
 
+    @Cacheable(cacheNames = "codeCache", key = "#code")
+    public HashMap getCodeCache(String code) {
+        return callCodeDefineSelect();
+    }
+
+    @CachePut(cacheNames = "codeCache", key = "#code")
+    public HashMap updateCodeCache(String code) {
+        return callCodeDefineSelect();
+    }
+
+    public HashMap callCodeDefineSelect(){
+        List<Map> data = commonDao.callCodeDefineSelect();
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("memGubun", setData(data, "mem_slct"));
+        result.put("osGubun", setData(data, "os_type"));
+        result.put("roomType", setData(data, "subject_type"));
+        result.put("roomState", setData(data, "broadcast_state"));
+        result.put("roomRight", setData(data, "broadcast_auth"));
+        result.put("declarReason", setData(data, "report_reason"));
+
+        return result;
+    }
+
+    public List<CodeVo> setData(List<Map> list, String type) {
+        List<CodeVo> data = new ArrayList<>();
+        if(list != null && list.size() > 0){
+            for(int i = 0; i < list.size(); i++){
+                if(type.equals((String)list.get(i).get("type"))){
+                    data.add(new CodeVo((String)list.get(i).get("value"), (String)list.get(i).get("code"), i));
+                }
+            }
+        }
+        return data;
+    }
 }
