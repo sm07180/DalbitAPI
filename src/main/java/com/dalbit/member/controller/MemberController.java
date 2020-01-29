@@ -41,7 +41,7 @@ public class MemberController {
     LoginUtil loginUtil;
 
     /**
-     * 로그인 토큰생성
+     * 토큰조회
      */
     @GetMapping("token")
     public String token(HttpServletRequest request){
