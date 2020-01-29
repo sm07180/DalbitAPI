@@ -64,58 +64,58 @@ public enum Status {
     회원정보보기_실패("C006", "member.info.view.fail", "회원정보보기 실패 시"),
 
     //회원 방송방 기본설정 조회
-    방송방기본설정조회_성공("0", "mypage.broad.basic.suceess", "방송방 기본설정 조회 성공 시"),
+    방송방기본설정조회_성공("0", "mypage.broad.basic.success", "방송방 기본설정 조회 성공 시"),
     방송방기본설정조회_회원아님("-1", "mypage.broad.basic.no", "회원이 아닐 시"),
     방송방기본설정조회_오류("C006", "mypage.broad.basic.error", "회원 방송방 기본설정 조회 오류 시"),
 
     //회원 방송방 기본설정 수정
-    방송방기본설정수정_성공("0", "mypage.broad.basic.edit.suceess", "방송방 기본설정 수정 성공 시"),
+    방송방기본설정수정_성공("0", "mypage.broad.basic.edit.success", "방송방 기본설정 수정 성공 시"),
     방송방기본설정수정_회원아님("-1", "mypage.broad.basic.edit.no", "회원이 아닐 시"),
     방송방기본설정수정_오류("C006", "mypage.broad.basic.edit.error", "회원 방송방 기본설정 수정 오류 시"),
 
     //회원 신고하기
-    회원신고성공("0", "mypage.member.report.add.suceess", "회원 신고 성공 시"),
+    회원신고성공("0", "mypage.member.report.add.success", "회원 신고 성공 시"),
     회원신고_요청회원번호_정상아님("-1", "mypage.member.report.add.mem.no", "요청 회원번호 정상 아닐 시"),
     회원신고_신고회원번호_정상아님("-2", "mypage.member.report.add.reported.no", "신고 회원번호 정상 아닐 시"),
     회원신고_이미_신고상태("-3", "mypage.member.reported", "이미 신고 상태 시"),
     회원신고오류("C006", "mypage.member.reported.error", "회원 신고 신청 중 오류 시"),
 
     //회원 차단하기
-    회원차단성공("0", "mypage.member.block.suceess", "회원 차단 성공 시"),
+    회원차단성공("0", "mypage.member.block.success", "회원 차단 성공 시"),
     회원차단_요청회원번호_정상아님("-1", "mypage.member.block.mem.no", "요청 회원번호 정상 아닐 시"),
     회원차단_차단회원번호_정상아님("-2", "mypage.member.block.blocked.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단_이미_차단상태("-3", "mypage.member.block.blocked", "이미 차단 상태 시"),
     회원차단오류("C006", "mypage.member.block.error", "회원 차단 신청중 오류 시"),
 
     //회원 차단해제하기
-    회원차단해제성공("0", "mypage.member.block.del.suceess", "회원 차단 해제 성공 시"),
+    회원차단해제성공("0", "mypage.member.block.del.success", "회원 차단 해제 성공 시"),
     회원차단해제_요청회원번호_정상아님("-1", "mypage.member.block.del.mem.no", "요청 회원번호 정상 아닐 시"),
     회원차단해제_신고회원번호_정상아님("-2", "mypage.member.block.blocked.del.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단안된상태("-3", "mypage.member.block.no", "차단 안된 상태 시"),
     회원차단해제오류("C006", "mypage.member.block.del.error", "차단 해제 신청중 오류 시"),
 
     //회원 알림설정 조회하기
-    알림설정조회_성공("0", "mypage.member.notify.sel.suceess", "알림 설정조회 성공 시"),
+    알림설정조회_성공("0", "mypage.member.notify.sel.success", "알림 설정조회 성공 시"),
     알림설정조회_회원아님("-1", "mypage.member.notify.no", "알림설정 회원아닐 시"),
     알림설정조회오류("C006", "mypage.member.notify.error", "알림 설정 오류 시"),
 
     // 알림 설정
-    알림설정수정_성공("0", "mypage.member.notify.edit.suceess", "알림 설정수정 성공 시"),
+    알림설정수정_성공("0", "mypage.member.notify.edit.success", "알림 설정수정 성공 시"),
     알림설정수정_회원아님("-1", "mypage.member.notify.edit.no", "알림 설정수정 회원아닐 시"),
     알림설정수정오류("C006", "mypage.member.notify.edit.error", "알림 설정 오류 시"),
 
     //회원 방송방 빠른말 가져오기
-    회원방송방빠른말조회_성공("0", "mypage.member.shorucut.suceess", "회원 방송방 빠른말 가져오기 성공 시"),
+    회원방송방빠른말조회_성공("0", "mypage.member.shorucut.success", "회원 방송방 빠른말 가져오기 성공 시"),
     회원방송방빠른말조회_회원아님("-1", "mypage.member.shorucut.no", "요청번호가 회원이 아닐 시"),
     회원방송방빠른말조회오류("C006", "mypage.member.shorucut.error", "회원 방송방 빠른말 가져오기 오류 시"),
 
     //회원방송방 빠른말 설정 수정/저장 하기
-    회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.suceess", "회원 방송방 빠른말 수정 성공 시"),
+    회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.success", "회원 방송방 빠른말 수정 성공 시"),
     회원방송방빠른말수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
     회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
 
     //회원 마이페이지 팬보드 댓글 달기
-    팬보드_댓글달기성공("0", "fanboard.add.suceess", "댓글달기 성공 시"),
+    팬보드_댓글달기성공("0", "fanboard.add.success", "댓글달기 성공 시"),
     팬보드_댓글달기실패_스타회원번호_회원아님("-1", "fanboard.add.fail.StarNo.notMember", "스타 회원번호가 회원이 아님"),
     팬보드_댓글달기실패_작성자회원번호_회원아님("-2", "fanboard.add.fail.writerNo.notMember", "작성자 회원번호가 회원이 아님"),
     팬보드_댓글달기실패_잘못된댓글그룹번호("-3", "fanboard.add.fail.wrong.groupNo", "댓글 그룹번호가 잘못된 번호"),
@@ -147,7 +147,7 @@ public enum Status {
     팬보드_대댓글조회오류("C006", "fanboard.reply.error", "팬보드 대댓글 보기 실패"),
 
     //방송생성
-    방송생성("0", "broadcast.room.start", "방송 생성 시"),
+    방송생성("0", "broadcast.room.start.success", "방송 생성 시"),
     방송생성_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송중인방존재("-2", "broadcast.room.existence", "방송중인 방이 있을 시"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
@@ -170,7 +170,7 @@ public enum Status {
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기
-    방송나가기("0", "broadcast.room.out", "방송 나가기 시"),
+    방송나가기("0", "broadcast.room.out.success", "방송 나가기 시"),
     방송나가기_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송나가기_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
     방송나가기_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
@@ -199,7 +199,7 @@ public enum Status {
     방송참여자리스트조회_실패("C006", "broadcast.room.list.member.select.fail", "방송참여자 리스트 조회 실패 시"),
 
     //방송종료
-    방송종료("2004", "broadcast.end", "방송 종료 시"),
+    방송종료("2004", "broadcast.end.success", "방송 종료 시"),
 
     //방송방 사연 등록
     방송방사연등록성공("0", "broadcast.room.story.add.success", "방송방 사연 등록 성공 시"),
