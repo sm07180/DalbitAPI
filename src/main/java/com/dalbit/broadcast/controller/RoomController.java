@@ -1,9 +1,9 @@
 package com.dalbit.broadcast.controller;
 
-import com.dalbit.broadcast.service.CommonService;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;

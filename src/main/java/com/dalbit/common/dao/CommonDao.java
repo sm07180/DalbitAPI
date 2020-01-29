@@ -1,4 +1,4 @@
-package com.dalbit.broadcast.dao;
+package com.dalbit.common.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
