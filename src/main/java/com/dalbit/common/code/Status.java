@@ -92,7 +92,7 @@ public enum Status {
     회원차단해제_요청회원번호_정상아님("-1", "mypage.member.block.del.mem.no", "요청 회원번호 정상 아닐 시"),
     회원차단해제_신고회원번호_정상아님("-2", "mypage.member.block.blocked.del.mem.no", "차단 회원번호 정상 아닐 시"),
     회원차단안된상태("-3", "mypage.member.block.no", "차단 안된 상태 시"),
-    회원차단해제오류("C006", "mypage.member.block.error", "차단 해제 신청중 오류 시"),
+    회원차단해제오류("C006", "mypage.member.block.del.error", "차단 해제 신청중 오류 시"),
 
     //회원 알림설정 조회하기
     알림설정조회_성공("0", "mypage.member.notify.sel.suceess", "알림 설정조회 성공 시"),
@@ -166,6 +166,7 @@ public enum Status {
     방송참여_이미참가("-4", "broadcast.room.join.already", "이미 참가 되어있을 시"),
     방송참여_입장제한("-5", "broadcast.room.join.no", "입장제한 시"),
     방송참여_나이제한("-6", "broadcast.room.join.no.age", "나이제한 시"),
+    방송참여_강퇴시간제한("-7", "broadcast.room.join.kickout.timelimit", "강제퇴장후 24시간이 지나지 않았을 시"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기
@@ -262,7 +263,19 @@ public enum Status {
     게스트취소_불가("-7", "broadcast.guest.cancel.no", "게스트가 아닐 시 "),
     게스트취소_실패("C006", "broadcast.guest.cancel.fail", "게스트 취소 실패 시"),
 
-    //유저
+    //방송방 참여자 강제퇴장 시키기
+    강제퇴장("0", "broadcast.kickout.success", "강제퇴장 성공 시"),
+    강제퇴장_회원아님("-1", "broadcast.kickout.member.no", "회원이 아닐 시"),
+    강제퇴장_해당방이없음("-2", "broadcast.kickout.room.no", "해당 방송이 없을 시"),
+    강제퇴장_방이종료되었음("-3", "broadcast.kickout.room.end", "방이 종료되어 있을 시"),
+    강제퇴장_요청회원_방소속회원아님("-4", "broadcast.kickout.request.room.join.no", "요청회원이 방에 소속된 회원이 아닐 시"),
+    강제퇴장_권한없음("-5", "broadcast.kickout.authorization.not", "강제퇴장 권한 없을 시"),
+    강제퇴장_대상회원_방소속회원아님("-6", "broadcast.kickout.object.room.join.no", "대상회원이 방에 소속된 회원이 아닐 시"),
+    강제퇴장_게스트이상불가("-7", "broadcast.kickout.guest.not", "게스트 이상 강제퇴장 불가 시"),
+    강제퇴장_실패("C006", "broadcast.kickout.fail", "강제퇴장 실패 시"),
+
+
+   //유저
     매니저지정("3001", "broadcast.user.manager.add", "매니저 지정 시"),
     게스트초대("3003", "broadcast.user.guest.invite", "게스트 초대 시"),
     게스트초대수락("3005", "broadcast.user.guest.join", "게스트 초대 수락 시"),

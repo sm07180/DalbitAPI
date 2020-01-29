@@ -128,18 +128,6 @@ public class ActionController {
     }
 
     /**
-     * 좋아요
-     */
-    @PostMapping("{brodNo}/likes")
-    public String likes(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-        data.put("brodNo", brodNo);
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.좋아요, data)));
-    }
-
-    /**
      * 부스트
      */
     @PostMapping("{brodNo}/boost")

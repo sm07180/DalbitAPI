@@ -17,5 +17,4 @@ public interface ContentDao {
         ProcedureVo callInsertStory(ProcedureVo procedureVo);
         List<P_RoomStoryListVo> callGetStory(ProcedureVo procedureVo);
         ProcedureVo callDeletetStory(ProcedureVo procedureVo);
-
 }

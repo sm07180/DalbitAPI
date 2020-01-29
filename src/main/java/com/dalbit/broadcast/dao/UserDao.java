@@ -11,4 +11,5 @@ public interface UserDao {
     List<P_RoomMemberListVo> callBroadCastRoomMemberList(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomGuestAdd(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomGuestDelete(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomKickout(ProcedureVo procedureVo);
 }

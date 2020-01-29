@@ -102,7 +102,7 @@ public class RoomController {
     }
 
     /**
-     * 방송방 나가기
+     * 방송방 나가기 (종료)
      */
     @DeleteMapping("/exit")
     public String roomExit(HttpServletRequest request){
@@ -166,20 +166,6 @@ public class RoomController {
 
 
     /* ####################### 여기까지 API명세서 기준 작업완료 ######################## */
-
-
-
-
-    /**
-     * 방송종료
-     */
-    @DeleteMapping("/{brodNo}")
-    public String deleteBrod(@PathVariable String brodNo ){
-
-        HashMap data = new HashMap();
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송종료, data)));
-    }
 
 
     /**

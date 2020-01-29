@@ -29,10 +29,13 @@
     <select id="callInsertStory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_broadcast_room_story_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callGetStory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_RoomStoryListVo">
       call sp_broadcast_room_story_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callDeletetStory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_broadcast_room_story_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
 </mapper>

@@ -1,10 +1,7 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
-import com.dalbit.broadcast.vo.P_RoomGuestDeleteVo;
-import com.dalbit.broadcast.vo.P_RoomMemberListVo;
-import com.dalbit.broadcast.vo.RoomMemberOutVo;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
@@ -154,6 +151,41 @@ public class UserService {
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, returnMap));
         }
+        return result;
+    }
+
+    /**
+     * 방송방 강퇴하기
+     */
+    public String callBroadCastRoomKickout(P_RoomKickoutVo pRoomKickoutVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomKickoutVo);
+        userDao.callBroadCastRoomKickout(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result = "";
+        if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_회원아님));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_해당방이없음));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_방이종료되었음));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_요청회원_방소속회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_요청회원_방소속회원아님));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_권한없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_권한없음));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_대상회원_방소속회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_대상회원_방소속회원아님));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_게스트이상불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_게스트이상불가));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_실패));
+        }
+
         return result;
     }
 }

@@ -22,6 +22,4 @@
             call sp_member_fanboard_reply(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-
-
 </mapper>

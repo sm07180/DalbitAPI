@@ -4,6 +4,7 @@ import com.dalbit.broadcast.service.CommonService;
 import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
 import com.dalbit.broadcast.vo.P_RoomGuestDeleteVo;
+import com.dalbit.broadcast.vo.P_RoomKickoutVo;
 import com.dalbit.broadcast.vo.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -114,6 +115,21 @@ public class UserController {
         String result = userService.callBroadCastRoomGuestDelete(apiData);
 
         return  result;
+    }
+
+    /**
+     * 방송방 강퇴하기
+     */
+    @PostMapping("/kickout")
+    public String roomKickout(HttpServletRequest request){
+        P_RoomKickoutVo apiData = new P_RoomKickoutVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setBlocked_mem_no(DalbitUtil.convertRequestParamToString(request, "blockNo"));
+
+        String result = userService.callBroadCastRoomKickout(apiData);
+
+        return result;
     }
 
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */

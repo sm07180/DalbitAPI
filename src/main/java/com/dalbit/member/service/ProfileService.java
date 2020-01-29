@@ -1,7 +1,5 @@
 package com.dalbit.member.service;
 
-
-
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
@@ -38,7 +36,6 @@ public class ProfileService {
     /**
      * 정보 조회
      */
-
     public String callMemberInfo(P_ProfileInfoVo pProfileInfo) {
         ProcedureVo procedureVo = new ProcedureVo(pProfileInfo);
         profileDao.callMemberInfo(procedureVo);
@@ -114,7 +111,6 @@ public class ProfileService {
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드조회성공, fanBoardList));
@@ -168,7 +164,6 @@ public class ProfileService {
     }
 
 
-
     /**
      * 팬보드 대댓글 조회하기
      */
@@ -209,7 +204,6 @@ public class ProfileService {
         }
 
         return result;
-        }
-
+    }
 
 }

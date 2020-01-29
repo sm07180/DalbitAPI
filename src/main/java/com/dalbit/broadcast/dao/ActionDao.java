@@ -8,8 +8,6 @@ import java.util.List;
 
 @Repository
 public interface ActionDao {
-
     ProcedureVo callBroadCastRoomGood(ProcedureVo procedureVo);
     List<P_RoomShareLinkVo> callBroadCastRoomShareLink(ProcedureVo procedureVo);
-
 }

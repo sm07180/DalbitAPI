@@ -5,6 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface CommonDao {
-
     ProcedureVo callBroadCastRoomStreamIdRequest(ProcedureVo procedureVo);
 }

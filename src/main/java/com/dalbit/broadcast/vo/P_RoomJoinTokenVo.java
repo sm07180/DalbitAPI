@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 public class P_RoomJoinTokenVo {
 
-    private String room_no;                                     //참가하려는 방 번호
+    private String room_no;     //참가하려는 방 번호
 
 }

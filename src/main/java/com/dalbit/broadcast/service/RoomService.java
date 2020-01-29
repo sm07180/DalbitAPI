@@ -75,6 +75,9 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomJoinVo);
         roomDao.callBroadCastRoomJoin(procedureVo);
 
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String remainTime = DalbitUtil.isNullToString(resultMap.get("remainTime"));
+
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
@@ -85,6 +88,7 @@ public class RoomService {
         returnMap.put("bgPlayToken",pRoomJoinVo.getBj_play_tokenid());
         returnMap.put("gstStreamId",pRoomJoinVo.getGuest_streamid());
         returnMap.put("gstPlayToken",pRoomJoinVo.getGuest_play_tokenid());
+        returnMap.put("remainTime", remainTime);
         log.info("returnMap: {}",returnMap);
         procedureVo.setData(returnMap);
 
@@ -101,6 +105,10 @@ public class RoomService {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_이미참가, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_입장제한, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송참여_나이제한.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_나이제한, procedureVo.getData())));
+        } else if (procedureVo.getRet().equals(Status.방송참여_강퇴시간제한.getMessageCode())) {
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_강퇴시간제한, procedureVo.getData())));
         } else {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가실패)));
         }

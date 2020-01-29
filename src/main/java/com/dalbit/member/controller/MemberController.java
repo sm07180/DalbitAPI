@@ -40,6 +40,9 @@ public class MemberController {
     @Autowired
     LoginUtil loginUtil;
 
+    /**
+     * 로그인 토큰생성
+     */
     @GetMapping("token")
     public String token(HttpServletRequest request){
 
@@ -82,6 +85,9 @@ public class MemberController {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
     }
 
+    /**
+     * 회원가입
+     */
     @PostMapping("signup")
     public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
@@ -140,6 +146,9 @@ public class MemberController {
         return result;
     }
 
+    /**
+     * 닉네임 중복체크
+     */
     @GetMapping("nick")
     public String nick(HttpServletRequest request){
 
