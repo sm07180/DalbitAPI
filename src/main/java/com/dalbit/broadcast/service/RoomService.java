@@ -7,6 +7,8 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
+import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
@@ -33,6 +35,9 @@ public class RoomService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
+    @Autowired
+    private RestService restService;
+
     /**
      * 방송방 생성
      */
@@ -56,6 +61,15 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송생성.getMessageCode())) {
+            if(!DalbitUtil.isEmpty(pRoomCreateVo.getBackgroundImage()) && !pRoomCreateVo.getBackgroundImage().startsWith("/default")){
+                try{
+                    restService.imgDone("/temp" + pRoomCreateVo.getBackgroundImage());
+                }catch (GlobalException e){
+                    //TODO 이미지 서버 오류 시 처리
+                    e.printStackTrace();
+                }
+
+            }
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성_회원아님, procedureVo.getData())));
@@ -159,6 +173,19 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
+            if(!DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImage()) && !pRoomEditVo.getBackgroundImage().startsWith("/default")){
+                String delImg = pRoomEditVo.getBackgroundImageDelete();
+                if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith("/default")){
+                    delImg = null;
+                }
+                try{
+                    restService.imgDone("/temp" + pRoomEditVo.getBackgroundImage(), delImg);
+                }catch (GlobalException e){
+                    //TODO 이미지 서버 오류 시 처리
+                    e.printStackTrace();
+                }
+            }
+
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정성공)));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정_회원아님)));
