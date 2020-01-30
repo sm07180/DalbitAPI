@@ -99,9 +99,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/sample"
                     ).hasRole("USER") // USER 권한만 접근 가능
                     .anyRequest().permitAll() // 나머지 리소스에 대한 접근 설정
-            .and()
-                .oauth2Login()
-                .loginPage("/login")
 
             .and()
                 .logout()
