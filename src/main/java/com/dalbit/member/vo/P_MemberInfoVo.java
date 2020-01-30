@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class P_MemberInfoVo {
 
+    private int memLogin;                          //회원 로그인 상태(1: 회원, 0: 비회원)
     private String  mem_no;
     private String  target_mem_no;                 //회원정보 확인 대상
     private String  nickName;                      //닉네임

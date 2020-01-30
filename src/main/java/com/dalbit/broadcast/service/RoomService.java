@@ -34,9 +34,10 @@ public class RoomService {
     GsonUtil gsonUtil;
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
-
     @Autowired
-    private RestService restService;
+    RestService restService;
+    @Autowired
+    RoomService roomService;
 
     /**
      * 방송방 생성
@@ -50,13 +51,29 @@ public class RoomService {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info("방번호 추출: {}", roomNo);
-        log.info(" ### 프로시저 호출결과 ###");
+        log.info(" ### 방송방 정보 조회 시작 ###");
 
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+        pRoomInfoViewVo.setMem_no(pRoomCreateVo.getMem_no());
+        pRoomInfoViewVo.setRoom_no(roomNo);
+
+        //방송방 정보 조회
+        ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
+        RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
+
+        log.info(" ### 프로시저 호출결과 ###");
         HashMap returnMap = new HashMap();
         returnMap.put("roomNo", roomNo);
         returnMap.put("bjStreamId",pRoomCreateVo.getBj_streamid());
         returnMap.put("bjPubToken", pRoomCreateVo.getBj_publish_tokenid());
-        log.info("returnMap: {}",returnMap);
+        returnMap.put("title", target.getTitle());
+        returnMap.put("bgImg", target.getBgImg().getUrl());
+        returnMap.put("link", target.getLink());
+        returnMap.put("bjMemNo", target.getBjMemNo());
+        returnMap.put("bjNickNm", target.getBjNickNm());
+        returnMap.put("bjProfImg", target.getBjProfImg());
         procedureVo.setData(returnMap);
 
         String result;
@@ -68,7 +85,6 @@ public class RoomService {
                     //TODO 이미지 서버 오류 시 처리
                     e.printStackTrace();
                 }
-
             }
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송생성, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
@@ -94,6 +110,17 @@ public class RoomService {
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        pRoomInfoViewVo.setMemLogin(pRoomJoinVo.getMemLogin());
+        pRoomInfoViewVo.setMem_no(pRoomJoinVo.getMem_no());
+        pRoomInfoViewVo.setRoom_no(pRoomJoinVo.getRoom_no());
+
+        //방송방 정보 조회
+        ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
+        RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
+
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
@@ -102,6 +129,15 @@ public class RoomService {
         returnMap.put("bgPlayToken",pRoomJoinVo.getBj_play_tokenid());
         returnMap.put("gstStreamId",pRoomJoinVo.getGuest_streamid());
         returnMap.put("gstPlayToken",pRoomJoinVo.getGuest_play_tokenid());
+        returnMap.put("title", target.getTitle());
+        returnMap.put("bgImg", target.getBgImg().getUrl());
+        returnMap.put("link", target.getLink());
+        returnMap.put("bjMemNo", target.getBjMemNo());
+        returnMap.put("bjNickNm", target.getBjNickNm());
+        returnMap.put("bjProfImg", target.getBjProfImg());
+        returnMap.put("gstMemNo", target.getGstMemNo());
+        returnMap.put("gstNickNm", target.getGstNickNm());
+        returnMap.put("gstProfImg", target.getGstProfImg());
         returnMap.put("remainTime", remainTime);
         log.info("returnMap: {}",returnMap);
         procedureVo.setData(returnMap);
@@ -237,5 +273,46 @@ public class RoomService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회_실패, roomList));
         }
         return result;
+    }
+
+    /**
+     * 방송 정보조회
+     */
+    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo) {
+
+        ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+
+        String result = "";
+        if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, procedureOutputVo.getOutputBox()));
+        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
+        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+        }
+        return result;
+    }
+
+    /**
+     * 방송 정보조회(방생성 후)
+     */
+    public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
+        P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(roomInfoViewVo)){
+            procedureOutputVo = null;
+        }else{
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo));
+        }
+
+        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        return procedureOutputVo;
     }
 }

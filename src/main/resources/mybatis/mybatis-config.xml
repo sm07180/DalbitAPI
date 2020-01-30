@@ -13,6 +13,7 @@
 		<typeAlias type="com.dalbit.common.vo.ProcedureVo" alias="ProcedureVo" />
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.P_RoomListVo" alias="P_RoomListVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.P_RoomInfoViewVo" alias="P_RoomInfoViewVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.P_RoomMemberListVo" alias="P_RoomMemberListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.P_RoomShareLinkVo" alias="P_RoomShareLinkVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.P_RoomStoryListVo" alias="P_RoomStoryListVo" />

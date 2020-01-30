@@ -176,69 +176,23 @@ public class RoomController {
     }
 
 
-
-    /* ####################### 여기까지 API명세서 기준 작업완료 ######################## */
-
-
     /**
      * 방송 정보조회
      */
-    @GetMapping("/{brodNo}")
-    public String getBrod(@PathVariable String brodNo){
+    @GetMapping("/info")
+    public String roomInfo(HttpServletRequest request){
 
-        HashMap data = new HashMap();
-        data.put("gubun", "BROD00100");
-        data.put("gubunNM", "일상");
-        data.put("title", "방 제목입니다.이렇게!");
-        data.put("intro", "안녕하세요! \n 제 방송 즐겁게 즐기다 가세요!");
-        data.put("isFan", true);
-        data.put("isOver20", false);
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
 
-        HashMap bgImg = new HashMap();
-        bgImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
-        bgImg.put("path","/2019/12/05/15");
-        bgImg.put("name","1231567454123.jpg");
+        P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(roomNo);
 
-        data.put("bgImg", bgImg);
+        String result = roomService.callBroadCastRoomInfoView(apiData);
 
-        HashMap owner = new HashMap();
-        owner.put("memNo", "M000125");
-        owner.put("nickNm", "방장닉네임");
+        return result;
 
-        HashMap ownerImg = new HashMap();
-        ownerImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
-        ownerImg.put("path","/2019/12/05/15");
-        ownerImg.put("name","1231567454123.jpg");
-
-        owner.put("img", ownerImg);
-        data.put("owner", owner);
-
-        HashMap guest = new HashMap();
-        guest.put("memNo", "M000125");
-        guest.put("nickNm", "게스트닉네임");
-
-        HashMap guestImg = new HashMap();
-        guestImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
-        guestImg.put("path","/2019/12/05/15");
-        guestImg.put("name","1231567454123.jpg");
-
-        guest.put("img", guestImg);
-        data.put("guest", guest);
-
-        HashMap managers = new HashMap();
-        managers.put("guest", "매니저정보");
-        managers.put("memNo", "M000125");
-        managers.put("nickNm", "매니저닉네임");
-
-        HashMap managersImg = new HashMap();
-        managersImg.put("url","https://photo.wawatoc.com/2019/12/05/15/1231567454123.jpg");
-        managersImg.put("path","/2019/12/05/15");
-        managersImg.put("name","1231567454123.jpg");
-
-        managers.put("img", managersImg);
-        data.put("managers", managers);
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
     }
 
 }

@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.dao;
 
+import com.dalbit.broadcast.vo.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.P_RoomListVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,5 @@ public interface RoomDao {
     ProcedureVo callBroadCastRoomExit(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomEdit(ProcedureVo procedureVo);
     List<P_RoomListVo> callBroadCastRoomList(ProcedureVo procedureVo);
+    P_RoomInfoViewVo callBroadCastRoomInfoView(ProcedureVo procedureVo);
 }

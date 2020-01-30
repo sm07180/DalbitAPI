@@ -83,6 +83,7 @@ public class MypageController {
     @GetMapping("")
     public String memberInfo(HttpServletRequest request){
         P_MemberInfoVo apiData = new P_MemberInfoVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setTarget_mem_no(MemberVo.getMyMemNo());
         String result = mypageService.callMemberInfo(apiData);

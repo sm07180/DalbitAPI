@@ -198,8 +198,11 @@ public enum Status {
     방송참여자리스트_방없음("-2", "broadcast.room.list.member.room.no", "해당 방이 없을 시"),
     방송참여자리스트조회_실패("C006", "broadcast.room.list.member.select.fail", "방송참여자 리스트 조회 실패 시"),
 
-    //방송종료
-    방송종료("2004", "broadcast.end.success", "방송 종료 시"),
+    //방송방 정보 보기
+    방정보보기("0", "broadcast.room.info.view.success", "방송방 정보 보기 성공 시"),
+    방정보보기_회원번호아님("-1", "broadcast.room.info.view.not.member.number","회원 번호가 아닐 시"),
+    방정보보기_해당방없음("-2", "broadcast.room.info.view.room.no", "해당 방이 없을 시"),
+    방정보보기_실패("C006", "broadcast.room.info.view.fail", "방송방 정보 보기 실패 시"),
 
     //방송방 사연 등록
     방송방사연등록성공("0", "broadcast.room.story.add.success", "방송방 사연 등록 성공 시"),

@@ -5,16 +5,13 @@ import lombok.Setter;
 
 import java.util.Date;
 
-@Getter
-@Setter
-public class P_RoomListVo{
+@Getter @Setter
+public class P_RoomInfoViewVo {
 
     /* Input */
-    private int memLogin;                   //회원 로그인 상태(1: 회원, 0: 비회원)
-    private String mem_no;                  //방리스트 요청 회원번호
-    private int subjectType;                //방주제, 리스트 우선순위 설정
-    private int pageNo;                     //현재 페이지 번호
-    private int pageCnt;                    //페이지당 리스트 개수
+    private int memLogin;       //회원 로그인 상태(1: 회원, 0: 비회원)
+    private String mem_no;      //요청 회원 번호
+    private String room_no;     //해당 방 번호
 
     /* Output */
     private String roomNo;                  //방번호
@@ -41,12 +38,4 @@ public class P_RoomListVo{
     private int guest_birthYear;            //게스트생년
     private int guest_age;                  //게스트 나이대
     private Object guest_profileImage;      //게스트프로필이미지
-
-    private String bj_streamid;            //bj 스트림아이디
-    private String bj_publish_tokenid;     //bj 토큰아이디
-    private String bj_play_tokenid;        //bj play토큰
-    private String guest_streamid;         //guest 스트림아이디
-    private String guest_publish_tokenid;  //guest 토큰아이디
-    private String guest_play_tokenid;     //guest play토큰
-
 }

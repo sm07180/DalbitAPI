@@ -16,12 +16,15 @@ public class ImageVo {
     }
 
     public ImageVo(Object path, String gender, String photoServerUrl){
-        if(path == null){
-            this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
-            setThumbs();
-        }else{
-            setPath(path.toString(), photoServerUrl);
+        if(gender != null){
+            if(path == null){
+                this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
+                setThumbs();
+            }else{
+                setPath(path.toString(), photoServerUrl);
+            }
         }
+
     }
 
     private String photoServer;
