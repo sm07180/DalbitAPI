@@ -6,6 +6,7 @@ import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.P_LoginVo;
+import com.dalbit.member.vo.P_MemberSessionUpdateVo;
 import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
@@ -43,17 +44,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        //MemberVo memberVo;
-        P_LoginVo pLoginVo = new P_LoginVo(
-            DalbitUtil.convertRequestParamToString(request,"memType")
-            , DalbitUtil.convertRequestParamToString(request,"memId")
-            , DalbitUtil.convertRequestParamToString(request,"memPwd")
-            , DalbitUtil.convertRequestParamToInteger(request,"os")
-            , DalbitUtil.convertRequestParamToString(request,"deviceId")
-            , DalbitUtil.convertRequestParamToString(request,"deviceToken")
-            , DalbitUtil.convertRequestParamToString(request,"appVer")
-            , DalbitUtil.convertRequestParamToString(request,"appAdId")
-        );
+        String memType = DalbitUtil.convertRequestParamToString(request,"memType");
+        String memId = DalbitUtil.convertRequestParamToString(request,"memId");
+        String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
+        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
+        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
+        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
+        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
+        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+
+        P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId);
 
         ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
         log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
@@ -72,10 +72,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         paramMemberVo.setMemId(DalbitUtil.convertRequestParamToString(request,"memId"));
         paramMemberVo.setMemSlct(DalbitUtil.convertRequestParamToString(request, "memType"));
 
-        MemberVo memberVo = loginDao.loginUseMemId(paramMemberVo);
+        MemberVo memberVo = loginDao.loginUseMemId(paramMemberVo);  //todo - 내 프로필 조회로 변경
         if(memberVo == null) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
         }
+
+        //세션 업데이트 프로시저 호출
+        P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(1, memberVo.getMemNo(), os, appAdId, deviceId, deviceToken, appVer, "서울");
+        memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
 
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));

@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,7 +22,6 @@ import java.util.HashMap;
 
 @Slf4j
 @RestController
-@RequestMapping("member")
 public class MemberController {
 
     @Autowired
@@ -49,18 +47,18 @@ public class MemberController {
         TokenVo tokenVo;
         boolean isLogin = DalbitUtil.isLogin();
 
+        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
+        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
+        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
+        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
+        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+
+        String location = "서울"; //todo - 지역명 api 조회로 변경
+
         if(isLogin){
             tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
         }else{
-            P_LoginVo pLoginVo = new P_LoginVo(
-                //DalbitUtil.convertRequestParamToString(request,"memType")
-                "a"
-                , DalbitUtil.convertRequestParamToInteger(request,"os")
-                , DalbitUtil.convertRequestParamToString(request,"deviceId")
-                , DalbitUtil.convertRequestParamToString(request,"deviceToken")
-                , DalbitUtil.convertRequestParamToString(request,"appVer")
-                , DalbitUtil.convertRequestParamToString(request,"appAdId")
-            );
+            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId);
 
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
@@ -80,7 +78,18 @@ public class MemberController {
             memberService.refreshAnonymousSecuritySession(memNo);
         }
 
-
+        //세션 업데이트 프로시저 호출
+        P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
+                isLogin ? 1 : 0
+                , tokenVo.getMemNo()
+                , os
+                , appAdId
+                , deviceId
+                , deviceToken
+                , appVer
+                , location
+        );
+        memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
     }
@@ -88,7 +97,7 @@ public class MemberController {
     /**
      * 회원가입
      */
-    @PostMapping("signup")
+    @PostMapping("member/signup")
     public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
         P_JoinVo joinVo = new P_JoinVo(
@@ -149,7 +158,7 @@ public class MemberController {
     /**
      * 닉네임 중복체크
      */
-    @GetMapping("nick")
+    @GetMapping("member/nick")
     public String nick(HttpServletRequest request){
 
         String _data = DalbitUtil.convertRequestParamToString(request,"nickNm");
@@ -165,7 +174,7 @@ public class MemberController {
     /**
      * 비밀번호 변경
      */
-    @PostMapping("/pwd")
+    @PostMapping("member/pwd")
     public String pwd(HttpServletRequest request){
 
         P_ChangePasswordVo pChangePasswordVo = new P_ChangePasswordVo();
