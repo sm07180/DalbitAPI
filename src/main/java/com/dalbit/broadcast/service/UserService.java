@@ -58,13 +58,13 @@ public class UserService {
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberList));
         }else if(Status.방송참여자리스트없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음));
         }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님, roomMemberList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님));
         }else if(Status.방송참여자리스트_방없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_방없음, roomMemberList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_방없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트조회_실패, roomMemberList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트조회_실패));
         }
 
         return result;
@@ -94,21 +94,21 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님));
         }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_해당방이없음));
         }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방이종료되었음));
         }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아님));
         }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방장아님));
         }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_방소속_회원아이디아님));
         }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_불가));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_실패));
         }
 
         return result;
@@ -135,21 +135,21 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님));
         }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_해당방이없음));
         }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방이종료되었음));
         }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아님));
         }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방장아님));
         }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_방소속_회원아이디아님));
         }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_불가));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_실패));
         }
         return result;
     }

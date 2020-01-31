@@ -47,13 +47,13 @@ public class ActionService {
         if(Status.좋아요.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData()));
         }else if(Status.좋아요_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_회원아님,procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_회원아님));
         }else if(Status.좋아요_해당방송없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_해당방송없음, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_해당방송없음));
         }else if(Status.좋아요_방송참가자아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_방송참가자아님, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_방송참가자아님));
         }else if(Status.좋아요_이미했음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_이미했음, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_이미했음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패));
         }

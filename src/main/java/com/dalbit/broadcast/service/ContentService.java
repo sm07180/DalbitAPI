@@ -141,13 +141,13 @@ public class ContentService {
         if(Status.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공));
         }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님,procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님));
         }else if(Status.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음,procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음));
         }else if(Status.방송방사연등록_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님,procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님));
         }else if(Status.방송방사연등록_10분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능,procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능, procedureVo.getData()));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류));
         }
