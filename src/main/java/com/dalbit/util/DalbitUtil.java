@@ -504,8 +504,8 @@ public class DalbitUtil {
      */
     public static LocationVo getLocation(HttpServletRequest request){
 
-        String apiResult = RestApiUtil.sendGet("http://ip-api.com/json/"+getIp(request));
-        LocationVo locationVo = null;
+        String apiResult = RestApiUtil.sendGet(getProperty("geo.location.server.url") + getIp(request));
+        LocationVo locationVo = new LocationVo();
         try {
             locationVo = new Gson().fromJson(apiResult, LocationVo.class);
         }catch (Exception e){

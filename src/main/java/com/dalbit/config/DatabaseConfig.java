@@ -52,7 +52,7 @@ public class DatabaseConfig {
         hikariConfig.setUsername(JDBC_USERNAME);
         hikariConfig.setPassword(JDBC_PASSWORD);
         hikariConfig.setConnectionTimeout(Long.valueOf(CONNECTION_TIMEOUT));
-        hikariConfig.setIdleTimeout(Long.valueOf(IDLE_TIMEOUT));
+        //hikariConfig.setIdleTimeout(Long.valueOf(IDLE_TIMEOUT));
         hikariConfig.setMaxLifetime(Long.valueOf(IDLE_TIMEOUT));
         return hikariConfig;
     }

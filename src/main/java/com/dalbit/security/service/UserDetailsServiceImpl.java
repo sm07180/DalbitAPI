@@ -1,12 +1,12 @@
 package com.dalbit.security.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.P_LoginVo;
-import com.dalbit.member.vo.P_MemberSessionUpdateVo;
 import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
@@ -53,7 +53,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
         String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
 
-        P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId);
+        LocationVo locationVo = DalbitUtil.getLocation(request);
+
+        P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
 
         ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
         log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));

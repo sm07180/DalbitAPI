@@ -2,8 +2,8 @@ package com.dalbit.member.controller;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.*;
@@ -54,12 +54,12 @@ public class MemberController {
         String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
         String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
 
-        String location = "서울"; //todo - 지역명 api 조회로 변경
+        LocationVo locationVo = DalbitUtil.getLocation(request);
 
         if(isLogin){
             tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
         }else{
-            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, location);
+            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
 
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
@@ -88,7 +88,7 @@ public class MemberController {
                 , deviceId
                 , deviceToken
                 , appVer
-                , location
+                , locationVo.getRegionName()
         );
         memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
 
@@ -101,7 +101,7 @@ public class MemberController {
     @PostMapping("member/signup")
     public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
-        String location = "서울";
+        LocationVo locationVo = DalbitUtil.getLocation(request);
 
         String memType = DalbitUtil.convertRequestParamToString(request,"memType");
         String memId = DalbitUtil.convertRequestParamToString(request,"memId");
@@ -133,7 +133,7 @@ public class MemberController {
             , deviceToken
             , appVer
             , appAdId
-            , location
+            , locationVo.getRegionName()
         );
 
         String result = "";
@@ -141,7 +141,7 @@ public class MemberController {
         if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
 
             //로그인 처리
-            P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId);
+            P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
 
             memberService.callMemberLogin(pLoginVo);
             log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
