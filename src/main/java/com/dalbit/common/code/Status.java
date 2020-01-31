@@ -29,7 +29,7 @@ public enum Status {
 
     //닉네임중복체크
     닉네임중복("0", "member.join.nick.duplicate", "닉네임 중복 시"),
-    닉네임사용가능("1", "member.join.nick.possible", "닉네임 사용가능 시"),
+    닉네임사용가능("1", "member.join.nick.success", "닉네임 사용가능 시"),
     닉네임_파라메터오류("C005", "param.error", "닉네임 파라메터 오류 시"),
 
     //비밀번호변경

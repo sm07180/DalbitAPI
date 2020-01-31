@@ -1,7 +1,6 @@
 package com.dalbit.config;
 
 import com.dalbit.security.filter.SsoAuthenticationFilter;
-//import com.dalbit.security.handler.LogoutSuccessHandlerImpl;
 import com.dalbit.security.handler.LogoutSuccessHandlerImpl;
 import com.dalbit.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;

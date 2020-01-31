@@ -7,6 +7,7 @@ import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.P_ChangePasswordVo;
 import com.dalbit.member.vo.P_JoinVo;
 import com.dalbit.member.vo.P_LoginVo;
+import com.dalbit.member.vo.P_MemberSessionUpdateVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -89,6 +90,10 @@ public class MemberService {
         return result;
     }
 
+    /**
+     * 비회원 토큰 업데이트
+     * @param memNo
+     */
     public void refreshAnonymousSecuritySession(String memNo){
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
@@ -100,5 +105,12 @@ public class MemberService {
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
+    }
+
+    public void callMemberSessionUpdate(P_MemberSessionUpdateVo pMemberSessionUpdateVo){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberSessionUpdateVo);
+        memberDao.callMemberSessionUpdate(procedureVo);
+
+        log.debug("세션 업데이트 결과: {}", procedureVo.toString());
     }
 }
