@@ -13,7 +13,7 @@ public class P_JoinVo extends BaseVo {
     public P_JoinVo(
         String memSlct , String id , String pw , String memSex , String nickName , int birthYear , int birthMonth , int birthDay
         , String term1 , String term2 , String term3 , String name , String profileImage , int profileImageGrade , String email
-        , int os , String deviceUuid , String deviceToken , String appVersion , String adId){
+        , int os , String deviceUuid , String deviceToken , String appVersion , String adId, String location){
 
         setMemSlct(memSlct);
         setId(id);
@@ -35,6 +35,7 @@ public class P_JoinVo extends BaseVo {
         setDeviceToken(deviceToken);
         setAppVersion(appVersion);
         setAdId(adId);
+        setLocation(location);
     }
 
     private String memSlct;
@@ -57,4 +58,5 @@ public class P_JoinVo extends BaseVo {
     private String deviceToken;
     private String appVersion;
     private String adId;
+    private String location;
 }

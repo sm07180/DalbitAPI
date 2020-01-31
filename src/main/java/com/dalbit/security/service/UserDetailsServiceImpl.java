@@ -77,10 +77,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
         }
 
-        //세션 업데이트 프로시저 호출
-        P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(1, memberVo.getMemNo(), os, appAdId, deviceId, deviceToken, appVer, "서울");
-        memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
-
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
