@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -116,6 +117,23 @@ public class RoomController {
         P_RoomExitVo apiData = new P_RoomExitVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(roomNo);
+
+        String result = roomService.callBroadCastRoomExit(apiData);
+
+        return result;
+    }
+
+    /**
+     * 임의 삭제
+     */
+    @DeleteMapping("/exitForce")
+    @Profile("local")
+    public String roomDelete(HttpServletRequest request){
+        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
+        P_RoomExitVo apiData = new P_RoomExitVo();
+        apiData.setMemLogin(1);
+        apiData.setMem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
         apiData.setRoom_no(roomNo);
 
         String result = roomService.callBroadCastRoomExit(apiData);
