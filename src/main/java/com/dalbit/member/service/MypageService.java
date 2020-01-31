@@ -155,7 +155,7 @@ public class MypageService {
         mypageDao.callBroadBasicEdit(procedureVo);
         String result;
         if(procedureVo.getRet().equals(Status.방송방기본설정수정_성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정수정_성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정수정_성공)));
         } else if(procedureVo.getRet().equals(Status.방송방기본설정수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정수정_회원아님)));
         }else{

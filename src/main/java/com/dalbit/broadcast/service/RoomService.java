@@ -296,7 +296,7 @@ public class RoomService {
     }
 
     /**
-     * 방송 정보조회(방생성 후)
+     * 방송 정보조회(방송방 생성,참여 후)
      */
     public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);

@@ -114,8 +114,7 @@ public class MypageController {
         apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request,"bgImgRacy"));
         apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"wecomMsg"));
         apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
-        apiData.setEntry(DalbitUtil.convertRequestParamToInteger(request,"isEntry"));
-        apiData.setAge(DalbitUtil.convertRequestParamToInteger(request,"isEntry"));
+        apiData.setEntryType(DalbitUtil.convertRequestParamToInteger(request,"entryType"));
 
         String result = mypageService.callBroadBasicEdit(apiData);
         return result;

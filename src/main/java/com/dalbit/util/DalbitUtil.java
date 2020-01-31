@@ -1,6 +1,8 @@
 package com.dalbit.util;
 
+import com.dalbit.common.vo.LocationVo;
 import com.dalbit.member.vo.MemberVo;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -9,6 +11,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -468,6 +474,66 @@ public class DalbitUtil {
 
     public static boolean isLogin(){
         return !("anonymousUser".equals(MemberVo.getMyMemNo()) || MemberVo.getMyMemNo().startsWith("8"));
+    }
+
+
+    /**
+     * IP 주소 가져오기
+     */
+    public static String getIp(HttpServletRequest request){
+        String clientIp = request.getHeader("Proxy-Client-IP");
+        if (clientIp == null) {
+            clientIp = request.getHeader("WL-Proxy-Client-IP");
+            if (clientIp == null) {
+                clientIp = request.getHeader("X-Forwarded-For");
+                if (clientIp == null) {
+                    clientIp = request.getRemoteAddr();
+                }
+            }
+        }
+        return clientIp;
+    }
+
+    /**
+     * 지역정보, 위도, 경도 가져오기
+     */
+    public static HashMap getLocation(HttpServletRequest request, LocationVo locationVo){
+        float lat = 0;
+        float lng = 0;
+        Gson gson = new Gson();
+        HashMap resultMap = null;
+        try {
+            URL url = new URL("http://ip-api.com/json/"+DalbitUtil.getIp(request));
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setConnectTimeout(5000);
+            con.setReadTimeout(5000);
+            int responseCode = con.getResponseCode();
+            String inputLine;
+            StringBuffer responseBuffer = new StringBuffer();
+            LocationVo resultVo = new LocationVo();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            while ((inputLine = in.readLine()) != null) {
+                responseBuffer.append(inputLine);
+            }
+            in.close();
+            if(200==responseCode) {
+                resultMap = gson.fromJson(responseBuffer.toString(), HashMap.class);
+                if("success".equals(resultMap.get("status"))){
+                    double latDouble = (double)resultMap.get("lat");
+                    lat = (float)latDouble;
+
+                    double lngDouble = (double)resultMap.get("lon");
+                    lng = (float)lngDouble;
+                } else {
+                    //호출실패시 Inforex 서울
+                    lat = (float) 37.5241;
+                    lng = (float) 127.023;
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return resultMap;
     }
 
 }

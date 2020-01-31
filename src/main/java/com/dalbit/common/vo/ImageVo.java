@@ -27,7 +27,6 @@ public class ImageVo {
 
     }
 
-    private String photoServer;
     private String url;
     private String path;
     private String thumb62x62;
