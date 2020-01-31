@@ -11,10 +11,6 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -458,6 +454,15 @@ public class DalbitUtil {
         }
     }
 
+    public static Double getDoubleMap(HashMap map, String key){
+        try{
+            return Double.valueOf(getStringMap(map, key));
+        }catch (Exception e){
+            log.error("StringUtil.getDoubleMap error - key name is [{}]", key);
+            return 0.0;
+        }
+    }
+
     public static boolean getBooleanMap(HashMap map, String key) {
         try{
             return Boolean.valueOf(getStringMap(map, key));
@@ -497,43 +502,17 @@ public class DalbitUtil {
     /**
      * 지역정보, 위도, 경도 가져오기
      */
-    public static HashMap getLocation(HttpServletRequest request, LocationVo locationVo){
-        float lat = 0;
-        float lng = 0;
-        Gson gson = new Gson();
-        HashMap resultMap = null;
-        try {
-            URL url = new URL("http://ip-api.com/json/"+DalbitUtil.getIp(request));
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setConnectTimeout(5000);
-            con.setReadTimeout(5000);
-            int responseCode = con.getResponseCode();
-            String inputLine;
-            StringBuffer responseBuffer = new StringBuffer();
-            LocationVo resultVo = new LocationVo();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            while ((inputLine = in.readLine()) != null) {
-                responseBuffer.append(inputLine);
-            }
-            in.close();
-            if(200==responseCode) {
-                resultMap = gson.fromJson(responseBuffer.toString(), HashMap.class);
-                if("success".equals(resultMap.get("status"))){
-                    double latDouble = (double)resultMap.get("lat");
-                    lat = (float)latDouble;
+    public static LocationVo getLocation(HttpServletRequest request){
 
-                    double lngDouble = (double)resultMap.get("lon");
-                    lng = (float)lngDouble;
-                } else {
-                    //호출실패시 Inforex 서울
-                    lat = (float) 37.5241;
-                    lng = (float) 127.023;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        String apiResult = RestApiUtil.sendGet("http://ip-api.com/json/"+getIp(request));
+        LocationVo locationVo = null;
+        try {
+            locationVo = new Gson().fromJson(apiResult, LocationVo.class);
+        }catch (Exception e){
+            locationVo.setRegionName("정보없음");
         }
-        return resultMap;
+
+        return locationVo;
     }
 
 }

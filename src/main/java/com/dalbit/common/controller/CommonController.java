@@ -44,7 +44,7 @@ public class CommonController {
      * 위치정보가져오기
      */
     @GetMapping("/location")
-    public HashMap GetLocateByIp(HttpServletRequest request) {
-        return DalbitUtil.getLocation(request, new LocationVo());
+    public LocationVo GetLocateByIp(HttpServletRequest request) {
+        return DalbitUtil.getLocation(request);
     }
 }

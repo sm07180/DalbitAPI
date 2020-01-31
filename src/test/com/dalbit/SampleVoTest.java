@@ -1,8 +1,10 @@
 package com.dalbit;
 
+import com.dalbit.common.vo.LocationVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.util.*;
 import com.dalbit.sample.vo.SampleVo;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -213,11 +216,11 @@ public class SampleVoTest {
     }
 
     @Test
-    public void 테스트(){
-        String memNo = "21319823013231";
-        boolean isLogin = true;
+    public void 테스트(HttpServletRequest request){
 
+        LocationVo locationVo = DalbitUtil.getLocation(request);
 
+        log.debug(locationVo.toString());
     }
 
 }
