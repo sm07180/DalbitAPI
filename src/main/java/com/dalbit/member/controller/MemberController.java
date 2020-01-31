@@ -3,6 +3,7 @@ package com.dalbit.member.controller;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.*;
@@ -58,7 +59,7 @@ public class MemberController {
         if(isLogin){
             tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
         }else{
-            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId);
+            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, location);
 
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
@@ -100,10 +101,21 @@ public class MemberController {
     @PostMapping("member/signup")
     public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
+        String location = "서울";
+
+        String memType = DalbitUtil.convertRequestParamToString(request,"memType");
+        String memId = DalbitUtil.convertRequestParamToString(request,"memId");
+        String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
+        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
+        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
+        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
+        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
+        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+
         P_JoinVo joinVo = new P_JoinVo(
-            DalbitUtil.convertRequestParamToString(request,"memType")
-            , DalbitUtil.convertRequestParamToString(request,"memId")
-            , DalbitUtil.convertRequestParamToString(request,"memPwd")
+            memType
+            , memId
+            , memPwd
             , DalbitUtil.convertRequestParamToString(request,"gender")
             , DalbitUtil.convertRequestParamToString(request,"nickNm")
             , DalbitUtil.convertRequestParamToInteger(request,"birthYY")
@@ -116,23 +128,29 @@ public class MemberController {
             , DalbitUtil.convertRequestParamToString(request,"profImg")
             , DalbitUtil.convertRequestParamToInteger(request,"profImgRacy")
             , DalbitUtil.convertRequestParamToString(request,"email")
-            , DalbitUtil.convertRequestParamToInteger(request,"os")
-            , DalbitUtil.convertRequestParamToString(request,"deviceId")
-            , DalbitUtil.convertRequestParamToString(request,"deviceToken")
-            , DalbitUtil.convertRequestParamToString(request,"appVer")
-            , DalbitUtil.convertRequestParamToString(request,"appAdId")
+            , os
+            , deviceId
+            , deviceToken
+            , appVer
+            , appAdId
+            , location
         );
 
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo);
         if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
-            //new JsonOutputVo(Status.회원가입성공);
+
+            //로그인 처리
+            P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId);
+
+            memberService.callMemberLogin(pLoginVo);
+            log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
 
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             String memNo = DalbitUtil.getStringMap(map, "mem_no");
             String jwtToken = jwtUtil.generateToken(memNo, true);
 
-            UserDetails userDetails = userDetailsService.loadUserBySsoCookieFromDb(memNo);
+            UserDetails userDetails = userDetailsService.loadUserBySsoCookieFromDb(memNo);  //todo - 프로필 조회로 변경 필요
 
             loginUtil.saveSecuritySession(request, userDetails);
             loginUtil.ssoCookieRenerate(response, jwtToken);
