@@ -35,11 +35,8 @@ public class ProfileController {
      */
     @GetMapping("")
     public String memberInfo(HttpServletRequest request){
-
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setTarget_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
+        int memLogin = DalbitUtil.isLogin() ? 1 : 0;
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), DalbitUtil.convertRequestParamToString(request,"memNo"));
         String result = profileService.callMemberInfo(apiData);
         return result;
     }

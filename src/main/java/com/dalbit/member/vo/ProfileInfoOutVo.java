@@ -29,6 +29,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private int     exp;
     private int     expNext;
     private String  grade;
+    private int     ruby;
+    private int     gold;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no) {
@@ -47,5 +49,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.exp=target.getExp();
         this.expNext=target.getExpNext();
         this.grade=target.getGrade();
+        this.ruby=target.getRuby();
+        this.gold=target.getGold();
     }
 }
