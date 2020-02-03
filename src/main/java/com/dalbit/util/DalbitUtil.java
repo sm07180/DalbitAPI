@@ -519,6 +519,13 @@ public class DalbitUtil {
     }
 
     /**
+     * 이미지 path 경로 치환
+     */
+    public static String replacePath(String path){
+        return path.replace("/temp", "");
+    }
+
+    /**
      * UTC 로 변경
      *
      * @param dt
@@ -528,11 +535,23 @@ public class DalbitUtil {
         return LocalDateTime.ofInstant(dt.toInstant(), ZoneId.of("UTC"));
     }
 
+    /**
+     * UTC기준 날짜 문자 변환
+     *
+     * @param dt
+     * @return
+     */
     public static String getUTCFormat(Date dt){
         return getUTC(dt).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
 
+    /**
+     * UTC기준 타임스탬프 변환
+     *
+     * @param dt
+     * @return
+     */
     public static long getUTCTimeStamp(Date dt){
-        return Timestamp.valueOf(getUTC(dt)).getTime();
+        return Timestamp.valueOf(getUTC(dt)).getTime() / 1000;
     }
 }
