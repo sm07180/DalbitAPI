@@ -57,7 +57,7 @@ public class RoomController {
         if(DalbitUtil.isEmpty(bgImg)){
             bgImg = "/default/roombg_" + (DalbitUtil.randomValue("number", 1)) + ".jpg";
         }else{
-            bgImg = bgImg.substring(5);
+            bgImg = DalbitUtil.replacePath(bgImg);
         }
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
@@ -156,7 +156,7 @@ public class RoomController {
         apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
         if(!DalbitUtil.isEmpty(bgImg)){
-            bgImg = bgImg.substring(5);
+            bgImg = DalbitUtil.replacePath(bgImg);
             apiData.setBackgroundImage(bgImg);
         }
         //apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));

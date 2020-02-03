@@ -515,4 +515,11 @@ public class DalbitUtil {
         return locationVo;
     }
 
+    /**
+     * 이미지 path 경로 치환
+     */
+    public static String replacePath(String path){
+        return path.replace("/temp", "");
+    }
+
 }
