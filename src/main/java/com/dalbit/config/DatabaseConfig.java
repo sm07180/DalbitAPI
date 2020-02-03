@@ -41,8 +41,8 @@ public class DatabaseConfig {
     @Value("${spring.datasource.connection.timeout}")
     private String CONNECTION_TIMEOUT;
 
-    @Value("${spring.datasource.idle.timeout}")
-    private String IDLE_TIMEOUT;
+    @Value("${spring.datasource.max.lifetime}")
+    private String MAX_LIFETIME;
 
     @Bean
     public HikariConfig hikariConfig() {
@@ -66,7 +66,7 @@ public class DatabaseConfig {
 
         Log4jdbcProxyDataSource log4jdbcDs = new Log4jdbcProxyDataSource(dataSource);
         log4jdbcDs.setLogFormatter(formatter);
-        return log4jdbcDs;
+        return dataSource;
 
     }
 

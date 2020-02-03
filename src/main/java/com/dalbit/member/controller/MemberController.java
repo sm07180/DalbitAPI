@@ -4,14 +4,19 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
+import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
 import com.dalbit.security.service.UserDetailsServiceImpl;
+import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 @Slf4j
@@ -29,6 +36,8 @@ public class MemberController {
     MemberService memberService;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    ProfileService profileService;
 
     @Autowired
     MessageUtil messageUtil;
@@ -150,9 +159,23 @@ public class MemberController {
             String memNo = DalbitUtil.getStringMap(map, "mem_no");
             String jwtToken = jwtUtil.generateToken(memNo, true);
 
-            UserDetails userDetails = userDetailsService.loadUserBySsoCookieFromDb(memNo);  //todo - 프로필 조회로 변경 필요
+            ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
 
-            loginUtil.saveSecuritySession(request, userDetails);
+            MemberVo memberVo = null;
+            if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+
+                P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
+                memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo));
+                memberVo.setMemSlct(memType);
+                memberVo.setMemPasswd(memPwd);
+            }else{
+                new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            }
+
+            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), DalbitUtil.getAuthorities());
+            securityUserVo.setMemberVo(memberVo);
+
+            loginUtil.saveSecuritySession(request, securityUserVo);
             loginUtil.ssoCookieRenerate(response, jwtToken);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));

@@ -7,6 +7,21 @@ import lombok.Setter;
 @Setter
 public class P_ProfileInfoVo {
 
+    public P_ProfileInfoVo(){}
+
+    //본인 프로필 조회 시 사용
+    public P_ProfileInfoVo(int memLogin, String mem_no){
+        setMemLogin(memLogin);
+        setMem_no(mem_no);
+        setTarget_mem_no(mem_no);
+    }
+
+    public P_ProfileInfoVo(int memLogin, String mem_no, String target_mem_no){
+        setMemLogin(memLogin);
+        setMem_no(mem_no);
+        setTarget_mem_no(target_mem_no);
+    }
+
     private int memLogin;                       //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;                      //회원번호
     private String target_mem_no;               //스타회원번호

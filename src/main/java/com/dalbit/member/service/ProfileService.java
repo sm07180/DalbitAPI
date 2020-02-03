@@ -33,15 +33,22 @@ public class ProfileService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
-    /**
-     * 정보 조회
-     */
-    public String callMemberInfo(P_ProfileInfoVo pProfileInfo) {
+    public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
+
         ProcedureVo procedureVo = new ProcedureVo(pProfileInfo);
         profileDao.callMemberInfo(procedureVo);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
+        return procedureVo;
+    }
+
+    /**
+     * 정보 조회
+     */
+    public String callMemberInfo(P_ProfileInfoVo pProfileInfo) {
+
+        ProcedureVo procedureVo = getProfile(pProfileInfo);
         P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
         ProfileInfoOutVo ProfileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
 

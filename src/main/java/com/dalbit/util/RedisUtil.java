@@ -27,43 +27,42 @@ public class RedisUtil {
     @Value("${spring.session.memberInfo.key}")
     String SPRING_SESSION_MEMBERINFO_KEY;
 
+    @Value("${spring.session.memberInfo.key.prefix}")
+    String SPRING_SESSION_MEMBERINFO_KEY_PREFIX;
+
     public boolean isExistLoginSession(String memNo){
         return 0 < redisTemplate.opsForHash().getOperations().boundSetOps(SPRING_REDIS_USER_INDEX_PREFIX + memNo).size();
     }
 
-    public String getSessionId(String memNo){
+    public MemberVo getMemberInfo(String memNo){
         Object[] sessionIdArr = (Object[])redisTemplate.opsForHash().getOperations().boundSetOps(SPRING_REDIS_USER_INDEX_PREFIX + memNo).members().toArray();
         for(int i = sessionIdArr.length; i-->0;){
-            if(sessionIdArr[i].toString().length() == 36){
-                return sessionIdArr[i].toString();
+            MemberVo memberVo = (MemberVo)redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionIdArr[i].toString()).get(SPRING_SESSION_MEMBERINFO_KEY_PREFIX + SPRING_SESSION_MEMBERINFO_KEY);
+            if(!DalbitUtil.isEmpty(memberVo)){
+                return memberVo;
             }
         }
-        return "";
+        return null;
     }
 
-    public MemberVo getMemberInfo(String sessionId){
+   /* public MemberVo getMemberInfo(String sessionId){
         MemberVo memberVo = null;
         try{
             if(!DalbitUtil.isEmpty(sessionId)){
-                memberVo = (MemberVo)redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionId).get(SPRING_SESSION_MEMBERINFO_KEY);
+                memberVo = (MemberVo)redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionId).get(SPRING_SESSION_MEMBERINFO_KEY_PREFIX + SPRING_SESSION_MEMBERINFO_KEY);
             }
         }catch(Exception e){
             log.error("RedisUtil.getMemberInfo : {}", e.getMessage());
         }
 
         return memberVo;
-    }
+    }*/
 
     public MemberVo getMemberInfoFromRedis(String memNo){
-        String SessionId = getSessionId(memNo);
-        MemberVo memberVo = getMemberInfo(SessionId);
-        return memberVo;
+        return getMemberInfo(memNo);
     }
 
     public MemberVo getMemberInfo(){
-        String memNo = MemberVo.getMyMemNo();
-        String sessionId = getSessionId(memNo);
-        MemberVo memberVo = getMemberInfo(sessionId);
-        return memberVo;
+        return getMemberInfo(MemberVo.getMyMemNo());
     }
 }

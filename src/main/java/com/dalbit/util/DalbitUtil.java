@@ -7,6 +7,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -554,4 +556,15 @@ public class DalbitUtil {
     public static long getUTCTimeStamp(Date dt){
         return Timestamp.valueOf(getUTC(dt)).getTime() / 1000;
     }
+
+    /**
+     * 로그인 권한
+     * @return
+     */
+    public static Collection<GrantedAuthority> getAuthorities(){
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
+    }
+
 }

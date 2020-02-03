@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.common.vo.BaseVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProfileInfoOutVo {
+public class ProfileInfoOutVo extends BaseVo {
 
     private String  memNo;
     private String  nickNm;
@@ -27,6 +28,7 @@ public class ProfileInfoOutVo {
     private int     expNext;
     private String  grade;
 
+    public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no) {
         this.memNo=target_mem_no;
         this.nickNm=target.getNickName();

@@ -6,6 +6,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.security.vo.SecurityUserVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -22,6 +23,9 @@ import javax.servlet.http.HttpSession;
 public class LoginUtil {
 
     @Autowired JwtUtil jwtUtil;
+
+    @Value("${spring.session.memberInfo.key}")
+    String SPRING_SESSION_MEMBERINFO_KEY;
 
     public void saveSecuritySession(HttpServletRequest request, UserDetails userDetails){
         if (userDetails != null) {
@@ -40,6 +44,7 @@ public class LoginUtil {
 
                 HttpSession session = request.getSession(true);
                 session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+                session.setAttribute(SPRING_SESSION_MEMBERINFO_KEY, securityUserVo.getMemberVo());
             }
         }
     }
@@ -110,4 +115,6 @@ public class LoginUtil {
             throw new GlobalException(ErrorStatus.쿠키만료오류);
         }
     }
+
+
 }

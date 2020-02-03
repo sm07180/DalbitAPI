@@ -65,12 +65,9 @@ public class SampleRestController {
     @GetMapping("rest")
     public String rest(){
 
-        List<SampleVo> list = sampleService.getList();
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+        MemberVo memberVo = redisUtil.getMemberInfo();
 
-        log.debug(result);
-
-        return result;
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, memberVo));
     }
 
     /**
