@@ -1,6 +1,7 @@
 package com.dalbit;
 
 import com.dalbit.common.vo.LocationVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.util.*;
 import com.dalbit.sample.vo.SampleVo;
@@ -99,7 +100,7 @@ public class SampleVoTest {
     }
 
     @Test
-    public void jwt토큰생성(){
+    public void jwt토큰생성() throws GlobalException {
         String token = jwtUtil.generateToken("010-1234-4568");
         log.info("JWT 토큰 : " + token);
         String userId = jwtUtil.getUserNameFromJwt(token);
@@ -126,7 +127,7 @@ public class SampleVoTest {
     }
 
     @Test
-    public void jwt토큰검증(){
+    public void jwt토큰검증() throws GlobalException {
         String token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIwMTAtMTIzNC00NTY4IiwiaWF0IjoxNTc4ODkyODQ3LCJleHAiOjE1Nzg4OTU0Mzl9.D7KMNYeBi-3VyhVyhcFc7H2Ap9MVKD3OTgpaPe_bBjw";
         boolean isValid = jwtUtil.validateToken(token);
         log.debug("isValid : {}", isValid);

@@ -1,5 +1,7 @@
 package com.dalbit.util;
 
+import com.dalbit.common.code.ErrorStatus;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.TokenVo;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +44,7 @@ public class JwtUtil {
     /**
      * Jwt Token을 복호화 하여 이름을 얻는다.
      */
-    public String getUserNameFromJwt(String jwt) {
+    public String getUserNameFromJwt(String jwt) throws GlobalException {
         return getClaims(jwt).getBody().getId();
     }
 
@@ -62,29 +64,32 @@ public class JwtUtil {
     /**
      * Jwt Token의 유효성을 체크한다.
      */
-    public boolean validateToken(String jwt) {
+    public boolean validateToken(String jwt) throws GlobalException {
         return this.getClaims(jwt) != null;
     }
 
-    private Jws<Claims> getClaims(String jwt) {
+    private Jws<Claims> getClaims(String jwt) throws GlobalException {
         try {
             return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(jwt);
         } catch (SignatureException ex) {
             log.error("Invalid JWT signature");
-            //throw ex;
+            throw new GlobalException(ErrorStatus.토큰검증오류);
+
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
-            //throw ex;
+            throw new GlobalException(ErrorStatus.토큰검증오류);
+
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
-            //throw ex;
+            throw new GlobalException(ErrorStatus.토큰만료오류);
+
         } catch (UnsupportedJwtException ex) {
             log.error("Unsupported JWT token");
-            //throw ex;
+            throw new GlobalException(ErrorStatus.토큰검증오류);
+
         } catch (IllegalArgumentException ex) {
             log.error("JWT claims string is empty.");
-            //throw ex;
+            throw new GlobalException(ErrorStatus.토큰검증오류);
         }
-        return null;
     }
 }

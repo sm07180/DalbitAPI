@@ -12,7 +12,10 @@ public enum ErrorStatus {
 
     쿠키생성오류("E001", "cookie.generate.error", "쿠키 생성 시 에러"),
     쿠키갱신오류("E002", "cookie.update.error", "쿠키 갱신 시 에러"),
-    쿠키만료오류("E002", "cookie.expire.error", "쿠키 만료 시 에러"),
+    쿠키만료오류("E003", "cookie.expire.error", "쿠키 만료 시 에러"),
+
+    토큰검증오류("E004", "authToken.invalid.error", "JWT 토큰 검증 시 발생한 에러"),
+    토큰만료오류("E005", "authToken.expire.error", "JWT 토큰 만료 시 발생한 에러"),
     ;
 
     final private String ERROR_RESULT = "fail";

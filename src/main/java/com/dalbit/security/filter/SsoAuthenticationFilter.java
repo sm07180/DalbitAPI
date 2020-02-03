@@ -1,8 +1,11 @@
 package com.dalbit.security.filter;
 
+import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
@@ -40,6 +43,7 @@ public class SsoAuthenticationFilter implements Filter {
     @Autowired JwtUtil jwtUtil;
     @Autowired RedisUtil redisUtil;
     @Autowired LoginUtil loginUtil;
+    @Autowired GsonUtil gsonUtil;
 
     @Value("${sso.cookie.name}")
     private String SSO_COOKIE_NAME;
@@ -73,6 +77,7 @@ public class SsoAuthenticationFilter implements Filter {
                         String headerCookie = request.getHeader(SSO_HEADER_COOKIE_NAME);
 
                         boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
+
                         if(isJwtTokenAvailable){
 
                             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerCookie);
@@ -114,8 +119,6 @@ public class SsoAuthenticationFilter implements Filter {
 
                                     memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
                                 }
-
-
                             }
 
                             loginUtil.saveSecuritySession(request, userDetails);
@@ -123,8 +126,10 @@ public class SsoAuthenticationFilter implements Filter {
                         }
                     }
 
-                } catch (Exception e) {
+                } catch (GlobalException e) {
                     e.printStackTrace();
+
+                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus()));
                 }
             }
         }
