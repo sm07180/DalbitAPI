@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.text.SimpleDateFormat;
-
 @Getter @Setter @ToString
 public class RoomOutVo {
 
@@ -38,7 +36,7 @@ public class RoomOutVo {
     private PagingVo paging;
 
     public RoomOutVo(P_RoomListVo target) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+
         this.roomNo = target.getRoomNo();
         this.type = target.getSubject_type();
         this.title = target.getTitle();
@@ -50,8 +48,8 @@ public class RoomOutVo {
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
         this.goodCnt = target.getCount_good();
-        this.startDt = format.format(target.getStart_date());
-        this.startTs = target.getStart_date().getTime() / 1000;
+        this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
+        this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();
         this.bjNickNm = target.getBj_nickName();
         this.bjGender = target.getBj_memSex();
@@ -65,7 +63,6 @@ public class RoomOutVo {
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         this.roomNo = target.getRoomNo();
         this.type = target.getSubject_type();
         this.title = target.getTitle();
@@ -77,8 +74,8 @@ public class RoomOutVo {
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
         this.goodCnt = target.getCount_good();
-        this.startDt = format.format(target.getStart_date());
-        this.startTs = target.getStart_date().getTime() / 1000;
+        this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
+        this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();
         this.bjNickNm = target.getBj_nickName();
         this.bjGender = target.getBj_memSex();

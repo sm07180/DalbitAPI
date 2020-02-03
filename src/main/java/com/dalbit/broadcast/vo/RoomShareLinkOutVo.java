@@ -3,8 +3,6 @@ package com.dalbit.broadcast.vo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 
-import java.text.SimpleDateFormat;
-
 public class RoomShareLinkOutVo {
 
     private String roomNo;
@@ -32,7 +30,6 @@ public class RoomShareLinkOutVo {
     private ImageVo gstProfImg;
 
     public RoomShareLinkOutVo(P_RoomShareLinkVo target){
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
         this.title = target.getTitle();
@@ -44,8 +41,8 @@ public class RoomShareLinkOutVo {
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
         this.likeCnt = target.getCount_good();
-        this.startDt = format.format(target.getStart_date());
-        this.startTs = target.getStart_date().getTime() / 1000;
+        this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
+        this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();
         this.bjNickNm = target.getBj_nickName();
         this.bjGender = target.getBj_memSex();

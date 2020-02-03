@@ -15,6 +15,9 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -516,10 +519,20 @@ public class DalbitUtil {
     }
 
     /**
-     * 이미지 path 경로 치환
+     * UTC 로 변경
+     *
+     * @param dt
+     * @return
      */
-    public static String replacePath(String path){
-        return path.replace("/temp", "");
+    public static LocalDateTime getUTC(Date dt){
+        return LocalDateTime.ofInstant(dt.toInstant(), ZoneId.of("UTC"));
     }
 
+    public static String getUTCFormat(Date dt){
+        return getUTC(dt).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+    }
+
+    public static long getUTCTimeStamp(Date dt){
+        return Timestamp.valueOf(getUTC(dt)).getTime();
+    }
 }

@@ -6,8 +6,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.text.SimpleDateFormat;
-
 @Getter @Setter @ToString
 public class RoomMemberOutVo{
 
@@ -22,7 +20,6 @@ public class RoomMemberOutVo{
     private long joinTs;
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         this.memNo = target.getMem_no();
         this.nickNm = target.getNickName();
         this.gender = target.getMemSex();
@@ -30,7 +27,7 @@ public class RoomMemberOutVo{
         this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.auth = target.getAuth();
         this.ctrlRole = target.getControlRole();
-        this.joinDt = format.format(target.getJoin_date());
-        this.joinTs = target.getJoin_date().getTime() / 1000;
+        this.joinDt = DalbitUtil.getUTCFormat(target.getJoin_date());
+        this.joinTs = DalbitUtil.getUTCTimeStamp(target.getJoin_date());
     }
 }
