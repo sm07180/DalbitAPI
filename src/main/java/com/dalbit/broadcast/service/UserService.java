@@ -7,8 +7,11 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.P_ProfileInfoVo;
+import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -186,6 +189,39 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_실패));
         }
 
+        return result;
+    }
+
+    /**
+     * 정보 조회(방송생성, 참여 시)
+     */
+    public String callMemberInfo(P_ProfileInfoVo pProfileInfo) {
+        ProcedureVo procedureVo = new ProcedureVo(pProfileInfo);
+        userDao.callMemberInfo(procedureVo);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+        P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
+        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("level", profileInfoOutVo.getLevel());
+        returnMap.put("exp", profileInfoOutVo.getExp());
+        returnMap.put("expNext", profileInfoOutVo.getExpNext());
+        returnMap.put("grade", profileInfoOutVo.getGrade());
+        returnMap.put("rubyCnt", profileInfoOutVo.getRuby());
+        returnMap.put("goldCnt", profileInfoOutVo.getGold());
+
+        String result;
+        if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_대상아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_실패));
+        }
         return result;
     }
 }

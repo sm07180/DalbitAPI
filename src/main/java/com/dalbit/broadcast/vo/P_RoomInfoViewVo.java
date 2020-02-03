@@ -38,4 +38,5 @@ public class P_RoomInfoViewVo {
     private int guest_birthYear;            //게스트생년
     private int guest_age;                  //게스트 나이대
     private Object guest_profileImage;      //게스트프로필이미지
+    private String ext;
 }

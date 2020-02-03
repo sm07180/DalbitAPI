@@ -76,6 +76,12 @@ public class RoomService {
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
+            returnMap.put("level", target.getLevel());
+            returnMap.put("grade", target.getGrade());
+            returnMap.put("exp", target.getExp());
+            returnMap.put("expNext", target.getExpNext());
+            returnMap.put("rubyCnt", target.getRubyCnt());
+            returnMap.put("goldCnt", target.getGoldCnt());
             procedureVo.setData(returnMap);
 
             if(!DalbitUtil.isEmpty(pRoomCreateVo.getBackgroundImage()) && !pRoomCreateVo.getBackgroundImage().startsWith("/default")){
@@ -141,6 +147,12 @@ public class RoomService {
             returnMap.put("gstNickNm", target.getGstNickNm());
             returnMap.put("gstProfImg", target.getGstProfImg());
             returnMap.put("remainTime", remainTime);
+            returnMap.put("level", target.getLevel());
+            returnMap.put("grade", target.getGrade());
+            returnMap.put("exp", target.getExp());
+            returnMap.put("expNext", target.getExpNext());
+            returnMap.put("rubyCnt", target.getRubyCnt());
+            returnMap.put("goldCnt", target.getGoldCnt());
             log.info("returnMap: {}",returnMap);
             procedureVo.setData(returnMap);
 
@@ -301,6 +313,7 @@ public class RoomService {
     public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
         P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureVo);
+        roomInfoViewVo.setExt(procedureVo.getExt());
 
         ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(roomInfoViewVo)){

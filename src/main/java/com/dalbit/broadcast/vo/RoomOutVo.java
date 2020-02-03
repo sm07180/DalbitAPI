@@ -3,9 +3,12 @@ package com.dalbit.broadcast.vo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.util.DalbitUtil;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.HashMap;
 
 @Getter @Setter @ToString
 public class RoomOutVo {
@@ -34,6 +37,12 @@ public class RoomOutVo {
     private int gstAge;
     private ImageVo gstProfImg;
     private PagingVo paging;
+    private int level;
+    private int exp;
+    private int expNext;
+    private String grade;
+    private int rubyCnt;
+    private int goldCnt;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -86,5 +95,13 @@ public class RoomOutVo {
         this.gstGender = target.getGuest_memSex();
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());
         this.gstProfImg = new ImageVo(target.getGuest_profileImage(), target.getGuest_memSex(), DalbitUtil.getProperty("server.photo.url"));
+
+        HashMap resultMap = new Gson().fromJson(target.getExt(), HashMap.class);
+        this.level = DalbitUtil.getIntMap(resultMap, "level");
+        this.grade = DalbitUtil.getStringMap(resultMap, "grade");
+        this.exp = DalbitUtil.getIntMap(resultMap, "exp");
+        this.expNext = DalbitUtil.getIntMap(resultMap, "expNext");
+        this.rubyCnt = DalbitUtil.getIntMap(resultMap, "ruby");
+        this.goldCnt = DalbitUtil.getIntMap(resultMap, "gold");
     }
 }

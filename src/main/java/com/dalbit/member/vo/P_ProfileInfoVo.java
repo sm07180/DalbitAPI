@@ -16,6 +16,7 @@ public class P_ProfileInfoVo {
         setTarget_mem_no(mem_no);
     }
 
+    //상대방 프로필 조회 시 사용
     public P_ProfileInfoVo(int memLogin, String mem_no, String target_mem_no){
         setMemLogin(memLogin);
         setMem_no(mem_no);
@@ -40,4 +41,6 @@ public class P_ProfileInfoVo {
     private int     exp;                        //현재경험치
     private int     expNext;                    //다음 레벨업 필요 경험치
     private String  grade;                      //등급
+    private int     ruby;                       //루비
+    private int     gold;                       //골드
 }
