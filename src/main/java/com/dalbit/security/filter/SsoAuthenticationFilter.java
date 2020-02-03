@@ -79,6 +79,7 @@ public class SsoAuthenticationFilter implements Filter {
                             UserDetails userDetails = null;
                             if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
                                 userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
+                                loginUtil.saveSecuritySession(request, userDetails);
                             }
 
                             if(DalbitUtil.isEmpty(userDetails)){
@@ -94,14 +95,15 @@ public class SsoAuthenticationFilter implements Filter {
                                     new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
                                 }
 
-                                //비밀번호가 없어서 아이디로 넣어둠.
-                                SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
+                                //비밀번호가 없어서 공백으로 넣어둠.
+                                SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
                                 securityUserVo.setMemberVo(memberVo);
 
                                 userDetails = securityUserVo;
+                                loginUtil.saveSecuritySession(request, userDetails);
                             }
 
-                            loginUtil.saveSecuritySession(request, userDetails);
+
                             loginUtil.ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
                         }
                     }else if (cookieUtil.exists(SSO_COOKIE_NAME)) {
@@ -122,8 +124,8 @@ public class SsoAuthenticationFilter implements Filter {
                                 new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
                             }
 
-                            //비밀번호가 없어서 아이디로 넣어둠.
-                            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
+                            //비밀번호가 없어서 공백으로 넣어둠.
+                            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
                             securityUserVo.setMemberVo(memberVo);
 
                             loginUtil.saveSecuritySession(request, securityUserVo);
