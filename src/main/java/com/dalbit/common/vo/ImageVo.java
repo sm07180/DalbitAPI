@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class ImageVo extends BaseVo{
 
+    private static final long serialVersionUID = 1L;
+
     public ImageVo(){}
 
     public ImageVo(Object path, String photoServerUrl){

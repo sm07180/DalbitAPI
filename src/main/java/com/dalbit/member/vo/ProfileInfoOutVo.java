@@ -12,6 +12,8 @@ import lombok.ToString;
 @ToString
 public class ProfileInfoOutVo extends BaseVo {
 
+    private static final long serialVersionUID = 1L;
+
     private String  memNo;
     private String  nickNm;
     private String  gender;
