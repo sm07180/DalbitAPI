@@ -1,6 +1,5 @@
 package com.dalbit.security.filter;
 
-import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -109,13 +108,13 @@ public class SsoAuthenticationFilter implements Filter {
                                     }
                                 }else{
 
-                                    /*MemberVo memberVo = new MemberVo();
+                                    MemberVo memberVo = new MemberVo();
                                     memberVo.setMemId(tokenVo.getMemNo());
                                     memberVo.setMemNo(tokenVo.getMemNo());
                                     memberVo.setMemPasswd("");
 
-                                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), "", DalbitUtil.getAuthorities()); //비회원 권한으로 바꿔야함
-                                    securityUserVo.setMemberVo(memberVo);*/
+                                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), "", DalbitUtil.getGuestAuthorities());
+                                    securityUserVo.setMemberVo(memberVo);
 
                                     memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
                                 }

@@ -567,4 +567,10 @@ public class DalbitUtil {
         return authorities;
     }
 
+    public static Collection<GrantedAuthority> getGuestAuthorities(){
+        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+        return authorities;
+    }
+
 }
