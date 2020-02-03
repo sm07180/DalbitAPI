@@ -3,6 +3,7 @@ package com.dalbit.security.filter;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
+import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.P_ProfileInfoVo;
@@ -34,6 +35,7 @@ public class SsoAuthenticationFilter implements Filter {
 
     @Autowired UserDetailsServiceImpl userDetailsService;
     @Autowired ProfileService profileService;
+    @Autowired MemberService memberService;
     @Autowired Base64Util base64Util;
     @Autowired JwtUtil jwtUtil;
     @Autowired RedisUtil redisUtil;
@@ -79,60 +81,46 @@ public class SsoAuthenticationFilter implements Filter {
                             UserDetails userDetails = null;
                             if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
                                 userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
-                                loginUtil.saveSecuritySession(request, userDetails);
                             }
 
                             if(DalbitUtil.isEmpty(userDetails)){
                                 //userDetails = userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo());
-                                ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
 
-                                MemberVo memberVo = null;
-                                if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+                                if(tokenVo.isLogin()){
+                                    ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
 
-                                    P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                                    memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo()));
+                                    MemberVo memberVo = null;
+                                    if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+
+                                        P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
+                                        memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo()));
+                                        //비밀번호가 없어서 공백으로 넣어둠.
+                                        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
+                                        securityUserVo.setMemberVo(memberVo);
+
+                                        userDetails = securityUserVo;
+                                    }else{
+                                        new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+                                    }
                                 }else{
-                                    new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+
+                                    /*MemberVo memberVo = new MemberVo();
+                                    memberVo.setMemId(tokenVo.getMemNo());
+                                    memberVo.setMemNo(tokenVo.getMemNo());
+                                    memberVo.setMemPasswd("");
+
+                                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), "", DalbitUtil.getAuthorities()); //비회원 권한으로 바꿔야함
+                                    securityUserVo.setMemberVo(memberVo);*/
+
+                                    memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
                                 }
 
-                                //비밀번호가 없어서 공백으로 넣어둠.
-                                SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
-                                securityUserVo.setMemberVo(memberVo);
 
-                                userDetails = securityUserVo;
-                                loginUtil.saveSecuritySession(request, userDetails);
                             }
 
-
+                            loginUtil.saveSecuritySession(request, userDetails);
                             loginUtil.ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
                         }
-                    }else if (cookieUtil.exists(SSO_COOKIE_NAME)) {
-                        boolean isJwtTokenAvailable = jwtUtil.validateToken(cookieUtil.getValue(SSO_COOKIE_NAME));
-                        if(isJwtTokenAvailable){
-
-                            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(SSO_COOKIE_NAME));
-                            log.debug("SsoAuthenticationFilter > JWT FROM TokenVo : {}", tokenVo.toString());
-
-                            ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
-
-                            MemberVo memberVo = null;
-                            if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
-
-                                P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                                memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo()));
-                            }else{
-                                new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-                            }
-
-                            //비밀번호가 없어서 공백으로 넣어둠.
-                            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
-                            securityUserVo.setMemberVo(memberVo);
-
-                            loginUtil.saveSecuritySession(request, securityUserVo);
-                        }
-
-                        loginUtil.ssoCookieUpdate(request, response, isJwtTokenAvailable);
-
                     }
 
                 } catch (Exception e) {
