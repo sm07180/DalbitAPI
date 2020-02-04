@@ -62,6 +62,10 @@ public class LoginUtil {
         }else{
             String cookieValue = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieValue);
+            if(DalbitUtil.isEmpty(tokenVo)){
+                throw new GlobalException(ErrorStatus.토큰검증오류);
+            }
+
             String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), true);
 
             ssoCookie = makeSsoCookie(jwtToken);
@@ -80,6 +84,9 @@ public class LoginUtil {
                 CookieUtil cookieUtil = new CookieUtil(request);
 
                 TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieUtil.getValue(DalbitUtil.getProperty("sso.cookie.name")));
+                if(DalbitUtil.isEmpty(tokenVo)){
+                    throw new GlobalException(ErrorStatus.토큰검증오류);
+                }
 
                 String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), tokenVo.isLogin());
 

@@ -1,5 +1,6 @@
 package com.dalbit.security.filter;
 
+import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -80,6 +81,9 @@ public class SsoAuthenticationFilter implements Filter {
 
                             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerCookie);
                             log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
+                            if(DalbitUtil.isEmpty(tokenVo)){
+                                throw new GlobalException(ErrorStatus.토큰검증오류);
+                            }
 
                             UserDetails userDetails = null;
                             if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
