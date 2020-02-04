@@ -48,15 +48,17 @@ public class JwtUtil {
         return getClaims(jwt).getBody().getId();
     }
 
-    public TokenVo getTokenVoFromJwt(String jwt){
+    public TokenVo getTokenVoFromJwt(String jwt) throws GlobalException{
         try {
             String[] splitStrArr = getUserNameFromJwt(jwt).split(JWT_SEPARATOR);
             if (splitStrArr.length == 2) {
                 boolean isLogin = Boolean.valueOf(splitStrArr[1]);
                 return new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin);
+            }else{
+                new GlobalException(ErrorStatus.토큰검증오류);
             }
         }catch (Exception e){
-            return null;
+            new GlobalException(ErrorStatus.토큰검증오류);
         }
         return null;
     }
