@@ -118,11 +118,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
         }
 
-
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), DalbitUtil.getAuthorities());
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
@@ -155,10 +151,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
 
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
