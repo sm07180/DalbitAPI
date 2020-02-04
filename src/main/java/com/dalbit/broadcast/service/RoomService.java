@@ -134,7 +134,7 @@ public class RoomService {
             HashMap returnMap = new HashMap();
             returnMap.put("roomNo",pRoomJoinVo.getRoom_no());
             returnMap.put("bjStreamId",pRoomJoinVo.getBj_streamid());
-            returnMap.put("bgPlayToken",pRoomJoinVo.getBj_play_tokenid());
+            returnMap.put("bjPlayToken",pRoomJoinVo.getBj_play_tokenid());
             returnMap.put("gstStreamId",pRoomJoinVo.getGuest_streamid());
             returnMap.put("gstPlayToken",pRoomJoinVo.getGuest_play_tokenid());
             returnMap.put("title", target.getTitle());
