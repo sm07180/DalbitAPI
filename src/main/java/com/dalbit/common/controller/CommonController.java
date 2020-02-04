@@ -4,6 +4,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
+import com.dalbit.common.vo.SplashVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -27,9 +28,7 @@ public class CommonController {
 
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
-        HashMap<String, Object> result = commonService.getCodeCache("splash");
-        result.put("member", commonService.getJwtTokenInfo(request).get("tokenVo"));
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
     }
 
     @PostMapping("/splash")
