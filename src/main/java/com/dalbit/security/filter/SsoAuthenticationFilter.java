@@ -69,7 +69,6 @@ public class SsoAuthenticationFilter implements Filter {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             if (authentication == null) {
                 try {
-                    CookieUtil cookieUtil = new CookieUtil(request);
 
                     if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
 
@@ -88,8 +87,6 @@ public class SsoAuthenticationFilter implements Filter {
                             }
 
                             if(DalbitUtil.isEmpty(userDetails)){
-                                //userDetails = userDetailsService.loadUserBySsoCookieFromDb(tokenVo.getMemNo());
-
                                 if(tokenVo.isLogin()){
                                     ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
 
@@ -117,6 +114,7 @@ public class SsoAuthenticationFilter implements Filter {
                                     securityUserVo.setMemberVo(memberVo);
 
                                     memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
+                                    userDetails = securityUserVo;
                                 }
                             }
 
