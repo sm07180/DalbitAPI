@@ -23,5 +23,10 @@ public class P_MemberInfoVo {
     private int     exp;                           //현재경험치
     private int     expNext;                       //다음 레벨업 필요 경험치
     private String  grade;                         //등급
+    private String  ruby;                          //보유 루비수(본인)
+    private String  gold;                          //보유 골드수(본인)
+    private String  fanRank1;                      //팬랭킹1위 정보
+    private String  fanRank2;                      //팬랭킹2위 정보
+    private String  fanRank3;                      //팬랭킹3위 정보
 
 }
