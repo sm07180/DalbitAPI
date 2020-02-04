@@ -9,6 +9,8 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
+import com.dalbit.sample.service.SampleService;
+import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.*;
@@ -27,6 +29,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -38,7 +41,6 @@ public class MemberController {
     UserDetailsServiceImpl userDetailsService;
     @Autowired
     ProfileService profileService;
-
     @Autowired
     MessageUtil messageUtil;
     @Autowired
@@ -47,6 +49,8 @@ public class MemberController {
     JwtUtil jwtUtil;
     @Autowired
     LoginUtil loginUtil;
+    @Autowired
+    SampleService sampleService;
 
     /**
      * 토큰조회
@@ -227,6 +231,17 @@ public class MemberController {
 
         log.info("result: {}", result);
         return result;
+    }
+
+    /**
+     * ID 리스트 가져오기 (임시 테스트용)
+     */
+    @GetMapping("id")
+    public List<SampleVo> selectMemid(){
+
+        List<SampleVo> idList = sampleService.selectMemId();
+
+        return idList;
     }
 
 }

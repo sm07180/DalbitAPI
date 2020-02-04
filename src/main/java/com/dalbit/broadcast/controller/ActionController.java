@@ -63,6 +63,23 @@ public class ActionController {
         return result;
     }
 
+    /**
+     * 방송방 선물하기
+     */
+    @PostMapping("/gift")
+    public String roomGift(HttpServletRequest request){
+        P_RoomGiftVo apiData = new P_RoomGiftVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setGifted_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        apiData.setItem_no(DalbitUtil.convertRequestParamToString(request, "itemNo"));
+        apiData.setItem_cnt(DalbitUtil.convertRequestParamToInteger(request, "itemCnt"));
+
+        String result = actionService.callBroadCastRoomGift(apiData);
+
+        return result;
+    }
+
 
 
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */

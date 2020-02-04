@@ -277,35 +277,45 @@ public enum Status {
     강제퇴장_게스트이상불가("-7", "broadcast.kickout.guest.not", "게스트 이상 강제퇴장 불가 시"),
     강제퇴장_실패("C006", "broadcast.kickout.fail", "강제퇴장 실패 시"),
 
-
-   //유저
+    //유저
     매니저지정("3001", "broadcast.user.manager.add", "매니저 지정 시"),
     게스트초대("3003", "broadcast.user.guest.invite", "게스트 초대 시"),
     게스트초대수락("3005", "broadcast.user.guest.join", "게스트 초대 수락 시"),
     게스트신청("3006", "broadcast.user.guest.apply", "게스트 신청 시"),
 
     //방송방 공지사항 가져오기
-    공지가져오기성공("0", "broadcast.room.notice.select.success", "공지 가져오기 성공"),
-    공지가져오기실패_정상회원이아님("-1", "broadcast.room.notice.member.no", "정상회원이 아님"),
+    공지가져오기성공("0", "broadcast.room.notice.select.success", "공지사항 가져오기 성공 시"),
+    공지가져오기실패_정상회원이아님("-1", "broadcast.room.notice.member.no", "정상회원이 아닐 시"),
     공지가져오기실패_해당방이없음("-2", "broadcast.room.notice.room.no", "해당 방이 없음"),
-    공지가져오기실패_방참가자가아님("-3", "broadcast.room.notice.join.member.no", "방 참가자가 아님"),
-    공지가져오기실패_조회에러("C006", "broadcast.room.notice.fail", "공지 가져오기 실패 시"),
+    공지가져오기실패_방참가자가아님("-3", "broadcast.room.notice.join.member.no", "방 참가자가 아닐 시"),
+    공지가져오기실패_조회에러("C006", "broadcast.room.notice.fail", "공지사항 가져오기 실패 시"),
 
     //방송방 공지사항 입력/수정
-    공지입력수정성공("0", "broadcast.room.notice.edit.success", "공지 입력/수정 성공"),
-    공지입력수정실패_정상회원이아님("-1", "broadcast.room.notice.edit.member.no", "정상회원이 아님"),
+    공지입력수정성공("0", "broadcast.room.notice.edit.success", "공지사항 입력/수정 성공 시"),
+    공지입력수정실패_정상회원이아님("-1", "broadcast.room.notice.edit.member.no", "정상회원이 아닐 시"),
     공지입력수정실패_해당방이없음("-2", "broadcast.room.notice.edit.room.no", "해당 방이 없음"),
-    공지입력수정실패_방참가자가아님("-3", "broadcast.room.notice.edit.join.member.no", "방 참가자가 아님"),
-    공지입력수정실패_공지권한없음("-4", "broadcast.room.notice.edit.authorization.not", "공지 권한이 없음"),
-    공지입력수정실패_입력수정에러("C006", "broadcast.room.notice.edit.fail", "공지 입력/수정 실패 시"),
+    공지입력수정실패_방참가자가아님("-3", "broadcast.room.notice.edit.join.member.no", "방 참가자가 아닐 시"),
+    공지입력수정실패_공지권한없음("-4", "broadcast.room.notice.edit.authorization.not", "공지 입력/수정 권한이 없을 시"),
+    공지입력수정실패_입력수정에러("C006", "broadcast.room.notice.edit.fail", "공지사항 입력/수정 실패 시"),
 
     //방송방 공지사항 삭제
-    공지삭제하기성공("0", "broadcast.room.notice.delete.success", "공지 입력/수정 성공"),
-    공지삭제하기실패_정상회원이아님("-1", "broadcast.room.notice.delete.member.no", "정상회원이 아님"),
-    공지삭제하기실패_해당방이없음("-2", "broadcast.room.notice.delete.room.no", "해당 방이 없음"),
-    공지삭제하기실패_방참가자가아님("-3", "broadcast.room.notice.delete.join.member.no", "방 참가자가 아님"),
-    공지삭제하기실패_공지삭제권한없음("-4", "broadcast.room.notice.delete.authorization.not", "공지 권한이 없음"),
-    공지삭제하기실패_삭제에러("C006", "broadcast.room.notice.delete.fail", "공지 입력/수정 실패 시"),
+    공지삭제하기성공("0", "broadcast.room.notice.delete.success", "공지사항 삭제 성공 시"),
+    공지삭제하기실패_정상회원이아님("-1", "broadcast.room.notice.delete.member.no", "정상회원이 아닐 시"),
+    공지삭제하기실패_해당방이없음("-2", "broadcast.room.notice.delete.room.no", "해당 방이 없을 시"),
+    공지삭제하기실패_방참가자가아님("-3", "broadcast.room.notice.delete.join.member.no", "방 참가자가 아닐 시"),
+    공지삭제하기실패_공지삭제권한없음("-4", "broadcast.room.notice.delete.authorization.not", "공지 삭제 권한이 없을 시"),
+    공지삭제하기실패_삭제에러("C006", "broadcast.room.notice.delete.fail", "공지사항 삭제 실패 시"),
+
+    //방송방 선물하기
+    선물하기성공("0", "broadcast.room.gift.success", "선물하기 성공 시"),
+    선물하기_요청회원_번호비정상("-1", "broadcast.room.gift.member.number.error", "요청회원 번호가 비정상일 시"),
+    선물하기_해당방없음("-2", "broadcast.room.gift.no.room", "해당 방 없을 시"),
+    선물하기_해당방종료("-3", "broadcast.room.gift.room.end", "해당 방이 종료되었을 시"),
+    선물하기_요청회원_해당방청취자아님("-4", "broadcast.room.gift.member.join.no", "요청회원이 해당방 청취자가 아닐 시"),
+    선물하기_받는회원_해당방에없음("-5", "broadcast.room.gift.member.no", "선물받을 회원이 해당방에 없을 시"),
+    선물하기_없는대상("-6", "broadcast.room.gift.member.error", "선물할 수 없는 대상 시"),
+    선물하기_아이템번호없음("-7", "broadcast.room.gift.item.number.no", "아이템번호가 없을 시"),
+    선물하기_실패("C006", "broadcast.room.gift.fail", "선물하기 실패 시"),
 
    ;
 

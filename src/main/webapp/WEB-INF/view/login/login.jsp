@@ -28,7 +28,7 @@
                                     <div class="col-md-6">
                                         <!--<input type="text" name="memId" id="memId" class="form-control" value="010-1234-4568" />-->
                                         <select name="memId" id="memId" class="form-control">
-                                            <option value="010-1234-1234">010-1234-1234 (radiogaga11)</option>
+                                            <%--<option value="010-1234-1234">010-1234-1234 (radiogaga11)</option>
                                             <option value="010-1234-4568">010-1234-4568 (radiogaga1)</option>
                                             <option value="010-1234-7412">010-1234-7412 (infotest01)</option>
                                             <option value="010-1234-7413">010-1234-7413 (infotest02)</option>
@@ -63,6 +63,7 @@
                                             <option value="010-3333-4455">010-3333-4455 (닉네임123)</option>
                                             <option value="010-3412-4568">010-3412-4568 (닉네임322)</option>
                                             <option value="010-3232-3232">010-3232-3232 (닉네임2323)</option>
+                                            <option value="010-4561-0004">010-4561-0004 (test1004)</option>--%>
                                         </select>
                                     </div>
                                 </div>
@@ -172,6 +173,7 @@
                 , success : function(response){
                     authToken = response.data.authToken;
                     fnLoadCast();
+                    fnSelectMemId();
                 }
             });
         });
@@ -260,6 +262,24 @@
                         }
                         $(".castList").html(html);
                     }
+                }
+            });
+        }
+
+        function fnSelectMemId(){
+            $.ajax({
+                type: "GET"
+                , url : "/id"
+                , dataType : "json"
+                , success : function(response){
+                    console.log(response)
+                    $("#memId").html("");
+                    var html = "";
+                    for(var i = 0; i < response.length; i++){
+                        html += "<option value="+response[i].mem_id+">"+response[i].id_info+"</option>";
+                    }
+                    $("#memId").html(html);
+
                 }
             });
         }

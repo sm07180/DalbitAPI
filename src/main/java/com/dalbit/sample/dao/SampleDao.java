@@ -12,6 +12,7 @@ public interface SampleDao {
     List<SampleVo> getList();
     int insertSample(SampleVo sampleVo);
     List<SampleVo> selectLogData();
+    List<SampleVo> selectMemId();
 
 
 }

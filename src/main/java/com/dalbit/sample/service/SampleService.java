@@ -37,4 +37,9 @@ public class SampleService{
         List<SampleVo> list = sampleDao.selectLogData();
         return list;
     }
+
+    public List<SampleVo> selectMemId() {
+        List<SampleVo> list = sampleDao.selectMemId();
+        return list;
+    }
 }

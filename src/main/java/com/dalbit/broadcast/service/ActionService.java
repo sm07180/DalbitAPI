@@ -107,4 +107,48 @@ public class ActionService {
 
         return result;
     }
+
+    /**
+     * 방송방 선물하기
+     */
+    public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
+        actionDao.callBroadCastRoomGift(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", resultMap);
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
+        returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
+        returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+        returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
+        returnMap.put("lubyCnt", DalbitUtil.getIntMap(resultMap, "luby"));
+        returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+
+        String result="";
+        if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
+        }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_요청회원_번호비정상));
+        }else if(Status.선물하기_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_해당방없음));
+        }else if(Status.선물하기_해당방종료.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_해당방종료));
+        }else if(Status.선물하기_요청회원_해당방청취자아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_요청회원_해당방청취자아님));
+        }else if(Status.선물하기_받는회원_해당방에없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_받는회원_해당방에없음));
+        }else if(Status.선물하기_없는대상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_없는대상));
+        }else if(Status.선물하기_아이템번호없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_아이템번호없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_실패));
+        }
+
+        return result;
+    }
 }

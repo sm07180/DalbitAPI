@@ -10,4 +10,5 @@ import java.util.List;
 public interface ActionDao {
     ProcedureVo callBroadCastRoomGood(ProcedureVo procedureVo);
     List<P_RoomShareLinkVo> callBroadCastRoomShareLink(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomGift(ProcedureVo procedureVo);
 }
