@@ -224,6 +224,15 @@ public class SampleVoTest {
         log.debug(locationVo.toString());
     }
 
+    @Test
+    public void replaceTest(){
+        String tempUrl = "/temp/2020/02/03/10/20200203102802930921.jpg";
+
+        String replacePath = tempUrl.replace("/temp", "");
+
+        log.debug(replacePath);
+    }
+
 }
 
 
