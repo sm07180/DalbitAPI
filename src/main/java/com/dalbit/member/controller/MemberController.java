@@ -1,6 +1,7 @@
 package com.dalbit.member.controller;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -51,61 +52,26 @@ public class MemberController {
     LoginUtil loginUtil;
     @Autowired
     SampleService sampleService;
+    @Autowired
+    CommonService commonService;
 
     /**
      * 토큰조회
      */
     @GetMapping("token")
     public String token(HttpServletRequest request){
+        HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
 
-        TokenVo tokenVo;
-        boolean isLogin = DalbitUtil.isLogin();
+        if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
 
-        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
-        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
-        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
-        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
-        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+        }else if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림));
 
-        LocationVo locationVo = DalbitUtil.getLocation(request);
-
-        if(isLogin){
-            tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
-        }else{
-            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
-
-            ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
-            if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
-
-            }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림));
-
-            }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_파라메터이상));
-            }
-
-            HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            String memNo = DalbitUtil.getStringMap(map,"mem_no");
-            tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
-
-            memberService.refreshAnonymousSecuritySession(memNo);
+        }else if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_파라메터이상));
         }
-
-        //세션 업데이트 프로시저 호출
-        P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
-                isLogin ? 1 : 0
-                , tokenVo.getMemNo()
-                , os
-                , appAdId
-                , deviceId
-                , deviceToken
-                , appVer
-                , locationVo.getRegionName()
-        );
-        memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
-
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result.get("tokenVo")));
     }
 
     /**
