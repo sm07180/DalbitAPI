@@ -118,18 +118,6 @@ public class ActionController {
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
     }
 
-    /**
-     * 선물하기
-     */
-    @PostMapping("{brodNo}/gift")
-    public String sendGift(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-        data.put("brodNo", brodNo);
-        data.put("giftNo", "GT005421");
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.생성, data)));
-    }
 
     /**
      * 선물액션조회

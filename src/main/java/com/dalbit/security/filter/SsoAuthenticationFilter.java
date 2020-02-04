@@ -64,7 +64,8 @@ public class SsoAuthenticationFilter implements Filter {
         response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS");
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,authToken,custom-header,redirectUrl");
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials", "true");
 
         if(!isIgnore(request)) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
