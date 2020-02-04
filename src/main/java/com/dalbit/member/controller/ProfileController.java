@@ -49,7 +49,7 @@ public class ProfileController {
 
         P_FanboardAddVo fanboardAddVo = new P_FanboardAddVo();
         fanboardAddVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        fanboardAddVo.setWriter_mem_no(DalbitUtil.convertRequestParamToString(request, "writerNo"));
+        fanboardAddVo.setWriter_mem_no(MemberVo.getMyMemNo());
         fanboardAddVo.setDepth(DalbitUtil.convertRequestParamToInteger(request, "depth"));
         fanboardAddVo.setBoard_no(DalbitUtil.convertRequestParamToInteger(request, "boardNo"));
         fanboardAddVo.setContents(DalbitUtil.convertRequestParamToString(request, "content"));
