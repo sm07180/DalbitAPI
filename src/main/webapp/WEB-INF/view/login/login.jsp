@@ -115,8 +115,8 @@
                                         LOGIN
                                     </button>
                                 </div>
+                            </form>
                         </div>
-                        </form>
                     </div>
                 </div>
                 <div class="col-md-8">
