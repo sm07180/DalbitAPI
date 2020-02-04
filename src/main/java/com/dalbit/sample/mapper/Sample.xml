@@ -45,7 +45,8 @@
         mem_id
         ,mem_nick
         ,CONCAT(mem_id," ","(",mem_nick,")") id_info
-      FROM tb_member_basic;
+      FROM tb_member_basic
+      WHERE mem_slct = 'p'
     </select>
 
 </mapper>
