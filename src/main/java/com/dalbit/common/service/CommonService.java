@@ -4,8 +4,17 @@ import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.CodeVo;
+import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MemberService;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.P_LoginVo;
+import com.dalbit.member.vo.P_MemberSessionUpdateVo;
+import com.dalbit.member.vo.TokenVo;
+import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.JwtUtil;
+import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +22,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +33,15 @@ import java.util.Map;
 public class CommonService {
 
     @Autowired
+    MemberService memberService;
+
+    @Autowired
     CommonDao commonDao;
+
+    @Autowired
+    JwtUtil jwtUtil;
+    @Autowired
+    LoginUtil loginUtil;
 
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
@@ -60,6 +78,71 @@ public class CommonService {
     @Cacheable(cacheNames = "codeCache", key = "#code")
     public HashMap getCodeCache(String code) {
         return callCodeDefineSelect();
+    }
+
+    public HashMap<String, Object> getJwtTokenInfo(HttpServletRequest request){
+        HashMap<String, Object> result = new HashMap<>();
+        TokenVo tokenVo = null;
+        boolean isLogin = DalbitUtil.isLogin();
+        String customHeader = request.getHeader("custom-header");
+        customHeader = customHeader == null ? "" : "";
+        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
+        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
+        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
+        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
+        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+        if(!"".equals(customHeader)){
+            HashMap<String, String> headers = new Gson().fromJson(customHeader, HashMap.class);
+            if(headers.get("os") != null && ("1".equals(headers.get("os")) || "2".equals(headers.get("os"))) && headers.get("deviceId") != null && headers.get("appVer") != null ){
+                os = Integer.valueOf(headers.get("os"));
+                deviceId = headers.get("deviceId").trim();
+                deviceToken = headers.get("deviceToken");
+                appVer = headers.get("appVer").trim();
+                appAdId = headers.get("appAdId");
+                deviceToken = deviceToken == null ? "" : deviceToken;
+                appAdId = appAdId == null ? "" : appAdId;
+            }
+        }
+        LocationVo locationVo = DalbitUtil.getLocation(request);
+
+        if(isLogin){
+            tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
+        }else {
+
+            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
+            ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
+            if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+                result.put("Status", Status.로그인실패_회원가입필요);
+            }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+                result.put("Status", Status.로그인실패_패스워드틀림);
+            }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+                result.put("Status", Status.로그인실패_파라메터이상);
+            }else{
+                result.put("Status", Status.로그인성공);
+                HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                String memNo = DalbitUtil.getStringMap(map,"mem_no");
+                tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
+                result.put("tokenVo", tokenVo);
+                memberService.refreshAnonymousSecuritySession(memNo);
+            }
+        }
+
+        if(tokenVo != null){
+            //세션 업데이트 프로시저 호출
+            P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
+                    isLogin ? 1 : 0
+                    , tokenVo.getMemNo()
+                    , os
+                    , appAdId
+                    , deviceId
+                    , deviceToken
+                    , appVer
+                    , locationVo.getRegionName()
+            );
+            memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
+        }
+
+        return result;
     }
 
     @CachePut(cacheNames = "codeCache", key = "#code")

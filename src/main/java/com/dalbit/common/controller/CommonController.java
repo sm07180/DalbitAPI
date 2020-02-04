@@ -6,7 +6,6 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,10 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.HashMap;
 
 @Slf4j
@@ -31,8 +26,10 @@ public class CommonController {
     CommonService commonService;
 
     @GetMapping("/splash")
-    public String getSplash(){
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getCodeCache("splash")));
+    public String getSplash(HttpServletRequest request){
+        HashMap<String, Object> result = commonService.getCodeCache("splash");
+        result.put("member", commonService.getJwtTokenInfo(request).get("tokenVo"));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
     }
 
     @PostMapping("/splash")
