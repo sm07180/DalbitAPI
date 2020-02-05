@@ -50,7 +50,7 @@ public class SsoAuthenticationFilter implements Filter {
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
 
-    private final String[] IGNORE_URLS = {/*"/login", */"/logout", "/splash"};
+    private final String[] IGNORE_URLS = {/*"/login", */"/logout", "/splash", "/token"};
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
