@@ -69,69 +69,28 @@ public class SsoAuthenticationFilter implements Filter {
 
         if(!isIgnore(request)) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            if (authentication == null) {
-                try {
+            try {
+                if (authentication == null) {
 
                     if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
-
-                        String headerCookie = request.getHeader(SSO_HEADER_COOKIE_NAME);
-
-                        boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
-
-                        if(isJwtTokenAvailable){
-
-                            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerCookie);
-                            log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
-                            if(DalbitUtil.isEmpty(tokenVo)){
-                                throw new GlobalException(ErrorStatus.토큰검증오류);
-                            }
-
-                            UserDetails userDetails = null;
-                            if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
-                                userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
-                            }
-
-                            if(DalbitUtil.isEmpty(userDetails)){
-                                if(tokenVo.isLogin()){
-                                    ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
-
-                                    MemberVo memberVo = null;
-                                    if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
-
-                                        P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                                        memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), null));
-                                        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
-                                        securityUserVo.setMemberVo(memberVo);
-
-                                        userDetails = securityUserVo;
-                                    }else{
-                                        new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-                                    }
-                                }else{
-
-                                    MemberVo memberVo = new MemberVo();
-                                    memberVo.setMemId(tokenVo.getMemNo());
-                                    memberVo.setMemNo(tokenVo.getMemNo());
-                                    memberVo.setMemPasswd("");
-
-                                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), tokenVo.getMemNo(), DalbitUtil.getGuestAuthorities());
-                                    securityUserVo.setMemberVo(memberVo);
-
-                                    memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
-                                    userDetails = securityUserVo;
-                                }
-                            }
-
-                            loginUtil.saveSecuritySession(request, userDetails);
-                            loginUtil.ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
-                        }
+                        checkToken(request, response);
                     }
 
-                } catch (GlobalException e) {
-                    e.printStackTrace();
-
-                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus()));
+                }else{
+                    log.debug("=============================================================================");
+                    log.debug(authentication.getPrincipal() + " : " +authentication.toString());
+                    log.debug(request.getHeader(SSO_HEADER_COOKIE_NAME));
+                    log.debug("=============================================================================");
+                    if(authentication.getPrincipal() == null || "anonymousUser".equals(authentication.getPrincipal())){
+                        if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
+                            checkToken(request, response);
+                        }
+                    }
                 }
+            } catch (GlobalException e) {
+                e.printStackTrace();
+
+                gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus()));
             }
         }
 
@@ -141,6 +100,63 @@ public class SsoAuthenticationFilter implements Filter {
     @Override
     public void destroy() {
 
+    }
+
+    public void checkToken(HttpServletRequest request, HttpServletResponse response) throws GlobalException{
+        String headerCookie = request.getHeader(SSO_HEADER_COOKIE_NAME);
+
+        boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
+
+        if(isJwtTokenAvailable){
+
+            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerCookie);
+            log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
+            if(DalbitUtil.isEmpty(tokenVo)){
+                throw new GlobalException(ErrorStatus.토큰검증오류);
+            }
+
+            UserDetails userDetails = null;
+            if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
+                userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
+            }
+
+            if(DalbitUtil.isEmpty(userDetails)) {
+                if (tokenVo.getMemNo() == null) {
+                    throw new GlobalException(ErrorStatus.토큰검증오류);
+                } else {
+                    if (tokenVo.isLogin()) {
+                        ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
+
+                        MemberVo memberVo = null;
+                        if (profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+
+                            P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
+                            memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), null));
+                            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
+                            securityUserVo.setMemberVo(memberVo);
+
+                            userDetails = securityUserVo;
+                        } else {
+                            new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+                        }
+                    } else {
+                        MemberVo memberVo = new MemberVo();
+                        memberVo.setMemId(tokenVo.getMemNo());
+                        memberVo.setMemNo(tokenVo.getMemNo());
+                        memberVo.setMemPasswd("");
+
+                        SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), tokenVo.getMemNo(), DalbitUtil.getGuestAuthorities());
+                        securityUserVo.setMemberVo(memberVo);
+
+                        memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
+                        userDetails = securityUserVo;
+                    }
+                }
+            }
+
+            loginUtil.saveSecuritySession(request, userDetails);
+            loginUtil.ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
+        }
     }
 
     private boolean isIgnore(HttpServletRequest request) {
