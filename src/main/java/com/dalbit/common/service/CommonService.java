@@ -134,6 +134,7 @@ public class CommonService {
                     , deviceToken
                     , appVer
                     , locationVo.getRegionName()
+                    , deviceVo.getIp()
             );
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
