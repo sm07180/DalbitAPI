@@ -28,6 +28,7 @@ public class DeviceVo {
         this.ip = DalbitUtil.getIp(request);
 
         if(customHeader != null && !"".equals(customHeader.trim())){
+            customHeader = java.net.URLDecoder.decode(customHeader);
             HashMap<String, String> headers = new Gson().fromJson(customHeader, HashMap.class);
             if(headers.get("os") != null && ("1".equals(headers.get("os")) || "2".equals(headers.get("os"))) && headers.get("deviceId") != null ){
                 os = Integer.valueOf(headers.get("os"));
