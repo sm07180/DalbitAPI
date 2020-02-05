@@ -117,13 +117,19 @@ public class CommonService {
                 result.put("Status", Status.로그인실패_패스워드틀림);
             }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
                 result.put("Status", Status.로그인실패_파라메터이상);
-            }else{
-                result.put("Status", Status.로그인성공);
+            }else if(procedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
                 HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
                 String memNo = DalbitUtil.getStringMap(map,"mem_no");
-                tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
-                result.put("tokenVo", tokenVo);
-                memberService.refreshAnonymousSecuritySession(memNo);
+                if(memNo == null){
+                    result.put("Status", Status.로그인실패_파라메터이상);
+                }else{
+                    result.put("Status", Status.로그인성공);
+                    tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
+                    result.put("tokenVo", tokenVo);
+                    memberService.refreshAnonymousSecuritySession(memNo);
+                }
+            }else{
+               result.put("Status", Status.로그인실패_파라메터이상);
             }
         }
 

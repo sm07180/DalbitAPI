@@ -52,6 +52,11 @@ public class JwtUtil {
         try {
             String[] splitStrArr = getUserNameFromJwt(jwt).split(JWT_SEPARATOR);
             if (splitStrArr.length == 2) {
+
+                if(DalbitUtil.isEmpty(splitStrArr[0]) || DalbitUtil.isEmpty(splitStrArr[1])){
+                    new GlobalException(ErrorStatus.토큰검증오류);
+                }
+
                 boolean isLogin = Boolean.valueOf(splitStrArr[1]);
                 return new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin);
             }else{
