@@ -72,7 +72,7 @@ public class SsoAuthenticationFilter implements Filter {
             if (authentication == null) {
                 try {
 
-                    if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
+                    if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null && !"".equals(request.getHeader(SSO_HEADER_COOKIE_NAME).trim())){
 
                         String headerCookie = request.getHeader(SSO_HEADER_COOKIE_NAME);
 
