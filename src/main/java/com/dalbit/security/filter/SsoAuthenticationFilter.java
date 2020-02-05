@@ -79,10 +79,10 @@ public class SsoAuthenticationFilter implements Filter {
                     }
 
                 }else{
-                    log.debug("=============================================================================");
+                    log.debug("=================================  토큰 컨텍스트에서 통과 정보  ============================================");
                     log.debug(authentication.getPrincipal() + " : " +authentication.toString());
                     log.debug(request.getHeader(SSO_HEADER_COOKIE_NAME));
-                    log.debug("=============================================================================");
+                    log.debug("=========================================================================================================");
                     if(authentication.getPrincipal() == null || "anonymousUser".equals(authentication.getPrincipal())){
                         if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
                             checkToken(request, response);
