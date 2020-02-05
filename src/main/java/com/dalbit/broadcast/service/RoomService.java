@@ -100,7 +100,6 @@ public class RoomService {
         } else {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방생성실패)));
         }
-
         return result;
     }
 
@@ -114,7 +113,7 @@ public class RoomService {
         String result;
         if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            String remainTime = DalbitUtil.isNullToString(resultMap.get("remainTime"));
+            int remainTime = DalbitUtil.getIntMap(resultMap, "remainTime");
 
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());

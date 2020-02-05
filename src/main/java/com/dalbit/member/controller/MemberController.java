@@ -18,6 +18,7 @@ import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -203,6 +204,7 @@ public class MemberController {
      * ID 리스트 가져오기 (임시 테스트용)
      */
     @GetMapping("id")
+    @Profile({"local", "dev"})
     public List<SampleVo> selectMemid(){
 
         List<SampleVo> idList = sampleService.selectMemId();

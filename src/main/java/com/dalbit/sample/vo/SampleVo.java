@@ -18,5 +18,6 @@ public class SampleVo extends BaseVo {
     private String mem_id;
     private String mem_nick;
     private String id_info;
+    private int ruby;
 
 }
