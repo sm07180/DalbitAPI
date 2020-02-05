@@ -74,6 +74,8 @@ public class SsoAuthenticationFilter implements Filter {
 
                     if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
                         checkToken(request, response);
+                    }else{
+                        throw new GlobalException(ErrorStatus.토큰검증오류);
                     }
 
                 }else{
@@ -84,6 +86,8 @@ public class SsoAuthenticationFilter implements Filter {
                     if(authentication.getPrincipal() == null || "anonymousUser".equals(authentication.getPrincipal())){
                         if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
                             checkToken(request, response);
+                        }else{
+                            throw new GlobalException(ErrorStatus.토큰검증오류);
                         }
                     }
                 }
