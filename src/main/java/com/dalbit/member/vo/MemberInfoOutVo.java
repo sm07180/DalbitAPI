@@ -57,8 +57,8 @@ public class MemberInfoOutVo {
         this.exp=target.getExp();
         this.expNext=target.getExpNext();
         this.grade=target.getGrade();
-        this.rubyCnt=Integer.valueOf(target.getRuby());
-        this.goldCnt=Integer.valueOf(target.getGold());
+        this.rubyCnt=target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
+        this.goldCnt=target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
         this.fanRank1=new Gson().fromJson(target.getFanRank1(), Object.class);
         this.fanRank2=new Gson().fromJson(target.getFanRank2(), Object.class);
         this.fanRank3=new Gson().fromJson(target.getFanRank3(), Object.class);
