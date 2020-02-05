@@ -100,7 +100,6 @@ public class RoomService {
         } else {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방생성실패)));
         }
-
         return result;
     }
 
