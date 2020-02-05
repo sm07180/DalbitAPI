@@ -124,25 +124,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return securityUserVo;
     }
 
-
-    /*@Deprecated
-    public UserDetails loadUserBySsoCookieFromDb(String memNo) throws UsernameNotFoundException {
-
-        MemberVo memberVo = loginDao.loginUseMemNo(memNo);
-
-        if(memberVo == null) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-        }
-
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), authorities);
-        securityUserVo.setMemberVo(memberVo);
-
-        return securityUserVo;
-    }*/
-
     public UserDetails loadUserBySsoCookieFromRedis(String memNo) throws UsernameNotFoundException {
 
         MemberVo memberVo = redisUtil.getMemberInfoFromRedis(memNo);
@@ -151,7 +132,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
 
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
+        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;

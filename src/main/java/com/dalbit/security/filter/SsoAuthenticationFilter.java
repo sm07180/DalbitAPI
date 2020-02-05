@@ -100,8 +100,7 @@ public class SsoAuthenticationFilter implements Filter {
 
                                         P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
                                         memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo()));
-                                        //비밀번호가 없어서 공백으로 넣어둠.
-                                        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), "", DalbitUtil.getAuthorities());
+                                        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
                                         securityUserVo.setMemberVo(memberVo);
 
                                         userDetails = securityUserVo;
@@ -115,7 +114,7 @@ public class SsoAuthenticationFilter implements Filter {
                                     memberVo.setMemNo(tokenVo.getMemNo());
                                     memberVo.setMemPasswd("");
 
-                                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), "", DalbitUtil.getGuestAuthorities());
+                                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), tokenVo.getMemNo(), DalbitUtil.getGuestAuthorities());
                                     securityUserVo.setMemberVo(memberVo);
 
                                     memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
