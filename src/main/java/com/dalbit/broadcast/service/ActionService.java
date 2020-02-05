@@ -3,6 +3,7 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.ActionDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -25,6 +26,8 @@ public class ActionService {
     ActionDao actionDao;
     @Autowired
     GsonUtil gsonUtil;
+    @Autowired
+    CommonService commonService;
 
     /**
      * 방송방 좋아요 추가
@@ -116,6 +119,9 @@ public class ActionService {
         actionDao.callBroadCastRoomGift(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info(" ### 프로시저 호출결과 ###");
@@ -127,6 +133,7 @@ public class ActionService {
         returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
         returnMap.put("lubyCnt", DalbitUtil.getIntMap(resultMap, "luby"));
         returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
         String result="";
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {

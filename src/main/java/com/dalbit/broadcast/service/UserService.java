@@ -3,6 +3,7 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.UserDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
@@ -31,6 +32,8 @@ public class UserService {
     GsonUtil gsonUtil;
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
+    @Autowired
+    CommonService commonService;
 
     /**
      * 방송방 참여자 리스트
@@ -164,13 +167,20 @@ public class UserService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomKickoutVo);
         userDao.callBroadCastRoomKickout(procedureVo);
 
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
+        HashMap returnMap = new HashMap();
+        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장, returnMap));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_회원아님));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_해당방이없음.getMessageCode())) {
@@ -202,15 +212,15 @@ public class UserService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
         P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
-        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
+        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), null);
 
         HashMap returnMap = new HashMap();
         returnMap.put("level", profileInfoOutVo.getLevel());
         returnMap.put("exp", profileInfoOutVo.getExp());
         returnMap.put("expNext", profileInfoOutVo.getExpNext());
         returnMap.put("grade", profileInfoOutVo.getGrade());
-        returnMap.put("rubyCnt", profileInfoOutVo.getRuby());
-        returnMap.put("goldCnt", profileInfoOutVo.getGold());
+        returnMap.put("rubyCnt", profileInfoOutVo.getRubyCnt());
+        returnMap.put("goldCnt", profileInfoOutVo.getGoldCnt());
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {

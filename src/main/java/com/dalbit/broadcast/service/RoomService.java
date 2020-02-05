@@ -3,6 +3,7 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
@@ -38,6 +39,8 @@ public class RoomService {
     RestService restService;
     @Autowired
     RoomService roomService;
+    @Autowired
+    CommonService commonService;
 
     /**
      * 방송방 생성
@@ -114,6 +117,9 @@ public class RoomService {
         if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             int remainTime = DalbitUtil.getIntMap(resultMap, "remainTime");
+            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
 
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
@@ -152,6 +158,7 @@ public class RoomService {
             returnMap.put("expNext", target.getExpNext());
             returnMap.put("rubyCnt", target.getRubyCnt());
             returnMap.put("goldCnt", target.getGoldCnt());
+            returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
             log.info("returnMap: {}",returnMap);
             procedureVo.setData(returnMap);
 
@@ -184,13 +191,21 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
         roomDao.callBroadCastRoomExit(procedureVo);
 
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
+        HashMap returnMap = new HashMap();
+        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
         String result;
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기)));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기, returnMap)));
         } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송나가기_회원아님)));
         } else if (procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode())) {

@@ -4,14 +4,12 @@ import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.CodeVo;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
-import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.P_LoginVo;
-import com.dalbit.member.vo.P_MemberSessionUpdateVo;
-import com.dalbit.member.vo.TokenVo;
+import com.dalbit.member.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.LoginUtil;
@@ -185,5 +183,41 @@ public class CommonService {
             }
         }
         return data;
+    }
+
+    /**
+     * 팬랭킹 1,2,3위 가져오기
+     */
+    public List getFanRankList(String rank1, String rank2, String rank3){
+
+        List memberFanVoList = new ArrayList();
+
+        if(!DalbitUtil.isEmpty(rank1)){
+            setFanVo(memberFanVoList, rank1);
+        }
+        if(!DalbitUtil.isEmpty(rank2)){
+            setFanVo(memberFanVoList, rank2);
+        }
+        if(!DalbitUtil.isEmpty(rank3)){
+            setFanVo(memberFanVoList, rank3);
+        }
+        return memberFanVoList;
+    }
+
+    private List setFanVo(List memberFanVoList, String fanRank){
+
+        HashMap map = new Gson().fromJson(fanRank, HashMap.class);
+
+        MemberFanVo fanVo = new MemberFanVo();
+        fanVo.setRank(memberFanVoList.size()+1);
+        fanVo.setMemNo(DalbitUtil.getStringMap(map, "mem_no"));
+        fanVo.setNickNm(DalbitUtil.getStringMap(map, "nickName"));
+        fanVo.setGender(DalbitUtil.getStringMap(map, "memSex"));
+        fanVo.setAge(DalbitUtil.getIntMap(map, "age"));
+        fanVo.setProfImg(new ImageVo(DalbitUtil.isNullToString(map.get("profileImage")), DalbitUtil.getProperty("server.photo.url")));
+
+        memberFanVoList.add(fanVo);
+
+        return memberFanVoList;
     }
 }

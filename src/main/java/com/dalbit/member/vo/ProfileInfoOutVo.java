@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.List;
+
 @Getter
 @Setter
 @ToString
@@ -29,27 +31,29 @@ public class ProfileInfoOutVo extends BaseVo {
     private int     exp;
     private int     expNext;
     private String  grade;
-    private int     ruby;
-    private int     gold;
+    private int     rubyCnt;
+    private int     goldCnt;
+    List fanRank;
 
     public ProfileInfoOutVo(){}
-    public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no) {
-        this.memNo=target_mem_no;
-        this.nickNm=target.getNickName();
-        this.gender=target.getMemSex();
-        this.age=target.getAge();
-        this.memId=target.getMemId();
-        this.bgImg=new ImageVo(target.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url"));
-        this.profImg=new ImageVo(target.getProfileImage(), DalbitUtil.getProperty("server.photo.url"));
-        this.profMsg=target.getProfileMsg();
-        this.level=target.getLevel();
-        this.fanCnt=target.getFanCount();
-        this.starCnt=target.getStarCount();
-        this.isFan=target.getEnableFan();
-        this.exp=target.getExp();
-        this.expNext=target.getExpNext();
-        this.grade=target.getGrade();
-        this.ruby=target.getRuby();
-        this.gold=target.getGold();
+    public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, List fanRank) {
+        this.memNo = target_mem_no;
+        this.nickNm = target.getNickName();
+        this.gender = target.getMemSex();
+        this.age = target.getAge();
+        this.memId = target.getMemId();
+        this.bgImg = new ImageVo(target.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url"));
+        this.profImg = new ImageVo(target.getProfileImage(), DalbitUtil.getProperty("server.photo.url"));
+        this.profMsg = target.getProfileMsg();
+        this.level = target.getLevel();
+        this.fanCnt = target.getFanCount();
+        this.starCnt = target.getStarCount();
+        this.isFan = target.getEnableFan();
+        this.exp = target.getExp();
+        this.expNext = target.getExpNext();
+        this.grade = target.getGrade();
+        this.rubyCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
+        this.goldCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
+        this.fanRank = fanRank;
     }
 }

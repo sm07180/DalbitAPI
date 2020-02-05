@@ -1,6 +1,7 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -30,6 +31,8 @@ public class ProfileService {
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
+    @Autowired
+    CommonService commonService;
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
@@ -50,7 +53,8 @@ public class ProfileService {
 
         ProcedureVo procedureVo = getProfile(pProfileInfo);
         P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
-        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no());
+        List fanRankList = commonService.getFanRankList(profileInfo.getFanRank1(), profileInfo.getFanRank2(), profileInfo.getFanRank3());
+        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), fanRankList);
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {

@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RestController
@@ -38,9 +40,9 @@ public class MypageController {
         apiData.setMemSex(DalbitUtil.convertRequestParamToString(request,"gender"));
         apiData.setNickName(DalbitUtil.convertRequestParamToString(request,"nickNm"));
         apiData.setName(DalbitUtil.convertRequestParamToString(request,"name"));
-        apiData.setBirthYear(DalbitUtil.convertRequestParamToString(request,"birthYY"));
-        apiData.setBirthMonth(DalbitUtil.convertRequestParamToString(request,"birthMM"));
-        apiData.setBirthDay(DalbitUtil.convertRequestParamToString(request,"birthDD"));
+        apiData.setBirthYear(LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getYear());
+        apiData.setBirthMonth(LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
+        apiData.setBirthDay(LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
         apiData.setProfileImage(DalbitUtil.convertRequestParamToString(request,"profImg"));
         apiData.setProfileImageGrade(DalbitUtil.convertRequestParamToString(request,"profImgRacy"));
         apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request,"bgImg"));

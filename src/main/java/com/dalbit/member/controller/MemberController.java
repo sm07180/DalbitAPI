@@ -19,17 +19,14 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -98,9 +95,9 @@ public class MemberController {
             , memPwd
             , DalbitUtil.convertRequestParamToString(request,"gender")
             , DalbitUtil.convertRequestParamToString(request,"nickNm")
-            , DalbitUtil.convertRequestParamToInteger(request,"birthYY")
-            , DalbitUtil.convertRequestParamToInteger(request,"birthMM")
-            , DalbitUtil.convertRequestParamToInteger(request,"birthDD")
+            , LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getYear()
+            , LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue()
+            , LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth()
             , DalbitUtil.convertRequestParamToString(request,"term1")
             , DalbitUtil.convertRequestParamToString(request,"term2")
             , DalbitUtil.convertRequestParamToString(request,"term3")
@@ -136,7 +133,7 @@ public class MemberController {
             if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
 
                 P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo));
+                memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, null));
                 memberVo.setMemSlct(memType);
                 memberVo.setMemPasswd(memPwd);
             }else{

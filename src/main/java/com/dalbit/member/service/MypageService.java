@@ -1,6 +1,7 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -29,7 +30,8 @@ public class MypageService {
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
-
+    @Autowired
+    CommonService commonService;
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
@@ -130,8 +132,9 @@ public class MypageService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        P_MemberInfoVo MemberInfo = new Gson().fromJson(procedureVo.getExt(), P_MemberInfoVo.class);
-        MemberInfoOutVo memberInfoOutVo = new MemberInfoOutVo(MemberInfo, pMemberInfo.getTarget_mem_no());
+        P_MemberInfoVo memberInfo = new Gson().fromJson(procedureVo.getExt(), P_MemberInfoVo.class);
+        List fanRankList = commonService.getFanRankList(memberInfo.getFanRank1(), memberInfo.getFanRank2(), memberInfo.getFanRank3());
+        MemberInfoOutVo memberInfoOutVo = new MemberInfoOutVo(memberInfo, pMemberInfo.getTarget_mem_no(), fanRankList);
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
@@ -275,21 +278,6 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
         mypageDao.callMemberShortCut(procedureVo);
         List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
-
-//        ArrayList<HashMap<String,String>> list = new ArrayList<>();
-//        for(int i=0;i<memberShortCutList.size();i++) {
-//            HashMap<String, String> map = new HashMap<>();
-//            map.put("mem_no", pMemberShortCut.getMem_no());
-//            map.put("orderNo", memberShortCutList.get(i).getOrderNo());
-//            map.put("order", memberShortCutList.get(i).getOrder());
-//            map.put("onOff", memberShortCutList.get(i).getOnOff());
-//            map.put("text", memberShortCutList.get(i).getText());
-//            list.add(map);
-//        }
-//
-//        ProcedureOutputVo procedureOutputVo;
-//        procedureOutputVo = new ProcedureOutputVo(procedureVo, list);
-
 
         ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(memberShortCutList)){
