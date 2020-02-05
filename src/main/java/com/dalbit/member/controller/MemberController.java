@@ -2,6 +2,7 @@ package com.dalbit.member.controller;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -78,16 +79,18 @@ public class MemberController {
     @PostMapping("member/signup")
     public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
-        LocationVo locationVo = DalbitUtil.getLocation(request);
-
         String memType = DalbitUtil.convertRequestParamToString(request,"memType");
         String memId = DalbitUtil.convertRequestParamToString(request,"memId");
         String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
-        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
-        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
-        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
-        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
-        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        int os = deviceVo.getOs();
+        String deviceId = deviceVo.getDeviceUuid();
+        String deviceToken = deviceVo.getDeviceToken();
+        String appVer = deviceVo.getAppVersion();
+        String appAdId = deviceVo.getAdId();
+
+        LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
         P_JoinVo joinVo = new P_JoinVo(
             memType

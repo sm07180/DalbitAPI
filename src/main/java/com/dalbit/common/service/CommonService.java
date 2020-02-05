@@ -4,6 +4,7 @@ import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.CodeVo;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -83,25 +84,13 @@ public class CommonService {
         TokenVo tokenVo = null;
         Status resultStatus = null;
         boolean isLogin = DalbitUtil.isLogin();
-        String customHeader = request.getHeader("custom-header");
-        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
-        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
-        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
-        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
-        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
-        if(!DalbitUtil.isEmpty(customHeader)){
-            HashMap<String, String> headers = new Gson().fromJson(customHeader, HashMap.class);
-            if(headers.get("os") != null && ("1".equals(headers.get("os")) || "2".equals(headers.get("os"))) && headers.get("deviceId") != null && headers.get("appVer") != null ){
-                os = DalbitUtil.getIntMap(headers, "os");
-                deviceId = DalbitUtil.getStringMap(headers, "deviceId");
-                deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
-                appVer = DalbitUtil.getStringMap(headers, "appVer");
-                appAdId = DalbitUtil.getStringMap(headers, "appAdId");
 
-                deviceToken = DalbitUtil.isEmpty(deviceToken) ? "" : deviceToken;
-                appAdId = DalbitUtil.isEmpty(appAdId) ? "" : appAdId;
-            }
-        }
+        DeviceVo deviceVo = new DeviceVo(request);
+        int os = deviceVo.getOs();
+        String deviceId = deviceVo.getDeviceUuid();
+        String deviceToken = deviceVo.getDeviceToken();
+        String appVer = deviceVo.getAppVersion();
+        String appAdId = deviceVo.getAdId();
         LocationVo locationVo = DalbitUtil.getLocation(request);
 
         if(isLogin){

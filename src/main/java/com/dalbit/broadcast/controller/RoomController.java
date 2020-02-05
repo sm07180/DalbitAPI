@@ -4,6 +4,7 @@ import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -69,10 +70,13 @@ public class RoomController {
         apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"welcomMsg"));
         apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
         apiData.setEntryType(DalbitUtil.convertRequestParamToInteger(request,"entryType"));
-        apiData.setOs(DalbitUtil.convertRequestParamToInteger(request,"os"));
-        apiData.setDeviceUuid(DalbitUtil.convertRequestParamToString(request, "deviceId"));
-        apiData.setDeviceToken(DalbitUtil.convertRequestParamToString(request, "deviceToken"));
-        apiData.setAppVersion(DalbitUtil.convertRequestParamToString(request, "appVer"));
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        apiData.setOs(deviceVo.getOs());
+        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
+        apiData.setDeviceToken(deviceVo.getDeviceToken());
+        apiData.setAppVersion(deviceVo.getAppVersion());
+
         apiData.setBj_streamid(streamId);
         apiData.setBj_publish_tokenid(publishToken);
         apiData.setBj_play_tokenid(playToken);
@@ -162,10 +166,12 @@ public class RoomController {
         //apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));
         apiData.setBackgroundImageGrade(bgGrade);
         apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request, "welcomMsg"));
-        apiData.setOs(DalbitUtil.convertRequestParamToInteger(request,"os"));
-        apiData.setDeviceUuid(DalbitUtil.convertRequestParamToString(request, "deviceId"));
-        apiData.setDeviceToken(DalbitUtil.convertRequestParamToString(request, "deviceToken"));
-        apiData.setAppVersion(DalbitUtil.convertRequestParamToString(request, "appVer"));
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        apiData.setOs(deviceVo.getOs());
+        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
+        apiData.setDeviceToken(deviceVo.getDeviceToken());
+        apiData.setAppVersion(deviceVo.getAppVersion());
 
         String result = roomService.callBroadCastRoomEdit(apiData);
 

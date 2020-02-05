@@ -509,7 +509,14 @@ public class DalbitUtil {
      */
     public static LocationVo getLocation(HttpServletRequest request){
 
-        String apiResult = RestApiUtil.sendGet(getProperty("geo.location.server.url") + getIp(request));
+        return getLocation(getIp(request));
+    }
+    /**
+     * 지역정보, 위도, 경도 가져오기
+     */
+    public static LocationVo getLocation(String ip){
+
+        String apiResult = RestApiUtil.sendGet(getProperty("geo.location.server.url") + ip);
         LocationVo locationVo = new LocationVo();
         try {
             locationVo = new Gson().fromJson(apiResult, LocationVo.class);
@@ -519,7 +526,6 @@ public class DalbitUtil {
 
         return locationVo;
     }
-
     /**
      * 이미지 path 경로 치환
      */

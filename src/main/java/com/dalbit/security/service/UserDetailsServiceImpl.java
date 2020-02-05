@@ -1,6 +1,7 @@
 package com.dalbit.security.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -71,17 +72,18 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         HashMap map = getParameterMap(request);
 
-        LocationVo locationVo = DalbitUtil.getLocation(request);
+        DeviceVo deviceVo = new DeviceVo(request);
+        LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
         P_LoginVo pLoginVo = new P_LoginVo(
                 DalbitUtil.getStringMap(map, "memType")
                 , DalbitUtil.getStringMap(map, "memId")
                 , DalbitUtil.getStringMap(map, "memPwd")
-                , DalbitUtil.getIntMap(map, "os")
-                , DalbitUtil.getStringMap(map, "deviceId")
-                , DalbitUtil.getStringMap(map, "deviceToken")
-                , DalbitUtil.getStringMap(map, "appVer")
-                , DalbitUtil.getStringMap(map, "appAdId")
+                , deviceVo.getOs()
+                , deviceVo.getDeviceUuid()
+                , deviceVo.getDeviceToken()
+                , deviceVo.getAppVersion()
+                , deviceVo.getAdId()
                 , locationVo.getRegionName()
         );
 
