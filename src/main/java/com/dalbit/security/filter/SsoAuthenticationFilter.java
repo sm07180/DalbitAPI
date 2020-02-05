@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -67,7 +68,7 @@ public class SsoAuthenticationFilter implements Filter {
         response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
         response.setHeader("Access-Control-Allow-Credentials", "true");
 
-        if(!isIgnore(request)) {
+        if(!isIgnore(request) && !HttpMethod.OPTIONS.name().equals(request.getMethod())) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             try {
                 if (authentication == null) {
