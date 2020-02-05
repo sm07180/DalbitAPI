@@ -83,46 +83,50 @@ public class CommonService {
     public HashMap<String, Object> getJwtTokenInfo(HttpServletRequest request){
         HashMap<String, Object> result = new HashMap<>();
         TokenVo tokenVo = null;
+        Status resultStatus = null;
         boolean isLogin = DalbitUtil.isLogin();
         String customHeader = request.getHeader("custom-header");
-        customHeader = customHeader == null ? "" : "";
         int os = DalbitUtil.convertRequestParamToInteger(request,"os");
         String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
         String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
         String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
         String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
-        if(!"".equals(customHeader)){
+        if(!DalbitUtil.isEmpty(customHeader)){
             HashMap<String, String> headers = new Gson().fromJson(customHeader, HashMap.class);
             if(headers.get("os") != null && ("1".equals(headers.get("os")) || "2".equals(headers.get("os"))) && headers.get("deviceId") != null && headers.get("appVer") != null ){
-                os = Integer.valueOf(headers.get("os"));
-                deviceId = headers.get("deviceId").trim();
-                deviceToken = headers.get("deviceToken");
-                appVer = headers.get("appVer").trim();
-                appAdId = headers.get("appAdId");
-                deviceToken = deviceToken == null ? "" : deviceToken;
-                appAdId = appAdId == null ? "" : appAdId;
+                os = DalbitUtil.getIntMap(headers, "os");
+                deviceId = DalbitUtil.getStringMap(headers, "deviceId");
+                deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
+                appVer = DalbitUtil.getStringMap(headers, "appVer");
+                appAdId = DalbitUtil.getStringMap(headers, "appAdId");
+
+                deviceToken = DalbitUtil.isEmpty(deviceToken) ? "" : deviceToken;
+                appAdId = DalbitUtil.isEmpty(appAdId) ? "" : appAdId;
             }
         }
         LocationVo locationVo = DalbitUtil.getLocation(request);
 
         if(isLogin){
             tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
+            resultStatus = Status.로그인성공;
+
         }else {
 
             P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-                result.put("Status", Status.로그인실패_회원가입필요);
+                resultStatus = Status.로그인실패_회원가입필요;
             }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-                result.put("Status", Status.로그인실패_패스워드틀림);
+                resultStatus = Status.로그인실패_패스워드틀림;
             }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-                result.put("Status", Status.로그인실패_파라메터이상);
+                resultStatus = Status.로그인실패_파라메터이상;
             }else{
-                result.put("Status", Status.로그인성공);
+                resultStatus = Status.로그인성공;
+
                 HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
                 String memNo = DalbitUtil.getStringMap(map,"mem_no");
                 tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
-                result.put("tokenVo", tokenVo);
+
                 memberService.refreshAnonymousSecuritySession(memNo);
             }
         }
@@ -142,6 +146,8 @@ public class CommonService {
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
 
+        result.put("tokenVo", tokenVo);
+        result.put("Status", resultStatus);
         return result;
     }
 
