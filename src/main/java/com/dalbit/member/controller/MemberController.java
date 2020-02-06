@@ -84,6 +84,20 @@ public class MemberController {
         String memId = DalbitUtil.convertRequestParamToString(request,"memId");
         String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
 
+        if(
+            DalbitUtil.isEmpty(memType) ||
+            DalbitUtil.isEmpty(memId) ||
+            DalbitUtil.isEmpty(memPwd) ||
+            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"nickNm")) ||
+            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request, "birth")) ||
+            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term1")) ||
+            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term2")) ||
+            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term3")) ||
+            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"name"))
+        ){
+            throw new GlobalException(ErrorStatus.잘못된파람);
+        }
+
         DeviceVo deviceVo = new DeviceVo(request);
         int os = deviceVo.getOs();
         String deviceId = deviceVo.getDeviceUuid();
@@ -117,21 +131,7 @@ public class MemberController {
             , locationVo.getRegionName()
         );
 
-        if(
-            DalbitUtil.isEmpty(joinVo.getMemSlct()) ||
-            DalbitUtil.isEmpty(joinVo.getId()) ||
-            DalbitUtil.isEmpty(joinVo.getMemSex()) ||
-            DalbitUtil.isEmpty(joinVo.getNickName()) ||
-            DalbitUtil.isEmpty(joinVo.getBirthYear()) ||
-            DalbitUtil.isEmpty(joinVo.getBirthMonth()) ||
-            DalbitUtil.isEmpty(joinVo.getBirthDay()) ||
-            DalbitUtil.isEmpty(joinVo.getTerms1()) ||
-            DalbitUtil.isEmpty(joinVo.getTerms2()) ||
-            DalbitUtil.isEmpty(joinVo.getTerms3()) ||
-            DalbitUtil.isEmpty(joinVo.getName())
-        ){
-            throw new GlobalException(ErrorStatus.잘못된파람);
-        }
+
 
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo);
