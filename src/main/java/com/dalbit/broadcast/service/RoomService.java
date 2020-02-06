@@ -148,8 +148,8 @@ public class RoomService {
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("gstMemNo", target.getGstMemNo());
-            returnMap.put("gstNickNm", target.getGstNickNm());
+            returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
+            returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
             returnMap.put("gstProfImg", target.getGstProfImg());
             returnMap.put("remainTime", remainTime);
             returnMap.put("level", target.getLevel());
