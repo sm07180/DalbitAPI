@@ -19,7 +19,7 @@ public class DeviceVo {
     private String ip;
 
     public DeviceVo(HttpServletRequest request){
-        String customHeader = request.getHeader("custom-header");
+        String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
         this.os = DalbitUtil.convertRequestParamToInteger(request,"os");
         this.deviceUuid = DalbitUtil.convertRequestParamToString(request,"deviceId");
         this.deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
