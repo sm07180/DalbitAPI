@@ -46,12 +46,14 @@ public class SsoAuthenticationFilter implements Filter {
     @Autowired LoginUtil loginUtil;
     @Autowired GsonUtil gsonUtil;
 
-    @Value("${sso.cookie.name}")
-    private String SSO_COOKIE_NAME;
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
 
-    private final String[] IGNORE_URLS = {/*"/login", */"/logout", "/splash", "/token"};
+    private final String[] IGNORE_URLS = {
+        "/favicon.ico"
+        , "/logout", "/splash", "/token"
+        , "/sample", "/rest/sample"
+    };
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -96,6 +98,7 @@ public class SsoAuthenticationFilter implements Filter {
                 e.printStackTrace();
 
                 gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus()));
+                return;
             }
         }
 
