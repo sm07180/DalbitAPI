@@ -101,11 +101,13 @@ public class RoomController {
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
-        apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
-        apiData.setGuest_play_tokenid(DalbitUtil.getStringMap(resultMap,"guest_play_tokenid"));
+        //apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
+        if(!DalbitUtil.isEmpty(apiData.getGuest_streamid())){
+            apiData.setGuest_play_tokenid((String) restService.antToken(apiData.getGuest_streamid(), "play").get("tokenId"));
+        }
         apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
-        apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
-        apiData.setBj_play_tokenid(DalbitUtil.getStringMap(resultMap,"bj_play_tokenid"));
+        //apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
+        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
 
         String result = roomService.callBroadCastRoomJoin(apiData);
 
