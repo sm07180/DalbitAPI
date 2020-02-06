@@ -54,22 +54,16 @@ public class LoginUtil {
         response.addCookie(ssoCookie);
     }
 
-    public void ssoCookieUpdateFromRequestHeader(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable) throws GlobalException{
-        Cookie ssoCookie;
-        if(!isJwtTokenAvailable){
-            ssoCookie = expireSsoCookie();
-
-        }else{
-            String cookieValue = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
-            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieValue);
-            if(DalbitUtil.isEmpty(tokenVo)){
-                throw new GlobalException(ErrorStatus.토큰검증오류);
-            }
-
-            String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), true);
-
-            ssoCookie = makeSsoCookie(jwtToken);
+    public void ssoCookieUpdateFromRequestHeader(HttpServletRequest request, HttpServletResponse response) throws GlobalException{
+        String headerAuthToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
+        TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerAuthToken);
+        if(DalbitUtil.isEmpty(tokenVo)){
+            throw new GlobalException(ErrorStatus.토큰검증오류);
         }
+
+        String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), true);
+
+        Cookie ssoCookie = makeSsoCookie(jwtToken);
 
         response.addCookie(ssoCookie);
     }

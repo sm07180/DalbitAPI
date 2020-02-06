@@ -579,4 +579,14 @@ public class DalbitUtil {
         return authorities;
     }
 
+    public static boolean isEmptyHeaderAuthToken(String header){
+        return isEmpty(header) || "undefined".equals(header);
+    }
+
+    public static boolean isAnonymousUser(Object principal){
+        return isEmpty(principal) || "anonymousUser".equals(principal);
+    }
+
+
+
 }
