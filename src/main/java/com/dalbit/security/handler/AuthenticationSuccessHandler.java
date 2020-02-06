@@ -4,7 +4,6 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
-import com.dalbit.util.CookieUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         String jwtToken = jwtUtil.generateToken(MemberVo.getMyMemNo(), true);
 
-        saveSsoCookie(response, jwtToken);
+        //saveSsoCookie(response, jwtToken);
 
         gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(), true)));
     }
@@ -53,7 +52,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
      * @param response
      * @throws IOException
      */
-    public void saveSsoCookie(HttpServletResponse response, String jwtToken) throws IOException {
+    /*public void saveSsoCookie(HttpServletResponse response, String jwtToken) throws IOException {
         response.addCookie(CookieUtil.createCookie(SSO_COOKIE_NAME, jwtToken, SSO_DOMAIN, "/", SSO_COOKIE_MAX_AGE)); // 60 * 60 * 24 * 30 = 30days
-    }
+    }*/
 }

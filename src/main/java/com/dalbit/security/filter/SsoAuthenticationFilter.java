@@ -173,7 +173,7 @@ public class SsoAuthenticationFilter implements Filter {
             }
 
             loginUtil.saveSecuritySession(request, userDetails);
-            loginUtil.ssoCookieUpdateFromRequestHeader(request, response);
+            //loginUtil.ssoCookieUpdateFromRequestHeader(request, response);
         }
     }
 
