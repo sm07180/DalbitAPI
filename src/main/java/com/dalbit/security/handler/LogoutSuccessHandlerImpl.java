@@ -23,8 +23,8 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
         try {
             log.info("onLogoutSuccess");
 
-            Cookie ssoCookie = loginUtil.expireSsoCookie();
-            httpServletResponse.addCookie(ssoCookie);
+            //Cookie ssoCookie = loginUtil.expireSsoCookie();
+            //httpServletResponse.addCookie(ssoCookie);
 
         }catch (Exception e){
             log.error(e.getMessage());

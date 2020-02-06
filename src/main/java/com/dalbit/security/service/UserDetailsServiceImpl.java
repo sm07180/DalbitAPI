@@ -56,14 +56,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         HashMap map = getParameterMap(request);
 
-        if(DalbitUtil.isEmpty(map.get("memId")) || DalbitUtil.isEmpty(map.get("memPwd"))) {
+        if(DalbitUtil.isEmpty(map.get("memId"))) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상);
         }
 
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 
-        SecurityUserVo securityUserVo = new SecurityUserVo(DalbitUtil.getStringMap(map, "memId"), DalbitUtil.getStringMap(map, "memPwd"), authorities);
+        SecurityUserVo securityUserVo = new SecurityUserVo(DalbitUtil.getStringMap(map, "memId"), DalbitUtil.getStringMap(map, "memId"), authorities);
         return securityUserVo;
     }
 

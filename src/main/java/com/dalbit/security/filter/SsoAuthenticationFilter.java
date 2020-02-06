@@ -46,12 +46,14 @@ public class SsoAuthenticationFilter implements Filter {
     @Autowired LoginUtil loginUtil;
     @Autowired GsonUtil gsonUtil;
 
-    @Value("${sso.cookie.name}")
-    private String SSO_COOKIE_NAME;
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
 
-    private final String[] IGNORE_URLS = {/*"/login", */"/logout", "/splash", "/token"};
+    private final String[] IGNORE_URLS = {
+        "/favicon.ico"
+        , "/login", "/logout", "/splash"
+        , "/sample", "/rest/sample"
+    };
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
@@ -70,25 +72,32 @@ public class SsoAuthenticationFilter implements Filter {
 
         if(!isIgnore(request) && !HttpMethod.OPTIONS.name().equals(request.getMethod())) {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-            try {
-                if (authentication == null) {
 
-                    if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
-                        checkToken(request, response);
+            String headerAuthToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
+            try {
+                if (DalbitUtil.isEmpty(authentication)) {
+
+                    if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
+                        if(!request.getRequestURI().startsWith("/token")){
+                            throw new GlobalException(ErrorStatus.토큰검증오류);
+                        }
                     }else{
-                        throw new GlobalException(ErrorStatus.토큰검증오류);
+                        checkToken(request, response);
                     }
 
                 }else{
                     log.debug("=================================  토큰 컨텍스트에서 통과 정보  ============================================");
                     log.debug(authentication.getPrincipal() + " : " +authentication.toString());
-                    log.debug(request.getHeader(SSO_HEADER_COOKIE_NAME));
+                    log.debug(headerAuthToken);
                     log.debug("=========================================================================================================");
-                    if(authentication.getPrincipal() == null || "anonymousUser".equals(authentication.getPrincipal())){
-                        if(request.getHeader(SSO_HEADER_COOKIE_NAME) != null){
-                            checkToken(request, response);
+
+                    if(DalbitUtil.isAnonymousUser(authentication.getPrincipal())){
+                        if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
+                            if(!request.getRequestURI().startsWith("/token")) {
+                                throw new GlobalException(ErrorStatus.토큰검증오류);
+                            }
                         }else{
-                            throw new GlobalException(ErrorStatus.토큰검증오류);
+                            checkToken(request, response);
                         }
                     }
                 }
@@ -96,6 +105,7 @@ public class SsoAuthenticationFilter implements Filter {
                 e.printStackTrace();
 
                 gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus()));
+                return;
             }
         }
 
@@ -108,13 +118,13 @@ public class SsoAuthenticationFilter implements Filter {
     }
 
     public void checkToken(HttpServletRequest request, HttpServletResponse response) throws GlobalException{
-        String headerCookie = request.getHeader(SSO_HEADER_COOKIE_NAME);
+        String headerAuthToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
 
-        boolean isJwtTokenAvailable = jwtUtil.validateToken(headerCookie);
+        boolean isJwtTokenAvailable = jwtUtil.validateToken(headerAuthToken);
 
         if(isJwtTokenAvailable){
 
-            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerCookie);
+            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerAuthToken);
             log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
             if(DalbitUtil.isEmpty(tokenVo)){
                 throw new GlobalException(ErrorStatus.토큰검증오류);
@@ -123,6 +133,9 @@ public class SsoAuthenticationFilter implements Filter {
             UserDetails userDetails = null;
             if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
                 userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
+                if(!DalbitUtil.isEmpty(userDetails)){
+                    log.debug("{}로 REDIS 조회 : {}", tokenVo.getMemNo(), userDetails.toString());
+                }
             }
 
             if(DalbitUtil.isEmpty(userDetails)) {
@@ -160,7 +173,7 @@ public class SsoAuthenticationFilter implements Filter {
             }
 
             loginUtil.saveSecuritySession(request, userDetails);
-            loginUtil.ssoCookieUpdateFromRequestHeader(request, response, isJwtTokenAvailable);
+            //loginUtil.ssoCookieUpdateFromRequestHeader(request, response);
         }
     }
 

@@ -11,12 +11,18 @@ public class SampleController {
     @GetMapping("login")
     public String login(){
         log.debug("로그인 입니다.");
-        return "/login/login";
+        return "login/login";
     }
 
     @GetMapping("signup")
     public String signup(){
         log.debug("회원가입 입니다.");
-        return "/member/signup";
+        return "member/signup";
+    }
+
+    @GetMapping("sample/token")
+    public String token(){
+        log.debug("토큰체크 입니다.");
+        return "sample/token";
     }
 }

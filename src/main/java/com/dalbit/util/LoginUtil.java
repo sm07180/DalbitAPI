@@ -49,32 +49,26 @@ public class LoginUtil {
         }
     }
 
-    public void ssoCookieRenerate(HttpServletResponse response, String jwtToken) throws GlobalException{
+    /*public void ssoCookieRenerate(HttpServletResponse response, String jwtToken) throws GlobalException{
         Cookie ssoCookie = makeSsoCookie(jwtToken);
         response.addCookie(ssoCookie);
-    }
+    }*/
 
-    public void ssoCookieUpdateFromRequestHeader(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable) throws GlobalException{
-        Cookie ssoCookie;
-        if(!isJwtTokenAvailable){
-            ssoCookie = expireSsoCookie();
-
-        }else{
-            String cookieValue = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
-            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(cookieValue);
-            if(DalbitUtil.isEmpty(tokenVo)){
-                throw new GlobalException(ErrorStatus.토큰검증오류);
-            }
-
-            String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), true);
-
-            ssoCookie = makeSsoCookie(jwtToken);
+    /*public void ssoCookieUpdateFromRequestHeader(HttpServletRequest request, HttpServletResponse response) throws GlobalException{
+        String headerAuthToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
+        TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerAuthToken);
+        if(DalbitUtil.isEmpty(tokenVo)){
+            throw new GlobalException(ErrorStatus.토큰검증오류);
         }
 
-        response.addCookie(ssoCookie);
-    }
+        String jwtToken = jwtUtil.generateToken(tokenVo.getMemNo(), true);
 
-    public void ssoCookieUpdate(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable) throws GlobalException{
+        Cookie ssoCookie = makeSsoCookie(jwtToken);
+
+        response.addCookie(ssoCookie);
+    }*/
+
+    /*public void ssoCookieUpdate(HttpServletRequest request, HttpServletResponse response, boolean isJwtTokenAvailable) throws GlobalException{
         try {
             Cookie ssoCookie;
             if(!isJwtTokenAvailable){
@@ -98,9 +92,9 @@ public class LoginUtil {
             e.printStackTrace();
             throw new GlobalException(ErrorStatus.쿠키갱신오류);
         }
-    }
+    }*/
 
-    public Cookie makeSsoCookie(String jwtToken) throws GlobalException{
+    /*public Cookie makeSsoCookie(String jwtToken) throws GlobalException{
         try{
             return CookieUtil.createCookie(
                     DalbitUtil.getProperty("sso.cookie.name")
@@ -112,16 +106,16 @@ public class LoginUtil {
             e.printStackTrace();
             throw new GlobalException(ErrorStatus.쿠키생성오류);
         }
-    }
+    }*/
 
-    public Cookie expireSsoCookie() throws GlobalException{
+    /*public Cookie expireSsoCookie() throws GlobalException{
         try{
             return CookieUtil.deleteCookie(DalbitUtil.getProperty("sso.cookie.name"), DalbitUtil.getProperty("sso.domain"), "/", 0);
         }catch (Exception e){
             e.printStackTrace();
             throw new GlobalException(ErrorStatus.쿠키만료오류);
         }
-    }
+    }*/
 
 
 }

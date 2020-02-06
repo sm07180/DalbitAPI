@@ -164,7 +164,7 @@ public class MemberController {
             securityUserVo.setMemberVo(memberVo);
 
             loginUtil.saveSecuritySession(request, securityUserVo);
-            loginUtil.ssoCookieRenerate(response, jwtToken);
+            //loginUtil.ssoCookieRenerate(response, jwtToken);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
 
