@@ -3,6 +3,9 @@ package com.dalbit.member.vo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 @Getter
 @Setter
 public class P_ProfileInfoVo {
@@ -24,7 +27,11 @@ public class P_ProfileInfoVo {
     }
 
     private int memLogin;                       //회원 로그인 상태(1: 회원, 0: 비회원)
+    @NotNull
+    @Size(min = 14, max = 14)
     private String mem_no;                      //회원번호
+    @NotNull
+    @Size(min = 14, max = 14)
     private String target_mem_no;               //스타회원번호
 
     private String  nickName;     				//닉네임

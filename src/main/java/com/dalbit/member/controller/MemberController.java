@@ -87,7 +87,6 @@ public class MemberController {
         if(
             DalbitUtil.isEmpty(memType) ||
             DalbitUtil.isEmpty(memId) ||
-            DalbitUtil.isEmpty(memPwd) ||
             DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"nickNm")) ||
             DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request, "birth")) ||
             DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term1")) ||

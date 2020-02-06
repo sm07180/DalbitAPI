@@ -1,6 +1,9 @@
 package com.dalbit.util;
 
+import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.LocationVo;
+import com.dalbit.common.vo.ValidationResultVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +16,10 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -587,6 +594,36 @@ public class DalbitUtil {
         return isEmpty(principal) || "anonymousUser".equals(principal);
     }
 
+
+    /**
+     * Validation 체크
+     */
+    public static ValidationResultVo voValidationCheck(Object object){
+
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.usingContext().getValidator();
+
+        Set<ConstraintViolation<Object>> constrains = validator.validate(object);
+        ValidationResultVo validationResultVo = new ValidationResultVo();
+        if(constrains.size() > 0){
+            validationResultVo.setSuccess(false);
+            ArrayList validationMessageList = new ArrayList();
+            for (ConstraintViolation constrain : constrains) {
+                validationMessageList.add(constrain.getPropertyPath()+ ": "+ constrain.getMessage());
+            }
+            validationResultVo.setValidationMessageDetail(validationMessageList);
+        }
+        return validationResultVo;
+    }
+
+    public static void throwValidaionException(Object object) throws GlobalException {
+
+        ValidationResultVo validationResultVo = voValidationCheck(object);
+        if(!validationResultVo.isSuccess()){
+            throw new GlobalException(Status.파라미터오류, validationResultVo);
+        }
+
+    }
 
 
 }
