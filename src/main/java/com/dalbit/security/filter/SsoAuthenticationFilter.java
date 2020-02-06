@@ -51,7 +51,7 @@ public class SsoAuthenticationFilter implements Filter {
 
     private final String[] IGNORE_URLS = {
         "/favicon.ico"
-        , "/logout", "/splash", "/token"
+        , "/login", "/logout", "/splash", "/token"
         , "/sample", "/rest/sample"
     };
 
