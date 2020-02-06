@@ -26,7 +26,7 @@ public class ParamCheckInterceptor extends HandlerInterceptorAdapter {
         log.debug("========================== Start Request uri = " + request.getRequestURI());
         for(Enumeration<String> itertor = (Enumeration<String>)request.getParameterNames(); itertor.hasMoreElements();){
             String key = itertor.nextElement();
-            log.debug("========================================= " + request.getRequestURI() + " " + key + " = |" + request.getParameterValues(key) + "|");
+            log.debug("========================================= " + request.getRequestURI() + " " + key + " = |" + request.getParameter(key) + "|");
             /*if(key.startsWith("i_")){
                 String[] values = request.getParameterValues(key);
                 if (values != null && values.length > 0){
