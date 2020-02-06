@@ -51,7 +51,7 @@ public class SsoAuthenticationFilter implements Filter {
 
     private final String[] IGNORE_URLS = {
         "/favicon.ico"
-        , "/login", "/logout", "/splash", "/token"
+        , "/login", "/logout", "/splash"
         , "/sample", "/rest/sample"
     };
 
@@ -78,7 +78,9 @@ public class SsoAuthenticationFilter implements Filter {
                 if (DalbitUtil.isEmpty(authentication)) {
 
                     if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
-                        throw new GlobalException(ErrorStatus.토큰검증오류);
+                        if(!request.getRequestURI().startsWith("/token")){
+                            throw new GlobalException(ErrorStatus.토큰검증오류);
+                        }
                     }else{
                         checkToken(request, response);
                     }
@@ -91,7 +93,9 @@ public class SsoAuthenticationFilter implements Filter {
 
                     if(DalbitUtil.isAnonymousUser(authentication.getPrincipal())){
                         if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
-                            throw new GlobalException(ErrorStatus.토큰검증오류);
+                            if(!request.getRequestURI().startsWith("/token")) {
+                                throw new GlobalException(ErrorStatus.토큰검증오류);
+                            }
                         }else{
                             checkToken(request, response);
                         }

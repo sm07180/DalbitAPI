@@ -17,6 +17,7 @@ import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
@@ -30,6 +31,9 @@ import java.util.Map;
 @Slf4j
 @Service
 public class CommonService {
+
+    @Value("${sso.header.cookie.name}")
+    private String SSO_HEADER_COOKIE_NAME;
 
     @Autowired
     MemberService memberService;
