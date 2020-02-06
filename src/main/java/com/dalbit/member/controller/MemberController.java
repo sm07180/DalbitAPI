@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
@@ -116,6 +117,22 @@ public class MemberController {
             , locationVo.getRegionName()
         );
 
+        if(
+            DalbitUtil.isEmpty(joinVo.getMemSlct()) ||
+            DalbitUtil.isEmpty(joinVo.getId()) ||
+            DalbitUtil.isEmpty(joinVo.getMemSex()) ||
+            DalbitUtil.isEmpty(joinVo.getNickName()) ||
+            DalbitUtil.isEmpty(joinVo.getBirthYear()) ||
+            DalbitUtil.isEmpty(joinVo.getBirthMonth()) ||
+            DalbitUtil.isEmpty(joinVo.getBirthDay()) ||
+            DalbitUtil.isEmpty(joinVo.getTerms1()) ||
+            DalbitUtil.isEmpty(joinVo.getTerms2()) ||
+            DalbitUtil.isEmpty(joinVo.getTerms3()) ||
+            DalbitUtil.isEmpty(joinVo.getName())
+        ){
+            throw new GlobalException(ErrorStatus.잘못된파람);
+        }
+
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo);
         if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
@@ -152,16 +169,16 @@ public class MemberController {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
 
         }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
 
         }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복));
 
         }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
 
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
         }
 
         return result;
