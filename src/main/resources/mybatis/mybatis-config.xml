@@ -12,14 +12,14 @@
 		<typeAlias type="com.dalbit.sample.vo.SampleVo" alias="SampleVo" />
 		<typeAlias type="com.dalbit.common.vo.ProcedureVo" alias="ProcedureVo" />
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
-		<typeAlias type="com.dalbit.broadcast.vo.P_RoomListVo" alias="P_RoomListVo" />
-		<typeAlias type="com.dalbit.broadcast.vo.P_RoomInfoViewVo" alias="P_RoomInfoViewVo" />
-		<typeAlias type="com.dalbit.broadcast.vo.P_RoomMemberListVo" alias="P_RoomMemberListVo" />
-		<typeAlias type="com.dalbit.broadcast.vo.P_RoomShareLinkVo" alias="P_RoomShareLinkVo" />
-		<typeAlias type="com.dalbit.broadcast.vo.P_RoomStoryListVo" alias="P_RoomStoryListVo" />
-		<typeAlias type="com.dalbit.member.vo.P_FanboardListVo" alias="P_FanboardListVo" />
-		<typeAlias type="com.dalbit.member.vo.P_FanboardReplyVo" alias="P_FanboardReplyVo" />
-		<typeAlias type="com.dalbit.member.vo.P_MemberShortCutVo" alias="P_MemberShortCutVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomListVo" alias="P_RoomListVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo" alias="P_RoomInfoViewVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo" alias="P_RoomMemberListVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo" alias="P_RoomShareLinkVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomStoryListVo" alias="P_RoomStoryListVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardListVo" alias="P_FanboardListVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardReplyVo" alias="P_FanboardReplyVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_MemberShortCutVo" alias="P_MemberShortCutVo" />
 	</typeAliases>
 
 </configuration>
