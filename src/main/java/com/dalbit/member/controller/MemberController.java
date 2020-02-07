@@ -165,12 +165,12 @@ public class MemberController {
     @GetMapping("member/nick")
     public String nick(HttpServletRequest request){
 
-        String _data = DalbitUtil.convertRequestParamToString(request,"nickNm");
-        if(_data.equals("")){
+        String nickNm = DalbitUtil.convertRequestParamToString(request,"nickNm");
+        if(DalbitUtil.isEmpty(nickNm)){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
         }
 
-        return memberService.callNickNameCheck(new ProcedureVo(_data));
+        return memberService.callNickNameCheck(new ProcedureVo(nickNm));
     }
 
 

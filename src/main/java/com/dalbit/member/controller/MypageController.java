@@ -1,17 +1,21 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.ProfileEditValidationVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -34,21 +38,25 @@ public class MypageController {
      * 프로필편집
      */
     @PostMapping("/profile")
-    public String editProfile(HttpServletRequest request){
+    public String editProfile(@Valid ProfileEditValidationVo profileEditValidationVo, BindingResult bindingResult) throws GlobalException {
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_ProfileEditVo apiData = new P_ProfileEditVo();
 
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setMemSex(DalbitUtil.convertRequestParamToString(request,"gender"));
-        apiData.setNickName(DalbitUtil.convertRequestParamToString(request,"nickNm"));
-        apiData.setName(DalbitUtil.convertRequestParamToString(request,"name"));
-        apiData.setBirthYear(LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getYear());
-        apiData.setBirthMonth(LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
-        apiData.setBirthDay(LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
-        apiData.setProfileImage(DalbitUtil.convertRequestParamToString(request,"profImg"));
-        apiData.setProfileImageGrade(DalbitUtil.convertRequestParamToString(request,"profImgRacy"));
-        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request,"bgImg"));
-        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToString(request,"bgImgRacy"));
-        apiData.setProfileMsg(DalbitUtil.convertRequestParamToString(request,"s_message"));
+        apiData.setMemSex(profileEditValidationVo.getGender());
+        apiData.setNickName(profileEditValidationVo.getNickNm());
+        apiData.setName(profileEditValidationVo.getName());
+        apiData.setBirthYear(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
+        apiData.setBirthMonth(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
+        apiData.setBirthDay(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
+        apiData.setProfileImage(profileEditValidationVo.getProfImg());
+        apiData.setProfileImageGrade(profileEditValidationVo.getProfImgRacy());
+        apiData.setBackgroundImage(profileEditValidationVo.getBgImg());
+        apiData.setBackgroundImageGrade(profileEditValidationVo.getBgImgRacy());
+        apiData.setProfileMsg(profileEditValidationVo.getProfMsg());
 
         String result = mypageService.callProfileEdit(apiData);
         return result;
