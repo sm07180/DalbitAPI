@@ -1,6 +1,5 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
@@ -11,12 +10,13 @@ import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
-import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
-import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.request.JoinValidationVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
@@ -28,14 +28,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
-import javax.validation.Validation;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
