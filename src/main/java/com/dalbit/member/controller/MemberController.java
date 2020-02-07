@@ -87,7 +87,7 @@ public class MemberController {
     @PostMapping("member/signup")
     public String signup(@Valid JoinValidationVo joinValidationVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        // 벨리데이션 체크
+        //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
         String memType = joinValidationVo.getMemType();
@@ -150,13 +150,10 @@ public class MemberController {
 
         }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
-
         }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복));
-
         }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
         }
@@ -189,7 +186,6 @@ public class MemberController {
         P_ChangePasswordVo pChangePasswordVo = new P_ChangePasswordVo();
         pChangePasswordVo.set_phoneNo(DalbitUtil.convertRequestParamToString(request, "memId"));
         pChangePasswordVo.set_password(DalbitUtil.convertRequestParamToString(request, "memPwd"));
-
 
         String result = memberService.callChangePassword(pChangePasswordVo);
 

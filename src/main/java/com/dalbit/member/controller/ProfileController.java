@@ -37,7 +37,7 @@ public class ProfileController {
     @GetMapping("")
     public String memberInfo(@Valid ProfileValidaionVo profileValidaionVo, BindingResult bindingResult) throws GlobalException {
 
-        // 벨리데이션 체크
+        //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
         int memLogin = DalbitUtil.isLogin() ? 1 : 0;
