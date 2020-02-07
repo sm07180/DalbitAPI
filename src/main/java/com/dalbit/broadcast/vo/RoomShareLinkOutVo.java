@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.vo;
 
+import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 

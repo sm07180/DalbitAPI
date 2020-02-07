@@ -2,15 +2,14 @@ package com.dalbit.security.service;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.P_LoginVo;
-import com.dalbit.member.vo.P_ProfileInfoVo;
+import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.SecurityUserVo;
@@ -27,7 +26,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;

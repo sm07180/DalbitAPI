@@ -1,7 +1,7 @@
 package com.dalbit.broadcast.dao;
 
-import com.dalbit.broadcast.vo.P_RoomInfoViewVo;
-import com.dalbit.broadcast.vo.P_RoomListVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 

@@ -2,13 +2,17 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.UserDao;
 import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.procedure.P_RoomGuestAddVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomGuestDeleteVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomKickoutVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.member.vo.P_ProfileInfoVo;
+import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;

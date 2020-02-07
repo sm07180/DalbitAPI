@@ -1,7 +1,7 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ContentService;
-import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;

@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.member.vo.procedure.P_MemberShortCutVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

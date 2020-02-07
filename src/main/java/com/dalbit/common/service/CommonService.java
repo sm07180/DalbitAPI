@@ -1,6 +1,6 @@
 package com.dalbit.common.service;
 
-import com.dalbit.broadcast.vo.P_RoomJoinTokenVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.CodeVo;
@@ -11,6 +11,8 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.LoginUtil;

@@ -1,5 +1,7 @@
 package com.dalbit.broadcast.vo;
 
+import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.util.DalbitUtil;

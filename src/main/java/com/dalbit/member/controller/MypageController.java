@@ -2,6 +2,7 @@ package com.dalbit.member.controller;
 
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.procedure.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;

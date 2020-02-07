@@ -1,21 +1,17 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.RoomService;
-import com.dalbit.broadcast.vo.*;
-import com.dalbit.common.code.Status;
+import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 

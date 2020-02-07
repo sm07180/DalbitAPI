@@ -1,17 +1,17 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.UserService;
-import com.dalbit.broadcast.vo.P_RoomGuestAddVo;
-import com.dalbit.broadcast.vo.P_RoomGuestDeleteVo;
-import com.dalbit.broadcast.vo.P_RoomKickoutVo;
-import com.dalbit.broadcast.vo.P_RoomMemberListVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomGuestAddVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomGuestDeleteVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomKickoutVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.P_ProfileInfoVo;
+import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.MessageUtil;

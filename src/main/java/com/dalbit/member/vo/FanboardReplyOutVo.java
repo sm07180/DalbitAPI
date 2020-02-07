@@ -2,6 +2,7 @@ package com.dalbit.member.vo;
 
 
 import com.dalbit.common.vo.ImageVo;
+import com.dalbit.member.vo.procedure.P_FanboardReplyVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;

@@ -2,6 +2,9 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ActionDao;
 import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;

@@ -9,7 +9,7 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.P_ProfileInfoVo;
+import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
