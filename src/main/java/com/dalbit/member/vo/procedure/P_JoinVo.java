@@ -1,8 +1,17 @@
 package com.dalbit.member.vo.procedure;
 
 import com.dalbit.common.vo.BaseVo;
+import com.dalbit.member.vo.request.JoinValidationVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Getter
 @Setter
@@ -10,23 +19,19 @@ public class P_JoinVo extends BaseVo {
 
     public P_JoinVo(){}
 
-    public P_JoinVo(
-        String memSlct , String id , String pw , String memSex , String nickName , int birthYear , int birthMonth , int birthDay
-        , String term1 , String term2 , String term3 , String name , String profileImage , int profileImageGrade , String email
+    public P_JoinVo(JoinValidationVo joinValidationVo
         , int os , String deviceUuid , String deviceToken , String appVersion , String adId, String location){
 
-        setMemSlct(memSlct);
-        setId(id);
-        setPw(pw);
-        setMemSex(memSex);
-        setNickName(nickName);
-        setBirthYear(birthYear);
-        setBirthMonth(birthMonth);
-        setBirthDay(birthDay);
-        setTerms1(term1);
-        setTerms2(term2);
-        setTerms3(term3);
-        setName(name);
+        setMemSlct(joinValidationVo.getMemType());
+        setId(joinValidationVo.getMemId());
+        setPw(joinValidationVo.getMemPwd());
+        setMemSex(joinValidationVo.getGender());
+        setNickName(joinValidationVo.getNickNm());
+        setBirth(joinValidationVo.getBirth());
+        setTerms1(joinValidationVo.getTerm1());
+        setTerms2(joinValidationVo.getTerm2());
+        setTerms3(joinValidationVo.getTerm3());
+        setName(joinValidationVo.getName());
         setProfileImage(profileImage);
         setProfileImageGrade(profileImageGrade);
         setEmail(email);
@@ -43,6 +48,7 @@ public class P_JoinVo extends BaseVo {
     private String pw;
     private String memSex;
     private String nickName;
+    private String birth;
     private int birthYear;
     private int birthMonth;
     private int birthDay;
@@ -59,4 +65,19 @@ public class P_JoinVo extends BaseVo {
     private String appVersion;
     private String adId;
     private String location;
-}
+
+
+    public void setBirth(String birth){
+
+        if(!DalbitUtil.isEmpty(birth))
+            try {
+                this.birth = birth;
+                this.birthYear = LocalDate.parse(birth, DateTimeFormatter.BASIC_ISO_DATE).getYear();
+                this.birthMonth = LocalDate.parse(birth, DateTimeFormatter.BASIC_ISO_DATE).getMonthValue();
+                this.birthDay = LocalDate.parse(birth, DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth();
+            } catch (Exception e){
+                this.birth = "";
+            }
+        }
+    }
+

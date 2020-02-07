@@ -233,6 +233,20 @@ public class SampleVoTest {
         log.debug(replacePath);
     }
 
+    @Test
+    public void value(){
+        String temp = "123";
+        int number =  3;
+        validaionCheck(temp, number);
+    }
+
+    @Test
+    public void validaionCheck(String temp, int number){
+        int length = temp.length();
+        log.debug(length+"");
+        log.debug((int)Math.log10(number)+1+"");
+    }
+
 }
 
 

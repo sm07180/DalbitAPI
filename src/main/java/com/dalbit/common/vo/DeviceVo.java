@@ -29,13 +29,13 @@ public class DeviceVo {
 
         if(customHeader != null && !"".equals(customHeader.trim())){
             customHeader = java.net.URLDecoder.decode(customHeader);
-            HashMap<String, String> headers = new Gson().fromJson(customHeader, HashMap.class);
-            if(headers.get("os") != null && ("1".equals(headers.get("os")) || "2".equals(headers.get("os"))) && headers.get("deviceId") != null ){
-                os = Integer.valueOf(headers.get("os"));
-                deviceUuid = headers.get("deviceId").trim();
-                deviceToken = headers.get("deviceToken");
-                appVersion = headers.get("appVer");
-                adId = headers.get("appAdId");
+            HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
+            if(headers.get("os") != null && headers.get("deviceId") != null ){
+                os = (int)DalbitUtil.getDoubleMap(headers, "os");
+                deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
+                deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
+                appVersion = DalbitUtil.getStringMap(headers, "appVer");
+                adId = DalbitUtil.getStringMap(headers, "appAdId");
                 deviceToken = deviceToken == null ? "" : deviceToken.trim();
                 appVersion = appVersion == null ? "" : appVersion.trim();
                 adId = adId == null ? "" : adId.trim();

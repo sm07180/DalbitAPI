@@ -5,14 +5,17 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.ProfileValidaionVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @Slf4j
 @RestController
@@ -32,14 +35,17 @@ public class ProfileController {
      * 정보 조회
      */
     @GetMapping("")
-    public String memberInfo(HttpServletRequest request) throws GlobalException {
+    public String memberInfo(@Valid ProfileValidaionVo profileValidaionVo, BindingResult bindingResult) throws GlobalException {
+
+        // 벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
 
         int memLogin = DalbitUtil.isLogin() ? 1 : 0;
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), DalbitUtil.convertRequestParamToString(request,"memNo"));
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), profileValidaionVo.getMemNo());
 
-        DalbitUtil.throwValidaionException(apiData);
+        String result = profileService.callMemberInfo(apiData);
 
-        return profileService.callMemberInfo(apiData);
+        return result;
     }
 
     /**

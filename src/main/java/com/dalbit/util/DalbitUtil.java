@@ -13,13 +13,11 @@ import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -466,7 +464,7 @@ public class DalbitUtil {
         }
     }
 
-    public static Double getDoubleMap(HashMap map, String key){
+    public static double getDoubleMap(HashMap map, String key){
         try{
             return Double.valueOf(getStringMap(map, key));
         }catch (Exception e){
@@ -598,7 +596,7 @@ public class DalbitUtil {
     /**
      * Validation 체크
      */
-    public static ValidationResultVo voValidationCheck(Object object){
+    /*public static ValidationResultVo voValidationCheck(Object object){
 
         ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
         Validator validator = validatorFactory.usingContext().getValidator();
@@ -609,7 +607,7 @@ public class DalbitUtil {
             validationResultVo.setSuccess(false);
             ArrayList validationMessageList = new ArrayList();
             for (ConstraintViolation constrain : constrains) {
-                validationMessageList.add(constrain.getPropertyPath()+ ": "+ constrain.getMessage());
+                validationMessageList.add("param : " + constrain.getPropertyPath()+ "," + " message : "+ constrain.getMessage());
             }
             validationResultVo.setValidationMessageDetail(validationMessageList);
         }
@@ -620,6 +618,28 @@ public class DalbitUtil {
 
         ValidationResultVo validationResultVo = voValidationCheck(object);
         if(!validationResultVo.isSuccess()){
+            throw new GlobalException(Status.파라미터오류, validationResultVo);
+        }
+
+    }*/
+
+    /**
+     * Validation 체크
+     */
+    public static void throwValidaionException(BindingResult bindingResult) throws GlobalException {
+
+        ValidationResultVo validationResultVo = new ValidationResultVo();
+        if(bindingResult.hasErrors()){
+            validationResultVo.setSuccess(false);
+            List errorList = bindingResult.getAllErrors();
+
+            ArrayList bindingMessageList = new ArrayList();
+            for (int i=0; i<bindingResult.getErrorCount(); i++) {
+                FieldError fieldError = (FieldError) errorList.get(i);
+
+                bindingMessageList.add("field : " + fieldError.getField()  + ", value : "+ fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage());
+            }
+            validationResultVo.setValidationMessageDetail(bindingMessageList);
             throw new GlobalException(Status.파라미터오류, validationResultVo);
         }
 

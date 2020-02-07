@@ -17,6 +17,7 @@ import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.request.JoinValidationVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
@@ -26,12 +27,13 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import javax.validation.Validation;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -83,24 +85,14 @@ public class MemberController {
      * 회원가입
      */
     @PostMapping("member/signup")
-    public String signup(HttpServletRequest request, HttpServletResponse response) throws GlobalException {
+    public String signup(@Valid JoinValidationVo joinValidationVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        String memType = DalbitUtil.convertRequestParamToString(request,"memType");
-        String memId = DalbitUtil.convertRequestParamToString(request,"memId");
-        String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
+        // 벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
 
-        if(
-            DalbitUtil.isEmpty(memType) ||
-            DalbitUtil.isEmpty(memId) ||
-            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"nickNm")) ||
-            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request, "birth")) ||
-            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term1")) ||
-            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term2")) ||
-            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"term3")) ||
-            DalbitUtil.isEmpty(DalbitUtil.convertRequestParamToString(request,"name"))
-        ){
-            throw new GlobalException(ErrorStatus.잘못된파람);
-        }
+        String memType = joinValidationVo.getMemType();
+        String memId = joinValidationVo.getMemId();
+        String memPwd = joinValidationVo.getMemPwd();
 
         DeviceVo deviceVo = new DeviceVo(request);
         int os = deviceVo.getOs();
@@ -112,30 +104,14 @@ public class MemberController {
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
         P_JoinVo joinVo = new P_JoinVo(
-            memType
-            , memId
-            , memPwd
-            , DalbitUtil.convertRequestParamToString(request,"gender")
-            , DalbitUtil.convertRequestParamToString(request,"nickNm")
-            , LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getYear()
-            , LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue()
-            , LocalDate.parse(DalbitUtil.convertRequestParamToString(request, "birth"), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth()
-            , DalbitUtil.convertRequestParamToString(request,"term1")
-            , DalbitUtil.convertRequestParamToString(request,"term2")
-            , DalbitUtil.convertRequestParamToString(request,"term3")
-            , DalbitUtil.convertRequestParamToString(request,"name")
-            , DalbitUtil.convertRequestParamToString(request,"profImg")
-            , DalbitUtil.convertRequestParamToInteger(request,"profImgRacy")
-            , DalbitUtil.convertRequestParamToString(request,"email")
-            , os
-            , deviceId
-            , deviceToken
-            , appVer
-            , appAdId
-            , locationVo.getRegionName()
+                joinValidationVo
+                , os
+                , deviceId
+                , deviceToken
+                , appVer
+                , appAdId
+                , locationVo.getRegionName()
         );
-
-
 
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo);
