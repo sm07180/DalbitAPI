@@ -125,8 +125,8 @@ public class SsoAuthenticationFilter implements Filter {
         if(isJwtTokenAvailable){
 
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerAuthToken);
-            log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
             if(DalbitUtil.isEmpty(tokenVo)){
+                log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
                 throw new GlobalException(ErrorStatus.토큰검증오류);
             }
 
