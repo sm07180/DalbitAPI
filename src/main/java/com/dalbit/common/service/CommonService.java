@@ -181,6 +181,10 @@ public class CommonService {
         return data;
     }
 
+    public List<CodeVo> getCodeList(String code){
+        return (List<CodeVo>)callCodeDefineSelect().get(code);
+    }
+
     /**
      * 팬랭킹 1,2,3위 가져오기
      */
