@@ -288,12 +288,13 @@ public class MypageService {
         }else{
             List<MemberShortCutOutVo> outVoList = new ArrayList<>();
             for (int i=0; i<memberShortCutList.size(); i++){
-                outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i), pMemberShortCut.getMem_no()));
+                outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
         HashMap shortCutList = new HashMap();
         shortCutList.put("list",procedureOutputVo.getOutputBox());
+        shortCutList.put("memNo", pMemberShortCut.getMem_no());
 
         String result;
         if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
