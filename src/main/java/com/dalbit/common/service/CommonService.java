@@ -98,6 +98,7 @@ public class CommonService {
         String appVer = deviceVo.getAppVersion();
         String appAdId = deviceVo.getAdId();
         LocationVo locationVo = DalbitUtil.getLocation(request);
+        String ip = deviceVo.getIp();
 
         if(isLogin){
             tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
@@ -105,7 +106,7 @@ public class CommonService {
 
         }else {
 
-            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
+            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
             ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
             if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
                 resultStatus = Status.로그인실패_회원가입필요;

@@ -85,7 +85,7 @@ public class MemberController {
      */
     @PostMapping("member/signup")
     public String signup(@Valid JoinValidationVo joinValidationVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        
+
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -107,6 +107,7 @@ public class MemberController {
         String deviceToken = deviceVo.getDeviceToken();
         String appVer = deviceVo.getAppVersion();
         String appAdId = deviceVo.getAdId();
+        String ip = deviceVo.getIp();
 
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
@@ -118,6 +119,7 @@ public class MemberController {
                 , appVer
                 , appAdId
                 , locationVo.getRegionName()
+                , ip
         );
 
         String result = "";
@@ -125,7 +127,7 @@ public class MemberController {
         if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
 
             //로그인 처리
-            P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName());
+            P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
 
             memberService.callMemberLogin(pLoginVo);
             log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));

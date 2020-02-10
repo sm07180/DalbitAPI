@@ -20,7 +20,7 @@ public class P_JoinVo extends BaseVo {
     public P_JoinVo(){}
 
     public P_JoinVo(JoinValidationVo joinValidationVo
-        , int os , String deviceUuid , String deviceToken , String appVersion , String adId, String location){
+        , int os , String deviceUuid , String deviceToken , String appVersion , String adId, String location, String ip){
 
         setMemSlct(joinValidationVo.getMemType());
         setId(joinValidationVo.getMemId());
@@ -31,16 +31,19 @@ public class P_JoinVo extends BaseVo {
         setTerms1(joinValidationVo.getTerm1());
         setTerms2(joinValidationVo.getTerm2());
         setTerms3(joinValidationVo.getTerm3());
+        setTerms4(joinValidationVo.getTerm4());
+        setTerms5(joinValidationVo.getTerm5());
         setName(joinValidationVo.getName());
-        setProfileImage(profileImage);
-        setProfileImageGrade(profileImageGrade);
-        setEmail(email);
+        setProfileImage(joinValidationVo.getProfImg());
+        setProfileImageGrade(joinValidationVo.getProfImgRacy());
+        setEmail(joinValidationVo.getEmail());
         setOs(os);
         setDeviceUuid(deviceUuid);
         setDeviceToken(deviceToken);
         setAppVersion(appVersion);
         setAdId(adId);
         setLocation(location);
+        setIp(ip);
     }
 
     private String memSlct;
@@ -55,6 +58,8 @@ public class P_JoinVo extends BaseVo {
     private String terms1;
     private String terms2;
     private String terms3;
+    private String terms4;
+    private String terms5;
     private String name;
     private String profileImage;
     private int profileImageGrade;
@@ -65,6 +70,7 @@ public class P_JoinVo extends BaseVo {
     private String appVersion;
     private String adId;
     private String location;
+    private String ip;
 
 
     public void setBirth(String birth){

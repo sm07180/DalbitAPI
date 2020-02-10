@@ -5,13 +5,12 @@ import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
-import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
@@ -88,6 +87,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , deviceVo.getAppVersion()
                 , deviceVo.getAdId()
                 , locationVo.getRegionName()
+                , deviceVo.getIp()
         );
 
         ProcedureVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
