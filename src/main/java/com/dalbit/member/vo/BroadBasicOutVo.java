@@ -25,7 +25,7 @@ public class BroadBasicOutVo {
 
 
     public BroadBasicOutVo(P_BroadBasicVo target) {
-        this.roomType = target.getSubject_type() == 0 ? String.valueOf(target.getSubject_type()) : commonService.getCodeList("roomType").get(0).getCd();
+        this.roomType = target.getSubject_type() != null ? String.valueOf(target.getSubject_type()) : commonService.getCodeList("roomType").get(0).getCd();
         this.title = target.getTitle();
         if(target.getImage_background() != null){
             this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));

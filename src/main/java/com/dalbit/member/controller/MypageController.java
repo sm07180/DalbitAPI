@@ -56,8 +56,6 @@ public class MypageController {
         apiData.setBirthDay(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
         apiData.setProfileImage(profileEditValidationVo.getProfImg());
         apiData.setProfileImageGrade(profileEditValidationVo.getProfImgRacy());
-        apiData.setBackgroundImage(profileEditValidationVo.getBgImg());
-        apiData.setBackgroundImageGrade(profileEditValidationVo.getBgImgRacy());
         apiData.setProfileMsg(profileEditValidationVo.getProfMsg());
 
         String result = mypageService.callProfileEdit(apiData);
@@ -121,7 +119,7 @@ public class MypageController {
     public String broadBasicEdit(HttpServletRequest request){
         P_BroadBasicEditVo apiData = new P_BroadBasicEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request,"roomType"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request,"roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request,"title"));
         apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request,"bgImg"));
         apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request,"bgImgRacy"));

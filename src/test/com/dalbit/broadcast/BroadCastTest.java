@@ -53,7 +53,7 @@ public class BroadCastTest {
         P_RoomCreateVo apiData = new P_RoomCreateVo();
 
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(1);
+        apiData.setSubjectType("1");
         apiData.setTitle("방송생성부터 참여 게스트 지정까지");
         apiData.setWelcomMsg("환영해보자");
         apiData.setEntryType(0);

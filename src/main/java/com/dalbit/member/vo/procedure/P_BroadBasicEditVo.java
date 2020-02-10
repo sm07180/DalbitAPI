@@ -7,7 +7,7 @@ import lombok.Setter;
 @Setter
 public class P_BroadBasicEditVo {
     private String mem_no;
-    private int subjectType;                                              //방송종류
+    private String subjectType;                                              //방송종류
     private String title;                               				  //제목
     private String backgroundImage;                                       //백그라운드 이미지 경로
     private int backgroundImageGrade;                                     //백그라운드 구글 선정성

@@ -8,7 +8,7 @@ import lombok.Setter;
 public class P_RoomCreateVo {
 
     private String mem_no;                  //회원번호
-    private int subjectType;                //방송종류
+    private String subjectType;                //방송종류
     private String title;                   //방송제목
     private String backgroundImage;         //배경이미지 경로
     private int backgroundImageGrade;       //배경이미지 선전성 등급

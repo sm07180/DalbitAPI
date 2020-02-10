@@ -59,7 +59,7 @@ public class RoomController {
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
         apiData.setBackgroundImage(bgImg);
         apiData.setBackgroundImageGrade(bgGrade);
@@ -155,7 +155,7 @@ public class RoomController {
         P_RoomEditVo apiData = new P_RoomEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
         if(!DalbitUtil.isEmpty(bgImg)){
             bgImg = DalbitUtil.replacePath(bgImg);
@@ -188,7 +188,7 @@ public class RoomController {
         P_RoomListVo apiData = new P_RoomListVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToInteger(request, "roomType"));
+        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 

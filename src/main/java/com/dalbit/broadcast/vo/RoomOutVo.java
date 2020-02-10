@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class RoomOutVo {
 
     private String roomNo;
-    private int type;
+    private String roomType;
     private String title;
     private ImageVo bgImg;
     private String welcomMsg;
@@ -49,7 +49,7 @@ public class RoomOutVo {
     public RoomOutVo(P_RoomListVo target) {
 
         this.roomNo = target.getRoomNo();
-        this.type = target.getSubject_type();
+        this.roomType = target.getSubject_type();
         this.title = target.getTitle();
         this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
         this.welcomMsg = target.getMsg_welcom();
@@ -75,7 +75,7 @@ public class RoomOutVo {
 
     public RoomOutVo(P_RoomInfoViewVo target) {
         this.roomNo = target.getRoomNo();
-        this.type = target.getSubject_type();
+        this.roomType = target.getSubject_type();
         this.title = target.getTitle();
         this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
         this.welcomMsg = target.getMsg_welcom();

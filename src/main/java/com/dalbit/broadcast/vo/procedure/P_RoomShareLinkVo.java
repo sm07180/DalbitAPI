@@ -16,7 +16,7 @@ public class P_RoomShareLinkVo {
 
     /* Output */
     private String roomNo;
-    private int subject_type;
+    private String subject_type;
     private String title;
     private Object image_background;
     private String msg_welcom;

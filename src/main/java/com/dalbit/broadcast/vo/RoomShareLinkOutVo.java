@@ -7,7 +7,7 @@ import com.dalbit.util.DalbitUtil;
 public class RoomShareLinkOutVo {
 
     private String roomNo;
-    private int roomType;
+    private String roomType;
     private String title;
     private ImageVo bgImg;
     private String welcomMsg;

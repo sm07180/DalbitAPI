@@ -25,11 +25,7 @@ public class ProfileEditValidationVo {
 
     @Max(5)
     private Integer profImgRacy;
-    @Max(5)
-    private Integer bgImgRacy;
 
-    private String bgImg;
-    private String bgImgDel;
     private String profImg;
     private String profImgDel;
     private String profMsg;

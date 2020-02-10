@@ -15,7 +15,7 @@ public class P_RoomInfoViewVo {
 
     /* Output */
     private String roomNo;                  //방번호
-    private int subject_type;               //방주제
+    private String subject_type;               //방주제
     private String title;                   //방제목
     private Object image_background;        //방배경이미지
     private String msg_welcom;              //환영메세지
