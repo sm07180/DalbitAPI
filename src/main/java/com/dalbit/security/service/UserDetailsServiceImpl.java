@@ -5,6 +5,7 @@ import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
@@ -69,6 +70,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername() throws UsernameNotFoundException {
 
         HashMap map = getParameterMap(request);
+
+        if("p".equals(DalbitUtil.getStringMap(map, "memType")) && DalbitUtil.isEmpty(DalbitUtil.getStringMap(map, "memPwd"))){
+            throw new CustomUsernameNotFoundException(Status.파라미터오류);
+        }
 
         DeviceVo deviceVo = new DeviceVo(request);
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
