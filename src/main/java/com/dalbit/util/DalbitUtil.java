@@ -26,6 +26,8 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Component
@@ -645,5 +647,21 @@ public class DalbitUtil {
 
     }
 
+    /**
+     * 비밀번호 체크
+     */
+    public static Boolean isPasswordCheck(String password){
+        boolean isPattern = false;
+
+        String pwPattern_1 = "^[A-Za-z[0-9]]{8,20}$";                         //영문 + 숫자
+        String pwPattern_2 = "^[[0-9]!@#$%^&*()\\-_=+{};:,<.>]{8,20}$";       //숫자 + 특수문자
+        String pwPattern_3 = "^[[A-Za-z]!@#$%^&*()\\-_=+{};:,<.>]{8,20}$";    //영문 + 특수문자
+        String pwPattern_4 = "^[A-Za-z[0-9]!@#$%^&*()\\-_=+{};:,<.>]{8,20}$";  //영문 + 숫자 + 특수문자
+
+        if(Pattern.matches(pwPattern_1, password) || Pattern.matches(pwPattern_2, password) || Pattern.matches(pwPattern_3, password) || Pattern.matches(pwPattern_4, password)){
+            isPattern = true;
+        }
+        return isPattern;
+    }
 
 }

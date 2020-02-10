@@ -76,7 +76,7 @@ public class MemberService {
      * 비밀번호 변경
      */
     public String callChangePassword(P_ChangePasswordVo pChangePasswordVo){
-        ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo);
+        ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo.getPhoneNo(), pChangePasswordVo.getPassword());
         memberDao.callChangePassword(procedureVo);
         String result;
 

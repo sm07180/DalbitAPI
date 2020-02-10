@@ -247,6 +247,11 @@ public class SampleVoTest {
         log.debug((int)Math.log10(number)+1+"");
     }
 
-}
+    @Test void 비밀번호패턴체크(){
+        String pw = "12515asd";
+        Boolean isPassword = DalbitUtil.isPasswordCheck(pw);
+        log.info("패턴체크: {}", isPassword);
+    }
 
+}
 
