@@ -9,6 +9,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -218,15 +220,27 @@ public class MypageController {
     public String memberShortCutEdit(HttpServletRequest request){
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setOrder_1(DalbitUtil.convertRequestParamToString(request,"order_1"));
-        apiData.setText_1(DalbitUtil.convertRequestParamToString(request,"text_1"));
-        apiData.setOnOff_1(DalbitUtil.convertRequestParamToString(request,"onOff_1"));
-        apiData.setOrder_2(DalbitUtil.convertRequestParamToString(request,"order_2"));
-        apiData.setText_2(DalbitUtil.convertRequestParamToString(request,"text_2"));
-        apiData.setOnOff_2(DalbitUtil.convertRequestParamToString(request,"onOff_2"));
-        apiData.setOrder_3(DalbitUtil.convertRequestParamToString(request,"order_3"));
-        apiData.setText_3(DalbitUtil.convertRequestParamToString(request,"text_3"));
-        apiData.setOnOff_3(DalbitUtil.convertRequestParamToString(request,"onOff_3"));
+        String[] data = request.getParameterValues("data");
+        if(data != null && data.length > 0){
+            for(int i = 0; i < data.length; i++){
+                HashMap<String, String> d = new Gson().fromJson(data[i], HashMap.class);
+                if(!DalbitUtil.isEmpty(d.get("order")) && !DalbitUtil.isEmpty(d.get("text")) && !DalbitUtil.isEmpty(d.get("isOn"))){
+                    if(i == 0){
+                        apiData.setOrder_1(d.get("order"));
+                        apiData.setText_1(d.get("text"));
+                        apiData.setOnOff_1(d.get("isOn").toUpperCase().equals("1") || d.get("isOn").toUpperCase().equals("TRUE") ? "on" : "off");
+                    }else if(i == 1){
+                        apiData.setOrder_2(d.get("order"));
+                        apiData.setText_2(d.get("text"));
+                        apiData.setOnOff_2(d.get("isOn").toUpperCase().equals("1") || d.get("isOn").toUpperCase().equals("TRUE") ? "on" : "off");
+                    }else if(i == 2) {
+                        apiData.setOrder_3(d.get("order"));
+                        apiData.setText_3(d.get("text"));
+                        apiData.setOnOff_3(d.get("isOn").toUpperCase().equals("1") || d.get("isOn").toUpperCase().equals("TRUE") ? "on" : "off");
+                    }
+                }
+            }
+        }
 
         String result = mypageService.callMemberShortCutEdit(apiData);
         return result;
