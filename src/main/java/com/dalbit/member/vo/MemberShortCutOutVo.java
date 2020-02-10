@@ -9,16 +9,15 @@ import lombok.ToString;
 @Setter
 @ToString
 public class MemberShortCutOutVo {
-
     private int     orderNo;
-    private String  onOff;
+    private boolean isOn;
     private String  order;
     private String  text;
 
 
     public MemberShortCutOutVo(P_MemberShortCutVo target) {
         this.orderNo=target.getOrderNo();
-        this.onOff=target.getOnOff();
+        this.isOn="on".equals(target.getOnOff());
         this.order=target.getOrder();
         this.text=target.getText();
     }

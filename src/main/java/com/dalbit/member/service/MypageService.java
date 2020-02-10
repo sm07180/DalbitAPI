@@ -3,13 +3,12 @@ package com.dalbit.member.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
+import com.dalbit.member.vo.MemberShortCutOutVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.BroadBasicOutVo;
 import com.dalbit.member.vo.MemberInfoOutVo;
-import com.dalbit.member.vo.MemberShortCutOutVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
@@ -282,23 +281,15 @@ public class MypageService {
         mypageDao.callMemberShortCut(procedureVo);
         List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(memberShortCutList)){
-            procedureOutputVo = null;
-        }else{
-            List<MemberShortCutOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<memberShortCutList.size(); i++){
-                outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
-        HashMap shortCutList = new HashMap();
-        shortCutList.put("list",procedureOutputVo.getOutputBox());
-        shortCutList.put("memNo", pMemberShortCut.getMem_no());
-
         String result;
         if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말조회_성공, shortCutList)));
+            List<MemberShortCutOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(memberShortCutList)){
+                for (int i=0; i<memberShortCutList.size(); i++){
+                    outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
+                }
+            }
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말조회_성공, outVoList)));
         } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님)));
         }else{
