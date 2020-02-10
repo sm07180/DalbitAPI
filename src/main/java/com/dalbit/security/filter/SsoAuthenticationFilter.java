@@ -104,7 +104,7 @@ public class SsoAuthenticationFilter implements Filter {
             } catch (GlobalException e) {
                 e.printStackTrace();
 
-                gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus()));
+                gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus(), e.getData()));
                 return;
             }
         }
