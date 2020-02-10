@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.request;
 
+import com.dalbit.validator.annotation.Password;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class JoinValidationVo {
     @NotBlank @Size(max = 25)
     private String memId;
 
-    @Size(max = 20/*, message = "8자~20자, 영문,숫자,특수문자 중 2가지 이상 조합 확인"*/)
+    @NotBlank @Password
     private String memPwd;
 
     @NotBlank @Size(max = 1)

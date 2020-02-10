@@ -32,10 +32,10 @@ public enum Status {
     //닉네임중복체크
     닉네임중복("0", "member.join.nick.duplicate", "닉네임 중복 시"),
     닉네임사용가능("1", "member.join.nick.success", "닉네임 사용가능 시"),
-    닉네임_파라메터오류("C005", "param.error", "닉네임 파라메터 오류 시"),
+    닉네임_파라메터오류("C005", "nick.name.error", "닉네임 파라메터 오류 시"),
 
     //비밀번호변경
-    비밀번호변경실패_회원아님("0", "member.change.password.fail", "비밀번호 변경 실패 시"),
+    비밀번호변경실패_회원아님("0", "member.change.password.fail", "비밀번호 변경 실패 - 회원이 아닌경우"),
     비밀번호변경성공("1", "member.change.password.success", "비밀번호 변경 성공 시"),
     비밀번호변경오류("C006", "member.change.password.error", "비밀번호 변경 오류 시"),
 

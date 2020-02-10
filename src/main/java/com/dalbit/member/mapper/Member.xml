@@ -15,7 +15,7 @@
     </select>
 
     <select id="callChangePassword" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-        call sp_member_changePassword(#{box._phoneNo, mode=IN, jdbcType=VARCHAR}, #{box._password, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+        call sp_member_changePassword(#{phoneNo, mode=IN, jdbcType=VARCHAR}, #{password, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callMemberInfoView" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

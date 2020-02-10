@@ -1,5 +1,6 @@
 package com.dalbit.common.vo;
 
+import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,9 +20,15 @@ public class ProcedureVo {
         setData(new Gson().toJson(paramVo));
     }
 
+    public ProcedureVo(String phoneNo, String password){
+        setPhoneNo(phoneNo);
+        setPassword(password);
+    }
+
     private Object data;
     private Object box;
     private String ret;
     private String ext;
-
+    private String phoneNo;
+    private String password;
 }

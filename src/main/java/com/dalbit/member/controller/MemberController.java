@@ -17,6 +17,7 @@ import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
+import com.dalbit.member.vo.request.ChangePwValidationVo;
 import com.dalbit.member.vo.request.JoinValidationVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
@@ -166,10 +167,9 @@ public class MemberController {
     public String nick(HttpServletRequest request){
 
         String nickNm = DalbitUtil.convertRequestParamToString(request,"nickNm");
-        if(DalbitUtil.isEmpty(nickNm)){
+        if(DalbitUtil.isEmpty(nickNm) || nickNm.length() > 20){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
         }
-
         return memberService.callNickNameCheck(new ProcedureVo(nickNm));
     }
 
@@ -179,15 +179,17 @@ public class MemberController {
      * 비밀번호 변경
      */
     @PostMapping("member/pwd")
-    public String pwd(HttpServletRequest request){
+    public String pwd(@Valid ChangePwValidationVo changePwValidationVo, BindingResult bindingResult) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
 
         P_ChangePasswordVo pChangePasswordVo = new P_ChangePasswordVo();
-        pChangePasswordVo.set_phoneNo(DalbitUtil.convertRequestParamToString(request, "memId"));
-        pChangePasswordVo.set_password(DalbitUtil.convertRequestParamToString(request, "memPwd"));
+        pChangePasswordVo.setPhoneNo(changePwValidationVo.getMemId());
+        pChangePasswordVo.setPassword(changePwValidationVo.getMemPwd());
 
         String result = memberService.callChangePassword(pChangePasswordVo);
 
-        log.info("result: {}", result);
         return result;
     }
 
