@@ -13,7 +13,7 @@ public class JoinValidationVo {
     @NotBlank @Size(max = 1)
     private String memType;
 
-    @NotBlank @Size(max = 13)
+    @NotBlank @Size(max = 25)
     private String memId;
 
     @Size(max = 20/*, message = "8자~20자, 영문,숫자,특수문자 중 2가지 이상 조합 확인"*/)
