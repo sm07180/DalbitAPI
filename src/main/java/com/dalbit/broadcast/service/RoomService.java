@@ -80,12 +80,19 @@ public class RoomService {
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("level", target.getLevel());
+            // 임의정보
+            returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+            returnMap.put("likes", 0);
+            returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+            returnMap.put("roomRole", 3);
+            returnMap.put("roleRight", "1111111111");
+            returnMap.put("isFan", false);
+            /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
             returnMap.put("expNext", target.getExpNext());
             returnMap.put("rubyCnt", target.getRubyCnt());
-            returnMap.put("goldCnt", target.getGoldCnt());
+            returnMap.put("goldCnt", target.getGoldCnt());*/
             procedureVo.setData(returnMap);
 
             if(!DalbitUtil.isEmpty(pRoomCreateVo.getBackgroundImage()) && !pRoomCreateVo.getBackgroundImage().startsWith("/default")){
@@ -153,12 +160,20 @@ public class RoomService {
             returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
             returnMap.put("gstProfImg", target.getGstProfImg());
             returnMap.put("remainTime", remainTime);
-            returnMap.put("level", target.getLevel());
+            // 임의정보
+            returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+            returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+            returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+            returnMap.put("roomRole", DalbitUtil.getIntMap(resultMap, "auth"));
+            returnMap.put("roleRight", DalbitUtil.getStringMap(resultMap, "controlRole"));
+            returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
+            returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
+            /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
             returnMap.put("expNext", target.getExpNext());
             returnMap.put("rubyCnt", target.getRubyCnt());
-            returnMap.put("goldCnt", target.getGoldCnt());
+            returnMap.put("goldCnt", target.getGoldCnt());*/
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
             log.info("returnMap: {}",returnMap);
             procedureVo.setData(returnMap);
