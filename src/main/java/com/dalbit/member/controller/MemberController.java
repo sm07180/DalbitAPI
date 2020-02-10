@@ -85,13 +85,21 @@ public class MemberController {
      */
     @PostMapping("member/signup")
     public String signup(@Valid JoinValidationVo joinValidationVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
+        
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
         String memType = joinValidationVo.getMemType();
         String memId = joinValidationVo.getMemId();
         String memPwd = joinValidationVo.getMemPwd();
+        String profImg = joinValidationVo.getProfImg();
+
+        if(DalbitUtil.isEmpty(profImg)){
+            profImg = "/profile_3/profile_"+joinValidationVo.getGender()+".jpg";
+        }else{
+            profImg = DalbitUtil.replacePath(profImg);
+        }
+        joinValidationVo.setProfImg(profImg);
 
         DeviceVo deviceVo = new DeviceVo(request);
         int os = deviceVo.getOs();

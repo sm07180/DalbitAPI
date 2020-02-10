@@ -52,7 +52,7 @@ public class RoomController {
         int bgGrade = DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy") < 0 ? 0 : DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy");
 
         if(DalbitUtil.isEmpty(bgImg)){
-            bgImg = "/default/roombg_" + (DalbitUtil.randomValue("number", 1)) + ".jpg";
+            bgImg = "/bg_3/roombg_" + (DalbitUtil.randomValue("number", 1)) + ".jpg";
         }else{
             bgImg = DalbitUtil.replacePath(bgImg);
         }
@@ -161,7 +161,7 @@ public class RoomController {
             bgImg = DalbitUtil.replacePath(bgImg);
             apiData.setBackgroundImage(bgImg);
         }
-        //apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));
+        apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));
         apiData.setBackgroundImageGrade(bgGrade);
         apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request, "welcomMsg"));
 

@@ -537,7 +537,7 @@ public class DalbitUtil {
      * 이미지 path 경로 치환
      */
     public static String replacePath(String path){
-        return path.replace("/temp", "");
+        return path.replace("_1/", "_0/");
     }
 
     /**
@@ -651,6 +651,11 @@ public class DalbitUtil {
      * 비밀번호 체크
      */
     public static Boolean isPasswordCheck(String password){
+
+        if(DalbitUtil.isEmpty(password)){
+            return true;
+        }
+
         boolean isPattern = false;
 
         String pwPattern_1 = "^[A-Za-z[0-9]]{8,20}$";                         //영문 + 숫자

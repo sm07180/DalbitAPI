@@ -17,7 +17,7 @@ public class JoinValidationVo {
     @NotBlank @Size(max = 25)
     private String memId;
 
-    /*@Password*/
+    @Password
     private String memPwd;
 
     @NotBlank @Size(max = 1)
