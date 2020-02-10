@@ -26,6 +26,12 @@ public class GlobalException extends Exception {
     public GlobalException(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
     }
+    public GlobalException(ErrorStatus errorStatus, Object data){
+        setErrorStatus(errorStatus);
+        setData(data);
+    }
+
+
     public GlobalException(Status status){
         setStatus(status);
     }

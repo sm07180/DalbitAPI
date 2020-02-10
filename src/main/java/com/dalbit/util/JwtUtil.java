@@ -1,24 +1,31 @@
 package com.dalbit.util;
 
 import com.dalbit.common.code.ErrorStatus;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.TokenVo;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 @Slf4j
 @Component
 public class JwtUtil {
 
+    @Autowired
+    HttpServletRequest request;
+    @Autowired
+    CommonService commonService;
+
     @Value("${spring.jwt.secret}")
     private String JWT_SECRET_KEY;
-    @Value("${sso.cookie.max.age}")
-    private long SSO_COOKIE_MAX_AGE;
 
     final String JWT_SEPARATOR = "@";
 
@@ -80,23 +87,33 @@ public class JwtUtil {
             return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(jwt);
         } catch (SignatureException ex) {
             log.error("Invalid JWT signature");
-            throw new GlobalException(ErrorStatus.토큰검증오류);
+            throwGlobalException(ErrorStatus.토큰검증오류);
 
         } catch (MalformedJwtException ex) {
             log.error("Invalid JWT token");
-            throw new GlobalException(ErrorStatus.토큰검증오류);
+            throwGlobalException(ErrorStatus.토큰검증오류);
 
         } catch (ExpiredJwtException ex) {
             log.error("Expired JWT token");
-            throw new GlobalException(ErrorStatus.토큰만료오류);
+            throwGlobalException(ErrorStatus.토큰만료오류);
 
         } catch (UnsupportedJwtException ex) {
             log.error("Unsupported JWT token");
-            throw new GlobalException(ErrorStatus.토큰검증오류);
+            throwGlobalException(ErrorStatus.토큰검증오류);
 
         } catch (IllegalArgumentException ex) {
             log.error("JWT claims string is empty.");
-            throw new GlobalException(ErrorStatus.토큰검증오류);
+            throwGlobalException(ErrorStatus.토큰검증오류);
         }
+
+        return null;
+    }
+
+    private void throwGlobalException(ErrorStatus errorStatus) throws GlobalException{
+        if(request.getRequestURI().startsWith("/token")){
+            HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
+            throw new GlobalException(errorStatus, result.get("tokenVo"));
+        }
+        throw new GlobalException(errorStatus);
     }
 }
