@@ -192,7 +192,10 @@ public class RoomService {
         } else if (procedureVo.getRet().equals(Status.방송참여_나이제한.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_나이제한)));
         } else if (procedureVo.getRet().equals(Status.방송참여_강퇴시간제한.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_강퇴시간제한)));
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap data = new HashMap();
+            data.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송참여_강퇴시간제한, data)));
         } else {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방참가실패)));
         }
