@@ -3,14 +3,11 @@ package com.dalbit.member.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.BroadBasicOutVo;
 import com.dalbit.member.vo.MemberInfoOutVo;
-import com.dalbit.member.vo.MemberShortCutOutVo;
-import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
@@ -19,7 +16,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
