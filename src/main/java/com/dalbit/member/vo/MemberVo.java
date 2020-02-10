@@ -2,8 +2,10 @@ package com.dalbit.member.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+@Slf4j
 @Getter
 @Setter
 public class MemberVo extends ProfileInfoOutVo {
@@ -11,7 +13,12 @@ public class MemberVo extends ProfileInfoOutVo {
     private static final long serialVersionUID = 1L;
 
     public static String getMyMemNo() {
-        return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        try{
+            return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (Exception e){
+            log.warn("MemberVo.getMyMemNo() return null : {}", e.getMessage());
+            return null;
+        }
     }
 
     private String memSlct;

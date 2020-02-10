@@ -488,7 +488,7 @@ public class DalbitUtil {
     }
 
     public static boolean isLogin(){
-        return !("anonymousUser".equals(MemberVo.getMyMemNo()) || MemberVo.getMyMemNo().startsWith("8"));
+        return !(DalbitUtil.isEmpty(MemberVo.getMyMemNo()) || "anonymousUser".equals(MemberVo.getMyMemNo()) || MemberVo.getMyMemNo().startsWith("8"));
     }
 
 

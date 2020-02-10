@@ -19,6 +19,8 @@ public enum Status {
     로그인실패_패스워드틀림("-1", "login.fail", "로그인 실패 시 - 아이디/비밀번호가 틀릴 시"),
     로그인실패_파라메터이상("-2", "login.param.error", "로그인 실패 시 - 파라메터이상"),
 
+    로그아웃성공("0", "logout.success", "로그아웃 성공 시"),
+
     //회원가입
     회원가입안됨("1","member.join.not", "회원가입 안된 상태 시"),
     회원가입성공("0", "member.join.success", "회원가입 성공 시"),
