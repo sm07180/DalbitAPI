@@ -94,7 +94,7 @@ public class MypageController {
      * 회원 정보 조회
      */
     @GetMapping("")
-    public String memberInfo(HttpServletRequest request){
+    public String memberInfo(){
         P_MemberInfoVo apiData = new P_MemberInfoVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
