@@ -15,7 +15,6 @@ public class ChangePwValidationVo {
     @Size(max = 25)
     private String memId;
 
-    @NotBlank
     @Password
     private String memPwd;
 }

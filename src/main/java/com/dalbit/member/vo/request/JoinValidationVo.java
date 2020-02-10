@@ -17,7 +17,7 @@ public class JoinValidationVo {
     @NotBlank @Size(max = 25)
     private String memId;
 
-    @NotBlank @Password
+    @Password
     private String memPwd;
 
     @NotBlank @Size(max = 1)
@@ -36,6 +36,6 @@ public class JoinValidationVo {
     private String name;
 
     private String profImg;
-    private String profImgRacy;
+    private String profImgRacy="0";
     private String email;
 }
