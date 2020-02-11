@@ -21,6 +21,8 @@ public class LoginUtil {
 
     @Value("${spring.session.memberInfo.key}")
     String SPRING_SESSION_MEMBERINFO_KEY;
+    @Value("${spring.security.session.name}")
+    String SPRING_SECURITY_SESSION_NAME;
 
     public void saveSecuritySession(HttpServletRequest request, UserDetails userDetails){
         if (userDetails != null) {
@@ -38,7 +40,7 @@ public class LoginUtil {
                 securityContext.setAuthentication(authentication);
 
                 HttpSession session = request.getSession(true);
-                session.setAttribute("SPRING_SECURITY_CONTEXT", securityContext);
+                session.setAttribute(SPRING_SECURITY_SESSION_NAME, securityContext);
                 session.setAttribute(SPRING_SESSION_MEMBERINFO_KEY, securityUserVo.getMemberVo());
             }
         }
