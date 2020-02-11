@@ -19,6 +19,7 @@ import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.request.ChangePwValidationVo;
 import com.dalbit.member.vo.request.JoinValidationVo;
+import com.dalbit.member.vo.request.NickNmDupleCheckValidaionVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
@@ -174,13 +175,14 @@ public class MemberController {
      * 닉네임 중복체크
      */
     @GetMapping("member/nick")
-    public String nick(HttpServletRequest request){
+    public String nick(@Valid NickNmDupleCheckValidaionVo nickNmDupleCheckValidaionVo, BindingResult bindingResult) throws GlobalException{
 
-        String nickNm = DalbitUtil.convertRequestParamToString(request,"nickNm");
-        if(DalbitUtil.isEmpty(nickNm) || nickNm.length() > 20){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
-        }
-        return memberService.callNickNameCheck(new ProcedureVo(nickNm));
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckValidaionVo.getNickNm()));
+
+        return result;
     }
 
 
