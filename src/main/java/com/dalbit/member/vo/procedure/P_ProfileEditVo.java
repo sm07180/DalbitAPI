@@ -16,5 +16,6 @@ public class P_ProfileEditVo {
     private String profileImage;                   //프로필이미지 패스
     private Integer profileImageGrade;             //프로필이미지 구글 선정성
     private String profileMsg;                     //메시지
+    private String profImgDel;
 
 }

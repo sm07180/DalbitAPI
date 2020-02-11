@@ -95,7 +95,7 @@ public class RoomService {
             returnMap.put("goldCnt", target.getGoldCnt());*/
             procedureVo.setData(returnMap);
 
-            if(!DalbitUtil.isEmpty(pRoomCreateVo.getBackgroundImage()) && !pRoomCreateVo.getBackgroundImage().startsWith("/bg_3")){
+            if(pRoomCreateVo.getBackgroundImage().startsWith("/bg_1")){
                 try{
                     restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
                 }catch (GlobalException e){
@@ -260,7 +260,7 @@ public class RoomService {
                     delImg = null;
                 }
                 try{
-                    restService.imgDone("/bg_1" + pRoomEditVo.getBackgroundImage(), delImg);
+                    restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
                 }catch (GlobalException e){
                     //TODO 이미지 서버 오류 시 처리
                     e.printStackTrace();

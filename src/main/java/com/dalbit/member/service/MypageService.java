@@ -4,11 +4,13 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberShortCutOutVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.BroadBasicOutVo;
 import com.dalbit.member.vo.MemberInfoOutVo;
+import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
@@ -34,6 +36,8 @@ public class MypageService {
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
+    @Autowired
+    RestService restService;
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
@@ -45,6 +49,14 @@ public class MypageService {
         mypageDao.callProfileEdit(procedureVo);
         String result;
         if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
+            if(pProfileEditVo.getProfileImage().startsWith("/profile_1")){
+                try{
+                    restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
+                }catch (GlobalException e){
+                    //TODO 이미지 서버 오류 시 처리
+                    e.printStackTrace();
+                }
+            }
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집성공)));
         } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.프로필편집실패_닉네임중복)));

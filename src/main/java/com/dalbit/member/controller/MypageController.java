@@ -54,9 +54,17 @@ public class MypageController {
         apiData.setBirthYear(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
         apiData.setBirthMonth(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
         apiData.setBirthDay(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
-        apiData.setProfileImage(profileEditValidationVo.getProfImg());
+
+        String profImg = profileEditValidationVo.getProfImg();
+        if(DalbitUtil.isEmpty(profImg)){
+            profImg = "/profile_3/profile_"+profileEditValidationVo.getGender()+".jpg";
+        }else{
+            profImg = DalbitUtil.replacePath(profImg);
+        }
+        apiData.setProfileImage(profImg);
         apiData.setProfileImageGrade(profileEditValidationVo.getProfImgRacy());
         apiData.setProfileMsg(profileEditValidationVo.getProfMsg());
+        apiData.setProfImgDel(profileEditValidationVo.getProfImgDel());
 
         String result = mypageService.callProfileEdit(apiData);
         return result;

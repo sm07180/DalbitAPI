@@ -20,7 +20,7 @@ public class ImageVo extends BaseVo{
     public ImageVo(Object path, String gender, String photoServerUrl){
         if(gender != null){
             if(path == null){
-                this.url = photoServerUrl + "/default/profile_" + gender + ".jpg";
+                this.url = photoServerUrl + "/profile_3/profile_"+gender+".jpg";
                 setThumbs();
             }else{
                 setPath(path.toString(), photoServerUrl);
