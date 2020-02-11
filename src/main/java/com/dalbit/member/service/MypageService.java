@@ -46,11 +46,22 @@ public class MypageService {
      * 프로필 편집
      */
     public String callProfileEdit(P_ProfileEditVo pProfileEditVo) {
+        Boolean isDone = false;
+        String profImg = pProfileEditVo.getProfileImage();
+        if(DalbitUtil.isEmpty(profImg)){
+            profImg = Code.포토_프로필_디폴트_PREFIX+"/"+Code.프로필이미지_파일명_PREFIX+pProfileEditVo.getMemSex()+".jpg";
+        }else{
+            if(profImg.startsWith(Code.포토_프로필_임시_PREFIX.getCode())){
+                isDone = true;
+            }
+            profImg = DalbitUtil.replacePath(profImg);
+        }
+        pProfileEditVo.setProfileImage(profImg);
         ProcedureVo procedureVo = new ProcedureVo(pProfileEditVo);
         mypageDao.callProfileEdit(procedureVo);
         String result;
         if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
-            if(pProfileEditVo.getProfileImage().startsWith(Code.포토_프로필_임시_PREFIX.getCode())){
+            if(isDone){
                 try{
                     restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
                 }catch (GlobalException e){

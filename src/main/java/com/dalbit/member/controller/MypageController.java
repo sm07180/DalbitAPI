@@ -55,14 +55,7 @@ public class MypageController {
         apiData.setBirthYear(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
         apiData.setBirthMonth(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
         apiData.setBirthDay(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
-
-        String profImg = profileEditVo.getProfImg();
-        if(DalbitUtil.isEmpty(profImg)){
-            profImg = Code.포토_프로필_디폴트_PREFIX+"/"+Code.프로필이미지_파일명_PREFIX+profileEditVo.getGender()+".jpg";
-        }else{
-            profImg = DalbitUtil.replacePath(profImg);
-        }
-        apiData.setProfileImage(profImg);
+        apiData.setProfileImage(profileEditVo.getProfImg());
         apiData.setProfileImageGrade(profileEditVo.getProfImgRacy());
         apiData.setProfileMsg(profileEditVo.getProfMsg());
         apiData.setProfImgDel(profileEditVo.getProfImgDel());

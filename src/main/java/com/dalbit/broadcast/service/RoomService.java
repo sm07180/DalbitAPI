@@ -48,9 +48,20 @@ public class RoomService {
      * 방송방 생성
      */
     public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo) {
+        String bgImg = pRoomCreateVo.getBackgroundImage();
+        Boolean isDone = false;
+        if(DalbitUtil.isEmpty(bgImg)){
+            bgImg = Code.포토_배경_디폴트_PREFIX+"/"+Code.배경이미지_파일명_PREFIX + (DalbitUtil.randomValue("number", 1)) + ".jpg";
+        }else{
+            if(bgImg.startsWith(Code.포토_배경_임시_PREFIX.getCode())){
+                isDone = true;
+            }
+            bgImg = DalbitUtil.replacePath(bgImg);
+        }
+
+        pRoomCreateVo.setBackgroundImage(bgImg);
         ProcedureVo procedureVo = new ProcedureVo(pRoomCreateVo);
         roomDao.callBroadCastRoomCreate(procedureVo);
-
         String result;
         if(procedureVo.getRet().equals(Status.방송생성.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
@@ -96,7 +107,7 @@ public class RoomService {
             returnMap.put("goldCnt", target.getGoldCnt());*/
             procedureVo.setData(returnMap);
 
-            if(pRoomCreateVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
+            if(isDone){
                 try{
                     restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
                 }catch (GlobalException e){
@@ -246,6 +257,12 @@ public class RoomService {
      * 방송방 정보 수정
      */
     public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) {
+        Boolean isDone = false;
+        if(pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
+            isDone = true;
+        }
+        pRoomEditVo.setBackgroundImage(DalbitUtil.replacePath(pRoomEditVo.getBackgroundImage()));
+
         ProcedureVo procedureVo = new ProcedureVo(pRoomEditVo);
         roomDao.callBroadCastRoomEdit(procedureVo);
 
@@ -255,7 +272,7 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
-            if(pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
+            if(isDone){
                 String delImg = pRoomEditVo.getBackgroundImageDelete();
                 if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                     delImg = null;
@@ -267,7 +284,6 @@ public class RoomService {
                     e.printStackTrace();
                 }
             }
-
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정성공)));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송정보수정_회원아님)));

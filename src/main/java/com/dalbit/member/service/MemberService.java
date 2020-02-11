@@ -1,13 +1,17 @@
 package com.dalbit.member.service;
 
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
+import com.dalbit.rest.service.RestService;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +38,8 @@ public class MemberService {
     MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
+    @Autowired
+    RestService restService;
 
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
@@ -48,8 +54,25 @@ public class MemberService {
      * 회원 가입
      */
     public ProcedureVo signup(P_JoinVo pLoginVo) {
+
+        String profImg = pLoginVo.getProfileImage();
+        Boolean isDone = false;
+        if(profImg.startsWith(Code.포토_프로필_임시_PREFIX.getCode())){
+            isDone = true;
+        }
+        pLoginVo.setProfileImage(DalbitUtil.replacePath(profImg));
         ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
         memberDao.callMemberJoin(procedureVo);
+
+        if(isDone){
+            try{
+                restService.imgDone(DalbitUtil.replaceDonePath(pLoginVo.getProfileImage()));
+            }catch (GlobalException e){
+                //TODO 이미지 서버 오류 시 처리
+                e.printStackTrace();
+            }
+        }
+
         return procedureVo;
     }
 

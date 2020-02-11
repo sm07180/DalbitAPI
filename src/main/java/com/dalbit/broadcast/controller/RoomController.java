@@ -49,20 +49,13 @@ public class RoomController {
         log.info("bj_publishToken: {}", publishToken);
         log.info("bj_playToken: {}", playToken);
 
-        String bgImg = DalbitUtil.convertRequestParamToString(request, "bgImg");
         int bgGrade = DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy") < 0 ? 0 : DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy");
-
-        if(DalbitUtil.isEmpty(bgImg)){
-            bgImg = Code.포토_배경_디폴트_PREFIX+"/"+Code.배경이미지_파일명_PREFIX + (DalbitUtil.randomValue("number", 1)) + ".jpg";
-        }else{
-            bgImg = DalbitUtil.replacePath(bgImg);
-        }
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
-        apiData.setBackgroundImage(bgImg);
+        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request, "bgImg"));
         apiData.setBackgroundImageGrade(bgGrade);
         apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"welcomMsg"));
         apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
@@ -159,7 +152,6 @@ public class RoomController {
         apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
         apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
         if(!DalbitUtil.isEmpty(bgImg)){
-            bgImg = DalbitUtil.replacePath(bgImg);
             apiData.setBackgroundImage(bgImg);
         }
         apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));

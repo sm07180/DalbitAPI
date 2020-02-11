@@ -98,8 +98,6 @@ public class MemberController {
 
         if(DalbitUtil.isEmpty(profImg)){
             profImg = Code.포토_프로필_디폴트_PREFIX+"/"+Code.프로필이미지_파일명_PREFIX+signUpVo.getGender()+".jpg";
-        }else{
-            profImg = DalbitUtil.replacePath(profImg);
         }
         signUpVo.setProfImg(profImg);
 
