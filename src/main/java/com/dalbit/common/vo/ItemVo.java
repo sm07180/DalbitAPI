@@ -8,17 +8,17 @@ import lombok.Setter;
 public class ItemVo {
     private String itemNo;
     private String itemNm;
-    private String type;
     private int cost;
     private String thumbs;
-    private String url;
+    private String webpUrl;
+    private String lottieUrl;
 
-    public ItemVo(String itemNo, String itemNm, String type, int cost, String thumbs, String url){
+    public ItemVo(String itemNo, String itemNm, int cost, String thumbs, String webpUrl, String lottieUrl){
         this.itemNm = itemNm;
         this.itemNo = itemNo;
         this.thumbs = thumbs;
         this.cost = cost;
-        this.type = type;
-        this.url = url;
+        this.webpUrl = webpUrl;
+        this.lottieUrl = lottieUrl;
     }
 }
