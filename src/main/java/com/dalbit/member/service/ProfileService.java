@@ -180,8 +180,8 @@ public class ProfileService {
     /**
      * 팬보드 대댓글 조회하기
      */
-    public String callMemberFanboardReply(P_FanboardReplyVo p_FanboardReplyVo) {
-        ProcedureVo procedureVo = new ProcedureVo(p_FanboardReplyVo);
+    public String callMemberFanboardReply(P_FanboardReplyVo pFanboardReplyVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanboardReplyVo);
         List<P_FanboardReplyVo> fanboardVoReplyList = profileDao.callMemberFanboardReply(procedureVo);
 
 

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 @Getter @Setter
-public class FanboardViewValidaionVo {
+public class FanboardViewVo {
 
     @NotBlank
     @Size(min = 14, max = 14)

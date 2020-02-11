@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class ChangePwValidationVo {
+public class ChangePwVo {
 
     @NotBlank
     @Size(max = 25)

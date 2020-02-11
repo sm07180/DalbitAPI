@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class JoinValidationVo {
+public class SignUpVo {
 
     @NotBlank @Size(max = 1)
     private String memType;

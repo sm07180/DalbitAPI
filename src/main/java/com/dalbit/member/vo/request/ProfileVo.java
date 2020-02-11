@@ -8,7 +8,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
-public class ProfileValidaionVo {
+public class ProfileVo {
 
     @NotBlank @Size(min = 14, max = 14)
     private String memNo;

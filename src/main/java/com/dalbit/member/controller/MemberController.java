@@ -17,9 +17,9 @@ import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
-import com.dalbit.member.vo.request.ChangePwValidationVo;
-import com.dalbit.member.vo.request.JoinValidationVo;
-import com.dalbit.member.vo.request.NickNmDupleCheckValidaionVo;
+import com.dalbit.member.vo.request.ChangePwVo;
+import com.dalbit.member.vo.request.SignUpVo;
+import com.dalbit.member.vo.request.NickNmDupleCheckVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
@@ -85,22 +85,22 @@ public class MemberController {
      * 회원가입
      */
     @PostMapping("member/signup")
-    public String signup(@Valid JoinValidationVo joinValidationVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String signup(@Valid SignUpVo signUpVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
-        String memType = joinValidationVo.getMemType();
-        String memId = joinValidationVo.getMemId();
-        String memPwd = joinValidationVo.getMemPwd();
-        String profImg = joinValidationVo.getProfImg();
+        String memType = signUpVo.getMemType();
+        String memId = signUpVo.getMemId();
+        String memPwd = signUpVo.getMemPwd();
+        String profImg = signUpVo.getProfImg();
 
         if(DalbitUtil.isEmpty(profImg)){
-            profImg = "/profile_3/profile_"+joinValidationVo.getGender()+".jpg";
+            profImg = "/profile_3/profile_"+ signUpVo.getGender()+".jpg";
         }else{
             profImg = DalbitUtil.replacePath(profImg);
         }
-        joinValidationVo.setProfImg(profImg);
+        signUpVo.setProfImg(profImg);
 
         DeviceVo deviceVo = new DeviceVo(request);
         int os = deviceVo.getOs();
@@ -113,7 +113,7 @@ public class MemberController {
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
         P_JoinVo joinVo = new P_JoinVo(
-                joinValidationVo
+                signUpVo
                 , os
                 , deviceId
                 , deviceToken
@@ -175,12 +175,12 @@ public class MemberController {
      * 닉네임 중복체크
      */
     @GetMapping("member/nick")
-    public String nick(@Valid NickNmDupleCheckValidaionVo nickNmDupleCheckValidaionVo, BindingResult bindingResult) throws GlobalException{
+    public String nick(@Valid NickNmDupleCheckVo nickNmDupleCheckVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
-        String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckValidaionVo.getNickNm()));
+        String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckVo.getNickNm()));
 
         return result;
     }
@@ -191,14 +191,14 @@ public class MemberController {
      * 비밀번호 변경
      */
     @PostMapping("member/pwd")
-    public String pwd(@Valid ChangePwValidationVo changePwValidationVo, BindingResult bindingResult) throws GlobalException{
+    public String pwd(@Valid ChangePwVo changePwVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_ChangePasswordVo pChangePasswordVo = new P_ChangePasswordVo();
-        pChangePasswordVo.setPhoneNo(changePwValidationVo.getMemId());
-        pChangePasswordVo.setPassword(changePwValidationVo.getMemPwd());
+        pChangePasswordVo.setPhoneNo(changePwVo.getMemId());
+        pChangePasswordVo.setPassword(changePwVo.getMemPwd());
 
         String result = memberService.callChangePassword(pChangePasswordVo);
 

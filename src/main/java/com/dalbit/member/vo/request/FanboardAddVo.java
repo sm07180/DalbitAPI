@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.validation.constraints.*;
 
 @Getter @Setter
-public class FanboardAddValidaionVo {
+public class FanboardAddVo {
 
     @NotBlank @Size(min = 14, max = 14)
     private String memNo;

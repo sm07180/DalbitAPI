@@ -40,7 +40,7 @@ public class MypageController {
      * 프로필편집
      */
     @PostMapping("/profile")
-    public String editProfile(@Valid ProfileEditValidationVo profileEditValidationVo, BindingResult bindingResult) throws GlobalException {
+    public String editProfile(@Valid ProfileEditVo profileEditVo, BindingResult bindingResult) throws GlobalException {
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
@@ -48,23 +48,23 @@ public class MypageController {
         P_ProfileEditVo apiData = new P_ProfileEditVo();
 
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setMemSex(profileEditValidationVo.getGender());
-        apiData.setNickName(profileEditValidationVo.getNickNm());
-        apiData.setName(profileEditValidationVo.getName());
-        apiData.setBirthYear(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
-        apiData.setBirthMonth(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
-        apiData.setBirthDay(LocalDate.parse(profileEditValidationVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
+        apiData.setMemSex(profileEditVo.getGender());
+        apiData.setNickName(profileEditVo.getNickNm());
+        apiData.setName(profileEditVo.getName());
+        apiData.setBirthYear(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
+        apiData.setBirthMonth(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
+        apiData.setBirthDay(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
 
-        String profImg = profileEditValidationVo.getProfImg();
+        String profImg = profileEditVo.getProfImg();
         if(DalbitUtil.isEmpty(profImg)){
-            profImg = "/profile_3/profile_"+profileEditValidationVo.getGender()+".jpg";
+            profImg = "/profile_3/profile_"+ profileEditVo.getGender()+".jpg";
         }else{
             profImg = DalbitUtil.replacePath(profImg);
         }
         apiData.setProfileImage(profImg);
-        apiData.setProfileImageGrade(profileEditValidationVo.getProfImgRacy());
-        apiData.setProfileMsg(profileEditValidationVo.getProfMsg());
-        apiData.setProfImgDel(profileEditValidationVo.getProfImgDel());
+        apiData.setProfileImageGrade(profileEditVo.getProfImgRacy());
+        apiData.setProfileMsg(profileEditVo.getProfMsg());
+        apiData.setProfImgDel(profileEditVo.getProfImgDel());
 
         String result = mypageService.callProfileEdit(apiData);
         return result;

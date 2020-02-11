@@ -1,17 +1,13 @@
 package com.dalbit.member.vo.procedure;
 
 import com.dalbit.common.vo.BaseVo;
-import com.dalbit.member.vo.request.JoinValidationVo;
+import com.dalbit.member.vo.request.SignUpVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
 
 @Getter
 @Setter
@@ -19,24 +15,24 @@ public class P_JoinVo extends BaseVo {
 
     public P_JoinVo(){}
 
-    public P_JoinVo(JoinValidationVo joinValidationVo
+    public P_JoinVo(SignUpVo signUpVo
         , int os , String deviceUuid , String deviceToken , String appVersion , String adId, String location, String ip){
 
-        setMemSlct(joinValidationVo.getMemType());
-        setId(joinValidationVo.getMemId());
-        setPw(joinValidationVo.getMemPwd());
-        setMemSex(joinValidationVo.getGender());
-        setNickName(joinValidationVo.getNickNm());
-        setBirth(joinValidationVo.getBirth());
-        setTerms1(joinValidationVo.getTerm1());
-        setTerms2(joinValidationVo.getTerm2());
-        setTerms3(joinValidationVo.getTerm3());
-        setTerms4(joinValidationVo.getTerm4());
-        setTerms5(joinValidationVo.getTerm5());
-        setName(joinValidationVo.getName());
-        setProfileImage(joinValidationVo.getProfImg());
-        setProfileImageGrade(joinValidationVo.getProfImgRacy());
-        setEmail(joinValidationVo.getEmail());
+        setMemSlct(signUpVo.getMemType());
+        setId(signUpVo.getMemId());
+        setPw(signUpVo.getMemPwd());
+        setMemSex(signUpVo.getGender());
+        setNickName(signUpVo.getNickNm());
+        setBirth(signUpVo.getBirth());
+        setTerms1(signUpVo.getTerm1());
+        setTerms2(signUpVo.getTerm2());
+        setTerms3(signUpVo.getTerm3());
+        setTerms4(signUpVo.getTerm4());
+        setTerms5(signUpVo.getTerm5());
+        setName(signUpVo.getName());
+        setProfileImage(signUpVo.getProfImg());
+        setProfileImageGrade(signUpVo.getProfImgRacy());
+        setEmail(signUpVo.getEmail());
         setOs(os);
         setDeviceUuid(deviceUuid);
         setDeviceToken(deviceToken);

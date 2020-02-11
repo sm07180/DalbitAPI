@@ -14,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -35,13 +34,13 @@ public class ProfileController {
      * 정보 조회
      */
     @GetMapping("")
-    public String memberInfo(@Valid ProfileValidaionVo profileValidaionVo, BindingResult bindingResult) throws GlobalException {
+    public String memberInfo(@Valid ProfileVo profileVo, BindingResult bindingResult) throws GlobalException {
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
         int memLogin = DalbitUtil.isLogin() ? 1 : 0;
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), profileValidaionVo.getMemNo());
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), profileVo.getMemNo());
 
         String result = profileService.callMemberInfo(apiData);
 
@@ -52,19 +51,19 @@ public class ProfileController {
      * 회원 팬보드 등록하기
      */
     @PostMapping("/board")
-    public String fanboardAdd(@Valid FanboardAddValidaionVo fanboardAddValidaionVo, BindingResult bindingResult) throws GlobalException{
+    public String fanboardAdd(@Valid FanboardAddVo fanboardAddVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_FanboardAddVo fanboardAddVo = new P_FanboardAddVo();
-        fanboardAddVo.setStar_mem_no(fanboardAddValidaionVo.getMemNo());
-        fanboardAddVo.setWriter_mem_no(MemberVo.getMyMemNo());
-        fanboardAddVo.setDepth(fanboardAddValidaionVo.getDepth());
-        fanboardAddVo.setBoard_no(fanboardAddValidaionVo.getBoardNo());
-        fanboardAddVo.setContents(fanboardAddValidaionVo.getContent());
+        P_FanboardAddVo pFanboardAddVo = new P_FanboardAddVo();
+        pFanboardAddVo.setStar_mem_no(fanboardAddVo.getMemNo());
+        pFanboardAddVo.setWriter_mem_no(MemberVo.getMyMemNo());
+        pFanboardAddVo.setDepth(fanboardAddVo.getDepth());
+        pFanboardAddVo.setBoard_no(fanboardAddVo.getBoardNo());
+        pFanboardAddVo.setContents(fanboardAddVo.getContent());
 
-        String result = profileService.callMemberFanboardAdd(fanboardAddVo);
+        String result = profileService.callMemberFanboardAdd(pFanboardAddVo);
 
         return result;
     }
@@ -73,17 +72,17 @@ public class ProfileController {
      * 회원 팬보드 목록조회
      */
     @GetMapping("/board")
-    public String fanboardList(@Valid FanboardViewValidaionVo fanboardViewValidaionVo, BindingResult bindingResult) throws GlobalException{
+    public String fanboardList(@Valid FanboardViewVo fanboardViewVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
-        int pageNo = DalbitUtil.isEmpty(fanboardViewValidaionVo.getPage()) ? 1 : fanboardViewValidaionVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(fanboardViewValidaionVo.getRecords()) ? 5 : fanboardViewValidaionVo.getRecords();
+        int pageNo = DalbitUtil.isEmpty(fanboardViewVo.getPage()) ? 1 : fanboardViewVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(fanboardViewVo.getRecords()) ? 5 : fanboardViewVo.getRecords();
 
         P_FanboardListVo fanboardListVo = new P_FanboardListVo();
         fanboardListVo.setMem_no(MemberVo.getMyMemNo());
-        fanboardListVo.setStar_mem_no(fanboardViewValidaionVo.getMemNo());
+        fanboardListVo.setStar_mem_no(fanboardViewVo.getMemNo());
         fanboardListVo.setPageNo(pageNo);
         fanboardListVo.setPageCnt(pageCnt);
 
@@ -96,15 +95,15 @@ public class ProfileController {
      * 회원 팬보드 삭제하기
      */
     @DeleteMapping("/board")
-    public String fanboardDelete(@Valid FanboardDeleteValidaionVo fanboardDeleteValidaionVo, BindingResult bindingResult) throws GlobalException{
+    public String fanboardDelete(@Valid FanboardDelVo fanboardDelVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_FanboardDeleteVo fanboardDeleteVo = new P_FanboardDeleteVo();
-        fanboardDeleteVo.setStar_mem_no(fanboardDeleteValidaionVo.getMemNo());
+        fanboardDeleteVo.setStar_mem_no(fanboardDelVo.getMemNo());
         fanboardDeleteVo.setDelete_mem_no(MemberVo.getMyMemNo());
-        fanboardDeleteVo.setBoard_idx(fanboardDeleteValidaionVo.getBoardIdx());
+        fanboardDeleteVo.setBoard_idx(fanboardDelVo.getBoardIdx());
 
         String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
         return result;
@@ -114,17 +113,17 @@ public class ProfileController {
      * 회원 팬보드 대댓글 조회하기
      */
     @GetMapping("/board/reply")
-    public String fanboardReply(@Valid FanboardReplyValidaionVo fanboardReplyValidaionVo, BindingResult bindingResult) throws GlobalException{
+    public String fanboardReply(@Valid FanboardReplyVo fanboardReplyVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_FanboardReplyVo fanboardReplyVo = new P_FanboardReplyVo();
-        fanboardReplyVo.setMem_no(MemberVo.getMyMemNo());
-        fanboardReplyVo.setStar_mem_no(fanboardReplyValidaionVo.getMemNo());
-        fanboardReplyVo.setBoard_no(fanboardReplyValidaionVo.getBoardNo());
+        P_FanboardReplyVo pFanboardReplyVo = new P_FanboardReplyVo();
+        pFanboardReplyVo.setMem_no(MemberVo.getMyMemNo());
+        pFanboardReplyVo.setStar_mem_no(fanboardReplyVo.getMemNo());
+        pFanboardReplyVo.setBoard_no(fanboardReplyVo.getBoardNo());
 
-        String result = profileService.callMemberFanboardReply(fanboardReplyVo);
+        String result = profileService.callMemberFanboardReply(pFanboardReplyVo);
         return result;
 
     }
