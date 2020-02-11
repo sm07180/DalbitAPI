@@ -5,7 +5,7 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
-import com.dalbit.member.vo.request.ProfileValidaionVo;
+import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
@@ -52,14 +52,17 @@ public class ProfileController {
      * 회원 팬보드 등록하기
      */
     @PostMapping("/board")
-    public String fanboardAdd(HttpServletRequest request){
+    public String fanboardAdd(@Valid FanboardAddValidaionVo fanboardAddValidaionVo, BindingResult bindingResult) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
 
         P_FanboardAddVo fanboardAddVo = new P_FanboardAddVo();
-        fanboardAddVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        fanboardAddVo.setStar_mem_no(fanboardAddValidaionVo.getMemNo());
         fanboardAddVo.setWriter_mem_no(MemberVo.getMyMemNo());
-        fanboardAddVo.setDepth(DalbitUtil.convertRequestParamToInteger(request, "depth"));
-        fanboardAddVo.setBoard_no(DalbitUtil.convertRequestParamToInteger(request, "boardNo"));
-        fanboardAddVo.setContents(DalbitUtil.convertRequestParamToString(request, "content"));
+        fanboardAddVo.setDepth(fanboardAddValidaionVo.getDepth());
+        fanboardAddVo.setBoard_no(fanboardAddValidaionVo.getBoardNo());
+        fanboardAddVo.setContents(fanboardAddValidaionVo.getContent());
 
         String result = profileService.callMemberFanboardAdd(fanboardAddVo);
 
@@ -70,13 +73,19 @@ public class ProfileController {
      * 회원 팬보드 목록조회
      */
     @GetMapping("/board")
-    public String fanboardList(HttpServletRequest request){
+    public String fanboardList(@Valid FanboardViewValidaionVo fanboardViewValidaionVo, BindingResult bindingResult) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        int pageNo = DalbitUtil.isEmpty(fanboardViewValidaionVo.getPage()) ? 1 : fanboardViewValidaionVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(fanboardViewValidaionVo.getRecords()) ? 5 : fanboardViewValidaionVo.getRecords();
 
         P_FanboardListVo fanboardListVo = new P_FanboardListVo();
         fanboardListVo.setMem_no(MemberVo.getMyMemNo());
-        fanboardListVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        fanboardListVo.setPageNo(DalbitUtil.convertRequestParamToInteger(request, "page"));
-        fanboardListVo.setPageCnt(DalbitUtil.convertRequestParamToInteger(request, "records"));
+        fanboardListVo.setStar_mem_no(fanboardViewValidaionVo.getMemNo());
+        fanboardListVo.setPageNo(pageNo);
+        fanboardListVo.setPageCnt(pageCnt);
 
         String result = profileService.callMemberFanboardList(fanboardListVo);
 
@@ -87,12 +96,15 @@ public class ProfileController {
      * 회원 팬보드 삭제하기
      */
     @DeleteMapping("/board")
-    public String fanboardDelete(HttpServletRequest request){
+    public String fanboardDelete(@Valid FanboardDeleteValidaionVo fanboardDeleteValidaionVo, BindingResult bindingResult) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
 
         P_FanboardDeleteVo fanboardDeleteVo = new P_FanboardDeleteVo();
-        fanboardDeleteVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        fanboardDeleteVo.setDelete_mem_no(MemberVo.getMyMemNo());  // 물어보기
-        fanboardDeleteVo.setBoard_idx(DalbitUtil.convertRequestParamToInteger(request, "boardIdx"));
+        fanboardDeleteVo.setStar_mem_no(fanboardDeleteValidaionVo.getMemNo());
+        fanboardDeleteVo.setDelete_mem_no(MemberVo.getMyMemNo());
+        fanboardDeleteVo.setBoard_idx(fanboardDeleteValidaionVo.getBoardIdx());
 
         String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
         return result;
@@ -102,12 +114,15 @@ public class ProfileController {
      * 회원 팬보드 대댓글 조회하기
      */
     @GetMapping("/board/reply")
-    public String fanboardReply(HttpServletRequest request){
+    public String fanboardReply(@Valid FanboardReplyValidaionVo fanboardReplyValidaionVo, BindingResult bindingResult) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
 
         P_FanboardReplyVo fanboardReplyVo = new P_FanboardReplyVo();
         fanboardReplyVo.setMem_no(MemberVo.getMyMemNo());
-        fanboardReplyVo.setStar_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        fanboardReplyVo.setBoard_no(DalbitUtil.convertRequestParamToInteger(request, "boardNo"));
+        fanboardReplyVo.setStar_mem_no(fanboardReplyValidaionVo.getMemNo());
+        fanboardReplyVo.setBoard_no(fanboardReplyValidaionVo.getBoardNo());
 
         String result = profileService.callMemberFanboardReply(fanboardReplyVo);
         return result;

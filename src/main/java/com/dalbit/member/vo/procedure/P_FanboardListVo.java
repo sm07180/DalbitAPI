@@ -12,8 +12,8 @@ public class P_FanboardListVo {
     /* Input */
     private String mem_no;          // 팬보드 댓글 리스트 요청 회원번호
     private String star_mem_no;     // 팬보드 스타 회원번호
-    private int pageNo;             // 페이징 현재 번호
-    private int pageCnt;            // 페이징 당 개수
+    private Integer pageNo;         // 페이징 현재 번호
+    private Integer pageCnt;        // 페이징 당 개수
 
     /* Output */
     private int board_idx;          // 댓글 인덱스 번호
