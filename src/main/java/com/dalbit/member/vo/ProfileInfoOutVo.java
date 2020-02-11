@@ -50,11 +50,18 @@ public class ProfileInfoOutVo extends BaseVo {
         this.fanCnt = target.getFanCount();
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
-        this.exp = target.getExp();
-        this.expNext = target.getExpNext();
+        if(target_mem_no.equals(target.getMem_no())){
+            this.exp = target.getExp();
+            this.expNext = target.getExpNext();
+            this.rubyCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
+            this.goldCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
+        }else{
+            this.exp = 0;
+            this.expNext = 0;
+            this.rubyCnt = 0;
+            this.goldCnt = 0;
+        }
         this.grade = target.getGrade();
-        this.rubyCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
-        this.goldCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
         this.fanRank = fanRank;
     }
 }
