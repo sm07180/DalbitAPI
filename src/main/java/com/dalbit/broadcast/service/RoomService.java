@@ -97,7 +97,7 @@ public class RoomService {
 
             if(!DalbitUtil.isEmpty(pRoomCreateVo.getBackgroundImage()) && !pRoomCreateVo.getBackgroundImage().startsWith("/bg_3")){
                 try{
-                    restService.imgDone("/bg_1" + pRoomCreateVo.getBackgroundImage());
+                    restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
                 }catch (GlobalException e){
                     //TODO 이미지 서버 오류 시 처리
                     e.printStackTrace();

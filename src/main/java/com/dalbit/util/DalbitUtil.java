@@ -541,6 +541,13 @@ public class DalbitUtil {
     }
 
     /**
+     * 이미지 Done path 경로 치환
+     */
+    public static String replaceDonePath(String path){
+        return path.replace("_0/", "_1/");
+    }
+
+    /**
      * UTC 로 변경
      *
      * @param dt
