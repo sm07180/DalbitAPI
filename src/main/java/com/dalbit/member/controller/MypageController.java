@@ -4,7 +4,7 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
-import com.dalbit.member.vo.request.ProfileEditValidationVo;
+import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
@@ -66,10 +66,13 @@ public class MypageController {
      * 팬등록
      */
     @PostMapping("/fan")
-    public String fanstarInsert(HttpServletRequest request){
+    public String fanstarInsert(@Valid FanstartInsertVo fanstartInsertVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_FanstarInsertVo apiData = new P_FanstarInsertVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo());
-        apiData.setStar_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
+        apiData.setStar_mem_no(fanstartInsertVo.getMemNo());
         String result = mypageService.callFanstarInsert(apiData);
 
         return result;
@@ -79,10 +82,13 @@ public class MypageController {
      * 팬해제
      */
     @DeleteMapping("/fan")
-    public String fanstarDelete(HttpServletRequest request){
+    public String fanstarDelete(@Valid FanstarDeleteVo fanstarDeleteVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_FanstarDeleteVo apiData = new P_FanstarDeleteVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo());
-        apiData.setStar_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
+        apiData.setStar_mem_no(fanstarDeleteVo.getMemNo());
         String result = mypageService.callFanstarDelete(apiData);
 
         return result;
@@ -116,16 +122,19 @@ public class MypageController {
      * 회원 방송방 기본설정 수정하기
      */
     @PostMapping("/broad")
-    public String broadBasicEdit(HttpServletRequest request){
+    public String broadBasicEdit(@Valid BroadBasicEditVo broadBasicEditVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_BroadBasicEditVo apiData = new P_BroadBasicEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request,"roomType"));
-        apiData.setTitle(DalbitUtil.convertRequestParamToString(request,"title"));
-        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request,"bgImg"));
-        apiData.setBackgroundImageGrade(DalbitUtil.convertRequestParamToInteger(request,"bgImgRacy"));
-        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"wecomMsg"));
-        apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
-        apiData.setEntryType(DalbitUtil.convertRequestParamToInteger(request,"entryType"));
+        apiData.setSubjectType(broadBasicEditVo.getRoomType());
+        apiData.setTitle(broadBasicEditVo.getTitle());
+        apiData.setBackgroundImage(broadBasicEditVo.getBgImg());
+        apiData.setBackgroundImageGrade(broadBasicEditVo.getBgImgRacy());
+        apiData.setWelcomMsg(broadBasicEditVo.getWecomMsg());
+        apiData.setNotice(broadBasicEditVo.getNotice());
+        apiData.setEntryType(broadBasicEditVo.getEntryType());
 
         String result = mypageService.callBroadBasicEdit(apiData);
         return result;
@@ -135,12 +144,15 @@ public class MypageController {
      * 회원 신고하기
      */
     @PostMapping("/declar")
-    public String memberReportAdd(HttpServletRequest request){
+    public String memberReportAdd(@Valid MemberReportAddVo memberReportAddVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_MemberReportAddVo apiData = new P_MemberReportAddVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setReported_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
-        apiData.setReason(DalbitUtil.convertRequestParamToInteger(request,"reason"));
-        apiData.setEtc(DalbitUtil.convertRequestParamToString(request,"cont"));
+        apiData.setReported_mem_no(memberReportAddVo.getMemNo());
+        apiData.setReason(memberReportAddVo.getReason());
+        apiData.setEtc(memberReportAddVo.getCont());
         String result = mypageService.callMemberReportAdd(apiData);
         return result;
     }
@@ -149,10 +161,13 @@ public class MypageController {
      * 회원 차단하기
      */
     @PostMapping("/block")
-    public String broadBlock_Add(HttpServletRequest request){
+    public String broadBlock_Add(@Valid MemberBlockAddVo memberBlockAddVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_MemberBlockAddVo apiData = new P_MemberBlockAddVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setBlocked_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
+        apiData.setBlocked_mem_no(memberBlockAddVo.getMemNo());
         String result = mypageService.callBlockAdd(apiData);
         return result;
     }
@@ -161,10 +176,13 @@ public class MypageController {
      * 회원 차단 해제하기
      */
     @DeleteMapping("/block")
-    public String broadBlock_Del(HttpServletRequest request){
+    public String broadBlock_Del(@Valid MemberBlockDelVo memberBlockDelVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_MemberBlockDelVo apiData = new P_MemberBlockDelVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setBlocked_mem_no(DalbitUtil.convertRequestParamToString(request,"memNo"));
+        apiData.setBlocked_mem_no(memberBlockDelVo.getMemNo());
         String result = mypageService.callMemBerBlocklDel(apiData);
         return result;
     }
@@ -173,7 +191,7 @@ public class MypageController {
      * 회원 알림설정 조회하기
      */
     @GetMapping("/notify")
-    public String memberNotify(HttpServletRequest request){
+    public String memberNotify(){
         P_MemberNotifyVo apiData = new P_MemberNotifyVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         String result = mypageService.callMemberNotify(apiData);
@@ -184,17 +202,20 @@ public class MypageController {
      * 회원 알림설정 수정하기
      */
     @PostMapping("/notify")
-    public String memberNotifyEdit(HttpServletRequest request){
+    public String memberNotifyEdit(@Valid MemberNotifyEditVo memberNotifyEditVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_MemberNotifyEditVo apiData = new P_MemberNotifyEditVo();
 
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setAll_ok(DalbitUtil.convertRequestParamToInteger(request,"isAll"));
-        apiData.setFan_reg(DalbitUtil.convertRequestParamToInteger(request,"isFanReg"));
-        apiData.setFan_board(DalbitUtil.convertRequestParamToInteger(request,"isBoard"));
-        apiData.setStar_broadcast(DalbitUtil.convertRequestParamToInteger(request,"isStarCast"));
-        apiData.setStar_notice(DalbitUtil.convertRequestParamToInteger(request,"isStarNoti"));
-        apiData.setEvent_notice(DalbitUtil.convertRequestParamToInteger(request,"isEvtNoti"));
-        apiData.setSearch(DalbitUtil.convertRequestParamToInteger(request,"isSearch"));
+        apiData.setAll_ok(memberNotifyEditVo.isAll() ? 1 : 0);
+        apiData.setFan_reg(memberNotifyEditVo.isFanReg() ? 1 : 0);
+        apiData.setFan_board(memberNotifyEditVo.isBoard() ? 1 : 0);
+        apiData.setStar_broadcast(memberNotifyEditVo.isStarCast() ? 1 : 0);
+        apiData.setStar_notice(memberNotifyEditVo.isStarNoti() ? 1 : 0);
+        apiData.setEvent_notice(memberNotifyEditVo.isEvtNoti() ? 1 : 0);
+        apiData.setSearch(memberNotifyEditVo.isSearch() ? 1 : 0);
 
         String result = mypageService.callMemberNotifyEdit(apiData);
         return result;
@@ -204,7 +225,7 @@ public class MypageController {
      * 회원 방송방 빠른말 가져오기
      */
     @GetMapping("/shortcut")
-    public String memberShortCut(HttpServletRequest request){
+    public String memberShortCut(){
         P_MemberShortCutVo apiData = new P_MemberShortCutVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         String result = mypageService.callMemberShortCut(apiData);

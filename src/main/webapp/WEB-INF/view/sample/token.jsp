@@ -28,7 +28,10 @@
                                 </div>
                             </form>
                         </div>
+                    </div>
 
+
+                    <div class="card">
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="authToken" class="col-md-4 col-form-label text-md-right">응답 결과</label>
@@ -62,22 +65,6 @@
                     <div class="card">
                         <div class="card-header">authToken으로 Redis 정보 조회</div>
                         <div class="card-body">
-                            <form id="getRedisFrm" method="post">
-                                <div class="form-group row">
-                                    <label for="authToken" class="col-md-4 col-form-label text-md-right">authToken</label>
-                                    <div class="col-md-6">
-                                        <input type="text" name="authToken" id="authToken" class="form-control" autofocus value="" />
-                                    </div>
-                                </div>
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="button" id="getRedisBtn" class="btn btn-primary">
-                                        토큰검증
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-
-                        <div class="card-body">
                             <div class="form-group row">
                                 <label for="authToken" class="col-md-4 col-form-label text-md-right">응답 결과</label>
                                 <div class="col-md-6" id="r_getRedis_tokenMessage">-</div>
@@ -101,6 +88,7 @@
     //토큰체크
     $('#tokenCheckBtn').on('click', function(){
         fnTokenCheck();
+        fnGetRedisData();
     });
 
     function fnTokenCheck(){
@@ -111,12 +99,21 @@
             data: $("#tokenCheckFrm").serialize(),
             success: function (response) {
                 console.log(response);
-                $("#r_tokenMessage").html(response.message);
+
+                var failMsg = '';
+                if(response.result == 'fail'){
+                    failMsg = '<br />' + response.data;
+                }
+                $("#r_tokenMessage").html(response.message + failMsg);
 
                 var data = response.data;
                 $("#r_authToken").html(data.authToken);
                 $("#r_memNo").html(data.memNo);
-                $("#r_isLogin").html(data.isLogin ? '로그인' : '비로그인');
+
+                if(data.isLogin != null){
+                    $("#r_isLogin").html(data.isLogin ? '로그인' : '비로그인');
+                }
+
 
             }, error: function (xhr, textStatus) {
                 console.log(xhr, textStatus);
@@ -134,7 +131,7 @@
             type: "POST",
             url: "/rest/sample/getRedisData",
             dataType: "json",
-            data: $("#getRedisFrm").serialize(),
+            data: $("#tokenCheckFrm").serialize(),
             success: function (response) {
                 console.log(response);
                 $("#r_getRedis_tokenMessage").html(response.message);

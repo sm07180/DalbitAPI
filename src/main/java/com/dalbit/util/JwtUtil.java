@@ -61,18 +61,17 @@ public class JwtUtil {
             if (splitStrArr.length == 2) {
 
                 if(DalbitUtil.isEmpty(splitStrArr[0]) || DalbitUtil.isEmpty(splitStrArr[1])){
-                    new GlobalException(ErrorStatus.토큰검증오류);
+                    throw new GlobalException(ErrorStatus.토큰검증오류, "회원번호 or 로그인 여부가 null값 입니다.");
                 }
 
                 boolean isLogin = Boolean.valueOf(splitStrArr[1]);
                 return new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin);
             }else{
-                new GlobalException(ErrorStatus.토큰검증오류);
+                throw new GlobalException(ErrorStatus.토큰검증오류, "회원번호 or 로그인 여부가 없습니다.");
             }
         }catch (Exception e){
-            new GlobalException(ErrorStatus.토큰검증오류);
+            throw new GlobalException(ErrorStatus.토큰검증오류, "이상한 토큰이 넘어왔어요.");
         }
-        return null;
     }
 
     /**
