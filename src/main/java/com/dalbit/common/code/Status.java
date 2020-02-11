@@ -20,6 +20,7 @@ public enum Status {
     로그인실패_파라메터이상("-2", "login.param.error", "로그인 실패 시 - 파라메터이상"),
 
     로그아웃성공("0", "logout.success", "로그아웃 성공 시"),
+    로그아웃실패_진행중인방송("0", "logout.mybroadcast.ing", "로그아웃을 시도했지만 방송을 진행하고 있을 때"),
 
     //회원가입
     회원가입안됨("1","member.join.not", "회원가입 안된 상태 시"),

@@ -26,4 +26,14 @@
       call sp_broadcast_room_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="getMyBroadcastCount" resultType="java.lang.Integer">
+        /* Room.xml - getMyBroadcastCount */
+        select
+            count(*)
+        from tb_broadcast_room_member
+        where mem_no = #{memNo}
+            and auth = #{auth}
+            and state = #{state};
+    </select>
+
 </mapper>

@@ -2,6 +2,7 @@ package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.common.code.Code;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.exception.GlobalException;
@@ -52,7 +53,7 @@ public class RoomController {
         int bgGrade = DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy") < 0 ? 0 : DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy");
 
         if(DalbitUtil.isEmpty(bgImg)){
-            bgImg = "/bg_3/roombg_" + (DalbitUtil.randomValue("number", 1)) + ".jpg";
+            bgImg = Code.포토_배경_디폴트_PREFIX+"/"+Code.배경이미지_파일명_PREFIX + (DalbitUtil.randomValue("number", 1)) + ".jpg";
         }else{
             bgImg = DalbitUtil.replacePath(bgImg);
         }

@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 
 @Slf4j
-@Component("logoutHandler")
+@Component("logoutSuccessHandler")
 public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 
     @Autowired

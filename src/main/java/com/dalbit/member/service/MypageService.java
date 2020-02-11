@@ -1,5 +1,6 @@
 package com.dalbit.member.service;
 
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -49,7 +50,7 @@ public class MypageService {
         mypageDao.callProfileEdit(procedureVo);
         String result;
         if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
-            if(pProfileEditVo.getProfileImage().startsWith("/profile_1")){
+            if(pProfileEditVo.getProfileImage().startsWith(Code.포토_프로필_임시_PREFIX.getCode())){
                 try{
                     restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
                 }catch (GlobalException e){

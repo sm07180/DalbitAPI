@@ -9,11 +9,10 @@ import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.util.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.Oneway;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -96,6 +95,13 @@ public class SampleRestController {
 
     @GetMapping("nameCheck")
     public String nameCheck(@Valid SampleVo sampleVo, BindingResult bindingResult){
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+    }
+
+    @Secured("ROLE_USER")
+    @GetMapping("roleCheck")
+    public String roleCheck(){
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회));
     }
