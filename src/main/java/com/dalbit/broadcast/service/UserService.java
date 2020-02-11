@@ -57,6 +57,7 @@ public class UserService {
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
         HashMap roomMemberList = new HashMap();
+
         roomMemberList.put("list", procedureOutputVo.getOutputBox());
         roomMemberList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
 
