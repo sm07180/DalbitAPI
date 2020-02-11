@@ -320,7 +320,19 @@ public enum Status {
     선물하기_아이템번호없음("-7", "broadcast.room.gift.item.number.no", "아이템번호가 없을 시"),
     선물하기_실패("C006", "broadcast.room.gift.fail", "선물하기 실패 시"),
 
-   ;
+    //방송방 부스터
+    부스터성공("0", "broadcast.room.booster.success", "부스터 성공 시"),
+    부스터_요청회원_번호비정상("-1", "broadcast.room.booster.member.number.error", "요청회원 번호가 비정상일 시"),
+    부스터_해당방없음("-2", "broadcast.room.booster.no.room", "해당 방 없을 시"),
+    부스터_해당방종료("-3", "broadcast.room.booster.room.end", "해당 방이 종료되었을 시"),
+    부스터_요청회원_해당방청취자아님("-4", "broadcast.room.booster.member.join.no", "요청회원이 해당방 청취자가 아닐 시"),
+    부스터_아이템번호없음("-5", "broadcast.room.booster.item.number.no", "아이템번호가 없을 시"),
+    부스터_사용불가능아이템번호("-6", "broadcast.room.booster.item.number.error", "사용할 수 없는 아이템번호일 시"),
+    부스터_루비부족("-8", "broadcast.room.booster.ruby.shortage", "루비가 부족할 시"),
+    부스터_실패("C006", "broadcast.room.booster.fail", "부스터 실패 시"),
+
+
+    ;
 
     final private String RESULT_SUCCESS = "success";
     final private String RESULT_FAIL = "fail";

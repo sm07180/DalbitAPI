@@ -538,14 +538,14 @@ public class DalbitUtil {
      * 이미지 path 경로 치환
      */
     public static String replacePath(String path){
-        return path.replace(Code.포토_이미지_경로.getCode(), Code.포토_이미지_임시경로.getCode());
+        return path.replace(Code.포토_이미지_임시경로.getCode(), Code.포토_이미지_경로.getCode());
     }
 
     /**
      * 이미지 Done path 경로 치환
      */
     public static String replaceDonePath(String path){
-        return path.replace(Code.포토_이미지_임시경로.getCode(), Code.포토_이미지_경로.getCode());
+        return path.replace(Code.포토_이미지_경로.getCode(), Code.포토_이미지_임시경로.getCode());
     }
 
     /**

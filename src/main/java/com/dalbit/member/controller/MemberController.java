@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
@@ -18,8 +19,8 @@ import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.request.ChangePwVo;
-import com.dalbit.member.vo.request.SignUpVo;
 import com.dalbit.member.vo.request.NickNmDupleCheckVo;
+import com.dalbit.member.vo.request.SignUpVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.service.UserDetailsServiceImpl;
@@ -96,7 +97,7 @@ public class MemberController {
         String profImg = signUpVo.getProfImg();
 
         if(DalbitUtil.isEmpty(profImg)){
-            profImg = "/profile_3/profile_"+ signUpVo.getGender()+".jpg";
+            profImg = Code.포토_프로필_디폴트_PREFIX+"/"+Code.프로필이미지_파일명_PREFIX+signUpVo.getGender()+".jpg";
         }else{
             profImg = DalbitUtil.replacePath(profImg);
         }
