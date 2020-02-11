@@ -1,5 +1,6 @@
 package com.dalbit.util;
 
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ValidationResultVo;
@@ -537,14 +538,14 @@ public class DalbitUtil {
      * 이미지 path 경로 치환
      */
     public static String replacePath(String path){
-        return path.replace("_1/", "_0/");
+        return path.replace(Code.포토_이미지_임시경로.getCode(), Code.포토_이미지_경로.getCode());
     }
 
     /**
      * 이미지 Done path 경로 치환
      */
     public static String replaceDonePath(String path){
-        return path.replace("_0/", "_1/");
+        return path.replace(Code.포토_이미지_경로.getCode(), Code.포토_이미지_임시경로.getCode());
     }
 
     /**

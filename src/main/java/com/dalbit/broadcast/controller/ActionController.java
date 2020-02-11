@@ -1,30 +1,31 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ActionService;
+import com.dalbit.broadcast.vo.procedure.P_RoomBoosterVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
-import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.broadcast.vo.request.BoosterVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("broad")
 public class ActionController {
 
-    @Autowired
-    private MessageUtil messageUtil;
     @Autowired
     private ActionService actionService;
     @Autowired
@@ -82,79 +83,24 @@ public class ActionController {
         return result;
     }
 
-
-
-    /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
-
-
     /**
-     * 받은선물내역
+     * 부스터 사용하기
      */
-    @GetMapping("{brodNo}/gift")
-    public String getGiftHistory(@PathVariable String brodNo){
+    @PostMapping("/booster")
+    public String roomBooster(@Valid BoosterVo boosterVo, BindingResult bindingResult) throws GlobalException {
 
-        HashMap data = new HashMap();
+        DalbitUtil.throwValidaionException(bindingResult);
 
-        HashMap summary = new HashMap();
-        summary.put("receives", 23);
-        summary.put("golds", 2407);
-        data.put("summary", summary);
+        P_RoomBoosterVo apiData = new P_RoomBoosterVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(boosterVo.getRoomNo());
+        apiData.setItem_no(boosterVo.getItemNo());
+        apiData.setItem_cnt(boosterVo.getItemCnt());
 
-        data.put("memNo", "M1001234");
-        data.put("img", "/files/filePath/filename.png");
-        data.put("nickNm", "하늘하늘이에요");
-        data.put("gift", "치킨");
-        data.put("combos", 3);
-        data.put("golds", 30);
-        data.put("date", DalbitUtil.getTimeStamp());
+        String result = actionService.callBroadCastRoomBooster(apiData);
 
-        HashMap paging = new HashMap();
-        paging.put("total", 102);
-        paging.put("recordperpage", 10);
-        paging.put("page", 1);
-        paging.put("prev", 0);
-        paging.put("next", 2);
-        paging.put("totalpage", 21);
-        data.put("paging", paging);
+        return result;
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, data)));
     }
 
-
-    /**
-     * 선물액션조회
-     */
-    @GetMapping("{brodNo}/gift/{giftNo}")
-    public String selectGiftNo(@PathVariable String brodNo, @PathVariable String giftNo){
-
-        HashMap data = new HashMap();
-        data.put("brodNo", brodNo);
-        data.put("giftNo", giftNo);
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.생성, data)));
-    }
-
-    /**
-     * 부스트
-     */
-    @PostMapping("{brodNo}/boost")
-    public String boost(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-        data.put("brodNo", brodNo);
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.생성, data)));
-    }
-
-    /**
-     * 신고하기
-     */
-    @PostMapping("{brodNo}/declar")
-    public String declar(@PathVariable String brodNo){
-
-        HashMap data = new HashMap();
-        data.put("brodNo", brodNo);
-
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.생성, data)));
-    }
 }

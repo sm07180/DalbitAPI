@@ -1,6 +1,7 @@
 package com.dalbit.config;
 
 import com.dalbit.security.filter.SsoAuthenticationFilter;
+import com.dalbit.security.handler.LogoutHandlerImpl;
 import com.dalbit.security.handler.LogoutSuccessHandlerImpl;
 import com.dalbit.security.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,16 +36,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired private AuthenticationSuccessHandler authSuccessHandler;
     @Autowired private AuthenticationFailureHandler authFailureHandler;
-    @Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
+    @Autowired private LogoutHandlerImpl logoutHandler;
+    //@Autowired private LogoutSuccessHandlerImpl logoutSuccessHandler;
     @Autowired private UserDetailsServiceImpl userDetailsService;
     @Autowired private AuthenticationProvider authProvider;
     @Autowired private SsoAuthenticationFilter ssoAuthenticationFilter;
 
-    @Value("${server.servlet.session.cookie.name}")
+    /*@Value("${server.servlet.session.cookie.name}")
     private String SECURITY_COOKIE_NAME;
 
     @Value("${sso.cookie.name}")
-    private String SSO_COOKIE_NAME;
+    private String SSO_COOKIE_NAME;*/
 
     @Bean
     public DelegatingPasswordEncoder passwordEncoder() {
@@ -102,18 +104,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
                 .logout()
                     .logoutUrl("/member/logout")
-                    .deleteCookies(SECURITY_COOKIE_NAME, SSO_COOKIE_NAME)
-                    .invalidateHttpSession(true)
+                    .addLogoutHandler(logoutHandler)
+                    //.deleteCookies(SECURITY_COOKIE_NAME, SSO_COOKIE_NAME)
+                    .invalidateHttpSession(false)
                     //.logoutSuccessUrl("/")
-                    .logoutSuccessHandler(logoutSuccessHandler)
+                    //.logoutSuccessHandler(logoutSuccessHandler)
 
             .and()
                 .sessionManagement()
                 .maximumSessions(1)
                 .expiredUrl("/logout")
-
-
-
         ;
     }
 

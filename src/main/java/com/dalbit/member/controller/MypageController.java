@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.code.Code;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.*;
@@ -57,7 +58,7 @@ public class MypageController {
 
         String profImg = profileEditVo.getProfImg();
         if(DalbitUtil.isEmpty(profImg)){
-            profImg = "/profile_3/profile_"+ profileEditVo.getGender()+".jpg";
+            profImg = Code.포토_프로필_디폴트_PREFIX+"/"+Code.프로필이미지_파일명_PREFIX+profileEditVo.getGender()+".jpg";
         }else{
             profImg = DalbitUtil.replacePath(profImg);
         }

@@ -1,8 +1,9 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
-import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -95,7 +96,7 @@ public class RoomService {
             returnMap.put("goldCnt", target.getGoldCnt());*/
             procedureVo.setData(returnMap);
 
-            if(pRoomCreateVo.getBackgroundImage().startsWith("/bg_1")){
+            if(pRoomCreateVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
                 try{
                     restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
                 }catch (GlobalException e){
@@ -254,9 +255,9 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
-            if(!DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImage()) && !pRoomEditVo.getBackgroundImage().startsWith("/default")){
+            if(pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
                 String delImg = pRoomEditVo.getBackgroundImageDelete();
-                if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith("/bg_3")){
+                if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                     delImg = null;
                 }
                 try{
@@ -360,5 +361,11 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         return procedureOutputVo;
+    }
+
+    public ProcedureVo callMemberBroadcastingCheck(P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberBroadcastingCheckVo);
+        roomDao.callMemberBroadcastingCheck(procedureVo);
+        return procedureVo;
     }
 }

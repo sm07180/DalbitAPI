@@ -19,7 +19,14 @@ public enum Status {
     로그인실패_패스워드틀림("-1", "login.fail", "로그인 실패 시 - 아이디/비밀번호가 틀릴 시"),
     로그인실패_파라메터이상("-2", "login.param.error", "로그인 실패 시 - 파라메터이상"),
 
+    //로그아웃
     로그아웃성공("0", "logout.success", "로그아웃 성공 시"),
+    로그아웃실패_진행중인방송("0", "logout.mybroadcast.ing", "로그아웃을 시도했지만 방송을 진행하고 있을 때"),
+
+    //진행중인방송방 체크
+    방송중인DJ체크_방송중("1","dj.broadcast.onair", "DJ가 방송중일 시"),
+    방송중인DJ체크_방송중아님("0","dj.broadcast.offair", "DJ가 방송중이 아닐 시"),
+    방송중인DJ체크_잘못된회원번호("-1","dj.notMember", "DJ가 방송중이 아닐 시"),
 
     //회원가입
     회원가입안됨("1","member.join.not", "회원가입 안된 상태 시"),
@@ -319,7 +326,19 @@ public enum Status {
     선물하기_아이템번호없음("-7", "broadcast.room.gift.item.number.no", "아이템번호가 없을 시"),
     선물하기_실패("C006", "broadcast.room.gift.fail", "선물하기 실패 시"),
 
-   ;
+    //방송방 부스터
+    부스터성공("0", "broadcast.room.booster.success", "부스터 성공 시"),
+    부스터_요청회원_번호비정상("-1", "broadcast.room.booster.member.number.error", "요청회원 번호가 비정상일 시"),
+    부스터_해당방없음("-2", "broadcast.room.booster.no.room", "해당 방 없을 시"),
+    부스터_해당방종료("-3", "broadcast.room.booster.room.end", "해당 방이 종료되었을 시"),
+    부스터_요청회원_해당방청취자아님("-4", "broadcast.room.booster.member.join.no", "요청회원이 해당방 청취자가 아닐 시"),
+    부스터_아이템번호없음("-5", "broadcast.room.booster.item.number.no", "아이템번호가 없을 시"),
+    부스터_사용불가능아이템번호("-6", "broadcast.room.booster.item.number.error", "사용할 수 없는 아이템번호일 시"),
+    부스터_루비부족("-8", "broadcast.room.booster.ruby.shortage", "루비가 부족할 시"),
+    부스터_실패("C006", "broadcast.room.booster.fail", "부스터 실패 시"),
+
+
+    ;
 
     final private String RESULT_SUCCESS = "success";
     final private String RESULT_FAIL = "fail";

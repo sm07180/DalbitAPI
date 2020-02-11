@@ -53,6 +53,7 @@ public class SsoAuthenticationFilter implements Filter {
         "/favicon.ico"
         , "/login", "/logout", "/splash"
         , "/sample", "/rest/sample"
+        , "/postman/dalbitcast.json"
     };
 
     @Override
