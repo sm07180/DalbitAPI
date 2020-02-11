@@ -20,6 +20,9 @@ public enum Code {
     배경이미지_파일명_PREFIX("roombg_", "배경이미지 파일명"),
     프로필이미지_파일명_PREFIX("profile_", "배경이미지 파일명"),
 
+    포토_이미지_임시경로("_0/", "이미지가 올라가는 임시 경로"),
+    포토_이미지_경로("_1/", "실제 파일이 올라갈 경로 -done 이후 경로"),
+
    ;
 
     final private String code;
