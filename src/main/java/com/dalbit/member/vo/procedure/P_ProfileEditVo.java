@@ -14,9 +14,7 @@ public class P_ProfileEditVo {
     private int birthMonth;                        //생월
     private int birthDay;                          //생일
     private String profileImage;                   //프로필이미지 패스
-    private Integer profileImageGrade;              //프로필이미지 구글 선정성
-    private String backgroundImage;                //배경이미지 패스
-    private Integer backgroundImageGrade;           //배경이미지 구글 선정성
+    private Integer profileImageGrade;             //프로필이미지 구글 선정성
     private String profileMsg;                     //메시지
 
 }
