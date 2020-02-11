@@ -1,8 +1,7 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
-import com.dalbit.broadcast.vo.*;
-import com.dalbit.broadcast.vo.database.D_MyBoardcastCountVo;
+import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -364,7 +363,9 @@ public class RoomService {
         return procedureOutputVo;
     }
 
-    public int getMyBroadcastCount(D_MyBoardcastCountVo dMyBoardcastCountVo){
-        return roomDao.getMyBroadcastCount(dMyBoardcastCountVo);
+    public ProcedureVo callMemberBroadcastingCheck(P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberBroadcastingCheckVo);
+        roomDao.callMemberBroadcastingCheck(procedureVo);
+        return procedureVo;
     }
 }
