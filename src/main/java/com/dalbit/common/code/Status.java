@@ -337,6 +337,14 @@ public enum Status {
     부스터_루비부족("-8", "broadcast.room.booster.ruby.shortage", "루비가 부족할 시"),
     부스터_실패("C006", "broadcast.room.booster.fail", "부스터 실패 시"),
 
+    //방송방 순위 아이템사용 조회
+    순위아이템사용_조회성공("0", "broadcast.room.live.rank.info.success", "순위 아이템사용 조회 성공 시"),
+    순위아이템사용_요청회원_번호비정상("-1", "broadcast.room.live.rank.member.number.error", "요청회원 번호가 비정상일 시"),
+    순위아이템사용_해당방없음("-2", "broadcast.room.live.rank.no.room", "해당 방 없을 시"),
+    순위아이템사용_해당방종료("-3", "broadcast.room.live.rank.room.end", "해당 방이 종료되었을 시"),
+    순위아이템사용_요청회원_해당방청취자아님("-4", "broadcast.room.live.rank.member.join.no", "요청회원이 해당방 청취자가 아닐 시"),
+    순위아이템사용_조회실패("C006", "broadcast.room.live.rank.info.fail", "순위 아이템사용 조회 실패 시"),
+
 
     ;
 

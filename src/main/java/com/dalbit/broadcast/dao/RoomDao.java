@@ -16,4 +16,5 @@ public interface RoomDao {
     List<P_RoomListVo> callBroadCastRoomList(ProcedureVo procedureVo);
     P_RoomInfoViewVo callBroadCastRoomInfoView(ProcedureVo procedureVo);
     ProcedureVo callMemberBroadcastingCheck(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomLiveRankInfo(ProcedureVo procedureVo);
 }

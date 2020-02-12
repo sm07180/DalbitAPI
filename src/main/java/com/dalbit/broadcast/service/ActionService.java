@@ -141,6 +141,7 @@ public class ActionService {
         returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
         returnMap.put("lubyCnt", DalbitUtil.getIntMap(resultMap, "luby"));
         returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+        returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
         String result="";
@@ -176,17 +177,11 @@ public class ActionService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
-        returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
-        returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
-        returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
-        returnMap.put("lubyCnt", DalbitUtil.getIntMap(resultMap, "luby"));
-        returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
-        returnMap.put("good", DalbitUtil.getIntMap(resultMap, "good"));
-        returnMap.put("totalRoomCnt", DalbitUtil.getIntMap(resultMap, "totalRoomCnt"));
+        returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+        returnMap.put("roomCnt", DalbitUtil.getIntMap(resultMap, "totalRoomCnt"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-        returnMap.put("usedItemCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
-        returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+        returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
+        returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());

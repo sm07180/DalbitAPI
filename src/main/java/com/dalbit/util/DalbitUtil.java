@@ -445,7 +445,7 @@ public class DalbitUtil {
 
     public static int getIntMap(HashMap map, String key) {
         try{
-            return (int) Math.round(getDoubleMap(map, key));
+            return (int) Math.floor(getDoubleMap(map, key));
         }catch (Exception e){
             log.error("StringUtil.getIntMap error - key name is [{}]", key);
             return 0;

@@ -2,6 +2,7 @@ package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.LiveRankInfoVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
@@ -14,9 +15,11 @@ import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 
 
@@ -208,6 +211,23 @@ public class RoomController {
 
         return result;
 
+    }
+
+    /**
+     * 방송방 현재 순위, 아이템 사용 현황 조회
+     */
+    @GetMapping("/boost")
+    public String roomLiveRankInfo(@Valid LiveRankInfoVo liveRankInfoVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_RoomLiveRankInfoVo apiData = new P_RoomLiveRankInfoVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(liveRankInfoVo.getRoomNo());
+
+        String result = roomService.callBroadCastRoomLiveRankInfo(apiData);
+
+        return result;
     }
 
 }

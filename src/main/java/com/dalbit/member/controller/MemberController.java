@@ -97,7 +97,7 @@ public class MemberController {
         String profImg = signUpVo.getProfImg();
 
         if(DalbitUtil.isEmpty(profImg)){
-            profImg = Code.포토_프로필_디폴트_PREFIX+"/"+Code.프로필이미지_파일명_PREFIX+signUpVo.getGender()+".jpg";
+            profImg = Code.포토_프로필_디폴트_PREFIX.getCode()+"/"+Code.프로필이미지_파일명_PREFIX.getCode()+signUpVo.getGender()+".jpg";
         }
         signUpVo.setProfImg(profImg);
 

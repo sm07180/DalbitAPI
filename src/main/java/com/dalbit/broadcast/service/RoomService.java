@@ -51,7 +51,7 @@ public class RoomService {
         String bgImg = pRoomCreateVo.getBackgroundImage();
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
-            bgImg = Code.포토_배경_디폴트_PREFIX+"/"+Code.배경이미지_파일명_PREFIX + (DalbitUtil.randomValue("number", 1)) + ".jpg";
+            bgImg = Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+(DalbitUtil.randomValue("number", 1))+".jpg";
         }else{
             if(bgImg.startsWith(Code.포토_배경_임시_PREFIX.getCode())){
                 isDone = true;
@@ -379,9 +379,44 @@ public class RoomService {
         return procedureOutputVo;
     }
 
+    /**
+     * 방송중인 DJ 체크
+     */
     public ProcedureVo callMemberBroadcastingCheck(P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo){
         ProcedureVo procedureVo = new ProcedureVo(pMemberBroadcastingCheckVo);
         roomDao.callMemberBroadcastingCheck(procedureVo);
         return procedureVo;
+    }
+
+    /**
+     * 방송방 현재 순위, 아이템 사용 현황 조회
+     */
+    public String callBroadCastRoomLiveRankInfo(P_RoomLiveRankInfoVo pRoomLiveRankInfoVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomLiveRankInfoVo);
+        roomDao.callBroadCastRoomLiveRankInfo(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("roomCnt", DalbitUtil.getIntMap(resultMap, "totalRoomCnt"));
+        returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+        returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
+        returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+
+        String result="";
+        if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공, returnMap));
+        }else if(Status.순위아이템사용_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_번호비정상));
+        }else if(Status.순위아이템사용_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_해당방없음));
+        }else if(Status.순위아이템사용_해당방종료.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_해당방종료));
+        }else if(Status.순위아이템사용_요청회원_해당방청취자아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_해당방청취자아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회실패));
+        }
+
+        return result;
     }
 }

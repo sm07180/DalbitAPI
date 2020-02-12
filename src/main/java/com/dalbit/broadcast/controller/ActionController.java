@@ -86,7 +86,7 @@ public class ActionController {
     /**
      * 부스터 사용하기
      */
-    @PostMapping("/booster")
+    @PostMapping("/boost")
     public String roomBooster(@Valid BoosterVo boosterVo, BindingResult bindingResult) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
