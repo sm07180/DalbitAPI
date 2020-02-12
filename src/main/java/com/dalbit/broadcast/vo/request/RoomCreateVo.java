@@ -19,7 +19,6 @@ public class RoomCreateVo {
     @Max(5)
     private Integer bgImgRacy;
 
-    @NotBlank
     private String welcomMsg;
 
     private String notice;

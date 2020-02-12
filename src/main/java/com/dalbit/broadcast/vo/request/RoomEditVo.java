@@ -23,7 +23,6 @@ public class RoomEditVo {
     @Max(5)
     private Integer bgImgRacy;
 
-    @NotBlank
     private String welcomMsg;
 
 }
