@@ -603,7 +603,7 @@ public class DalbitUtil {
                 bindingMessageList.add("field : " + fieldError.getField()  + ", value : "+ fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage());
             }
             validationResultVo.setValidationMessageDetail(bindingMessageList);
-            throw new GlobalException(Status.파라미터오류, validationResultVo);
+            throw new GlobalException(Status.파라미터오류, "", validationResultVo.getValidationMessageDetail());
         }
 
     }

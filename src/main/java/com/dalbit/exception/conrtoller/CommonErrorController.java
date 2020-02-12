@@ -27,7 +27,7 @@ public class CommonErrorController{
         if(globalException.getErrorStatus() != null){
             return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus(), globalException.getData()));
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData()));
+            return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData(), globalException.getValidationMessageDetail()));
         }
 
     }

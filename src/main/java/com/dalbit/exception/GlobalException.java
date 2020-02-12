@@ -3,10 +3,12 @@ package com.dalbit.exception;
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ValidationResultVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 @ToString
@@ -22,6 +24,8 @@ public class GlobalException extends Exception {
     private ErrorStatus errorStatus;
     private Status status;
     private Object data;
+
+    private ArrayList validationMessageDetail;
 
     public GlobalException(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
@@ -39,6 +43,12 @@ public class GlobalException extends Exception {
     public GlobalException(Status status, Object data){
         setStatus(status);
         setData(data);
+    }
+
+    public GlobalException(Status status, Object data, ArrayList validationMessageDetail){
+        setStatus(status);
+        setData(data);
+        setValidationMessageDetail(validationMessageDetail);
     }
 
     public static JsonOutputVo throwException(ErrorStatus errorStatus){
