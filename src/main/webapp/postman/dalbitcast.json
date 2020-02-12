@@ -1,2229 +1,2855 @@
 {
-  "info": {
-    "_postman_id": "d8eedb3d-43c8-4edf-9b88-13bf3d63e480",
-    "name": "달빛라디오 API 정의서",
-    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
-  },
-  "item": [{
-    "name": "개발",
-    "item": [{
-      "name": "API",
-      "item": [{
-        "name": "회원",
-        "item": [{
-          "name": "[완료] 회원가입_2020.02.07",
-          "_postman_id": "a1f938eb-f25b-4fb5-9531-42920c2176b8",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memType",
-                "value": "p",
-                "type": "text",
-                "description": "* 로그인구분"
-              }, {
-                "key": "memId",
-                "value": "0109991245",
-                "type": "text",
-                "description": "* 아이디 / 소셜아이디"
-              }, {
-                "key": "memPwd",
-                "value": "123qweasd",
-                "type": "text",
-                "description": "비밀번호"
-              }, {
-                "key": "gender",
-                "value": "m",
-                "type": "text",
-                "description": "* 성별"
-              }, {
-                "key": "nickNm",
-                "value": "구구구구구구",
-                "type": "text",
-                "description": "* 닉네임"
-              }, {
-                "key": "birth",
-                "value": "20200206",
-                "type": "text",
-                "description": "* 생년월일"
-              }, {
-                "key": "term1",
-                "value": "y",
-                "type": "text",
-                "description": "* 약관동의1"
-              }, {
-                "key": "term2",
-                "value": "y",
-                "type": "text",
-                "description": "* 약관동의2"
-              }, {
-                "key": "term3",
-                "value": "y",
-                "type": "text",
-                "description": "* 약관동의3"
-              }, {
-                "key": "term4",
-                "value": "y",
-                "description": "* 약관동의4",
-                "type": "text"
-              }, {
-                "key": "term5",
-                "value": "y",
-                "description": "* 약관동의5",
-                "type": "text"
-              }, {
-                "key": "name",
-                "value": "홍길동",
-                "type": "text",
-                "description": "* 이름"
-              }, {
-                "key": "profImg",
-                "value": "",
-                "type": "text",
-                "description": "프로필이미지 패스"
-              }, {
-                "key": "profImgRacy",
-                "value": "",
-                "type": "text",
-                "description": "프로필이미지 구글 선정성"
-              }, {
-                "key": "email",
-                "value": "",
-                "type": "text",
-                "description": "이메일"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/member/signup",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["member", "signup"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 로그인_2020.01.21",
-          "_postman_id": "1c2e34d7-36c3-4ba4-a292-aadc87221e9d",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg2Njk2NjQ5MUBmYWxzZSIsImlhdCI6MTU4MDk1NDUyNSwiZXhwIjoxNTgzNDYwMTI1fQ.bhV5XGj2_oOFssdYqpkj62aJ5hZEYp98aILV1cHFAj4",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memType",
-                "value": "p",
-                "type": "text",
-                "description": "회원구분 [필수]"
-              }, {
-                "key": "memId",
-                "value": "010-1234-1234",
-                "type": "text",
-                "description": "아이디 / 소셜아이디 [필수]"
-              }, {
-                "key": "memPwd",
-                "value": "1234",
-                "type": "text",
-                "description": "비밀번호"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/member/login",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["member", "login"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 닉네임 중복체크_2020.01.21",
-          "_postman_id": "8dc7b254-e373-49d6-91d2-25fa79abb3a4",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": []
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/member/nick?nickNm=radiodalbit",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["member", "nick"],
-              "query": [{
-                "key": "nickNm",
-                "value": "radiodalbit",
-                "description": "* 닉네임"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]비밀번호변경_2020.02.10",
-          "_postman_id": "762ce23f-9a5d-40c8-a88b-fd4371fbfdc2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3Nzk1MDYwMzk1OEB0cnVlIiwiaWF0IjoxNTgxMjk1OTc2LCJleHAiOjE1ODM4MDE1NzZ9.xR98hC9Q3I24WuMU3OMyXMiXu-qPpel9Uaf7Ofs3lls",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memId",
-                "value": "010-1234-0001",
-                "type": "text",
-                "description": "* 핸드폰 번호"
-              }, {
-                "key": "memPwd",
-                "value": "234234asf",
-                "type": "text",
-                "description": "* 비밀번호"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/member/pwd",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["member", "pwd"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]프로필편집_2020.02.10",
-          "_postman_id": "828d487f-90ff-421d-8002-4b1a25af52df",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgxMDYxNDAzLCJleHAiOjE1ODM1NjcwMDN9.3yXWs2oIcHr3dS3rlmqIVNiG5OdVBh-dn_SCTro6W8U",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "gender",
-                "value": "m",
-                "type": "text",
-                "description": "* 성별"
-              }, {
-                "key": "nickNm",
-                "value": "radiogaga",
-                "type": "text",
-                "description": "* 닉네임"
-              }, {
-                "key": "name",
-                "value": "홍길동",
-                "type": "text",
-                "description": "* 이름"
-              }, {
-                "key": "birth",
-                "value": "19801123",
-                "type": "text",
-                "description": "* 생년월일"
-              }, {
-                "key": "profImg",
-                "value": "profile_1/2020/01/03/profile.png",
-                "type": "text",
-                "description": "프로필이미지 패스"
-              }, {
-                "key": "profImgDel",
-                "value": "profile_0/2020/01/03/profile.png",
-                "type": "text",
-                "description": "삭제할 프로필 이미지 패스"
-              }, {
-                "key": "profImgRacy",
-                "value": "5",
-                "type": "text",
-                "description": "프로필이미지 구글 선정성"
-              }, {
-                "key": "profMsg",
-                "value": "Hi! Hello",
-                "type": "text",
-                "description": "메시지"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/profile",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "profile"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]팬 등록_2020.02.11",
-          "_postman_id": "4e9cc230-70b5-458f-9951-99ee7bc6bea1",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTIyNDk4MywiZXhwIjoxNTgxOTAzMzgzfQ.-YR7a_QSOI_b2Uytj5OdABOPgT8wDfybbrHdpqC9-To",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "description": "* 스타회원번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/fan",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "fan"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]팬 해제_2020.02.11",
-          "_postman_id": "5fbb27c2-7a2e-47c2-b49c-e2d3cc8ec952",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTIyMTk4NiwiZXhwIjoxNTgxOTAwMzg2fQ.rQdcmapLIcBzWOwe8EJoDZSV7of6deAYb3CNyeuX2eI",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "description": "* 스타회원번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/fan",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "fan"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]본인 회원 정보 조회_2020.02.05",
-          "_postman_id": "01b8e594-96da-4d6c-abe5-75c79b94b925",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "Content-Type",
-              "type": "text",
-              "value": "application/x-www-form-urlencoded"
-            }, {
-              "key": "authToken",
-              "type": "text",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM5NjMzNEB0cnVlIiwiaWF0IjoxNTgwNzc2MDMzLCJleHAiOjE1ODMyODE2MzN9.y9joubKtWhWOBppxfYBxvw6hAyPNzqhSJG_NEo0Ujow"
-            }, {
-              "key": "custom-header",
-              "type": "text",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": []
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 방송방 기본설정 조회하기_2020.01.31",
-          "_postman_id": "988b42f7-22a6-44f9-a54d-78ebb34ac845",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM3NDIzNkB0cnVlIiwiaWF0IjoxNTgxMzE4NDcyLCJleHAiOjE1ODM4MjQwNzJ9.HixvZ5z8e1RaL3r4Vts1EO3iPWs8_CY3ASZ36xFGJRM",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/broad",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "broad"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 방송방 기본설정 수정하기_2020.02.11",
-          "_postman_id": "5a2f74f6-22ba-4a2b-8090-59604b55d267",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3OTc1MjEzNTk3MUB0cnVlIiwiaWF0IjoxNTgwMzYzODI1LCJleHAiOjE1ODI5NTU4MjV9.sg5Owffq93J7U9KXIFBgjOjQzAlOlqIZoyF82L9AIaQ",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomType",
-                "value": "1",
-                "type": "text",
-                "description": "* 방송종류"
-              }, {
-                "key": "title",
-                "value": "방송방제목입니다",
-                "type": "text",
-                "description": "* 제목"
-              }, {
-                "key": "bgImg",
-                "value": "/2020/01/10/15/asdas132213.jpg",
-                "type": "text",
-                "description": "백그라운드 이미지 경로"
-              }, {
-                "key": "bgImgRacy",
-                "value": "3",
-                "type": "text",
-                "description": "백그라운드 구글 선정성"
-              }, {
-                "key": "wecomMsg",
-                "value": "환영합니다",
-                "type": "text",
-                "description": "* 환영 메시지"
-              }, {
-                "key": "notice",
-                "value": "공지사항",
-                "type": "text",
-                "description": "공지사항"
-              }, {
-                "key": "entryType",
-                "value": "1",
-                "type": "text",
-                "description": "* 입장 (0: 전체, 1: 팬,  2: 20세이상)"
-              }, {
-                "key": "",
-                "value": "",
-                "type": "text",
-                "disabled": true
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/broad",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "broad"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 신고하기_2020.02.11",
-          "_postman_id": "e1b250a2-34fc-4197-a789-03df68354512",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "type": "text",
-                "description": "* 신고회원번호"
-              }, {
-                "key": "reason",
-                "value": "1",
-                "type": "text",
-                "description": "* 신고사유"
-              }, {
-                "key": "cont",
-                "value": "신고내용",
-                "type": "text",
-                "description": "* 상세내용"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/declar",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "declar"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 차단하기_2020.02.11",
-          "_postman_id": "b9f21b27-1807-432c-871d-c80cd1f60df7",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memNo",
-                "value": "11577690655946",
-                "description": "* 차단회원번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/block",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "block"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 차단 해제하기_2020.02.11",
-          "_postman_id": "38715af8-7d86-40ea-ac57-1db1de767ef9",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "Content-Type",
-              "type": "text",
-              "value": "application/x-www-form-urlencoded"
-            }, {
-              "key": "authToken",
-              "type": "text",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs"
-            }, {
-              "key": "custom-header",
-              "type": "text",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "description": "* 차단회원번호",
-                "key": "memNo",
-                "type": "text",
-                "value": "11577690655946"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/block",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "block"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 알림설정 조회하기_2020.01.20",
-          "_postman_id": "a8159549-93c8-4100-acc5-39dd96d8f55a",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": []
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/notify",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "notify"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 알림설정 수정하기_2020.02.11",
-          "_postman_id": "876855c6-423b-4088-b113-5910a8f0669f",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "isAll",
-                "value": "0",
-                "type": "text",
-                "description": "* 전체알림"
-              }, {
-                "key": "isFanReg",
-                "value": "0",
-                "type": "text",
-                "description": "* 팬등록알림"
-              }, {
-                "key": "isBoard",
-                "value": "0",
-                "type": "text",
-                "description": "* 팬보드알림"
-              }, {
-                "key": "isStarCast",
-                "value": "1",
-                "type": "text",
-                "description": "* 스타방송알림"
-              }, {
-                "key": "isStarNoti",
-                "value": "1",
-                "type": "text",
-                "description": "* 스타공지사항알림"
-              }, {
-                "key": "isEvtNoti",
-                "value": "1",
-                "type": "text",
-                "description": "* 이벤트공지알림"
-              }, {
-                "key": "isSearch",
-                "value": "1",
-                "type": "text",
-                "description": "* 검색허용"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/notify",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "notify"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 상대방 정보 조회_2020.02.07",
-          "_postman_id": "061bdd0a-4c5e-4b13-9a3a-92038ae82db3",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgxMDYxNDAzLCJleHAiOjE1ODM1NjcwMDN9.3yXWs2oIcHr3dS3rlmqIVNiG5OdVBh-dn_SCTro6W8U",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/profile?memNo=11580691392851",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["profile"],
-              "query": [{
-                "key": "memNo",
-                "value": "11580691392851"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 팬보드 등록하기_2020.02.11",
-          "_postman_id": "150a1476-875c-4212-8b6f-af262d1c6f76",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "type": "text",
-                "description": "* 팬보드 스타 회원번호"
-              }, {
-                "key": "depth",
-                "value": "1",
-                "type": "text",
-                "description": "* 1: 댓글, 2:대댓글"
-              }, {
-                "key": "boardNo",
-                "value": "",
-                "type": "text",
-                "description": "대댓글일 경우 부모 댓글번호"
-              }, {
-                "key": "content",
-                "value": "댓글내용",
-                "type": "text",
-                "description": "* 내용"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/profile/board/",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["profile", "board", ""]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 팬보드 목록조회_2020.02.11",
-          "_postman_id": "77f5a7a1-7d95-4f83-9b7e-ff29a0985848",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "formdata",
-              "formdata": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "type": "text",
-                "description": "* 팬보드 회원번호"
-              }, {
-                "key": "page",
-                "value": "",
-                "type": "text"
-              }, {
-                "key": "records",
-                "value": "",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/profile/board/",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["profile", "board", ""]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 팬보드 삭제하기_2020.02.11",
-          "_postman_id": "a360d9f4-a61a-411d-bfb8-665467a5c445",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "type": "text",
-                "description": "* 팬보드 회원번호"
-              }, {
-                "key": "boardIdx",
-                "value": "11",
-                "type": "text",
-                "description": "* 페이지번호"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/profile/board/",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["profile", "board", ""]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 팬보드 대댓글 조회하기_2020.02.11",
-          "_postman_id": "3897e97a-ece4-4b9e-a125-6052aaec6bb9",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/profile/board/reply?memNo=11577931027280&boardNo=5",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["profile", "board", "reply"],
-              "query": [{
-                "key": "memNo",
-                "value": "11577931027280",
-                "description": "* 팬보드 회원번호"
-              }, {
-                "key": "boardNo",
-                "value": "5",
-                "description": "* 댓글 그룹번호"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 방송방 빠른말 가져오기_2020.01.23",
-          "_postman_id": "024d8c14-1c21-432d-943d-537f081e78fa",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTU3MjY3MywiZXhwIjoxNTgyMjUxMDczfQ.8hmsOwNS6LOFoCI1g1-wfH0QN5QcObZ22u5eK5weiFA",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "formdata",
-              "formdata": []
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/shortcut",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "shortcut"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료]회원 방송방 빠른말 저장하기_2020.01.23",
-          "_postman_id": "f18359e3-9a61-402d-b802-9031ade27481",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTI0ODUyNCwiZXhwIjoxNTgxOTI2OTI0fQ.sTlSbw9DropFmMn7an5Jka5Fye40IoyUE1AVwexdUS0",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "order_1",
-                "value": "인사",
-                "type": "text",
-                "description": "* 첫번째 명령"
-              }, {
-                "key": "text_1",
-                "value": "안녕하세요1",
-                "type": "text",
-                "description": "* 첫번째 내용"
-              }, {
-                "key": "onOff_1",
-                "value": "on",
-                "type": "text",
-                "description": "* 첫번째 사용여부 (on/off)"
-              }, {
-                "key": "order_2",
-                "value": "박수",
-                "type": "text",
-                "description": "* 두번째 명령"
-              }, {
-                "key": "text_2",
-                "value": "짝~짝~짝~1",
-                "type": "text",
-                "description": "* 두번째 내용"
-              }, {
-                "key": "onOff_2",
-                "value": "off",
-                "type": "text",
-                "description": "* 두번째 사용여부 (on/off)"
-              }, {
-                "key": "order_3",
-                "value": "감사",
-                "type": "text",
-                "description": "* 세번째 명령"
-              }, {
-                "key": "text_3",
-                "value": "땡큐~~~1",
-                "type": "text",
-                "description": "* 세번째 내용"
-              }, {
-                "key": "onOff_3",
-                "value": " on",
-                "type": "text",
-                "description": "* 세번째 사용여부 (on/off)"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/mypage/shortcut",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["mypage", "shortcut"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 토큰조회_2020.01.31",
-          "_postman_id": "63298ed2-3061-47b4-bfc4-a4eefb957324",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "",
-              "type": "text",
-              "disabled": true
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "os",
-                "value": "1",
-                "type": "text",
-                "description": "* OS 구분"
-              }, {
-                "key": "deviceId",
-                "value": "2200DDD1-77A",
-                "type": "text",
-                "description": "* 디바이스 고유아이디/MAC ADDR"
-              }, {
-                "key": "deviceToken",
-                "value": "45E3156FDE20E7F11AF",
-                "type": "text",
-                "description": "디바이스 토큰"
-              }, {
-                "key": "appVer",
-                "value": "1.0.0.1",
-                "type": "text",
-                "description": "앱 버전"
-              }, {
-                "key": "appAdId",
-                "value": "asd123asdas1",
-                "type": "text",
-                "description": "광고 아이디"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/token",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["token"]
-            }
-          },
-          "response": []
-        }],
-        "_postman_id": "6016064b-20db-40dc-9747-88c474e49000",
-        "_postman_isSubFolder": true
-      }, {
-        "name": "방송",
-        "item": [{
-          "name": "[완료] 방송방 생성_2020.02.03",
-          "_postman_id": "bc7d799f-414c-4ac5-95d3-64bb2069835b",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM5NjMzNEB0cnVlIiwiaWF0IjoxNTgwNzc2MDMzLCJleHAiOjE1ODMyODE2MzN9.y9joubKtWhWOBppxfYBxvw6hAyPNzqhSJG_NEo0Ujow",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomType",
-                "value": "1",
-                "type": "text",
-                "description": "* 방송종류"
-              }, {
-                "key": "title",
-                "value": "선물하기테스트방",
-                "type": "text",
-                "description": "* 제목"
-              }, {
-                "key": "bgImg",
-                "value": "/bg_1/2020/02/03/10/20200203102802930921.jpg",
-                "type": "text",
-                "description": "백그라운드 이미지 경로 ( photo서버에서 받은 path경로만 입력)"
-              }, {
-                "key": "bgImgRacy",
-                "value": "3",
-                "type": "text",
-                "description": "백그라운드 구글 선정성"
-              }, {
-                "key": "welcomMsg",
-                "value": "환영합니다.",
-                "type": "text",
-                "description": "* 환영 메시지"
-              }, {
-                "key": "entryType",
-                "value": "0",
-                "type": "text",
-                "description": "공지사항"
-              }, {
-                "key": "os",
-                "value": "1",
-                "type": "text",
-                "description": "* 0 : 전체, 1 : 팬,  2 : 20세이상"
-              }, {
-                "key": "deviceId",
-                "value": "2200DDD1-77A",
-                "type": "text",
-                "description": "* OS 구분 android: 1, ios: 2, pc: 3"
-              }, {
-                "key": "deviceToken",
-                "value": "45E3156FDE20E7F11AF",
-                "type": "text",
-                "description": "디바이스 고유아이디"
-              }, {
-                "key": "appVer",
-                "value": "1.0.0.1",
-                "type": "text",
-                "description": "디바이스 토큰"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/create",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "create"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 참여_2020.02.05",
-          "_postman_id": "2bd8e7d2-0470-437d-b199-ff46d1ede1e0",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91580776354712",
-                "description": "* 방번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/join",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "join"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 나가기_2020.02.05",
-          "_postman_id": "b799d3fb-0d54-45ca-ba8a-56c4f0ccce9d",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91580776354712",
-                "description": "방번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/exit",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "exit"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송정보 수정_2020.01.22",
-          "_postman_id": "cac3b2b3-cc60-4d61-8cde-04393d77fc0a",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }, {
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "description": "* 방송방번호",
-                "key": "roomNo",
-                "type": "text",
-                "value": "91578888356181"
-              }, {
-                "description": "* 방송종류",
-                "key": "roomType",
-                "type": "text",
-                "value": "1"
-              }, {
-                "description": "* 제목",
-                "key": "title",
-                "type": "text",
-                "value": "자유"
-              }, {
-                "description": "백그라운드 이미지 경로",
-                "key": "bgImg",
-                "type": "text",
-                "value": "/2020/01/10/15/asdas132213.jpg"
-              }, {
-                "description": "백그라운드 구글 선정성",
-                "key": "bgImgRacy",
-                "type": "text",
-                "value": "3"
-              }, {
-                "description": "* 환영메시지",
-                "key": "welcomMsg",
-                "type": "text",
-                "value": "환영합니다"
-              }, {
-                "description": "* OS 구분 android: 1, ios: 2, pc: 3",
-                "key": "os",
-                "type": "text",
-                "value": "1"
-              }, {
-                "description": "디바이스 고유아이디",
-                "key": "deviceId",
-                "type": "text",
-                "value": "2200DDD1-77A"
-              }, {
-                "description": "디바이스 토큰",
-                "key": "deviceToken",
-                "type": "text",
-                "value": "45E3156FDE20E7F11AF"
-              }, {
-                "description": "앱 버전",
-                "key": "appVer",
-                "type": "text",
-                "value": "1.0.0.1"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/edit",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "edit"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 리스트_2020.01.22",
-          "_postman_id": "6f39f0c4-e5cc-47d6-80b5-2f7ac3e5f9d2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/list?roomType=00&page=1&records=50",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "list"],
-              "query": [{
-                "key": "roomType",
-                "value": "00",
-                "description": "방주제"
-              }, {
-                "key": "page",
-                "value": "1",
-                "description": "페이지번호"
-              }, {
-                "key": "records",
-                "value": "50",
-                "description": "페이지당 리스트 개수"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 참여자 리스트_2020.01.23",
-          "_postman_id": "e37ac2e0-25ef-4f7e-84bd-a8976f266c80",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": []
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/listeners?roomNo=91580717628329&page=1&records=5",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "listeners"],
-              "query": [{
-                "key": "roomNo",
-                "value": "91580717628329",
-                "description": "* 방 번호"
-              }, {
-                "key": "page",
-                "value": "1",
-                "description": "현재 페이지 번호"
-              }, {
-                "key": "records",
-                "value": "5",
-                "description": "페이지당 리스트 개수"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 좋아요 추가_2020.01.28",
-          "_postman_id": "cc72603f-bb80-4e92-a779-a94a029dc8af",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91579752109117",
-                "description": "* 방번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/likes",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "likes"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 게스트 지정하기_2020.01.23",
-          "_postman_id": "f8c30112-a054-4588-b846-04b5270851cd",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91579752109117",
-                "description": "* 방번호",
-                "type": "text"
-              }, {
-                "key": "memNo",
-                "value": "11579752135971",
-                "description": "* 게스트 회원번호",
-                "type": "text"
-              }, {
-                "key": "title",
-                "value": "방송생성테스트",
-                "description": "* 방제목",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/guest",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "guest"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 게스트 취소하기_2020.01.23",
-          "_postman_id": "8ea68621-4e70-4e34-a8fd-bc67b01fb3b2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91579752109117",
-                "type": "text",
-                "description": "* 방송방번호"
-              }, {
-                "key": "memNo",
-                "value": "11579752135971",
-                "type": "text",
-                "description": "* 게스트 회원번호"
-              }, {
-                "key": "title",
-                "value": "test",
-                "type": "text",
-                "disabled": true
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/guest",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "guest"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 공지사항 조회_2020.01.28",
-          "_postman_id": "b61d17b1-9187-4f45-96d2-0e862fdea063",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/notice?roomNo=91578888356181",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "notice"],
-              "query": [{
-                "key": "roomNo",
-                "value": "91578888356181",
-                "description": "* 방송방번호"
-              }, {
-                "key": "",
-                "value": "",
-                "disabled": true
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 공지사항 입력/수정_2020.01.28",
-          "_postman_id": "d1a13ba9-243f-4d99-baab-b2ff0e036ec7",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91578888356181",
-                "type": "text",
-                "description": "* 방송방번호"
-              }, {
-                "key": "notice",
-                "value": "공지사항 수정 테스트",
-                "type": "text",
-                "description": "* 공지사항"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/notice",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "notice"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 공지사항 삭제_2020.01.28",
-          "_postman_id": "172742c1-0384-47df-a49e-7237925ea6f2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91578888356181",
-                "type": "text",
-                "description": "* 방송방번호"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/notice",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "notice"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 공유링크 확인_2020.01.28",
-          "_postman_id": "374acc6b-b639-49ca-a108-b613ad0c4590",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/link?link=o3qh7f8vcy",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "link"],
-              "query": [{
-                "key": "link",
-                "value": "o3qh7f8vcy",
-                "description": "링크코드"
-              }, {
-                "key": "link",
-                "value": "fz4dzllxpm",
-                "description": "실패 링크코드 조회",
-                "type": "text",
-                "disabled": true
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 사연 등록_2020.01.28",
-          "_postman_id": "b3a69d9c-fc2b-4862-9d04-408be6d95738",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91578896569103",
-                "type": "text",
-                "description": "* 방송방번호"
-              }, {
-                "key": "contents",
-                "value": "사연등록3",
-                "type": "text",
-                "description": "* 사연"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/story",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "story"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 사연 목록 조회_2020.01.28",
-          "_postman_id": "bb40fe4c-a39a-46b9-a088-1eaa104523b2",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": []
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/story?roomNo=91578896569103&page=1&records=15",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "story"],
-              "query": [{
-                "key": "roomNo",
-                "value": "91578896569103",
-                "description": "* 방송방번호"
-              }, {
-                "key": "page",
-                "value": "1"
-              }, {
-                "key": "records",
-                "value": "15"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 사연 삭제_2020.01.28",
-          "_postman_id": "a351e268-77b6-4e94-aab0-e8837da78322",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "DELETE",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/story?roomNo=91578896569103&storyIdx=10",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "story"],
-              "query": [{
-                "key": "roomNo",
-                "value": "91578896569103",
-                "description": "* 방송방번호"
-              }, {
-                "key": "storyIdx",
-                "value": "10",
-                "description": "* 사연 인덱스 번호"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 강퇴하기_2020.02.05",
-          "_postman_id": "1daf59b3-616e-4e6c-bb62-f1797f7d756d",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "key": "roomNo",
-                "value": "91579752109117",
-                "description": "* 방송방번호",
-                "type": "text"
-              }, {
-                "key": "blockNo",
-                "value": "11579752135971",
-                "description": "* 강퇴회원번호",
-                "type": "text"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/kickout",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "kickout"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 정보 보기_2020.01.30",
-          "_postman_id": "73ebb5f8-1118-446a-933f-3d1e0a0eab7b",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/info?roomNo=91580717628329",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "info"],
-              "query": [{
-                "key": "roomNo",
-                "value": "91580717628329",
-                "description": "* 방송방번호"
-              }]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 개인정보조회(레벨, 경험치, 등급, 루비, 골드)_2020.02.03",
-          "_postman_id": "9d3bc5be-9855-4748-9bb1-abc6c35afd05",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }],
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/profile",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "profile"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[완료] 방송방 선물하기_2020.02.05",
-          "_postman_id": "d201a804-5f71-4f99-a8fb-ecee3e7f143d",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "POST",
-            "header": [{
-              "key": "authToken",
-              "value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
-              "type": "text"
-            }, {
-              "key": "custom-header",
-              "value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-              "type": "text"
-            }, {
-              "key": "Content-Type",
-              "value": "application/x-www-form-urlencoded",
-              "type": "text"
-            }],
-            "body": {
-              "mode": "urlencoded",
-              "urlencoded": [{
-                "description": "* 해당 방 번호",
-                "key": "roomNo",
-                "type": "text",
-                "value": "91580776354712"
-              }, {
-                "description": "* 선물받을 회원번호",
-                "key": "memNo",
-                "type": "text",
-                "value": "11578531396334"
-              }, {
-                "description": "* 선물할 아이템번호",
-                "key": "itemNo",
-                "type": "text",
-                "value": "1001"
-              }, {
-                "description": "* 아이템 개수",
-                "key": "itemCnt",
-                "type": "text",
-                "value": "1"
-              }]
-            },
-            "url": {
-              "raw": "http://devapi2.dalbitcast.com/broad/gift",
-              "protocol": "http",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["broad", "gift"]
-            }
-          },
-          "response": []
-        }, {
-          "name": "[임시] 방송방 부스터 사용하기_2020.02.11",
-          "_postman_id": "b81f2e77-39ee-4ae9-8580-59d49e5f84e7",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": ""
-            }
-          },
-          "response": []
-        }],
-        "_postman_id": "f0d638fb-302c-421a-8b3a-744ae7d27dc6",
-        "_postman_isSubFolder": true
-      }, {
-        "name": "공통",
-        "item": [{
-          "name": "공통정보조회하기",
-          "_postman_id": "573a0bdf-737a-407a-ac6a-5e3eeeda9cde",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "https://devapi2.dalbitcast.com/splash",
-              "protocol": "https",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["splash"]
-            },
-            "description": "공통코드, 추후 아이템 목록 추가될 예정"
-          },
-          "response": []
-        }, {
-          "name": "[완료] 위치정보 가져오기_2020.01.31",
-          "_postman_id": "ed6781f5-3014-4e8a-84a1-8ef29e678861",
-          "protocolProfileBehavior": {
-            "disableBodyPruning": true
-          },
-          "request": {
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "https://devapi2.dalbitcast.com/location",
-              "protocol": "https",
-              "host": ["devapi2", "dalbitcast", "com"],
-              "path": ["location"]
-            }
-          },
-          "response": []
-        }],
-        "_postman_id": "6714518f-929f-46c1-8974-6b13226dc5ff",
-        "_postman_isSubFolder": true
-      }],
-      "_postman_id": "4ec1a6ec-2aee-4d4e-aae6-cce14d2fa066",
-      "_postman_isSubFolder": true
-    }, {
-      "name": "Photo",
-      "item": [{
-        "name": "이미지 조회_2020.01.17",
-        "_postman_id": "c1d368f4-91f7-44b0-8637-54a23ec1010c",
-        "protocolProfileBehavior": {
-          "disableBodyPruning": true
-        },
-        "request": {
-          "method": "GET",
-          "header": [],
-          "url": {
-            "raw": "https://devphoto2.dalbitcast.com/2020/01/07/09/20200107095944413261.jpg",
-            "protocol": "https",
-            "host": ["devphoto2", "dalbitcast", "com"],
-            "path": ["2020", "01", "07", "09", "20200107095944413261.jpg"]
-          },
-          "description": "URL에 파일 경로+파일명 입력시 이미지 조회 됩니다."
-        },
-        "response": []
-      }, {
-        "name": "이미지 업로드_2020.01.17",
-        "_postman_id": "62e0f251-f243-4f18-a66d-a632e335ef06",
-        "protocolProfileBehavior": {
-          "disableBodyPruning": true
-        },
-        "request": {
-          "method": "POST",
-          "header": [{
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "value": "application/x-www-form-urlencoded",
-            "type": "text"
-          }],
-          "body": {
-            "mode": "formdata",
-            "formdata": [{
-              "key": "file",
-              "description": "* ",
-              "type": "file",
-              "value": null
-            }, {
-              "key": "dataURL",
-              "value": "",
-              "description": "*",
-              "type": "text"
-            }, {
-              "key": "imageURL",
-              "value": "",
-              "description": "*",
-              "type": "text"
-            }, {
-              "key": "uploadType",
-              "value": "bg",
-              "description": "* bg: 배경이미지 , profile : 프로필이미지",
-              "type": "text"
-            }]
-          },
-          "url": {
-            "raw": "https://devphoto2.dalbitcast.com/upload",
-            "protocol": "https",
-            "host": ["devphoto2", "dalbitcast", "com"],
-            "path": ["upload"]
-          },
-          "description": "파라미터(MultypartFile / dataURL / ImageURL) * 셋중 하나만 필수\r\n \r\n#업로드 가능 이미지 확장자 : png, jpg, jpeg"
-        },
-        "response": []
-      }, {
-        "name": "이미지 업로드 완료(Done)_2020.01.17",
-        "_postman_id": "ad9b7cd3-eb6f-427f-9e5a-479315554fe5",
-        "protocolProfileBehavior": {
-          "disableBodyPruning": true
-        },
-        "request": {
-          "method": "POST",
-          "header": [{
-            "key": "Content-Type",
-            "name": "Content-Type",
-            "type": "text",
-            "value": "application/x-www-form-urlencoded"
-          }],
-          "body": {
-            "mode": "urlencoded",
-            "urlencoded": [{
-              "description": "* Temp 파일 FullPath    *필수",
-              "key": "tempFileURI",
-              "type": "text",
-              "value": "https://devphoto2.wawatoc.com/temp/2020/01/16/11/20200116113536310467.png"
-            }, {
-              "description": "삭제할 이미지 파일 FullPath ",
-              "key": "deleteFileURI",
-              "type": "text",
-              "value": ""
-            }]
-          },
-          "url": {
-            "raw": "https://devphoto2.dalbitcast.com/done",
-            "protocol": "https",
-            "host": ["devphoto2", "dalbitcast", "com"],
-            "path": ["done"]
-          },
-          "description": "tempFileURI : 완료처리 대상 Temp 이미지 파일 Path 및 URL *필수\r\n \r\ndeleteFileURI : 삭제처리 대상 이미지 Path 및 URL (이미지 수정 시 사용 예정)"
-        },
-        "response": []
-      }, {
-        "name": "이미지 삭제_완료",
-        "_postman_id": "8adfa2b6-34e2-42eb-a17a-786a272454b6",
-        "protocolProfileBehavior": {
-          "disableBodyPruning": true
-        },
-        "request": {
-          "method": "DELETE",
-          "header": [],
-          "body": {
-            "mode": "formdata",
-            "formdata": [{
-              "key": "deleteFileURI",
-              "value": "",
-              "description": "* 삭제할 이미지 파일 FullPath ",
-              "type": "text"
-            }]
-          },
-          "url": {
-            "raw": "https://devphoto2.dalbitcast.com/delete",
-            "protocol": "https",
-            "host": ["devphoto2", "dalbitcast", "com"],
-            "path": ["delete"]
-          }
-        },
-        "response": []
-      }],
-      "_postman_id": "d903bfcc-204f-4dc5-91ef-e79563552cb5",
-      "_postman_isSubFolder": true
-    }],
-    "_postman_id": "bcf7b305-a258-4e4e-8208-9a25efab4121"
-  }],
-  "event": [{
-    "listen": "prerequest",
-    "script": {
-      "id": "0f3acf1b-a2a7-400d-808b-a9a2ba8ae96a",
-      "type": "text/javascript",
-      "exec": [""]
-    }
-  }, {
-    "listen": "test",
-    "script": {
-      "id": "afcc2d09-3688-4a5d-9a3c-25a978d33ca0",
-      "type": "text/javascript",
-      "exec": [""]
-    }
-  }]
+	"info": {
+		"_postman_id": "085762e0-f122-4f56-9234-a49466f04829",
+		"name": "달빛라디오 API 정의서",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "개발",
+			"item": [
+				{
+					"name": "API",
+					"item": [
+						{
+							"name": "회원",
+							"item": [
+								{
+									"name": "[완료] 회원가입_2020.02.07",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memType",
+													"value": "p",
+													"description": "* 로그인구분",
+													"type": "text"
+												},
+												{
+													"key": "memId",
+													"value": "00012341258",
+													"description": "* 아이디 / 소셜아이디",
+													"type": "text"
+												},
+												{
+													"key": "memPwd",
+													"value": "123qweasd",
+													"description": "비밀번호",
+													"type": "text"
+												},
+												{
+													"key": "gender",
+													"value": "m",
+													"description": "* 성별",
+													"type": "text"
+												},
+												{
+													"key": "nickNm",
+													"value": "구구구구구구",
+													"description": "* 닉네임",
+													"type": "text"
+												},
+												{
+													"key": "birth",
+													"value": "20200206",
+													"description": "* 생년월일",
+													"type": "text"
+												},
+												{
+													"key": "term1",
+													"value": "y",
+													"description": "* 약관동의1",
+													"type": "text"
+												},
+												{
+													"key": "term2",
+													"value": "y",
+													"description": "* 약관동의2",
+													"type": "text"
+												},
+												{
+													"key": "term3",
+													"value": "y",
+													"description": "* 약관동의3",
+													"type": "text"
+												},
+												{
+													"key": "term4",
+													"value": "y",
+													"description": "* 약관동의4",
+													"type": "text"
+												},
+												{
+													"key": "term5",
+													"value": "y",
+													"description": "* 약관동의5",
+													"type": "text"
+												},
+												{
+													"key": "name",
+													"value": "홍길동",
+													"description": "이름",
+													"type": "text"
+												},
+												{
+													"key": "profImg",
+													"value": "/profile_1/20557555200/20200211165401431682.png",
+													"description": "프로필이미지 패스",
+													"type": "text"
+												},
+												{
+													"key": "profImgRacy",
+													"value": "",
+													"description": "프로필이미지 구글 선정성",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "",
+													"description": "이메일",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/member/signup",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"member",
+												"signup"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 로그인_2020.01.21",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg2Njk2NjQ5MUBmYWxzZSIsImlhdCI6MTU4MDk1NDUyNSwiZXhwIjoxNTgzNDYwMTI1fQ.bhV5XGj2_oOFssdYqpkj62aJ5hZEYp98aILV1cHFAj4",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memType",
+													"value": "p",
+													"description": "* 회원구분 [필수]",
+													"type": "text"
+												},
+												{
+													"key": "memId",
+													"value": "010-1234-1234",
+													"description": "* 아이디 / 소셜아이디 [필수]",
+													"type": "text"
+												},
+												{
+													"key": "memPwd",
+													"value": "123qweasd",
+													"description": "비밀번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/member/login",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"member",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 닉네임 중복체크_2020.01.21",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/member/nick?nickNm=radiodalbit",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"member",
+												"nick"
+											],
+											"query": [
+												{
+													"key": "nickNm",
+													"value": "radiodalbit",
+													"description": "* 닉네임"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 비밀번호변경_2020.02.10",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3Nzk1MDYwMzk1OEB0cnVlIiwiaWF0IjoxNTgxMjk1OTc2LCJleHAiOjE1ODM4MDE1NzZ9.xR98hC9Q3I24WuMU3OMyXMiXu-qPpel9Uaf7Ofs3lls",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memId",
+													"value": "010-1234-0001",
+													"description": "* 핸드폰 번호",
+													"type": "text"
+												},
+												{
+													"key": "memPwd",
+													"value": "123qweasd",
+													"description": "* 비밀번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/member/pwd",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"member",
+												"pwd"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 프로필편집_2020.02.10",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgxMDYxNDAzLCJleHAiOjE1ODM1NjcwMDN9.3yXWs2oIcHr3dS3rlmqIVNiG5OdVBh-dn_SCTro6W8U",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "gender",
+													"value": "m",
+													"description": "* 성별",
+													"type": "text"
+												},
+												{
+													"key": "nickNm",
+													"value": "radiogaga",
+													"description": "* 닉네임",
+													"type": "text"
+												},
+												{
+													"key": "name",
+													"value": "홍길동",
+													"description": "이름",
+													"type": "text"
+												},
+												{
+													"key": "birth",
+													"value": "19801123",
+													"description": "* 생년월일",
+													"type": "text"
+												},
+												{
+													"key": "profImg",
+													"value": "profile_1/2020/01/03/profile.png",
+													"description": "프로필이미지 패스",
+													"type": "text"
+												},
+												{
+													"key": "profImgDel",
+													"value": "profile_0/2020/01/03/profile.png",
+													"description": "삭제할 프로필 이미지 패스",
+													"type": "text"
+												},
+												{
+													"key": "profImgRacy",
+													"value": "5",
+													"description": "프로필이미지 구글 선정성",
+													"type": "text"
+												},
+												{
+													"key": "profMsg",
+													"value": "Hi! Hello",
+													"description": "메시지",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/profile",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"profile"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 팬 등록_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTIyNDk4MywiZXhwIjoxNTgxOTAzMzgzfQ.-YR7a_QSOI_b2Uytj5OdABOPgT8wDfybbrHdpqC9-To",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 스타회원번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/fan",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"fan"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 팬 해제_2020.02.11",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTIyMTk4NiwiZXhwIjoxNTgxOTAwMzg2fQ.rQdcmapLIcBzWOwe8EJoDZSV7of6deAYb3CNyeuX2eI",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 스타회원번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/fan",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"fan"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 본인 회원 정보 조회_2020.02.05",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM5NjMzNEB0cnVlIiwiaWF0IjoxNTgwNzc2MDMzLCJleHAiOjE1ODMyODE2MzN9.y9joubKtWhWOBppxfYBxvw6hAyPNzqhSJG_NEo0Ujow"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 방송방 기본설정 조회하기_2020.01.31",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM3NDIzNkB0cnVlIiwiaWF0IjoxNTgxMzE4NDcyLCJleHAiOjE1ODM4MjQwNzJ9.HixvZ5z8e1RaL3r4Vts1EO3iPWs8_CY3ASZ36xFGJRM",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/broad",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"broad"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 방송방 기본설정 수정하기_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3OTc1MjEzNTk3MUB0cnVlIiwiaWF0IjoxNTgwMzYzODI1LCJleHAiOjE1ODI5NTU4MjV9.sg5Owffq93J7U9KXIFBgjOjQzAlOlqIZoyF82L9AIaQ",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomType",
+													"value": "1",
+													"description": "* 방송종류",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "방송방제목입니다",
+													"description": "* 제목",
+													"type": "text"
+												},
+												{
+													"key": "bgImg",
+													"value": "/2020/01/10/15/asdas132213.jpg",
+													"description": "백그라운드 이미지 경로",
+													"type": "text"
+												},
+												{
+													"key": "bgImgRacy",
+													"value": "3",
+													"description": "백그라운드 구글 선정성",
+													"type": "text"
+												},
+												{
+													"key": "wecomMsg",
+													"value": "환영합니다",
+													"description": "환영 메시지",
+													"type": "text"
+												},
+												{
+													"key": "notice",
+													"value": "공지사항",
+													"description": "공지사항",
+													"type": "text"
+												},
+												{
+													"key": "entryType",
+													"value": "1",
+													"description": "* 입장 (0: 전체, 1: 팬,  2: 20세이상)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/broad",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"broad"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 신고하기_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 신고회원번호",
+													"type": "text"
+												},
+												{
+													"key": "reason",
+													"value": "1",
+													"description": "* 신고사유",
+													"type": "text"
+												},
+												{
+													"key": "cont",
+													"value": "신고내용",
+													"description": "* 상세내용",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/declar",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"declar"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 차단하기_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577690655946",
+													"description": "* 차단회원번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/block",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"block"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 차단 해제하기_2020.02.11",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577690655946",
+													"description": "* 차단회원번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/block",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"block"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 알림설정 조회하기_2020.01.20",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/notify",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"notify"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 알림설정 수정하기_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "isAll",
+													"value": "0",
+													"description": "* 전체알림",
+													"type": "text"
+												},
+												{
+													"key": "isFanReg",
+													"value": "0",
+													"description": "* 팬등록알림",
+													"type": "text"
+												},
+												{
+													"key": "isBoard",
+													"value": "0",
+													"description": "* 팬보드알림",
+													"type": "text"
+												},
+												{
+													"key": "isStarCast",
+													"value": "1",
+													"description": "* 스타방송알림",
+													"type": "text"
+												},
+												{
+													"key": "isStarNoti",
+													"value": "1",
+													"description": "* 스타공지사항알림",
+													"type": "text"
+												},
+												{
+													"key": "isEvtNoti",
+													"value": "1",
+													"description": "* 이벤트공지알림",
+													"type": "text"
+												},
+												{
+													"key": "isSearch",
+													"value": "1",
+													"description": "* 검색허용",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/notify",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"notify"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 상대방 정보 조회_2020.02.07",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NkB0cnVlIiwiaWF0IjoxNTgxMDYxNDAzLCJleHAiOjE1ODM1NjcwMDN9.3yXWs2oIcHr3dS3rlmqIVNiG5OdVBh-dn_SCTro6W8U",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/profile?memNo=11580691392851",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile"
+											],
+											"query": [
+												{
+													"key": "memNo",
+													"value": "11580691392851"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 팬보드 등록하기_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 팬보드 스타 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "depth",
+													"value": "1",
+													"description": "* 1: 댓글, 2:대댓글",
+													"type": "text"
+												},
+												{
+													"key": "boardNo",
+													"value": "",
+													"description": "대댓글일 경우 부모 댓글번호",
+													"type": "text"
+												},
+												{
+													"key": "content",
+													"value": "댓글내용",
+													"description": "* 내용",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/profile/board/",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile",
+												"board",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 팬보드 목록조회_2020.02.11",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 팬보드 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "page",
+													"value": "",
+													"type": "text"
+												},
+												{
+													"key": "records",
+													"value": "",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/profile/board/",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile",
+												"board",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 팬보드 삭제하기_2020.02.11",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 팬보드 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "boardIdx",
+													"value": "11",
+													"description": "* 페이지번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/profile/board/",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile",
+												"board",
+												""
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 팬보드 대댓글 조회하기_2020.02.11",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/profile/board/reply?memNo=11577931027280&boardNo=5",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile",
+												"board",
+												"reply"
+											],
+											"query": [
+												{
+													"key": "memNo",
+													"value": "11577931027280",
+													"description": "* 팬보드 회원번호"
+												},
+												{
+													"key": "boardNo",
+													"value": "5",
+													"description": "* 댓글 그룹번호"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 방송방 빠른말 가져오기_2020.01.23",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTU3MjY3MywiZXhwIjoxNTgyMjUxMDczfQ.8hmsOwNS6LOFoCI1g1-wfH0QN5QcObZ22u5eK5weiFA",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "formdata",
+											"formdata": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/shortcut",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"shortcut"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 방송방 빠른말 저장하기_2020.01.23",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTI0ODUyNCwiZXhwIjoxNTgxOTI2OTI0fQ.sTlSbw9DropFmMn7an5Jka5Fye40IoyUE1AVwexdUS0",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "order_1",
+													"value": "인사",
+													"description": "* 첫번째 명령",
+													"type": "text"
+												},
+												{
+													"key": "text_1",
+													"value": "안녕하세요1",
+													"description": "* 첫번째 내용",
+													"type": "text"
+												},
+												{
+													"key": "onOff_1",
+													"value": "on",
+													"description": "* 첫번째 사용여부 (on/off)",
+													"type": "text"
+												},
+												{
+													"key": "order_2",
+													"value": "박수",
+													"description": "* 두번째 명령",
+													"type": "text"
+												},
+												{
+													"key": "text_2",
+													"value": "짝~짝~짝~1",
+													"description": "* 두번째 내용",
+													"type": "text"
+												},
+												{
+													"key": "onOff_2",
+													"value": "off",
+													"description": "* 두번째 사용여부 (on/off)",
+													"type": "text"
+												},
+												{
+													"key": "order_3",
+													"value": "감사",
+													"description": "* 세번째 명령",
+													"type": "text"
+												},
+												{
+													"key": "text_3",
+													"value": "땡큐~~~1",
+													"description": "* 세번째 내용",
+													"type": "text"
+												},
+												{
+													"key": "onOff_3",
+													"value": " on",
+													"description": "* 세번째 사용여부 (on/off)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/mypage/shortcut",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"shortcut"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 토큰조회_2020.01.31",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "os",
+													"value": "1",
+													"description": "* OS 구분",
+													"type": "text"
+												},
+												{
+													"key": "deviceId",
+													"value": "2200DDD1-77A",
+													"description": "* 디바이스 고유아이디/MAC ADDR",
+													"type": "text"
+												},
+												{
+													"key": "deviceToken",
+													"value": "45E3156FDE20E7F11AF",
+													"description": "디바이스 토큰",
+													"type": "text"
+												},
+												{
+													"key": "appVer",
+													"value": "1.0.0.1",
+													"description": "앱 버전",
+													"type": "text"
+												},
+												{
+													"key": "appAdId",
+													"value": "asd123asdas1",
+													"description": "광고 아이디",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/token",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"token"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "방송",
+							"item": [
+								{
+									"name": "[완료] 방송방 생성_2020.02.03",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomType",
+													"value": "00",
+													"description": "* 방송종류",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "선물하기테스트방",
+													"description": "* 제목",
+													"type": "text"
+												},
+												{
+													"key": "bgImg",
+													"value": "/bg_1/20558678400/20200212141450976969.png",
+													"description": "백그라운드 이미지 경로 ( photo서버에서 받은 path경로만 입력)",
+													"type": "text"
+												},
+												{
+													"key": "bgImgRacy",
+													"value": "5",
+													"description": "백그라운드 구글 선정성",
+													"type": "text"
+												},
+												{
+													"key": "welcomMsg",
+													"value": "환영합니다.",
+													"description": "환영 메시지",
+													"type": "text"
+												},
+												{
+													"key": "notice",
+													"value": "공지사항",
+													"description": "공지사항",
+													"type": "text"
+												},
+												{
+													"key": "entryType",
+													"value": "0",
+													"description": "* 0 : 전체, 1 : 팬, 2 : 20세이상",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/create",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 참여_2020.02.05",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91581486691950",
+													"description": "* 방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/join",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"join"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 나가기_2020.02.05",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91581473349269",
+													"description": "방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/exit",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"exit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송정보 수정_2020.01.22",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91578888356181",
+													"description": "* 방송방번호",
+													"type": "text"
+												},
+												{
+													"key": "roomType",
+													"value": "01",
+													"description": "* 방송종류",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "자유",
+													"description": "* 제목",
+													"type": "text"
+												},
+												{
+													"key": "bgImg",
+													"value": "/2020/01/10/15/asdas132213.jpg",
+													"description": "백그라운드 이미지 경로",
+													"type": "text"
+												},
+												{
+													"key": "bgImgRacy",
+													"value": "3",
+													"description": "백그라운드 구글 선정성",
+													"type": "text"
+												},
+												{
+													"key": "welcomMsg",
+													"value": "환영합니다",
+													"description": "환영메시지",
+													"type": "text"
+												},
+												{
+													"key": "bgImgDel",
+													"value": "/2020/01/10/15/asdas132213.jpg",
+													"description": "삭제할 백그라운드 이미지 경로",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/edit",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"edit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 리스트_2020.01.22",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/list?roomType=00&page=1&records=5",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"list"
+											],
+											"query": [
+												{
+													"key": "roomType",
+													"value": "00",
+													"description": "방주제"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "5",
+													"description": "페이지당 리스트 개수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 참여자 리스트_2020.01.23",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/listeners?roomNo=91580717628329&page=1&records=5",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"listeners"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91580717628329"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "records",
+													"value": "5"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 좋아요 추가_2020.01.28",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91579752109117",
+													"description": "* 방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/likes",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"likes"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 게스트 지정하기_2020.01.23",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91579752109117",
+													"description": "* 방번호",
+													"type": "text"
+												},
+												{
+													"key": "memNo",
+													"value": "11579752135971",
+													"description": "* 게스트 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "방송생성테스트",
+													"description": "* 방제목",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/guest",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"guest"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 게스트 취소하기_2020.01.23",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91579752109117",
+													"description": "* 방송방번호",
+													"type": "text"
+												},
+												{
+													"key": "memNo",
+													"value": "11579752135971",
+													"description": "* 게스트 회원번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/guest",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"guest"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 공지사항 조회_2020.01.28",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/notice?roomNo=91578888356181",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"notice"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91578888356181",
+													"description": "* 방송방번호"
+												},
+												{
+													"key": "",
+													"value": "",
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 공지사항 입력/수정_2020.01.28",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91578888356181",
+													"description": "* 방송방번호",
+													"type": "text"
+												},
+												{
+													"key": "notice",
+													"value": "공지사항 수정 테스트",
+													"description": "* 공지사항",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/notice",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"notice"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 공지사항 삭제_2020.01.28",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91578888356181",
+													"description": "* 방송방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/notice",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"notice"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 공유링크 확인_2020.01.28",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/link?link=o3qh7f8vcy",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"link"
+											],
+											"query": [
+												{
+													"key": "link",
+													"value": "o3qh7f8vcy",
+													"description": "실패 링크코드 조회"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 사연 등록_2020.01.28",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91578896569103",
+													"description": "* 방송방번호",
+													"type": "text"
+												},
+												{
+													"key": "contents",
+													"value": "사연등록3",
+													"description": "* 사연",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/story",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"story"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 사연 목록 조회_2020.01.28",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/story?roomNo=91578896569103&page=1&records=15",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"story"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91578896569103"
+												},
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "records",
+													"value": "15"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 사연 삭제_2020.01.28",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/story?roomNo=91578896569103&storyIdx=1",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"story"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91578896569103",
+													"description": "* 방송방번호"
+												},
+												{
+													"key": "storyIdx",
+													"value": "1",
+													"description": "* 사연 인덱스 번호"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 강퇴하기_2020.02.05",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91579752109117",
+													"description": "* 방송방번호",
+													"type": "text"
+												},
+												{
+													"key": "blockNo",
+													"value": "11579752135971",
+													"description": "* 강퇴회원번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/kickout",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"kickout"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 정보 보기_2020.01.30",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/info?roomNo=91580717628329",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"info"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91580717628329",
+													"description": "* 방송방번호"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 개인정보조회(레벨, 경험치, 등급, 루비, 골드)_2020.02.03",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/profile",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"profile"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 선물하기_2020.02.05",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91581466234515",
+													"description": "* 해당 방 번호",
+													"type": "text"
+												},
+												{
+													"key": "memNo",
+													"value": "11580778865500",
+													"description": "* 선물받을 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "itemNo",
+													"value": "1001",
+													"description": "* 선물할 아이템번호",
+													"type": "text"
+												},
+												{
+													"key": "itemCnt",
+													"value": "1",
+													"description": "* 아이템 개수",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/gift",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"gift"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[임시] 방송방 부스터 사용하기_2020.02.11",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91581493968953",
+													"description": "* 해당 방 번호",
+													"type": "text"
+												},
+												{
+													"key": "itemNo",
+													"value": "2001",
+													"description": "* 선물할 아이템 번호",
+													"type": "text"
+												},
+												{
+													"key": "itemCnt",
+													"value": "1",
+													"description": "* 아이템 개수",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/boost",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"boost"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 순위 및 아이템사용 조회_2020.02.12",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/boost?roomNo=91581493968953",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"boost"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91581493968953"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						},
+						{
+							"name": "공통",
+							"item": [
+								{
+									"name": "공통정보조회하기",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/splash",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"splash"
+											]
+										},
+										"description": "공통코드, 추후 아이템 목록 추가될 예정"
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 위치정보 가져오기_2020.01.31",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/location",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"location"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Photo",
+					"item": [
+						{
+							"name": "이미지 조회_2020.01.17",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://devphoto2.dalbitcast.com/2020/01/07/09/20200107095944413261.jpg",
+									"protocol": "https",
+									"host": [
+										"devphoto2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"2020",
+										"01",
+										"07",
+										"09",
+										"20200107095944413261.jpg"
+									]
+								},
+								"description": "URL에 파일 경로+파일명 입력시 이미지 조회 됩니다."
+							},
+							"response": []
+						},
+						{
+							"name": "이미지 업로드_2020.01.17",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"description": "* ",
+											"type": "file",
+											"src": "/C:/Users/USER/Desktop/요시/개인자료/여보야.png"
+										},
+										{
+											"key": "dataURL",
+											"value": "",
+											"description": "*",
+											"type": "text"
+										},
+										{
+											"key": "imageURL",
+											"value": "",
+											"description": "*",
+											"type": "text"
+										},
+										{
+											"key": "uploadType",
+											"value": "bg",
+											"description": "* bg: 배경이미지 , profile : 프로필이미지",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devphoto2.dalbitcast.com/upload",
+									"protocol": "https",
+									"host": [
+										"devphoto2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"upload"
+									]
+								},
+								"description": "파라미터(MultypartFile / dataURL / ImageURL) * 셋중 하나만 필수\r\n \r\n#업로드 가능 이미지 확장자 : png, jpg, jpeg"
+							},
+							"response": []
+						},
+						{
+							"name": "이미지 업로드 완료(Done)_2020.01.17",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "tempFileURI",
+											"value": "https://devphoto2.wawatoc.com/temp/2020/01/16/11/20200116113536310467.png",
+											"description": "* Temp 파일 FullPath    *필수",
+											"type": "text"
+										},
+										{
+											"key": "deleteFileURI",
+											"value": "",
+											"description": "삭제할 이미지 파일 FullPath ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devphoto2.dalbitcast.com/done",
+									"protocol": "https",
+									"host": [
+										"devphoto2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"done"
+									]
+								},
+								"description": "tempFileURI : 완료처리 대상 Temp 이미지 파일 Path 및 URL *필수\r\n \r\ndeleteFileURI : 삭제처리 대상 이미지 Path 및 URL (이미지 수정 시 사용 예정)"
+							},
+							"response": []
+						},
+						{
+							"name": "이미지 삭제_완료",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "deleteFileURI",
+											"value": "",
+											"description": "* 삭제할 이미지 파일 FullPath ",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devphoto2.dalbitcast.com/delete",
+									"protocol": "https",
+									"host": [
+										"devphoto2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "0f3acf1b-a2a7-400d-808b-a9a2ba8ae96a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "afcc2d09-3688-4a5d-9a3c-25a978d33ca0",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
 }
