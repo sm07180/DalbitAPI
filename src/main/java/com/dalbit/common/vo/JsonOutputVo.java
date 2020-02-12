@@ -6,6 +6,8 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 /**
  * JSON output을 위한 VO
  */
@@ -26,6 +28,14 @@ public class JsonOutputVo {
         setTimestamp(DalbitUtil.getTimeStamp());
     }
 
+    public JsonOutputVo(Status status, Object data, ArrayList validationMessageDetail){
+        setStatus(status);
+        setData(data);
+        setTimestamp(DalbitUtil.getTimeStamp());
+
+        setValidationMessageDetail(validationMessageDetail);
+    }
+
     public JsonOutputVo(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
         setTimestamp(DalbitUtil.getTimeStamp());
@@ -43,9 +53,11 @@ public class JsonOutputVo {
     private String messageKey;
     private String message;
 
-    private Object data;
+    private Object data = "";
 
     private String timestamp;
+
+    private ArrayList validationMessageDetail = new ArrayList<String>();
 
     public void setStatus(Status status){
         setCode(status.getMessageCode());

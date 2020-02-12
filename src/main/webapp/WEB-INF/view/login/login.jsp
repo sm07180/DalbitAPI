@@ -27,51 +27,14 @@
                                     <label for="memId" class="col-md-4 col-form-label text-md-right">memId</label>
                                     <div class="col-md-6">
                                         <!--<input type="text" name="memId" id="memId" class="form-control" value="010-1234-4568" />-->
-                                        <select name="memId" id="memId" class="form-control">
-                                            <%--<option value="010-1234-1234">010-1234-1234 (radiogaga11)</option>
-                                            <option value="010-1234-4568">010-1234-4568 (radiogaga1)</option>
-                                            <option value="010-1234-7412">010-1234-7412 (infotest01)</option>
-                                            <option value="010-1234-7413">010-1234-7413 (infotest02)</option>
-                                            <option value="010-1234-4413">010-1234-4413 (infotest03)</option>
-                                            <option value="010-1234-4414">010-1234-4414 (infotest04)</option>
-                                            <option value="010-1234-0001">010-1234-0001 (test0001)</option>
-                                            <option value="010-1234-0002">010-1234-0002 (test0002)</option>
-                                            <option value="010-1234-0003">010-1234-0003 (test0003)</option>
-                                            <option value="010-1234-0004">010-1234-0004 (test0004)</option>
-                                            <option value="010-1234-0005">010-1234-0005 (radiogaga21)</option>
-                                            <option value="010-1234-0006">010-1234-0006 (test0006)</option>
-                                            <option value="010-1234-0007">010-1234-0007 (test0007)</option>
-                                            <option value="010-1234-0008">010-1234-0008 (test0008)</option>
-                                            <option value="010-1234-0009">010-1234-0009 (test0009)</option>
-                                            <option value="010-1234-0010">010-1234-0010 (radiogaga12)</option>
-                                            <option value="010-1234-0011">010-1234-0011 (test0011)</option>
-                                            <option value="010-1234-0012">010-1234-0012 (test0012)</option>
-                                            <option value="010-1234-0013">010-1234-0013 (test0013)</option>
-                                            <option value="010-1234-0014">010-1234-0014 (test0014)</option>
-                                            <option value="010-1234-4567">010-1234-4567 (radiagaga)</option>
-                                            <option value="010-9999-0001">010-9999-0001 (postman_test1)</option>
-                                            <option value="010-9999-0002">010-9999-0002 (radiogaga)</option>
-                                            <option value="010-9999-0003">010-9999-0003 (radiogaga33)</option>
-                                            <option value="010-1224-0014">010-1224-0014 (test0024)</option>
-                                            <option value="010-1234-9090">010-1234-9090 (달빛DJ)</option>
-                                            <option value="010-3232-9090">010-3232-9090 (달빛DJ1234)</option>
-                                            <option value="010-1234-5992">010-1234-5992 (달빛DJ테스트)</option>
-                                            <option value="010-1234-5959">010-1234-5959 (달빛DJ참여테스트)</option>
-                                            <option value="010-3232-9091">010-3232-9091 (달빛DJ1)</option>
-                                            <option value="010-1111-2222">010-1111-2222 (달빛청취자)</option>
-                                            <option value="010-4444-5555">010-4444-5555 (달빛래디오)</option>
-                                            <option value="010-3333-4455">010-3333-4455 (닉네임123)</option>
-                                            <option value="010-3412-4568">010-3412-4568 (닉네임322)</option>
-                                            <option value="010-3232-3232">010-3232-3232 (닉네임2323)</option>
-                                            <option value="010-4561-0004">010-4561-0004 (test1004)</option>--%>
-                                        </select>
+                                        <select name="memId" id="memId" class="form-control"></select>
                                     </div>
                                 </div>
 
                                 <div class="form-group row">
                                     <label for="memId" class="col-md-4 col-form-label text-md-right">memPwd</label>
                                     <div class="col-md-6">
-                                        <input type="text" name="memPwd" id="memPwd" class="form-control" value="1234" />
+                                        <input type="text" name="memPwd" id="memPwd" class="form-control" value="123qweasd" />
                                     </div>
                                 </div>
 
