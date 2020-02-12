@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.dao;
 
+import com.dalbit.broadcast.vo.DevRoomVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
@@ -13,4 +14,7 @@ public interface UserDao {
     ProcedureVo callBroadCastRoomGuestDelete(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomKickout(ProcedureVo procedureVo);
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
+
+    List<DevRoomVo> selectBjRoom(String memNo);
+    List<DevRoomVo> selectJoinRoom(String memNo);
 }

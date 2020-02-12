@@ -18,6 +18,7 @@ import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -236,5 +237,19 @@ public class UserController {
         HashMap data = new HashMap();
 
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.삭제, data)));
+    }
+
+
+    /* ######################## Native 연동에서만 필요한 부분 ########################## */
+    @Profile({"local", "dev"})
+    @GetMapping("devBroad/bj")
+    public String getDevBjRoom(HttpServletRequest request){
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.getDevBjRoom(MemberVo.getMyMemNo()))));
+    }
+
+    @Profile({"local", "dev"})
+    @GetMapping("devBroad/join")
+    public String getDevJoinRoom(HttpServletRequest request){
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo()))));
     }
 }

@@ -239,4 +239,13 @@ public class UserService {
         }
         return result;
     }
+
+    /* ######################## Native 연동에서만 필요한 부분 ########################## */
+    public List<DevRoomVo> getDevBjRoom(String memNo){
+        return userDao.selectBjRoom(memNo);
+    }
+
+    public List<DevRoomVo> getDevJoinRoom(String memNo){
+        return userDao.selectJoinRoom(memNo);
+    }
 }
