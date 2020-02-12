@@ -19,6 +19,7 @@ import org.springframework.validation.FieldError;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -627,6 +628,19 @@ public class DalbitUtil {
             isPattern = true;
         }
         return isPattern;
+    }
+
+    /**
+     * CORS 방지를 위한 Response 헤더 세팅
+     * @param request
+     * @param response
+     */
+    public static void setHeader(HttpServletRequest request, HttpServletResponse response){
+        response.setHeader("Access-Control-Allow-Methods", "POST, GET, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Max-Age", "3600");
+        response.setHeader("Access-Control-Allow-Headers", "Origin,Accept,X-Requested-With,Content-Type,Access-Control-Request-Method,Access-Control-Request-Headers,Authorization,"+DalbitUtil.getProperty("sso.header.cookie.name")+","+DalbitUtil.getProperty("rest.custom.header.name")+",redirectUrl,Proxy-Client-IP,WL-Proxy-Client-IP,X-Forwarded-For");
+        response.setHeader("Access-Control-Allow-Origin", request.getHeader("Origin"));
+        response.setHeader("Access-Control-Allow-Credentials", "true");
     }
 
 }
