@@ -15,7 +15,7 @@
 
 #### repository 정보
 
-    gitrepo@devj.wawatoc.com:radio_mobile.git
+    gitrepo@devj.dalbitcast.com:radio_mobile.git
  
 #### branch 정보
 

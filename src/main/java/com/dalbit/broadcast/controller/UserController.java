@@ -5,6 +5,10 @@ import com.dalbit.broadcast.vo.procedure.P_RoomGuestAddVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGuestDeleteVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomKickoutVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
+import com.dalbit.broadcast.vo.request.GuestAddVo;
+import com.dalbit.broadcast.vo.request.GuestDelVo;
+import com.dalbit.broadcast.vo.request.JoinMemberListVo;
+import com.dalbit.broadcast.vo.request.KickOutVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -19,9 +23,11 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.util.HashMap;
 
 @Slf4j
@@ -44,14 +50,16 @@ public class UserController {
      * 방송방 참여자 리스트
      */
     @GetMapping("/listeners")
-    public String roomMemberList(HttpServletRequest request){
+    public String roomMemberList(@Valid JoinMemberListVo joinMemberListVo, BindingResult bindingResult) throws GlobalException{
 
-        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "page");
-        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "records");
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        int pageNo = DalbitUtil.isEmpty(joinMemberListVo.getPage()) ? 1 : joinMemberListVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(joinMemberListVo.getRecords()) ? 5 : joinMemberListVo.getRecords();
 
         P_RoomMemberListVo apiData = new P_RoomMemberListVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setRoom_no(joinMemberListVo.getRoomNo());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 
@@ -64,13 +72,16 @@ public class UserController {
      * 게스트 지정하기
      */
     @PostMapping("/guest")
-    public String roomGuestAdd(HttpServletRequest request) throws GlobalException {
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
+    public String roomGuestAdd(@Valid GuestAddVo guestAddVo, BindingResult bindingResult) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        String roomNo = guestAddVo.getRoomNo();
         //게스트 지정을 위한 BJ토큰 조회
         HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
 
         //Guest 토큰생성
-        String guestStreamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "title")).get("streamId");
+        String guestStreamId = (String) restService.antCreate(guestAddVo.getTitle()).get("streamId");
         String guestPublishToken = (String) restService.antToken(guestStreamId, "publish").get("tokenId");
         String guestPlayToken = (String) restService.antToken(guestStreamId, "play").get("tokenId");
 
@@ -81,13 +92,13 @@ public class UserController {
         P_RoomGuestAddVo apiData = new P_RoomGuestAddVo();
         apiData.setRoom_no(roomNo);
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setGuest_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        apiData.setGuest_mem_no(guestAddVo.getMemNo());
         apiData.setGuest_streamid(guestStreamId);
         apiData.setGuest_publish_tokenid(guestPublishToken);
         apiData.setGuest_play_tokenid(guestPlayToken);
         apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
         apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
-        apiData.setBj_play_tokenid(DalbitUtil.getStringMap(resultMap, "bj_playToken"));
+        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
 
         String result = userService.callBroadCastRoomGuestAdd(apiData);
 
@@ -99,16 +110,17 @@ public class UserController {
      * 게스트 취소하기
      */
     @DeleteMapping("/guest")
-    public String roomGuestDelete(HttpServletRequest request) throws GlobalException{
+    public String roomGuestDelete(@Valid GuestDelVo guestDelVo, BindingResult bindingResult) throws GlobalException{
 
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
+        DalbitUtil.throwValidaionException(bindingResult);
 
+        String roomNo = guestDelVo.getRoomNo();
         //게스트 취소를 위한 토큰 조회
         HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomGuestDeleteVo apiData = new P_RoomGuestDeleteVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setGuest_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
+        apiData.setGuest_mem_no(guestDelVo.getMemNo());
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
         apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
@@ -126,11 +138,14 @@ public class UserController {
      * 방송방 강퇴하기
      */
     @PostMapping("/kickout")
-    public String roomKickout(HttpServletRequest request){
+    public String roomKickout(@Valid KickOutVo kickOutVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_RoomKickoutVo apiData = new P_RoomKickoutVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
-        apiData.setBlocked_mem_no(DalbitUtil.convertRequestParamToString(request, "blockNo"));
+        apiData.setRoom_no(kickOutVo.getRoomNo());
+        apiData.setBlocked_mem_no(kickOutVo.getBlockNo());
 
         String result = userService.callBroadCastRoomKickout(apiData);
 
@@ -141,12 +156,13 @@ public class UserController {
      * 개인 정보 조회(방송생성, 참여 시)
      */
     @GetMapping("/profile")
-    public String memberInfo(HttpServletRequest request){
+    public String memberInfo(){
         int memLogin = DalbitUtil.isLogin() ? 1 : 0;
         P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo());
         String result = userService.callMemberInfo(apiData);
         return result;
     }
+
 
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
 

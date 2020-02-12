@@ -127,7 +127,7 @@ public class ContentService {
         contentDao.callInsertStory(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String passTime = DalbitUtil.isNullToString(resultMap.get("passTime"));
+        int passTime = DalbitUtil.getIntMap(resultMap, "passTime");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info("passTime 추출: {}", passTime);
@@ -175,7 +175,7 @@ public class ContentService {
         }
         HashMap storyList = new HashMap();
         storyList.put("list", procedureOutputVo.getOutputBox());
-        storyList.put("paging ", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
+        storyList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());

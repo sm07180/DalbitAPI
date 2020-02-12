@@ -6,6 +6,9 @@ import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
 import com.dalbit.broadcast.vo.request.BoosterVo;
+import com.dalbit.broadcast.vo.request.GiftVo;
+import com.dalbit.broadcast.vo.request.GoodVo;
+import com.dalbit.broadcast.vo.request.ShareLinkVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
@@ -39,11 +42,13 @@ public class ActionController {
      * 방송방 좋아요 추가
      */
     @PostMapping("/likes")
-    public String roomGood(HttpServletRequest request){
+    public String roomGood(@Valid GoodVo goodVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomGoodVo apiData = new P_RoomGoodVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
+        apiData.setRoom_no(goodVo.getRoomNo());
 
         String result = actionService.callBroadCastRoomGood(apiData);
 
@@ -55,11 +60,14 @@ public class ActionController {
      * 방송방 공유링크 확인
      */
     @GetMapping("/link")
-    public String roomShareLink(HttpServletRequest request){
+    public String roomShareLink(@Valid ShareLinkVo shareLinkVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_RoomShareLinkVo apiData = new P_RoomShareLinkVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setLinkCode(DalbitUtil.convertRequestParamToString(request, "link"));
+        apiData.setLinkCode(shareLinkVo.getLink());
 
         String result = actionService.callBroadCastShareLink(apiData);
 
@@ -70,13 +78,16 @@ public class ActionController {
      * 방송방 선물하기
      */
     @PostMapping("/gift")
-    public String roomGift(HttpServletRequest request){
+    public String roomGift(@Valid GiftVo giftVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_RoomGiftVo apiData = new P_RoomGiftVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
-        apiData.setGifted_mem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        apiData.setItem_no(DalbitUtil.convertRequestParamToString(request, "itemNo"));
-        apiData.setItem_cnt(DalbitUtil.convertRequestParamToInteger(request, "itemCnt"));
+        apiData.setRoom_no(giftVo.getRoomNo());
+        apiData.setGifted_mem_no(giftVo.getMemNo());
+        apiData.setItem_no(giftVo.getItemNo());
+        apiData.setItem_cnt(giftVo.getItemCnt());
 
         String result = actionService.callBroadCastRoomGift(apiData);
 

@@ -6,12 +6,17 @@ import lombok.Setter;
 import javax.validation.constraints.*;
 
 @Getter @Setter
-public class BoosterVo {
+public class GiftVo {
 
     @NotBlank
     private String roomNo;
+
+    @NotBlank
+    private String memNo;
+
     @NotBlank
     private String itemNo;
+
     @NotNull
     private Integer itemCnt;
 }

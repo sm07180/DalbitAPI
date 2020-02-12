@@ -2,8 +2,7 @@ package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.broadcast.vo.request.LiveRankInfoVo;
-import com.dalbit.common.code.Code;
+import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.exception.GlobalException;
@@ -43,26 +42,34 @@ public class RoomController {
      * 방송방 생성
      */
     @PostMapping("/create")
-    public String roomCreate(HttpServletRequest request) throws GlobalException {
+    public String roomCreate(@Valid RoomCreateVo roomCreateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         //토큰생성
-        String streamId = (String) restService.antCreate(DalbitUtil.convertRequestParamToString(request, "title")).get("streamId");
+        String streamId = (String) restService.antCreate(roomCreateVo.getTitle()).get("streamId");
         String publishToken = (String) restService.antToken(streamId, "publish").get("tokenId");
         String playToken = (String) restService.antToken(streamId, "play").get("tokenId");
         log.info("bj_streamId: {}", streamId);
         log.info("bj_publishToken: {}", publishToken);
         log.info("bj_playToken: {}", playToken);
 
-        int bgGrade = DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy") < 0 ? 0 : DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy");
+        Integer bgGrade;
+        if(!DalbitUtil.isEmpty(roomCreateVo.getBgImgRacy())){
+            bgGrade = (roomCreateVo.getBgImgRacy() <= 0) ? 0 : roomCreateVo.getBgImgRacy();
+        } else{
+            bgGrade = null;
+        }
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
-        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
-        apiData.setBackgroundImage(DalbitUtil.convertRequestParamToString(request, "bgImg"));
+        apiData.setSubjectType(roomCreateVo.getRoomType());
+        apiData.setTitle(roomCreateVo.getTitle());
+        apiData.setBackgroundImage(roomCreateVo.getBgImg());
         apiData.setBackgroundImageGrade(bgGrade);
-        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request,"welcomMsg"));
-        apiData.setNotice(DalbitUtil.convertRequestParamToString(request,"notice"));
-        apiData.setEntryType(DalbitUtil.convertRequestParamToInteger(request,"entryType"));
+        apiData.setWelcomMsg(roomCreateVo.getWelcomMsg());
+        apiData.setNotice(roomCreateVo.getNotice());
+        apiData.setEntryType(roomCreateVo.getEntryType());
 
         DeviceVo deviceVo = new DeviceVo(request);
         apiData.setOs(deviceVo.getOs());
@@ -83,8 +90,11 @@ public class RoomController {
      * 방송방 참여하기
      */
     @PostMapping("/join")
-    public String roomJoin(HttpServletRequest request) throws GlobalException{
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
+    public String roomJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        String roomNo = roomJoinVo.getRoomNo();
 
         //방참가를 위한 토큰 조회
         HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
@@ -111,12 +121,14 @@ public class RoomController {
      * 방송방 나가기 (종료)
      */
     @DeleteMapping("/exit")
-    public String roomExit(HttpServletRequest request){
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
+    public String roomExit(@Valid RoomExitVo roomExitVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
         P_RoomExitVo apiData = new P_RoomExitVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(roomNo);
+        apiData.setRoom_no(roomExitVo.getRoomNo());
 
         String result = roomService.callBroadCastRoomExit(apiData);
 
@@ -144,22 +156,29 @@ public class RoomController {
      * 방송 정보수정
      */
     @PostMapping("/edit")
-    public String roomEdit(HttpServletRequest request){
+    public String roomEdit(@Valid RoomEditVo roomEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        String bgImg = DalbitUtil.convertRequestParamToString(request, "bgImg");
-        int bgGrade = DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy") < 0 ? 0 : DalbitUtil.convertRequestParamToInteger(request, "bgImgRacy");
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        String bgImg = roomEditVo.getBgImg();
+        Integer bgGrade;
+        if(!DalbitUtil.isEmpty(roomEditVo.getBgImgRacy())){
+            bgGrade = (roomEditVo.getBgImgRacy() <= 0) ? 0 : roomEditVo.getBgImgRacy();
+        } else{
+            bgGrade = null;
+        }
 
         P_RoomEditVo apiData = new P_RoomEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(DalbitUtil.convertRequestParamToString(request, "roomNo"));
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
-        apiData.setTitle(DalbitUtil.convertRequestParamToString(request, "title"));
+        apiData.setRoom_no(roomEditVo.getRoomNo());
+        apiData.setSubjectType(roomEditVo.getRoomType());
+        apiData.setTitle(roomEditVo.getTitle());
         if(!DalbitUtil.isEmpty(bgImg)){
             apiData.setBackgroundImage(bgImg);
         }
-        apiData.setBackgroundImageDelete(DalbitUtil.convertRequestParamToString(request, "bgImgDel"));
+        apiData.setBackgroundImageDelete(roomEditVo.getBgImgDel());
         apiData.setBackgroundImageGrade(bgGrade);
-        apiData.setWelcomMsg(DalbitUtil.convertRequestParamToString(request, "welcomMsg"));
+        apiData.setWelcomMsg(roomEditVo.getWelcomMsg());
 
         DeviceVo deviceVo = new DeviceVo(request);
         apiData.setOs(deviceVo.getOs());
@@ -176,15 +195,17 @@ public class RoomController {
      * 방송방 리스트
      */
     @GetMapping("/list")
-    public String roomList(HttpServletRequest request){
+    public String roomList(@Valid RoomListVo roomListVo, BindingResult bindingResult) throws GlobalException{
 
-        int pageNo = (DalbitUtil.convertRequestParamToInteger(request, "page")) == -1 ? 1 : DalbitUtil.convertRequestParamToInteger(request, "page");
-        int pageCnt = (DalbitUtil.convertRequestParamToInteger(request, "records")) == -1 ? 5 : DalbitUtil.convertRequestParamToInteger(request, "records");
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 5 : roomListVo.getRecords();
 
         P_RoomListVo apiData = new P_RoomListVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setSubjectType(DalbitUtil.convertRequestParamToString(request, "roomType"));
+        apiData.setSubjectType(roomListVo.getRoomType());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 
@@ -198,14 +219,14 @@ public class RoomController {
      * 방송 정보조회
      */
     @GetMapping("/info")
-    public String roomInfo(HttpServletRequest request){
+    public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult) throws GlobalException{
 
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
+        DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(roomNo);
+        apiData.setRoom_no(roomInfo.getRoomNo());
 
         String result = roomService.callBroadCastRoomInfoView(apiData);
 
@@ -231,4 +252,3 @@ public class RoomController {
     }
 
 }
-

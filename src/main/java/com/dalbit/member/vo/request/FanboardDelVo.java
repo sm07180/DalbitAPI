@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class FanboardDelVo {
 
-    @NotBlank @Size(min = 14, max = 14)
+    @NotBlank
     private String memNo;
 
     @NotNull

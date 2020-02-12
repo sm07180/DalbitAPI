@@ -87,7 +87,7 @@ public class RoomService {
             returnMap.put("bjStreamId",pRoomCreateVo.getBj_streamid());
             returnMap.put("bjPubToken", pRoomCreateVo.getBj_publish_tokenid());
             returnMap.put("title", target.getTitle());
-            returnMap.put("bgImg", target.getBgImg().getUrl());
+            returnMap.put("bgImg", target.getBgImg());
             returnMap.put("link", target.getLink());
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
@@ -163,7 +163,7 @@ public class RoomService {
             returnMap.put("gstStreamId",pRoomJoinVo.getGuest_streamid());
             returnMap.put("gstPlayToken",pRoomJoinVo.getGuest_play_tokenid());
             returnMap.put("title", target.getTitle());
-            returnMap.put("bgImg", target.getBgImg().getUrl());
+            returnMap.put("bgImg", target.getBgImg());
             returnMap.put("link", target.getLink());
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
@@ -318,7 +318,7 @@ public class RoomService {
         }
         HashMap roomList = new HashMap();
         roomList.put("list", procedureOutputVo.getOutputBox());
-        roomList.put("paging ", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
+        roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
@@ -340,7 +340,7 @@ public class RoomService {
     /**
      * 방송 정보조회
      */
-    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo) {
+    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo){
 
         ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
 
@@ -360,15 +360,15 @@ public class RoomService {
     /**
      * 방송 정보조회(방송방 생성,참여 후)
      */
-    public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo) {
+    public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
         P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureVo);
-        roomInfoViewVo.setExt(procedureVo.getExt());
 
         ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(roomInfoViewVo)){
-            return null;
+            return new ProcedureOutputVo(procedureVo);
         }else{
+            roomInfoViewVo.setExt(procedureVo.getExt());
             procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo));
         }
 

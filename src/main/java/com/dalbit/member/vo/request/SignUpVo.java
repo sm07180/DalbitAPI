@@ -32,9 +32,7 @@ public class SignUpVo {
     @NotBlank @Size(max = 1)
     private String term1, term2, term3, term4, term5;
 
-    @NotBlank
     private String name;
-
     private String profImg;
     private int profImgRacy;
     private String email;

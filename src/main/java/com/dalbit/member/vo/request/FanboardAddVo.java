@@ -8,7 +8,7 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class FanboardAddVo {
 
-    @NotBlank @Size(min = 14, max = 14)
+    @NotBlank
     private String memNo;
 
     @NotNull @Min(value = 1, message = "1(댓글) 또는 2(대댓글) 를 입력해주세요.") @Max(value = 2, message = "1(댓글) 또는 2(대댓글) 를 입력해주세요.")

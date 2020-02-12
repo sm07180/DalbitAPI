@@ -20,7 +20,6 @@ public class ProfileEditVo {
     @NotBlank @Size(min = 8, max = 8)
     private String birth;
 
-    @NotBlank
     private String name;
 
     @Max(5)
