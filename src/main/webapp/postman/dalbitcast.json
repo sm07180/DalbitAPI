@@ -616,7 +616,7 @@
 													"type": "text"
 												},
 												{
-													"key": "wecomMsg",
+													"key": "welcomMsg",
 													"value": "환영합니다",
 													"description": "환영 메시지",
 													"type": "text"
