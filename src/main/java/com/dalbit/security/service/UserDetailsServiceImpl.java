@@ -97,7 +97,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         String memNo = DalbitUtil.getStringMap(loginExt, "mem_no");
 
         if(LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+            if("p".equals(DalbitUtil.getStringMap(map, "memType"))){
+                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            }else{
+                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+            }
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
