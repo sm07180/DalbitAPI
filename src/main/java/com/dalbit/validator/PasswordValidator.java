@@ -2,7 +2,6 @@ package com.dalbit.validator;
 
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.validator.annotation.Password;
-import com.dalbit.validator.annotation.Sample;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.validation.ConstraintValidator;
