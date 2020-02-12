@@ -134,7 +134,7 @@ public class MypageController {
         apiData.setTitle(broadBasicEditVo.getTitle());
         apiData.setBackgroundImage(broadBasicEditVo.getBgImg());
         apiData.setBackgroundImageGrade(broadBasicEditVo.getBgImgRacy());
-        apiData.setWelcomMsg(broadBasicEditVo.getWecomMsg());
+        apiData.setWelcomMsg(broadBasicEditVo.getWelcomMsg());
         apiData.setNotice(broadBasicEditVo.getNotice());
         apiData.setEntryType(broadBasicEditVo.getEntryType());
 
