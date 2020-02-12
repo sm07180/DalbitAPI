@@ -95,6 +95,26 @@ public class DalbitUtil {
     }
 
     /**
+     * <p>
+     * String이 비었거나("") 혹은 null 인지 검증한다.
+     * </p>
+     *
+     * <pre>
+     *  StringUtil.isEmpty(null)      = true
+     *  StringUtil.isEmpty("")        = true
+     *  StringUtil.isEmpty(" ")       = false
+     *  StringUtil.isEmpty("bob")     = false
+     *  StringUtil.isEmpty("  bob  ") = false
+     * </pre>
+     *
+     * @param str - 체크 대상 스트링오브젝트이며 null을 허용함
+     * @return <code>true</code> - 입력받은 String 이 빈 문자열 또는 null인 경우
+     */
+    public static boolean isEmpty(String str) {
+        return str == null || str.length() == 0;
+    }
+
+    /**
      * 리스트 값이 있는지 체크
      * @param list
      * @return
@@ -134,12 +154,6 @@ public class DalbitUtil {
     }
 
     /**
-     * DalbitUtil 생성자
-     */
-    public DalbitUtil() {
-    }
-
-    /**
      * 입력된 날짜가 유효한 날짜인지를 검사한다.
      * @param date 기준일자
      * @return 유효여부(true/false)
@@ -164,27 +178,6 @@ public class DalbitUtil {
         }catch( Exception e ) {
             return false;
         }
-    }
-
-
-    /**
-     * <p>
-     * String이 비었거나("") 혹은 null 인지 검증한다.
-     * </p>
-     *
-     * <pre>
-     *  StringUtil.isEmpty(null)      = true
-     *  StringUtil.isEmpty("")        = true
-     *  StringUtil.isEmpty(" ")       = false
-     *  StringUtil.isEmpty("bob")     = false
-     *  StringUtil.isEmpty("  bob  ") = false
-     * </pre>
-     *
-     * @param str - 체크 대상 스트링오브젝트이며 null을 허용함
-     * @return <code>true</code> - 입력받은 String 이 빈 문자열 또는 null인 경우
-     */
-    public static boolean isEmpty(String str) {
-        return str == null || str.length() == 0;
     }
 
     /**
@@ -214,7 +207,6 @@ public class DalbitUtil {
         }
         return new String(chars, 0, pos);
     }
-
 
     /**
      * <p><code>str</code> 중 <code>searchStr</code>의 시작(index) 위치를 반환.</p>
@@ -351,10 +343,9 @@ public class DalbitUtil {
      * @return 소문자로 변환된 문자열, null이 입력되면 <code>null</code> 리턴
      */
     public static String lowerCase(String str) {
-        if (str == null) {
+        if(isEmpty(str)){
             return null;
         }
-
         return str.toLowerCase();
     }
 
@@ -371,15 +362,11 @@ public class DalbitUtil {
      * @return 대문자로 변환된 문자열, null이 입력되면 <code>null</code> 리턴
      */
     public static String upperCase(String str) {
-        if (str == null) {
+        if(isEmpty(str)){
             return null;
         }
-
         return str.toUpperCase();
     }
-
-
-
 
     /**
      * 특수문자를 웹 브라우저에서 정상적으로 보이기 위해 특수문자를 처리('<' -> & lT)하는 기능이다
@@ -434,15 +421,13 @@ public class DalbitUtil {
      */
     public static String getTimeStamp() {
 
-        String rtnStr = null;
-
         // 문자열로 변환하기 위한 패턴 설정(년도-월-일 시:분:초:초(자정이후 초))
         String pattern = "yyyyMMddhhmmssSSS";
 
         SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
         Timestamp ts = new Timestamp(System.currentTimeMillis());
 
-        rtnStr = sdfCurrent.format(ts.getTime());
+        String rtnStr = sdfCurrent.format(ts.getTime());
 
         return rtnStr;
     }
@@ -494,7 +479,6 @@ public class DalbitUtil {
         return !(DalbitUtil.isEmpty(MemberVo.getMyMemNo()) || "anonymousUser".equals(MemberVo.getMyMemNo()) || MemberVo.getMyMemNo().startsWith("8"));
     }
 
-
     /**
      * IP 주소 가져오기
      */
@@ -516,7 +500,6 @@ public class DalbitUtil {
      * 지역정보, 위도, 경도 가져오기
      */
     public static LocationVo getLocation(HttpServletRequest request){
-
         return getLocation(getIp(request));
     }
     /**
@@ -601,37 +584,6 @@ public class DalbitUtil {
     public static boolean isAnonymousUser(Object principal){
         return isEmpty(principal) || "anonymousUser".equals(principal);
     }
-
-
-    /**
-     * Validation 체크
-     */
-    /*public static ValidationResultVo voValidationCheck(Object object){
-
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.usingContext().getValidator();
-
-        Set<ConstraintViolation<Object>> constrains = validator.validate(object);
-        ValidationResultVo validationResultVo = new ValidationResultVo();
-        if(constrains.size() > 0){
-            validationResultVo.setSuccess(false);
-            ArrayList validationMessageList = new ArrayList();
-            for (ConstraintViolation constrain : constrains) {
-                validationMessageList.add("param : " + constrain.getPropertyPath()+ "," + " message : "+ constrain.getMessage());
-            }
-            validationResultVo.setValidationMessageDetail(validationMessageList);
-        }
-        return validationResultVo;
-    }
-
-    public static void throwValidaionException(Object object) throws GlobalException {
-
-        ValidationResultVo validationResultVo = voValidationCheck(object);
-        if(!validationResultVo.isSuccess()){
-            throw new GlobalException(Status.파라미터오류, validationResultVo);
-        }
-
-    }*/
 
     /**
      * Validation 체크
