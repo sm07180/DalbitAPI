@@ -1,9 +1,8 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.common.code.Code;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
-import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
@@ -13,6 +12,7 @@ import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Description;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -237,6 +237,7 @@ public class MypageController {
     /**
      * 회원 방송방 빠른말 수정하기
      */
+    @Description("TODO (2020.02.12) - 프로시저가 변경 되면 맞춰서 VO validation 체크 추가 예정")
     @PostMapping("/shortcut")
     public String memberShortCutEdit(HttpServletRequest request){
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();

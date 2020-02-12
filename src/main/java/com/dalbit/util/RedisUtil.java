@@ -45,19 +45,6 @@ public class RedisUtil {
         return null;
     }
 
-   /* public MemberVo getMemberInfo(String sessionId){
-        MemberVo memberVo = null;
-        try{
-            if(!DalbitUtil.isEmpty(sessionId)){
-                memberVo = (MemberVo)redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionId).get(SPRING_SESSION_MEMBERINFO_KEY_PREFIX + SPRING_SESSION_MEMBERINFO_KEY);
-            }
-        }catch(Exception e){
-            log.error("RedisUtil.getMemberInfo : {}", e.getMessage());
-        }
-
-        return memberVo;
-    }*/
-
     public MemberVo getMemberInfoFromRedis(String memNo){
         return getMemberInfo(memNo);
     }

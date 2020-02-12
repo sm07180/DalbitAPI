@@ -12,7 +12,6 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">authToken 체크</div>
                         <div class="card-body">
                             <form id="tokenCheckFrm" method="post">
                                 <div class="form-group row">
@@ -22,16 +21,14 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6 offset-md-4">
-                                    <button type="button" id="tokenCheckBtn" class="btn btn-primary">
-                                        토큰검증
-                                    </button>
+                                    <button type="button" id="tokenCheckBtn" class="btn btn-primary">토큰검증</button>
                                 </div>
                             </form>
                         </div>
                     </div>
 
-
                     <div class="card">
+                        <div class="card-header">authToken 체크</div>
                         <div class="card-body">
                             <div class="form-group row">
                                 <label for="authToken" class="col-md-4 col-form-label text-md-right">응답 결과</label>
@@ -57,7 +54,6 @@
 
     </main>
 
-
     <main class="login-form">
         <div class="cotainer">
             <div class="row justify-content-center">
@@ -78,7 +74,46 @@
                 </div>
             </div>
         </div>
+    </main>
 
+    <hr />
+
+    <main class="login-form">
+        <div class="cotainer">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <div class="card">
+                        <div class="card-body">
+                            <form id="searchMemFrm" method="post">
+                                <div class="form-group row">
+                                    <label for="memNo" class="col-md-4 col-form-label text-md-right">회원번호</label>
+                                    <div class="col-md-4">
+                                        <input type="text" name="memNo" id="memNo" class="form-control" value="" />
+                                    </div>
+                                </div>
+                                <div class="col-md-4 offset-md-4">
+                                    <button type="button" id="searchMemBtn" class="btn btn-primary">조회</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">회원번호로 로그인 체크</div>
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="authToken" class="col-md-4 col-form-label text-md-right">응답 결과</label>
+                                <div class="col-md-6" id="r_getRedis_tokenMessage">-</div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="authToken" class="col-md-4 col-form-label text-md-right">회원번호</label>
+                                <div class="col-md-6" id="r_getRedis_memNo">-</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
@@ -91,6 +126,14 @@
         fnGetRedisData();
     });
 
+    function isEmpty(value){
+        return !value ? true : false;
+    }
+
+    function isFail(response){
+        return response.result == 'fail';
+    }
+
     function fnTokenCheck(){
         $.ajax({
             type: "POST",
@@ -101,16 +144,18 @@
                 console.log(response);
 
                 var failMsg = '';
-                if(response.result == 'fail'){
+                if(isFail(response)){
                     failMsg = '<br />' + response.data;
                 }
                 $("#r_tokenMessage").html(response.message + failMsg);
 
                 var data = response.data;
-                $("#r_authToken").html(data.authToken);
-                $("#r_memNo").html(data.memNo);
+                $("#r_authToken").html(isFail(response) ? '' : data.authToken);
+                $("#r_memNo").html(isFail(response) ? '' : data.memNo);
 
-                if(data.isLogin != null){
+                if(isFail(response)){
+                    $("#r_isLogin").html('');
+                }else{
                     $("#r_isLogin").html(data.isLogin ? '로그인' : '비로그인');
                 }
 
