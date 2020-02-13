@@ -54,19 +54,12 @@ public class RoomController {
         log.info("bj_publishToken: {}", publishToken);
         log.info("bj_playToken: {}", playToken);
 
-        Integer bgGrade;
-        if(!DalbitUtil.isEmpty(roomCreateVo.getBgImgRacy())){
-            bgGrade = (roomCreateVo.getBgImgRacy() <= 0) ? 0 : roomCreateVo.getBgImgRacy();
-        } else{
-            bgGrade = null;
-        }
-
         P_RoomCreateVo apiData = new P_RoomCreateVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setSubjectType(roomCreateVo.getRoomType());
         apiData.setTitle(roomCreateVo.getTitle());
         apiData.setBackgroundImage(roomCreateVo.getBgImg());
-        apiData.setBackgroundImageGrade(bgGrade);
+        apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomCreateVo.getBgImgRacy()));
         apiData.setWelcomMsg(roomCreateVo.getWelcomMsg());
         apiData.setNotice(roomCreateVo.getNotice());
         apiData.setEntryType(roomCreateVo.getEntryType());
@@ -161,12 +154,6 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         String bgImg = roomEditVo.getBgImg();
-        Integer bgGrade;
-        if(!DalbitUtil.isEmpty(roomEditVo.getBgImgRacy())){
-            bgGrade = (roomEditVo.getBgImgRacy() <= 0) ? 0 : roomEditVo.getBgImgRacy();
-        } else{
-            bgGrade = null;
-        }
 
         P_RoomEditVo apiData = new P_RoomEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
@@ -177,7 +164,7 @@ public class RoomController {
             apiData.setBackgroundImage(bgImg);
         }
         apiData.setBackgroundImageDelete(roomEditVo.getBgImgDel());
-        apiData.setBackgroundImageGrade(bgGrade);
+        apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomEditVo.getBgImgRacy()));
         apiData.setWelcomMsg(roomEditVo.getWelcomMsg());
 
         DeviceVo deviceVo = new DeviceVo(request);

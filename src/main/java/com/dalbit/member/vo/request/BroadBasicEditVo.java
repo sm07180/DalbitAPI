@@ -16,7 +16,7 @@ public class BroadBasicEditVo {
     private String title;
     private String bgImg;
     private String bgImgDel;
-    private int bgImgRacy;
+    private String bgImgRacy;
     private String welcomMsg;
     private String notice;
     @NotBlank

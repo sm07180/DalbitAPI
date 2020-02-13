@@ -56,7 +56,7 @@ public class MypageController {
         apiData.setBirthMonth(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
         apiData.setBirthDay(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
         apiData.setProfileImage(profileEditVo.getProfImg());
-        apiData.setProfileImageGrade(profileEditVo.getProfImgRacy());
+        apiData.setProfileImageGrade(DalbitUtil.isStringToNumber(profileEditVo.getProfImgRacy()));
         apiData.setProfileMsg(profileEditVo.getProfMsg());
         apiData.setProfImgDel(profileEditVo.getProfImgDel());
 
@@ -133,7 +133,7 @@ public class MypageController {
         apiData.setSubjectType(broadBasicEditVo.getRoomType());
         apiData.setTitle(broadBasicEditVo.getTitle());
         apiData.setBackgroundImage(broadBasicEditVo.getBgImg());
-        apiData.setBackgroundImageGrade(broadBasicEditVo.getBgImgRacy());
+        apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(broadBasicEditVo.getBgImgRacy()));
         apiData.setWelcomMsg(broadBasicEditVo.getWelcomMsg());
         apiData.setNotice(broadBasicEditVo.getNotice());
         apiData.setEntryType(broadBasicEditVo.getEntryType());

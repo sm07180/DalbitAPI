@@ -11,7 +11,7 @@ public class P_RoomCreateVo {
     private String subjectType;             //방송종류
     private String title;                   //방송제목
     private String backgroundImage;         //배경이미지 경로
-    private Integer backgroundImageGrade;   //배경이미지 선전성 등급
+    private int backgroundImageGrade;   //배경이미지 선전성 등급
     private String welcomMsg;               //환영메시지
     private String notice;                  //공지사항
     private Integer entryType;              //입장제한(0: 전체, 1: 팬만, 2: 20세이상)

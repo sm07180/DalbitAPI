@@ -16,8 +16,7 @@ public class RoomCreateVo {
 
     private String bgImg;
 
-    @Max(5)
-    private Integer bgImgRacy;
+    private String bgImgRacy;
 
     private String welcomMsg;
 

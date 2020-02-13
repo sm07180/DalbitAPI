@@ -3,7 +3,6 @@ package com.dalbit.member.vo.request;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
@@ -21,10 +20,7 @@ public class ProfileEditVo {
     private String birth;
 
     private String name;
-
-    @Max(5)
-    private Integer profImgRacy;
-
+    private String profImgRacy;
     private String profImg;
     private String profImgDel;
     private String profMsg;

@@ -19,10 +19,7 @@ public class RoomEditVo {
 
     private String bgImg;
     private String bgImgDel;
-
-    @Max(5)
-    private Integer bgImgRacy;
-
+    private String bgImgRacy;
     private String welcomMsg;
 
 }
