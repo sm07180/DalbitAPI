@@ -14,7 +14,12 @@ public interface UserDao {
     ProcedureVo callBroadCastRoomGuestDelete(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomKickout(ProcedureVo procedureVo);
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomManagerAdd(ProcedureVo procedureVo);
+    ProcedureVo callBroadCastRoomManagerDel(ProcedureVo procedureVo);
 
     List<DevRoomVo> selectBjRoom(String memNo);
     List<DevRoomVo> selectJoinRoom(String memNo);
+
+
+
 }

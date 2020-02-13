@@ -22,6 +22,16 @@
       call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callBroadCastRoomManagerAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_manager_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadCastRoomManagerDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_manager_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+
     <select id="selectBjRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
         select
             t1.room_no as roomNo

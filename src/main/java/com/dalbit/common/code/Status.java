@@ -345,6 +345,28 @@ public enum Status {
     순위아이템사용_요청회원_해당방청취자아님("-4", "broadcast.room.live.rank.member.join.no", "요청회원이 해당방 청취자가 아닐 시"),
     순위아이템사용_조회실패("C006", "broadcast.room.live.rank.info.fail", "순위 아이템사용 조회 실패 시"),
 
+    //방송방 매니저지정
+    매니저지정_성공("0", "broadcast.room.manager.add.success", "매니저지정 성공 시"),
+    매니저지정_회원아님("-1", "broadcast.room.manager.add.member.no", "회원이 아닐 시"),
+    매니저지정_해당방이없음("-2", "broadcast.room.manager.add.no.room", "해당 방 없을 시"),
+    매니저지정_방이종료되었음("-3", "broadcast.room.manager.add.room.end", "방이 종료되었을 시"),
+    매니저지정_요청회원_방소속아님("-4", "broadcast.room.manager.add.member.join.no", "요청회원이 방 소속이 아닐 시"),
+    매니저지정_요청회원_방장아님("-5", "broadcast.room.manager.add.member.not.bj", "요청회원이 방장이 아닐 시"),
+    매니저지정_대상회원아이디_방소속아님("-6", "broadcast.room.manager.add.member.not.join.id", "대상 회원아이디가 방 소속이 아닐 시"),
+    매니저지정_불가("-7", "broadcast.room.manager.add.error", "매니저지정 불가 시(이미 매니저거나 방장 권한)"),
+    매니저지정_인원제한("-8", "broadcast.room.manager.add.limit", "매니저 수 제한 시"),
+    매니저지정_실패("C006", "broadcast.room.manager.add.fail", "매니저지정 실패 시"),
+
+    //방송방 매니저취소
+    매니저취소_성공("0", "broadcast.room.manager.del.success", "매니저취소 성공 시"),
+    매니저취소_회원아님("-1", "broadcast.room.manager.del.member.no", "회원이 아닐 시"),
+    매니저취소_해당방이없음("-2", "broadcast.room.manager.del.no.room", "해당 방 없을 시"),
+    매니저취소_방이종료되었음("-3", "broadcast.room.manager.del.room.end", "방이 종료되었을 시"),
+    매니저취소_요청회원_방소속아님("-4", "broadcast.room.manager.del.member.join.no", "요청회원이 방 소속이 아닐 시"),
+    매니저취소_요청회원_방장아님("-5", "broadcast.room.manager.del.member.not.bj", "요청회원이 방장이 아닐 시"),
+    매니저취소_대상회원아이디_방소속아님("-6", "broadcast.room.manager.del.member.not.join.id", "대상 회원아이디가 방 소속이 아닐 시"),
+    매니저취소_매니저아님("-7", "broadcast.room.manager.del.no", "매니저 아닐 시"),
+    매니저취소_실패("C006", "broadcast.room.manager.del.fail", "매니저취소 실패 시"),
 
     ;
 
