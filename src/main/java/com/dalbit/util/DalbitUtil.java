@@ -314,6 +314,18 @@ public class DalbitUtil {
         return string;
     }
 
+    public static int isStringToNumber(String str){
+        return isStringToNumber(str, 0);
+    }
+
+    public static int isStringToNumber(String str, int nullValue){
+        try {
+            return DalbitUtil.isEmpty(str) ? nullValue : Integer.parseInt(str);
+        } catch (Exception e){
+            return nullValue;
+        }
+    }
+
     public static String convertRequestParamToString(HttpServletRequest request, String parameterName){
         if(request != null && parameterName != null){
             return DalbitUtil.isNullToString(request.getParameter(parameterName)).trim();

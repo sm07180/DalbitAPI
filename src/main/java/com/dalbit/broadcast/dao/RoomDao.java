@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.dao;
 
+import com.dalbit.broadcast.vo.procedure.P_RoomGiftHistoryVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -17,4 +18,5 @@ public interface RoomDao {
     P_RoomInfoViewVo callBroadCastRoomInfoView(ProcedureVo procedureVo);
     ProcedureVo callMemberBroadcastingCheck(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomLiveRankInfo(ProcedureVo procedureVo);
+    List<P_RoomGiftHistoryVo> callBroadCastRoomGiftHistory(ProcedureVo procedureVo);
 }

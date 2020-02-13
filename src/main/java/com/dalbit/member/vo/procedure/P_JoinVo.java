@@ -31,7 +31,7 @@ public class P_JoinVo extends BaseVo {
         setTerms5(signUpVo.getTerm5());
         setName(signUpVo.getName());
         setProfileImage(signUpVo.getProfImg());
-        setProfileImageGrade(signUpVo.getProfImgRacy());
+        setProfileImageGrade(DalbitUtil.isStringToNumber(signUpVo.getProfImgRacy()));
         setEmail(signUpVo.getEmail());
         setOs(os);
         setDeviceUuid(deviceUuid);

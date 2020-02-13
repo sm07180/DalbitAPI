@@ -251,4 +251,18 @@ public class RoomController {
         return result;
     }
 
+    /**
+     * 방송방 선물받은 내역보기
+     */
+    @GetMapping("/history")
+    public String roomGiftHistory(@Valid RoomGiftHistoryVo roomGiftHistoryVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_RoomGiftHistoryVo apiData = new P_RoomGiftHistoryVo(roomGiftHistoryVo);
+        String result = roomService.callBroadCastRoomGiftHistory(apiData);
+
+        return result;
+    }
+
 }

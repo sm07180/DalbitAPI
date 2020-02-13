@@ -368,6 +368,22 @@ public enum Status {
     매니저취소_매니저아님("-7", "broadcast.room.manager.del.no", "매니저 아닐 시"),
     매니저취소_실패("C006", "broadcast.room.manager.del.fail", "매니저취소 실패 시"),
 
+    //방송방 스트림아이디 가져오기
+    스트림아이디_조회성공("0", "broadcast.room.stream.id.success", "스트림아이디 조회 성공 시"),
+    스트림아이디_회원아님("-1", "broadcast.room.stream.id.member.no", "회원이 아닐 시"),
+    스트림아이디_해당방없음("-2", "broadcast.room.stream.id.no.room", "해당 방 없을 시"),
+    스트림아이디_요청회원_방소속아님("-3", "broadcast.room.stream.id.member.join.no", "요청회원이 방 소속이 아닐 시"),
+    스트림아이디_조회실패("C006", "broadcast.room.stream.id.fail", "스트림아이디 조회 실패 시"),
+
+    //방송방 선물받은내역 조회
+    선물받은내역조회("C001", "broadcast.room.gift.history.success", "선물받은내역 조회 성공 시"),
+    선물받은내역없음("0", "broadcast.room.gift.history.no", "선물받은내역 없을 시"),
+    선물내역조회_회원번호정상아님("-1", "broadcast.room.gift.history.member.number.error", "회원번호가 정상이 아닐 시"),
+    선물내역조회_해당방없음("-2", "broadcast.room.gift.history.no.room", "해당 방 없을 시"),
+    선물받은내역조회_실패("C006", "broadcast.room.gift.history.fail", "선물받은내역 조회 실패 시"),
+
+
+
     ;
 
     final private String RESULT_SUCCESS = "success";

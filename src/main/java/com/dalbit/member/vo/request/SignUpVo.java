@@ -34,6 +34,6 @@ public class SignUpVo {
 
     private String name;
     private String profImg;
-    private int profImgRacy;
+    private String profImgRacy;
     private String email;
 }

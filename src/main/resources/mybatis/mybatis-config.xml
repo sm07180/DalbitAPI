@@ -17,6 +17,7 @@
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo" alias="P_RoomMemberListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo" alias="P_RoomShareLinkVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomStoryListVo" alias="P_RoomStoryListVo" />
+		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomGiftHistoryVo" alias="P_RoomGiftHistoryVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardListVo" alias="P_FanboardListVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardReplyVo" alias="P_FanboardReplyVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_MemberShortCutVo" alias="P_MemberShortCutVo" />

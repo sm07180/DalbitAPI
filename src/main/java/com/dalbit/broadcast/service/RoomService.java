@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.vo.RoomGiftHistoryOutVo;
 import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Code;
@@ -418,5 +419,48 @@ public class RoomService {
         }
 
         return result;
+    }
+
+    /**
+     * 방송방 선물받은 내역보기
+     */
+    public String callBroadCastRoomGiftHistory(P_RoomGiftHistoryVo pRoomGiftHistoryVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGiftHistoryVo);
+        List<P_RoomGiftHistoryVo> giftHistoryListVo = roomDao.callBroadCastRoomGiftHistory(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(giftHistoryListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<RoomGiftHistoryOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<giftHistoryListVo.size(); i++){
+                outVoList.add(new RoomGiftHistoryOutVo(giftHistoryListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+
+        HashMap giftHistoryList = new HashMap();
+        giftHistoryList.put("totalCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
+        giftHistoryList.put("totalGold", DalbitUtil.getIntMap(resultMap, "totalGold"));
+        giftHistoryList.put("list", procedureOutputVo.getOutputBox());
+        giftHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역조회, giftHistoryList));
+        }else if(Status.선물받은내역없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역없음));
+        }else if(Status.선물내역조회_회원번호정상아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물내역조회_회원번호정상아님));
+        }else if(Status.선물내역조회_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물내역조회_해당방없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역조회_실패));
+        }
+
+
+        return result;
+
     }
 }
