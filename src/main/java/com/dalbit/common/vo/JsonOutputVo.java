@@ -53,7 +53,7 @@ public class JsonOutputVo {
     private String messageKey;
     private String message;
 
-    private Object data = "";
+    private Object data;
 
     private String timestamp;
 
