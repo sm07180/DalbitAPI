@@ -1519,7 +1519,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzUzMjMyN0B0cnVlIiwiaWF0IjoxNTgxNTczNTMyLCJleHAiOjE1ODQwNzkxMzJ9.o_Ys3rubStTjG1KF3PqF17pB4Fr4X228VScyORK0fKk",
 												"type": "text"
 											},
 											{
@@ -1538,7 +1538,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581486691950",
+													"value": "91581573678831",
 													"description": "* 방번호",
 													"type": "text"
 												}
@@ -2434,7 +2434,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzUzMjMyN0B0cnVlIiwiaWF0IjoxNTgxNTczNTMyLCJleHAiOjE1ODQwNzkxMzJ9.o_Ys3rubStTjG1KF3PqF17pB4Fr4X228VScyORK0fKk",
 												"type": "text"
 											},
 											{
@@ -2453,13 +2453,13 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581466234515",
+													"value": "91581573678831",
 													"description": "* 해당 방 번호",
 													"type": "text"
 												},
 												{
 													"key": "memNo",
-													"value": "11580778865500",
+													"value": "11581573459470",
 													"description": "* 선물받을 회원번호",
 													"type": "text"
 												},
@@ -2471,7 +2471,7 @@
 												},
 												{
 													"key": "itemCnt",
-													"value": "1",
+													"value": "2",
 													"description": "* 아이템 개수",
 													"type": "text"
 												}
@@ -2598,6 +2598,171 @@
 												{
 													"key": "roomNo",
 													"value": "91581493968953"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 매니저 지정_2020.02.13",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM5NjMzNEB0cnVlIiwiaWF0IjoxNTgxNTU0NjMzLCJleHAiOjE1ODQwNjAyMzN9.cnmMfvVZhwuOOy-Hfz0mvJFK-LK4At1acWKW0pGCuUs",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11580691480170",
+													"description": "* 매니저 지정할 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "roomNo",
+													"value": "91581486691950",
+													"description": "* 방 번호",
+													"type": "text"
+												},
+												{
+													"key": "role",
+													"value": "",
+													"description": "매니저 역할 설정(추후사용예정)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/manager",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"manager"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 매니저 취소_2020.02.13",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTM5NjMzNEB0cnVlIiwiaWF0IjoxNTgxNTU0NjMzLCJleHAiOjE1ODQwNjAyMzN9.cnmMfvVZhwuOOy-Hfz0mvJFK-LK4At1acWKW0pGCuUs",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11580691480170",
+													"description": "* 매니저를 취소할 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "roomNo",
+													"value": "91581486691950",
+													"description": "* 방 번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/manager",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"manager"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 선물받은내역 조회_2020.02.13",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "http://devapi2.dalbitcast.com/broad/history?roomNo=91581573678831&page&records",
+											"protocol": "http",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"history"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91581573678831",
+													"description": "* 방송방 번호"
+												},
+												{
+													"key": "page",
+													"value": null,
+													"description": "페이지번"
+												},
+												{
+													"key": "records",
+													"value": null,
+													"description": "페이지당 리스트 수"
 												}
 											]
 										}
