@@ -2,10 +2,7 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.UserDao;
 import com.dalbit.broadcast.vo.*;
-import com.dalbit.broadcast.vo.procedure.P_RoomGuestAddVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGuestDeleteVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomKickoutVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
+import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -240,6 +237,76 @@ public class UserService {
         return result;
     }
 
+    /**
+     * 매니저지정
+     */
+    public String callBroadCastRoomManagerAdd(P_ManagerAddVo pManagerAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pManagerAddVo);
+        userDao.callBroadCastRoomManagerAdd(procedureVo);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if (procedureVo.getRet().equals(Status.매니저지정_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_성공));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_회원아님));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_해당방이없음));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_방이종료되었음));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_요청회원_방소속아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_요청회원_방소속아님));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_요청회원_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_요청회원_방장아님));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_대상회원아이디_방소속아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_대상회원아이디_방소속아님));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_불가));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_인원제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_인원제한));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 매니저취소
+     */
+    public String callBroadCastRoomManagerDel(P_ManagerDelVo pManagerDelVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pManagerDelVo);
+        userDao.callBroadCastRoomManagerDel(procedureVo);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if (procedureVo.getRet().equals(Status.매니저취소_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_성공));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_회원아님));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_해당방이없음));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_방이종료되었음));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_요청회원_방소속아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_요청회원_방소속아님));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_요청회원_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_요청회원_방장아님));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_대상회원아이디_방소속아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_대상회원아이디_방소속아님));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_매니저아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_매니저아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_실패));
+        }
+
+        return result;
+    }
+
     /* ######################## Native 연동에서만 필요한 부분 ########################## */
     public List<DevRoomVo> getDevBjRoom(String memNo){
         return userDao.selectBjRoom(memNo);
@@ -248,4 +315,7 @@ public class UserService {
     public List<DevRoomVo> getDevJoinRoom(String memNo){
         return userDao.selectJoinRoom(memNo);
     }
+
+
+
 }

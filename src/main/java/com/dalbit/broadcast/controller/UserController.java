@@ -1,14 +1,8 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.UserService;
-import com.dalbit.broadcast.vo.procedure.P_RoomGuestAddVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGuestDeleteVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomKickoutVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
-import com.dalbit.broadcast.vo.request.GuestAddVo;
-import com.dalbit.broadcast.vo.request.GuestDelVo;
-import com.dalbit.broadcast.vo.request.JoinMemberListVo;
-import com.dalbit.broadcast.vo.request.KickOutVo;
+import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -163,31 +157,34 @@ public class UserController {
         return result;
     }
 
-
-    /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
-
-
     /**
      * 매니저지정
      */
-    @PostMapping("/{brodNo}/mgr/{memNo}")
-    public String addManager(@PathVariable String brodNo, @PathVariable String memNo){
+    @PostMapping("/manager")
+    public String managerAdd(@Valid ManagerAddVo managerAddVo, BindingResult bindingResult) throws GlobalException{
 
-        HashMap data = new HashMap();
+        DalbitUtil.throwValidaionException(bindingResult);
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.매니저지정, data)));
+        P_ManagerAddVo apiData = new P_ManagerAddVo(managerAddVo);
+        String result = userService.callBroadCastRoomManagerAdd(apiData);
+        return result;
     }
 
     /**
-     * 매니저해제
+     * 매니저취소
      */
-    @DeleteMapping("/{brodNo}/mgr/{memNo}")
-    public String deleteManager(@PathVariable String brodNo, @PathVariable String memNo){
+    @DeleteMapping("/manager")
+    public String managerDel(@Valid ManagerDelVo managerDelVo, BindingResult bindingResult) throws GlobalException{
 
-        HashMap data = new HashMap();
+        DalbitUtil.throwValidaionException(bindingResult);
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.삭제, data)));
+        P_ManagerDelVo apiData = new P_ManagerDelVo(managerDelVo);
+        String result = userService.callBroadCastRoomManagerDel(apiData);
+        return result;
     }
+
+    /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
+
 
     /**
      * 게스트초대
