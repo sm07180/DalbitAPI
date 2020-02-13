@@ -40,7 +40,7 @@
             , 3 as auth
         from tb_broadcast_room t1
         where t1.mem_no = #{value}
-            and t1.state != 4;
+            and t1.state not in (4, 5);
 	    </select>
 
     <select id="selectJoinRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
