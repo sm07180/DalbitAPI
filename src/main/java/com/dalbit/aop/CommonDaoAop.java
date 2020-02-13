@@ -36,7 +36,7 @@ public class CommonDaoAop {
         stopWatch.stop();
 
         log.info("[" + proceedName + "] - 실행시간 : " + stopWatch.getTotalTimeMillis() + " (ms)");
-        log.info("[" + proceedName + "] - DB 리턴 결과 : " + new Gson().toJson(proceedingJoinPoint.getArgs()));
+        log.info("[" + proceedName + "] - ### DB 리턴 결과 ### : " + new Gson().toJson(proceedingJoinPoint.getArgs()));
 
         return result;
     }
