@@ -37,12 +37,11 @@
             t1.room_no as roomNo
             , t1.title as title
             , t1.start_date as startDt
-            , t2.auth
-        from tb_broadcast_room t1 inner join tb_broadcast_room_member t2 on t1.room_no = t2.room_no
-        where t2.mem_no = #{value}
-            and t2.auth = 3
-            and t2.state = 0;
-    </select>
+            , 3 as auth
+        from tb_broadcast_room t1
+        where t1.mem_no = #{value}
+            and t1.state != 4;
+	    </select>
 
     <select id="selectJoinRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
         select
