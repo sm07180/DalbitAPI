@@ -1420,6 +1420,61 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 회원 루비 선물하기_2020.02.14",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11581645188545",
+													"description": "* 선물받는 회원 번호",
+													"type": "text"
+												},
+												{
+													"key": "ruby",
+													"value": "10",
+													"description": "* 선물하는 루비 수",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/gift",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"gift"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -1440,7 +1495,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTY0NTE4ODU0NUB0cnVlIiwiaWF0IjoxNTgxNjQ1MTkwLCJleHAiOjE1ODQxNTA3OTB9.d5A958mXUEbKZtqv4qL0Z8M4KJBi3KcBE6hxJs8LB2o",
 												"type": "text"
 											},
 											{
@@ -1460,7 +1515,7 @@
 												},
 												{
 													"key": "title",
-													"value": "선물하기테스트방",
+													"value": "참여팬랭킹임시확인테스트방",
 													"description": "* 제목",
 													"type": "text"
 												},
@@ -1519,7 +1574,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzUzMjMyN0B0cnVlIiwiaWF0IjoxNTgxNTczNTMyLCJleHAiOjE1ODQwNzkxMzJ9.o_Ys3rubStTjG1KF3PqF17pB4Fr4X228VScyORK0fKk",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTY0NTI5OTk3NkB0cnVlIiwiaWF0IjoxNTgxNjQ1MzAxLCJleHAiOjE1ODQxNTA5MDF9.hkZUTLhDimNiTVcIQbXa1YUq8mMaeZZWvKP9idTa2fw",
 												"type": "text"
 											},
 											{
@@ -1538,15 +1593,15 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581573678831",
+													"value": "91581645216737",
 													"description": "* 방번호",
 													"type": "text"
 												}
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/join",
-											"protocol": "https",
+											"raw": "http://devapi2.dalbitcast.com/broad/join",
+											"protocol": "http",
 											"host": [
 												"devapi2",
 												"dalbitcast",
@@ -2650,8 +2705,8 @@
 											]
 										},
 										"url": {
-											"raw": "http://devapi2.dalbitcast.com/broad/manager",
-											"protocol": "http",
+											"raw": "https://devapi2.dalbitcast.com/broad/manager",
+											"protocol": "https",
 											"host": [
 												"devapi2",
 												"dalbitcast",
@@ -2705,8 +2760,8 @@
 											]
 										},
 										"url": {
-											"raw": "http://devapi2.dalbitcast.com/broad/manager",
-											"protocol": "http",
+											"raw": "https://devapi2.dalbitcast.com/broad/manager",
+											"protocol": "https",
 											"host": [
 												"devapi2",
 												"dalbitcast",
@@ -2737,8 +2792,8 @@
 											}
 										],
 										"url": {
-											"raw": "http://devapi2.dalbitcast.com/broad/history?roomNo=91581573678831&page&records",
-											"protocol": "http",
+											"raw": "https://devapi2.dalbitcast.com/broad/history?roomNo=91581573678831&page&records",
+											"protocol": "https",
 											"host": [
 												"devapi2",
 												"dalbitcast",
