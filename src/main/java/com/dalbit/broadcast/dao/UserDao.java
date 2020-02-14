@@ -19,7 +19,8 @@ public interface UserDao {
 
     List<DevRoomVo> selectBjRoom(String memNo);
     List<DevRoomVo> selectJoinRoom(String memNo);
-
+    List<DevRoomVo> selectDisconnectRoom(String memNo);
+    void updateNormalRoom(String roomNo);
 
 
 }

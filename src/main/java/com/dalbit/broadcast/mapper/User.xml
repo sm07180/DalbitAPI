@@ -43,6 +43,23 @@
             and t1.state not in (4, 5);
 	    </select>
 
+    <select id="selectDisconnectRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
+        select
+            t1.room_no as roomNo
+            , t1.title as title
+            , t1.start_date as startDt
+            , 3 as auth
+        from tb_broadcast_room t1
+        where t1.mem_no = #{value}
+            and t1.state = 5;
+    </select>
+
+    <update id="updateNormalRoom" parameterType="String">
+        update tb_broadcast_room set
+          state = 0
+        where room_no = #{value}
+    </update>
+
     <select id="selectJoinRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
         select
             t1.room_no as roomNo

@@ -266,4 +266,18 @@ public class UserController {
     public String getDevJoinRoom(HttpServletRequest request){
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo()))));
     }
+
+
+    @Profile({"local", "dev"})
+    @GetMapping("devBroad/disconnect")
+    public String selectDisconnectRoom(HttpServletRequest request){
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.selectDisconnectRoom(MemberVo.getMyMemNo()))));
+    }
+
+    @Profile({"local", "dev"})
+    @GetMapping("devBroad/normal")
+    public String updateNormalRoom(HttpServletRequest request){
+        userService.updateNormalRoom(request.getParameter("roomNo"));
+        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회)));
+    }
 }

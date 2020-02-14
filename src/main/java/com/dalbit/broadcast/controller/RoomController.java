@@ -83,7 +83,7 @@ public class RoomController {
      * 방송방 참여하기
      */
     @PostMapping("/join")
-    public String roomJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult) throws GlobalException{
+    public String roomJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -104,6 +104,8 @@ public class RoomController {
         apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
         //apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
         apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
+        DeviceVo deviceVo = new DeviceVo(request);
+        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
 
         String result = roomService.callBroadCastRoomJoin(apiData);
 

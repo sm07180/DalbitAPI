@@ -316,6 +316,11 @@ public class UserService {
         return userDao.selectJoinRoom(memNo);
     }
 
+    public List<DevRoomVo> selectDisconnectRoom(String memNo){
+        return userDao.selectDisconnectRoom(memNo);
+    }
 
-
+    public void updateNormalRoom(String roomNo){
+        userDao.updateNormalRoom(roomNo);
+    }
 }
