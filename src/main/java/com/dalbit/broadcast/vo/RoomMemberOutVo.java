@@ -34,7 +34,7 @@ public class RoomMemberOutVo{
         this.joinTs = DalbitUtil.getUTCTimeStamp(target.getJoin_date());
 
         //TODO - 임시 데이터..
-        this.isFan = Math.random() < 0.5;
+        this.isFan = Math.random() < 0.5 ? true : false;
         this.starCnt = Integer.valueOf(DalbitUtil.randomValue("number", 3));
     }
 }
