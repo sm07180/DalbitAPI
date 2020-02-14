@@ -79,7 +79,7 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanboardAddVo);
         profileDao.callMemberFanboardAdd(procedureVo);
 
-        String result="";
+        String result;
         if(Status.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공));
         }else if (Status.팬보드_댓글달기실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
@@ -148,25 +148,19 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(p_fanboardDeleteVo);
         profileDao.callMemberFanboardDelete(procedureVo);
 
-        String result = null;
+        String result;
         if(Integer.parseInt(procedureVo.getRet()) == 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status. 팬보드_댓글삭제성공));
-
         } else if(Status.팬보드_댓글삭제실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_스타회원번호_회원아님));
-
         } else if(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님));
-
         } else if(Status.팬보드_댓글삭제실패_댓글인덱스번호_잘못된번호.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
-
         } else if(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
-
         } else if(Status.팬보드_댓글삭제실패_이미삭제됨.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_이미삭제됨));
-
         } else if(Status.팬보드_댓글삭제실패_삭제권한없음.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제권한없음));
         } else {
@@ -202,8 +196,7 @@ public class ProfileService {
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        String result="";
-
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReplyList));
         } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureOutputVo.getRet())) {

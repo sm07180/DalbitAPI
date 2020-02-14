@@ -5,41 +5,59 @@
     <select id="callProfileEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_profile_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callFanstarInsert" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_fanstar_insert(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callFanstarDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_fanstar_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberInfo" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callBroadBasic" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_broadcast_basic_request(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callBroadBasicEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_broadcast_basic_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberReportAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_report_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberBlockAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_block_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberBlockDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_block_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberNotify" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_setting_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberNotifyEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_setting_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberShortCut" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MemberShortCutVo">
         call sp_member_broadcast_shortcut_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
     <select id="callMemberShortCutEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_broadcast_shortcut_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callMemberGiftRuby" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_gift_ruby(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
 
 </mapper>

@@ -223,45 +223,58 @@ public class CommonService {
         if(!DalbitUtil.isEmpty(rank3)){
             setFanVo(memberFanVoList, rank3);
         }
+
+        //개발 로컬일때 없을경우 임시데이터 셋팅
+        if(DalbitUtil.isEmpty(rank1) && DalbitUtil.isEmpty(rank2) && DalbitUtil.isEmpty(rank3)){
+            setFanVo(memberFanVoList, null);
+        }
+
         return memberFanVoList;
     }
 
     private List setFanVo(List memberFanVoList, String fanRank){
 
         HashMap map = new Gson().fromJson(fanRank, HashMap.class);
-
         MemberFanVo fanVo = new MemberFanVo();
-        fanVo.setRank(memberFanVoList.size()+1);
         //개발 로컬일때 없을경우 임시데이터 셋팅
-        if(DalbitUtil.getStringMap(map, "mem_no") == null && ("local".equals(env.getActiveProfiles()) || "dev".equals(env.getActiveProfiles()))){
-            if(memberFanVoList.size() == 0){
-                fanVo.setMemNo("11581570590758");
-                fanVo.setNickNm("4434qwqw");
-                fanVo.setGender("m");
-                fanVo.setAge(10);
-                fanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
+        if(DalbitUtil.isEmpty(map) && ("local".equals(env.getActiveProfiles()[0]) || "dev".equals(env.getActiveProfiles()[0]))){
+            for(int i= memberFanVoList.size(); i < 3; i++){
+                MemberFanVo sampleFanVo = new MemberFanVo();
+                if(i == 0){
+                    sampleFanVo.setRank(i+1);
+                    sampleFanVo.setMemNo("11581570590758");
+                    sampleFanVo.setNickNm("4434qwqw");
+                    sampleFanVo.setGender("m");
+                    sampleFanVo.setAge(10);
+                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
 
-            }else if(memberFanVoList.size() == 1){
-                fanVo.setMemNo("11581570632108");
-                fanVo.setNickNm("44323ee");
-                fanVo.setGender("m");
-                fanVo.setAge(20);
-                fanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213141031308290.jpeg", DalbitUtil.getProperty("server.photo.url")));
-            }else if(memberFanVoList.size() == 2){
-                fanVo.setMemNo("11581570944586");
-                fanVo.setNickNm("123wqeasd55656");
-                fanVo.setGender("m");
-                fanVo.setAge(30);
-                fanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
+                }else if(i == 1){
+                    sampleFanVo.setRank(i+1);
+                    sampleFanVo.setMemNo("11581570632108");
+                    sampleFanVo.setNickNm("44323ee");
+                    sampleFanVo.setGender("m");
+                    sampleFanVo.setAge(20);
+                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213141031308290.jpeg", DalbitUtil.getProperty("server.photo.url")));
+
+                }else if(i == 2){
+                    sampleFanVo.setRank(i+1);
+                    sampleFanVo.setMemNo("11581570944586");
+                    sampleFanVo.setNickNm("123wqeasd55656");
+                    sampleFanVo.setGender("m");
+                    sampleFanVo.setAge(30);
+                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
+                }
+                memberFanVoList.add(sampleFanVo);
             }
+            return memberFanVoList;
         }else{
+            fanVo.setRank(memberFanVoList.size()+1);
             fanVo.setMemNo(DalbitUtil.getStringMap(map, "mem_no"));
             fanVo.setNickNm(DalbitUtil.getStringMap(map, "nickName"));
             fanVo.setGender(DalbitUtil.getStringMap(map, "memSex"));
             fanVo.setAge(DalbitUtil.getIntMap(map, "age"));
             fanVo.setProfImg(new ImageVo(DalbitUtil.isNullToString(map.get("profileImage")), DalbitUtil.getProperty("server.photo.url")));
         }
-
         memberFanVoList.add(fanVo);
 
         return memberFanVoList;

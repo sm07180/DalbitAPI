@@ -36,6 +36,7 @@ public class ContentController {
         apiData.setRoom_no(noticeViewVo.getRoomNo());
 
         String result = contentService.callBroadCastRoomNoticeSelect(apiData);
+
         return result;
     }
 
@@ -53,6 +54,7 @@ public class ContentController {
         apiData.setNotice(noticeEditVo.getNotice());
 
         String result = contentService.callBroadCastRoomNoticeEdit(apiData);
+
         return result;
     }
 
@@ -69,6 +71,7 @@ public class ContentController {
         apiData.setRoom_no(noticeDelVo.getRoomNo());
 
         String result = contentService.callBroadCastRoomNoticeDelete(apiData);
+
         return result;
     }
 

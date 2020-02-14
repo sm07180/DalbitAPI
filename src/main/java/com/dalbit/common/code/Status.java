@@ -150,10 +150,18 @@ public enum Status {
 
     //회원 마이페이지 팬보드 대댓글 보기
     팬보드_대댓글조회성공("C001", "fanboard.reply.comment.success", "팬보드 대댓글 조회 시"),
-    팬보드_대댓글조회실패_대댓글없음("0", "fanboard.reply.comment.no", "대댓글 없음"),
-    팬보드_대댓글조회실패_요청회원번호_회원아님("-1", "fanboard.reply.requestNo.notMember", "요청 회원번호가 회원이 아님"),
-    팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아님"),
-    팬보드_대댓글조회오류("C006", "fanboard.reply.error", "팬보드 대댓글 보기 실패"),
+    팬보드_대댓글조회실패_대댓글없음("0", "fanboard.reply.comment.no", "대댓글 없을 시"),
+    팬보드_대댓글조회실패_요청회원번호_회원아님("-1", "fanboard.reply.requestNo.notMember", "요청 회원번호가 회원이 아닐 시"),
+    팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아닐 시"),
+    팬보드_대댓글조회오류("C006", "fanboard.reply.error", "팬보드 대댓글 보기 실패 시"),
+
+    //회원 루비선물하기
+    루비선물_성공("0", "mypage.member.gift.ruby.success", "루비 선물 성공 시"),
+    루비선물_요청회원번호_회원아님("-1", "mypage.member.gift.ruby.member.no", "요청회원번호가 회원이 아닐 시"),
+    루비선물_받는회원번호_회원아님("-2", "mypage.member.gift.ruby.object.member.no", "받는회원번호가 회원이 아닐 시"),
+    루비선물_루비개수_비정상("-3", "mypage.member.gift.ruby.count.error", "선물하는 루비 개수가 비정상일 시"),
+    루비선물_루비개수_부족("-4", "mypage.member.gift.ruby.limit", "루비 개수가 부족할 시"),
+    루비선물_실패("C006", "mypage.member.gift.ruby.fail", "루비 선물 실패 시"),
 
     //방송생성
     방송생성("0", "broadcast.room.start.success", "방송 생성 시"),

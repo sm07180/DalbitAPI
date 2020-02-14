@@ -87,7 +87,7 @@ public class MemberService {
 
         log.debug("닉네임중복체크 결과 : {}", procedureVo.toString());
 
-        String result = "";
+        String result;
         if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복));
         }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
@@ -104,14 +104,14 @@ public class MemberService {
     public String callChangePassword(P_ChangePasswordVo pChangePasswordVo){
         ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo.getPhoneNo(), pChangePasswordVo.getPassword());
         memberDao.callChangePassword(procedureVo);
-        String result;
 
+        String result;
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경성공)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경성공));
         } else if(procedureVo.getRet().equals(Status.비밀번호변경실패_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경실패_회원아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경실패_회원아님));
         } else {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.비밀번호변경오류)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경오류));
         }
         return result;
     }

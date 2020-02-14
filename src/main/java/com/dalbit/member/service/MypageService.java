@@ -59,6 +59,7 @@ public class MypageService {
         pProfileEditVo.setProfileImage(profImg);
         ProcedureVo procedureVo = new ProcedureVo(pProfileEditVo);
         mypageDao.callProfileEdit(procedureVo);
+
         String result;
         if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
             if(isDone){
@@ -86,6 +87,7 @@ public class MypageService {
     public String callFanstarInsert(P_FanstarInsertVo pFanstarInsertVo) {
         ProcedureVo procedureVo = new ProcedureVo(pFanstarInsertVo);
         mypageDao.callFanstarInsert(procedureVo);
+
         String result;
         if(procedureVo.getRet().equals(Status.팬등록성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬등록성공, procedureVo.getData())));
@@ -107,8 +109,8 @@ public class MypageService {
     public String callFanstarDelete(P_FanstarDeleteVo pFanstarDeleteVo) {
         ProcedureVo procedureVo = new ProcedureVo(pFanstarDeleteVo);
         mypageDao.callFanstarDelete(procedureVo);
-        String result;
 
+        String result;
         if (procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.팬해제성공, procedureVo.getData())));
         } else if (procedureVo.getRet().equals(Status.팬해제_회원아님.getMessageCode())) {
@@ -182,6 +184,7 @@ public class MypageService {
     public String callBroadBasicEdit(P_BroadBasicEditVo pBroadBasicEdit){
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasicEdit);
         mypageDao.callBroadBasicEdit(procedureVo);
+
         String result;
         if(procedureVo.getRet().equals(Status.방송방기본설정수정_성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.방송방기본설정수정_성공)));
@@ -199,6 +202,7 @@ public class MypageService {
     public String callMemberReportAdd(P_MemberReportAddVo pMemberReportAdd){
         ProcedureVo procedureVo = new ProcedureVo(pMemberReportAdd);
         mypageDao.callMemberReportAdd(procedureVo);
+
         String result;
         if(procedureVo.getRet().equals(Status.회원신고성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원신고성공, procedureVo.getData())));
@@ -220,8 +224,8 @@ public class MypageService {
     public String callBlockAdd(P_MemberBlockAddVo pMemberBlockAdd){
         ProcedureVo procedureVo = new ProcedureVo(pMemberBlockAdd);
         mypageDao.callMemberBlockAdd(procedureVo);
-        String result;
 
+        String result;
         if(procedureVo.getRet().equals(Status.회원차단성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단성공, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.회원차단_요청회원번호_정상아님.getMessageCode())) {
@@ -242,8 +246,8 @@ public class MypageService {
     public String callMemBerBlocklDel(P_MemberBlockDelVo pMemberBlockDel){
         ProcedureVo procedureVo = new ProcedureVo(pMemberBlockDel);
         mypageDao.callMemberBlockDel(procedureVo);
-        String result;
 
+        String result;
         if(procedureVo.getRet().equals(Status.회원차단해제성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원차단해제성공, procedureVo.getData())));
         }else if(procedureVo.getRet().equals(Status.회원차단해제_요청회원번호_정상아님.getMessageCode())) {
@@ -330,7 +334,6 @@ public class MypageService {
         mypageDao.callMemberShortCutEdit(procedureVo);
 
         String result;
-
         if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_성공.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말수정_성공)));
         } else if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_회원아님.getMessageCode())) {
@@ -338,6 +341,31 @@ public class MypageService {
         }else{
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.회원방송방빠른말수정오류)));
         }
+        return result;
+    }
+
+    /**
+     * 회원 루비선물하기
+     */
+    public String callMemberGiftRuby(P_RubyVo pRubyVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRubyVo);
+        mypageDao.callMemberGiftRuby(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.루비선물_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_성공));
+        }else if(procedureVo.getRet().equals(Status.루비선물_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.루비선물_받는회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_받는회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.루비선물_루비개수_비정상.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_루비개수_비정상));
+        }else if(procedureVo.getRet().equals(Status.루비선물_루비개수_부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_루비개수_부족));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_실패));
+        }
+
         return result;
     }
 }

@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.broadcast.vo.request.GiftVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
@@ -265,6 +266,19 @@ public class MypageController {
         }
 
         String result = mypageService.callMemberShortCutEdit(apiData);
+        return result;
+    }
+
+    /**
+     * 회원 루비선물하기
+     */
+    @PostMapping("/gift")
+    public String memberGift(@Valid RubyVo rubyVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_RubyVo apiData = new P_RubyVo(rubyVo);
+        String result = mypageService.callMemberGiftRuby(apiData);
         return result;
     }
 }
