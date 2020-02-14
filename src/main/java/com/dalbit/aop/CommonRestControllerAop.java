@@ -42,7 +42,7 @@ public class CommonRestControllerAop {
         stopWatch.stop();
 
         log.info("[" + proceedName + "] [memNo : {}] - 실행시간 : {}", memNo, stopWatch.getTotalTimeMillis() + " (ms)");
-        log.info("실행결과 : " + gsonUtil.toJson(result));
+        log.info("[memNo : {}] 실행결과 {}", memNo, gsonUtil.toJson(result));
 
         return result;
     }
