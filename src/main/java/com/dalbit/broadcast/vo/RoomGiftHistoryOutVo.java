@@ -14,7 +14,7 @@ public class RoomGiftHistoryOutVo {
     private String memNo;
     private String nickNm;
     private ImageVo profImg;
-    private int itemNo;
+    private String itemNo;
     private String itemNm;
     private int gold;
     private Boolean isSecret;

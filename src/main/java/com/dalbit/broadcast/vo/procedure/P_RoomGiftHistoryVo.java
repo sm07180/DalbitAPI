@@ -33,7 +33,7 @@ public class P_RoomGiftHistoryVo {
     private String nickName;
     private String memSex;
     private String profileImage;
-    private int item_no;
+    private String item_no;
     private String item_name;
     private int gold;
     private int secret;
