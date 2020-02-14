@@ -6,7 +6,7 @@
       call sp_checkDuplicateNickName(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.ConnectRoomVo">
         call sp_member_login(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 

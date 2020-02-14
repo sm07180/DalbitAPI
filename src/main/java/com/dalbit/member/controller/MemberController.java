@@ -124,19 +124,19 @@ public class MemberController {
         if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
             //로그인 처리
             P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
-            ProcedureVo procedureVo1 = new ProcedureVo(pLoginVo);
-            List<P_LoginVo> loginList = memberService.callMemberLogin(procedureVo1);
-            ProcedureOutputVo LoginProcedureVo;
-            if(DalbitUtil.isEmpty(loginList)){
+            //ProcedureVo procedureVo1 = new ProcedureVo(pLoginVo);
+            ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
+            //ProcedureOutputVo LoginProcedureVo;
+            /*if(DalbitUtil.isEmpty(loginList)){
                 LoginProcedureVo = null;
             }else{
                 LoginProcedureVo = new ProcedureOutputVo(procedureVo);
             }
             if(LoginProcedureVo == null){
-            }
+            }*/
             log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
 
-            HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
             String memNo = DalbitUtil.getStringMap(map, "mem_no");
             String jwtToken = jwtUtil.generateToken(memNo, true);
 

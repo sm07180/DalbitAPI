@@ -30,7 +30,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @Service("userDetailsService")
@@ -91,27 +90,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , locationVo.getRegionName()
                 , deviceVo.getIp()
         );
-        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
-        //LoginProcedureVo
-        List<P_LoginVo> loginList = memberService.callMemberLogin(procedureVo);
-        ProcedureOutputVo LoginProcedureVo;
-        if(DalbitUtil.isEmpty(loginList)){
-            if("p".equals(DalbitUtil.getStringMap(map, "memType"))){
-                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-            }else{
-                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
-            }
-        }else{
-            LoginProcedureVo = new ProcedureOutputVo(procedureVo);
-        }
+
+        ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
         log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
-        if(LoginProcedureVo == null){
-            if("p".equals(DalbitUtil.getStringMap(map, "memType"))){
-                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-            }else{
-                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
-            }
-        }
 
         HashMap loginExt = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
         String memNo = DalbitUtil.getStringMap(loginExt, "mem_no");

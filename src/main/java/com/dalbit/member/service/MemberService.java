@@ -3,9 +3,11 @@ package com.dalbit.member.service;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
+import com.dalbit.member.vo.ConnectRoomVo;
 import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.dalbit.member.vo.procedure.P_JoinVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
@@ -45,9 +47,10 @@ public class MemberService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
-    public List<P_LoginVo> callMemberLogin(ProcedureVo procedureVo) {
-        //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
-        return memberDao.callMemberLogin(procedureVo);
+    public ProcedureOutputVo callMemberLogin(P_LoginVo pLoginVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
+        List<ConnectRoomVo> connectRoomList =  memberDao.callMemberLogin(procedureVo);
+        return new ProcedureOutputVo(procedureVo, connectRoomList);
     }
 
     /**

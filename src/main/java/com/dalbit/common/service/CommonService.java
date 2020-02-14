@@ -117,14 +117,14 @@ public class CommonService {
         }else {
 
             P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
-            ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
-            List<P_LoginVo> loginList = memberService.callMemberLogin(procedureVo);
-            ProcedureOutputVo LoginProcedureVo;
-            if(DalbitUtil.isEmpty(loginList)){
+            //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
+            ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
+            //ProcedureOutputVo LoginProcedureVo;
+            /*if(DalbitUtil.isEmpty(loginList)){
                 throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
             }else{
                 LoginProcedureVo = new ProcedureOutputVo(procedureVo);
-            }
+            }*/
             log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
             if(LoginProcedureVo == null){
                 throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
