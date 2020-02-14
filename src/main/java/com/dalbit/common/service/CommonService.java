@@ -243,7 +243,7 @@ public class CommonService {
                 if(i == 0){
                     sampleFanVo.setRank(i+1);
                     sampleFanVo.setMemNo("11581570590758");
-                    sampleFanVo.setNickNm("4434qwqw");
+                    sampleFanVo.setNickNm("임시팬랭킹1");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(10);
                     sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
@@ -251,7 +251,7 @@ public class CommonService {
                 }else if(i == 1){
                     sampleFanVo.setRank(i+1);
                     sampleFanVo.setMemNo("11581570632108");
-                    sampleFanVo.setNickNm("44323ee");
+                    sampleFanVo.setNickNm("임시팬랭킹2");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(20);
                     sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213141031308290.jpeg", DalbitUtil.getProperty("server.photo.url")));
@@ -259,7 +259,7 @@ public class CommonService {
                 }else if(i == 2){
                     sampleFanVo.setRank(i+1);
                     sampleFanVo.setMemNo("11581570944586");
-                    sampleFanVo.setNickNm("123wqeasd55656");
+                    sampleFanVo.setNickNm("임시팬랭킹3");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(30);
                     sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
