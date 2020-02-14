@@ -23,4 +23,6 @@ public class P_RoomMemberListVo {
     private int auth;
     private String controlRole;
     private Date join_date;
+    private int enableFan;
+    private int gift_gold;
 }
