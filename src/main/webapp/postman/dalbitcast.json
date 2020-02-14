@@ -1600,8 +1600,8 @@
 											]
 										},
 										"url": {
-											"raw": "http://devapi2.dalbitcast.com/broad/join",
-											"protocol": "http",
+											"raw": "https://devapi2.dalbitcast.com/broad/join",
+											"protocol": "https",
 											"host": [
 												"devapi2",
 												"dalbitcast",
