@@ -14,6 +14,6 @@ public class BaseVo implements Serializable {
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this,
-                ToStringStyle.MULTI_LINE_STYLE);
+                ToStringStyle.DEFAULT_STYLE);
     }
 }
