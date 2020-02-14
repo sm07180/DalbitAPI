@@ -12,6 +12,8 @@ public class ItemVo {
     private String thumbs;
     private String webpUrl;
     private String lottieUrl;
+    private int width = 600;
+    private int height = 600;
 
     public ItemVo(String itemNo, String itemNm, int cost, String thumbs, String webpUrl, String lottieUrl){
         this.itemNm = itemNm;

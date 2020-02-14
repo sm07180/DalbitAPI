@@ -278,7 +278,7 @@ public class UserController {
     }
 
     @Profile({"local", "dev"})
-    @GetMapping("devBroad/normal")
+    @PostMapping("devBroad/normal")
     public String updateNormalRoom(HttpServletRequest request){
         userService.updateNormalRoom(request.getParameter("roomNo"));
         return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회)));
