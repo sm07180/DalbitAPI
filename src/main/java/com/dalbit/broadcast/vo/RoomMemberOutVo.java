@@ -19,6 +19,8 @@ public class RoomMemberOutVo{
     private String ctrlRole;
     private String joinDt;
     private long joinTs;
+    private boolean isFan;
+    private int starCnt;
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();
@@ -30,5 +32,9 @@ public class RoomMemberOutVo{
         this.ctrlRole = target.getControlRole();
         this.joinDt = DalbitUtil.getUTCFormat(target.getJoin_date());
         this.joinTs = DalbitUtil.getUTCTimeStamp(target.getJoin_date());
+
+        //TODO - 임시 데이터..
+        this.isFan = Math.random() < 0.5;
+        this.starCnt = Integer.valueOf(DalbitUtil.randomValue("number", 3));
     }
 }
