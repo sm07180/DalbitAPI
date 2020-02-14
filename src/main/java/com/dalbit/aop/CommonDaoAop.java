@@ -1,5 +1,6 @@
 package com.dalbit.aop;
 
+import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -25,9 +26,10 @@ public class CommonDaoAop {
     @Around("execution(* com.dalbit.*.dao.*.*(..))")
     public Object daoLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
+        String memNo = MemberVo.getMyMemNo();
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
-        log.debug("[dao] - start : " + proceedName);
+        log.debug("[dao] [memNo : {}] - start : {}", memNo, proceedName);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -35,8 +37,8 @@ public class CommonDaoAop {
 
         stopWatch.stop();
 
-        log.info("[" + proceedName + "] - 실행시간 : " + stopWatch.getTotalTimeMillis() + " (ms)");
-        log.info("[" + proceedName + "] - ### DB 리턴 결과 ### : " + new Gson().toJson(proceedingJoinPoint.getArgs()));
+        log.info("[" + proceedName + "] [memNo : {}] - 실행시간 : {}", memNo, stopWatch.getTotalTimeMillis() + " (ms)");
+        log.info("[" + proceedName + "] [memNo : {}] - ### DB 리턴 결과 ### : {}", memNo, new Gson().toJson(proceedingJoinPoint.getArgs()));
 
         return result;
     }

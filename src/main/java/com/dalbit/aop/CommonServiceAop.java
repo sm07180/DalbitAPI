@@ -1,5 +1,6 @@
 package com.dalbit.aop;
 
+import com.dalbit.member.vo.MemberVo;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -24,9 +25,10 @@ public class CommonServiceAop {
     @Around("execution(* com.dalbit.*.service.*.*(..))")
     public Object serviceLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
+        String memNo = MemberVo.getMyMemNo();
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
-        log.debug("[service] - start : " + proceedName);
+        log.debug("[service] [memNo : {}] - start : {}", memNo, proceedName);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -34,7 +36,7 @@ public class CommonServiceAop {
 
         stopWatch.stop();
 
-        log.info("[" + proceedName + "] - 실행시간 : " + stopWatch.getTotalTimeMillis() + " (ms)");
+        log.info("[" + proceedName + "] [memNo : {}] - 실행시간 : {}", memNo, stopWatch.getTotalTimeMillis() + " (ms)");
 
         return result;
     }

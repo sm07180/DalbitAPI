@@ -1,5 +1,6 @@
 package com.dalbit.aop;
 
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -29,9 +30,10 @@ public class CommonRestControllerAop {
     @Around("execution(* com.dalbit.*.controller.*.*(..))")
     public Object restControllerLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
+        String memNo = MemberVo.getMyMemNo();
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
-        log.debug("[restController] - start : " + proceedName);
+        log.debug("[restController] [memNo : {}] - start : {}", memNo, proceedName);
         StopWatch stopWatch = new StopWatch();
         stopWatch.start();
 
@@ -39,7 +41,7 @@ public class CommonRestControllerAop {
 
         stopWatch.stop();
 
-        log.info("[" + proceedName + "] - 실행시간 : " + stopWatch.getTotalTimeMillis() + " (ms)");
+        log.info("[" + proceedName + "] [memNo : {}] - 실행시간 : {}", memNo, stopWatch.getTotalTimeMillis() + " (ms)");
         log.info("실행결과 : " + gsonUtil.toJson(result));
 
         return result;
