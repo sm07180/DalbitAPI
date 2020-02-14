@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -44,10 +45,9 @@ public class MemberService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
-    public ProcedureVo callMemberLogin(P_LoginVo pLoginVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
-        memberDao.callMemberLogin(procedureVo);
-        return procedureVo;
+    public List<P_LoginVo> callMemberLogin(ProcedureVo procedureVo) {
+        //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
+        return memberDao.callMemberLogin(procedureVo);
     }
 
     /**

@@ -3,10 +3,7 @@ package com.dalbit.member.controller;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.LocationVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
@@ -125,12 +122,19 @@ public class MemberController {
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo);
         if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
-
             //로그인 처리
             P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
-
-            memberService.callMemberLogin(pLoginVo);
-            log.debug("로그인 결과 : {}", new Gson().toJson(procedureVo));
+            ProcedureVo procedureVo1 = new ProcedureVo(pLoginVo);
+            List<P_LoginVo> loginList = memberService.callMemberLogin(procedureVo1);
+            ProcedureOutputVo LoginProcedureVo;
+            if(DalbitUtil.isEmpty(loginList)){
+                LoginProcedureVo = null;
+            }else{
+                LoginProcedureVo = new ProcedureOutputVo(procedureVo);
+            }
+            if(LoginProcedureVo == null){
+            }
+            log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
 
             HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             String memNo = DalbitUtil.getStringMap(map, "mem_no");

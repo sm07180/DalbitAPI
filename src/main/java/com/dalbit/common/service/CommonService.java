@@ -4,6 +4,7 @@ import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.*;
+import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.*;
@@ -116,15 +117,26 @@ public class CommonService {
         }else {
 
             P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
-            ProcedureVo procedureVo = memberService.callMemberLogin(pLoginVo);
-            if(procedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+            ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
+            List<P_LoginVo> loginList = memberService.callMemberLogin(procedureVo);
+            ProcedureOutputVo LoginProcedureVo;
+            if(DalbitUtil.isEmpty(loginList)){
+                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+            }else{
+                LoginProcedureVo = new ProcedureOutputVo(procedureVo);
+            }
+            log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
+            if(LoginProcedureVo == null){
+                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+            }
+            if(LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
                 resultStatus = Status.로그인실패_회원가입필요;
-            }else if(procedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+            }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
                 resultStatus = Status.로그인실패_패스워드틀림;
-            }else if(procedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+            }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
                 resultStatus = Status.로그인실패_파라메터이상;
-            }else if(procedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
-                HashMap map = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
+                HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
                 String memNo = DalbitUtil.getStringMap(map,"mem_no");
                 if(memNo == null){
                     resultStatus = Status.로그인실패_파라메터이상;

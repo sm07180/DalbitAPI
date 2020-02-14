@@ -3,6 +3,7 @@ package com.dalbit.security.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.LocationVo;
+import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.member.service.MemberService;
@@ -29,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @Service("userDetailsService")
@@ -89,9 +91,27 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , locationVo.getRegionName()
                 , deviceVo.getIp()
         );
-
-        ProcedureVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
+        ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
+        //LoginProcedureVo
+        List<P_LoginVo> loginList = memberService.callMemberLogin(procedureVo);
+        ProcedureOutputVo LoginProcedureVo;
+        if(DalbitUtil.isEmpty(loginList)){
+            if("p".equals(DalbitUtil.getStringMap(map, "memType"))){
+                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            }else{
+                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+            }
+        }else{
+            LoginProcedureVo = new ProcedureOutputVo(procedureVo);
+        }
         log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
+        if(LoginProcedureVo == null){
+            if("p".equals(DalbitUtil.getStringMap(map, "memType"))){
+                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            }else{
+                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+            }
+        }
 
         HashMap loginExt = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
         String memNo = DalbitUtil.getStringMap(loginExt, "mem_no");

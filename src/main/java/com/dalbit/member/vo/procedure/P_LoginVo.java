@@ -46,4 +46,9 @@ public class P_LoginVo extends BaseVo {
     private String adId;
     private String location;
     private String ip;
+
+    private String room_no;
+    private int auth;
+    private String device_uuid;
+    private int state;
 }

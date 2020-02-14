@@ -317,6 +317,11 @@ public class RoomService {
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
+
+        if(procedureOutputVo == null){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음));
+        }
+
         HashMap roomList = new HashMap();
         roomList.put("list", procedureOutputVo.getOutputBox());
         roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
