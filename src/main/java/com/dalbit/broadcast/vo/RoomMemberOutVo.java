@@ -20,7 +20,7 @@ public class RoomMemberOutVo{
     private String joinDt;
     private long joinTs;
     private boolean isFan;
-    private int starCnt;
+    private int goldCnt;
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();
@@ -35,6 +35,6 @@ public class RoomMemberOutVo{
 
         //TODO - 임시 데이터..
         this.isFan = Math.random() < 0.5 ? true : false;
-        this.starCnt = Integer.valueOf(DalbitUtil.randomValue("number", 3));
+        this.goldCnt = Integer.valueOf(DalbitUtil.randomValue("number", 3));
     }
 }
