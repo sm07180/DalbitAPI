@@ -167,6 +167,7 @@ public enum Status {
     방송생성("0", "broadcast.room.start.success", "방송 생성 시"),
     방송생성_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송중인방존재("-2", "broadcast.room.existence", "방송중인 방이 있을 시"),
+    방송생성_deviceUuid비정상("-3", "broadcast.room.deviceUuid.error", "deviceUuid 비정상일 시"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
 
     //방송방 참가를 위한 스트림아이디, 토큰받아오기

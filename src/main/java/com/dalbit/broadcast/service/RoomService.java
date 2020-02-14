@@ -121,6 +121,8 @@ public class RoomService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송생성_회원아님));
         } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송중인방존재));
+        } else if (procedureVo.getRet().equals(Status.방송생성_deviceUuid비정상.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송생성_deviceUuid비정상));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방생성실패));
         }
