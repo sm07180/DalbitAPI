@@ -8,6 +8,6 @@ import lombok.Setter;
 public class ConnectRoomVo {
     private String room_no;
     private int auth;
-    private String device_id;
+    private String device_uuid;
     private int state;
 }
