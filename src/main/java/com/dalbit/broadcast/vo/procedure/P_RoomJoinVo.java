@@ -17,4 +17,5 @@ public class P_RoomJoinVo {
     private String bj_publish_tokenid;          //bj 토큰아이디
     private String bj_play_tokenid;             //bj play토큰
     private String deviceUuid;
+    private int os;
 }

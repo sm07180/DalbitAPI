@@ -106,6 +106,7 @@ public class RoomController {
         apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
         DeviceVo deviceVo = new DeviceVo(request);
         apiData.setDeviceUuid(deviceVo.getDeviceUuid());
+        apiData.setOs(deviceVo.getOs());
 
         String result = roomService.callBroadCastRoomJoin(apiData);
 

@@ -54,15 +54,15 @@ public class ContentService {
 
         String result ="";
         if(procedureVo.getRet().equals(Status.공지가져오기성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지가져오기성공, procedureVo.getData())));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기성공, procedureVo.getData()));
         } else if(procedureVo.getRet().equals(Status.공지가져오기실패_정상회원이아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님));
         } else if(procedureVo.getRet().equals(Status.공지가져오기실패_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님));
         } else if(procedureVo.getRet().equals(Status.공지가져오기실패_방참가자가아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지가져오기실패_방참가자가아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_방참가자가아님));
         } else {
-            result = gsonUtil.toJson((messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지가져오기실패_조회에러))));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_조회에러));
         }
          return result;
     }
@@ -77,17 +77,17 @@ public class ContentService {
 
         String result;
         if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지입력수정성공)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정성공));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_정상회원이아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지입력수정실패_정상회원이아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_정상회원이아님));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지입력수정실패_해당방이없음)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_해당방이없음));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_방참가자가아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지입력수정실패_방참가자가아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_방참가자가아님));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_공지권한없음.getMessageCode())){
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지입력수정실패_공지권한없음)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_공지권한없음));
         } else {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지입력수정실패_입력수정에러)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_입력수정에러));
         }
 
         return result;
@@ -102,17 +102,17 @@ public class ContentService {
 
         String result;
         if (procedureVo.getRet().equals(Status.공지삭제하기성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지삭제하기성공)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기성공));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_정상회원이아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지삭제하기실패_정상회원이아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_정상회원이아님));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지삭제하기실패_해당방이없음)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_해당방이없음));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_방참가자가아님.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지삭제하기실패_방참가자가아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_방참가자가아님));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_공지삭제권한없음)) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지삭제하기실패_공지삭제권한없음)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_공지삭제권한없음));
         } else {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.공지삭제하기실패_삭제에러)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_삭제에러));
         }
 
         return result;

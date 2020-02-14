@@ -21,4 +21,5 @@ public interface MypageDao {
     ProcedureVo callMemberNotifyEdit(ProcedureVo procedureVo);
     List<P_MemberShortCutVo> callMemberShortCut(ProcedureVo procedureVo);
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
+    ProcedureVo callMemberGiftRuby(ProcedureVo procedureVo);
 }

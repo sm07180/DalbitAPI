@@ -154,6 +154,7 @@ public class UserController {
         int memLogin = DalbitUtil.isLogin() ? 1 : 0;
         P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo());
         String result = userService.callMemberInfo(apiData);
+
         return result;
     }
 
@@ -167,6 +168,7 @@ public class UserController {
 
         P_ManagerAddVo apiData = new P_ManagerAddVo(managerAddVo);
         String result = userService.callBroadCastRoomManagerAdd(apiData);
+
         return result;
     }
 
@@ -180,6 +182,7 @@ public class UserController {
 
         P_ManagerDelVo apiData = new P_ManagerDelVo(managerDelVo);
         String result = userService.callBroadCastRoomManagerDel(apiData);
+
         return result;
     }
 
