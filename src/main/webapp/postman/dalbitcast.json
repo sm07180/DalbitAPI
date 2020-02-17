@@ -808,7 +808,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 회원 알림설정 조회하기_2020.01.20",
+									"name": "[완료] 회원 알림설정 조회하기_2020.02.17",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -827,7 +827,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
 												"type": "text"
 											}
 										],
@@ -852,7 +852,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 회원 알림설정 수정하기_2020.02.11",
+									"name": "[완료] 회원 알림설정 수정하기_2020.02.17",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -868,7 +868,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
 												"type": "text"
 											}
 										],
@@ -877,44 +877,44 @@
 											"urlencoded": [
 												{
 													"key": "isAll",
+													"value": "1",
+													"description": "* 전체 알림",
+													"type": "text"
+												},
+												{
+													"key": "isMyStar",
 													"value": "0",
-													"description": "* 전체알림",
+													"description": "* 마이스타 알림",
 													"type": "text"
 												},
 												{
-													"key": "isFanReg",
+													"key": "isGift",
 													"value": "0",
-													"description": "* 팬등록알림",
+													"description": "* 선물받은 달 알림",
 													"type": "text"
 												},
 												{
-													"key": "isBoard",
-													"value": "0",
-													"description": "* 팬보드알림",
-													"type": "text"
-												},
-												{
-													"key": "isStarCast",
+													"key": "isFan",
 													"value": "1",
-													"description": "* 스타방송알림",
+													"description": "* 팬 알림",
 													"type": "text"
 												},
 												{
-													"key": "isStarNoti",
+													"key": "isComment",
 													"value": "1",
-													"description": "* 스타공지사항알림",
+													"description": "* 댓글 알림",
 													"type": "text"
 												},
 												{
-													"key": "isEvtNoti",
+													"key": "isRadio",
 													"value": "1",
-													"description": "* 이벤트공지알림",
+													"description": "* 달빛 라디오 알림",
 													"type": "text"
 												},
 												{
-													"key": "isSearch",
+													"key": "isEvent",
 													"value": "1",
-													"description": "* 검색허용",
+													"description": "* 이벤트 및 마케팅 정보 수신 알림",
 													"type": "text"
 												}
 											]
@@ -1593,7 +1593,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581645216737",
+													"value": "91581579368921",
 													"description": "* 방번호",
 													"type": "text"
 												}
@@ -1811,7 +1811,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgxNjY4OTQ1LCJleHAiOjE1ODQxNzQ1NDV9.cR3sLkXLQF4Z747s9dGcrAjDazW1NvhvzFQMKvDCtOA",
 												"type": "text"
 											},
 											{
@@ -1830,7 +1830,7 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/listeners?roomNo=91580717628329&page=1&records=5",
+											"raw": "https://devapi2.dalbitcast.com/broad/listeners?roomNo=91581579368921&page=1&records=5",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -1844,7 +1844,7 @@
 											"query": [
 												{
 													"key": "roomNo",
-													"value": "91580717628329"
+													"value": "91581579368921"
 												},
 												{
 													"key": "page",
