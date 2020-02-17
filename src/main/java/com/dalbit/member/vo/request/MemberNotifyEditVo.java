@@ -4,22 +4,23 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
 public class MemberNotifyEditVo {
-    @NotBlank
-    private boolean isAll;
-    @NotBlank
-    private boolean isFanReg;
-    @NotBlank
-    private boolean isBoard;
-    @NotBlank
-    private boolean isStarCast;
-    @NotBlank
-    private boolean isStarNoti;
-    @NotBlank
-    private boolean isEvtNoti;
-    @NotBlank
-    private boolean isSearch;
+    @NotNull
+    private int isAll;
+    @NotNull
+    private int isMyStar;
+    @NotNull
+    private int isGift;
+    @NotNull
+    private int isFan;
+    @NotNull
+    private int isComment;
+    @NotNull
+    private int isRadio;
+    @NotNull
+    private int isEvent;
 }

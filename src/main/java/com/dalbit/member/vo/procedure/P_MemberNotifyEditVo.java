@@ -7,12 +7,12 @@ import lombok.Setter;
 @Setter
 public class P_MemberNotifyEditVo {
 
-    private String mem_no;                     //ID
-    private int all_ok;                        //전체알림
-    private int fan_reg;                       //팬등록알림
-    private int fan_board;                     //팬보드알림
-    private int star_broadcast;                //스타방송알림
-    private int star_notice;                   //스타공지사항알림
-    private int event_notice;                  //이벤트공지알림
-    private int search;                        //검색허용
+    private String mem_no;      //요청 회원번호
+    private int all_ok;         //전체알림
+    private int set_1;          //마이 스타 알림
+    private int set_2;          //선물 받은 달 알림
+    private int set_3;          //팬 알림
+    private int set_4;          //댓글 알림
+    private int set_5;          //달빛 라디오 알림
+    private int set_6;          //이벤트 및 마케팅 정보 수신
 }

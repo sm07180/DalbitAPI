@@ -212,13 +212,13 @@ public class MypageController {
         P_MemberNotifyEditVo apiData = new P_MemberNotifyEditVo();
 
         apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setAll_ok(memberNotifyEditVo.isAll() ? 1 : 0);
-        apiData.setFan_reg(memberNotifyEditVo.isFanReg() ? 1 : 0);
-        apiData.setFan_board(memberNotifyEditVo.isBoard() ? 1 : 0);
-        apiData.setStar_broadcast(memberNotifyEditVo.isStarCast() ? 1 : 0);
-        apiData.setStar_notice(memberNotifyEditVo.isStarNoti() ? 1 : 0);
-        apiData.setEvent_notice(memberNotifyEditVo.isEvtNoti() ? 1 : 0);
-        apiData.setSearch(memberNotifyEditVo.isSearch() ? 1 : 0);
+        apiData.setAll_ok(memberNotifyEditVo.getIsAll());
+        apiData.setSet_1(memberNotifyEditVo.getIsMyStar());
+        apiData.setSet_2(memberNotifyEditVo.getIsGift());
+        apiData.setSet_3(memberNotifyEditVo.getIsFan());
+        apiData.setSet_4(memberNotifyEditVo.getIsComment());
+        apiData.setSet_5(memberNotifyEditVo.getIsRadio());
+        apiData.setSet_6(memberNotifyEditVo.getIsEvent());
 
         String result = mypageService.callMemberNotifyEdit(apiData);
         return result;

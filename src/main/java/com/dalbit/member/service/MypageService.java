@@ -270,7 +270,15 @@ public class MypageService {
         mypageDao.callMemberNotify(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        procedureVo.setData(resultMap);
+        HashMap returnMap = new HashMap();
+        returnMap.put("all_ok", DalbitUtil.getIntMap(resultMap, "all_ok"));
+        returnMap.put("isMyStar", DalbitUtil.getIntMap(resultMap, "set_1"));
+        returnMap.put("isGift", DalbitUtil.getIntMap(resultMap, "set_2"));
+        returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "set_3"));
+        returnMap.put("isComment", DalbitUtil.getIntMap(resultMap, "set_4"));
+        returnMap.put("isRadio", DalbitUtil.getIntMap(resultMap, "set_5"));
+        returnMap.put("isEvent", DalbitUtil.getIntMap(resultMap, "set_6"));
+        procedureVo.setData(returnMap);
 
         String result;
         if(procedureVo.getRet().equals(Status.알림설정조회_성공.getMessageCode())) {
@@ -292,7 +300,7 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.알림설정수정_성공.getMessageCode())) {
-            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정_성공, procedureVo.getData())));
+            result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정_성공)));
         }else if(procedureVo.getRet().equals(Status.알림설정수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.알림설정수정_회원아님)));
         }else{
