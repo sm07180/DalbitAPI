@@ -20,6 +20,10 @@ public class ProcedureVo {
         setData(new Gson().toJson(paramVo));
     }
 
+    public ProcedureVo(String nickNm){
+        setNickName(nickNm);
+    }
+
     public ProcedureVo(String phoneNo, String password){
         setPhoneNo(phoneNo);
         setPassword(password);
@@ -31,4 +35,5 @@ public class ProcedureVo {
     private String ext;
     private String phoneNo;
     private String password;
+    private String nickName;
 }

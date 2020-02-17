@@ -3,7 +3,7 @@
 <mapper namespace="com.dalbit.member.dao.MemberDao" >
 
     <select id="callNickNameCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_checkDuplicateNickName(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_checkDuplicateNickName(#{nickName, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callMemberLogin" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.ConnectRoomVo">

@@ -83,6 +83,7 @@ public class MemberService {
      * 닉네임 중복체크
      */
     public String callNickNameCheck(ProcedureVo procedureVo) {
+
         memberDao.callNickNameCheck(procedureVo);
 
         log.debug("닉네임중복체크 결과 : {}", procedureVo.toString());
