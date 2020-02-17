@@ -7,10 +7,7 @@ import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.PagingVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
@@ -469,5 +466,55 @@ public class RoomService {
 
         return result;
 
+    }
+
+    /**
+     * 방송방 회원정보 조회
+     */
+    public String callBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
+        roomDao.callBroadCastRoomMemberInfo(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", resultMap);
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
+        returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
+        returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
+        returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
+        returnMap.put("age", DalbitUtil.getIntMap(resultMap, "age"));
+        returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
+        returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+        returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
+        returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
+        returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
+        returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+        returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
+        returnMap.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCount"));
+        returnMap.put("starCnt", DalbitUtil.getIntMap(resultMap, "starCount"));
+        returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+        procedureVo.setData(returnMap);
+
+        String result="";
+        if(Status.방송방회원정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_성공, procedureVo.getData()));
+        }else if(Status.방송방회원정보조회_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_요청회원_번호비정상));
+        }else if(Status.방송방회원정보조회_대상회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_번호비정상));
+        }else if(Status.방송방회원정보조회_대상회원_방에없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_방에없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_실패));
+        }
+
+        return result;
     }
 }

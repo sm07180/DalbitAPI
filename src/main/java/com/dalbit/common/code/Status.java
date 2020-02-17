@@ -392,6 +392,13 @@ public enum Status {
     선물받은내역조회_실패("C006", "broadcast.room.gift.history.fail", "선물받은내역 조회 실패 시"),
 
 
+    //방송방 회원정보 조회
+    방송방회원정보조회_성공("0", "broadcast.room.member.info.select.success", "방송방 회원정보 조회 성공 시"),
+    방송방회원정보조회_요청회원_번호비정상("-1", "broadcast.room.member.info.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    방송방회원정보조회_대상회원_번호비정상("-2", "broadcast.room.member.info.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    방송방회원정보조회_대상회원_방에없음("-3", "broadcast.room.member.info.join.no", "대상 회원이 방에 없을 시"),
+    방송방회원정보조회_실패("C006", "broadcast.room.member.info.select.fail", "방송방 회원정보 조회 실패 시"),
+
 
     ;
 

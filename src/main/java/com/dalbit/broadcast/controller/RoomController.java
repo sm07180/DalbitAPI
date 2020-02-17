@@ -255,4 +255,16 @@ public class RoomController {
         return result;
     }
 
+    /**
+     * 방송방 회원정보 조회
+     */
+    @GetMapping("/member/profile")
+    public String roomMemberInfo(@Valid RoomMemberInfoVo roomMemberInfoVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_RoomMemberInfoVo apiData = new P_RoomMemberInfoVo(roomMemberInfoVo);
+        String result = roomService.callBroadCastRoomMemberInfo(apiData);
+        return result;
+    }
+
 }
