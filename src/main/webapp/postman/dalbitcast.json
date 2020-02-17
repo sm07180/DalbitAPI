@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "085762e0-f122-4f56-9234-a49466f04829",
+		"_postman_id": "db058ae6-c598-4d9a-8e7b-bf991e7ba37d",
 		"name": "달빛라디오 API 정의서",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -1627,7 +1627,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
 												"type": "text"
 											},
 											{
@@ -1641,7 +1641,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581473349269",
+													"value": "91581918310651",
 													"description": "방번호",
 													"type": "text"
 												}
@@ -1769,7 +1769,7 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/list?roomType=00&page=1&records=5",
+											"raw": "https://devapi2.dalbitcast.com/broad/list?roomType=13&page=1&records=30",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -1783,7 +1783,7 @@
 											"query": [
 												{
 													"key": "roomType",
-													"value": "00",
+													"value": "13",
 													"description": "방주제"
 												},
 												{
@@ -1793,7 +1793,7 @@
 												},
 												{
 													"key": "records",
-													"value": "5",
+													"value": "30",
 													"description": "페이지당 리스트 개수"
 												}
 											]
@@ -2818,6 +2818,56 @@
 													"key": "records",
 													"value": null,
 													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 회원정보 조회_2020.02.17",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/broad/member/profile?memNo=11581573532327&roomNo=91581918310651",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"member",
+												"profile"
+											],
+											"query": [
+												{
+													"key": "memNo",
+													"value": "11581573532327",
+													"description": "* 대상 회원번호"
+												},
+												{
+													"key": "roomNo",
+													"value": "91581918310651",
+													"description": "* 방송방 번호"
 												}
 											]
 										}
