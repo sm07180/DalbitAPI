@@ -1,5 +1,6 @@
 package com.dalbit.aop;
 
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * 공통 rest controller AOP 정의
  */
@@ -17,6 +20,9 @@ import org.springframework.util.StopWatch;
 @Aspect
 @Component
 public class CommonRestControllerAop {
+
+    @Autowired
+    HttpServletRequest request;
 
     @Autowired
     GsonUtil gsonUtil;
@@ -41,7 +47,8 @@ public class CommonRestControllerAop {
 
         stopWatch.stop();
 
-        log.info("[" + proceedName + "] [memNo : {}] - 실행시간 : {}", memNo, stopWatch.getTotalTimeMillis() + " (ms)");
+        log.info("[{}] [memNo : {}] - 실행시간 : {}", proceedName, memNo, stopWatch.getTotalTimeMillis() + " (ms)");
+        log.debug("[{}] 헤더정보 : {}, ", proceedName, gsonUtil.toJson(new DeviceVo(request)));
         log.info("[memNo : {}] 실행결과 {}", memNo, gsonUtil.toJson(result));
 
         return result;
