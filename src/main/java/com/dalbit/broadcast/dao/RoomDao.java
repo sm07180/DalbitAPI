@@ -20,4 +20,7 @@ public interface RoomDao {
     ProcedureVo callBroadCastRoomLiveRankInfo(ProcedureVo procedureVo);
     List<P_RoomGiftHistoryVo> callBroadCastRoomGiftHistory(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomMemberInfo(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastRoomStreamSelect(ProcedureVo procedureVo);
+    ProcedureVo callBroadcastRoomTokenUpdate(ProcedureVo procedureVo);
 }

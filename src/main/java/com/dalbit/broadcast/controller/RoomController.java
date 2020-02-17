@@ -267,4 +267,18 @@ public class RoomController {
         return result;
     }
 
+    /**
+     * 방송방 토큰 재 생성
+     */
+    @PostMapping("/reToken")
+    public String roomGiftHistory(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_RoomStreamVo apiData = new P_RoomStreamVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(roomTokenVo.getRoomNo());
+
+        return roomService.callBroadcastRoomStreamSelect(apiData);
+    }
 }

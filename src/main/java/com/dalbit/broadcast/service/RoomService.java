@@ -9,6 +9,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -513,6 +514,139 @@ public class RoomService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_방에없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 방송방 토큰 재생성
+     */
+    public String callBroadcastRoomStreamSelect(P_RoomStreamVo pRoomStreamVo) throws GlobalException {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomStreamVo);
+        roomDao.callBroadcastRoomStreamSelect(procedureVo);
+
+        String result = "";
+        if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            int auth = DalbitUtil.getIntMap(resultMap, "auth");
+            String bjStreamId = DalbitUtil.getStringMap(resultMap, "bj_streamid");
+            String bjPubToken = "";
+            String bjPlayToken = "";
+            String gstStreamId = DalbitUtil.getStringMap(resultMap, "guest_streamid");
+            String gstPubToken = "";
+            String gstPlayToken = "";
+            if(auth == 3){ // DJ
+                bjPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
+                if(!DalbitUtil.isEmpty(gstStreamId)){
+                    bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                    gstPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
+                    gstPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                }
+            }else{
+                bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                if(!DalbitUtil.isEmpty(gstStreamId)){
+                    gstPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                }
+                if(auth == 2){ //게스트
+                    bjPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
+                    gstPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
+                }
+            }
+
+            P_RoomStreamTokenVo pRoomStreamTokenVo = new P_RoomStreamTokenVo();
+            pRoomStreamTokenVo.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+            pRoomStreamTokenVo.setMem_no(MemberVo.getMyMemNo());
+            pRoomStreamTokenVo.setRoom_no(pRoomStreamVo.getRoom_no());
+            pRoomStreamTokenVo.setBj_publish_tokenid(bjPubToken);
+            pRoomStreamTokenVo.setBj_play_tokenid(bjPlayToken);
+            pRoomStreamTokenVo.setGuest_publish_tokenid(gstPubToken);
+            pRoomStreamTokenVo.setGuest_play_tokenid(gstPlayToken);
+            procedureVo.setData(pRoomStreamTokenVo);
+            ProcedureVo procedureUpdateVo = new ProcedureVo(pRoomStreamTokenVo);
+
+            //토큰 업데이트
+            roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
+
+            if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
+                HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
+                String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
+                String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");
+
+                log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+                log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+                P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+                pRoomInfoViewVo.setMemLogin(pRoomStreamTokenVo.getMemLogin());
+                pRoomInfoViewVo.setMem_no(pRoomStreamTokenVo.getMem_no());
+                pRoomInfoViewVo.setRoom_no(pRoomStreamTokenVo.getRoom_no());
+
+                //방송방 정보 조회
+                ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+                if(Status.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
+                    log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
+                    RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
+
+                    HashMap returnMap = new HashMap();
+                    returnMap.put("roomNo", pRoomStreamVo.getRoom_no());
+                    returnMap.put("bjStreamId", bjStreamId);
+                    returnMap.put("bjPubToken", bjPubToken);
+                    returnMap.put("bjPlayToken", bjPlayToken);
+                    returnMap.put("gstStreamId", gstStreamId);
+                    returnMap.put("gstPubToken", gstPubToken);
+                    returnMap.put("gstPlayToken", gstPlayToken);
+                    returnMap.put("title", target.getTitle());
+                    returnMap.put("bgImg", target.getBgImg());
+                    returnMap.put("link", target.getLink());
+                    returnMap.put("bjMemNo", target.getBjMemNo());
+                    returnMap.put("bjNickNm", target.getBjNickNm());
+                    returnMap.put("bjProfImg", target.getBjProfImg());
+                    returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
+                    returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
+                    returnMap.put("gstProfImg", target.getGstProfImg());
+                    // 임의정보
+                    returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+                    returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                    returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                    returnMap.put("roomRole", DalbitUtil.getIntMap(resultMap, "auth"));
+                    returnMap.put("roleRight", DalbitUtil.getStringMap(resultMap, "controlRole"));
+                    returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
+                    returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
+                    /*returnMap.put("level", target.getLevel());
+                    returnMap.put("grade", target.getGrade());
+                    returnMap.put("exp", target.getExp());
+                    returnMap.put("expNext", target.getExpNext());
+                    returnMap.put("rubyCnt", target.getRubyCnt());
+                    returnMap.put("goldCnt", target.getGoldCnt());*/
+                    returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                    log.info("returnMap: {}", returnMap);
+
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회성공, returnMap));
+                }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
+                }else if(Status.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+                }else{
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+                }
+            }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
+            }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
+            }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+            }
+        }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
+        }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
+        }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
         }
 
         return result;
