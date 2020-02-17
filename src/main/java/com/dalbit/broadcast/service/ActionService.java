@@ -48,10 +48,7 @@ public class ActionService {
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
-        returnMap.put("roomCnt", DalbitUtil.getIntMap(resultMap, "totalRoomCnt"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-        returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
-        returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
         procedureVo.setData(returnMap);
 
         String result="";
