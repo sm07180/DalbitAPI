@@ -2,7 +2,7 @@
 <configuration scan="true" scanPeriod="30 seconds">
 
     <!-- TODO 로그 경로는 개발 서버에 맞추어 변경해야함 -->
-    <property name="LOG_PATH" value="D:/workspace/radio_mobile/logs" />
+    <property name="LOG_PATH" value="/home/dalbit/logs" />
     <property name="LOG_FILE_NAME" value="radio_mobile.log" />
     <property name="LOG_ERROR_FILE_NAME" value="error_radio_mobile.log" />
 
