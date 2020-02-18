@@ -18,8 +18,7 @@ public class RoomOutVo {
     private String roomNo;
     private String roomType;
     private String title;
-    //private ImageVo bgImg;
-    private String bgImg;
+    private ImageVo bgImg;
     private String welcomMsg;
     private int entryType;
     private String notice;
@@ -52,8 +51,7 @@ public class RoomOutVo {
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
         this.title = target.getTitle();
-        //this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
-        this.bgImg = DalbitUtil.getProperty("server.photo.url") + target.getImage_background();
+        this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
         this.welcomMsg = target.getMsg_welcom();
         this.entryType = target.getType_entry();
         this.notice = target.getNotice();
@@ -79,8 +77,7 @@ public class RoomOutVo {
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
         this.title = target.getTitle();
-        //this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
-        this.bgImg = DalbitUtil.getProperty("server.photo.url") + target.getImage_background();
+        this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
         this.welcomMsg = target.getMsg_welcom();
         this.entryType = target.getType_entry();
         this.notice = target.getNotice();
