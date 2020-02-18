@@ -1262,7 +1262,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTI0ODUyNCwiZXhwIjoxNTgxOTI2OTI0fQ.sTlSbw9DropFmMn7an5Jka5Fye40IoyUE1AVwexdUS0",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgxNjY4OTQ1LCJleHAiOjE1ODQxNzQ1NDV9.cR3sLkXLQF4Z747s9dGcrAjDazW1NvhvzFQMKvDCtOA",
 												"type": "text"
 											},
 											{
@@ -1275,57 +1275,18 @@
 											"mode": "urlencoded",
 											"urlencoded": [
 												{
-													"key": "order_1",
-													"value": "인사",
-													"description": "* 첫번째 명령",
+													"key": "data",
+													"value": "{\"order\": \"인사\", \"text\": \"안녕하세요1\", \"isOn\": \"on\"}",
 													"type": "text"
 												},
 												{
-													"key": "text_1",
-													"value": "안녕하세요1",
-													"description": "* 첫번째 내용",
+													"key": "data",
+													"value": "{\"order\": \"박수\", \"text\": \"짝~짝~짝~1\", \"isOn\": \"on\"}",
 													"type": "text"
 												},
 												{
-													"key": "onOff_1",
-													"value": "on",
-													"description": "* 첫번째 사용여부 (on/off)",
-													"type": "text"
-												},
-												{
-													"key": "order_2",
-													"value": "박수",
-													"description": "* 두번째 명령",
-													"type": "text"
-												},
-												{
-													"key": "text_2",
-													"value": "짝~짝~짝~1",
-													"description": "* 두번째 내용",
-													"type": "text"
-												},
-												{
-													"key": "onOff_2",
-													"value": "off",
-													"description": "* 두번째 사용여부 (on/off)",
-													"type": "text"
-												},
-												{
-													"key": "order_3",
-													"value": "감사",
-													"description": "* 세번째 명령",
-													"type": "text"
-												},
-												{
-													"key": "text_3",
-													"value": "땡큐~~~1",
-													"description": "* 세번째 내용",
-													"type": "text"
-												},
-												{
-													"key": "onOff_3",
-													"value": " on",
-													"description": "* 세번째 사용여부 (on/off)",
+													"key": "data",
+													"value": "{\"order\": \"감사\", \"text\": \"땡큐~~~12\", \"isOn\": \"on\"}",
 													"type": "text"
 												}
 											]
@@ -2869,55 +2830,6 @@
 													"value": "91581918310651",
 													"description": "* 방송방 번호"
 												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
-									"name": "[완료] 방송방 토큰 재생성",
-									"request": {
-										"method": "POST",
-										"header": [
-											{
-												"key": "custom-header",
-												"value": "{\"os\":\"3\",\"deviceId\":\"d2f1d741-a08d-426a-93e2-77e53a7c50bb\",\"appVer\":\"1.0.0.0\",\"locale\":\"ko-KR\",\"language\":\"ko-KR\"}",
-												"type": "text"
-											},
-											{
-												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTg5NzMwNjMxMUB0cnVlIiwiaWF0IjoxNTgxOTE2MTQyLCJleHAiOjE1ODQ0MjE3NDJ9.sEJWPmG5sGhd4znyAVvVLI4xId3iRSeHEtr7xr2dXmY",
-												"type": "text"
-											},
-											{
-												"key": "Content-Type",
-												"name": "Content-Type",
-												"value": "application/x-www-form-urlencoded",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "urlencoded",
-											"urlencoded": [
-												{
-													"key": "roomNo",
-													"value": "91581552455424",
-													"type": "text"
-												}
-											]
-										},
-										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/reToken",
-											"protocol": "https",
-											"host": [
-												"devm-coreano81",
-												"dalbitcast",
-												"com"
-											],
-											"port": "4431",
-											"path": [
-												"broad",
-												"reToken"
 											]
 										}
 									},
