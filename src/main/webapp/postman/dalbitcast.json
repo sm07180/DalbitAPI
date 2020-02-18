@@ -2873,6 +2873,55 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 방송방 토큰 재생성",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "custom-header",
+												"value": "{\"os\":\"3\",\"deviceId\":\"d2f1d741-a08d-426a-93e2-77e53a7c50bb\",\"appVer\":\"1.0.0.0\",\"locale\":\"ko-KR\",\"language\":\"ko-KR\"}",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTg5NzMwNjMxMUB0cnVlIiwiaWF0IjoxNTgxOTE2MTQyLCJleHAiOjE1ODQ0MjE3NDJ9.sEJWPmG5sGhd4znyAVvVLI4xId3iRSeHEtr7xr2dXmY",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91581552455424",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/broad/reToken",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"broad",
+												"reToken"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
