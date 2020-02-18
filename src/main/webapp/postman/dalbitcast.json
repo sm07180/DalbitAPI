@@ -1276,17 +1276,17 @@
 											"urlencoded": [
 												{
 													"key": "data",
-													"value": "{\"order\": \"인사\", \"text\": \"안녕하세요1\", \"isOn\": \"on\"}",
+													"value": "{\"order\": \"인사\", \"text\": \"안녕하세요1\", \"isOn\": \"true\"}",
 													"type": "text"
 												},
 												{
 													"key": "data",
-													"value": "{\"order\": \"박수\", \"text\": \"짝~짝~짝~1\", \"isOn\": \"on\"}",
+													"value": "{\"order\": \"박수\", \"text\": \"짝~짝~짝~1\", \"isOn\": \"true\"}",
 													"type": "text"
 												},
 												{
 													"key": "data",
-													"value": "{\"order\": \"감사\", \"text\": \"땡큐~~~12\", \"isOn\": \"on\"}",
+													"value": "{\"order\": \"감사\", \"text\": \"땡큐~~~12\", \"isOn\": \"true\"}",
 													"type": "text"
 												}
 											]
@@ -1588,7 +1588,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU2MDU4OTYwNUB0cnVlIiwiaWF0IjoxNTgxOTkwMjc2LCJleHAiOjE1ODQ0OTU4NzZ9.FpiCQZJougLqr65G1DlnFt6nKAfvDpe6SpZzTR8T-QI",
 												"type": "text"
 											},
 											{
@@ -1602,7 +1602,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581918310651",
+													"value": "91581668099107",
 													"description": "방번호",
 													"type": "text"
 												}
@@ -1730,7 +1730,7 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/list?roomType=13&page=1&records=30",
+											"raw": "https://devapi2.dalbitcast.com/broad/list?roomType=&page=1&records=30",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -1744,7 +1744,7 @@
 											"query": [
 												{
 													"key": "roomType",
-													"value": "13",
+													"value": "",
 													"description": "방주제"
 												},
 												{
