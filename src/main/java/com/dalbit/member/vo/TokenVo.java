@@ -19,5 +19,4 @@ public class TokenVo extends BaseVo {
     private String authToken;
     private String memNo;
     private boolean isLogin;
-    private String autoLogin;
 }
