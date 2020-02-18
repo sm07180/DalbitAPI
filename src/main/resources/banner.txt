@@ -1,9 +1,28 @@
 
-  ____        _ _     _ _     ____           _ _
- |  _ \  __ _| | |__ (_) |_  |  _ \ __ _  __| (_) ___
- | | | |/ _` | | '_ \| | __| | |_) / _` |/ _` | |/ _ \
- | |_| | (_| | | |_) | | |_  |  _ < (_| | (_| | | (_) |
- |____/ \__,_|_|_.__/|_|\__| |_| \_\__,_|\__,_|_|\___/
+
+                                             bbbbbbbb                                                                                                dddddddd
+DDDDDDDDDDDDD                         lllllllb::::::b              iiii          tttt               RRRRRRRRRRRRRRRRR                                d::::::d  iiii                                       AAA               PPPPPPPPPPPPPPPPP   IIIIIIIIII
+D::::::::::::DDD                      l:::::lb::::::b             i::::i      ttt:::t               R::::::::::::::::R                               d::::::d i::::i                                     A:::A              P::::::::::::::::P  I::::::::I
+D:::::::::::::::DD                    l:::::lb::::::b              iiii       t:::::t               R::::::RRRRRR:::::R                              d::::::d  iiii                                     A:::::A             P::::::PPPPPP:::::P I::::::::I
+DDD:::::DDDDD:::::D                   l:::::l b:::::b                         t:::::t               RR:::::R     R:::::R                             d:::::d                                           A:::::::A            PP:::::P     P:::::PII::::::II
+  D:::::D    D:::::D  aaaaaaaaaaaaa    l::::l b:::::bbbbbbbbb    iiiiiiittttttt:::::ttttttt           R::::R     R:::::R  aaaaaaaaaaaaa      ddddddddd:::::d iiiiiii    ooooooooooo                   A:::::::::A             P::::P     P:::::P  I::::I
+  D:::::D     D:::::D a::::::::::::a   l::::l b::::::::::::::bb  i:::::it:::::::::::::::::t           R::::R     R:::::R  a::::::::::::a   dd::::::::::::::d i:::::i  oo:::::::::::oo                A:::::A:::::A            P::::P     P:::::P  I::::I
+  D:::::D     D:::::D aaaaaaaaa:::::a  l::::l b::::::::::::::::b  i::::it:::::::::::::::::t           R::::RRRRRR:::::R   aaaaaaaaa:::::a d::::::::::::::::d  i::::i o:::::::::::::::o              A:::::A A:::::A           P::::PPPPPP:::::P   I::::I
+  D:::::D     D:::::D          a::::a  l::::l b:::::bbbbb:::::::b i::::itttttt:::::::tttttt           R:::::::::::::RR             a::::ad:::::::ddddd:::::d  i::::i o:::::ooooo:::::o             A:::::A   A:::::A          P:::::::::::::PP    I::::I
+  D:::::D     D:::::D   aaaaaaa:::::a  l::::l b:::::b    b::::::b i::::i      t:::::t                 R::::RRRRRR:::::R     aaaaaaa:::::ad::::::d    d:::::d  i::::i o::::o     o::::o            A:::::A     A:::::A         P::::PPPPPPPPP      I::::I
+  D:::::D     D:::::D aa::::::::::::a  l::::l b:::::b     b:::::b i::::i      t:::::t                 R::::R     R:::::R  aa::::::::::::ad:::::d     d:::::d  i::::i o::::o     o::::o           A:::::AAAAAAAAA:::::A        P::::P              I::::I
+  D:::::D     D:::::Da::::aaaa::::::a  l::::l b:::::b     b:::::b i::::i      t:::::t                 R::::R     R:::::R a::::aaaa::::::ad:::::d     d:::::d  i::::i o::::o     o::::o          A:::::::::::::::::::::A       P::::P              I::::I
+  D:::::D    D:::::Da::::a    a:::::a  l::::l b:::::b     b:::::b i::::i      t:::::t    tttttt       R::::R     R:::::Ra::::a    a:::::ad:::::d     d:::::d  i::::i o::::o     o::::o         A:::::AAAAAAAAAAAAA:::::A      P::::P              I::::I
+DDD:::::DDDDD:::::D a::::a    a:::::a l::::::lb:::::bbbbbb::::::bi::::::i     t::::::tttt:::::t     RR:::::R     R:::::Ra::::a    a:::::ad::::::ddddd::::::ddi::::::io:::::ooooo:::::o        A:::::A             A:::::A   PP::::::PP          II::::::II
+D:::::::::::::::DD  a:::::aaaa::::::a l::::::lb::::::::::::::::b i::::::i     tt::::::::::::::t     R::::::R     R:::::Ra:::::aaaa::::::a d:::::::::::::::::di::::::io:::::::::::::::o       A:::::A               A:::::A  P::::::::P          I::::::::I
+D::::::::::::DDD     a::::::::::aa:::al::::::lb:::::::::::::::b  i::::::i       tt:::::::::::tt     R::::::R     R:::::R a::::::::::aa:::a d:::::::::ddd::::di::::::i oo:::::::::::oo       A:::::A                 A:::::A P::::::::P          I::::::::I
+DDDDDDDDDDDDD         aaaaaaaaaa  aaaallllllllbbbbbbbbbbbbbbbb   iiiiiiii         ttttttttttt       RRRRRRRR     RRRRRRR  aaaaaaaaaa  aaaa  ddddddddd   dddddiiiiiiii   ooooooooooo        AAAAAAA                   AAAAAAAPPPPPPPPPP          IIIIIIIIII
 
 
-            :: Dalbit Radio by inforex ::
+
+                                ,------.          ,--.,--.   ,--.  ,--.      ,------.            ,--.,--.             ,---.  ,------. ,--.    ,--.               ,--.         ,---.
+                    .--..--.    |  .-.  \  ,--,--.|  ||  |-. `--',-'  '-.    |  .--. ' ,--,--. ,-|  |`--' ,---.      /  O  \ |  .--. '|  |    |  |-.,--. ,--.    `--',--,--, /  .-' ,---. ,--.--. ,---. ,--.  ,--.    .--..--.
+                    '--''--'    |  |  \  :' ,-.  ||  || .-. ',--.'-.  .-'    |  '--'.'' ,-.  |' .-. |,--.| .-. |    |  .-.  ||  '--' ||  |    | .-. '\  '  /     ,--.|      \|  `-,| .-. ||  .--'| .-. : \  `'  /     '--''--'
+                    .--..--.    |  '--'  /\ '-'  ||  || `-' ||  |  |  |      |  |\  \ \ '-'  |\ `-' ||  |' '-' '    |  | |  ||  | --' |  |    | `-' | \   '      |  ||  ||  ||  .-'' '-' '|  |   \   --. /  /.  \     .--..--.
+                    '--''--'    `-------'  `--`--'`--' `---' `--'  `--'      `--' '--' `--`--' `---' `--' `---'     `--' `--'`--'     `--'     `---'.-'  /       `--'`--''--'`--'   `---' `--'    `----''--'  '--'    '--''--'
+                                                                                                                                                    `---'
