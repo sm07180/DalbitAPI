@@ -15,7 +15,7 @@ public class P_NotificationVo {
     public P_NotificationVo(NotificationVo notificationVo){
 
         int pageNo = DalbitUtil.isEmpty(notificationVo.getPage()) ? 1 : notificationVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(notificationVo.getRecords()) ? 5 : notificationVo.getRecords();
+        int pageCnt = DalbitUtil.isEmpty(notificationVo.getRecords()) ? 10 : notificationVo.getRecords();
         setMem_no(MemberVo.getMyMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

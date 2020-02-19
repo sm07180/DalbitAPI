@@ -78,7 +78,7 @@ public class ProfileController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         int pageNo = DalbitUtil.isEmpty(fanboardViewVo.getPage()) ? 1 : fanboardViewVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(fanboardViewVo.getRecords()) ? 5 : fanboardViewVo.getRecords();
+        int pageCnt = DalbitUtil.isEmpty(fanboardViewVo.getRecords()) ? 10 : fanboardViewVo.getRecords();
 
         P_FanboardListVo fanboardListVo = new P_FanboardListVo();
         fanboardListVo.setMem_no(MemberVo.getMyMemNo());

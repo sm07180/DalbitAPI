@@ -400,8 +400,8 @@ public class MypageService {
 
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         HashMap notificationList = new HashMap();
-        notificationList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
         notificationList.put("list", procedureOutputVo.getOutputBox());
+        notificationList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result ="";
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {

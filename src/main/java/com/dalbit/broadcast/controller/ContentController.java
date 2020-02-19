@@ -102,7 +102,7 @@ public class ContentController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         int pageNo = DalbitUtil.isEmpty(storyViewVo.getPage()) ? 1 : storyViewVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(storyViewVo.getRecords()) ? 5 : storyViewVo.getRecords();
+        int pageCnt = DalbitUtil.isEmpty(storyViewVo.getRecords()) ? 10 : storyViewVo.getRecords();
 
         P_RoomStoryListVo apiData = new P_RoomStoryListVo();
         apiData.setMem_no(MemberVo.getMyMemNo());

@@ -15,7 +15,7 @@ public class P_RoomGiftHistoryVo {
     public P_RoomGiftHistoryVo(RoomGiftHistoryVo roomGiftHistoryVo){
 
         int pageNo = DalbitUtil.isEmpty(roomGiftHistoryVo.getPage()) ? 1 : roomGiftHistoryVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(roomGiftHistoryVo.getRecords()) ? 5 : roomGiftHistoryVo.getRecords();
+        int pageCnt = DalbitUtil.isEmpty(roomGiftHistoryVo.getRecords()) ? 10 : roomGiftHistoryVo.getRecords();
 
         setMem_no(MemberVo.getMyMemNo());
         setRoom_no(roomGiftHistoryVo.getRoomNo());

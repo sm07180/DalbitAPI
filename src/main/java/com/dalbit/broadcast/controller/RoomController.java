@@ -190,7 +190,7 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 5 : roomListVo.getRecords();
+        int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
 
         P_RoomListVo apiData = new P_RoomListVo();
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);

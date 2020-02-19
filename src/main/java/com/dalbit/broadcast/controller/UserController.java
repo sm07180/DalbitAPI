@@ -49,7 +49,7 @@ public class UserController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         int pageNo = DalbitUtil.isEmpty(joinMemberListVo.getPage()) ? 1 : joinMemberListVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(joinMemberListVo.getRecords()) ? 5 : joinMemberListVo.getRecords();
+        int pageCnt = DalbitUtil.isEmpty(joinMemberListVo.getRecords()) ? 10 : joinMemberListVo.getRecords();
 
         P_RoomMemberListVo apiData = new P_RoomMemberListVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
