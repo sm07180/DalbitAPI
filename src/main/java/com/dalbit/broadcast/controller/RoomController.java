@@ -271,7 +271,7 @@ public class RoomController {
      * 방송방 토큰 재 생성
      */
     @PostMapping("/reToken")
-    public String roomGiftHistory(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult) throws GlobalException{
+    public String roomRefreshToken(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
         P_RoomStreamVo apiData = new P_RoomStreamVo();
