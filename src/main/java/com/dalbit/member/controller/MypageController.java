@@ -7,6 +7,7 @@ import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
+import com.dalbit.sample.vo.TestVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
@@ -20,6 +21,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -43,19 +47,15 @@ public class MypageController {
 
 
     /**
-     * 정보 조회
+     * 회원 정보 조회
      */
     @GetMapping("")
-    public String memberInfo(BindingResult bindingResult) throws GlobalException {
-
-        //벨리데이션 체크
-        DalbitUtil.throwValidaionException(bindingResult);
-
-        int memLogin = DalbitUtil.isLogin() ? 1 : 0;
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), MemberVo.getMyMemNo());
-
-        String result = profileService.callMemberInfo(apiData);
-
+    public String memberInfo(){
+        P_MemberInfoVo apiData = new P_MemberInfoVo();
+        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setTarget_mem_no(MemberVo.getMyMemNo());
+        String result = mypageService.callMemberInfo(apiData);
         return result;
     }
 
@@ -118,18 +118,7 @@ public class MypageController {
         return result;
     }
 
-    /**
-     * 회원 정보 조회
-     */
-    @GetMapping("")
-    public String memberInfo(){
-        P_MemberInfoVo apiData = new P_MemberInfoVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setTarget_mem_no(MemberVo.getMyMemNo());
-        String result = mypageService.callMemberInfo(apiData);
-        return result;
-    }
+
 
     /**
      * 회원 방송방 기본설정 조회
@@ -261,10 +250,14 @@ public class MypageController {
      */
     @Description("TODO (2020.02.12) - 프로시저가 변경 되면 맞춰서 VO validation 체크 추가 예정")
     @PostMapping("/shortcut")
-    public String memberShortCutEdit(HttpServletRequest request){
+    public String memberShortCutEdit(TestVo testVo, HttpServletRequest request){
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        String[] data = request.getParameterValues("data");
+        request.getParameterMap();
+        String[] data = request.getParameterValues("data[][]");
+        /*BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
+        bufferedReader.readLine();
+        bufferedReader.read();*/
         if(data != null && data.length > 0){
             for(int i = 0; i < data.length; i++){
                 HashMap<String, String> d = new Gson().fromJson(data[i], HashMap.class);
@@ -300,6 +293,22 @@ public class MypageController {
 
         P_RubyVo apiData = new P_RubyVo(rubyVo);
         String result = mypageService.callMemberGiftRuby(apiData);
+
         return result;
     }
+
+    /**
+     * 회원 알림 내용 조회
+     */
+    @GetMapping("/notification")
+    public String memberNotification(@Valid NotificationVo notificationVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_NotificationVo apiData = new P_NotificationVo(notificationVo);
+
+        String result = mypageService.callMemberNotification(apiData);
+
+        return result;
+    }
+
 }
