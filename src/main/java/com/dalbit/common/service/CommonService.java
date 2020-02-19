@@ -237,7 +237,7 @@ public class CommonService {
         HashMap map = new Gson().fromJson(fanRank, HashMap.class);
         MemberFanVo fanVo = new MemberFanVo();
         //개발 로컬일때 없을경우 임시데이터 셋팅
-        if(DalbitUtil.isEmpty(map) && ("local".equals(env.getActiveProfiles()[0]) || "dev".equals(env.getActiveProfiles()[0]))){
+        if(DalbitUtil.isEmpty(map) && (DalbitUtil.profileCheck("local") || DalbitUtil.profileCheck("dev"))){
             for(int i= memberFanVoList.size(); i < 3; i++){
                 MemberFanVo sampleFanVo = new MemberFanVo();
                 if(i == 0){

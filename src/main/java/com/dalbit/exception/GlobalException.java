@@ -30,9 +30,16 @@ public class GlobalException extends Exception {
     public GlobalException(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
     }
+
     public GlobalException(ErrorStatus errorStatus, Object data){
         setErrorStatus(errorStatus);
         setData(data);
+    }
+
+    public GlobalException(ErrorStatus errorStatus, Object data, ArrayList validationMessageDetail){
+        setErrorStatus(errorStatus);
+        setData(data);
+        setValidationMessageDetail(validationMessageDetail);
     }
 
 

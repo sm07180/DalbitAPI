@@ -30,7 +30,7 @@ public class CommonErrorController{
         DalbitUtil.setHeader(request, response);
 
         if(globalException.getErrorStatus() != null){
-            return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus(), globalException.getData()));
+            return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus(), globalException.getData(), globalException.getValidationMessageDetail()));
         }else{
             return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData(), globalException.getValidationMessageDetail()));
         }

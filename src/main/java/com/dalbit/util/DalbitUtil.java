@@ -28,7 +28,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -655,4 +654,11 @@ public class DalbitUtil {
         response.setHeader("Access-Control-Allow-Credentials", "true");
     }
 
+    public static String getActiceProfile(){
+        return environment.getActiveProfiles()[0];
+    }
+
+    public static boolean profileCheck(String serverName){
+        return getActiceProfile().equals(serverName);
+    }
 }

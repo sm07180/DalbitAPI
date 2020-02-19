@@ -16,6 +16,8 @@ public enum ErrorStatus {
 
     토큰검증오류("E004", "authToken.invalid.error", "JWT 토큰 검증 시 발생한 에러"),
     토큰만료오류("E005", "authToken.expire.error", "JWT 토큰 만료 시 발생한 에러"),
+
+    커스텀헤더정보이상("E006", "request.custom.header.error", "request header의 custom_header 정보가 이상할 때"),
     ;
 
     final private String ERROR_RESULT = "fail";
