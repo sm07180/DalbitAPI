@@ -3,6 +3,7 @@ package com.dalbit.member.controller;
 import com.dalbit.broadcast.vo.request.GiftVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
+import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
@@ -34,9 +35,29 @@ public class MypageController {
     GsonUtil gsonUtil;
     @Autowired
     MypageService mypageService;
+    @Autowired
+    ProfileService profileService;
 
     @Autowired
     JwtUtil jwtUtil;
+
+
+    /**
+     * 정보 조회
+     */
+    @GetMapping("")
+    public String memberInfo(BindingResult bindingResult) throws GlobalException {
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        int memLogin = DalbitUtil.isLogin() ? 1 : 0;
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), MemberVo.getMyMemNo());
+
+        String result = profileService.callMemberInfo(apiData);
+
+        return result;
+    }
 
     /**
      * 프로필편집
