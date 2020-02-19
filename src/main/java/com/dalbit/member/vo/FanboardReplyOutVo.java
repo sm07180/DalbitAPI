@@ -25,8 +25,6 @@ public class FanboardReplyOutVo {
     private long    writeTs;
 
     public FanboardReplyOutVo(P_FanboardReplyVo target) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
-
         this.boardNo=target.getBoard_no();
         this.boardIdx=target.getBoard_idx();
         this.writerNo=target.getWriter_mem_no();
@@ -34,7 +32,7 @@ public class FanboardReplyOutVo {
         this.profImg=new ImageVo(target.getProfileImage(),DalbitUtil.getProperty("server.photo.url"));
         this.contents=target.getContents();
         this.status=target.getStatus();
-        this.writeDt = format.format(target.getWriteDate());
-        this.writeTs = target.getWriteDate().getTime() / 1000;
+        this.writeDt = DalbitUtil.getUTCFormat(target.getWriteDate());
+        this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
     }
 }

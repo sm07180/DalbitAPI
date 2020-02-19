@@ -21,6 +21,7 @@
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardListVo" alias="P_FanboardListVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardReplyVo" alias="P_FanboardReplyVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_MemberShortCutVo" alias="P_MemberShortCutVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_NotificationVo" alias="P_NotificationVo" />
 	</typeAliases>
 
 </configuration>

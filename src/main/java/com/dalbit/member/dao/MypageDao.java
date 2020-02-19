@@ -2,6 +2,7 @@ package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.procedure.P_MemberShortCutVo;
+import com.dalbit.member.vo.procedure.P_NotificationVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,4 +23,5 @@ public interface MypageDao {
     List<P_MemberShortCutVo> callMemberShortCut(ProcedureVo procedureVo);
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
     ProcedureVo callMemberGiftRuby(ProcedureVo procedureVo);
+    List<P_NotificationVo> callMemberNotification(ProcedureVo procedureVo);
 }

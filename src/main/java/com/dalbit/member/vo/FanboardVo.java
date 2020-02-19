@@ -27,7 +27,6 @@ public class FanboardVo {
     private long writeTs;
 
     public FanboardVo(P_FanboardListVo target) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
         this.boardIdx = target.getBoard_idx();
         this.boardNo = target.getBoard_no();
         this.writerNo = target.getWriter_mem_no();
@@ -36,8 +35,8 @@ public class FanboardVo {
         this.contents = target.getContents();
         this.replyCnt = target.getReplyCnt();
         this.status = target.getStatus();
-        this.writeDt = format.format(target.getWriteDate());
-        this.writeTs = target.getWriteDate().getTime() / 1000;
+        this.writeDt = DalbitUtil.getUTCFormat(target.getWriteDate());
+        this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
     }
 
 }

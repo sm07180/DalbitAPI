@@ -399,6 +399,12 @@ public enum Status {
     방송방회원정보조회_대상회원_방에없음("-3", "broadcast.room.member.info.join.no", "대상 회원이 방에 없을 시"),
     방송방회원정보조회_실패("C006", "broadcast.room.member.info.select.fail", "방송방 회원정보 조회 실패 시"),
 
+    //회원 알림 내용 조회
+    회원알림내용조회_성공("C001", "mypage.member.notification.select.success", "회원 알림내용 조회 성공 시"),
+    회원알림내용조회_알림없음("0", "mypage.member.notification.select.no", "알림 없을 시"),
+    회원알림내용조회_회원아님("-1", "mypage.member.notification.select.not.member", "회원이 아닐 시"),
+    회원알림내용조회_실패("C006", "mypage.member.notification.select.fail", "회원 알림내용 조회 실패 시"),
+
 
     ;
 

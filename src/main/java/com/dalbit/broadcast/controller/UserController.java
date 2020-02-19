@@ -198,7 +198,7 @@ public class UserController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.게스트초대, data)));
+        return new Gson().toJson(new JsonOutputVo(Status.게스트초대, data));
     }
 
     /**
@@ -209,7 +209,7 @@ public class UserController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.삭제, data)));
+        return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
     }
 
     /**
@@ -220,7 +220,7 @@ public class UserController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.게스트초대수락, data)));
+        return new Gson().toJson(new JsonOutputVo(Status.게스트초대수락, data));
     }
 
     /**
@@ -231,7 +231,7 @@ public class UserController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.게스트신청, data)));
+        return new Gson().toJson(new JsonOutputVo(Status.게스트신청, data));
     }
 
     /**
@@ -242,7 +242,7 @@ public class UserController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.삭제, data)));
+        return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
     }
 
     /**
@@ -253,7 +253,7 @@ public class UserController {
 
         HashMap data = new HashMap();
 
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.삭제, data)));
+        return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
     }
 
 
@@ -261,26 +261,26 @@ public class UserController {
     @Profile({"local", "dev"})
     @GetMapping("devBroad/bj")
     public String getDevBjRoom(HttpServletRequest request){
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.getDevBjRoom(MemberVo.getMyMemNo()))));
+        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevBjRoom(MemberVo.getMyMemNo())));
     }
 
     @Profile({"local", "dev"})
     @GetMapping("devBroad/join")
     public String getDevJoinRoom(HttpServletRequest request){
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo()))));
+        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo())));
     }
 
 
     @Profile({"local", "dev"})
     @GetMapping("devBroad/disconnect")
     public String selectDisconnectRoom(HttpServletRequest request){
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회, userService.selectDisconnectRoom(MemberVo.getMyMemNo()))));
+        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.selectDisconnectRoom(MemberVo.getMyMemNo())));
     }
 
     @Profile({"local", "dev"})
     @PostMapping("devBroad/normal")
     public String updateNormalRoom(HttpServletRequest request){
         userService.updateNormalRoom(request.getParameter("roomNo"));
-        return new Gson().toJson(messageUtil.setJsonOutputVo(new JsonOutputVo(Status.조회)));
+        return new Gson().toJson(new JsonOutputVo(Status.조회));
     }
 }
