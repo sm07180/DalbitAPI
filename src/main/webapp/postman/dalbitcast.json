@@ -1251,7 +1251,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 회원 방송방 빠른말 저장하기_2020.01.23",
+									"name": "[완료] 회원 방송방 빠른말 저장하기_2020.02.19",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -1275,18 +1275,27 @@
 											"mode": "urlencoded",
 											"urlencoded": [
 												{
-													"key": "data",
-													"value": "{\"order\": \"인사\", \"text\": \"안녕하세요1\", \"isOn\": \"true\"}",
+													"key": "orderNo",
+													"value": "1",
+													"description": "* 명령어 순서번호",
 													"type": "text"
 												},
 												{
-													"key": "data",
-													"value": "{\"order\": \"박수\", \"text\": \"짝~짝~짝~1\", \"isOn\": \"true\"}",
+													"key": "order",
+													"value": "인사",
+													"description": "* 명령어 이름",
 													"type": "text"
 												},
 												{
-													"key": "data",
-													"value": "{\"order\": \"감사\", \"text\": \"땡큐~~~12\", \"isOn\": \"true\"}",
+													"key": "text",
+													"value": "안녕하세요!",
+													"description": "* 출력 글",
+													"type": "text"
+												},
+												{
+													"key": "isOn",
+													"value": "1",
+													"description": "사용여부",
 													"type": "text"
 												}
 											]
