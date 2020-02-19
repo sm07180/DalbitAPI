@@ -37,6 +37,7 @@ public class ActionController {
     @Value("${server.img.url}")
     private String IMG_URL;
 
+
     /**
      * 방송방 좋아요 추가
      */
@@ -73,6 +74,7 @@ public class ActionController {
         return result;
     }
 
+
     /**
      * 방송방 선물하기
      */
@@ -92,6 +94,7 @@ public class ActionController {
 
         return result;
     }
+
 
     /**
      * 부스터 사용하기

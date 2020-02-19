@@ -47,6 +47,7 @@ public class ProfileController {
         return result;
     }
 
+
     /**
      * 회원 팬보드 등록하기
      */
@@ -67,6 +68,7 @@ public class ProfileController {
 
         return result;
     }
+
 
     /**
      * 회원 팬보드 목록조회
@@ -91,6 +93,7 @@ public class ProfileController {
         return result;
     }
 
+
     /**
      * 회원 팬보드 삭제하기
      */
@@ -108,6 +111,7 @@ public class ProfileController {
         String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
         return result;
     }
+
 
     /**
      * 회원 팬보드 대댓글 조회하기

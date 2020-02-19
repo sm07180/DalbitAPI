@@ -8,10 +8,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
-import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
-import com.dalbit.member.vo.procedure.P_JoinVo;
-import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
+import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -134,10 +131,15 @@ public class MemberService {
         securityContext.setAuthentication(authentication);
     }
 
+
+    /**
+     * 세션 업데이트
+     */
     public void callMemberSessionUpdate(P_MemberSessionUpdateVo pMemberSessionUpdateVo){
         ProcedureVo procedureVo = new ProcedureVo(pMemberSessionUpdateVo);
         memberDao.callMemberSessionUpdate(procedureVo);
 
         log.debug("세션 업데이트 결과: {}", procedureVo.toString());
     }
+
 }

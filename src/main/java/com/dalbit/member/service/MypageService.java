@@ -45,6 +45,7 @@ public class MypageService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
+
     /**
      * 프로필 편집
      */
@@ -84,6 +85,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 팬가입
      */
@@ -106,6 +108,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 팬해제
      */
@@ -127,6 +130,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 회원 방송방 기본설정 조회하기
@@ -151,6 +155,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 회원 정보 조회
@@ -181,6 +186,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 회원 방송방 기본설정 수정하기
      */
@@ -198,6 +204,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 회원 신고
@@ -221,6 +228,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 회원 차단하기
      */
@@ -243,6 +251,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 회원 차단 해제
      */
@@ -264,6 +273,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 회원 알림설정 조회하기
@@ -294,6 +304,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 회원 알림설정 수정하기
      */
@@ -311,6 +322,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 회원 방송방 빠른말 가져오기
@@ -337,6 +349,7 @@ public class MypageService {
         return result;
     }
 
+
     /**
      * 회원 방송방 빠른말 수정하기
      */
@@ -354,6 +367,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 회원 루비선물하기
@@ -379,6 +393,7 @@ public class MypageService {
 
         return result;
     }
+
 
     /**
      * 회원 알림 내용 조회
