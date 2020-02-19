@@ -147,7 +147,7 @@ public class SampleVoTest {
 
         private TestRestTemplate restTemplate;
 
-   /*     @TestVo
+   /*     @Test
         public void 태그_치환() {
             String content = "<li>content</li>";
             String expected = "&lt;li&gt;content&lt;/li&gt;";
@@ -178,7 +178,7 @@ public class SampleVoTest {
             assertThat(response.getBody()).isEqualTo(content);
         }
 
-        /*@TestVo
+        /*@Test
         public void LocalDate가_치환된다() throws Exception {
             String content = "<li>content</li>";
             String expected = "&lt;li&gt;content&lt;/li&gt;";
@@ -247,18 +247,14 @@ public class SampleVoTest {
         log.debug((int)Math.log10(number)+1+"");
     }
 
-    @Test
-    public void 비밀번호패턴체크(){
+    @Test void 비밀번호패턴체크(){
         String pw = "12515asd";
         Boolean isPassword = DalbitUtil.isPasswordCheck(pw);
         log.info("패턴체크: {}", isPassword);
     }
 
-    @Test
-    public void 던던(){
-        String done = "1800.0";
-        done.split(".");
-        log.info(done);
+    @Test void serverip(){
+        DalbitUtil.setTimestampInJsonOutputVo();
     }
 
 }

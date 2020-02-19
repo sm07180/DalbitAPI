@@ -19,38 +19,38 @@ public class JsonOutputVo {
 
     public JsonOutputVo(Status status){
         setStatus(status);
-        setTimestamp(DalbitUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
     public JsonOutputVo(Status status, Object data){
         setStatus(status);
         setData(data);
-        setTimestamp(DalbitUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
     public JsonOutputVo(Status status, Object data, ArrayList validationMessageDetail){
         setStatus(status);
         setData(data);
-        setTimestamp(DalbitUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
 
         setValidationMessageDetail(validationMessageDetail);
     }
 
     public JsonOutputVo(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
-        setTimestamp(DalbitUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
     public JsonOutputVo(ErrorStatus errorStatus, Object data){
         setErrorStatus(errorStatus);
         setData(data);
-        setTimestamp(DalbitUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
     public JsonOutputVo(ErrorStatus errorStatus, Object data, ArrayList validationMessageDetail){
         setErrorStatus(errorStatus);
         setData(data);
-        setTimestamp(DalbitUtil.getTimeStamp());
+        setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
 
         setValidationMessageDetail(validationMessageDetail);
     }

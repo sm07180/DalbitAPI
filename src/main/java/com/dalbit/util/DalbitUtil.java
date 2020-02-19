@@ -20,6 +20,7 @@ import org.springframework.validation.FieldError;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -506,6 +507,28 @@ public class DalbitUtil {
             }
         }
         return clientIp;
+    }
+
+    public static String getServerIp(){
+        try {
+            InetAddress ip = InetAddress.getLocalHost();
+            log.debug("ip : {}", ip);
+            return ip.getHostAddress();
+        }catch (Exception e){
+            return "";
+        }
+    }
+
+    public static String setTimestampInJsonOutputVo(){
+        StringBuffer sb = new StringBuffer();
+        sb.append(getTimeStamp());
+
+        String serverIp = getServerIp();
+        if(!isEmpty(serverIp)){
+            sb.append("_");
+            sb.append(serverIp.substring(serverIp.lastIndexOf(".")+1));
+        }
+        return sb.toString();
     }
 
     /**
