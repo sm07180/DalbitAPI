@@ -16,15 +16,6 @@
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.log</fileNamePattern>
-            <!-- 이전 설정 -->
-            <!--<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>100MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>30</maxHistory>-->
-        </rollingPolicy>
     </appender>
 
     <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
@@ -35,16 +26,6 @@
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.log</fileNamePattern>
-
-            <!--이전설정-->
-            <!--<fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>5MB</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
-            <maxHistory>30</maxHistory>-->
-        </rollingPolicy>
     </appender>
 
     <root level="INFO">
@@ -58,6 +39,7 @@
 
     <logger name="com.dalbit" additivity="false" level="DEBUG">
         <appender-ref ref="FILE" />
+        <appender-ref ref="ERROR_FILE" />
     </logger>
 
     <logger name="jdbc" level="OFF" />
@@ -73,6 +55,7 @@
 
     <root level="DEBUG">
         <appender-ref ref="FILE"/>
+        <appender-ref ref="ERROR_FILE" />
     </root>
 
 </configuration>
