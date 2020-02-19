@@ -1,13 +1,11 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.broadcast.vo.request.GiftVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
-import com.dalbit.sample.vo.TestVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
@@ -21,9 +19,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -250,14 +245,11 @@ public class MypageController {
      */
     @Description("TODO (2020.02.12) - 프로시저가 변경 되면 맞춰서 VO validation 체크 추가 예정")
     @PostMapping("/shortcut")
-    public String memberShortCutEdit(TestVo testVo, HttpServletRequest request){
+    public String memberShortCutEdit(HttpServletRequest request){
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         request.getParameterMap();
-        String[] data = request.getParameterValues("data[][]");
-        /*BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
-        bufferedReader.readLine();
-        bufferedReader.read();*/
+        String[] data = request.getParameterValues("data");
         if(data != null && data.length > 0){
             for(int i = 0; i < data.length; i++){
                 HashMap<String, String> d = new Gson().fromJson(data[i], HashMap.class);
