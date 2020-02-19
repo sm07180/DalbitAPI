@@ -36,7 +36,6 @@ public class MypageController {
     MypageService mypageService;
     @Autowired
     ProfileService profileService;
-
     @Autowired
     JwtUtil jwtUtil;
 
@@ -243,33 +242,19 @@ public class MypageController {
     /**
      * 회원 방송방 빠른말 수정하기
      */
-    @Description("TODO (2020.02.12) - 프로시저가 변경 되면 맞춰서 VO validation 체크 추가 예정")
     @PostMapping("/shortcut")
-    public String memberShortCutEdit(HttpServletRequest request){
+    public String memberShortCutEdit(@Valid ShortCutEditVo shortCutEditVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        String isOn = (shortCutEditVo.getIsOn().toUpperCase().equals("1") || shortCutEditVo.getIsOn().toUpperCase().equals("TRUE")) ? "on" : "off";
+
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
-        request.getParameterMap();
-        String[] data = request.getParameterValues("data");
-        if(data != null && data.length > 0){
-            for(int i = 0; i < data.length; i++){
-                HashMap<String, String> d = new Gson().fromJson(data[i], HashMap.class);
-                if(!DalbitUtil.isEmpty(d.get("order")) && !DalbitUtil.isEmpty(d.get("text")) && !DalbitUtil.isEmpty(d.get("isOn"))){
-                    if(i == 0){
-                        apiData.setOrder_1(d.get("order"));
-                        apiData.setText_1(d.get("text"));
-                        apiData.setOnOff_1(d.get("isOn").toUpperCase().equals("1") || d.get("isOn").toUpperCase().equals("TRUE") ? "on" : "off");
-                    }else if(i == 1){
-                        apiData.setOrder_2(d.get("order"));
-                        apiData.setText_2(d.get("text"));
-                        apiData.setOnOff_2(d.get("isOn").toUpperCase().equals("1") || d.get("isOn").toUpperCase().equals("TRUE") ? "on" : "off");
-                    }else if(i == 2) {
-                        apiData.setOrder_3(d.get("order"));
-                        apiData.setText_3(d.get("text"));
-                        apiData.setOnOff_3(d.get("isOn").toUpperCase().equals("1") || d.get("isOn").toUpperCase().equals("TRUE") ? "on" : "off");
-                    }
-                }
-            }
-        }
+        apiData.setOrderNo(shortCutEditVo.getOrderNo());
+        apiData.setOrder(shortCutEditVo.getOrder());
+        apiData.setText(shortCutEditVo.getText());
+        apiData.setOnOff(isOn);
 
         String result = mypageService.callMemberShortCutEdit(apiData);
         return result;

@@ -9,13 +9,9 @@ public class P_MemberShortCutEditVo {
 
     private String mem_no;
 
-    private String order_1;                       //첫번째 명령
-    private String text_1;                        //첫번째 내용
-    private String onOff_1;                       //첫번째 사용여부 (on/off)
-    private String order_2;                       //두번째 명령
-    private String text_2;                        //두번째 내용
-    private String onOff_2;                       //두번째 사용여부 (on/off)
-    private String order_3;                       //세번째 명령
-    private String text_3;                        //세번째 내용
-    private String onOff_3;                       //세번째 사용여부 (on/off)
+    private int orderNo;                        //명령어 순번
+    private String order;                       //명령어
+    private String text;                        //내용
+    private String onOff;                       //사용여부 (on/off)
+
 }
