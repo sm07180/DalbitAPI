@@ -20,6 +20,7 @@ import org.springframework.validation.FieldError;
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -683,5 +684,19 @@ public class DalbitUtil {
 
     public static boolean profileCheck(String serverName){
         return getActiceProfile().equals(serverName);
+    }
+
+    public static String getAuthToken(HttpServletRequest request, String name){
+        String authToken = request.getHeader(name);
+        if(isEmpty(authToken)){
+            CookieUtil cookieUtil = new CookieUtil(request);
+            if (cookieUtil.exists(name)) {
+                try{
+                    authToken = cookieUtil.getValue(name);
+                }catch(IOException e){}
+            }
+        }
+
+        return authToken == null ? "" : authToken.trim();
     }
 }
