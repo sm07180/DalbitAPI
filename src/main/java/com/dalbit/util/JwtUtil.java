@@ -33,13 +33,10 @@ public class JwtUtil {
      * 이름으로 Jwt Token을 생성한다.
      */
     public String generateToken(String name) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.MONTH, 1);
-
         return Jwts.builder()
                 .setId(name)
                 .setIssuedAt(new Date(System.currentTimeMillis())) // 토큰 발행일자
-                .setExpiration(calendar.getTime()) // 유효시간 설정
+                .setExpiration(new Date(System.currentTimeMillis() + 2592000000L)) // 유효시간 설정 (30일 기준)
                 .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY) // 암호화 알고리즘, secret값 세팅
                 .compact();
     }

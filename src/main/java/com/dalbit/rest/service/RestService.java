@@ -2,6 +2,7 @@ package com.dalbit.rest.service;
 
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -119,9 +121,23 @@ public class RestService {
             }
         }
 
-        log.debug(result);
-        return new Gson().fromJson(result, Map.class);
-        //return result;
+        log.debug("callRest 결과 : {}", result);
+
+        try {
+
+            return new Gson().fromJson(result, Map.class);
+
+        }catch (Exception e){
+            ArrayList messageList = new ArrayList<String>();
+            messageList.add("회원번호 : "+ MemberVo.getMyMemNo());
+            messageList.add("server_url : "+ server_url);
+            messageList.add("url_path : "+ url_path);
+            messageList.add("params : "+ params);
+            messageList.add("method : "+ method);
+            messageList.add("result : "+ result);
+
+            throw new GlobalException(ErrorStatus.호출에러, messageList);
+        }
     }
 
     /**
@@ -154,6 +170,12 @@ public class RestService {
             if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
                 String stream_id = params.substring(3, params.indexOf("&"));
                 deleteAntRoom(stream_id);
+
+                log.error("방송 생성 후 publish token 생성시 오류 일때 방송방 삭제");
+                log.error("회원번호 : {}", MemberVo.getMyMemNo());
+                log.error("server_url : {}", server_url);
+                log.error("url_path : {}", url_path);
+                log.error("params : {}", params);
             }
             throw new GlobalException(ErrorStatus.호출에러);
         }
