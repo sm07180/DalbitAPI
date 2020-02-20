@@ -19,6 +19,7 @@ import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
+import java.util.Date;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -254,7 +255,12 @@ public class SampleVoTest {
     }
 
     @Test void serverip(){
-        DalbitUtil.setTimestampInJsonOutputVo();
+        Date startDate = new Date(System.currentTimeMillis());
+        Date endDate = new Date(System.currentTimeMillis() + 2592000000L);
+
+        endDate.before(startDate);
+
+
     }
 
 }

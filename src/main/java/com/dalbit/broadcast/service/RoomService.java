@@ -47,7 +47,7 @@ public class RoomService {
     /**
      * 방송방 생성
      */
-    public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo) {
+    public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo) throws GlobalException{
         String bgImg = pRoomCreateVo.getBackgroundImage();
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
@@ -108,12 +108,8 @@ public class RoomService {
             procedureVo.setData(returnMap);
 
             if(isDone){
-                try{
-                    restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
-                }catch (GlobalException e){
-                    //TODO 이미지 서버 오류 시 처리
-                    e.printStackTrace();
-                }
+                //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+                restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송생성, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
@@ -261,7 +257,7 @@ public class RoomService {
     /**
      * 방송방 정보 수정
      */
-    public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) {
+    public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) throws GlobalException {
         Boolean isDone = false;
         if(pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
             isDone = true;
@@ -282,12 +278,8 @@ public class RoomService {
                 if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                     delImg = null;
                 }
-                try{
-                    restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
-                }catch (GlobalException e){
-                    //TODO 이미지 서버 오류 시 처리
-                    e.printStackTrace();
-                }
+                //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+                restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
