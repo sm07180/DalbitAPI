@@ -10,20 +10,24 @@
 
 	<typeAliases>
 		<typeAlias type="com.dalbit.sample.vo.SampleVo" alias="SampleVo" />
+
 		<typeAlias type="com.dalbit.common.vo.ProcedureVo" alias="ProcedureVo" />
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
+
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomListVo" alias="P_RoomListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo" alias="P_RoomInfoViewVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo" alias="P_RoomMemberListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo" alias="P_RoomShareLinkVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomStoryListVo" alias="P_RoomStoryListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomGiftHistoryVo" alias="P_RoomGiftHistoryVo" />
+
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardListVo" alias="P_FanboardListVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanboardReplyVo" alias="P_FanboardReplyVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_MemberShortCutVo" alias="P_MemberShortCutVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_NotificationVo" alias="P_NotificationVo" />
-		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
 
+		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
+		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />
 	</typeAliases>
 
 </configuration>

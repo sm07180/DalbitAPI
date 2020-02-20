@@ -6,7 +6,9 @@ import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.search.dao.SearchDao;
-import com.dalbit.search.vo.SearchMemberOutVo;
+import com.dalbit.search.vo.MemberSearchOutVo;
+import com.dalbit.search.vo.RoomSearchOutVo;
+import com.dalbit.search.vo.procedure.P_LiveRoomSearchVo;
 import com.dalbit.search.vo.procedure.P_MemberSearchVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -28,6 +30,7 @@ public class SearchService {
     @Autowired
     GsonUtil gsonUtil;
 
+
     /**
      * 회원 닉네임 검색
      */
@@ -39,9 +42,9 @@ public class SearchService {
         if(DalbitUtil.isEmpty(memberSearchVoList)){
             procedureOutputVo = null;
         }else{
-            List<SearchMemberOutVo> outVoList = new ArrayList<>();
+            List<MemberSearchOutVo> outVoList = new ArrayList<>();
             for (int i=0; i<memberSearchVoList.size(); i++){
-                outVoList.add(new SearchMemberOutVo(memberSearchVoList.get(i)));
+                outVoList.add(new MemberSearchOutVo(memberSearchVoList.get(i)));
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
@@ -60,6 +63,40 @@ public class SearchService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_실패));
         }
         return result;
+    }
 
+
+    /**
+     * 라이브 방송 검색
+     */
+    public String callLiveRoomSearch(P_LiveRoomSearchVo pLiveRoomSearchVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pLiveRoomSearchVo);
+        List<P_LiveRoomSearchVo> liveRoomSearchVoList = searchDao.callLiveRoomSearch(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(liveRoomSearchVoList)){
+            procedureOutputVo = null;
+        }else{
+            List<RoomSearchOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<liveRoomSearchVoList.size(); i++){
+                outVoList.add(new RoomSearchOutVo(liveRoomSearchVoList.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap roomSearchList = new HashMap();
+        roomSearchList.put("list", procedureOutputVo.getOutputBox());
+        roomSearchList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_성공, roomSearchList));
+        } else if (procedureVo.getRet().equals(Status.라이브방송검색_결과없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_결과없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_실패));
+        }
+        return result;
     }
 }

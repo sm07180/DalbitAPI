@@ -410,6 +410,10 @@ public enum Status {
     회원닉네임검색_결과없음("0", "member.nick.search.no", "결과 없을 시"),
     회원닉네임검색_실패("C006", "member.nick.search.fail", "회원 닉네임 검색 실패 시"),
 
+    //라이브 방송 검색
+    라이브방송검색_성공("C001", "live.broadcast.search.success", "라이브 방송 검색 성공 시"),
+    라이브방송검색_결과없음("0", "live.broadcast.search.no", "결과 없을 시"),
+    라이브방송검색_실패("C006", "live.broadcast.search.fail", "라이브 방송 검색 실패 시"),
 
     ;
 

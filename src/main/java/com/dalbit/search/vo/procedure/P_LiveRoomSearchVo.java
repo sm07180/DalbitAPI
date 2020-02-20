@@ -7,10 +7,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class P_MemberSearchVo {
+public class P_LiveRoomSearchVo {
 
-    public P_MemberSearchVo(){}
-    public P_MemberSearchVo(SearchVo searchVo){
+    public P_LiveRoomSearchVo(){}
+    public P_LiveRoomSearchVo(SearchVo searchVo){
         int pageNo = DalbitUtil.isEmpty(searchVo.getPage()) ? 1 : searchVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(searchVo.getRecords()) ? 10 : searchVo.getRecords();
 
@@ -27,10 +27,16 @@ public class P_MemberSearchVo {
     private int pageCnt;
 
     /* Output */
+    private String room_no;
+    private String title;
+    private int count_entry;
+    private int count_good;
+    private int badge_recomm;
+    private int badge_popular;
+    private int badge_newdj;
     private String mem_nick;
     private String mem_id;
     private String mem_sex;
     private String image_profile;
-    private String room_no;
 
 }

@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 public class SearchVo {
 
     @NotBlank @Size(min = 2)
-    private String searchText;
+    private String search;
     private Integer page;
     private Integer records;
 }
