@@ -294,7 +294,7 @@ public class RoomController {
     /**
      * 방송방 상태 변경
      */
-    @PostMapping("state")
+    @PostMapping("/state")
     public String roomStateUpdate(@Valid StateVo stateVo, BindingResult bindingResult) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);

@@ -415,6 +415,16 @@ public enum Status {
     라이브방송검색_결과없음("0", "live.broadcast.search.no", "결과 없을 시"),
     라이브방송검색_실패("C006", "live.broadcast.search.fail", "라이브 방송 검색 실패 시"),
 
+    //방송방 상태 변경
+    방송방상태변경_성공("0", "broadcast.room.state.update.success", "방송방 상태 변경 성공 시"),
+    방송방상태변경_회원아님("-1", "broadcast.room.state.update.member.error", "요청회원이 정상회원 아닐 시"),
+    방송방상태변경_해당방이없음("-2", "broadcast.room.state.update.no.room", "해당 방 없을 시"),
+    방송방상태변경_방이종료되었음("-3", "broadcast.room.state.update.end.room", "방이 종료되었을 시"),
+    방송방상태변경_요청회원_방소속아님("-4", "broadcast.room.state.update.join.not.member", "요청 회원이 방 소속 아닐 시"),
+    방송방상태변경_요청회원_방장아님("-5", "broadcast.room.state.update.not.bj", "요청 회원이 방장 아닐 시"),
+    방송방상태변경_실패("C006", "broadcast.room.state.update.fail", "방송방 상태 변경 실패 시"),
+
+
     ;
 
     final private String RESULT_SUCCESS = "success";

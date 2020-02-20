@@ -50,4 +50,9 @@
     <select id="callBroadcastRoomTokenUpdate" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_broadcast_room_token_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callBroadCastRoomStateUpate" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_state_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>
