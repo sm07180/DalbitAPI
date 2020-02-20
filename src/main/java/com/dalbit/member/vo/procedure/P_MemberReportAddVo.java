@@ -9,7 +9,7 @@ public class P_MemberReportAddVo {
 
     private String mem_no;
     private String reported_mem_no;                           //신고회원번호
-    private int reason;                                       //신고사유
+    private Integer reason;                                       //신고사유
     private String etc;                                       //상세내용
 
 }
