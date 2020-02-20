@@ -219,7 +219,7 @@ public class RestService {
         delImg = StringUtils.defaultIfEmpty(delImg, "").trim();
         String params = "tempFileURI=" + tempImg;
         if(!"".equals(delImg)){
-            params = "&deleteFileURI=" + delImg;
+            params += "&deleteFileURI=" + delImg;
         }
 
         return callRest(photoServer, "/done", params, 1);
