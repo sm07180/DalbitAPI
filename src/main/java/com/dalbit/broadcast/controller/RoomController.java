@@ -14,6 +14,7 @@ import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,7 @@ import java.util.HashMap;
 @Slf4j
 @RestController
 @RequestMapping("/broad")
+@Scope("prototype")
 public class RoomController {
 
     @Autowired
