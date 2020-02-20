@@ -43,6 +43,7 @@ public class RoomService {
     @Autowired
     CommonService commonService;
 
+
     /**
      * 방송방 생성
      */
@@ -126,6 +127,7 @@ public class RoomService {
         }
         return result;
     }
+
 
     /**
      * 방송방 참여하기
@@ -216,6 +218,7 @@ public class RoomService {
         return result;
     }
 
+
     /**
      * 방송방 나가기
      */
@@ -253,6 +256,7 @@ public class RoomService {
         }
         return result;
     }
+
 
     /**
      * 방송방 정보 수정
@@ -299,6 +303,7 @@ public class RoomService {
         return result;
     }
 
+
     /**
      * 방송방 리스트
      */
@@ -343,6 +348,7 @@ public class RoomService {
         return result;
     }
 
+
     /**
      * 방송 정보조회
      */
@@ -362,6 +368,7 @@ public class RoomService {
         }
         return result;
     }
+
 
     /**
      * 방송 정보조회(방송방 생성,참여 후)
@@ -385,6 +392,7 @@ public class RoomService {
         return procedureOutputVo;
     }
 
+
     /**
      * 방송중인 DJ 체크
      */
@@ -393,6 +401,7 @@ public class RoomService {
         roomDao.callMemberBroadcastingCheck(procedureVo);
         return procedureVo;
     }
+
 
     /**
      * 방송방 현재 순위, 아이템 사용 현황 조회
@@ -425,6 +434,7 @@ public class RoomService {
 
         return result;
     }
+
 
     /**
      * 방송방 선물받은 내역보기
@@ -468,6 +478,7 @@ public class RoomService {
         return result;
 
     }
+
 
     /**
      * 방송방 회원정보 조회
@@ -518,6 +529,7 @@ public class RoomService {
 
         return result;
     }
+
 
     /**
      * 방송방 토큰 재생성

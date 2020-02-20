@@ -11,10 +11,7 @@ import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.TokenVo;
-import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
-import com.dalbit.member.vo.procedure.P_JoinVo;
-import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
+import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ChangePwVo;
 import com.dalbit.member.vo.request.NickNmDupleCheckVo;
 import com.dalbit.member.vo.request.SignUpVo;
@@ -189,7 +186,6 @@ public class MemberController {
     }
 
 
-
     /**
      * 비밀번호 변경
      */
@@ -207,6 +203,7 @@ public class MemberController {
 
         return result;
     }
+
 
     /**
      * ID 리스트 가져오기 (임시 테스트용)

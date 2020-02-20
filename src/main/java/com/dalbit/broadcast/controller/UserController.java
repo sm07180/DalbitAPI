@@ -40,6 +40,7 @@ public class UserController {
     @Autowired
     ProfileService profileService;
 
+
     /**
      * 방송방 참여자 리스트
      */
@@ -61,6 +62,7 @@ public class UserController {
 
         return result;
     }
+
 
     /**
      * 게스트 지정하기
@@ -128,6 +130,7 @@ public class UserController {
         return  result;
     }
 
+
     /**
      * 방송방 강퇴하기
      */
@@ -146,6 +149,7 @@ public class UserController {
         return result;
     }
 
+
     /**
      * 개인 정보 조회(방송생성, 참여 시)
      */
@@ -157,6 +161,7 @@ public class UserController {
 
         return result;
     }
+
 
     /**
      * 매니저지정
@@ -171,6 +176,7 @@ public class UserController {
 
         return result;
     }
+
 
     /**
      * 매니저취소

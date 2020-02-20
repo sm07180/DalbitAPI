@@ -33,6 +33,7 @@ public class ActionService {
     @Autowired
     CommonService commonService;
 
+
     /**
      * 방송방 좋아요 추가
      */
@@ -68,6 +69,7 @@ public class ActionService {
 
         return result;
     }
+
 
     /**
      * 방송방 공유링크 확인
@@ -115,6 +117,7 @@ public class ActionService {
 
         return result;
     }
+
 
     /**
      * 방송방 선물하기
@@ -164,6 +167,7 @@ public class ActionService {
 
         return result;
     }
+
 
     /**
      * 부스터 사용하기

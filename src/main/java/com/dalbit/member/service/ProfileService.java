@@ -49,6 +49,7 @@ public class ProfileService {
         return procedureVo;
     }
 
+
     /**
      * 정보 조회
      */
@@ -71,6 +72,7 @@ public class ProfileService {
         }
         return result;
     }
+
 
     /**
      * 팬보드 등록하기
@@ -99,6 +101,7 @@ public class ProfileService {
 
         return result;
     }
+
 
     /**
      * 팬보드 목록조회

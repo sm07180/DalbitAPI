@@ -38,6 +38,7 @@ public class RoomController {
     @Autowired
     RestService restService;
 
+
     /**
      * 방송방 생성
      */
@@ -79,6 +80,7 @@ public class RoomController {
         return result;
     }
 
+
     /**
      * 방송방 참여하기
      */
@@ -113,6 +115,7 @@ public class RoomController {
         return result;
     }
 
+
     /**
      * 방송방 나가기 (종료)
      */
@@ -131,6 +134,7 @@ public class RoomController {
         return result;
     }
 
+
     /**
      * 임의 삭제
      */
@@ -147,6 +151,7 @@ public class RoomController {
 
         return result;
     }
+
 
     /**
      * 방송 정보수정
@@ -180,6 +185,7 @@ public class RoomController {
 
         return result;
     }
+
 
     /**
      * 방송방 리스트
@@ -224,6 +230,7 @@ public class RoomController {
 
     }
 
+
     /**
      * 방송방 현재 순위, 아이템 사용 현황 조회
      */
@@ -241,6 +248,7 @@ public class RoomController {
         return result;
     }
 
+
     /**
      * 방송방 선물받은 내역보기
      */
@@ -254,6 +262,7 @@ public class RoomController {
 
         return result;
     }
+
 
     /**
      * 방송방 회원정보 조회

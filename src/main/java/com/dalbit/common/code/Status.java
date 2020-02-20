@@ -405,6 +405,11 @@ public enum Status {
     회원알림내용조회_회원아님("-1", "mypage.member.notification.select.not.member", "회원이 아닐 시"),
     회원알림내용조회_실패("C006", "mypage.member.notification.select.fail", "회원 알림내용 조회 실패 시"),
 
+    //회원 닉네임 검색
+    회원닉네임검색_성공("C001", "member.nick.search.success", "회원 닉네임 검색 성공 시"),
+    회원닉네임검색_결과없음("0", "member.nick.search.no", "결과 없을 시"),
+    회원닉네임검색_실패("C006", "member.nick.search.fail", "회원 닉네임 검색 실패 시"),
+
 
     ;
 

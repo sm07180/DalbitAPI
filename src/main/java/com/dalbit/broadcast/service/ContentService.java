@@ -35,6 +35,7 @@ public class ContentService {
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
 
+
     /**
      *  방송방 공지사항 조회
      */
@@ -93,6 +94,7 @@ public class ContentService {
         return result;
     }
 
+
     /**
      *  방송방 공지사항 삭제
      */
@@ -119,6 +121,7 @@ public class ContentService {
 
     }
 
+
     /**
      * 방송방 사연 등록
      */
@@ -137,7 +140,6 @@ public class ContentService {
         returnMap.put("passTime", passTime);
         procedureVo.setData(returnMap);
 
-
         String result;
         if(Status.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공));
@@ -155,6 +157,7 @@ public class ContentService {
 
         return result;
     }
+
 
     /**
      * 방송방 사연 조회
@@ -197,6 +200,7 @@ public class ContentService {
         }
         return result;
     }
+
 
     /**
      * 방송방 사연 삭제

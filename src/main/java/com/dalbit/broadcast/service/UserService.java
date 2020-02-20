@@ -36,6 +36,7 @@ public class UserService {
     @Autowired
     CommonService commonService;
 
+
     /**
      * 방송방 참여자 리스트
      */
@@ -77,6 +78,7 @@ public class UserService {
 
         return result;
     }
+
 
     /**
      * 방송방 게스트 지정하기
@@ -122,6 +124,7 @@ public class UserService {
         return result;
     }
 
+
     /**
      * 방송방 게스트 취소
      */
@@ -161,6 +164,7 @@ public class UserService {
         }
         return result;
     }
+
 
     /**
      * 방송방 강퇴하기
@@ -204,6 +208,7 @@ public class UserService {
         return result;
     }
 
+
     /**
      * 정보 조회(방송생성, 참여 시)
      */
@@ -236,6 +241,7 @@ public class UserService {
         }
         return result;
     }
+
 
     /**
      * 매니저지정
@@ -273,6 +279,7 @@ public class UserService {
         return result;
     }
 
+
     /**
      * 매니저취소
      */
@@ -306,6 +313,7 @@ public class UserService {
 
         return result;
     }
+
 
     /* ######################## Native 연동에서만 필요한 부분 ########################## */
     public List<DevRoomVo> getDevBjRoom(String memNo){

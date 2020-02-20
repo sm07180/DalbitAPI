@@ -49,9 +49,12 @@ public class MypageController {
         apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setTarget_mem_no(MemberVo.getMyMemNo());
+
         String result = mypageService.callMemberInfo(apiData);
+
         return result;
     }
+
 
     /**
      * 프로필편집
@@ -77,8 +80,10 @@ public class MypageController {
         apiData.setProfImgDel(profileEditVo.getProfImgDel());
 
         String result = mypageService.callProfileEdit(apiData);
+
         return result;
     }
+
 
     /**
      * 팬등록
@@ -91,10 +96,12 @@ public class MypageController {
         P_FanstarInsertVo apiData = new P_FanstarInsertVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo());
         apiData.setStar_mem_no(fanstartInsertVo.getMemNo());
+
         String result = mypageService.callFanstarInsert(apiData);
 
         return result;
     }
+
 
     /**
      * 팬해제
@@ -107,11 +114,11 @@ public class MypageController {
         P_FanstarDeleteVo apiData = new P_FanstarDeleteVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo());
         apiData.setStar_mem_no(fanstarDeleteVo.getMemNo());
+
         String result = mypageService.callFanstarDelete(apiData);
 
         return result;
     }
-
 
 
     /**
@@ -121,9 +128,12 @@ public class MypageController {
     public String broadBasic(){
         P_BroadBasicVo apiData = new P_BroadBasicVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
+
         String result = mypageService.callBroadBasic(apiData);
+
         return result;
     }
+
 
     /**
      * 회원 방송방 기본설정 수정하기
@@ -144,8 +154,10 @@ public class MypageController {
         apiData.setEntryType(broadBasicEditVo.getEntryType());
 
         String result = mypageService.callBroadBasicEdit(apiData);
+
         return result;
     }
+
 
     /**
      * 회원 신고하기
@@ -160,9 +172,12 @@ public class MypageController {
         apiData.setReported_mem_no(memberReportAddVo.getMemNo());
         apiData.setReason(memberReportAddVo.getReason());
         apiData.setEtc(memberReportAddVo.getCont());
+
         String result = mypageService.callMemberReportAdd(apiData);
+
         return result;
     }
+
 
     /**
      * 회원 차단하기
@@ -175,9 +190,12 @@ public class MypageController {
         P_MemberBlockAddVo apiData = new P_MemberBlockAddVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setBlocked_mem_no(memberBlockAddVo.getMemNo());
+
         String result = mypageService.callBlockAdd(apiData);
+
         return result;
     }
+
 
     /**
      * 회원 차단 해제하기
@@ -190,9 +208,12 @@ public class MypageController {
         P_MemberBlockDelVo apiData = new P_MemberBlockDelVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setBlocked_mem_no(memberBlockDelVo.getMemNo());
+
         String result = mypageService.callMemBerBlocklDel(apiData);
+
         return result;
     }
+
 
     /**
      * 회원 알림설정 조회하기
@@ -201,7 +222,9 @@ public class MypageController {
     public String memberNotify(){
         P_MemberNotifyVo apiData = new P_MemberNotifyVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
+
         String result = mypageService.callMemberNotify(apiData);
+
         return result;
     }
 
@@ -225,6 +248,7 @@ public class MypageController {
         apiData.setSet_6(memberNotifyEditVo.getIsEvent());
 
         String result = mypageService.callMemberNotifyEdit(apiData);
+
         return result;
     }
 
@@ -235,7 +259,9 @@ public class MypageController {
     public String memberShortCut(){
         P_MemberShortCutVo apiData = new P_MemberShortCutVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
+
         String result = mypageService.callMemberShortCut(apiData);
+
         return result;
     }
 
@@ -257,6 +283,7 @@ public class MypageController {
         apiData.setOnOff(isOn);
 
         String result = mypageService.callMemberShortCutEdit(apiData);
+
         return result;
     }
 
