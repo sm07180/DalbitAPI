@@ -543,19 +543,26 @@ public class RoomService {
             if(auth == 3){ // DJ
                 bjPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
                 if(!DalbitUtil.isEmpty(gstStreamId)){
-                    bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
-                    gstPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
-                    gstPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                    //bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                    //gstPubToken = (String)restService.antToken(gstStreamId, "publish").get("tokenId");
+                    gstPlayToken = (String)restService.antToken(gstStreamId, "play").get("tokenId");
                 }
             }else{
                 bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
                 if(!DalbitUtil.isEmpty(gstStreamId)){
-                    gstPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                    if(auth == 2) { //게스트
+                        gstPubToken = (String)restService.antToken(gstStreamId, "publish").get("tokenId");
+                    }else{
+                        gstPlayToken = (String)restService.antToken(gstStreamId, "play").get("tokenId");
+                    }
+                }
+                /*if(!DalbitUtil.isEmpty(gstStreamId)){
+                    gstPlayToken = (String)restService.antToken(gstStreamId, "play").get("tokenId");
                 }
                 if(auth == 2){ //게스트
                     bjPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
-                    gstPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
-                }
+                    gstPubToken = (String)restService.antToken(gstStreamId, "publish").get("tokenId");
+                }*/
             }
 
             P_RoomStreamTokenVo pRoomStreamTokenVo = new P_RoomStreamTokenVo();
