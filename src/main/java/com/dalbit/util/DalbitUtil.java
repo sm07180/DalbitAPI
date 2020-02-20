@@ -513,7 +513,6 @@ public class DalbitUtil {
     public static String getServerIp(){
         try {
             InetAddress ip = InetAddress.getLocalHost();
-            log.debug("ip : {}", ip);
             return ip.getHostAddress();
         }catch (Exception e){
             return "";
