@@ -65,7 +65,7 @@ public class MemberService {
         memberDao.callMemberJoin(procedureVo);
 
         if(isDone){
-            //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+            //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
             restService.imgDone(DalbitUtil.replaceDonePath(pLoginVo.getProfileImage()));
         }
 

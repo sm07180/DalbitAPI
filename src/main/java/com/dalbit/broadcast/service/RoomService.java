@@ -108,7 +108,7 @@ public class RoomService {
             procedureVo.setData(returnMap);
 
             if(isDone){
-                //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+                //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송생성, procedureVo.getData()));
@@ -271,6 +271,13 @@ public class RoomService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
+        HashMap returnMap = new HashMap();
+        returnMap.put("roomType", pRoomEditVo.getSubjectType());
+        returnMap.put("title", pRoomEditVo.getTitle());
+        returnMap.put("welcomMsg", pRoomEditVo.getWelcomMsg());
+        returnMap.put("bgImg", new ImageVo(pRoomEditVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
+        returnMap.put("bgImgRacy", pRoomEditVo.getBackgroundImageGrade());
+
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
             if(isDone){
@@ -278,10 +285,10 @@ public class RoomService {
                 if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                     delImg = null;
                 }
-                //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+                //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_회원아님));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_해당방에없는회원번호.getMessageCode())) {

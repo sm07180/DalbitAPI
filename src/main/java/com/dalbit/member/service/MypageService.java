@@ -67,7 +67,7 @@ public class MypageService {
         String result;
         if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
             if(isDone){
-                //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+                //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공));

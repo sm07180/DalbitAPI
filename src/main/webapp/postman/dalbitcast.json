@@ -338,7 +338,7 @@
 												},
 												{
 													"key": "nickNm",
-													"value": "radiogaga",
+													"value": "radiogaga12313",
 													"description": "* 닉네임",
 													"type": "text"
 												},
@@ -362,7 +362,7 @@
 												},
 												{
 													"key": "profImgDel",
-													"value": "profile_0/2020/01/03/profile.png",
+													"value": "",
 													"description": "삭제할 프로필 이미지 패스",
 													"type": "text"
 												},
@@ -1512,7 +1512,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTY0NTE4ODU0NUB0cnVlIiwiaWF0IjoxNTgxNjQ1MTkwLCJleHAiOjE1ODQxNTA3OTB9.d5A958mXUEbKZtqv4qL0Z8M4KJBi3KcBE6hxJs8LB2o",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
 												"type": "text"
 											},
 											{
@@ -1532,13 +1532,13 @@
 												},
 												{
 													"key": "title",
-													"value": "참여팬랭킹임시확인테스트방",
+													"value": "이미지수정테스트",
 													"description": "* 제목",
 													"type": "text"
 												},
 												{
 													"key": "bgImg",
-													"value": "/bg_1/20558678400/20200212171941908030.jpg",
+													"value": "/bg_1/20567664000/20200220125402436375.png",
 													"description": "백그라운드 이미지 경로 ( photo서버에서 받은 path경로만 입력)",
 													"type": "text"
 												},
@@ -1692,7 +1692,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg5NjM5NjY1NEBmYWxzZSIsImlhdCI6MTU4MDg5NjM5OCwiZXhwIjoxNTgzNDAxOTk4fQ.T-sRpRmADHIhOs7h4R8L6uoQ-VFu50fuC2w9p0Swjak",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
 												"type": "text"
 											},
 											{
@@ -1706,7 +1706,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91578888356181",
+													"value": "91582170942845",
 													"description": "* 방송방번호",
 													"type": "text"
 												},
@@ -1718,19 +1718,19 @@
 												},
 												{
 													"key": "title",
-													"value": "자유",
+													"value": "이미지수정되랏",
 													"description": "* 제목",
 													"type": "text"
 												},
 												{
 													"key": "bgImg",
-													"value": "/2020/01/10/15/asdas132213.jpg",
+													"value": "/bg_1/20567664000/20200220125754366166.jpg",
 													"description": "백그라운드 이미지 경로",
 													"type": "text"
 												},
 												{
 													"key": "bgImgRacy",
-													"value": "3",
+													"value": "5",
 													"description": "백그라운드 구글 선정성",
 													"type": "text"
 												},
@@ -1742,9 +1742,15 @@
 												},
 												{
 													"key": "bgImgDel",
-													"value": "/2020/01/10/15/asdas132213.jpg",
+													"value": "/bg_0/20567664000/20200220125402436375.png",
 													"description": "삭제할 백그라운드 이미지 경로",
 													"type": "text"
+												},
+												{
+													"key": "",
+													"value": "",
+													"type": "text",
+													"disabled": true
 												}
 											]
 										},
