@@ -211,11 +211,11 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.회원신고성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고성공, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고성공));
         }else if(procedureVo.getRet().equals(Status.회원신고_요청회원번호_정상아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고_요청회원번호_정상아님, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고_요청회원번호_정상아님));
         }else if(procedureVo.getRet().equals(Status.회원신고_신고회원번호_정상아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고_신고회원번호_정상아님, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고_신고회원번호_정상아님));
         }else if(procedureVo.getRet().equals(Status.회원신고_이미_신고상태.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원신고_이미_신고상태));
         }else{

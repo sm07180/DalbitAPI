@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.request;
 
+import com.sun.istack.internal.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,7 +12,7 @@ public class MemberReportAddVo {
 
     @NotBlank
     private String memNo;
-    @NotBlank
+    @NotNull
     private int reason;
     @NotBlank
     private String cont;

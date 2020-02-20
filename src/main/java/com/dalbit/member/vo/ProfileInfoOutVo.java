@@ -22,7 +22,6 @@ public class ProfileInfoOutVo extends BaseVo {
     private String  gender;
     private int     age;
     private String  memId;
-    private ImageVo bgImg;
     private ImageVo profImg;
     private String  profMsg;
     private int     level;
@@ -34,6 +33,9 @@ public class ProfileInfoOutVo extends BaseVo {
     private String  grade;
     private int     rubyCnt;
     private int     goldCnt;
+    private Boolean isRecomm;
+    private Boolean isPop;
+    private Boolean isNew;
     List fanRank;
 
     public ProfileInfoOutVo(){}
@@ -43,7 +45,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.gender = target.getMemSex();
         this.age = target.getAge();
         this.memId = target.getMemId();
-        this.bgImg = new ImageVo(target.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url"));
         this.profImg = new ImageVo(target.getProfileImage(), DalbitUtil.getProperty("server.photo.url"));
         this.profMsg = target.getProfileMsg();
         this.level = target.getLevel();
@@ -63,5 +64,8 @@ public class ProfileInfoOutVo extends BaseVo {
         }
         this.grade = target.getGrade();
         this.fanRank = fanRank;
+        this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
+        this.isPop = (target.getBadge_popular() == 1) ? true : false;
+        this.isNew = (target.getBadge_newdj() == 1 ? true : false);
     }
 }

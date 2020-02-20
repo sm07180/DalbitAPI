@@ -292,4 +292,19 @@ public class RoomController {
 
         return roomService.callBroadcastRoomStreamSelect(apiData);
     }
+
+    /**
+     * 방송방 상태 변경
+     */
+    @PostMapping("state")
+    public String roomStateUpdate(@Valid StateVo stateVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_RoomStateUpdateVo apiData = new P_RoomStateUpdateVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setRoom_no(stateVo.getRoomNo());
+        apiData.setState(stateVo.getState());
+
+        return roomService.callBroadCastRoomStateUpate(apiData);
+    }
 }

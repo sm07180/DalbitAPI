@@ -34,7 +34,6 @@ public class P_ProfileInfoVo {
     private String  memSex;                     //성별
     private int     age;                        //나이대
     private String  memId;                      //자동생성된아이디8자
-    private String  backgroundImage;            //배경이미지
     private String  profileImage;               //프로필이미지
     private String  profileMsg;                 //프로필메세지
     private int     level;                      //레벨
@@ -49,5 +48,8 @@ public class P_ProfileInfoVo {
     private String  fanRank1;                   //팬랭킹1위 정보
     private String  fanRank2;                   //팬랭킹2위 정보
     private String  fanRank3;                   //팬랭킹3위 정보
+    private int badge_recomm;                   //추천뱃지
+    private int badge_popular;                  //인기뱃지
+    private int badge_newdj;                    //신입뱃지
 
 }

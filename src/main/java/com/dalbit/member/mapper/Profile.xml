@@ -3,7 +3,7 @@
 <mapper namespace="com.dalbit.member.dao.ProfileDao" >
 
     <select id = "callMemberInfo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-        call sp_member_info_view(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+        call sp_member_mypage_info(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id = "callMemberFanboardAdd" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">

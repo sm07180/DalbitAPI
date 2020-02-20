@@ -31,7 +31,6 @@ public class MemberVo extends ProfileInfoOutVo {
         setGender(target.getGender());
         setAge(target.getAge());
         setMemId(target.getMemId());
-        setBgImg(target.getBgImg());
         setProfImg(target.getProfImg());
         setProfMsg(target.getProfMsg());
         setLevel(target.getLevel());

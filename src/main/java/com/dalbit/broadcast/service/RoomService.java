@@ -671,4 +671,35 @@ public class RoomService {
 
         return result;
     }
+
+    /**
+     * 방송방 상태 변경
+     */
+    public String callBroadCastRoomStateUpate(P_RoomStateUpdateVo pRoomStateUpdateVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
+        roomDao.callBroadCastRoomExit(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result="";
+        /*if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+        } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송방상태변경_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_해당방이없음));
+        } else if (procedureVo.getRet().equals(Status.방송방상태변경_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_방이종료되었음));
+        } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방소속아님));
+        } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방장아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방장아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_실패));
+        }*/
+
+        return result;
+    }
 }
