@@ -49,7 +49,7 @@ public class MypageService {
     /**
      * 프로필 편집
      */
-    public String callProfileEdit(P_ProfileEditVo pProfileEditVo) {
+    public String callProfileEdit(P_ProfileEditVo pProfileEditVo) throws GlobalException {
         Boolean isDone = false;
         String profImg = pProfileEditVo.getProfileImage();
         if(DalbitUtil.isEmpty(profImg)){
@@ -67,12 +67,8 @@ public class MypageService {
         String result;
         if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
             if(isDone){
-                try{
-                    restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
-                }catch (GlobalException e){
-                    //TODO 이미지 서버 오류 시 처리
-                    e.printStackTrace();
-                }
+                //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+                restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공));
         } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {

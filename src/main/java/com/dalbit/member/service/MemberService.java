@@ -53,7 +53,7 @@ public class MemberService {
     /**
      * 회원 가입
      */
-    public ProcedureVo signup(P_JoinVo pLoginVo) {
+    public ProcedureVo signup(P_JoinVo pLoginVo) throws GlobalException {
 
         String profImg = pLoginVo.getProfileImage();
         Boolean isDone = false;
@@ -65,12 +65,8 @@ public class MemberService {
         memberDao.callMemberJoin(procedureVo);
 
         if(isDone){
-            try{
-                restService.imgDone(DalbitUtil.replaceDonePath(pLoginVo.getProfileImage()));
-            }catch (GlobalException e){
-                //TODO 이미지 서버 오류 시 처리
-                e.printStackTrace();
-            }
+            //TODO - 이비지 서버 오류 시 처리 -> GlobalException으로 throw
+            restService.imgDone(DalbitUtil.replaceDonePath(pLoginVo.getProfileImage()));
         }
 
         return procedureVo;

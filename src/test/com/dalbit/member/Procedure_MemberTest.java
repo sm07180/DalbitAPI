@@ -53,7 +53,7 @@ public class Procedure_MemberTest {
     }
 
     @Test
-    public void 회원가입(){
+    public void 회원가입()throws GlobalException{
 
         P_JoinVo joinVo = new P_JoinVo();
 
