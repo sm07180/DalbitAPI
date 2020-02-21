@@ -259,19 +259,16 @@ public class DalbitUtil {
     }
 
     public static String convertRequestParamToString(HttpServletRequest request, String parameterName){
-        if(!isEmpty(request) && !isEmpty(parameterName)){
-            return request.getParameter(parameterName).trim();
-        }else{
-            log.warn("StringUtil.convertRequestParamToString parameter is null - request : [{}], parameterName : [{}]", request, parameterName);
-            return "";
+        if(request != null && parameterName != null){
+            return DalbitUtil.isNullToString(request.getParameter(parameterName)).trim();
         }
+        return "";
     }
 
     public static int convertRequestParamToInteger(HttpServletRequest request, String parameterName){
         try{
             return Integer.valueOf(request.getParameter(parameterName));
         }catch (Exception e){
-            log.warn("StringUtil.convertRequestParamToInteger error - request : [{}], parameterName : [{}]", request, parameterName);
             return -1;
         }
 
