@@ -7,16 +7,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
-import javax.servlet.http.HttpSession;
-
 @Slf4j
 @Component
 public class RedisUtil {
 
     @Autowired
     RedisTemplate redisTemplate;
-    @Autowired
-    HttpSession httpSession;
 
     @Value("${spring.redis.user.index.prefix}")
     String SPRING_REDIS_USER_INDEX_PREFIX;

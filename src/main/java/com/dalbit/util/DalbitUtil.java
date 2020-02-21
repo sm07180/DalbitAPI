@@ -46,10 +46,6 @@ public class DalbitUtil {
         environment = this.activeEnvironment;
     }
 
-    public static boolean isNullBlank(String checkValue) {
-        return checkValue == null || "".equals(checkValue);
-    }
-
     public static String randomValue(String type, int cnt) {
         type = type.toLowerCase();
 
@@ -97,20 +93,9 @@ public class DalbitUtil {
     }
 
     /**
-     * <p>
-     * String이 비었거나("") 혹은 null 인지 검증한다.
-     * </p>
-     *
-     * <pre>
-     *  StringUtil.isEmpty(null)      = true
-     *  StringUtil.isEmpty("")        = true
-     *  StringUtil.isEmpty(" ")       = false
-     *  StringUtil.isEmpty("bob")     = false
-     *  StringUtil.isEmpty("  bob  ") = false
-     * </pre>
-     *
-     * @param str - 체크 대상 스트링오브젝트이며 null을 허용함
-     * @return <code>true</code> - 입력받은 String 이 빈 문자열 또는 null인 경우
+     * 문자열에 값이 있는지 체크
+     * @param str
+     * @return
      */
     public static boolean isEmpty(String str) {
         return str == null || str.length() == 0;
@@ -183,60 +168,6 @@ public class DalbitUtil {
     }
 
     /**
-     * <p>기준 문자열에 포함된 모든 대상 문자(char)를 제거한다.</p>
-     *
-     * <pre>
-     * StringUtil.remove(null, *)       = null
-     * StringUtil.remove("", *)         = ""
-     * StringUtil.remove("queued", 'u') = "qeed"
-     * StringUtil.remove("queued", 'z') = "queued"
-     * </pre>
-     *
-     * @param str  입력받는 기준 문자열
-     * @param remove  입력받는 문자열에서 제거할 대상 문자열
-     * @return 제거대상 문자열이 제거된 입력문자열. 입력문자열이 null인 경우 출력문자열은 null
-     */
-    public static String remove(String str, char remove) throws NullPointerException{
-        if (isEmpty(str) || str.indexOf(remove) == -1) {
-            return str;
-        }
-        char[] chars = str.toCharArray();
-        int pos = 0;
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] != remove) {
-                chars[pos++] = chars[i];
-            }
-        }
-        return new String(chars, 0, pos);
-    }
-
-    /**
-     * <p><code>str</code> 중 <code>searchStr</code>의 시작(index) 위치를 반환.</p>
-     *
-     * <p>입력값 중 <code>null</code>이 있을 경우 <code>-1</code>을 반환.</p>
-     *
-     * <pre>
-     * StringUtil.indexOf(null, *)          = -1
-     * StringUtil.indexOf(*, null)          = -1
-     * StringUtil.indexOf("", "")           = 0
-     * StringUtil.indexOf("aabaabaa", "a")  = 0
-     * StringUtil.indexOf("aabaabaa", "b")  = 2
-     * StringUtil.indexOf("aabaabaa", "ab") = 1
-     * StringUtil.indexOf("aabaabaa", "")   = 0
-     * </pre>
-     *
-     * @param str  검색 문자열
-     * @param searchStr  검색 대상문자열
-     * @return 검색 문자열 중 검색 대상문자열이 있는 시작 위치 검색대상 문자열이 없거나 null인 경우 -1
-     */
-    public static int indexOf(String str, String searchStr) throws NullPointerException{
-        if (str == null || searchStr == null) {
-            return -1;
-        }
-        return str.indexOf(searchStr);
-    }
-
-    /**
      * <p>오라클의 decode 함수와 동일한 기능을 가진 메서드이다.
      * <code>sourStr</code>과 <code>compareStr</code>의 값이 같으면
      * <code>returStr</code>을 반환하며, 다르면  <code>defaultStr</code>을 반환한다.
@@ -286,7 +217,6 @@ public class DalbitUtil {
      * StringUtil.decode("", null, "foo") = ""
      * StringUtil.decode(null, "", "foo") = null
      * StringUtil.decode("하이", "하이", "foo") = "foo"
-     * StringUtil.decode("하이", "하이 ", "foo") = "하이"
      * StringUtil.decode("하이", "바이", "foo") = "하이"
      * </pre>
      *
@@ -308,7 +238,7 @@ public class DalbitUtil {
     public static String isNullToString(Object object) {
         String string = "";
 
-        if (object != null) {
+        if (!isEmpty(object)) {
             string = object.toString().trim();
         }
 
@@ -323,63 +253,28 @@ public class DalbitUtil {
         try {
             return DalbitUtil.isEmpty(str) ? nullValue : Integer.parseInt(str);
         } catch (Exception e){
+            log.warn("StringUtil.isStringToNumber error - str : [{}], nullValue : [{}]", str, nullValue);
             return nullValue;
         }
     }
 
     public static String convertRequestParamToString(HttpServletRequest request, String parameterName){
-        if(request != null && parameterName != null){
-            return DalbitUtil.isNullToString(request.getParameter(parameterName)).trim();
+        if(!isEmpty(request) && !isEmpty(parameterName)){
+            return request.getParameter(parameterName).trim();
+        }else{
+            log.warn("StringUtil.convertRequestParamToString parameter is null - request : [{}], parameterName : [{}]", request, parameterName);
+            return "";
         }
-        return "";
     }
 
     public static int convertRequestParamToInteger(HttpServletRequest request, String parameterName){
         try{
             return Integer.valueOf(request.getParameter(parameterName));
         }catch (Exception e){
+            log.warn("StringUtil.convertRequestParamToInteger error - request : [{}], parameterName : [{}]", request, parameterName);
             return -1;
         }
 
-    }
-
-
-    /**
-     * <p>{@link String#toLowerCase()}를 이용하여 소문자로 변환한다.</p>
-     *
-     * <pre>
-     * StringUtil.lowerCase(null)  = null
-     * StringUtil.lowerCase("")    = ""
-     * StringUtil.lowerCase("aBc") = "abc"
-     * </pre>
-     *
-     * @param str 소문자로 변환되어야 할 문자열
-     * @return 소문자로 변환된 문자열, null이 입력되면 <code>null</code> 리턴
-     */
-    public static String lowerCase(String str) {
-        if(isEmpty(str)){
-            return null;
-        }
-        return str.toLowerCase();
-    }
-
-    /**
-     * <p>{@link String#toUpperCase()}를 이용하여 대문자로 변환한다.</p>
-     *
-     * <pre>
-     * StringUtil.upperCase(null)  = null
-     * StringUtil.upperCase("")    = ""
-     * StringUtil.upperCase("aBc") = "ABC"
-     * </pre>
-     *
-     * @param str 대문자로 변환되어야 할 문자열
-     * @return 대문자로 변환된 문자열, null이 입력되면 <code>null</code> 리턴
-     */
-    public static String upperCase(String str) {
-        if(isEmpty(str)){
-            return null;
-        }
-        return str.toUpperCase();
     }
 
     /**
@@ -391,16 +286,16 @@ public class DalbitUtil {
      */
     public static String getSpclStrCnvr(String srcString) throws NullPointerException{
 
-        String rtnStr = null;
+        String rtnStr;
 
         try {
-            StringBuffer strTxt = new StringBuffer("");
+            StringBuffer strTxt = new StringBuffer();
 
             char chrBuff;
             int len = srcString.length();
 
             for (int i = 0; i < len; i++) {
-                chrBuff = (char) srcString.charAt(i);
+                chrBuff = srcString.charAt(i);
 
                 switch (chrBuff) {
                     case '<':
@@ -420,6 +315,7 @@ public class DalbitUtil {
             rtnStr = strTxt.toString();
 
         } catch (NullPointerException e) {
+            log.warn("StringUtil.getSpclStrCnvr NullPointerException - srcString : [{}]", srcString);
             return srcString;
         }
 
@@ -435,7 +331,6 @@ public class DalbitUtil {
      */
     public static String getTimeStamp() {
 
-        // 문자열로 변환하기 위한 패턴 설정(년도-월-일 시:분:초:초(자정이후 초))
         String pattern = "yyyyMMddhhmmssSSS";
 
         SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
@@ -452,7 +347,7 @@ public class DalbitUtil {
         try{
             return map.get(key).toString();
         }catch (Exception e){
-            log.error("StringUtil.getStringMap error - key name is [{}]", key);
+            log.warn("StringUtil.getStringMap error - key name is [{}]", key);
             return "";
         }
     }
@@ -461,7 +356,7 @@ public class DalbitUtil {
         try{
             return (int) Math.floor(getDoubleMap(map, key));
         }catch (Exception e){
-            log.error("StringUtil.getIntMap error - key name is [{}]", key);
+            log.warn("StringUtil.getIntMap error - key name is [{}]", key);
             return 0;
         }
     }
@@ -470,7 +365,7 @@ public class DalbitUtil {
         try{
             return Double.valueOf(getStringMap(map, key));
         }catch (Exception e){
-            log.error("StringUtil.getDoubleMap error - key name is [{}]", key);
+            log.warn("StringUtil.getDoubleMap error - key name is [{}]", key);
             return 0.0;
         }
     }
@@ -479,7 +374,7 @@ public class DalbitUtil {
         try{
             return Boolean.valueOf(getStringMap(map, key));
         }catch (Exception e){
-            log.error("StringUtil.getBooleanMap error - key name is [{}]", key);
+            log.warn("StringUtil.getBooleanMap error - key name is [{}]", key);
             return false;
         }
     }
@@ -547,6 +442,7 @@ public class DalbitUtil {
         try {
             locationVo = new Gson().fromJson(apiResult, LocationVo.class);
         }catch (Exception e){
+            log.warn("StringUtil.getLocation error - ip : [{}], apiResult : [{}]", ip, apiResult);
             locationVo.setRegionName("정보없음");
         }
 
@@ -692,11 +588,15 @@ public class DalbitUtil {
             if (cookieUtil.exists(name)) {
                 try{
                     authToken = cookieUtil.getValue(name);
-                }catch(IOException e){}
+                }catch(IOException e){
+                    log.warn("StringUtil.getAuthToken error - request : [{}]", request);
+                    log.warn("StringUtil.getAuthToken error - name : [{}]", name);
+                    log.warn("StringUtil.getAuthToken error - authToken : [{}]", authToken);
+                }
             }
         }
 
-        return authToken == null ? "" : authToken.trim();
+        return isEmpty(authToken) ? "" : authToken.trim();
     }
 
     /**

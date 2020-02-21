@@ -73,7 +73,7 @@ public class CipherUtil {
             log.error(var11.getMessage());
         }
 
-        return DalbitUtil.isNullBlank(rtValue) ? "" : rtValue;
+        return DalbitUtil.isEmpty(rtValue) ? "" : rtValue;
     }
 
     public static String encryptSha256WithSalt(String text, String salt){

@@ -20,7 +20,7 @@ public class CookieUtil {
     public CookieUtil(HttpServletRequest request) {
 
         Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
+        if (!DalbitUtil.isEmpty(cookies)) {
             for (int i = 0; i < cookies.length; i++) {
                 cookieMap.put(cookies[i].getName(), cookies[i]);
             }
@@ -32,16 +32,14 @@ public class CookieUtil {
         return new Cookie(name, URLEncoder.encode(value, "utf-8"));
     }
 
-    public static Cookie createCookie(String name, String value, String path,
-                                      int maxAge) throws IOException {
+    public static Cookie createCookie(String name, String value, String path, int maxAge) throws IOException {
         Cookie cookie = new Cookie(name, URLEncoder.encode(value, "utf-8"));
         cookie.setPath(path);
         cookie.setMaxAge(maxAge);
         return cookie;
     }
 
-    public static Cookie createCookie(String name, String value, String domain,
-                                      String path, int maxAge) throws IOException {
+    public static Cookie createCookie(String name, String value, String domain, String path, int maxAge) throws IOException {
         Cookie cookie = new Cookie(name, value);
         cookie.setDomain(domain);
         cookie.setPath(path);
@@ -49,8 +47,7 @@ public class CookieUtil {
         return cookie;
     }
 
-    public static Cookie deleteCookie(String name, String domain,
-                                      String path, int maxAge) throws IOException {
+    public static Cookie deleteCookie(String name, String domain, String path, int maxAge) throws IOException {
         Cookie cookie = new Cookie(name, null);
         cookie.setDomain(domain);
         cookie.setPath(path);
@@ -64,8 +61,9 @@ public class CookieUtil {
 
     public String getValue(String name) throws IOException {
         Cookie cookie = (Cookie) cookieMap.get(name);
-        if (cookie == null)
+        if (DalbitUtil.isEmpty(cookie)){
             return null;
+        }
         return URLDecoder.decode(cookie.getValue(), "utf-8");
     }
 

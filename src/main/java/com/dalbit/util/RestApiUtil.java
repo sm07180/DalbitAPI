@@ -41,7 +41,7 @@ public class RestApiUtil {
             if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
                 String line;
-                while ((line = br.readLine()) != null) {
+                while (!DalbitUtil.isEmpty(line = br.readLine())) {
                     result.append(line);
                 }
                 br.close();
@@ -89,7 +89,7 @@ public class RestApiUtil {
             if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
                 BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "utf-8"));
                 String line;
-                while ((line = br.readLine()) != null) {
+                while (!DalbitUtil.isEmpty(line = br.readLine())) {
                     result.append(line);
                 }
                 br.close();
