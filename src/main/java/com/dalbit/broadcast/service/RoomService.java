@@ -504,6 +504,7 @@ public class RoomService {
         returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
         returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
+        returnMap.put("holder", "https://devimage.dalbitcast.com/holder/gold.png");
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
