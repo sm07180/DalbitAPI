@@ -5,16 +5,16 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter @Setter
 public class ShortCutEditVo {
 
     @NotNull
     private Integer orderNo;
-
-    @NotBlank
+    @NotBlank @Size(max = 4)
     private String order;
-    @NotBlank
+    @NotBlank @Size (max = 50)
     private String text;
 
     private String isOn;
