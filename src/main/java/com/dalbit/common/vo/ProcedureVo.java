@@ -1,6 +1,5 @@
 package com.dalbit.common.vo;
 
-import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;

@@ -6,7 +6,6 @@ import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +15,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("broad")
 public class ContentController {
-
-    @Autowired
-    MessageUtil messageUtil;
 
     @Autowired
     ContentService contentService;

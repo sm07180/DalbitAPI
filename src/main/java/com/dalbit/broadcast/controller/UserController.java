@@ -7,12 +7,10 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +28,11 @@ import java.util.HashMap;
 public class UserController {
 
     @Autowired
-    MessageUtil messageUtil;
-    @Autowired
     UserService userService;
     @Autowired
     RestService restService;
     @Autowired
     CommonService commonService;
-    @Autowired
-    ProfileService profileService;
 
 
     /**

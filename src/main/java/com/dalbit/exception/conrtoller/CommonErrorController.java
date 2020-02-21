@@ -4,7 +4,6 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -18,9 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 @ControllerAdvice
 @RestController
 public class CommonErrorController{
-
-    @Autowired
-    MessageUtil messageUtil;
 
     @Autowired
     GsonUtil gsonUtil;

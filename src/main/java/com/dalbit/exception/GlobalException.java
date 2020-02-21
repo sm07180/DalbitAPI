@@ -3,7 +3,6 @@ package com.dalbit.exception;
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ValidationResultVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

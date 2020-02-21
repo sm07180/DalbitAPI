@@ -7,7 +7,9 @@ import com.dalbit.common.vo.*;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
-import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.MemberFanVo;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
 import com.dalbit.util.DalbitUtil;
@@ -15,12 +17,9 @@ import com.dalbit.util.JwtUtil;
 import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.internal.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,9 +32,6 @@ import java.util.Map;
 @Service
 public class CommonService {
 
-    @Value("${sso.header.cookie.name}")
-    private String SSO_HEADER_COOKIE_NAME;
-
     @Autowired
     MemberService memberService;
 
@@ -46,9 +42,6 @@ public class CommonService {
     JwtUtil jwtUtil;
     @Autowired
     LoginUtil loginUtil;
-
-    @Autowired
-    private Environment env;
 
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
@@ -98,7 +91,7 @@ public class CommonService {
     public HashMap<String, Object> getJwtTokenInfo(HttpServletRequest request){
         HashMap<String, Object> result = new HashMap<>();
         TokenVo tokenVo = null;
-        Status resultStatus = null;
+        Status resultStatus;
         boolean isLogin = DalbitUtil.isLogin();
 
         DeviceVo deviceVo = new DeviceVo(request);
@@ -126,7 +119,7 @@ public class CommonService {
                 LoginProcedureVo = new ProcedureOutputVo(procedureVo);
             }*/
             log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
-            if(LoginProcedureVo == null){
+            if(DalbitUtil.isEmpty(LoginProcedureVo)){
                 throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
             }
             if(LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
@@ -138,7 +131,7 @@ public class CommonService {
             }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
                 HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
                 String memNo = DalbitUtil.getStringMap(map,"mem_no");
-                if(memNo == null){
+                if(DalbitUtil.isEmpty(memNo)){
                     resultStatus = Status.로그인실패_파라메터이상;
                 }else{
                     resultStatus = Status.로그인성공;
@@ -151,18 +144,17 @@ public class CommonService {
             }
         }
 
-        if(tokenVo != null){
-            //세션 업데이트 프로시저 호출
+        if(!DalbitUtil.isEmpty(tokenVo)){
             P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
-                    isLogin ? 1 : 0
-                    , tokenVo.getMemNo()
-                    , os
-                    , appAdId
-                    , deviceId
-                    , deviceToken
-                    , appVer
-                    , locationVo.getRegionName()
-                    , deviceVo.getIp()
+                isLogin ? 1 : 0
+                , tokenVo.getMemNo()
+                , os
+                , appAdId
+                , deviceId
+                , deviceToken
+                , appVer
+                , locationVo.getRegionName()
+                , deviceVo.getIp()
             );
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
@@ -193,9 +185,9 @@ public class CommonService {
 
     public List<CodeVo> setData(List<Map> list, String type) {
         List<CodeVo> data = new ArrayList<>();
-        if(list != null && list.size() > 0){
+        if(!DalbitUtil.isEmpty(list)){
             for(int i = 0; i < list.size(); i++){
-                if(type.equals((String)list.get(i).get("type"))){
+                if(type.equals(list.get(i).get("type"))){
                     data.add(new CodeVo((String)list.get(i).get("value"), (String)list.get(i).get("code"), i));
                 }
             }

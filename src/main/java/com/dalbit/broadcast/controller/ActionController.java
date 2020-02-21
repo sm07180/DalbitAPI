@@ -15,7 +15,6 @@ import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,9 +33,6 @@ public class ActionController {
     GsonUtil gsonUtil;
     @Autowired
     RestService restService;
-    @Value("${server.img.url}")
-    private String IMG_URL;
-
 
     /**
      * 방송방 좋아요 추가

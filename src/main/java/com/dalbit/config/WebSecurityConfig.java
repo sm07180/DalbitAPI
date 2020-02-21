@@ -42,12 +42,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired private AuthenticationProvider authProvider;
     @Autowired private SsoAuthenticationFilter ssoAuthenticationFilter;
 
-    /*@Value("${server.servlet.session.cookie.name}")
-    private String SECURITY_COOKIE_NAME;
-
-    @Value("${sso.cookie.name}")
-    private String SSO_COOKIE_NAME;*/
-
     @Bean
     public DelegatingPasswordEncoder passwordEncoder() {
         DelegatingPasswordEncoder delegatingPasswordEncoder = (DelegatingPasswordEncoder) PasswordEncoderFactories.createDelegatingPasswordEncoder();
