@@ -29,24 +29,25 @@ public class AES {
                   secretKey = new SecretKeySpec(key, "AES");
             }
             catch (NoSuchAlgorithmException e) {
+                  log.error("AES.setKey NoSuchAlgorithmException - myKey : [{}]", myKey);
                   e.printStackTrace();
             }
             catch (UnsupportedEncodingException e) {
+                  log.error("AES.setKey UnsupportedEncodingException - myKey : [{}]", myKey);
                   e.printStackTrace();
             }
       }
 
       public static String encrypt(String strToEncrypt, String secret){
-            try
-            {
+            try{
                   setKey(secret);
                   Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
                   cipher.init(Cipher.ENCRYPT_MODE, secretKey);
                   return Base64.getEncoder().encodeToString(cipher.doFinal(strToEncrypt.getBytes("UTF-8")));
-            }
-            catch (Exception e)
-            {
-                  System.out.println("Error while encrypting: " + e.toString());
+            }catch (Exception e){
+                  log.error("AES.encrypt Error - strToEncrypt : [{}]", strToEncrypt);
+                  log.error("AES.encrypt Error - secret : [{}]", secret);
+                  e.printStackTrace();
             }
             return null;
       }
@@ -58,7 +59,9 @@ public class AES {
                   cipher.init(Cipher.DECRYPT_MODE, secretKey);
                   return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
             }catch (Exception e){
-                  System.out.println("Error while decrypting: " + e.toString());
+                  log.error("AES.decrypt Error - strToEncrypt : [{}]", strToDecrypt);
+                  log.error("AES.decrypt Error - secret : [{}]", secret);
+                  e.printStackTrace();
             }
             return null;
       }

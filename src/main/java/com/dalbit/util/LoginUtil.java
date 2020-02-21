@@ -2,8 +2,6 @@ package com.dalbit.util;
 
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.security.vo.SecurityUserVo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -17,15 +15,8 @@ import javax.servlet.http.HttpSession;
 @Component
 public class LoginUtil {
 
-    @Autowired JwtUtil jwtUtil;
-
-    @Value("${spring.session.memberInfo.key}")
-    String SPRING_SESSION_MEMBERINFO_KEY;
-    @Value("${spring.security.session.name}")
-    String SPRING_SECURITY_SESSION_NAME;
-
     public void saveSecuritySession(HttpServletRequest request, UserDetails userDetails){
-        if (userDetails != null) {
+        if (!DalbitUtil.isEmpty(userDetails)) {
             SecurityUserVo securityUserVo = (SecurityUserVo) userDetails;
             MemberVo memberVo = securityUserVo.getMemberVo();
 
@@ -40,8 +31,8 @@ public class LoginUtil {
                 securityContext.setAuthentication(authentication);
 
                 HttpSession session = request.getSession(true);
-                session.setAttribute(SPRING_SECURITY_SESSION_NAME, securityContext);
-                session.setAttribute(SPRING_SESSION_MEMBERINFO_KEY, securityUserVo.getMemberVo());
+                session.setAttribute(DalbitUtil.getProperty("spring.security.session.name"), securityContext);
+                session.setAttribute(DalbitUtil.getProperty("spring.session.memberInfo.key"), securityUserVo.getMemberVo());
             }
         }
     }
