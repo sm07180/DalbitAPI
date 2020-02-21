@@ -83,7 +83,6 @@ public class RedisRepositoryConfig {
         redisTemplate.setConnectionFactory(redisConnectionFactory());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
         redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-        //redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(RedisData.class));
         return redisTemplate;
     }
 

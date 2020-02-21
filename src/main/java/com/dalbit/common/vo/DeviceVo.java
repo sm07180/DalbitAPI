@@ -32,15 +32,15 @@ public class DeviceVo {
             customHeader = java.net.URLDecoder.decode(customHeader);
             HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
 
-            if(headers.get("os") != null && headers.get("deviceId") != null ){
+            if(!DalbitUtil.isEmpty(headers.get("os")) && !DalbitUtil.isEmpty(headers.get("deviceId"))){
                 os = (int)DalbitUtil.getDoubleMap(headers, "os");
                 deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
                 deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
                 appVersion = DalbitUtil.getStringMap(headers, "appVer");
                 adId = DalbitUtil.getStringMap(headers, "appAdId");
-                deviceToken = deviceToken == null ? "" : deviceToken.trim();
-                appVersion = appVersion == null ? "" : appVersion.trim();
-                adId = adId == null ? "" : adId.trim();
+                deviceToken = DalbitUtil.isNullToString(deviceToken);
+                appVersion = DalbitUtil.isNullToString(appVersion);
+                adId = DalbitUtil.isNullToString(adId);
             }
         }
     }
