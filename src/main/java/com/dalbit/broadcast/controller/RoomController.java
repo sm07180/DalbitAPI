@@ -9,8 +9,6 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
@@ -27,10 +25,6 @@ import java.util.HashMap;
 @RequestMapping("/broad")
 public class RoomController {
 
-    @Autowired
-    MessageUtil messageUtil;
-    @Autowired
-    GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
     @Autowired
