@@ -598,4 +598,17 @@ public class DalbitUtil {
 
         return isEmpty(authToken) ? "" : authToken.trim();
     }
+
+    /**
+     * 생년월일변환
+     */
+    public static String getBirth(String year, String month, String day){
+        month = (month.length() == 1) ? "0"+month : month;
+        day = (day.length() == 1) ? "0"+day : day;
+
+        String birth = year+month+day;
+
+        return birth;
+
+    }
 }

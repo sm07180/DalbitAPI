@@ -3,17 +3,13 @@ package com.dalbit.member.service;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.PagingVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberShortCutOutVo;
 import com.dalbit.member.vo.NotificationOutVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.BroadBasicOutVo;
-import com.dalbit.member.vo.MemberInfoOutVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -154,7 +150,7 @@ public class MypageService {
 
 
     /**
-     * 회원 정보 조회
+     * 본인 정보 조회
      */
     public String callMemberInfo(P_MemberInfoVo pMemberInfo) {
         ProcedureVo procedureVo = new ProcedureVo(pMemberInfo);
@@ -164,13 +160,20 @@ public class MypageService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        P_MemberInfoVo memberInfo = new Gson().fromJson(procedureVo.getExt(), P_MemberInfoVo.class);
-        List fanRankList = commonService.getFanRankList(memberInfo.getFanRank1(), memberInfo.getFanRank2(), memberInfo.getFanRank3());
-        MemberInfoOutVo memberInfoOutVo = new MemberInfoOutVo(memberInfo, pMemberInfo.getTarget_mem_no(), fanRankList);
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
+        returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
+        returnMap.put("birth", DalbitUtil.getBirth(DalbitUtil.getStringMap(resultMap, "birthYear"), DalbitUtil.getStringMap(resultMap, "birthMonth"), DalbitUtil.getStringMap(resultMap, "birthDay")));
+        returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
+        returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+        returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
+        returnMap.put("rubyCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
+        returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, memberInfoOutVo));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_대상아님.getMessageCode())) {

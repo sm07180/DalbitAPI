@@ -493,7 +493,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 본인 회원 정보 조회_2020.02.05",
+									"name": "[완료] 본인 정보 조회_2020.02.21",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -663,7 +663,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQ0MTk1NCIsImlhdCI6MTU3OTIyNzc5NCwiZXhwIjoxNTgxOTA2MTk0fQ.njOVO01vAFF_JUoU56snWNBt8P-ZzwKqdgkxAIOHKOs",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
 												"type": "text"
 											},
 											{
@@ -936,7 +936,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 상대방 정보 조회_2020.02.07",
+									"name": "[완료] 프로필&마이페이지 정보 조회_2020.02.20",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -2940,6 +2940,60 @@
 											"path": [
 												"broad",
 												"reToken"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 상태 변경_2020.02.20",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91582187875464",
+													"description": "* 방송방번호",
+													"type": "text"
+												},
+												{
+													"key": "state",
+													"value": "1",
+													"description": "* 상태값 (1: 마이크 on, 2: 마이크 off, 3:통화중)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/broad/state",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"state"
 											]
 										}
 									},
