@@ -253,7 +253,6 @@ public class DalbitUtil {
         try {
             return DalbitUtil.isEmpty(str) ? nullValue : Integer.parseInt(str);
         } catch (Exception e){
-            log.warn("StringUtil.isStringToNumber error - str : [{}], nullValue : [{}]", str, nullValue);
             return nullValue;
         }
     }
