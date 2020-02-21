@@ -1,7 +1,8 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.DevRoomVo;
+import com.dalbit.broadcast.vo.RoomMemberOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
@@ -9,14 +10,13 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,8 +31,6 @@ public class UserService {
     UserDao userDao;
     @Autowired
     GsonUtil gsonUtil;
-    @Value("${server.photo.url}")
-    private String SERVER_PHOTO_URL;
     @Autowired
     CommonService commonService;
 

@@ -2,7 +2,6 @@ package com.dalbit.socket.controller;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;

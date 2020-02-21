@@ -1,17 +1,14 @@
 package com.dalbit.member.vo;
 
-
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.member.vo.procedure.P_FanboardReplyVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
-import java.text.SimpleDateFormat;
 
 @Getter
 @Setter
 public class FanboardReplyOutVo {
-
 
     private String memNo;
     private int     boardNo;

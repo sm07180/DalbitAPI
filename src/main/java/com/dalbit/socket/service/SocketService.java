@@ -1,9 +1,7 @@
 package com.dalbit.socket.service;
 
-import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.util.CookieUtil;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -11,12 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @Service

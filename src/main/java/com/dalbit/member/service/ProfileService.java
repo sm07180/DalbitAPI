@@ -7,17 +7,16 @@ import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.ProfileDao;
-import com.dalbit.member.vo.*;
-import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.FanRankingOutVo;
 import com.dalbit.member.vo.FanboardReplyOutVo;
+import com.dalbit.member.vo.FanboardVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.procedure.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -32,13 +31,9 @@ public class ProfileService {
     @Autowired
     ProfileDao profileDao;
     @Autowired
-    MessageUtil messageUtil;
-    @Autowired
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
-    @Value("${server.photo.url}")
-    private String SERVER_PHOTO_URL;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 

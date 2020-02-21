@@ -1,7 +1,5 @@
 package com.dalbit.member.vo.procedure;
 
-
-import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 

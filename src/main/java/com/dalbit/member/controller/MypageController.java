@@ -7,21 +7,14 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
-import com.dalbit.util.JwtUtil;
-import com.dalbit.util.MessageUtil;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Description;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -29,16 +22,9 @@ import java.util.HashMap;
 public class MypageController {
 
     @Autowired
-    MessageUtil messageUtil;
-    @Autowired
-    GsonUtil gsonUtil;
-    @Autowired
     MypageService mypageService;
     @Autowired
     ProfileService profileService;
-    @Autowired
-    JwtUtil jwtUtil;
-
 
     /**
      * 본인 정보 조회

@@ -1,14 +1,11 @@
 package com.dalbit.member.controller;
 
 import com.dalbit.exception.GlobalException;
-import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
-import com.dalbit.member.vo.*;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -21,13 +18,7 @@ import javax.validation.Valid;
 @RequestMapping("profile")
 public class ProfileController {
     @Autowired
-    MessageUtil messageUtil;
-    @Autowired
-    GsonUtil gsonUtil;
-    @Autowired
     ProfileService profileService;
-    @Autowired
-    MemberService memberService;
 
 
     /**

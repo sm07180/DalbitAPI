@@ -1,7 +1,6 @@
 package com.dalbit.security.vo;
 
 import com.dalbit.member.vo.MemberVo;
-import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;

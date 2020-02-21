@@ -13,11 +13,9 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,11 +29,7 @@ public class RoomService {
     @Autowired
     RoomDao roomDao;
     @Autowired
-    MessageUtil messageUtil;
-    @Autowired
     GsonUtil gsonUtil;
-    @Value("${server.photo.url}")
-    private String SERVER_PHOTO_URL;
     @Autowired
     RestService restService;
     @Autowired

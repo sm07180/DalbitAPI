@@ -8,11 +8,13 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
-import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
+import com.dalbit.member.vo.procedure.P_JoinVo;
+import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +36,6 @@ public class MemberService {
 
     @Autowired
     MemberDao memberDao;
-    @Autowired
-    MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
     @Autowired

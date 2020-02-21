@@ -33,6 +33,7 @@
 
 
     <select id="selectBjRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
+        /* User.xml - selectBjRoom */
         select
             t1.room_no as roomNo
             , t1.title as title
@@ -44,6 +45,7 @@
 	    </select>
 
     <select id="selectDisconnectRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
+        /* User.xml - selectDisconnectRoom */
         select
             t1.room_no as roomNo
             , t1.title as title
@@ -55,12 +57,14 @@
     </select>
 
     <update id="updateNormalRoom" parameterType="String">
+        /* User.xml - updateNormalRoom */
         update tb_broadcast_room set
           state = 1
         where room_no = #{value}
     </update>
 
     <select id="selectJoinRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">
+        /* User.xml - selectJoinRoom */
         select
             t1.room_no as roomNo
             , t1.title as title

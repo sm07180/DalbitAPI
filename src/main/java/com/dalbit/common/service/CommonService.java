@@ -14,7 +14,6 @@ import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.JwtUtil;
-import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +39,6 @@ public class CommonService {
 
     @Autowired
     JwtUtil jwtUtil;
-    @Autowired
-    LoginUtil loginUtil;
 
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기

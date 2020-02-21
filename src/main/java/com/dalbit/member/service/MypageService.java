@@ -2,22 +2,19 @@ package com.dalbit.member.service;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
+import com.dalbit.member.vo.BroadBasicOutVo;
 import com.dalbit.member.vo.MemberShortCutOutVo;
 import com.dalbit.member.vo.NotificationOutVo;
 import com.dalbit.member.vo.procedure.*;
-import com.dalbit.member.vo.BroadBasicOutVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -31,15 +28,9 @@ public class MypageService {
     @Autowired
     MypageDao mypageDao;
     @Autowired
-    MessageUtil messageUtil;
-    @Autowired
     GsonUtil gsonUtil;
     @Autowired
-    CommonService commonService;
-    @Autowired
     RestService restService;
-    @Value("${server.photo.url}")
-    private String SERVER_PHOTO_URL;
 
 
     /**

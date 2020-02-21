@@ -7,8 +7,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import java.text.SimpleDateFormat;
-
 @Getter
 @Setter
 @ToString

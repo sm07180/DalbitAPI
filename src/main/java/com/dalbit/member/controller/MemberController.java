@@ -11,15 +11,20 @@ import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.TokenVo;
-import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
+import com.dalbit.member.vo.procedure.P_JoinVo;
+import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.member.vo.request.ChangePwVo;
 import com.dalbit.member.vo.request.NickNmDupleCheckVo;
 import com.dalbit.member.vo.request.SignUpVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
-import com.dalbit.security.service.UserDetailsServiceImpl;
 import com.dalbit.security.vo.SecurityUserVo;
-import com.dalbit.util.*;
+import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
+import com.dalbit.util.JwtUtil;
+import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +46,7 @@ public class MemberController {
     @Autowired
     MemberService memberService;
     @Autowired
-    UserDetailsServiceImpl userDetailsService;
-    @Autowired
     ProfileService profileService;
-    @Autowired
-    MessageUtil messageUtil;
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
