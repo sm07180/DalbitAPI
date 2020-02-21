@@ -1,5 +1,7 @@
 package com.dalbit.common.vo;
 
+import com.dalbit.common.code.Item;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,15 +14,17 @@ public class ItemVo {
     private String thumbs;
     private String webpUrl;
     private String lottieUrl;
-    private int width = 600;
-    private int height = 600;
+    private int width;
+    private int height;
 
-    public ItemVo(String itemNo, String itemNm, int cost, String thumbs, String webpUrl, String lottieUrl){
-        this.itemNm = itemNm;
-        this.itemNo = itemNo;
-        this.thumbs = thumbs;
-        this.cost = cost;
-        this.webpUrl = webpUrl;
-        this.lottieUrl = lottieUrl;
+    public ItemVo(Item item){
+        this.itemNm = item.getItemNm();
+        this.itemNo = item.getItemNo();
+        this.cost = item.getCost();
+        this.thumbs = DalbitUtil.getProperty(item.getThumbs());
+        this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
+        this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
+        this.width = item.getWidth();
+        this.height = item.getHeight();
     }
 }
