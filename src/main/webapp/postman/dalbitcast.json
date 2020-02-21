@@ -493,7 +493,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 본인 회원 정보 조회_2020.02.05",
+									"name": "[완료] 본인 정보 조회_2020.02.21",
 									"protocolProfileBehavior": {
 										"disableBodyPruning": true
 									},
@@ -936,7 +936,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 상대방 프로필&마이페이지 정보 조회_2020.02.20",
+									"name": "[완료] 프로필&마이페이지 정보 조회_2020.02.20",
 									"request": {
 										"method": "GET",
 										"header": [
