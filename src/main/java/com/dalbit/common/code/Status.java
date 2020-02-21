@@ -424,6 +424,13 @@ public enum Status {
     방송방상태변경_요청회원_방장아님("-5", "broadcast.room.state.update.not.bj", "요청 회원이 방장 아닐 시"),
     방송방상태변경_실패("C006", "broadcast.room.state.update.fail", "방송방 상태 변경 실패 시"),
 
+    //팬 랭킹 조회
+    팬랭킹조회_성공("C001", "member.fan.ranking.select.success", "팬 랭킹 조회 성공 시"),
+    팬랭킹조회_팬없음("0", "member.fan.ranking.no.fan", "팬 없을 시"),
+    팬랭킹조회_요청회원_회원아님("-1", "member.fan.ranking.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    팬랭킹조회_대상회원_회원아님("-2", "member.fan.ranking.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    팬랭킹조회_실패("C006", "member.fan.ranking.select.fail", "팬 랭킹 조회 실패 시"),
+
 
     ;
 

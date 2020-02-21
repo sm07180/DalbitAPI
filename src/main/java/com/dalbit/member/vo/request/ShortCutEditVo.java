@@ -11,9 +11,11 @@ public class ShortCutEditVo {
 
     @NotNull
     private Integer orderNo;
+
     @NotBlank
     private String order;
     @NotBlank
     private String text;
+
     private String isOn;
 }

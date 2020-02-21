@@ -133,4 +133,17 @@ public class ProfileController {
     }
 
 
+    /**
+     * 회원 팬 랭킹 조회
+     */
+    @GetMapping("/fan")
+    public String fanRanking(@Valid FanRankingVo fanRankingVo, BindingResult bindingResult) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_FanRankingVo apiData = new P_FanRankingVo(fanRankingVo);
+
+        String result = profileService.callMemberFanRanking(apiData);
+        return result;
+    }
 }

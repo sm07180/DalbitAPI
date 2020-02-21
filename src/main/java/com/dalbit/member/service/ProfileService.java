@@ -3,6 +3,7 @@ package com.dalbit.member.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.ProfileDao;
@@ -215,4 +216,42 @@ public class ProfileService {
         return result;
     }
 
+
+    /**
+     * 회원 팬 랭킹 조회
+     */
+    public String callMemberFanRanking(P_FanRankingVo pFanRankingVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanRankingVo);
+        List<P_FanRankingVo> fanRankingVoList = profileDao.callMemberFanRanking(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(fanRankingVoList)){
+            procedureOutputVo = null;
+        }else{
+            List<FanRankingOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<fanRankingVoList.size(); i++){
+                outVoList.add(new FanRankingOutVo(fanRankingVoList.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap notificationList = new HashMap();
+        notificationList.put("list", procedureOutputVo.getOutputBox());
+        notificationList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_성공, notificationList));
+        } else if (procedureVo.getRet().equals(Status.팬랭킹조회_팬없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음));
+        } else if (procedureVo.getRet().equals(Status.팬랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬랭킹조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_대상회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_실패));
+        }
+        return result;
+    }
 }

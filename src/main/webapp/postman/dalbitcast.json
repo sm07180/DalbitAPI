@@ -1492,6 +1492,60 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 팬 랭킹 조회_2020.02.21",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/profile/fan?page=1&records=10&memNo=11581573459470",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile",
+												"fan"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지 번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 수"
+												},
+												{
+													"key": "memNo",
+													"value": "11581573459470",
+													"description": "* 대상 회원 번호"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
