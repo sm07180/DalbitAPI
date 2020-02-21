@@ -263,5 +263,23 @@ public class SampleVoTest {
 
     }
 
+    @Test
+    public void 테스트(){
+        String birth = getBirth("1989", "9", "7");
+        log.info(birth);
+    }
+
+    @Test
+    public String getBirth(String year, String month, String day){
+        month = (month.length() == 1) ? "0"+month : month;
+        day = (day.length() == 1) ? "0"+day : day;
+
+        String birth = year+month+day;
+
+        return birth;
+
+    }
+
+
 }
 
