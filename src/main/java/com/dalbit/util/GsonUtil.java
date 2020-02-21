@@ -26,13 +26,17 @@ public class GsonUtil {
                 .registerTypeAdapter(Date.class, new DateAdapter());
     }
 
+    public String convertJson(Object object){
+        return getGsonBuilder().create().toJson(object);
+    }
+
     /**
      * 문자열중 html 태그를 excape 하여 json 형식으로 변환한다.
      *      * @param object
      *      * @return
      */
     public String toJson(Object object){
-        return DalbitUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(object));
+        return DalbitUtil.getSpclStrCnvr(convertJson(object));
     }
 
     /**
@@ -41,7 +45,7 @@ public class GsonUtil {
      * @return
      */
     public String toJson(JsonOutputVo jsonOutputVo){
-        return DalbitUtil.getSpclStrCnvr(getGsonBuilder().create().toJson(messageUtil.setJsonOutputVo(jsonOutputVo)));
+        return DalbitUtil.getSpclStrCnvr(convertJson(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\"));
     }
 
     /**
