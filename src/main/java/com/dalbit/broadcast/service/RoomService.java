@@ -90,8 +90,8 @@ public class RoomService {
             returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
             returnMap.put("likes", 0);
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-            returnMap.put("roomRole", 3);
-            returnMap.put("roleRight", "1111111111");
+            returnMap.put("auth", 3);
+            returnMap.put("ctrlRole", "1111111111");
             returnMap.put("isFan", false);
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
