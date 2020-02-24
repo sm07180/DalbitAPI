@@ -489,8 +489,7 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
-        returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
+        returnMap.put("memNo", pRoomMemberInfoVo.getTarget_mem_no());
         returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
         returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
         returnMap.put("age", DalbitUtil.getIntMap(resultMap, "age"));
@@ -505,6 +504,8 @@ public class RoomService {
         returnMap.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCount"));
         returnMap.put("starCnt", DalbitUtil.getIntMap(resultMap, "starCount"));
         returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+        returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
+        returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
         procedureVo.setData(returnMap);
 
