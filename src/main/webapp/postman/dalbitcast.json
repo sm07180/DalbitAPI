@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "70602b6a-3ce0-42b0-a75b-1af0a1646ca4",
+		"_postman_id": "abeb1a22-0582-491d-8760-2041b26b3d07",
 		"name": "달빛라디오 API 정의서_2020.02.19",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -148,6 +148,66 @@
 								},
 								{
 									"name": "[완료] 로그인_2020.01.21",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MDg2Njk2NjQ5MUBmYWxzZSIsImlhdCI6MTU4MDk1NDUyNSwiZXhwIjoxNTgzNDYwMTI1fQ.bhV5XGj2_oOFssdYqpkj62aJ5hZEYp98aILV1cHFAj4",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memType",
+													"value": "p",
+													"description": "* 회원구분 [필수]",
+													"type": "text"
+												},
+												{
+													"key": "memId",
+													"value": "010-1234-1234",
+													"description": "* 아이디 / 소셜아이디 [필수]",
+													"type": "text"
+												},
+												{
+													"key": "memPwd",
+													"value": "123qweasd",
+													"description": "비밀번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/member/login",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"member",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 로그아웃_2020.02.24",
 									"request": {
 										"method": "POST",
 										"header": [
