@@ -2,6 +2,7 @@ package com.dalbit.security.handler;
 
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -11,6 +12,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.CookieUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -43,7 +45,12 @@ public class LogoutHandlerImpl implements LogoutHandler {
 
         ProcedureVo procedureVo = roomService.callMemberBroadcastingCheck(new P_MemberBroadcastingCheckVo(MemberVo.getMyMemNo()));
         log.debug("방송중인 DJ체크 : {}", procedureVo.toString());
-        if(DalbitUtil.isLogin() && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode())){
+
+        HashMap broadcastingInfo = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String state = DalbitUtil.getStringMap(broadcastingInfo, "state");
+        boolean isBroadcast = state.equals(Code.방송중체크_방송중.getCode()) ? true : false;
+
+        if(DalbitUtil.isLogin() && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
 
             try {
                 gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃실패_진행중인방송));
