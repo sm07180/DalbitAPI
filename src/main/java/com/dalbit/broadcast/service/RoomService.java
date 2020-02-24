@@ -170,8 +170,8 @@ public class RoomService {
             returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
             returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-            returnMap.put("roomRole", DalbitUtil.getIntMap(resultMap, "auth"));
-            returnMap.put("roleRight", DalbitUtil.getStringMap(resultMap, "controlRole"));
+            returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
+            returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
             returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
             returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
             /*returnMap.put("level", target.getLevel());
