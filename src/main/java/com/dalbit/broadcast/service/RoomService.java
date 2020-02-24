@@ -254,10 +254,10 @@ public class RoomService {
      */
     public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) throws GlobalException {
         Boolean isDone = false;
-        if(pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
+        if(!DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImage()) && pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
             isDone = true;
+            pRoomEditVo.setBackgroundImage(DalbitUtil.replacePath(pRoomEditVo.getBackgroundImage()));
         }
-        pRoomEditVo.setBackgroundImage(DalbitUtil.replacePath(pRoomEditVo.getBackgroundImage()));
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomEditVo);
         roomDao.callBroadCastRoomEdit(procedureVo);
