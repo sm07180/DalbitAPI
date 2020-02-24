@@ -299,4 +299,56 @@ public class MypageController {
         return result;
     }
 
+    /**
+     * 마이페이지 공지사항 등록
+     */
+    @PostMapping("/notice/add")
+    public String noticeAdd(@Valid MypageNoticeAddVo mypageNoticeAddVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MypageNoticeAddVo apiData = new P_MypageNoticeAddVo(mypageNoticeAddVo);
+
+        String result = mypageService.callMypageNoticeAdd(apiData);
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 수정
+     */
+    @PostMapping("/notice/edit")
+    public String noticeEdit(@Valid MypageNoticeEditVo mypageNoticeEditVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MypageNoticeEditVo apiData = new P_MypageNoticeEditVo(mypageNoticeEditVo);
+
+        String result = mypageService.callMypageNoticeEdit(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 마이페이지 공지사항 삭제
+     */
+    @DeleteMapping("/notice/delete")
+    public String noticeDel(@Valid MypageNoticeDelVo mypageNoticeDelVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MypageNoticeDelVo apiData = new P_MypageNoticeDelVo(mypageNoticeDelVo);
+
+        String result = mypageService.callMypageNoticeDel(apiData);
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 조회
+     */
+    @GetMapping("/notice/select")
+    public String noticeSelete(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MypageNoticeSelectVo apiData = new P_MypageNoticeSelectVo(mypageNoticeSelectVo);
+
+        String result = mypageService.callMypageNoticeSelect(apiData);
+
+        return result;
+    }
 }

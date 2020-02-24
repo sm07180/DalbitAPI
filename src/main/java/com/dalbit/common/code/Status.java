@@ -431,6 +431,35 @@ public enum Status {
     팬랭킹조회_대상회원_회원아님("-2", "member.fan.ranking.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
     팬랭킹조회_실패("C006", "member.fan.ranking.select.fail", "팬 랭킹 조회 실패 시"),
 
+    //마이페이지 공지사항 등록
+    공지등록_성공("0", "mypage.notice.create.success", "마이페이지 공지등록 성공 시"),
+    공지등록_요청회원번호_회원아님("-1", "mypage.notice.create.member.number.error", "요청회원번호가 회원 아닐 시"),
+    공지등록_대상회원번호_회원아님("-2", "mypage.notice.create.object.member.number.error", "대상회원번호가 회원 아닐 시"),
+    공지등록_권한없음("-3", "mypage.notice.create.authorization.not", "공지등록 권한 없을 시"),
+    공지등록_실패("C006", "mypage.notice.create.fail", "마이페이지 공지등록 실패 시"),
+
+    //마이페이지 공지사항 수정
+    공지수정_성공("0", "mypage.notice.edit.success", "마이페이지 공지수정 성공 시"),
+    공지수정_요청회원번호_회원아님("-1", "mypage.notice.edit.member.number.error", "요청회원번호가 회원 아닐 시"),
+    공지수정_대상회원번호_회원아님("-2", "mypage.notice.edit.object.member.number.error", "대상회원번호가 회원 아닐 시"),
+    공지수정_권한없음("-3", "mypage.notice.edit.authorization.not", "공지수정 권한 없을 시"),
+    공지수정_잘못된공지번호("-4", "mypage.notice.edit.number.error", "공지번호가 잘못된 번호일 시"),
+    공지수정_실패("C006", "mypage.notice.edit.fail", "마이페이지 공지수정 실패 시"),
+
+    //마이페이지 공지사항 삭제
+    공지삭제_성공("0", "mypage.notice.delete.success", "마이페이지 공지삭제 성공 시"),
+    공지삭제_요청회원번호_회원아님("-1", "mypage.notice.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
+    공지삭제_대상회원번호_회원아님("-2", "mypage.notice.delete.object.member.number.error", "대상회원번호가 회원 아닐 시"),
+    공지삭제_권한없음("-3", "mypage.notice.delete.authorization.not", "공지삭제 권한 없을 시"),
+    공지삭제_잘못된공지번호("-4", "mypage.notice.delete.number.error", "공지번호가 잘못된 번호일 시"),
+    공지삭제_실패("C006", "mypage.notice.delete.fail", "마이페이지 공지삭제 실패 시"),
+
+    //마이페이지 공지사항 조회
+    공지조회_성공("C001", "mypage.notice.select.success", "마이페이지 공지조회 성공 시"),
+    공지조회_없음("0", "mypage.notice.select.no", "공지사항 없을 시"),
+    공지조회_요청회원번호_회원아님("-1", "mypage.notice.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    공지조회_대상회원번호_회원아님("-2", "mypage.notice.select.object.member.number.error", "대상회원번호가 회원 아닐 시"),
+    공지조회_실패("C006", "mypage.notice.select.fail", "마이페이지 공지조회 실패 시"),
 
     ;
 

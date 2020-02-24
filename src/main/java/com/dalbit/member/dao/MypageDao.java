@@ -2,6 +2,7 @@ package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.procedure.P_MemberShortCutVo;
+import com.dalbit.member.vo.procedure.P_MypageNoticeSelectVo;
 import com.dalbit.member.vo.procedure.P_NotificationVo;
 import org.springframework.stereotype.Repository;
 
@@ -24,4 +25,9 @@ public interface MypageDao {
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
     ProcedureVo callMemberGiftRuby(ProcedureVo procedureVo);
     List<P_NotificationVo> callMemberNotification(ProcedureVo procedureVo);
+    ProcedureVo callMypageNoticeAdd(ProcedureVo procedureVo);
+    ProcedureVo callMypageNoticeEdit(ProcedureVo procedureVo);
+    ProcedureVo callMypageNoticeDel(ProcedureVo procedureVo);
+
+    List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
 }

@@ -7,6 +7,7 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.BroadBasicOutVo;
 import com.dalbit.member.vo.MemberShortCutOutVo;
+import com.dalbit.member.vo.MypageNoticeListOutVo;
 import com.dalbit.member.vo.NotificationOutVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
@@ -417,6 +418,122 @@ public class MypageService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 마이페이지 공지사항 등록
+     */
+    public String callMypageNoticeAdd(P_MypageNoticeAddVo pMypageNoticeAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeAddVo);
+        mypageDao.callMypageNoticeAdd(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.공지등록_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
+        }else if(procedureVo.getRet().equals(Status.공지등록_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지등록_대상회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_대상회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지등록_권한없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_권한없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+        }
+
+        return result;
+
+    }
+
+
+    /**
+     * 마이페이지 공지사항 수정
+     */
+    public String callMypageNoticeEdit(P_MypageNoticeEditVo pMypageNoticeEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeEditVo);
+        mypageDao.callMypageNoticeEdit(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.공지수정_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
+        }else if(procedureVo.getRet().equals(Status.공지수정_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지수정_대상회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_대상회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지수정_권한없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_권한없음));
+        }else if(procedureVo.getRet().equals(Status.공지수정_잘못된공지번호.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_잘못된공지번호));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 마이페이지 공지사항 삭제
+     */
+    public String callMypageNoticeDel(P_MypageNoticeDelVo pMypageNoticeDelVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeDelVo);
+        mypageDao.callMypageNoticeDel(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.공지삭제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_성공));
+        }else if(procedureVo.getRet().equals(Status.공지삭제_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지삭제_대상회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_대상회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지삭제_권한없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_권한없음));
+        }else if(procedureVo.getRet().equals(Status.공지삭제_잘못된공지번호.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_잘못된공지번호));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 마이페이지 공지사항 조회
+     */
+    public String callMypageNoticeSelect(P_MypageNoticeSelectVo pMypagNoticeSelectVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypagNoticeSelectVo);
+        List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(mypageNoticeListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<mypageNoticeListVo.size(); i++){
+                outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap mypageNoticeList = new HashMap();
+        mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
+        mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, mypageNoticeList));
+        } else if (procedureVo.getRet().equals(Status.공지조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음));
+        } else if (procedureVo.getRet().equals(Status.공지조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_요청회원번호_회원아님));
+        } else if (procedureVo.getRet().equals(Status.공지조회_대상회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_대상회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
         }
         return result;
     }
