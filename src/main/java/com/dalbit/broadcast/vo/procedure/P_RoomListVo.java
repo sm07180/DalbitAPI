@@ -49,4 +49,8 @@ public class P_RoomListVo{
     private String guest_publish_tokenid;  //guest 토큰아이디
     private String guest_play_tokenid;     //guest play토큰
 
+    private int badge_recomm;                   //추천뱃지
+    private int badge_popular;                  //인기뱃지
+    private int badge_newdj;                    //신입뱃지
+
 }

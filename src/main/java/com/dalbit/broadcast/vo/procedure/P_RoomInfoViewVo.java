@@ -39,4 +39,7 @@ public class P_RoomInfoViewVo {
     private int guest_age;                  //게스트 나이대
     private Object guest_profileImage;      //게스트프로필이미지
     private String ext;
+    private int badge_recomm;                   //추천뱃지
+    private int badge_popular;                  //인기뱃지
+    private int badge_newdj;                    //신입뱃지
 }

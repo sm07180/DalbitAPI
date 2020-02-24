@@ -45,6 +45,9 @@ public class RoomOutVo {
     private String grade;
     private int rubyCnt;
     private int goldCnt;
+    private Boolean isRecomm;
+    private Boolean isPop;
+    private Boolean isNew;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -71,6 +74,9 @@ public class RoomOutVo {
         this.gstGender = target.getGuest_memSex();
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());
         this.gstProfImg = new ImageVo(target.getGuest_profileImage(), target.getGuest_memSex(), DalbitUtil.getProperty("server.photo.url"));
+        this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
+        this.isPop = (target.getBadge_popular() == 1) ? true : false;
+        this.isNew = (target.getBadge_newdj() == 1 ? true : false);
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {
@@ -97,6 +103,9 @@ public class RoomOutVo {
         this.gstGender = target.getGuest_memSex();
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());
         this.gstProfImg = new ImageVo(target.getGuest_profileImage(), target.getGuest_memSex(), DalbitUtil.getProperty("server.photo.url"));
+        this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
+        this.isPop = (target.getBadge_popular() == 1) ? true : false;
+        this.isNew = (target.getBadge_newdj() == 1 ? true : false);
 
         HashMap resultMap = new Gson().fromJson(target.getExt(), HashMap.class);
         this.level = DalbitUtil.getIntMap(resultMap, "level");
