@@ -271,8 +271,6 @@ public class RoomService {
                 }
                 //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
-            }else{
-
             }
 
             HashMap returnMap = new HashMap();
