@@ -1560,7 +1560,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgyNTIxMTU4LCJleHAiOjE1ODUxMTMxNTh9.XoGMGEPx3J1HZtvr1AVlm3l7JGVI9mckgISnu5KjuIA",
 												"type": "text"
 											},
 											{
@@ -1574,7 +1574,7 @@
 											"urlencoded": [
 												{
 													"key": "memNo",
-													"value": "11581573459470",
+													"value": "11581579183705",
 													"description": "* 대상회원번호",
 													"type": "text"
 												},
@@ -1591,7 +1591,7 @@
 													"type": "text"
 												},
 												{
-													"key": "topFix",
+													"key": "isTop",
 													"value": "1",
 													"description": "* 상단고정여부 ( 0: 일반, 1:상단고정)",
 													"type": "text"
@@ -1622,13 +1622,12 @@
 										"header": [
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
 												"value": "application/x-www-form-urlencoded",
 												"type": "text"
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgyNTIxMTU4LCJleHAiOjE1ODUxMTMxNTh9.XoGMGEPx3J1HZtvr1AVlm3l7JGVI9mckgISnu5KjuIA",
 												"type": "text"
 											},
 											{
@@ -1642,31 +1641,31 @@
 											"urlencoded": [
 												{
 													"key": "memNo",
-													"value": "11581573459470",
+													"value": "11581579183705",
 													"description": "* 대상회원번호",
 													"type": "text"
 												},
 												{
+													"key": "noticeIdx",
+													"value": "9",
+													"description": "* 공지사항번호",
+													"type": "text"
+												},
+												{
 													"key": "title",
-													"value": "마이페이지 공지사항 수정",
+													"value": "수정테스트",
 													"description": "* 공지 제목",
 													"type": "text"
 												},
 												{
 													"key": "contents",
-													"value": "마이페이지 공지사항 수정내용.",
+													"value": "수정내용",
 													"description": "* 공지 내용",
 													"type": "text"
 												},
 												{
-													"key": "noticeIdx",
-													"value": "3",
-													"description": "* 공지사항번호",
-													"type": "text"
-												},
-												{
-													"key": "topFix",
-													"value": "1",
+													"key": "isTop",
+													"value": "false",
 													"description": "* 상단고정여부 ( 0: 일반, 1:상단고정)",
 													"type": "text"
 												}
@@ -1696,19 +1695,18 @@
 										"header": [
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
-												"type": "text",
-												"value": "application/x-www-form-urlencoded"
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
 											},
 											{
 												"key": "authToken",
-												"type": "text",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4"
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgyNTIxMTU4LCJleHAiOjE1ODUxMTMxNTh9.XoGMGEPx3J1HZtvr1AVlm3l7JGVI9mckgISnu5KjuIA",
+												"type": "text"
 											},
 											{
 												"key": "custom-header",
-												"type": "text",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
 											}
 										],
 										"body": {
@@ -1716,20 +1714,20 @@
 											"urlencoded": [
 												{
 													"key": "memNo",
-													"value": "11581573459470",
+													"value": "11581579183705",
 													"description": "* 대상회원번호",
 													"type": "text"
 												},
 												{
 													"key": "noticeIdx",
-													"value": "3",
+													"value": "6",
 													"description": "* 공지사항번호",
 													"type": "text"
 												}
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notice/delete",
+											"raw": "https://devapi2.dalbitcast.com/mypage/notice",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -1738,8 +1736,7 @@
 											],
 											"path": [
 												"mypage",
-												"notice",
-												"delete"
+												"notice"
 											]
 										}
 									},
@@ -1752,23 +1749,22 @@
 										"header": [
 											{
 												"key": "Content-Type",
-												"name": "Content-Type",
-												"type": "text",
-												"value": "application/x-www-form-urlencoded"
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
 											},
 											{
 												"key": "authToken",
-												"type": "text",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4"
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgyNTIxMTU4LCJleHAiOjE1ODUxMTMxNTh9.XoGMGEPx3J1HZtvr1AVlm3l7JGVI9mckgISnu5KjuIA",
+												"type": "text"
 											},
 											{
 												"key": "custom-header",
-												"type": "text",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notice/select?memNo=11581579183705&page=1&records=10",
+											"raw": "https://devapi2.dalbitcast.com/mypage/notice?memNo=11581579183705&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -1777,21 +1773,23 @@
 											],
 											"path": [
 												"mypage",
-												"notice",
-												"select"
+												"notice"
 											],
 											"query": [
 												{
 													"key": "memNo",
-													"value": "11581579183705"
+													"value": "11581579183705",
+													"description": "* 대상회원번호"
 												},
 												{
 													"key": "page",
-													"value": "1"
+													"value": "1",
+													"description": "페이지번호"
 												},
 												{
 													"key": "records",
-													"value": "10"
+													"value": "10",
+													"description": "페이지당 리스트 수"
 												}
 											]
 										}
@@ -2139,7 +2137,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3OTE4MzcwNUB0cnVlIiwiaWF0IjoxNTgxNjY4OTQ1LCJleHAiOjE1ODQxNzQ1NDV9.cR3sLkXLQF4Z747s9dGcrAjDazW1NvhvzFQMKvDCtOA",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTkyMDEwNTM5N0B0cnVlIiwiaWF0IjoxNTgyNTE4NTE2LCJleHAiOjE1ODUxMTA1MTZ9.79HPMolV_waGeR1IdlrS5DarsfOu8spe6sqCRY_5ZD4",
 												"type": "text"
 											},
 											{
@@ -2158,7 +2156,7 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/listeners?roomNo=91581579368921&page=1&records=5",
+											"raw": "https://devapi2.dalbitcast.com/broad/listeners?roomNo=91578893643149&page=1&records=5",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -2172,7 +2170,7 @@
 											"query": [
 												{
 													"key": "roomNo",
-													"value": "91581579368921"
+													"value": "91578893643149"
 												},
 												{
 													"key": "page",
