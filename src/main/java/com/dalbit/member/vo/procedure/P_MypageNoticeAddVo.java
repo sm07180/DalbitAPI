@@ -9,7 +9,7 @@ import lombok.Setter;
 public class P_MypageNoticeAddVo {
 
     public P_MypageNoticeAddVo(MypageNoticeAddVo mypageNoticeAddVo){
-        int topFix = (mypageNoticeAddVo.getTopFix().equals("1") || mypageNoticeAddVo.getTopFix().toUpperCase().equals("TRUE")) ? 1 : 0;
+        int topFix = (mypageNoticeAddVo.getIsTop().equals("1") || mypageNoticeAddVo.getIsTop().toUpperCase().equals("TRUE")) ? 1 : 0;
 
         setMem_no(MemberVo.getMyMemNo());
         setTarget_mem_no(mypageNoticeAddVo.getMemNo());

@@ -329,7 +329,7 @@ public class MypageController {
     /**
      * 마이페이지 공지사항 삭제
      */
-    @DeleteMapping("/notice/delete")
+    @DeleteMapping("/notice")
     public String noticeDel(@Valid MypageNoticeDelVo mypageNoticeDelVo, BindingResult bindingResult) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeDelVo apiData = new P_MypageNoticeDelVo(mypageNoticeDelVo);
@@ -342,8 +342,8 @@ public class MypageController {
     /**
      * 마이페이지 공지사항 조회
      */
-    @GetMapping("/notice/select")
-    public String noticeSelete(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult) throws GlobalException{
+    @GetMapping("/notice")
+    public String notice(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeSelectVo apiData = new P_MypageNoticeSelectVo(mypageNoticeSelectVo);
 

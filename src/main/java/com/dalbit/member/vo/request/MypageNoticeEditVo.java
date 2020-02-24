@@ -18,5 +18,5 @@ public class MypageNoticeEditVo {
     @NotNull
     private Integer noticeIdx;
 
-    private String topFix;
+    private String isTop;
 }

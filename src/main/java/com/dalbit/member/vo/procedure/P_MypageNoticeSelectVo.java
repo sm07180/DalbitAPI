@@ -15,15 +15,6 @@ import java.util.Date;
 public class P_MypageNoticeSelectVo {
 
     public P_MypageNoticeSelectVo(){}
-
-    /*public P_MypageNoticeSelectVo(java.lang.Long a, java.lang.String b, java.lang.String c, java.lang.Boolean d, java.sql.Timestamp e){
-        log.debug("a : {}", a);
-        log.debug("b : {}", b);
-        log.debug("c : {}", c);
-        log.debug("d : {}", d);
-        log.debug("e : {}", e);
-    }*/
-
     public P_MypageNoticeSelectVo(MypageNoticeSelectVo mypageNoticeSelectVo){
         int pageNo = DalbitUtil.isEmpty(mypageNoticeSelectVo.getPage()) ? 1 : mypageNoticeSelectVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mypageNoticeSelectVo.getRecords()) ? 10 : mypageNoticeSelectVo.getRecords();

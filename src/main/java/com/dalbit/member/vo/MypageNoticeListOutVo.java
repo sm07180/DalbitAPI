@@ -11,7 +11,7 @@ public class MypageNoticeListOutVo {
     private Long noticeIdx;
     private String title;
     private String contents;
-    private boolean topFix;
+    private boolean isTop;
     private String writeDt;
     private Long writeTs;
 
@@ -19,7 +19,7 @@ public class MypageNoticeListOutVo {
         setNoticeIdx(target.getNoticeIdx());
         setTitle(target.getTitle());
         setContents(target.getContents());
-        setTopFix(target.getTopFix() == 1 ? true : false);
+        setTop(target.getTopFix() == 1 ? true : false);
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
     }

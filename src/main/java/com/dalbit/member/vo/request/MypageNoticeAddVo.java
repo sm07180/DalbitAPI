@@ -15,5 +15,5 @@ public class MypageNoticeAddVo {
     @NotBlank
     private String contents;
 
-    private String topFix;
+    private String isTop;
 }
