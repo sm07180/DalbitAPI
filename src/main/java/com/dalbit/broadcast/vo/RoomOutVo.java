@@ -77,6 +77,8 @@ public class RoomOutVo {
         this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
         this.isPop = (target.getBadge_popular() == 1) ? true : false;
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
+        this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {
@@ -106,6 +108,8 @@ public class RoomOutVo {
         this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
         this.isPop = (target.getBadge_popular() == 1) ? true : false;
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
+        this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
 
         HashMap resultMap = new Gson().fromJson(target.getExt(), HashMap.class);
         this.level = DalbitUtil.getIntMap(resultMap, "level");

@@ -42,4 +42,5 @@ public class P_RoomInfoViewVo {
     private int badge_recomm;                   //추천뱃지
     private int badge_popular;                  //인기뱃지
     private int badge_newdj;                    //신입뱃지
+
 }
