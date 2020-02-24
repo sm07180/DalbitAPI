@@ -260,18 +260,7 @@ public class RoomService {
         }
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomEditVo);
-        roomDao.callBroadCastRoomEdit(procedureVo);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("roomType", pRoomEditVo.getSubjectType());
-        returnMap.put("title", pRoomEditVo.getTitle());
-        returnMap.put("welcomMsg", pRoomEditVo.getWelcomMsg());
-        returnMap.put("bgImg", new ImageVo(pRoomEditVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
-        returnMap.put("bgImgRacy", pRoomEditVo.getBackgroundImageGrade());
+        P_RoomEditOutVo pRoomEditOutVo = roomDao.callBroadCastRoomEdit(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
@@ -282,7 +271,17 @@ public class RoomService {
                 }
                 //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
+            }else{
+
             }
+
+            HashMap returnMap = new HashMap();
+            returnMap.put("roomType", pRoomEditOutVo.getRoomNo());
+            returnMap.put("title", pRoomEditOutVo.getTitle());
+            returnMap.put("welcomMsg", pRoomEditOutVo.getMsg_welcom());
+            returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_회원아님));

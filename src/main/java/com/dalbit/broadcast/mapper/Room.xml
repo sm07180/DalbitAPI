@@ -14,7 +14,7 @@
       call sp_broadcast_room_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callBroadCastRoomEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callBroadCastRoomEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_RoomEditOutVo">
       call sp_broadcast_room_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
