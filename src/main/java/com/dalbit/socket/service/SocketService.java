@@ -108,7 +108,7 @@ public class SocketService {
         String memNo = MemberVo.getMyMemNo();
         String roomNo = DalbitUtil.convertRequestParamToString(request,"roomNo");
         String message = DalbitUtil.convertRequestParamToString(request,"message");
-        String authToken = DalbitUtil.getAuthToken(request, SSO_HEADER_COOKIE_NAME);
+        String authToken = DalbitUtil.getAuthToken(request);
         memNo = memNo == null ? "" : memNo.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(message) && !"".equals(authToken)){
