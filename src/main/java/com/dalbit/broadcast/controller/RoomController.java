@@ -289,14 +289,10 @@ public class RoomController {
      * 방송방 상태 변경
      */
     @PostMapping("/state")
-    public String roomStateUpdate(@Valid StateVo stateVo, BindingResult bindingResult) throws GlobalException{
+    public String roomStateUpdate(@Valid StateVo stateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
-        P_RoomStateUpdateVo apiData = new P_RoomStateUpdateVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setRoom_no(stateVo.getRoomNo());
-        apiData.setState(stateVo.getState());
 
-        return roomService.callBroadCastRoomStateUpate(apiData);
+        return roomService.callBroadCastRoomStateUpate(stateVo, request);
     }
 }

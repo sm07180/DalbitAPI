@@ -1,11 +1,16 @@
 package com.dalbit.socket.service;
 
+import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.vo.procedure.P_RoomMemberInfoVo;
+import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -24,36 +30,30 @@ public class SocketService {
     @Value("${socket.port}")
     private String SERVER_SOCKET_PORT;
 
-    @Value("${sso.header.cookie.name}")
-    private String SSO_HEADER_COOKIE_NAME;
+    @Value("${socket.send.url}")
+    private String SERVER_SOCKET_URL;
 
-    public Map<String, Object> sendSocketApi(String authToken, String url_path, String params, int method) {
+    @Value("${socket.global.room}")
+    private String SERVER_SOCKET_GLOBAL_ROOM;
+
+    @Autowired
+    RoomDao roomDao;
+
+    public Map<String, Object> sendSocketApi(String authToken, String roomNo, String params) {
         HttpURLConnection con = null;
         URL url = null;
-        String method_str = "GET";
         String result = "";
-
-        if(method == 1){
-            method_str = "POST";
-        }else if(method == 2){
-            method_str = "DELETE";
-        }else if(method == 3){
-            method_str = "PUT";
-        }
 
         params = StringUtils.defaultIfEmpty(params, "").trim();
 
-        String request_uri = "https://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + url_path;
-        if(method != 1 && !"".equals(params)){
-            request_uri += "?" + params;
-        }
+        String request_uri = "https://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + SERVER_SOCKET_URL + roomNo;
 
         try{
             url = new URL(request_uri);
             con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod(method_str);
+            con.setRequestMethod("POST");
             con.setRequestProperty("x-custom-header", authToken);
-            if(method == 1 && !"".equals(params)){
+            if(!"".equals(params)){
                 //con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 con.setDoInput(true);
@@ -112,25 +112,65 @@ public class SocketService {
         memNo = memNo == null ? "" : memNo.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(message) && !"".equals(authToken)){
-            String socketUrl = "/api/chatroom/sendmessage/" + roomNo;
-            StringBuffer params = new StringBuffer();
-            params.append("command=");
-            params.append("chat");
-            params.append("&message=");
-            params.append(message);
-            params.append("&memNo=");
-            params.append(memNo);
-            params.append("&isFan=");
-            params.append(true);
-            params.append("&roomRole=");
-            params.append(1);
-            params.append("&roomRight=");
-            params.append("111111111");
-            params.append("&recvMemNo=");
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            log.debug("send vo : " + vo.toString());
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("chat");
+            vo.setMessage(message);
 
-            return sendSocketApi(authToken, socketUrl, params.toString(), 1);
+            log.debug("send message : " + vo.toString());
+            Map<String, Object> result = sendSocketApi(authToken, roomNo, vo.toString());
+            log.debug("send result : " + result.toString());
+
+            return result;
         }
 
         return null;
     }
+
+    public Map<String, Object> changeRoomState(String roomNo, String memNo, boolean isMic, boolean isCall, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = memNo == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+
+            String command = "reqMicOn";
+            if(isCall){ //통화중
+                command = "reqCalling";
+            }else if(!isMic){ // 마이크 오프
+                command = "reqMicOff";
+            }else if(isMic && !isCall){ //마이크는 켜져있는데 통화 종료
+                command = "reqEndCall";
+            }
+            vo.setCommand(command);
+            vo.setMessage("3");
+
+            return sendSocketApi(authToken, roomNo, vo.toString());
+        }
+
+        return null;
+    }
+
+    public SocketVo getSocketVo(String roomNo, String memNo){
+        P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
+        pRoomMemberInfoVo.setMem_no(memNo);
+        pRoomMemberInfoVo.setRoom_no(roomNo);
+        pRoomMemberInfoVo.setTarget_mem_no(memNo);
+
+        try{
+        ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
+            roomDao.callBroadCastRoomMemberInfo(procedureVo);
+
+            return new SocketVo(roomNo, memNo, new Gson().fromJson(procedureVo.getExt(), HashMap.class));
+        }catch(Exception e){e.getStackTrace();}
+        return null;
+    }
 }
+

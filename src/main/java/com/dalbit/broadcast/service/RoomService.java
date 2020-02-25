@@ -4,6 +4,7 @@ import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.RoomGiftHistoryOutVo;
 import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.StateVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
@@ -11,6 +12,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +39,8 @@ public class RoomService {
     RoomService roomService;
     @Autowired
     CommonService commonService;
+    @Autowired
+    SocketService socketService;
 
 
     /**
@@ -685,7 +690,18 @@ public class RoomService {
     /**
      * 방송방 상태 변경
      */
-    public String callBroadCastRoomStateUpate(P_RoomStateUpdateVo pRoomStateUpdateVo) {
+    public String callBroadCastRoomStateUpate(StateVo stateVo, HttpServletRequest request) {
+        P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
+        pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo());
+        pRoomStateUpdateVo.setRoom_no(stateVo.getRoomNo());
+        int state = 1;
+        if(stateVo.getIsCall()) {
+            state = 3;
+        }else if(!stateVo.getIsMic()){
+            state = 2;
+        }
+        pRoomStateUpdateVo.setState(state);
+
         ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
         roomDao.callBroadCastRoomStateUpate(procedureVo);
 
@@ -695,6 +711,9 @@ public class RoomService {
 
         String result="";
         if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
+            try{
+                socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(), stateVo.getIsMic(), stateVo.getIsCall(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
         } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));

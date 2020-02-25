@@ -13,6 +13,20 @@ public class StateVo {
 
     @NotBlank
     private String roomNo;
-    @NotNull @Min(1) @Max(3)
+
+    @NotNull
+    private boolean isMic;
+
+    @NotNull
+    private boolean isCall;
+
     private Integer state;
+
+    public boolean getIsMic(){
+        return this.isMic;
+    }
+
+    public boolean getIsCall(){
+        return this.isCall;
+    }
 }
