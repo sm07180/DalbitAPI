@@ -37,7 +37,8 @@ public class P_ProfileInfoVo {
     private int     fanCount;                   //팬으로 등록된 회원수
     private int     starCount;                  //스타로 등록된 회원수
     private int     enableFan;                  //팬등록 가눙여부(1: 가능)
-    private int     exp;                        //현재경험치
+    private int     exp;                        //현재 누적 경험치
+    private int     expBegin;                   //시작 경험치
     private int     expNext;                    //다음 레벨업 필요 경험치
     private String  grade;                      //등급
     private String  ruby;                       //루비

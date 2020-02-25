@@ -138,6 +138,7 @@ public class ActionService {
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+        /*returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));*/ //시작경험치 임시
         returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
         returnMap.put("lubyCnt", DalbitUtil.getIntMap(resultMap, "luby"));
         returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));

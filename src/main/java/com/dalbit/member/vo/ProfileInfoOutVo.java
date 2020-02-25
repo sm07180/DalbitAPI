@@ -29,6 +29,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private int     starCnt;
     private int     isFan;
     private int     exp;
+    private int     expBegin;
     private int     expNext;
     private String  grade;
     private int     rubyCnt;
@@ -53,11 +54,13 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isFan = target.getEnableFan();
         if(target_mem_no.equals(target.getMem_no())){
             this.exp = target.getExp();
+            this.expBegin = target.getExpBegin();
             this.expNext = target.getExpNext();
             this.rubyCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
             this.goldCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
         }else{
             this.exp = 0;
+            this.expBegin = 0;
             this.expNext = 0;
             this.rubyCnt = 0;
             this.goldCnt = 0;

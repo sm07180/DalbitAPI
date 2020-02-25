@@ -509,6 +509,7 @@ public class RoomService {
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+        returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));
         returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
         returnMap.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCount"));
         returnMap.put("starCnt", DalbitUtil.getIntMap(resultMap, "starCount"));
