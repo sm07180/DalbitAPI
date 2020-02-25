@@ -71,7 +71,7 @@ public class MypageService {
 
 
     /**
-     * 팬가입
+     * 팬등록
      */
     public String callFanstarInsert(P_FanstarInsertVo pFanstarInsertVo) {
         ProcedureVo procedureVo = new ProcedureVo(pFanstarInsertVo);
@@ -79,7 +79,7 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.팬등록성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공));
         } else if(procedureVo.getRet().equals(Status.팬등록_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_회원아님));
         } else if(procedureVo.getRet().equals(Status.팬등록_스타회원번호이상.getMessageCode())) {
@@ -102,7 +102,7 @@ public class MypageService {
 
         String result;
         if (procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공));
         } else if (procedureVo.getRet().equals(Status.팬해제_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제_회원아님));
         } else if (procedureVo.getRet().equals(Status.팬해제_스타회원번호이상.getMessageCode())) {

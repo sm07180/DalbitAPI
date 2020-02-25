@@ -187,6 +187,25 @@ public class UserController {
     }
 
 
+    /**
+     * 방송방 팬 등록
+     */
+    @PostMapping("/fan")
+    public String fanstarInsert(@Valid BroadFanstartInsertVo broadFanstartInsertVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_BroadFanstarInsertVo apiData = new P_BroadFanstarInsertVo();
+        apiData.setFan_mem_no(MemberVo.getMyMemNo());
+        apiData.setStar_mem_no(broadFanstartInsertVo.getMemNo());
+        apiData.setRoom_no(broadFanstartInsertVo.getRoomNo());
+
+        String result = userService.callFanstarInsert(apiData);
+
+        return result;
+    }
+
+
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
 
 

@@ -206,7 +206,7 @@ public class RoomController {
 
 
     /**
-     * 방송 정보조회
+     * 방송방 정보조회
      */
     @GetMapping("/info")
     public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult) throws GlobalException{

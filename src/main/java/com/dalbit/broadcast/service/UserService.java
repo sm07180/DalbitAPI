@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.service;
 
+import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.dao.UserDao;
 import com.dalbit.broadcast.vo.DevRoomVo;
 import com.dalbit.broadcast.vo.RoomMemberOutVo;
@@ -30,9 +31,22 @@ public class UserService {
     @Autowired
     UserDao userDao;
     @Autowired
+    RoomDao roomDao;
+    @Autowired
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
+    @Autowired
+    RoomService roomService;
+
+    public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
+        ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
+        pRoomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureVo);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+        return pRoomInfoViewVo;
+    }
 
 
     /**
@@ -311,6 +325,42 @@ public class UserService {
 
         return result;
     }
+
+    /**
+     * 방송방 팬 등록
+     */
+    public String callFanstarInsert(P_BroadFanstarInsertVo pBroadFanstarInsertVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadFanstarInsertVo);
+        userDao.callFanstarInsert(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.팬등록성공.getMessageCode())) {
+
+            //방 정보 조회
+            P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
+            apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+            apiData.setMem_no(pBroadFanstarInsertVo.getStar_mem_no());
+            apiData.setRoom_no(pBroadFanstarInsertVo.getRoom_no());
+
+            P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
+            if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
+                //TODO - 채팅방알림 Node call
+                log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
+            }
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공));
+        } else if(procedureVo.getRet().equals(Status.팬등록_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_회원아님));
+        } else if(procedureVo.getRet().equals(Status.팬등록_스타회원번호이상.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_스타회원번호이상));
+        } else if(procedureVo.getRet().equals(Status.팬등록_이미팬등록됨.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_이미팬등록됨));
+        } else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록실패));
+        }
+        return result;
+    }
+
 
 
     /* ######################## Native 연동에서만 필요한 부분 ########################## */

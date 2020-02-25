@@ -30,6 +30,10 @@
       call sp_broadcast_room_manager_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callFanstarInsert" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fanstar_insert(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 
 
     <select id="selectBjRoom" parameterType="String" resultType="com.dalbit.broadcast.vo.DevRoomVo">

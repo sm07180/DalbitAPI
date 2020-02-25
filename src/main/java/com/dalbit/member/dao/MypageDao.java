@@ -28,6 +28,5 @@ public interface MypageDao {
     ProcedureVo callMypageNoticeAdd(ProcedureVo procedureVo);
     ProcedureVo callMypageNoticeEdit(ProcedureVo procedureVo);
     ProcedureVo callMypageNoticeDel(ProcedureVo procedureVo);
-
     List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
 }
