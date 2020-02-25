@@ -465,7 +465,8 @@ public class DalbitUtil {
      * @return
      */
     public static LocalDateTime getUTC(Date dt){
-        return LocalDateTime.ofInstant(dt.toInstant(), ZoneId.of("UTC"));
+        //return LocalDateTime.ofInstant(dt.toInstant(), ZoneId.of("UTC"));
+        return dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
     /**
@@ -577,7 +578,8 @@ public class DalbitUtil {
         return getActiceProfile().equals(serverName);
     }
 
-    public static String getAuthToken(HttpServletRequest request, String name){
+    public static String getAuthToken(HttpServletRequest request){
+        String name = getProperty("sso.header.cookie.name");
         String authToken = request.getHeader(name);
         if(isEmpty(authToken)){
             CookieUtil cookieUtil = new CookieUtil(request);
