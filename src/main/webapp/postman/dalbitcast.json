@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "41fcb982-6c6b-48cb-98bb-f7dd3bac6fb1",
-		"name": "달빛라디오 API 정의서_2020.02.24",
+		"name": "달빛라디오 API 정의서_2020.02.25",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1795,6 +1795,114 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 내지갑 달 조회_2020.02.25",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQzMzM4OUB0cnVlIiwiaWF0IjoxNTgyNjA5NzUwLCJleHAiOjE1ODUyMDE3NTB9.0ae6l7HqyYzt0ZfnDZLpRWm32eBGxKvOXGy245Rhbm8",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/dal?walletType=0&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"dal"
+											],
+											"query": [
+												{
+													"key": "walletType",
+													"value": "0",
+													"description": "* 지갑타입 (0: 전체, 1:구매, 2:선물, 3:교환)"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 내지갑 별 조회_2020.02.25 ",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgyNjEwNDM0LCJleHAiOjE1ODUyMDI0MzR9.IxAbRtHmUqq-pokcEdz6_3KKu7V4lxgcwuz5cAZbri0",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/byeol?walletType=0&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"byeol"
+											],
+											"query": [
+												{
+													"key": "walletType",
+													"value": "0",
+													"description": "* 지갑타입 (0: 전체, 1:구매, 2:선물, 3:교환)"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -2936,56 +3044,6 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 방송방 순위 및 아이템사용 조회_2020.02.12",
-									"protocolProfileBehavior": {
-										"disableBodyPruning": true
-									},
-									"request": {
-										"method": "GET",
-										"header": [
-											{
-												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
-												"type": "text"
-											},
-											{
-												"key": "custom-header",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-												"type": "text"
-											},
-											{
-												"key": "Content-Type",
-												"value": "application/x-www-form-urlencoded",
-												"type": "text"
-											}
-										],
-										"body": {
-											"mode": "urlencoded",
-											"urlencoded": []
-										},
-										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/boost?roomNo=91581493968953",
-											"protocol": "https",
-											"host": [
-												"devapi2",
-												"dalbitcast",
-												"com"
-											],
-											"path": [
-												"broad",
-												"boost"
-											],
-											"query": [
-												{
-													"key": "roomNo",
-													"value": "91581493968953"
-												}
-											]
-										}
-									},
-									"response": []
-								},
-								{
 									"name": "[완료] 방송방 매니저 지정_2020.02.13",
 									"request": {
 										"method": "POST",
@@ -3201,6 +3259,56 @@
 									"response": []
 								},
 								{
+									"name": "[완료] 방송방 순위 및 아이템사용 조회_2020.02.12",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTQ4MDE3MEB0cnVlIiwiaWF0IjoxNTgwNzgxMDQ5LCJleHAiOjE1ODMyODY2NDl9.7bk5MfprRcEbggQm748gkQxFHZ6sF-k5blnMX5Q9k5I",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/broad/boost?roomNo=91581493968953",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"boost"
+											],
+											"query": [
+												{
+													"key": "roomNo",
+													"value": "91581493968953"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
 									"name": "[완료] 방송방 토큰 재생성",
 									"request": {
 										"method": "POST",
@@ -3297,6 +3405,60 @@
 											"path": [
 												"broad",
 												"state"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 팬 등록_2020.02.25",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzUzMjMyN0B0cnVlIiwiaWF0IjoxNTgxNTczNTMyLCJleHAiOjE1ODQwNzkxMzJ9.o_Ys3rubStTjG1KF3PqF17pB4Fr4X228VScyORK0fKk",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11581573459470",
+													"description": "* 스타회원번호",
+													"type": "text"
+												},
+												{
+													"key": "roomNo",
+													"value": "91582597115346",
+													"description": "* 방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/broad/fan",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"fan"
 											]
 										}
 									},
