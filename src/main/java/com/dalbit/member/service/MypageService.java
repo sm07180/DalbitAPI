@@ -5,10 +5,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
-import com.dalbit.member.vo.BroadBasicOutVo;
-import com.dalbit.member.vo.MemberShortCutOutVo;
-import com.dalbit.member.vo.MypageNoticeListOutVo;
-import com.dalbit.member.vo.NotificationOutVo;
+import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
@@ -160,8 +157,8 @@ public class MypageService {
         returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
         returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
-        returnMap.put("rubyCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
-        returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+        returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
+        returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
@@ -534,6 +531,82 @@ public class MypageService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_대상회원번호_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 내지갑 달 내역 조회
+     */
+    public String callMemberWalletDal(P_DalVo pDalVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pDalVo);
+        List<P_DalVo> dalListVo = mypageDao.callMemberWalletDal(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(dalListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<WalletDalListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<dalListVo.size(); i++){
+                outVoList.add(new WalletDalListOutVo(dalListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap mypageDalList = new HashMap();
+        mypageDalList.put("dalTotCnt", DalbitUtil.getIntMap(resultMap, "dal"));
+        mypageDalList.put("list", procedureOutputVo.getOutputBox());
+        mypageDalList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_성공, mypageDalList));
+        } else if (procedureVo.getRet().equals(Status.달사용내역조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_없음));
+        } else if (procedureVo.getRet().equals(Status.달사용내역조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 내지갑 별 내역 조회
+     */
+    public String callMemberWalletByeol(P_ByeolVo pByeolVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pByeolVo);
+        List<P_ByeolVo> byeolListVo = mypageDao.callMemberWalletByeol(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(byeolListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<WalletByeolListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<byeolListVo.size(); i++){
+                outVoList.add(new WalletByeolListOutVo(byeolListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap mypageByeolList = new HashMap();
+        mypageByeolList.put("byeolTotCnt", DalbitUtil.getIntMap(resultMap, "byeol"));
+        mypageByeolList.put("list", procedureOutputVo.getOutputBox());
+        mypageByeolList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_성공, mypageByeolList));
+        } else if (procedureVo.getRet().equals(Status.별사용내역조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_없음));
+        } else if (procedureVo.getRet().equals(Status.별사용내역조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_실패));
         }
         return result;
     }

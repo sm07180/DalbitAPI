@@ -461,6 +461,18 @@ public enum Status {
     공지조회_대상회원번호_회원아님("-2", "mypage.notice.select.object.member.number.error", "대상회원번호가 회원 아닐 시"),
     공지조회_실패("C006", "mypage.notice.select.fail", "마이페이지 공지조회 실패 시"),
 
+    //마이페이지 내지갑 달 사용내역 조회
+    달사용내역조회_성공("C001", "mypage.wallet.dal.select.success", "달 사용내역 조회 성공 시"),
+    달사용내역조회_없음("0","mypage.wallet.dal.select.no", "달 사용내역 없을 시"),
+    달사용내역조회_요청회원번호_회원아님("-1","mypage.wallet.dal.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    달사용내역조회_실패("C006", "mypage.wallet.dal.select.fail", "달 사용내역 조회 실패 시"),
+
+    //마이페이지 내지갑 별 사용내역 조회
+    별사용내역조회_성공("C001", "mypage.wallet.byeol.select.success", "별 사용내역 조회 성공 시"),
+    별사용내역조회_없음("0","mypage.wallet.byeol.select.no", "별 사용내역 없을 시"),
+    별사용내역조회_요청회원번호_회원아님("-1","mypage.wallet.byeol.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    별사용내역조회_실패("C006", "mypage.wallet.byeol.select.fail", "별 사용내역 조회 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";

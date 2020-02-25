@@ -343,7 +343,7 @@ public class MypageController {
      * 마이페이지 공지사항 조회
      */
     @GetMapping("/notice")
-    public String notice(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult) throws GlobalException{
+    public String noticeView(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeSelectVo apiData = new P_MypageNoticeSelectVo(mypageNoticeSelectVo);
 
@@ -351,4 +351,31 @@ public class MypageController {
 
         return result;
     }
+
+    /**
+     * 내지갑 달 내역 조회
+     */
+    @GetMapping("/dal")
+    public String dalView(@Valid DalVo dalVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_DalVo apiData = new P_DalVo(dalVo);
+
+        String result = mypageService.callMemberWalletDal(apiData);
+
+        return result;
+    }
+
+    /**
+     * 내지갑 별 내역 조회
+     */
+    @GetMapping("/byeol")
+    public String byeolView(@Valid ByeolVo byeolVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_ByeolVo apiData = new P_ByeolVo(byeolVo);
+
+        String result = mypageService.callMemberWalletByeol(apiData);
+
+        return result;
+    }
+
 }

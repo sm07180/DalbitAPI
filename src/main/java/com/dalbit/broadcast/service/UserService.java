@@ -238,8 +238,8 @@ public class UserService {
         returnMap.put("exp", profileInfoOutVo.getExp());
         returnMap.put("expNext", profileInfoOutVo.getExpNext());
         returnMap.put("grade", profileInfoOutVo.getGrade());
-        returnMap.put("rubyCnt", profileInfoOutVo.getRubyCnt());
-        returnMap.put("goldCnt", profileInfoOutVo.getGoldCnt());
+        returnMap.put("dalCnt", profileInfoOutVo.getDalCnt());
+        returnMap.put("byeolCnt", profileInfoOutVo.getByeolCnt());
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {

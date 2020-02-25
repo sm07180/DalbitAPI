@@ -43,8 +43,8 @@ public class RoomOutVo {
     private int exp;
     private int expNext;
     private String grade;
-    private int rubyCnt;
-    private int goldCnt;
+    private int dalCnt;
+    private int byeolCnt;
     private Boolean isRecomm;
     private Boolean isPop;
     private Boolean isNew;
@@ -116,7 +116,7 @@ public class RoomOutVo {
         this.grade = DalbitUtil.getStringMap(resultMap, "grade");
         this.exp = DalbitUtil.getIntMap(resultMap, "exp");
         this.expNext = DalbitUtil.getIntMap(resultMap, "expNext");
-        this.rubyCnt = DalbitUtil.getIntMap(resultMap, "ruby");
-        this.goldCnt = DalbitUtil.getIntMap(resultMap, "gold");
+        this.dalCnt = DalbitUtil.getIntMap(resultMap, "ruby");
+        this.byeolCnt = DalbitUtil.getIntMap(resultMap, "gold");
     }
 }

@@ -1,9 +1,7 @@
 package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.member.vo.procedure.P_MemberShortCutVo;
-import com.dalbit.member.vo.procedure.P_MypageNoticeSelectVo;
-import com.dalbit.member.vo.procedure.P_NotificationVo;
+import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +27,6 @@ public interface MypageDao {
     ProcedureVo callMypageNoticeEdit(ProcedureVo procedureVo);
     ProcedureVo callMypageNoticeDel(ProcedureVo procedureVo);
     List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
+    List<P_DalVo> callMemberWalletDal(ProcedureVo procedureVo);
+    List<P_ByeolVo> callMemberWalletByeol(ProcedureVo procedureVo);
 }

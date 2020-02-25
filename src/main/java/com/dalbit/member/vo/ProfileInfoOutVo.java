@@ -32,11 +32,15 @@ public class ProfileInfoOutVo extends BaseVo {
     private int     expBegin;
     private int     expNext;
     private String  grade;
-    private int     rubyCnt;
-    private int     goldCnt;
+    private int     dalCnt;
+    private int     byeolCnt;
     private Boolean isRecomm;
     private Boolean isPop;
     private Boolean isNew;
+    private String roomNo;
+    private long broadTotTime;
+    private long listenTotTime;
+    private int goodTotCnt;
     List fanRank;
 
     public ProfileInfoOutVo(){}
@@ -52,23 +56,27 @@ public class ProfileInfoOutVo extends BaseVo {
         this.fanCnt = target.getFanCount();
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
+        this.roomNo = target.getRoom_no();
         if(target_mem_no.equals(target.getMem_no())){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();
             this.expNext = target.getExpNext();
-            this.rubyCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
-            this.goldCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
+            this.dalCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
+            this.byeolCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
         }else{
             this.exp = 0;
             this.expBegin = 0;
             this.expNext = 0;
-            this.rubyCnt = 0;
-            this.goldCnt = 0;
+            this.dalCnt = 0;
+            this.byeolCnt = 0;
         }
         this.grade = target.getGrade();
         this.fanRank = fanRank;
         this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
         this.isPop = (target.getBadge_popular() == 1) ? true : false;
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.broadTotTime = target.getBroadcastingTime();
+        this.listenTotTime = target.getListeningTime();
+        this.goodTotCnt = target.getReceivedGoodTotal();
     }
 }

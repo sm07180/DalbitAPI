@@ -40,6 +40,7 @@ public class P_ProfileInfoVo {
     private int     exp;                        //현재 누적 경험치
     private int     expBegin;                   //시작 경험치
     private int     expNext;                    //다음 레벨업 필요 경험치
+    private String  room_no;                    //진행중인 방 번호
     private String  grade;                      //등급
     private String  ruby;                       //루비
     private String  gold;                       //골드
@@ -49,5 +50,8 @@ public class P_ProfileInfoVo {
     private int badge_recomm;                   //추천뱃지
     private int badge_popular;                  //인기뱃지
     private int badge_newdj;                    //신입뱃지
+    private long broadcastingTime;              //총 방송시간(초 단위)
+    private long listeningTime;                 //총 청취시간(초 단위)
+    private int receivedGoodTotal;              //총 좋아요 받은 수
 
 }

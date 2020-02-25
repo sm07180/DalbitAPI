@@ -103,8 +103,8 @@ public class RoomService {
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
             returnMap.put("expNext", target.getExpNext());
-            returnMap.put("rubyCnt", target.getRubyCnt());
-            returnMap.put("goldCnt", target.getGoldCnt());*/
+            returnMap.put("dalCnt", target.getRubyCnt());
+            returnMap.put("byeolCnt", target.getGoldCnt());*/
             procedureVo.setData(returnMap);
 
             if(isDone){
@@ -189,8 +189,8 @@ public class RoomService {
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
             returnMap.put("expNext", target.getExpNext());
-            returnMap.put("rubyCnt", target.getRubyCnt());
-            returnMap.put("goldCnt", target.getGoldCnt());*/
+            returnMap.put("dalCnt", target.getRubyCnt());
+            returnMap.put("byeolCnt", target.getGoldCnt());*/
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
             log.info("returnMap: {}",returnMap);
             procedureVo.setData(returnMap);
@@ -647,8 +647,8 @@ public class RoomService {
                     returnMap.put("grade", target.getGrade());
                     returnMap.put("exp", target.getExp());
                     returnMap.put("expNext", target.getExpNext());
-                    returnMap.put("rubyCnt", target.getRubyCnt());
-                    returnMap.put("goldCnt", target.getGoldCnt());*/
+                    returnMap.put("dalCnt", target.getRubyCnt());
+                    returnMap.put("byeolCnt", target.getGoldCnt());*/
                     returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
                     log.info("returnMap: {}", returnMap);
 

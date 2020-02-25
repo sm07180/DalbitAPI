@@ -78,4 +78,12 @@
         call sp_member_broadcast_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMemberWalletDal" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_DalVo">
+        call sp_member_wallet_dal(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMemberWalletByeol" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_ByeolVo">
+        call sp_member_wallet_byeol(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>
