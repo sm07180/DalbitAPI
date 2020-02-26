@@ -649,7 +649,7 @@ public class DalbitUtil {
         return _timeStr;
     }
 
-    public static String convertDate(String sDate, String sTime, String sFormatStr) {
+    public static String convertDateTime(String sDate, String sTime, String sFormatStr) {
         String dateStr = validChkDate(sDate);
         String timeStr = validChkTime(sTime);
 
@@ -660,6 +660,20 @@ public class DalbitUtil {
         cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateStr.substring(6, 8)));
         cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeStr.substring(0, 2)));
         cal.set(Calendar.MINUTE, Integer.parseInt(timeStr.substring(2, 4)));
+
+        SimpleDateFormat sdf = new SimpleDateFormat(sFormatStr, Locale.KOREA);
+
+        return sdf.format(cal.getTime());
+    }
+
+    public static String convertDate(String sDate, String sFormatStr) {
+        String dateStr = validChkDate(sDate);
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.YEAR, Integer.parseInt(dateStr.substring(0, 4)));
+        cal.set(Calendar.MONTH, Integer.parseInt(dateStr.substring(4, 6)) - 1);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateStr.substring(6, 8)));
 
         SimpleDateFormat sdf = new SimpleDateFormat(sFormatStr, Locale.KOREA);
 
