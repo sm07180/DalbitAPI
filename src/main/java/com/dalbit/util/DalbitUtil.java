@@ -609,4 +609,60 @@ public class DalbitUtil {
         return birth;
 
     }
+
+    public static String remove(String str, char remove) throws NullPointerException{
+        if (isEmpty(str) || str.indexOf(remove) == -1) {
+            return str;
+        }
+        char[] chars = str.toCharArray();
+        int pos = 0;
+        for (int i = 0; i < chars.length; i++) {
+            if (chars[i] != remove) {
+                chars[pos++] = chars[i];
+            }
+        }
+        return new String(chars, 0, pos);
+    }
+
+    public static String validChkDate(String dateStr) {
+        String _dateStr = dateStr;
+
+        if (dateStr == null || !(dateStr.trim().length() == 8 || dateStr.trim().length() == 10)) {
+            throw new IllegalArgumentException("Invalid date format: " + dateStr);
+        }
+        if (dateStr.length() == 10) {
+            _dateStr = remove(dateStr, '-');
+        }
+        return _dateStr;
+    }
+
+    public static String validChkTime(String timeStr) {
+        String _timeStr = timeStr;
+
+        if (_timeStr.length() == 5) {
+            _timeStr = remove(_timeStr, ':');
+        }
+        if (_timeStr == null || !(_timeStr.trim().length() == 4)) {
+            throw new IllegalArgumentException("Invalid time format: " + _timeStr);
+        }
+
+        return _timeStr;
+    }
+
+    public static String convertDate(String sDate, String sTime, String sFormatStr) {
+        String dateStr = validChkDate(sDate);
+        String timeStr = validChkTime(sTime);
+
+        Calendar cal = Calendar.getInstance();
+
+        cal.set(Calendar.YEAR, Integer.parseInt(dateStr.substring(0, 4)));
+        cal.set(Calendar.MONTH, Integer.parseInt(dateStr.substring(4, 6)) - 1);
+        cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateStr.substring(6, 8)));
+        cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeStr.substring(0, 2)));
+        cal.set(Calendar.MINUTE, Integer.parseInt(timeStr.substring(2, 4)));
+
+        SimpleDateFormat sdf = new SimpleDateFormat(sFormatStr, Locale.KOREA);
+
+        return sdf.format(cal.getTime());
+    }
 }
