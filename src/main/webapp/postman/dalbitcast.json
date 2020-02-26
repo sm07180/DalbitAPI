@@ -1903,6 +1903,136 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 리포트 방송내역 조회_2020.02.26",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzkzMTAyNzI4MEB0cnVlIiwiaWF0IjoxNTgyNzA1MzI1LCJleHAiOjE1ODUyOTczMjV9.ZndB-xjJFxvdC2XyMLbNv9A-16J2VrtDRivx7kI_Ri0",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/report/broad?dateType=3&startDt=20200201&endDt=20200226&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"report",
+												"broad"
+											],
+											"query": [
+												{
+													"key": "dateType",
+													"value": "3",
+													"description": "* 날짜검색타입 (0: 오늘, 1: 어제, 2: 최근7일, 3: 월간, 4:기간지정)"
+												},
+												{
+													"key": "startDt",
+													"value": "20200201",
+													"description": "* 기간지정 검색시작일자"
+												},
+												{
+													"key": "endDt",
+													"value": "20200226",
+													"description": "* 기간지정 검색종료일자"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 리포트 청취내역 조회_2020.02.26",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3ODUzMTQxODg2MEB0cnVlIiwiaWF0IjoxNTgyNzA2OTg2LCJleHAiOjE1ODUyOTg5ODZ9.mSV-EClwNGo9LYjK346SoTG5tbWOi3I_WI4VUPICjLo",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/report/listen?dateType=3&startDt=20200201&endDt=20200226&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"report",
+												"listen"
+											],
+											"query": [
+												{
+													"key": "dateType",
+													"value": "3",
+													"description": "* 날짜검색타입 (0: 오늘, 1: 어제, 2: 최근7일, 3: 월간, 4:기간지정)"
+												},
+												{
+													"key": "startDt",
+													"value": "20200201",
+													"description": "* 검색시작일자"
+												},
+												{
+													"key": "endDt",
+													"value": "20200226",
+													"description": "* 검색종료일자"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
