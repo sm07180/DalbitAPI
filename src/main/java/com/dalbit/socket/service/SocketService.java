@@ -121,7 +121,7 @@ public class SocketService {
             vo.setMessage(message);
 
             log.debug("send message : " + vo.toString());
-            Map<String, Object> result = sendSocketApi(authToken, roomNo, vo.toString());
+            Map<String, Object> result = sendSocketApi(authToken, roomNo, vo.toQueryString());
             log.debug("send result : " + result.toString());
 
             return result;
@@ -152,7 +152,7 @@ public class SocketService {
             vo.setCommand(command);
             vo.setMessage("3");
 
-            return sendSocketApi(authToken, roomNo, vo.toString());
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
 
         return null;
@@ -168,7 +168,7 @@ public class SocketService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
             roomDao.callBroadCastRoomMemberInfo(procedureVo);
 
-            return new SocketVo(roomNo, memNo, new Gson().fromJson(procedureVo.getExt(), HashMap.class));
+            return new SocketVo(memNo, new Gson().fromJson(procedureVo.getExt(), HashMap.class));
         }catch(Exception e){e.getStackTrace();}
         return null;
     }

@@ -18,7 +18,7 @@ public class SocketVo {
     private String recvMemNo;
 
 
-    public SocketVo(String roomNo, String memNo, HashMap memInfo){
+    public SocketVo(String memNo, HashMap memInfo){
         if(memInfo != null){
             this.memNo = memNo;
             this.isFan = "0".equals(DalbitUtil.getStringMap(memInfo, "enableFan"));
@@ -31,7 +31,7 @@ public class SocketVo {
         this.message = message.toString();
     }
 
-    public String getQueryString(){
+    public String toQueryString(){
         StringBuffer qs = new StringBuffer();
         qs.append("command=");
         qs.append(this.command);
