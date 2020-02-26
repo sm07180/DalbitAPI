@@ -25,7 +25,7 @@ public class RoomOutVo {
     private int state;
     private String link;
     private int entryCnt;
-    private int goodCnt;
+    private int likeCnt;
     private String startDt;
     private long startTs;
     private String bjMemNo;
@@ -61,7 +61,7 @@ public class RoomOutVo {
         this.state = target.getState();
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
-        this.goodCnt = target.getCount_good();
+        this.likeCnt = target.getCount_good();
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();
@@ -92,7 +92,7 @@ public class RoomOutVo {
         this.state = target.getState();
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
-        this.goodCnt = target.getCount_good();
+        this.likeCnt = target.getCount_good();
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();

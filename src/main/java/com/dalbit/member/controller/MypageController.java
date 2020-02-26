@@ -378,4 +378,30 @@ public class MypageController {
         return result;
     }
 
+    /**
+     * 마이페이지 리포트 방송내역 보기
+     */
+    @GetMapping("/report/broad")
+    public String reportBroadView(@Valid MypageReportBroadVo mypageReportBroadVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MypageReportBroadVo apiData = new P_MypageReportBroadVo(mypageReportBroadVo);
+
+        String result = mypageService.callMypageMypageReportBroad(apiData);
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 리포트 청취내역 보기
+     */
+    @GetMapping("/report/listen")
+    public String reportListenView(@Valid MypageReportListenVo mypageReportListenVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MypageReportListenVo apiData = new P_MypageReportListenVo(mypageReportListenVo);
+
+        String result = mypageService.callMypageMypageReportListen(apiData);
+
+        return result;
+    }
+
 }

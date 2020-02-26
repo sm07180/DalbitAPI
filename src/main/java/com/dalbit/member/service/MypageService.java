@@ -610,4 +610,77 @@ public class MypageService {
         }
         return result;
     }
+
+
+    /**
+     *  마이페이지 리포트 방송내역 보기
+     */
+    public String callMypageMypageReportBroad(P_MypageReportBroadVo pMypageReportBroadVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageReportBroadVo);
+        List<P_MypageReportBroadVo> reportBoradListVo = mypageDao.callMypageMypageReportBroad(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(reportBoradListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<MypageReportBroadListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<reportBoradListVo.size(); i++){
+                outVoList.add(new MypageReportBroadListOutVo(reportBoradListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap reportBroadList = new HashMap();
+        reportBroadList.put("list", procedureOutputVo.getOutputBox());
+        reportBroadList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_성공, reportBroadList));
+        } else if (procedureVo.getRet().equals(Status.방송내역조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_없음));
+        } else if (procedureVo.getRet().equals(Status.방송내역조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_실패));
+        }
+        return result;
+    }
+
+    /**
+     *  마이페이지 리포트 청취내역 보기
+     */
+    public String callMypageMypageReportListen(P_MypageReportListenVo pMypageReportListenVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageReportListenVo);
+        List<P_MypageReportListenVo> reportListenListVo = mypageDao.callMypageMypageReportListen(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(reportListenListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<MypageReportListenListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<reportListenListVo.size(); i++){
+                outVoList.add(new MypageReportListenListOutVo(reportListenListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap reportListenList = new HashMap();
+        reportListenList.put("list", procedureOutputVo.getOutputBox());
+        reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_성공, reportListenList));
+        } else if (procedureVo.getRet().equals(Status.청취내역조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_없음));
+        } else if (procedureVo.getRet().equals(Status.청취내역조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_실패));
+        }
+        return result;
+    }
 }

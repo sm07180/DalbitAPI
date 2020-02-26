@@ -40,7 +40,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private String roomNo;
     private long broadTotTime;
     private long listenTotTime;
-    private int goodTotCnt;
+    private int likeTotCnt;
     List fanRank;
 
     public ProfileInfoOutVo(){}
@@ -77,6 +77,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
-        this.goodTotCnt = target.getReceivedGoodTotal();
+        this.likeTotCnt = target.getReceivedGoodTotal();
     }
 }

@@ -29,4 +29,6 @@ public interface MypageDao {
     List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
     List<P_DalVo> callMemberWalletDal(ProcedureVo procedureVo);
     List<P_ByeolVo> callMemberWalletByeol(ProcedureVo procedureVo);
+    List<P_MypageReportBroadVo> callMypageMypageReportBroad(ProcedureVo procedureVo);
+    List<P_MypageReportListenVo> callMypageMypageReportListen(ProcedureVo procedureVo);
 }

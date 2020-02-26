@@ -473,6 +473,18 @@ public enum Status {
     별사용내역조회_요청회원번호_회원아님("-1","mypage.wallet.byeol.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     별사용내역조회_실패("C006", "mypage.wallet.byeol.select.fail", "별 사용내역 조회 실패 시"),
 
+    //마이페이지 방송내역 조회
+    방송내역조회_성공("C001", "mypage.broadcast.report.select.success", "방송내역 조회 성공 시"),
+    방송내역조회_없음("0","mypage.broadcast.report.select.no", "방송내역 없을 시"),
+    방송내역조회_요청회원번호_회원아님("-1","mypage.broadcast.report.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    방송내역조회_실패("C006", "mypage.broadcast.report.select.fail", "방송내역 조회 실패 시"),
+
+    //마이페이지 청취내역 조회
+    청취내역조회_성공("C001", "mypage.listen.report.select.success", "청취내역 조회 성공 시"),
+    청취내역조회_없음("0","mypage.listen.report.select.no", "청취내역 없을 시"),
+    청취내역조회_요청회원번호_회원아님("-1","mypage.listen.report.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    청취내역조회_실패("C006", "mypage.listen.report.select.fail", "청취내역 조회 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";
