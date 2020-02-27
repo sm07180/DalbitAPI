@@ -12,7 +12,7 @@ public class P_RubyVo {
     public P_RubyVo(RubyVo rubyVo){
         setMem_no(MemberVo.getMyMemNo());
         setGifted_mem_no(rubyVo.getMemNo());
-        setRuby(rubyVo.getRuby());
+        setRuby(rubyVo.getDal());
     }
 
     private String mem_no;

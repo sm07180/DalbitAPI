@@ -12,5 +12,5 @@ public class RubyVo {
     @NotBlank
     private String memNo;
     @NotNull
-    private int ruby;
+    private int dal;
 }
