@@ -113,7 +113,6 @@ public class RoomService {
             procedureVo.setData(returnMap);
 
             if(isDone){
-                //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송생성, procedureVo.getData()));
@@ -285,7 +284,6 @@ public class RoomService {
                 if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                     delImg = null;
                 }
-                //TODO - 이미지 서버 오류 시 처리 -> GlobalException으로 throw
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
             }
 
