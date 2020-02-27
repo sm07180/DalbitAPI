@@ -17,7 +17,7 @@ public class MypageReportListenListOutVo {
     private String bjNickNm;
     private int giftDalCnt;
     private int byeolCnt;
-    private int listentime;
+    private int listenTime;
     private Boolean isGuest;
 
     public MypageReportListenListOutVo(){}
@@ -29,7 +29,7 @@ public class MypageReportListenListOutVo {
         setEndDt(DalbitUtil.getUTCFormat(target.getEnd_date()));
         setEndTs(DalbitUtil.getUTCTimeStamp(target.getEnd_date()));
         setBjNickNm(target.getDj_nickname());
-        setListentime(target.getListentime());
+        setListenTime(target.getListentime());
         setGiftDalCnt(target.getGift_ruby());
         setByeolCnt(target.getGold());
         setIsGuest(target.getGuest() == 1 ? true : false);
