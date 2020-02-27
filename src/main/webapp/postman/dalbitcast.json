@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "41fcb982-6c6b-48cb-98bb-f7dd3bac6fb1",
-		"name": "달빛라디오 API 정의서_2020.02.25",
+		"name": "달빛라디오 API 정의서_2020.02.27",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1423,9 +1423,9 @@
 													"type": "text"
 												},
 												{
-													"key": "ruby",
+													"key": "dal",
 													"value": "10",
-													"description": "* 선물하는 루비 수",
+													"description": "* 선물하는 달 수",
 													"type": "text"
 												}
 											]
@@ -3517,9 +3517,15 @@
 													"type": "text"
 												},
 												{
-													"key": "state",
-													"value": "1",
-													"description": "* 상태값 (1: 마이크 on, 2: 마이크 off, 3:통화중)",
+													"key": "isMic",
+													"value": "True",
+													"description": "*  마이크 on/off ( on: True, off: False)",
+													"type": "text"
+												},
+												{
+													"key": "isCall",
+													"value": "False",
+													"description": "* 통화중 여부 (통화중: True, 미통화중: False)",
 													"type": "text"
 												}
 											]
