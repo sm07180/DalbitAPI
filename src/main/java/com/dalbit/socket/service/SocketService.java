@@ -150,7 +150,10 @@ public class SocketService {
                 command = "reqEndCall";
             }
             vo.setCommand(command);
-            vo.setMessage("3");
+            vo.setMessage(vo.getAuth() + "");
+            vo.setRecvPosition("top1");
+            vo.setRecvLevel(3);
+            vo.setRecvType("system");
 
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }

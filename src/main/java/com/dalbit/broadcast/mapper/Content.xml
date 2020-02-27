@@ -7,23 +7,23 @@
     </select>
 
     <select id="callBroadCastRoomNoticeEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_broadcast_room_notice_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callBroadCastRoomNoticeDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_broadcast_room_notice_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callBroadCastRoomStoryAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_broadcast_room_story_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callBroadCastRoomStoryList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_broadcast_room_story_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callBroadCastRoomStoryDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_broadcast_room_story_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callInsertStory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
