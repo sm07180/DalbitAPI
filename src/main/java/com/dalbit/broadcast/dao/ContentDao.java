@@ -11,9 +11,6 @@ public interface ContentDao {
         ProcedureVo callBroadCastRoomNoticeSelect(ProcedureVo procedureVo);
         ProcedureVo callBroadCastRoomNoticeEdit(ProcedureVo procedureVo);
         ProcedureVo callBroadCastRoomNoticeDelete(ProcedureVo procedureVo);
-        ProcedureVo callBroadCastRoomStoryAdd(ProcedureVo procedureVo);
-        ProcedureVo callBroadCastRoomStoryList(ProcedureVo procedureVo);
-        ProcedureVo callBroadCastRoomStoryDelete(ProcedureVo procedureVo);
         ProcedureVo callInsertStory(ProcedureVo procedureVo);
         List<P_RoomStoryListVo> callGetStory(ProcedureVo procedureVo);
         ProcedureVo callDeletetStory(ProcedureVo procedureVo);
