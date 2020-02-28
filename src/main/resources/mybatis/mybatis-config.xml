@@ -14,6 +14,9 @@
 		<typeAlias type="com.dalbit.common.vo.ProcedureVo" alias="ProcedureVo" />
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
 
+		<typeAlias type="com.dalbit.main.vo.procedure.P_MainFanRankingVo" alias="P_MainFanRankingVo" />
+		<typeAlias type="com.dalbit.main.vo.procedure.P_MainDjRankingVo" alias="P_MainDjRankingVo" />
+
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomListVo" alias="P_RoomListVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo" alias="P_RoomInfoViewVo" />
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo" alias="P_RoomMemberListVo" />

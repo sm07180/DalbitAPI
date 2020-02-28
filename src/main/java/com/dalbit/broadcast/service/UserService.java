@@ -36,8 +36,6 @@ public class UserService {
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
-    @Autowired
-    RoomService roomService;
 
     public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);

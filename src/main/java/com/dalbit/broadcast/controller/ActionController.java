@@ -11,9 +11,7 @@ import com.dalbit.broadcast.vo.request.GoodVo;
 import com.dalbit.broadcast.vo.request.ShareLinkVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,10 +27,6 @@ public class ActionController {
 
     @Autowired
     private ActionService actionService;
-    @Autowired
-    GsonUtil gsonUtil;
-    @Autowired
-    RestService restService;
 
     /**
      * 방송방 좋아요 추가

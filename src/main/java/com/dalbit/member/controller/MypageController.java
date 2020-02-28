@@ -2,7 +2,6 @@ package com.dalbit.member.controller;
 
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
-import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
@@ -23,8 +22,6 @@ public class MypageController {
 
     @Autowired
     MypageService mypageService;
-    @Autowired
-    ProfileService profileService;
 
     /**
      * 본인 정보 조회
