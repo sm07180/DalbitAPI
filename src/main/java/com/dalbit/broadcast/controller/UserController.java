@@ -161,12 +161,12 @@ public class UserController {
      * 매니저지정
      */
     @PostMapping("/manager")
-    public String managerAdd(@Valid ManagerAddVo managerAddVo, BindingResult bindingResult) throws GlobalException{
+    public String managerAdd(@Valid ManagerAddVo managerAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_ManagerAddVo apiData = new P_ManagerAddVo(managerAddVo);
-        String result = userService.callBroadCastRoomManagerAdd(apiData);
+        String result = userService.callBroadCastRoomManagerAdd(apiData, request);
 
         return result;
     }
@@ -176,12 +176,12 @@ public class UserController {
      * 매니저취소
      */
     @DeleteMapping("/manager")
-    public String managerDel(@Valid ManagerDelVo managerDelVo, BindingResult bindingResult) throws GlobalException{
+    public String managerDel(@Valid ManagerDelVo managerDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_ManagerDelVo apiData = new P_ManagerDelVo(managerDelVo);
-        String result = userService.callBroadCastRoomManagerDel(apiData);
+        String result = userService.callBroadCastRoomManagerDel(apiData, request);
 
         return result;
     }

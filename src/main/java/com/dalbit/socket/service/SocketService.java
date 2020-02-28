@@ -75,6 +75,7 @@ public class SocketService {
 
         }
 
+        log.debug("Socket Result {}, {}, {}", roomNo, params, result);
         return new Gson().fromJson(result, Map.class);
     }
 
@@ -158,6 +159,17 @@ public class SocketService {
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
 
+        return null;
+    }
+
+    public Map<String, Object> changeManager(String roomNo, String memNo, boolean isManager, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = memNo == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+
+        }
         return null;
     }
 
