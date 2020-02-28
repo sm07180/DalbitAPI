@@ -145,7 +145,7 @@ public class SocketService {
             String command = "reqMicOn";
             if(isCall){ //통화중
                 command = "reqCalling";
-            }else if(!isMic){ // 마이크 오프
+            }else if(isMic){ // 마이크 오프
                 command = "reqMicOff";
             }else if(isMic && !isCall){ //마이크는 켜져있는데 통화 종료
                 command = "reqEndCall";
