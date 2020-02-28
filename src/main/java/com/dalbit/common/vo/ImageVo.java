@@ -1,6 +1,7 @@
 package com.dalbit.common.vo;
 
 import com.dalbit.common.code.Code;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,21 +14,20 @@ public class ImageVo extends BaseVo{
     public ImageVo(){}
 
     public ImageVo(Object path, String photoServerUrl){
-        if(path != null){
+        if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
             setPath(path.toString(), photoServerUrl);
         }
     }
 
     public ImageVo(Object path, String gender, String photoServerUrl){
-        if(gender != null){
-            if(path == null){
-                this.url = photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode()+"/"+Code.프로필이미지_파일명_PREFIX.getCode()+gender+".jpg";
+        if(DalbitUtil.isEmpty(path) || DalbitUtil.isEmpty(path.toString())){
+            if(!DalbitUtil.isEmpty(gender)) {
+                this.url = photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + ".jpg";
                 setThumbs();
-            }else{
-                setPath(path.toString(), photoServerUrl);
             }
+        }else{
+            setPath(path.toString(), photoServerUrl);
         }
-
     }
 
     private String url;
