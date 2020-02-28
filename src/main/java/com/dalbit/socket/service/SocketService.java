@@ -162,13 +162,20 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeManager(String roomNo, String memNo, boolean isManager, String authToken){
+    public Map<String, Object> changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = memNo == null ? "" : authToken.trim();
 
-        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-
+        if(!"".equals(memNo) && !"".equals(menagerMemNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqGrant");
+            vo.setMessage(isManager ? "1" : "0");
+            vo.setRecvMemNo(menagerMemNo);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
     }

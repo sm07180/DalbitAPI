@@ -11,8 +11,10 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -20,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,6 +39,8 @@ public class UserService {
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
+    @Autowired
+    SocketService socketService;
 
     public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
@@ -256,7 +261,7 @@ public class UserService {
     /**
      * 매니저지정
      */
-    public String callBroadCastRoomManagerAdd(P_ManagerAddVo pManagerAddVo) {
+    public String callBroadCastRoomManagerAdd(P_ManagerAddVo pManagerAddVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pManagerAddVo);
         userDao.callBroadCastRoomManagerAdd(procedureVo);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -265,6 +270,9 @@ public class UserService {
 
         String result;
         if (procedureVo.getRet().equals(Status.매니저지정_성공.getMessageCode())) {
+            try{
+                socketService.changeManager(pManagerAddVo.getRoom_no(), MemberVo.getMyMemNo(), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_성공));
         } else if (procedureVo.getRet().equals(Status.매니저지정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_회원아님));
@@ -293,7 +301,7 @@ public class UserService {
     /**
      * 매니저취소
      */
-    public String callBroadCastRoomManagerDel(P_ManagerDelVo pManagerDelVo) {
+    public String callBroadCastRoomManagerDel(P_ManagerDelVo pManagerDelVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pManagerDelVo);
         userDao.callBroadCastRoomManagerDel(procedureVo);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -302,6 +310,9 @@ public class UserService {
 
         String result;
         if (procedureVo.getRet().equals(Status.매니저취소_성공.getMessageCode())) {
+            try{
+                socketService.changeManager(pManagerDelVo.getRoom_no(), MemberVo.getMyMemNo(), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_성공));
         } else if (procedureVo.getRet().equals(Status.매니저취소_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_회원아님));
