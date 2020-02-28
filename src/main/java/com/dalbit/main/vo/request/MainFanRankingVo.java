@@ -1,11 +1,9 @@
 package com.dalbit.main.vo.request;
 
-import com.sun.istack.internal.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
+import javax.validation.constraints.*;
 
 @Getter @Setter
 public class MainFanRankingVo {
