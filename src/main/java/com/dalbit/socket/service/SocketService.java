@@ -182,6 +182,23 @@ public class SocketService {
         return null;
     }
 
+    public Map<String, Object> sendRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = memNo == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqGrant");
+            vo.setMessage(roomInfo);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
     public SocketVo getSocketVo(String roomNo, String memNo){
         P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
         pRoomMemberInfoVo.setMem_no(memNo);

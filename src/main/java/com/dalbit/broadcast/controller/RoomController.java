@@ -104,7 +104,7 @@ public class RoomController {
         apiData.setDeviceUuid(deviceVo.getDeviceUuid());
         apiData.setOs(deviceVo.getOs());
 
-        String result = roomService.callBroadCastRoomJoin(apiData);
+        String result = roomService.callBroadCastRoomJoin(apiData, request);
 
         return result;
     }
@@ -114,7 +114,7 @@ public class RoomController {
      * 방송방 나가기 (종료)
      */
     @DeleteMapping("/exit")
-    public String roomExit(@Valid RoomExitVo roomExitVo, BindingResult bindingResult) throws GlobalException{
+    public String roomExit(@Valid RoomExitVo roomExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -123,29 +123,10 @@ public class RoomController {
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(roomExitVo.getRoomNo());
 
-        String result = roomService.callBroadCastRoomExit(apiData);
+        String result = roomService.callBroadCastRoomExit(apiData, request);
 
         return result;
     }
-
-
-    /**
-     * 임의 삭제
-     */
-    @DeleteMapping("/exitForce")
-    @Profile("local")
-    public String roomDelete(HttpServletRequest request){
-        String roomNo = DalbitUtil.convertRequestParamToString(request, "roomNo");
-        P_RoomExitVo apiData = new P_RoomExitVo();
-        apiData.setMemLogin(1);
-        apiData.setMem_no(DalbitUtil.convertRequestParamToString(request, "memNo"));
-        apiData.setRoom_no(roomNo);
-
-        String result = roomService.callBroadCastRoomExit(apiData);
-
-        return result;
-    }
-
 
     /**
      * 방송 정보수정

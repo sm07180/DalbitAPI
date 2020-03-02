@@ -15,18 +15,10 @@ public class StateVo {
     private String roomNo;
 
     @NotNull
-    private boolean isMic;
+    private String isMic;
 
     @NotNull
-    private boolean isCall;
+    private String isCall;
 
     private Integer state;
-
-    public boolean getIsMic(){
-        return this.isMic;
-    }
-
-    public boolean getIsCall(){
-        return this.isCall;
-    }
 }
