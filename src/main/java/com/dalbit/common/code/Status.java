@@ -222,6 +222,13 @@ public enum Status {
     방정보보기_해당방없음("-2", "broadcast.room.info.view.room.no", "해당 방이 없을 시"),
     방정보보기_실패("C006", "broadcast.room.info.view.fail", "방송방 정보 보기 실패 시"),
 
+    //방송진행여부체크
+    방송진행여부체크_방송방없음("0", "broadcasting.none.success", "방송중인 방이없음"),
+    방송진행여부체크_방송중("1", "broadcasting.ing.success", "방송중"),
+    방송진행여부체크_비정상("2", "broadcasting.disconnect.success", "비정상종료된 방송 존재"),
+    방송진행여부체크_요청회원아님("-1", "broadcasting.member.no", "요청회원이 아님"),
+    방송진행여부체크_실페("C006", "broadcasting.fail", "방송중인 방이없음"),
+
     //방송방 사연 등록
     방송방사연등록성공("0", "broadcast.room.story.add.success", "방송방 사연 등록 성공 시"),
     방송방사연등록_회원아님("-1", "broadcast.room.story.add.no", "방송방 사연 등록 회원이 아닐 시"),

@@ -431,7 +431,25 @@ public class RoomService {
         pMemberBroadcastingCheckVo.setMem_no(MemberVo.getMyMemNo());
         ProcedureVo procedureVo = new ProcedureVo(pMemberBroadcastingCheckVo);
         roomDao.callMemberBroadcastingCheck(procedureVo);
-        return "";
+        String result = "";
+        if(Status.방송진행여부체크_방송방없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송방없음));
+        }else if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("roomNo", DalbitUtil.getStringMap(resultMap, "roomNo"));
+            returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
+            if(DalbitUtil.getIntMap(resultMap, "state") == 5){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_비정상, returnMap));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송중, returnMap));
+            }
+        }else if(Status.방송진행여부체크_요청회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_요청회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회실패));
+        }
+        return result;
     }
 
     /**

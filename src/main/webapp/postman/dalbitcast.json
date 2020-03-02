@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "41fcb982-6c6b-48cb-98bb-f7dd3bac6fb1",
+		"_postman_id": "3313abde-651e-4d22-b589-5e94fede6905",
 		"name": "달빛라디오 API 정의서_2020.02.28",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3595,6 +3595,39 @@
 											"path": [
 												"broad",
 												"fan"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "진행중인 방송방 확인",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMTQ2ODk4MUB0cnVlIiwiaWF0IjoxNTgzMTIyMzE5LCJleHAiOjE1ODU3MTQzMTl9.ehStUtKZXbdbaVniUc8cxe3PQZw4B9dFDRq6D-rU43M",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":\"3\",\"locale\":\"ko-KR\",\"deviceId\":\"1749adb8-be9f-4e79-9e13-c417872ab321\",\"hybridApp\":\"N\",\"browserName\":\"Chrome\",\"language\":\"ko-KR\",\"deviceToken\":\"make_custom_header\",\"appVersion\":\"1.0.1\",\"appVer\":\"1.0.0.0\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com:4431/broad/check",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"broad",
+												"check"
 											]
 										}
 									},

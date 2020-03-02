@@ -276,4 +276,12 @@ public class RoomController {
 
         return roomService.callBroadCastRoomStateUpate(stateVo, request);
     }
+
+    /**
+     * 회원 방송진행여부 체크
+     */
+    @GetMapping("/check")
+    public String checkBroadcasting() throws GlobalException {
+        return roomService.callMemberBroadcastingCheck();
+    }
 }
