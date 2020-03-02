@@ -690,42 +690,58 @@ public class RoomService {
      * 방송방 상태 변경
      */
     public String callBroadCastRoomStateUpate(StateVo stateVo, HttpServletRequest request) {
-        P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
-        pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo());
-        pRoomStateUpdateVo.setRoom_no(stateVo.getRoomNo());
-        int state = 1;
-        if(stateVo.getIsCall()) {
-            state = 3;
-        }else if(!stateVo.getIsMic()){
-            state = 2;
-        }
-        pRoomStateUpdateVo.setState(state);
-
-        ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
-        roomDao.callBroadCastRoomStateUpate(procedureVo);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+        pRoomInfoViewVo.setMem_no(MemberVo.getMyMemNo());
+        pRoomInfoViewVo.setRoom_no(stateVo.getRoomNo());
+        ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
 
         String result="";
-        if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
-            try{
-                socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(), stateVo.getIsMic(), stateVo.getIsCall(), DalbitUtil.getAuthToken(request));
-            }catch(Exception e){}
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_해당방이없음));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_방이종료되었음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_방이종료되었음));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방소속아님));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방장아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방장아님));
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_실패));
+        if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+            RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();
+            int old_state = target.getState();
+            P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
+            pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo());
+            pRoomStateUpdateVo.setRoom_no(stateVo.getRoomNo());
+            int state = 1;
+            if(stateVo.getIsCall()) {
+                state = 3;
+            }else if(!stateVo.getIsMic()){
+                state = 2;
+            }
+            pRoomStateUpdateVo.setState(state);
+
+            ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
+            roomDao.callBroadCastRoomStateUpate(procedureVo);
+
+            log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+            log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+            log.info(" ### 프로시저 호출결과 ###");
+
+            if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
+                try{
+                    socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(), old_state, state, DalbitUtil.getAuthToken(request));
+                }catch(Exception e){}
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+            } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));
+            } else if (procedureVo.getRet().equals(Status.방송방상태변경_해당방이없음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_해당방이없음));
+            } else if (procedureVo.getRet().equals(Status.방송방상태변경_방이종료되었음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_방이종료되었음));
+            } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방소속아님));
+            } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방장아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방장아님));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_실패));
+            }
+        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
+        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
         }
 
         return result;

@@ -131,7 +131,7 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, boolean isMic, boolean isCall, String authToken){
+    public Map<String, Object> changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = memNo == null ? "" : authToken.trim();
@@ -143,10 +143,14 @@ public class SocketService {
             }
 
             String command = "reqMicOn";
-            if(isCall){ //통화중
+            if(state == 3){ //통화중
                 command = "reqCalling";
-            }else if(isMic == false){ // 마이크 오프
+            }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
+            }else{
+                if(old_state == 3){
+                    command = "reqEndCall";
+                }
             }
             vo.setCommand(command);
             vo.setMessage(vo.getAuth() + "");
