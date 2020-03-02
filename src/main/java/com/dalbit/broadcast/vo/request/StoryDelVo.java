@@ -13,4 +13,7 @@ public class StoryDelVo {
     private String roomNo;
     @NotNull
     private Integer storyIdx;
+
+    private Integer page;
+    private Integer records;
 }

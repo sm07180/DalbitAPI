@@ -8,6 +8,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -154,9 +155,9 @@ public class ContentService {
 
 
     /**
-     * 방송방 사연 조회
+     * 방송방 조회
      */
-    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo) {
+    public ProcedureOutputVo callGetStoryList(P_RoomStoryListVo pRoomStoryListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryListVo);
         List<P_RoomStoryListVo> storyVoList = contentDao.callGetStory(procedureVo);
 
@@ -170,6 +171,15 @@ public class ContentService {
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
+        return procedureOutputVo;
+    }
+
+    /**
+     * 방송방 사연 조회
+     */
+    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo) {
+
+        ProcedureOutputVo procedureOutputVo = callGetStoryList(pRoomStoryListVo);
         HashMap storyList = new HashMap();
         storyList.put("list", procedureOutputVo.getOutputBox());
         storyList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
@@ -211,7 +221,25 @@ public class ContentService {
         String result;
 
         if(Status.방송방사연삭제성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제성공));
+
+            //사연 목록 재조회
+            P_RoomStoryListVo pRoomStoryListVo = new P_RoomStoryListVo();
+            pRoomStoryListVo.setMem_no(MemberVo.getMyMemNo());
+            pRoomStoryListVo.setRoom_no(pRoomStoryDeleteVo.getRoom_no());
+            pRoomStoryListVo.setPageNo(pRoomStoryDeleteVo.getPage());
+            pRoomStoryListVo.setPageCnt(pRoomStoryDeleteVo.getRecords());
+
+            ProcedureOutputVo procedureOutputVo = callGetStoryList(pRoomStoryListVo);
+            HashMap storyList = new HashMap();
+            storyList.put("list", procedureOutputVo.getOutputBox());
+            storyList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
+
+            log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
+            log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
+            log.info(" ### 프로시저 호출결과 ###");
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제성공, storyList));
+
         }else if(Status.방송방사연삭제_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_회원아님));
         }else if(Status.방송방사연삭제_해당방이없음.getMessageCode().equals(procedureVo.getRet())){

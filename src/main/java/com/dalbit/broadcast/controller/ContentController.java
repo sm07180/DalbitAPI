@@ -124,10 +124,15 @@ public class ContentController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
+        int page = DalbitUtil.isEmpty(storyDelVo.getPage()) ? 1 : storyDelVo.getPage();
+        int records = DalbitUtil.isEmpty(storyDelVo.getRecords()) ? 10 : storyDelVo.getRecords();
+
         P_RoomStoryDeleteVo apiData = new P_RoomStoryDeleteVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(storyDelVo.getRoomNo());
         apiData.setStory_idx(storyDelVo.getStoryIdx());
+        apiData.setPage(page);
+        apiData.setRecords(records);
 
         String result = contentService.callDeleteStory(apiData);
 
