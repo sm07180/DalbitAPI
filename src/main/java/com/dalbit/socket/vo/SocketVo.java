@@ -1,6 +1,7 @@
 package com.dalbit.socket.vo;
 
 import com.dalbit.util.DalbitUtil;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -73,7 +74,8 @@ public class SocketVo {
     }
 
     public void setMessage(Object message){
-        this.message = message.toString();
+        this.message = new Gson().toJson(message);
+        //this.message = message;
     }
 
     public String toQueryString(){
