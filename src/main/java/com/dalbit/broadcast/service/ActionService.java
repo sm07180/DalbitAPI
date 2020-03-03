@@ -166,15 +166,17 @@ public class ActionService {
         String result="";
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
             try{
+                HashMap itemMap = new HashMap();
+                itemMap.put("itemNo", pRoomGiftVo.getItem_no());
+                itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), itemMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
                 socketService.changeCount(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
-                HashMap itemMap = new HashMap();
-                itemMap.put("itemNo", pRoomGiftVo.getItem_no());
-                itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
-                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), itemMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
         }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
