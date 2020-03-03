@@ -33,4 +33,5 @@ public interface MypageDao {
     List<P_MypageReportListenVo> callMypageMypageReportListen(ProcedureVo procedureVo);
     ProcedureVo callgetBanWord(ProcedureVo procedureVo);
     ProcedureVo callInsertBanWord(ProcedureVo procedureVo);
+    List<P_SearchUserVo> callSearchUser(ProcedureVo procedureVo);
 }

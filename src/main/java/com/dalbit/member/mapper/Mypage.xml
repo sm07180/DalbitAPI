@@ -101,4 +101,9 @@
     <select id="callInsertBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_member_broadcast_banword_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callSearchUser" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_SearchUserVo">
+      call sp_member_broadcast_search(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

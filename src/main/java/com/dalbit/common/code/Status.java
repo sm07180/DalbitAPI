@@ -505,16 +505,22 @@ public enum Status {
     메인_DJ랭킹조회_요청회원_회원아님("-1", "main.dj.ranking.member.number.error", "요청회원번호가 회원 아닐 시"),
     메인_DJ랭킹조회_실패("C006", "main.dj.ranking.select.fail", "DJ 랭킹 조회 실패 시"),
 
-    //방송설정 금지어 조회
-    금지어조회_성공("0", "broadcast.ban.word.select.success", "금지어 조회 성공 시"),
-    금지어조회_요청번호_회원아님("-1", "broadcast.ban.word.select.member.number.error", "요청회원번호가 회원 아닐 시"),
-    금지어조회_실패("C006", "broadcast.ban.word.select.fail", "금지어 조회 실패 시"),
+    //마이페이지 방송설정 금지어 조회
+    금지어조회_성공("0", "mypage.broadcast.ban.word.select.success", "금지어 조회 성공 시"),
+    금지어조회_요청번호_회원아님("-1", "mypage.broadcast.ban.word.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    금지어조회_실패("C006", "mypage.broadcast.ban.word.select.fail", "금지어 조회 실패 시"),
 
-    //방송설정 금지어 저장
-    금지어저장_성공("0", "broadcast.ban.word.save.success", "금지어 저장 성공 시"),
-    금지어저장_요청번호_회원아님("-1", "broadcast.ban.word.save.member.number.error", "요청회원번호가 회원 아닐 시"),
-    금지어저장_초과("-2", "broadcast.ban.word.save.limit", "금지어 저장 100개 초과 시"),
-    금지어저장_실패("C006", "broadcast.ban.word.save.fail", "금지어 저장 실패 시"),
+    //마이페이지 방송설정 금지어 저장
+    금지어저장_성공("0", "mypage.broadcast.ban.word.save.success", "금지어 저장 성공 시"),
+    금지어저장_요청번호_회원아님("-1", "mypage.broadcast.ban.word.save.member.number.error", "요청회원번호가 회원 아닐 시"),
+    금지어저장_초과("-2", "mypage.broadcast.ban.word.save.limit", "금지어 저장 100개 초과 시"),
+    금지어저장_실패("C006", "mypage.broadcast.ban.word.save.fail", "금지어 저장 실패 시"),
+
+    //마이페이지 방송설정 유저 검색
+    유저검색_성공("C001", "mypage.broadcast.search.user.success", "유저 검색 성공 시"),
+    유저검색_요청회원번호_회원아님("-1", "mypage.broadcast.search.user.member.number.error","요청회원번호가 회원 아닐 시"),
+    유저검색_실패("C006", "mypage.broadcast.search.user.fail", "유저 검색 실패 시"),
+
 
     ;
 

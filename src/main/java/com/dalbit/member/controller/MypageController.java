@@ -430,4 +430,17 @@ public class MypageController {
         return result;
     }
 
+    /**
+     * 방송설정 유저 검색
+     */
+    @GetMapping("/search")
+    public String searchUser(@Valid SearchUserVo searchUserVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_SearchUserVo apiData = new P_SearchUserVo(searchUserVo);
+        String result = mypageService.callSearchUser(apiData);
+
+        return result;
+    }
+
 }

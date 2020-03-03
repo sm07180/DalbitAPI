@@ -742,6 +742,40 @@ public class MypageService {
         }
 
         return result;
+    }
 
+
+    /**
+     * 방송설정 유저 검색
+     */
+    public String callSearchUser(P_SearchUserVo pSearchUserVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pSearchUserVo);
+        List<P_SearchUserVo> searchUserListVo = mypageDao.callSearchUser(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(searchUserListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<SearchUserOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<searchUserListVo.size(); i++){
+                outVoList.add(new SearchUserOutVo(searchUserListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap reportListenList = new HashMap();
+        reportListenList.put("list", procedureOutputVo.getOutputBox());
+        reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_성공, reportListenList));
+        } else if (procedureVo.getRet().equals(Status.유저검색_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_실패));
+        }
+        return result;
     }
 }
