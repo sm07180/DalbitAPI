@@ -46,7 +46,7 @@ public class Procedure_MemberTest {
             log.info(gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, procedureVo.getData())));
 
         }else {
-            log.info(gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림, procedureVo.getData())));
+            log.info(gsonUtil.toJson(new JsonOutputVo(Status.로그인오류, procedureVo.getData())));
         }
 
         Assert.assertEquals(Status.로그인성공.getMessageCode(), procedureVo.getRet());

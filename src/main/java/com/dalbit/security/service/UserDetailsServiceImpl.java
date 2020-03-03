@@ -109,36 +109,40 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
-        }
 
-        MemberVo paramMemberVo = new MemberVo();
-        paramMemberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));
-        paramMemberVo.setMemSlct(DalbitUtil.getStringMap(map, "memType"));
+        }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
+            MemberVo paramMemberVo = new MemberVo();
+            paramMemberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));
+            paramMemberVo.setMemSlct(DalbitUtil.getStringMap(map, "memType"));
 
-        ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
+            ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
 
-        MemberVo memberVo = null;
-        if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            MemberVo memberVo = null;
+            if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
 
-            P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-            memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, null));
-            memberVo.setMemSlct(DalbitUtil.getStringMap(map, "memType"));
-            memberVo.setMemPasswd(DalbitUtil.getStringMap(map, "memPwd"));
+                P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
+                memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, null));
+                memberVo.setMemSlct(DalbitUtil.getStringMap(map, "memType"));
+                memberVo.setMemPasswd(DalbitUtil.getStringMap(map, "memPwd"));
+            }else{
+                throw new CustomUsernameNotFoundException(Status.로그인오류);
+            }
+
+            //todo - 프로시저에 관리자 구분 추가되어야함. 임시로 특정 아이디에 관리자 권한 부여
+            //boolean isAdmin = memberVo.getMemSlct().equals("m");
+            boolean isAdmin = DalbitUtil.isEmpty(DalbitUtil.isEmpty(memberVo) || DalbitUtil.isEmpty(memberVo.getMemId())) ? false : memberVo.getMemId().equals("huhazv74");
+
+            SecurityUserVo securityUserVo = new SecurityUserVo(
+                    memberVo.getMemId()
+                    , memberVo.getMemPasswd()
+                    , isAdmin ? DalbitUtil.getAdminAuthorities() : DalbitUtil.getAuthorities());
+            securityUserVo.setMemberVo(memberVo);
+
+            return securityUserVo;
+
         }else{
-            new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+            throw new CustomUsernameNotFoundException(Status.로그인오류);
         }
-
-        //todo - 프로시저에 관리자 구분 추가되어야함. 임시로 특정 아이디에 관리자 권한 부여
-        //boolean isAdmin = memberVo.getMemSlct().equals("m");
-        boolean isAdmin = DalbitUtil.isEmpty(DalbitUtil.isEmpty(memberVo) || DalbitUtil.isEmpty(memberVo.getMemId())) ? false : memberVo.getMemId().equals("huhazv74");
-
-        SecurityUserVo securityUserVo = new SecurityUserVo(
-                memberVo.getMemId()
-                , memberVo.getMemPasswd()
-                , isAdmin ? DalbitUtil.getAdminAuthorities() : DalbitUtil.getAuthorities());
-        securityUserVo.setMemberVo(memberVo);
-
-        return securityUserVo;
     }
 
     public UserDetails loadUserBySsoCookieFromRedis(String memNo) throws UsernameNotFoundException {
