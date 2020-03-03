@@ -419,6 +419,9 @@ public class DalbitUtil {
             sb.append("_");
             sb.append(serverIp.substring(serverIp.lastIndexOf(".")+1));
         }
+
+        sb.append("_");
+        sb.append(DalbitUtil.getActiceProfile());
         return sb.toString();
     }
 
