@@ -8,6 +8,7 @@ import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,8 @@ public class MypageService {
     GsonUtil gsonUtil;
     @Autowired
     RestService restService;
-
+    @Autowired
+    SocketService socketService;
 
     /**
      * 프로필 편집
@@ -359,12 +362,15 @@ public class MypageService {
     /**
      * 회원 루비선물하기
      */
-    public String callMemberGiftRuby(P_RubyVo pRubyVo) {
+    public String callMemberGiftRuby(P_RubyVo pRubyVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRubyVo);
         mypageDao.callMemberGiftRuby(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.루비선물_성공.getMessageCode())) {
+            try{
+                socketService.giftDal(MemberVo.getMyMemNo(), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_성공));
         }else if(procedureVo.getRet().equals(Status.루비선물_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_요청회원번호_회원아님));

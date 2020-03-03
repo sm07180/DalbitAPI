@@ -62,7 +62,7 @@ public class UserController {
      * 게스트 지정하기
      */
     @PostMapping("/guest")
-    public String roomGuestAdd(@Valid GuestAddVo guestAddVo, BindingResult bindingResult) throws GlobalException {
+    public String roomGuestAdd(@Valid GuestAddVo guestAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -90,7 +90,7 @@ public class UserController {
         apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
         apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
 
-        String result = userService.callBroadCastRoomGuestAdd(apiData);
+        String result = userService.callBroadCastRoomGuestAdd(apiData, request);
 
         return result;
     }
@@ -100,7 +100,7 @@ public class UserController {
      * 게스트 취소하기
      */
     @DeleteMapping("/guest")
-    public String roomGuestDelete(@Valid GuestDelVo guestDelVo, BindingResult bindingResult) throws GlobalException{
+    public String roomGuestDelete(@Valid GuestDelVo guestDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -119,7 +119,7 @@ public class UserController {
         apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
         apiData.setBj_play_tokenid(DalbitUtil.getStringMap(resultMap,"bj_play_tokenid"));
 
-        String result = userService.callBroadCastRoomGuestDelete(apiData);
+        String result = userService.callBroadCastRoomGuestDelete(apiData, request);
 
         return  result;
     }
@@ -129,7 +129,7 @@ public class UserController {
      * 방송방 강퇴하기
      */
     @PostMapping("/kickout")
-    public String roomKickout(@Valid KickOutVo kickOutVo, BindingResult bindingResult) throws GlobalException{
+    public String roomKickout(@Valid KickOutVo kickOutVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -138,7 +138,7 @@ public class UserController {
         apiData.setRoom_no(kickOutVo.getRoomNo());
         apiData.setBlocked_mem_no(kickOutVo.getBlockNo());
 
-        String result = userService.callBroadCastRoomKickout(apiData);
+        String result = userService.callBroadCastRoomKickout(apiData, request);
 
         return result;
     }
@@ -191,7 +191,7 @@ public class UserController {
      * 방송방 팬 등록
      */
     @PostMapping("/fan")
-    public String fanstarInsert(@Valid BroadFanstartInsertVo broadFanstartInsertVo, BindingResult bindingResult)throws GlobalException{
+    public String fanstarInsert(@Valid BroadFanstartInsertVo broadFanstartInsertVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -200,7 +200,7 @@ public class UserController {
         apiData.setStar_mem_no(broadFanstartInsertVo.getMemNo());
         apiData.setRoom_no(broadFanstartInsertVo.getRoomNo());
 
-        String result = userService.callFanstarInsert(apiData);
+        String result = userService.callFanstarInsert(apiData, request);
 
         return result;
     }
