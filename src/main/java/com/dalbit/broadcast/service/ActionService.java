@@ -11,6 +11,8 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -18,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,12 +35,14 @@ public class ActionService {
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
+    @Autowired
+    SocketService socketService;
 
 
     /**
      * 방송방 좋아요 추가
      */
-    public String callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo) {
+    public String callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGoodVo);
         actionDao.callBroadCastRoomGood(procedureVo);
 
@@ -54,6 +59,19 @@ public class ActionService {
 
         String result="";
         if(Status.좋아요.getMessageCode().equals(procedureVo.getRet())) {
+            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+            try{
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            try{
+                HashMap socketMap = new HashMap();
+                socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
+                socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                socketService.changeCount(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData()));
         }else if(Status.좋아요_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요_회원아님));
@@ -122,7 +140,7 @@ public class ActionService {
     /**
      * 방송방 선물하기
      */
-    public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo) {
+    public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
         actionDao.callBroadCastRoomGift(procedureVo);
 
@@ -140,13 +158,24 @@ public class ActionService {
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
         /*returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));*/ //시작경험치 임시
         returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
-        returnMap.put("lubyCnt", DalbitUtil.getIntMap(resultMap, "luby"));
-        returnMap.put("goldCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+        returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
+        returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
         String result="";
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
+            try{
+                HashMap socketMap = new HashMap();
+                socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                socketMap.put("fanRank", returnMap.get("fanRank"));
+                socketService.changeCount(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+                HashMap itemMap = new HashMap();
+                itemMap.put("itemNo", pRoomGiftVo.getItem_no());
+                itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), itemMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
         }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_요청회원_번호비정상));
@@ -173,7 +202,7 @@ public class ActionService {
     /**
      * 부스터 사용하기
      */
-    public String callBroadCastRoomBooster(P_RoomBoosterVo pRoomBoosterVo) {
+    public String callBroadCastRoomBooster(P_RoomBoosterVo pRoomBoosterVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomBoosterVo);
         actionDao.callBroadCastRoomBooster(procedureVo);
 
@@ -191,6 +220,19 @@ public class ActionService {
 
         String result="";
         if(Status.부스터성공.getMessageCode().equals(procedureVo.getRet())) {
+            try{
+                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            try{
+                String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+                HashMap socketMap = new HashMap();
+                socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                socketService.changeCount(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터성공, returnMap));
         }else if(Status.부스터_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_요청회원_번호비정상));

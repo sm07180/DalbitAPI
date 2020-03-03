@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -32,7 +33,7 @@ public class ActionController {
      * 방송방 좋아요 추가
      */
     @PostMapping("/likes")
-    public String roomGood(@Valid GoodVo goodVo, BindingResult bindingResult) throws GlobalException{
+    public String roomGood(@Valid GoodVo goodVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -40,7 +41,7 @@ public class ActionController {
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(goodVo.getRoomNo());
 
-        String result = actionService.callBroadCastRoomGood(apiData);
+        String result = actionService.callBroadCastRoomGood(apiData, request);
 
         return result;
     }
@@ -69,7 +70,7 @@ public class ActionController {
      * 방송방 선물하기
      */
     @PostMapping("/gift")
-    public String roomGift(@Valid GiftVo giftVo, BindingResult bindingResult) throws GlobalException{
+    public String roomGift(@Valid GiftVo giftVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -80,7 +81,7 @@ public class ActionController {
         apiData.setItem_no(giftVo.getItemNo());
         apiData.setItem_cnt(giftVo.getItemCnt());
 
-        String result = actionService.callBroadCastRoomGift(apiData);
+        String result = actionService.callBroadCastRoomGift(apiData, request);
 
         return result;
     }
@@ -90,7 +91,7 @@ public class ActionController {
      * 부스터 사용하기
      */
     @PostMapping("/boost")
-    public String roomBooster(@Valid BoosterVo boosterVo, BindingResult bindingResult) throws GlobalException {
+    public String roomBooster(@Valid BoosterVo boosterVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -100,7 +101,7 @@ public class ActionController {
         apiData.setItem_no(boosterVo.getItemNo());
         apiData.setItem_cnt(boosterVo.getItemCnt());
 
-        String result = actionService.callBroadCastRoomBooster(apiData);
+        String result = actionService.callBroadCastRoomBooster(apiData, request);
 
         return result;
 

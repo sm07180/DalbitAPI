@@ -48,6 +48,12 @@ public class SocketVo {
     private int recvTime = 0;
 
 
+    public SocketVo(String memNo, String recvMemNo){
+        this.memNo = memNo;
+        this.recvMemNo = recvMemNo;
+        this.login = DalbitUtil.isLogin() ? 1 : 0;
+    }
+
     public SocketVo(String memNo, HashMap memInfo){
         if(memInfo != null){
             this.memNo = memNo;

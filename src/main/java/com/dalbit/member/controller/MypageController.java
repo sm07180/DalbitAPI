@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -272,12 +273,12 @@ public class MypageController {
      * 회원 루비선물하기
      */
     @PostMapping("/gift")
-    public String memberGift(@Valid RubyVo rubyVo, BindingResult bindingResult) throws GlobalException{
+    public String memberGift(@Valid RubyVo rubyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RubyVo apiData = new P_RubyVo(rubyVo);
-        String result = mypageService.callMemberGiftRuby(apiData);
+        String result = mypageService.callMemberGiftRuby(apiData, request);
 
         return result;
     }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -41,7 +42,7 @@ public class ContentController {
      * 공지사항 입력/수정
      */
     @PostMapping("/notice")
-    public String noticeEdit(@Valid NoticeEditVo noticeEditVo, BindingResult bindingResult) throws GlobalException{
+    public String noticeEdit(@Valid NoticeEditVo noticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -50,7 +51,7 @@ public class ContentController {
         apiData.setRoom_no(noticeEditVo.getRoomNo());
         apiData.setNotice(noticeEditVo.getNotice());
 
-        String result = contentService.callBroadCastRoomNoticeEdit(apiData);
+        String result = contentService.callBroadCastRoomNoticeEdit(apiData, request);
 
         return result;
     }
@@ -60,7 +61,7 @@ public class ContentController {
      * 공지삭제
      */
     @DeleteMapping("/notice")
-    public String noticeDelete(@Valid NoticeDelVo noticeDelVo, BindingResult bindingResult) throws GlobalException{
+    public String noticeDelete(@Valid NoticeDelVo noticeDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -68,7 +69,7 @@ public class ContentController {
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setRoom_no(noticeDelVo.getRoomNo());
 
-        String result = contentService.callBroadCastRoomNoticeDelete(apiData);
+        String result = contentService.callBroadCastRoomNoticeDelete(apiData, request);
 
         return result;
     }
@@ -78,7 +79,7 @@ public class ContentController {
      * 방송방 사연 등록
      */
     @PostMapping("/story")
-    public String insertStory(@Valid StoryAddVo storyAddVo, BindingResult bindingResult) throws GlobalException{
+    public String insertStory(@Valid StoryAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -87,7 +88,7 @@ public class ContentController {
         apiData.setRoom_no(storyAddVo.getRoomNo());
         apiData.setContents(storyAddVo.getContents());
 
-        String result = contentService.callInsertStory(apiData);
+        String result = contentService.callInsertStory(apiData, request);
 
         return result;
     }
