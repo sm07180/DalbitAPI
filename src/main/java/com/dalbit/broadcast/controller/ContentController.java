@@ -138,4 +138,34 @@ public class ContentController {
 
         return result;
     }
+
+
+    /**
+     * 방송설정 금지어 단어 조회
+     */
+    @GetMapping("/banwrod")
+    public String getBanWrod(){
+        P_BanWordSelectVo apiData = new P_BanWordSelectVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+
+        String result = contentService.callgetBanWord(apiData);
+
+        return result;
+    }
+
+    /**
+     * 방송설정 금지어 저장
+     */
+    @PostMapping("/banword")
+    public String insertBanWrod(@Valid BanWordVo banWordVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_BanWordInsertVo apiData = new P_BanWordInsertVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setBanWord(banWordVo.getBanWord());
+
+        String result = contentService.callInsertBanWord(apiData);
+
+        return result;
+    }
 }
