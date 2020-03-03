@@ -14,6 +14,10 @@ public enum Item {
             , "prop.item.1001.lottieUrl"
             , 600
             , 600
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
     ),
 
 
@@ -26,6 +30,10 @@ public enum Item {
             , "prop.item.1002.lottieUrl"
             , 600
             , 600
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
     ),
 
     도너츠달(
@@ -37,6 +45,10 @@ public enum Item {
             , "prop.item.1003.lottieUrl"
             , 600
             , 600
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
     ),
 
     도너츠(
@@ -48,6 +60,10 @@ public enum Item {
             , "prop.item.1004.lottieUrl"
             , 600
             , 600
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
     ),
 
    ;
@@ -60,8 +76,12 @@ public enum Item {
     final private String lottieUrl;
     final private int width;
     final private int height;
+    final private double deviceRate;
+    final private double widthRate;
+    final private double heightRate;
+    final private String location; // topLeft bottomRight
 
-    Item(String itemNo, String itemNm, int cost, String thumbs, String webpUrl, String lottieUrl, int width, int height){
+    Item(String itemNo, String itemNm, int cost, String thumbs, String webpUrl, String lottieUrl, int width, int height, double deviceRate, double widthRate, double heightRate, String location){
         this.itemNo = itemNo;
         this.itemNm = itemNm;
         this.cost = cost;
@@ -70,5 +90,9 @@ public enum Item {
         this.lottieUrl = lottieUrl;
         this.width = width;
         this.height = height;
+        this.deviceRate  = deviceRate;
+        this.widthRate  = widthRate;
+        this.heightRate  = heightRate;
+        this.location  = location;
     }
 }
