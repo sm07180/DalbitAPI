@@ -128,7 +128,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
         }
 
-        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), DalbitUtil.getAuthorities());
+        //todo - 프로시저에 관리자 구분 추가되어야함. 임시로 특정 아이디에 관리자 권한 부여
+        //boolean isAdmin = memberVo.getMemSlct().equals("m");
+        boolean isAdmin = memberVo.getMemId().equals("huhazv74");
+
+        SecurityUserVo securityUserVo = new SecurityUserVo(
+                memberVo.getMemId()
+                , memberVo.getMemPasswd()
+                , isAdmin ? DalbitUtil.getAdminAuthorities() : DalbitUtil.getAuthorities());
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;

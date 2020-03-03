@@ -494,14 +494,22 @@ public class DalbitUtil {
      * @return
      */
     public static Collection<GrantedAuthority> getAuthorities(){
-        Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
-        return authorities;
+        return setAutorities(new String[]{"ROLE_USER"});
     }
 
     public static Collection<GrantedAuthority> getGuestAuthorities(){
+        return setAutorities(new String[]{"ROLE_ANONYMOUS"});
+    }
+
+    public static Collection<GrantedAuthority> getAdminAuthorities(){
+        return setAutorities(new String[]{"ROLE_ADMIN", "ROLE_USER"});
+    }
+
+    public static Collection<GrantedAuthority> setAutorities(String[] rolNames){
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
+        for (String rol : rolNames) {
+            authorities.add(new SimpleGrantedAuthority(rol));
+        }
         return authorities;
     }
 

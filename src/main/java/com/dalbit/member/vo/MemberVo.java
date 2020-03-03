@@ -21,6 +21,15 @@ public class MemberVo extends ProfileInfoOutVo {
         }
     }
 
+    public static boolean isAdmin(){
+        try{
+            return 0 < SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().filter(auth -> auth.getAuthority().equals("ROLE_ADMIN")).count();
+        }catch (Exception e){
+            log.warn("MemberVo.isAdmin() return false : {}", e.getMessage());
+            return false;
+        }
+    }
+
     private String memSlct;
     private String memPasswd;
 
