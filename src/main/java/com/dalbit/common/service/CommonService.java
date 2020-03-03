@@ -138,7 +138,7 @@ public class CommonService {
                     memberService.refreshAnonymousSecuritySession(memNo);
                 }
             }else{
-                resultStatus = Status.로그인실패_파라메터이상;
+                resultStatus = Status.로그인오류;
             }
         }
 
