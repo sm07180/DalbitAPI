@@ -36,6 +36,8 @@
 		<typeAlias type="com.dalbit.member.vo.procedure.P_MypageReportBroadVo" alias="P_MypageReportBroadVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_MypageReportListenVo" alias="P_MypageReportListenVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_SearchUserVo" alias="P_SearchUserVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_MypageManagerVo" alias="P_MypageManagerVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_MypageBlackVo" alias="P_MypageBlackVo" />
 
 		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
 		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />

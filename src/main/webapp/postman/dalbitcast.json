@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "3313abde-651e-4d22-b589-5e94fede6905",
-		"name": "달빛라디오 API 정의서_2020.02.28",
+		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
+		"name": "달빛라디오 API 정의서_2020.03.03",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2033,6 +2033,500 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 금지어 조회_2020.03.03",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/banwrod",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"banwrod"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 금지어 저장_2020.03.03",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "banWord",
+													"value": "코로나|금지|마스크",
+													"description": "* 금지어 ( | 구분자)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/banword",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"banword"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 유저 검색_2020.03.03",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/search?userType=0&search=형원&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"search"
+											],
+											"query": [
+												{
+													"key": "userType",
+													"value": "0",
+													"description": "* 유저검색타입(0: 전체, 1:닉네임, 2:아이디)"
+												},
+												{
+													"key": "search",
+													"value": "형원",
+													"description": "* 검색단어"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 개수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 고정매니저 조회_2020.03.03",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/manager",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"manager"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 고정매니저 등록_2020.03.03",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11583122401203",
+													"description": "* 매니저될 회원 번호",
+													"type": "text"
+												},
+												{
+													"key": "role",
+													"value": "1000000001",
+													"description": "권한설정",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/manager/add",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"manager",
+												"add"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 고정매니저 권한수정_2020.03.03",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11583122401203",
+													"description": "* 매니저될 회원 번호",
+													"type": "text"
+												},
+												{
+													"key": "role",
+													"value": "1000000001",
+													"description": "* 권한설정",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/manager/edit",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"manager",
+												"edit"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 고정매니저 해제_2020.03.03",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11583122401203",
+													"description": "* 해제할 매니저 회원 번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/manager",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"manager"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 블랙리스트 조회_2020.03.03",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/black?page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"black"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 블랙리스트 등록_2020.03.03",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11583122401203",
+													"description": "* 블랙리스트 등록할 회원 번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/black/add",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"black",
+												"add"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이페이지 방송설정 블랙리스트 해제_2020.03.03",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMjAwMDgyLCJleHAiOjE1ODU3OTIwODJ9.rp9DOeuNKfuq8ULAE0k0FskEnaERtnd8ZIN2bDDBqVc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"name": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11583122401203",
+													"description": "* 해제할 블랙리스트 회원 번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/mypage/black",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"black"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -3607,7 +4101,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMTQ2ODk4MUB0cnVlIiwiaWF0IjoxNTgzMTIyMzE5LCJleHAiOjE1ODU3MTQzMTl9.ehStUtKZXbdbaVniUc8cxe3PQZw4B9dFDRq6D-rU43M",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
 												"type": "text"
 											},
 											{
@@ -3617,14 +4111,13 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com:4431/broad/check",
+											"raw": "https://devapi2.dalbitcast.com/broad/check",
 											"protocol": "https",
 											"host": [
 												"devapi2",
 												"dalbitcast",
 												"com"
 											],
-											"port": "4431",
 											"path": [
 												"broad",
 												"check"

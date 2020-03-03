@@ -410,7 +410,7 @@ public class MypageController {
         P_BanWordSelectVo apiData = new P_BanWordSelectVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
 
-        String result = mypageService.callgetBanWord(apiData);
+        String result = mypageService.callMyapgeGetBanWord(apiData);
 
         return result;
     }
@@ -426,7 +426,7 @@ public class MypageController {
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setBanWord(banWordVo.getBanWord());
 
-        String result = mypageService.callInsertBanWord(apiData);
+        String result = mypageService.callMypageInsertBanWord(apiData);
 
         return result;
     }
@@ -439,9 +439,102 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_SearchUserVo apiData = new P_SearchUserVo(searchUserVo);
-        String result = mypageService.callSearchUser(apiData);
+        String result = mypageService.callMypageSearchUser(apiData);
 
         return result;
     }
 
+    /**
+     * 방송설정 고정 매니저 조회
+     */
+    @GetMapping("/manager")
+    public String getManager(){
+
+        P_MypageManagerVo apiData = new P_MypageManagerVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+        String result = mypageService.callMypageManager(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 등록
+     */
+    @PostMapping("/manager/add")
+    public String addManager(@Valid MypageManagerAddVo mypageManagerAddVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_MypageManagerAddVo apiData = new P_MypageManagerAddVo(mypageManagerAddVo);
+        String result = mypageService.callMypageManagerAdd(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 권한수정
+     */
+    @PostMapping("/manager/edit")
+    public String editManager(@Valid MypageManagerEditVo mypageManagerEditVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_MypageManagerEditVo apiData = new P_MypageManagerEditVo(mypageManagerEditVo);
+        String result = mypageService.callMypageManagerEdit(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 해제
+     */
+    @DeleteMapping("/manager")
+    public String delManager(@Valid MypageManagerDelVo mypageManagerDelVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_MypageManagerDelVo apiData = new P_MypageManagerDelVo(mypageManagerDelVo);
+        String result = mypageService.callMypageManagerDel(apiData);
+
+        return result;
+    }
+
+    /**
+     * 방송설정 블랙리스트 조회
+     */
+    @GetMapping("/black")
+    public String getBlackList(@Valid MypageBlackVo mypageBlackVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_MypageBlackVo apiData = new P_MypageBlackVo(mypageBlackVo);
+        String result = mypageService.callMypageBlackListView(apiData);
+
+        return result;
+    }
+
+    /**
+     * 방송설정 블랙리스트 등록
+     */
+    @PostMapping("/black/add")
+    public String addBlackList(@Valid MypageBlackAddVo mypageBlackAddVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_MypageBlackAddVo apiData = new P_MypageBlackAddVo(mypageBlackAddVo);
+        String result = mypageService.callMypageBlackListAdd(apiData);
+
+        return result;
+    }
+
+    /**
+     * 방송설정 블랙리스트 해제
+     */
+    @DeleteMapping("/black")
+    public String delBlackList(@Valid MypageBlackDelVo mypageBlackDelVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_MypageBlackDelVo apiData = new P_MypageBlackDelVo(mypageBlackDelVo);
+        String result = mypageService.callMypageBlackListDel(apiData);
+
+        return result;
+    }
 }

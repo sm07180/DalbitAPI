@@ -94,16 +94,45 @@
         call sp_member_broadcast_listening_report(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callgetBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callMyapgeGetBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_member_broadcast_banword_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callInsertBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+    <select id="callMypageInsertBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_member_broadcast_banword_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callSearchUser" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_SearchUserVo">
+    <select id="callMypageSearchUser" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_SearchUserVo">
       call sp_member_broadcast_search(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callMypageManager" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MypageManagerVo">
+      call sp_member_broadcast_manager_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMypageManagerAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_manager_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMypageManagerEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_manager_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMypageManagerDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_manager_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMypageBlackListView" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MypageBlackVo">
+      call sp_member_broadcast_black_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMypageBlackListAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_black_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMypageBlackListDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_black_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 
 </mapper>
