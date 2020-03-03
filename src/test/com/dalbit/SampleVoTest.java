@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
 import java.util.Date;
 
+import static jdk.nashorn.internal.objects.NativeString.substr;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -279,6 +280,22 @@ public class SampleVoTest {
 
     }
 
+    @Test
+    public void 각종테스트(){
+        String str = "20200212";
+
+        String year = substr(str,0,4);
+        String month = substr(str, 4,2);
+        String day = substr(str,6,2);
+
+        /*log.info(year);
+        log.info(month);
+        log.info(day);
+*/
+        log.info(DalbitUtil.convertDate(str, "yyyy-MM-dd"));
+
+
+    }
 
 }
 

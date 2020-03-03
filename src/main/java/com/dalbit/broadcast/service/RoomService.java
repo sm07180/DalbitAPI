@@ -447,7 +447,7 @@ public class RoomService {
         }else if(Status.방송진행여부체크_요청회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_요청회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_실페));
         }
         return result;
     }

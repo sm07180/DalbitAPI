@@ -256,5 +256,4 @@ public class ContentService {
 
         return result;
     }
-
 }
