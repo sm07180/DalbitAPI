@@ -94,4 +94,11 @@
         call sp_member_broadcast_listening_report(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callgetBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_banword_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callInsertBanWord" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_broadcast_banword_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

@@ -1,4 +1,4 @@
-package com.dalbit.broadcast.vo.request;
+package com.dalbit.member.vo.request;
 
 import lombok.Getter;
 import lombok.Setter;
