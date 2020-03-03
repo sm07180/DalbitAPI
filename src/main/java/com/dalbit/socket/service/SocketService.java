@@ -209,7 +209,7 @@ public class SocketService {
             if(vo.getMemNo() == null){
                 return null;
             }
-            vo.setCommand("reqGrant");
+            vo.setCommand("reqChangeCount");
             vo.setMessage(roomInfo);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
