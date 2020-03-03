@@ -519,8 +519,58 @@ public enum Status {
 
     //마이페이지 방송설정 유저 검색
     유저검색_성공("C001", "mypage.broadcast.search.user.success", "유저 검색 성공 시"),
+    유저검색_없음("0", "mypage.broadcast.search.user.no", "검색 내역 없을 시"),
     유저검색_요청회원번호_회원아님("-1", "mypage.broadcast.search.user.member.number.error","요청회원번호가 회원 아닐 시"),
     유저검색_실패("C006", "mypage.broadcast.search.user.fail", "유저 검색 실패 시"),
+
+    //마이페이지 방송설정 고정매니저 조회
+    고정매니저조회_성공("C001", "mypage.broadcast.manager.select.success", "고정매니저 조회 성공 시"),
+    고정매니저조회_없음("0", "mypage.broadcast.manager.select.no", "조회 내역 없을 시"),
+    고정매니저조회_요청회원번호_회원아님("-1", "mypage.broadcast.manager.select.member.number.error","요청회원번호가 회원 아닐 시"),
+    고정매니저조회_실패("C006", "mypage.broadcast.manager.select.fail", "고정매니저 조회 실패 시"),
+
+    //마이페이지 방송설정 고정매니저 등록
+    고정매니저등록_성공("0", "mypage.broadcast.manager.add.success", "고정매니저 등록 성공 시"),
+    고정매니저등록_요청회원번호_회원아님("-1", "mypage.broadcast.manager.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    고정매니저등록_매니저회원번호_회원아님("-2", "mypage.broadcast.manager.add.number.error", "매니저 회원번호가 회원 아닐 시"),
+    고정매니저등록_5명초과("-3", "mypage.broadcast.manager.add.five.people.limit", "5명초과 등록 안될 시"),
+    고정매니저등록_이미매니저등록("-4", "mypage.broadcast.manager.add.already.add", "이미 매니저로 등록 되어있을 시"),
+    고정매니저등록_실패("C006", "mypage.broadcast.manager.add.fail", "고정매니저 등록 실패 시"),
+
+    //마이페이지 방송설정 고정매니저 권한 수정
+    고정매니저_권한수정_성공("0", "mypage.broadcast.manager.edit.success", "고정매니저 권한수정 성공 시"),
+    고정매니저_권한수정_요청회원번호_회원아님("-1", "mypage.broadcast.manager.edit.member.number.error", "요청회원번호가 회원 아닐 시"),
+    고정매니저_권한수정_매니저회원번호_회원아님("-2", "mypage.broadcast.manager.edit.number.error", "매니저 회원번호가 회원 아닐 시"),
+    고정매니저_권한수정_등록된매니저아님("-3", "mypage.broadcast.manager.edit.add.manager", "등록된 매니저가 아닐 시"),
+    고정매니저_권한수정_실패("C006", "mypage.broadcast.manager.edit.fail", "고정매니저 권한수정 실패 시"),
+
+    //마이페이지 방송설정 고정매니저 해제
+    고정매니저해제_성공("0", "mypage.broadcast.manager.delete.success", "고정매니저 해제 성공 시"),
+    고정매니저해제_요청회원번호_회원아님("-1", "mypage.broadcast.manager.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
+    고정매니저해제_매니저회원번호_회원아님("-2", "mypage.broadcast.manager.delete.number.error", "매니저 회원번호가 회원 아닐 시"),
+    고정매니저해제_등록된매니저아님("-3", "mypage.broadcast.manager.delete.add.manager", "등록된 매니저가 아닐 시"),
+    고정매니저해제_실패("C006", "mypage.broadcast.manager.delete.fail", "고정매니저 해제 실패 시"),
+
+    //마이페이지 방송설정 블랙리스트 조회
+    블랙리스트조회_성공("C001", "mypage.broadcast.blacklist.select.success", "블랙리스트 조회 성공 시"),
+    블랙리스트조회_없음("0", "mypage.broadcast.blacklist.select.no", "조회 내역 없을 시"),
+    블랙리스트조회_요청회원번호_회원아님("-1", "mypage.broadcast.blacklist.select.member.number.error","요청회원번호가 회원 아닐 시"),
+    블랙리스트조회_실패("C006", "mypage.broadcast.blacklist.select.fail", "블랙리스트 조회 실패 시"),
+
+    //마이페이지 방송설정 블랙리스트 등록
+    블랙리스트등록_성공("0", "mypage.broadcast.blacklist.add.success", "블랙리스트 등록 성공 시"),
+    블랙리스트등록_요청회원번호_회원아님("-1", "mypage.broadcast.blacklist.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    블랙리스트등록_블랙회원번호_회원아님("-2", "mypage.broadcast.blacklist.add.number.error", "블랙리스트 회원번호가 회원 아닐 시"),
+    블랙리스트등록_이미블랙등록("-4", "mypage.broadcast.blacklist.add.already.add", "이미 블랙리스트 등록 되어있을 시"),
+    블랙리스트등록_실패("C006", "mypage.broadcast.blacklist.add.fail", "블랙리스트 등록 실패 시"),
+
+    //마이페이지 방송설정 블랙리스트 해제
+    블랙리스트해제_성공("0", "mypage.broadcast.blacklist.delete.success", "블랙리스트 해제 성공 시"),
+    블랙리스트해제_요청회원번호_회원아님("-1", "mypage.broadcast.blacklist.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
+    블랙리스트해제_블랙회원번호_회원아님("-2", "mypage.broadcast.blacklist.delete.number.error", "블랙리스트 회원번호가 회원 아닐 시"),
+    블랙리스트해제_블랙회원없음("-3", "mypage.broadcast.blacklist.delete.add.blacklist.no", "등록된 블랙리스트 회원이 없을 시"),
+    블랙리스트해제_실패("C006", "mypage.broadcast.blacklist.delete.fail", "블랙리스트 해제 실패 시"),
+
 
 
     ;

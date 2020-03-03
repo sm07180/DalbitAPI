@@ -158,7 +158,7 @@ public class UserController {
 
 
     /**
-     * 매니저지정
+     * 매니저 지정
      */
     @PostMapping("/manager")
     public String managerAdd(@Valid ManagerAddVo managerAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
@@ -173,7 +173,7 @@ public class UserController {
 
 
     /**
-     * 매니저취소
+     * 매니저 취소
      */
     @DeleteMapping("/manager")
     public String managerDel(@Valid ManagerDelVo managerDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
