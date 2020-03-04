@@ -135,7 +135,7 @@ public enum Status {
 
     //회원 마이페이지 팬보드 댓글 리스트
     팬보드조회성공("C001", "fanboard.list.comment.success", "팬보드 정보 조회 시"),
-    팬보드_댓글없음("0", "fanboard.list.comment.no", "댓글이 없음"),
+    팬보드_댓글없음("0", "fanboard.list.comment.no.success", "댓글이 없음"),
     팬보드_요청회원번호_회원아님("-1", "fanboard.list.requestNo.notMember", "요청 회원번호가 회원이 아님"),
     팬보드_스타회원번호_회원아님("-2", "fanboard.list.starNo.notMember","스타 회원번호가 회원이 아님"),
     팬보드_조회오류("C006", "fanboard.list.error", "팬보드 댓글 리스트 조회 실패"),
@@ -152,7 +152,7 @@ public enum Status {
 
     //회원 마이페이지 팬보드 대댓글 보기
     팬보드_대댓글조회성공("C001", "fanboard.reply.comment.success", "팬보드 대댓글 조회 시"),
-    팬보드_대댓글조회실패_대댓글없음("0", "fanboard.reply.comment.no", "대댓글 없을 시"),
+    팬보드_대댓글조회실패_대댓글없음("0", "fanboard.reply.comment.no.success", "대댓글 없을 시"),
     팬보드_대댓글조회실패_요청회원번호_회원아님("-1", "fanboard.reply.requestNo.notMember", "요청 회원번호가 회원이 아닐 시"),
     팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아닐 시"),
     팬보드_대댓글조회오류("C006", "fanboard.reply.error", "팬보드 대댓글 보기 실패 시"),
@@ -207,13 +207,13 @@ public enum Status {
 
     //방송리스트
     방송리스트조회("C001", "broadcast.room.list.select.success", "방송리스트 정보 조회 성공 시"),
-    방송리스트없음("0", "broadcast.room.list.no", "방송리스트가 없을 시"),
+    방송리스트없음("0", "broadcast.room.list.no.success", "방송리스트가 없을 시"),
     방송리스트_회원아님("-1", "broadcast.room.list.member.number.no", "회원번호가 아닐 시"),
     방송리스트조회_실패("C006", "broadcast.room.list.select.fail", "방송리스트 정보 조회 실패 시"),
 
     //방송참여자 리스트
     방송참여자리스트_조회("C001", "broadcast.room.member.list.select.success", "방송참여자리스트 정보 조회 시"),
-    방송참여자리스트없음("0", "broadcast.room.member.list.no", "방송참여자 리스트가 없을 시"),
+    방송참여자리스트없음("0", "broadcast.room.member.list.no.success", "방송참여자 리스트가 없을 시"),
     방송참여자리스트_회원아님("-1", "broadcast.room.member.list.number.no", "회원번호가 아닐 시"),
     방송참여자리스트_방없음("-2", "broadcast.room.member.list.room.no", "해당 방이 없을 시"),
     방송참여자리스트조회_실패("C006", "broadcast.room.member.list.select.fail", "방송참여자 리스트 조회 실패 시"),
@@ -395,7 +395,7 @@ public enum Status {
 
     //방송방 선물받은내역 조회
     선물받은내역조회("C001", "broadcast.room.gift.history.success", "선물받은내역 조회 성공 시"),
-    선물받은내역없음("0", "broadcast.room.gift.history.no", "선물받은내역 없을 시"),
+    선물받은내역없음("0", "broadcast.room.gift.history.no.success", "선물받은내역 없을 시"),
     선물내역조회_회원번호정상아님("-1", "broadcast.room.gift.history.member.number.error", "회원번호가 정상이 아닐 시"),
     선물내역조회_해당방없음("-2", "broadcast.room.gift.history.no.room", "해당 방 없을 시"),
     선물받은내역조회_실패("C006", "broadcast.room.gift.history.fail", "선물받은내역 조회 실패 시"),
@@ -410,18 +410,18 @@ public enum Status {
 
     //회원 알림 내용 조회
     회원알림내용조회_성공("C001", "mypage.member.notification.select.success", "회원 알림내용 조회 성공 시"),
-    회원알림내용조회_알림없음("0", "mypage.member.notification.select.no", "알림 없을 시"),
+    회원알림내용조회_알림없음("0", "mypage.member.notification.select.no.success", "알림 없을 시"),
     회원알림내용조회_회원아님("-1", "mypage.member.notification.select.not.member", "회원이 아닐 시"),
     회원알림내용조회_실패("C006", "mypage.member.notification.select.fail", "회원 알림내용 조회 실패 시"),
 
     //회원 닉네임 검색
     회원닉네임검색_성공("C001", "member.nick.search.success", "회원 닉네임 검색 성공 시"),
-    회원닉네임검색_결과없음("0", "member.nick.search.no", "결과 없을 시"),
+    회원닉네임검색_결과없음("0", "member.nick.search.no.success", "결과 없을 시"),
     회원닉네임검색_실패("C006", "member.nick.search.fail", "회원 닉네임 검색 실패 시"),
 
     //라이브 방송 검색
     라이브방송검색_성공("C001", "live.broadcast.search.success", "라이브 방송 검색 성공 시"),
-    라이브방송검색_결과없음("0", "live.broadcast.search.no", "결과 없을 시"),
+    라이브방송검색_결과없음("0", "live.broadcast.search.no.success", "결과 없을 시"),
     라이브방송검색_실패("C006", "live.broadcast.search.fail", "라이브 방송 검색 실패 시"),
 
     //방송방 상태 변경
@@ -435,7 +435,7 @@ public enum Status {
 
     //팬 랭킹 조회
     팬랭킹조회_성공("C001", "member.fan.ranking.select.success", "팬 랭킹 조회 성공 시"),
-    팬랭킹조회_팬없음("0", "member.fan.ranking.no.fan", "팬 없을 시"),
+    팬랭킹조회_팬없음("0", "member.fan.ranking.no.fan.success", "팬 없을 시"),
     팬랭킹조회_요청회원_회원아님("-1", "member.fan.ranking.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
     팬랭킹조회_대상회원_회원아님("-2", "member.fan.ranking.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
     팬랭킹조회_실패("C006", "member.fan.ranking.select.fail", "팬 랭킹 조회 실패 시"),
@@ -465,44 +465,44 @@ public enum Status {
 
     //마이페이지 공지사항 조회
     공지조회_성공("C001", "mypage.notice.select.success", "마이페이지 공지조회 성공 시"),
-    공지조회_없음("0", "mypage.notice.select.no", "공지사항 없을 시"),
+    공지조회_없음("0", "mypage.notice.select.no.success", "공지사항 없을 시"),
     공지조회_요청회원번호_회원아님("-1", "mypage.notice.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     공지조회_대상회원번호_회원아님("-2", "mypage.notice.select.object.member.number.error", "대상회원번호가 회원 아닐 시"),
     공지조회_실패("C006", "mypage.notice.select.fail", "마이페이지 공지조회 실패 시"),
 
     //마이페이지 내지갑 달 사용내역 조회
     달사용내역조회_성공("C001", "mypage.wallet.dal.select.success", "달 사용내역 조회 성공 시"),
-    달사용내역조회_없음("0","mypage.wallet.dal.select.no", "달 사용내역 없을 시"),
+    달사용내역조회_없음("0","mypage.wallet.dal.select.no.success", "달 사용내역 없을 시"),
     달사용내역조회_요청회원번호_회원아님("-1","mypage.wallet.dal.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     달사용내역조회_실패("C006", "mypage.wallet.dal.select.fail", "달 사용내역 조회 실패 시"),
 
     //마이페이지 내지갑 별 사용내역 조회
     별사용내역조회_성공("C001", "mypage.wallet.byeol.select.success", "별 사용내역 조회 성공 시"),
-    별사용내역조회_없음("0","mypage.wallet.byeol.select.no", "별 사용내역 없을 시"),
+    별사용내역조회_없음("0","mypage.wallet.byeol.select.no.success", "별 사용내역 없을 시"),
     별사용내역조회_요청회원번호_회원아님("-1","mypage.wallet.byeol.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     별사용내역조회_실패("C006", "mypage.wallet.byeol.select.fail", "별 사용내역 조회 실패 시"),
 
     //마이페이지 방송내역 조회
     방송내역조회_성공("C001", "mypage.broadcast.report.select.success", "방송내역 조회 성공 시"),
-    방송내역조회_없음("0","mypage.broadcast.report.select.no", "방송내역 없을 시"),
+    방송내역조회_없음("0","mypage.broadcast.report.select.no.success", "방송내역 없을 시"),
     방송내역조회_요청회원번호_회원아님("-1","mypage.broadcast.report.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     방송내역조회_실패("C006", "mypage.broadcast.report.select.fail", "방송내역 조회 실패 시"),
 
     //마이페이지 청취내역 조회
     청취내역조회_성공("C001", "mypage.listen.report.select.success", "청취내역 조회 성공 시"),
-    청취내역조회_없음("0","mypage.listen.report.select.no", "청취내역 없을 시"),
+    청취내역조회_없음("0","mypage.listen.report.select.no.success", "청취내역 없을 시"),
     청취내역조회_요청회원번호_회원아님("-1","mypage.listen.report.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     청취내역조회_실패("C006", "mypage.listen.report.select.fail", "청취내역 조회 실패 시"),
 
     //메인 팬 랭킹
     메인_팬랭킹조회_성공("C001", "main.fan.ranking.select.success", "팬 랭킹 조회 성공 시"),
-    메인_팬랭킹조회_내역없음("0", "main.fan.ranking.no.ranking", "랭킹 내역 없을 시"),
+    메인_팬랭킹조회_내역없음("0", "main.fan.ranking.no.ranking.success", "랭킹 내역 없을 시"),
     메인_팬랭킹조회_요청회원_회원아님("-1", "main.fan.ranking.member.number.error", "요청회원번호가 회원 아닐 시"),
     메인_팬랭킹조회_실패("C006", "main.fan.ranking.select.fail", "팬 랭킹 조회 실패 시"),
 
     //메인 DJ 랭킹
     메인_DJ랭킹조회_성공("C001", "main.dj.ranking.select.success", "DJ 랭킹 조회 성공 시"),
-    메인_DJ랭킹조회_내역없음("0", "main.dj.ranking.no.ranking", "랭킹 내역 없을 시"),
+    메인_DJ랭킹조회_내역없음("0", "main.dj.ranking.no.ranking.success", "랭킹 내역 없을 시"),
     메인_DJ랭킹조회_요청회원_회원아님("-1", "main.dj.ranking.member.number.error", "요청회원번호가 회원 아닐 시"),
     메인_DJ랭킹조회_실패("C006", "main.dj.ranking.select.fail", "DJ 랭킹 조회 실패 시"),
 
@@ -519,13 +519,13 @@ public enum Status {
 
     //마이페이지 방송설정 유저 검색
     유저검색_성공("C001", "mypage.broadcast.search.user.success", "유저 검색 성공 시"),
-    유저검색_없음("0", "mypage.broadcast.search.user.no", "검색 내역 없을 시"),
+    유저검색_없음("0", "mypage.broadcast.search.user.no.success", "검색 내역 없을 시"),
     유저검색_요청회원번호_회원아님("-1", "mypage.broadcast.search.user.member.number.error","요청회원번호가 회원 아닐 시"),
     유저검색_실패("C006", "mypage.broadcast.search.user.fail", "유저 검색 실패 시"),
 
     //마이페이지 방송설정 고정매니저 조회
     고정매니저조회_성공("C001", "mypage.broadcast.manager.select.success", "고정매니저 조회 성공 시"),
-    고정매니저조회_없음("0", "mypage.broadcast.manager.select.no", "조회 내역 없을 시"),
+    고정매니저조회_없음("0", "mypage.broadcast.manager.select.no.success", "조회 내역 없을 시"),
     고정매니저조회_요청회원번호_회원아님("-1", "mypage.broadcast.manager.select.member.number.error","요청회원번호가 회원 아닐 시"),
     고정매니저조회_실패("C006", "mypage.broadcast.manager.select.fail", "고정매니저 조회 실패 시"),
 
@@ -553,7 +553,7 @@ public enum Status {
 
     //마이페이지 방송설정 블랙리스트 조회
     블랙리스트조회_성공("C001", "mypage.broadcast.blacklist.select.success", "블랙리스트 조회 성공 시"),
-    블랙리스트조회_없음("0", "mypage.broadcast.blacklist.select.no", "조회 내역 없을 시"),
+    블랙리스트조회_없음("0", "mypage.broadcast.blacklist.select.no.success", "조회 내역 없을 시"),
     블랙리스트조회_요청회원번호_회원아님("-1", "mypage.broadcast.blacklist.select.member.number.error","요청회원번호가 회원 아닐 시"),
     블랙리스트조회_실패("C006", "mypage.broadcast.blacklist.select.fail", "블랙리스트 조회 실패 시"),
 
