@@ -82,6 +82,9 @@ public class CommonService {
         items.add(new ItemVo(Item.곰인형));
         items.add(new ItemVo(Item.도너츠달));
         items.add(new ItemVo(Item.도너츠));
+        items.add(new ItemVo(Item.곰토끼));
+        items.add(new ItemVo(Item.곰인형));
+        items.add(new ItemVo(Item.도너츠달));
         resultMap.put("items", items);
         return resultMap;
     }
