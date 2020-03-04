@@ -249,19 +249,26 @@ public class UserService {
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
-        P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
-        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), null);
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("level", profileInfoOutVo.getLevel());
-        returnMap.put("exp", profileInfoOutVo.getExp());
-        returnMap.put("expNext", profileInfoOutVo.getExpNext());
-        returnMap.put("grade", profileInfoOutVo.getGrade());
-        returnMap.put("dalCnt", profileInfoOutVo.getDalCnt());
-        returnMap.put("byeolCnt", profileInfoOutVo.getByeolCnt());
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
+            ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), null);
+
+            HashMap returnMap = new HashMap();
+            returnMap.put("level", profileInfoOutVo.getLevel());
+            returnMap.put("exp", profileInfoOutVo.getExp());
+            returnMap.put("expBegin", profileInfoOutVo.getExpBegin());
+            returnMap.put("expNext", profileInfoOutVo.getExpNext());
+            returnMap.put("grade", profileInfoOutVo.getGrade());
+            returnMap.put("dalCnt", profileInfoOutVo.getDalCnt());
+            returnMap.put("byeolCnt", profileInfoOutVo.getByeolCnt());
+            if((profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) > 0){
+                returnMap.put("expRate", ((profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) / (profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin())) * 100);
+            }else{
+                returnMap.put("expRate", 0);
+            }
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));

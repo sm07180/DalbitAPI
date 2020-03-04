@@ -35,6 +35,11 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));
     }
 
+    @GetMapping("/pong")
+    public String pong(){
+        return "pong";
+    }
+
     /**
      * 위치정보가져오기
      */

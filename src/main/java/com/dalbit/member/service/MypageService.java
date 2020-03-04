@@ -151,19 +151,19 @@ public class MypageService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
-        returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
-        returnMap.put("birth", DalbitUtil.getBirth(DalbitUtil.getStringMap(resultMap, "birthYear"), DalbitUtil.getStringMap(resultMap, "birthMonth"), DalbitUtil.getStringMap(resultMap, "birthDay")));
-        returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
-        returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
-        returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
-        returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
-        returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
-
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
+            returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
+            returnMap.put("birth", DalbitUtil.getBirth(DalbitUtil.getStringMap(resultMap, "birthYear"), DalbitUtil.getStringMap(resultMap, "birthMonth"), DalbitUtil.getStringMap(resultMap, "birthDay")));
+            returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
+            returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
+            returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
+            returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
