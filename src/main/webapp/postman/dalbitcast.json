@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.03",
+		"name": "달빛라디오 API 정의서_2020.03.04",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4564,6 +4564,68 @@
 									],
 									"path": [
 										"delete"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Pay",
+					"item": [
+						{
+							"name": "휴대폰 결제 요청_2020.03.04",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authToken",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMzA1NzE1LCJleHAiOjE1ODU4OTc3MTV9.NU9onKaqcNGYlNuX-_Rxp56v88QZPDkoqbSXnf8vXGw",
+										"type": "text"
+									},
+									{
+										"key": "custom-header",
+										"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "Prdtnm",
+											"value": "달달토끼",
+											"description": "* 상품명 (50byte 이하)",
+											"type": "text"
+										},
+										{
+											"key": "Prdtprice",
+											"value": "100",
+											"description": "* 요청금액(10byte 이하)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devpay2.dalbitcast.com/rest/pay/phone",
+									"protocol": "https",
+									"host": [
+										"devpay2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"rest",
+										"pay",
+										"phone"
 									]
 								}
 							},
