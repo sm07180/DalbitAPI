@@ -2,8 +2,9 @@
 <configuration scan="true" scanPeriod="30 seconds">
 
     <property name="LOG_PATH" value="/home/dalbit/logs" />
-    <property name="LOG_FILE_NAME" value="radio_api.log" />
-    <property name="LOG_ERROR_FILE_NAME" value="error_radio_api.log" />
+    <property name="LOG_FILE_NAME_PREFIX" value="radio_api" />
+    <property name="LOG_ERROR_FILE_NAME_PREFIX" value="error_radio_api" />
+    <timestamp key="yyyyMMdd" datePattern="yyyyMMdd" />
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
@@ -11,18 +12,18 @@
         </layout>
     </appender>
 
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${LOG_PATH}/${LOG_FILE_NAME}</file>
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME_PREFIX}.${yyyyMMdd}.log</file>
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
     </appender>
 
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
-        <file>${LOG_PATH}/${LOG_ERROR_FILE_NAME}</file>
+        <file>${LOG_PATH}/${LOG_ERROR_FILE_NAME_PREFIX}.${yyyyMMdd}.log</file>
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
@@ -30,32 +31,14 @@
 
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE" />
+        <appender-ref ref="ERROR_FILE" />
     </root>
 
     <logger name="org.springframework.web" level="DEBUG">
+        <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <appender-ref ref="ERROR_FILE" />
     </logger>
-
-    <logger name="com.dalbit" additivity="false" level="DEBUG">
-        <appender-ref ref="FILE" />
-        <appender-ref ref="ERROR_FILE" />
-    </logger>
-
-    <logger name="jdbc" level="OFF" />
-    <logger name="jdbc.sqlonly" level="INFO" />
-    <logger name="jdbc.sqltiming" level="OFF" />
-    <logger name="jdbc.audit" level="OFF" />
-    <logger name="jdbc.resultset" level="OFF" />
-    <logger name="jdbc.resultsettable" level="INFO" />
-    <logger name="jdbc.connection" level="WARN" />
-    <logger name="log4jdbc.log4j2" level="OFF" />
-    <logger name="io.lettuce" level="WARN" />
-    <logger name="com.zaxxer.hikari" level="WARN" />
-
-    <root level="DEBUG">
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="ERROR_FILE" />
-    </root>
 
 </configuration>
