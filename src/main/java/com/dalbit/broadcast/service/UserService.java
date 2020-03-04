@@ -11,6 +11,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
@@ -35,6 +36,8 @@ public class UserService {
     UserDao userDao;
     @Autowired
     RoomDao roomDao;
+    @Autowired
+    ProfileDao profileDao;
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
@@ -246,7 +249,7 @@ public class UserService {
      */
     public String callMemberInfo(P_ProfileInfoVo pProfileInfo) {
         ProcedureVo procedureVo = new ProcedureVo(pProfileInfo);
-        userDao.callMemberInfo(procedureVo);
+        profileDao.callMemberInfo(procedureVo);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
@@ -254,6 +257,7 @@ public class UserService {
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
             P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
+            profileInfo.setMem_no(pProfileInfo.getTarget_mem_no());
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), null);
 
             HashMap returnMap = new HashMap();
@@ -265,7 +269,7 @@ public class UserService {
             returnMap.put("dalCnt", profileInfoOutVo.getDalCnt());
             returnMap.put("byeolCnt", profileInfoOutVo.getByeolCnt());
             if((profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) > 0){
-                returnMap.put("expRate", ((profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) / (profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin())) * 100);
+                returnMap.put("expRate", (int)(((double)(profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) / (double)(profileInfoOutVo.getExpNext() - profileInfoOutVo.getExpBegin())) * 100));
             }else{
                 returnMap.put("expRate", 0);
             }

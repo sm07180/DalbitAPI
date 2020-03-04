@@ -57,6 +57,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
+
         if(target_mem_no.equals(target.getMem_no())){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();
