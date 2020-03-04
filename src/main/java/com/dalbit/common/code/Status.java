@@ -241,7 +241,7 @@ public enum Status {
 
     //방송방 사연 조회
     방송방사연조회성공("C001", "broadcast.room.story.sel.success", "방송방 사연조회 성공 시"),
-    방송방사연조회_등록된사연없음("0", "broadcast.room.story.sel.no", "방송방 사연조회 등록된 사연 없을 시"),
+    방송방사연조회_등록된사연없음("0", "broadcast.room.story.sel.no.success", "방송방 사연조회 등록된 사연 없을 시"),
     방송방사연조회_회원아님("-1", "broadcast.room.story.sel.member.no", "방송방 사연조회 회원이 아닐 시"),
     방송방사연조회_해당방이없음("-2", "broadcast.room.story.room.no", "방송방 사연조회 해당 방이 없을 시"),
     방송방사연조회_방참가자가아님("-3", "broadcast.room.story.member.no", "방송방 사연조회 방 참가자가 아닐 시"),
