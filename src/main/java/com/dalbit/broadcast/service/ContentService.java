@@ -141,7 +141,6 @@ public class ContentService {
 
         HashMap returnMap = new HashMap();
         returnMap.put("passTime", passTime);
-        procedureVo.setData(returnMap);
 
         String result;
         if(Status.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
@@ -156,15 +155,15 @@ public class ContentService {
                 socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((Date)resultMap.get("writeDate")));
                 socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공, returnMap));
         }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님, returnMap));
         }else if(Status.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음, returnMap));
         }else if(Status.방송방사연등록_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님, returnMap));
         }else if(Status.방송방사연등록_10분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능, returnMap));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류));
         }
