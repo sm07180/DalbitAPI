@@ -164,6 +164,36 @@ public class SocketService {
         return null;
     }
 
+    public Map<String, Object> changeRoomState(String roomNo, String memNo, int state, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+
+            String command = "reqMicOn";
+            if(state == 3){ //통화중
+                command = "reqCalling";
+            }else if(state == 2){ // 마이크 오프
+                command = "reqMicOff";
+            }
+            vo.setCommand(command);
+            vo.setMessage(vo.getAuth() + "");
+            vo.setRecvPosition("top1");
+            vo.setRecvLevel(3);
+            vo.setRecvType("system");
+            vo.setRecvMemNo(memNo);
+
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+
+        return null;
+    }
+
     public Map<String, Object> changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();

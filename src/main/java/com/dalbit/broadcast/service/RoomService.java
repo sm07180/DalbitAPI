@@ -202,7 +202,7 @@ public class RoomService {
 
             if(target.getState() == 2 || target.getState() == 3){
                 try{
-                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), 1, target.getState(), DalbitUtil.getAuthToken(request));
+                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), target.getState(), DalbitUtil.getAuthToken(request));
                 }catch(Exception e){}
             }
 
