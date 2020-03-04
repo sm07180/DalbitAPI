@@ -239,7 +239,8 @@ public class ProfileService {
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_성공, notificationList));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_팬없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음));
+            notificationList.put("list", new ArrayList<>());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, notificationList));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_요청회원_회원아님));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_대상회원_회원아님.getMessageCode())) {
