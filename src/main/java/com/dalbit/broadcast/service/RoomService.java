@@ -200,6 +200,12 @@ public class RoomService {
             log.info("returnMap: {}",returnMap);
             procedureVo.setData(returnMap);
 
+            if(target.getState() == 2 || target.getState() == 3){
+                try{
+                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), 1, target.getState(), DalbitUtil.getAuthToken(request));
+                }catch(Exception e){}
+            }
+
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
