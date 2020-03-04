@@ -165,7 +165,7 @@ public class ContentService {
         }else if(Status.방송방사연등록_10분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능, returnMap));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
         }
 
         return result;
