@@ -202,10 +202,10 @@ public class RoomService {
 
             try{
                 HashMap socketMap = new HashMap();
-                socketMap.put("goodCount", DalbitUtil.getIntMap(returnMap, "rank"));
-                socketMap.put("roomRanking", DalbitUtil.getIntMap(returnMap, "rank"));
-                socketMap.put("fanRanking", returnMap.get("fanRank"));
-                socketService.sendRoomInfo(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+                socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
+                socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                socketMap.put("fanRank", returnMap.get("fanRank"));
+                socketService.changeCount(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여성공, procedureVo.getData()));
@@ -241,26 +241,25 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
         roomDao.callBroadCastRoomExit(procedureVo);
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
-
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        HashMap returnMap = new HashMap();
-        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
-
         String result;
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+            HashMap returnMap = new HashMap();
+            returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
             try{
                 HashMap socketMap = new HashMap();
-                socketMap.put("goodCount", DalbitUtil.getIntMap(returnMap, "rank"));
-                socketMap.put("roomRanking", DalbitUtil.getIntMap(returnMap, "rank"));
-                socketMap.put("fanRanking", returnMap.get("fanRank"));
-                //socketService.sendRoomInfo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+                socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                socketMap.put("fanRank", returnMap.get("fanRank"));
+                socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
@@ -283,7 +282,7 @@ public class RoomService {
     /**
      * 방송방 정보 수정
      */
-    public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo) throws GlobalException {
+    public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo, HttpServletRequest request) throws GlobalException {
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImage()) && pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
             isDone = true;
@@ -309,7 +308,9 @@ public class RoomService {
             returnMap.put("welcomMsg", pRoomEditOutVo.getMsg_welcom());
             returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
-
+            try{
+                socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(), returnMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_회원아님));

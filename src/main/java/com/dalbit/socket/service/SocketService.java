@@ -134,7 +134,7 @@ public class SocketService {
     public Map<String, Object> changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
-        authToken = memNo == null ? "" : authToken.trim();
+        authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
             SocketVo vo = getSocketVo(roomNo, memNo);
@@ -167,7 +167,7 @@ public class SocketService {
     public Map<String, Object> changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
-        authToken = memNo == null ? "" : authToken.trim();
+        authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(menagerMemNo) && !"".equals(roomNo) && !"".equals(authToken)){
             SocketVo vo = getSocketVo(roomNo, memNo);
@@ -182,18 +182,207 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken){
+    public Map<String, Object> changeRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
-        authToken = memNo == null ? "" : authToken.trim();
+        authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
             SocketVo vo = getSocketVo(roomNo, memNo);
             if(vo.getMemNo() == null){
                 return null;
             }
-            vo.setCommand("reqGrant");
+            vo.setCommand("reqRoomChangeInfo");
             vo.setMessage(roomInfo);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> changeCount(String roomNo, String memNo, HashMap roomInfo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqChangeCount");
+            vo.setMessage(roomInfo);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> sendLike(String roomNo, String memNo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqGood");
+            vo.setRecvDj(0);
+            vo.setRecvTime(3);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> sendBooster(String roomNo, String memNo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = memNo == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqBooster");
+            vo.setRecvTime(3);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> sendNotice(String roomNo, String memNo, String notice, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        notice = notice == null ? "" : notice.trim();
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqNotice");
+            vo.setRecvTime(3);
+            vo.setRecvDj(0);
+            vo.setMessage(notice);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> sendStory(String roomNo, String memNo, Object story, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && story != null){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqStory");
+            vo.setRecvTime(3);
+            vo.setRecvListener(0);
+            vo.setRecvManager(0);
+            vo.setMessage(story);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> addFan(String roomNo, String memNo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqFan");
+            vo.setMessage("1");
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> giftDal(String memNo, String giftedMemNo, int dal, String authToken){
+        memNo = memNo == null ? "" : memNo.trim();
+        giftedMemNo = giftedMemNo == null ? "" : giftedMemNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(giftedMemNo) && !"".equals(authToken) && dal > 0){
+            SocketVo vo = new SocketVo(memNo, giftedMemNo);
+            vo.setCommand("reqGiftDal");
+            vo.setMessage(dal + "");
+            return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> giftItem(String roomNo, String memNo, Object item, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && item != null){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqGiftImg");
+            vo.setMessage(item);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    /**
+     * 게스트 노드 호출
+     * @param roomNo 방번호
+     * @param bjMemNo bj 회원번호
+     * @param gstMemNo 게스트 회원번호
+     * @param type 타입 (1:초대, 2:취소, 3:승락, 4:거절, 5:신청, 6:퇴장)
+     * @param authToken 토큰
+     * @return
+     */
+    public Map<String, Object> execGuest(String roomNo, String bjMemNo, String gstMemNo, int type, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        bjMemNo = bjMemNo == null ? "" : bjMemNo.trim();
+        gstMemNo = gstMemNo == null ? "" : gstMemNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        if(!"".equals(roomNo) && !"".equals(bjMemNo) && !"".equals(gstMemNo) && !"".equals(authToken) && type > 0 && type < 7){
+            String recvMemNo = gstMemNo;
+            String sendMemno = bjMemNo;
+            if(type > 2){
+                recvMemNo = bjMemNo;
+                sendMemno = gstMemNo;
+            }
+            SocketVo vo = getSocketVo(roomNo, sendMemno);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setRecvMemNo(recvMemNo);
+            vo.setMessage(type + "");
+            vo.setCommand("reqGuest");
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        kickedMemNo = kickedMemNo == null ? "" : kickedMemNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(kickedMemNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqKickOut");
+            vo.setMessage(kickedMemNo);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;

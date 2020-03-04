@@ -31,6 +31,16 @@ public interface MypageDao {
     List<P_ByeolVo> callMemberWalletByeol(ProcedureVo procedureVo);
     List<P_MypageReportBroadVo> callMypageMypageReportBroad(ProcedureVo procedureVo);
     List<P_MypageReportListenVo> callMypageMypageReportListen(ProcedureVo procedureVo);
-    ProcedureVo callgetBanWord(ProcedureVo procedureVo);
-    ProcedureVo callInsertBanWord(ProcedureVo procedureVo);
+    ProcedureVo callMyapgeGetBanWord(ProcedureVo procedureVo);
+    ProcedureVo callMypageInsertBanWord(ProcedureVo procedureVo);
+    List<P_SearchUserVo> callMypageSearchUser(ProcedureVo procedureVo);
+    List<P_MypageManagerVo> callMypageManager(ProcedureVo procedureVo);
+    ProcedureVo callMypageManagerAdd(ProcedureVo procedureVo);
+    ProcedureVo callMypageManagerEdit(ProcedureVo procedureVo);
+    ProcedureVo callMypageManagerDel(ProcedureVo procedureVo);
+    List<P_MypageBlackVo> callMypageBlackListView(ProcedureVo procedureVo);
+    ProcedureVo callMypageBlackListAdd(ProcedureVo procedureVo);
+    ProcedureVo callMypageBlackListDel(ProcedureVo procedureVo);
+
+
 }

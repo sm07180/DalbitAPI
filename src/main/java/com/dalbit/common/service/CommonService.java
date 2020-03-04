@@ -232,7 +232,7 @@ public class CommonService {
                 MemberFanVo sampleFanVo = new MemberFanVo();
                 if(i == 0){
                     sampleFanVo.setRank(i+1);
-                    sampleFanVo.setMemNo("11581570590758");
+                    sampleFanVo.setMemNo("11583120890262");
                     sampleFanVo.setNickNm("임시팬랭킹1");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(10);
@@ -240,7 +240,7 @@ public class CommonService {
 
                 }else if(i == 1){
                     sampleFanVo.setRank(i+1);
-                    sampleFanVo.setMemNo("11581570632108");
+                    sampleFanVo.setMemNo("11583128215641");
                     sampleFanVo.setNickNm("임시팬랭킹2");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(20);
@@ -248,7 +248,7 @@ public class CommonService {
 
                 }else if(i == 2){
                     sampleFanVo.setRank(i+1);
-                    sampleFanVo.setMemNo("11581570944586");
+                    sampleFanVo.setMemNo("11583121468981");
                     sampleFanVo.setNickNm("임시팬랭킹3");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(30);

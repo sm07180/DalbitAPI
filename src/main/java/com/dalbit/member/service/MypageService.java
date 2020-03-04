@@ -8,6 +8,7 @@ import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -29,7 +31,8 @@ public class MypageService {
     GsonUtil gsonUtil;
     @Autowired
     RestService restService;
-
+    @Autowired
+    SocketService socketService;
 
     /**
      * 프로필 편집
@@ -359,12 +362,15 @@ public class MypageService {
     /**
      * 회원 루비선물하기
      */
-    public String callMemberGiftRuby(P_RubyVo pRubyVo) {
+    public String callMemberGiftRuby(P_RubyVo pRubyVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRubyVo);
         mypageDao.callMemberGiftRuby(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.루비선물_성공.getMessageCode())) {
+            try{
+                socketService.giftDal(MemberVo.getMyMemNo(), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_성공));
         }else if(procedureVo.getRet().equals(Status.루비선물_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_요청회원번호_회원아님));
@@ -686,9 +692,9 @@ public class MypageService {
     /**
      * 방송설정 금지어 단어 조회
      */
-    public String callgetBanWord(P_BanWordSelectVo pBanWordSelectVo) {
+    public String callMyapgeGetBanWord(P_BanWordSelectVo pBanWordSelectVo) {
         ProcedureVo procedureVo = new ProcedureVo(pBanWordSelectVo);
-        mypageDao.callgetBanWord(procedureVo);
+        mypageDao.callMyapgeGetBanWord(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -716,9 +722,9 @@ public class MypageService {
     /**
      * 방송설정 금지어 저장
      */
-    public String callInsertBanWord(P_BanWordInsertVo pBanWordInsertVo) {
+    public String callMypageInsertBanWord(P_BanWordInsertVo pBanWordInsertVo) {
         ProcedureVo procedureVo = new ProcedureVo(pBanWordInsertVo);
-        mypageDao.callInsertBanWord(procedureVo);
+        mypageDao.callMypageInsertBanWord(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -742,6 +748,237 @@ public class MypageService {
         }
 
         return result;
+    }
 
+
+    /**
+     * 방송설정 유저 검색
+     */
+    public String callMypageSearchUser(P_SearchUserVo pSearchUserVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pSearchUserVo);
+        List<P_SearchUserVo> searchUserListVo = mypageDao.callMypageSearchUser(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(searchUserListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<SearchUserOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<searchUserListVo.size(); i++){
+                outVoList.add(new SearchUserOutVo(searchUserListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap reportListenList = new HashMap();
+        reportListenList.put("list", procedureOutputVo.getOutputBox());
+        reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_성공, reportListenList));
+        } else if (procedureVo.getRet().equals(Status.유저검색_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_없음));
+        } else if (procedureVo.getRet().equals(Status.유저검색_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 조회
+     */
+    public String callMypageManager(P_MypageManagerVo pMypageManagerVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageManagerVo);
+        List<P_MypageManagerVo> managerListVo = mypageDao.callMypageManager(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(managerListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<ManagerOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<managerListVo.size(); i++){
+                outVoList.add(new ManagerOutVo(managerListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap reportListenList = new HashMap();
+        reportListenList.put("list", procedureOutputVo.getOutputBox());
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_성공, reportListenList));
+        } else if (procedureVo.getRet().equals(Status.고정매니저조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_없음));
+        } else if (procedureVo.getRet().equals(Status.고정매니저조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 등록
+     */
+    public String callMypageManagerAdd(P_MypageManagerAddVo pMypageManagerAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageManagerAddVo);
+        mypageDao.callMypageManagerAdd(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.고정매니저등록_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저등록_성공));
+        }else if(procedureVo.getRet().equals(Status.고정매니저등록_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저등록_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.고정매니저등록_매니저회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저등록_매니저회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.고정매니저등록_5명초과.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저등록_5명초과));
+        }else if(procedureVo.getRet().equals(Status.고정매니저등록_이미매니저등록.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저등록_이미매니저등록));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저등록_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 권한수정
+     */
+    public String callMypageManagerEdit(P_MypageManagerEditVo pMypageManagerEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageManagerEditVo);
+        mypageDao.callMypageManagerEdit(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.고정매니저_권한수정_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저_권한수정_성공));
+        }else if(procedureVo.getRet().equals(Status.고정매니저_권한수정_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저_권한수정_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.고정매니저_권한수정_매니저회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저_권한수정_매니저회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.고정매니저_권한수정_등록된매니저아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저_권한수정_등록된매니저아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저_권한수정_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 고정 매니저 해제
+     */
+    public String callMypageManagerDel(P_MypageManagerDelVo pMypageManagerDelVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageManagerDelVo);
+        mypageDao.callMypageManagerDel(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.고정매니저해제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저해제_성공));
+        }else if(procedureVo.getRet().equals(Status.고정매니저해제_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저해제_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.고정매니저해제_매니저회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저해제_매니저회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.고정매니저해제_등록된매니저아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저해제_등록된매니저아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저해제_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 블랙리스트 조회
+     */
+    public String callMypageBlackListView(P_MypageBlackVo pMypageBlackVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageBlackVo);
+        List<P_MypageBlackVo> blackListVo = mypageDao.callMypageBlackListView(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(blackListVo)){
+            procedureOutputVo = null;
+        }else{
+            List<BlackListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<blackListVo.size(); i++){
+                outVoList.add(new BlackListOutVo(blackListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap reportListenList = new HashMap();
+        reportListenList.put("list", procedureOutputVo.getOutputBox());
+        reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_성공, reportListenList));
+        } else if (procedureVo.getRet().equals(Status.블랙리스트조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_없음));
+        } else if (procedureVo.getRet().equals(Status.블랙리스트조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_요청회원번호_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송설정 블랙리스트 등록
+     */
+    public String callMypageBlackListAdd(P_MypageBlackAddVo pMypageBlackAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageBlackAddVo);
+        mypageDao.callMypageBlackListAdd(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.블랙리스트등록_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_성공));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트등록_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트등록_블랙회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_블랙회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트등록_이미블랙등록.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_이미블랙등록));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 블랙리스트 해제
+     */
+    public String callMypageBlackListDel(P_MypageBlackDelVo pMypageBlackDelVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageBlackDelVo);
+        mypageDao.callMypageBlackListDel(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.블랙리스트해제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트해제_성공));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트해제_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트해제_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트해제_블랙회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트해제_블랙회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트해제_블랙회원없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트해제_블랙회원없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트해제_실패));
+        }
+
+        return result;
     }
 }

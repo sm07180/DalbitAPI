@@ -16,6 +16,10 @@ public class ItemVo {
     private String lottieUrl;
     private int width;
     private int height;
+    private double deviceRate;
+    private double widthRate;
+    private double heightRate;
+    private String location; // topLeft bottomRight
 
     public ItemVo(Item item){
         this.itemNm = item.getItemNm();
@@ -26,5 +30,9 @@ public class ItemVo {
         this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
         this.width = item.getWidth();
         this.height = item.getHeight();
+        this.deviceRate = item.getDeviceRate();
+        this.widthRate = item.getWidthRate();
+        this.heightRate = item.getHeightRate();
+        this.location = item.getLocation();
     }
 }

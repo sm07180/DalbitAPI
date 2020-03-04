@@ -98,7 +98,7 @@ public class UserService {
     /**
      * 방송방 게스트 지정하기
      */
-    public String callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo) {
+    public String callBroadCastRoomGuestAdd(P_RoomGuestAddVo pRoomGuestAddVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGuestAddVo);
         userDao.callBroadCastRoomGuestAdd(procedureVo);
 
@@ -117,6 +117,9 @@ public class UserService {
 
         String result="";
         if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
+            try{
+                socketService.execGuest(pRoomGuestAddVo.getRoom_no(), MemberVo.getMyMemNo(), pRoomGuestAddVo.getGuest_mem_no(), 3, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님));
@@ -143,7 +146,7 @@ public class UserService {
     /**
      * 방송방 게스트 취소
      */
-    public String callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo) {
+    public String callBroadCastRoomGuestDelete(P_RoomGuestDeleteVo pRoomGuestDeleteVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGuestDeleteVo);
         userDao.callBroadCastRoomGuestDelete(procedureVo);
 
@@ -159,6 +162,9 @@ public class UserService {
 
         String result = "";
         if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
+            try{
+                socketService.execGuest(pRoomGuestDeleteVo.getRoom_no(), MemberVo.getMyMemNo(), pRoomGuestDeleteVo.getGuest_mem_no(), 6, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님));
@@ -184,7 +190,7 @@ public class UserService {
     /**
      * 방송방 강퇴하기
      */
-    public String callBroadCastRoomKickout(P_RoomKickoutVo pRoomKickoutVo) {
+    public String callBroadCastRoomKickout(P_RoomKickoutVo pRoomKickoutVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomKickoutVo);
         userDao.callBroadCastRoomKickout(procedureVo);
 
@@ -201,6 +207,16 @@ public class UserService {
 
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
+            try{
+                socketService.kickout(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            try{
+                HashMap socketMap = new HashMap();
+                socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                socketMap.put("fanRank", returnMap.get("fanRank"));
+                socketService.changeCount(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장, returnMap));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_회원아님));
@@ -338,7 +354,7 @@ public class UserService {
     /**
      * 방송방 팬 등록
      */
-    public String callFanstarInsert(P_BroadFanstarInsertVo pBroadFanstarInsertVo) {
+    public String callFanstarInsert(P_BroadFanstarInsertVo pBroadFanstarInsertVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pBroadFanstarInsertVo);
         userDao.callFanstarInsert(procedureVo);
 
@@ -353,7 +369,9 @@ public class UserService {
 
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
-                //TODO - 채팅방알림 Node call
+                try{
+                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(), DalbitUtil.getAuthToken(request));
+                }catch(Exception e){}
                 log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
 

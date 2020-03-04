@@ -4,11 +4,9 @@ import com.dalbit.broadcast.dao.ContentDao;
 import com.dalbit.broadcast.vo.RoomStoryListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.PagingVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -16,7 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,6 +29,8 @@ public class ContentService {
     ContentDao contentDao;
     @Autowired
     GsonUtil gsonUtil;
+    @Autowired
+    SocketService socketService;
 
 
     /**
@@ -67,12 +69,15 @@ public class ContentService {
     /**
      *  방송방 공지사항 입력/수정
      */
-    public String callBroadCastRoomNoticeEdit(P_RoomNoticeEditVo pRoomNoticeEditVo) {
+    public String callBroadCastRoomNoticeEdit(P_RoomNoticeEditVo pRoomNoticeEditVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeEditVo);
         contentDao.callBroadCastRoomNoticeEdit(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
+            try{
+                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정성공));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_정상회원이아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_정상회원이아님));
@@ -93,12 +98,15 @@ public class ContentService {
     /**
      *  방송방 공지사항 삭제
      */
-    public String callBroadCastRoomNoticeDelete(P_RoomNoticeVo pRoomNoticeSelectVo) {
+    public String callBroadCastRoomNoticeDelete(P_RoomNoticeVo pRoomNoticeSelectVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeSelectVo);
         contentDao.callBroadCastRoomNoticeDelete(procedureVo);
 
         String result;
         if (procedureVo.getRet().equals(Status.공지삭제하기성공.getMessageCode())) {
+            try{
+                socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(), "", DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기성공));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_정상회원이아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_정상회원이아님));
@@ -120,7 +128,7 @@ public class ContentService {
     /**
      * 방송방 사연 등록
      */
-    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo) {
+    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
@@ -133,20 +141,32 @@ public class ContentService {
 
         HashMap returnMap = new HashMap();
         returnMap.put("passTime", passTime);
+        procedureVo.setData(returnMap);
 
         String result;
         if(Status.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공, returnMap));
+            try{
+                HashMap socketMap = new HashMap();
+                socketMap.put("storyIdx", DalbitUtil.getIntMap(resultMap, "story_idx"));
+                socketMap.put("writerNo", DalbitUtil.getStringMap(resultMap, "writer_mem_no"));
+                socketMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
+                socketMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+                socketMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
+                socketMap.put("writeDt", DalbitUtil.getUTCFormat((Date)resultMap.get("writeDate")));
+                socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((Date)resultMap.get("writeDate")));
+                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공));
         }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님));
         }else if(Status.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음));
         }else if(Status.방송방사연등록_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님));
         }else if(Status.방송방사연등록_10분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_10분에한번등록가능, procedureVo.getData()));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류));
         }
 
         return result;

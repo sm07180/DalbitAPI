@@ -1,6 +1,7 @@
 package com.dalbit.socket.vo;
 
 import com.dalbit.util.DalbitUtil;
+import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -48,6 +49,12 @@ public class SocketVo {
     private int recvTime = 0;
 
 
+    public SocketVo(String memNo, String recvMemNo){
+        this.memNo = memNo;
+        this.recvMemNo = recvMemNo;
+        this.login = DalbitUtil.isLogin() ? 1 : 0;
+    }
+
     public SocketVo(String memNo, HashMap memInfo){
         if(memInfo != null){
             this.memNo = memNo;
@@ -67,7 +74,8 @@ public class SocketVo {
     }
 
     public void setMessage(Object message){
-        this.message = message.toString();
+        this.message = new Gson().toJson(message);
+        //this.message = message;
     }
 
     public String toQueryString(){
