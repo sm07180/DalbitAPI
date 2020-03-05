@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -47,5 +48,11 @@ public class CommonController {
     @GetMapping("/location")
     public LocationVo GetLocateByIp(HttpServletRequest request) {
         return DalbitUtil.getLocation(request);
+    }
+
+    @GetMapping("/ctrl/check/service")
+    @ResponseBody
+    public String checkService(HttpServletRequest request){
+        return commonService.checkHealthy(request);
     }
 }

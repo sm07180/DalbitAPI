@@ -18,15 +18,21 @@ import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 @Slf4j
 @Service
@@ -271,5 +277,49 @@ public class CommonService {
         memberFanVoList.add(fanVo);
 
         return memberFanVoList;
+    }
+
+    @Value("${server.healthy.check.dir}")
+    private String HEALTHY_DIR;
+    @Value("${server.healthy.check.postfix}")
+    private String HEALTHY_POSTFIX;
+
+    public String checkHealthy(HttpServletRequest request) {
+        String rootDir = request.getSession().getServletContext().getRealPath("/");
+        String instance;
+        String result = "OK";
+        if(rootDir.endsWith("/") || rootDir.endsWith("\\")){
+            rootDir = rootDir.substring(0, rootDir.length() - 1);
+        }
+        instance = rootDir.substring(rootDir.length() - 1);
+
+        if(!Pattern.matches("\\d", instance)){
+            instance = "1";
+        }
+
+        FileReader fileReader = null;
+        try{
+            File healthyFile = new File(HEALTHY_DIR, "service" + instance + "_" + HEALTHY_POSTFIX + ".txt");
+            if(healthyFile.exists()){
+                fileReader = new FileReader(healthyFile);
+                int cur = 0;
+                result = "";
+                while((cur = fileReader.read()) != -1){
+                    result += (char)cur;
+                }
+            }
+        }catch (FileNotFoundException e) {
+            result = "OK";
+        }catch (IOException e1) {
+            result = "OK";
+        }finally {
+            if(fileReader != null){
+                try {
+                    fileReader.close();
+                }catch(IOException e){}
+            }
+        }
+
+        return result;
     }
 }
