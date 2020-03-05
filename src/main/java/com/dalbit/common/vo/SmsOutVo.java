@@ -7,8 +7,7 @@ import javax.validation.constraints.NotBlank;
 
 @Getter @Setter
 public class SmsOutVo {
-    @NotBlank
+
     private int CMID;
-    int code;
 
 }

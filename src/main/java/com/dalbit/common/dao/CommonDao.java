@@ -14,5 +14,5 @@ public interface CommonDao {
 
     List<Map> callCodeDefineSelect();
 
-    SmsOutVo requestSms(SmsVo smsVo);
+    void requestSms(SmsVo smsVo);
 }

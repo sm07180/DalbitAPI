@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 @Slf4j
@@ -74,7 +75,18 @@ public class CommonController {
         log.debug("휴대폰 인증 코드: {}", code);
         smsVo.setCode(code);
         smsVo.setSendPhoneNo(DalbitUtil.getProperty("sms.send.phone.no"));
-        SmsOutVo smsOutVo = commonService.requestSms(smsVo);
+        commonService.requestSms(smsVo);
+
+        HttpSession session = request.getSession();
+        session.setAttribute("CMID", smsVo.getCMID());
+        session.setAttribute("reqTime", DalbitUtil.getCurrentTimeStamp("yyyyMMddhhmmss"));
+
+        log.debug("휴대폰 인증 CMID: {}", session.getAttribute("CMID"));
+        log.debug("인증번호 요청시간: {}", session.getAttribute("reqTime"));
+
+
+        SmsOutVo smsOutVo = new SmsOutVo();
+        smsOutVo.setCMID(smsVo.getCMID());
 
         return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
     }

@@ -9,10 +9,10 @@
       	call sp_code_define_select
     </select>
 
-    <insert id="requestSms" parameterType="SmsVo">
-      <selectKey keyProperty="cmId" resultType="SmsOutVo">
-          SELECT LAST_INSERT_ID()
-      </selectKey>
+    <insert id="requestSms" parameterType="SmsVo" useGeneratedKeys="true" keyProperty="CMID" keyColumn="CMID">
+        <selectKey keyProperty="CMID" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
       	INSERT INTO hp_msg(
           UMID
           , MSG_TYPE

@@ -700,4 +700,19 @@ public class DalbitUtil {
     }
 
 
+    /**
+     *  현재시간 패턴에 맞춰서 가져오기
+     */
+    public static String getCurrentTimeStamp(String pattern) {
+
+        //String pattern = "yyyyMMddhhmmssSSS";
+        SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+
+        String rtnStr = sdfCurrent.format(ts.getTime());
+
+        return rtnStr;
+    }
+
+
 }

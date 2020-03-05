@@ -327,7 +327,7 @@ public class CommonService {
     /**
      * 휴대폰 인증번호 요청
      */
-    public SmsOutVo requestSms(SmsVo smsVo) {
-        return commonDao.requestSms(smsVo);
+    public void requestSms(SmsVo smsVo) {
+        commonDao.requestSms(smsVo);
     }
 }
