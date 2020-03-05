@@ -19,6 +19,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -335,6 +336,7 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
+    @Transactional(readOnly = true)
     public String callBroadCastRoomList(P_RoomListVo pRoomListVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
 

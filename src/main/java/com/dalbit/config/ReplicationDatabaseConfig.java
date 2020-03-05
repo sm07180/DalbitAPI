@@ -1,33 +1,35 @@
 package com.dalbit.config;
 
 import com.dalbit.mybatis.RefreshableSqlSessionFactoryBean;
+import com.dalbit.mybatis.ReplicationRoutingDataSource;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import net.sf.log4jdbc.Log4jdbcProxyDataSource;
-import net.sf.log4jdbc.tools.Log4JdbcCustomFormatter;
-import net.sf.log4jdbc.tools.LoggingType;
+import lombok.var;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Description;
+import org.springframework.context.annotation.Primary;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.jdbc.datasource.LazyConnectionDataSourceProxy;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
 
-/**
- * DATABASE 환경설정
- */
-//@Configuration
-@Description("master slave 설정으로 변경되어 ReplicationDatabaseConfig Class를 사용합니다.")
-@Deprecated
+@Configuration
+@EnableAutoConfiguration(exclude = {DataSourceAutoConfiguration.class})
+@EnableTransactionManagement
 @MapperScan(basePackages= "com.dalbit")
-public class DatabaseConfig {
+public class ReplicationDatabaseConfig {
 
     @Value("${spring.datasource.driverClassName}")
     private String JDBC_DRIVER_CLASS_NAME;
@@ -41,36 +43,48 @@ public class DatabaseConfig {
     @Value("${spring.datasource.password}")
     private String JDBC_PASSWORD;
 
-    @Value("${spring.datasource.connection.timeout}")
-    private String CONNECTION_TIMEOUT;
-
-    @Value("${spring.datasource.max.lifetime}")
-    private String MAX_LIFETIME;
-
     @Bean
-    public HikariConfig hikariConfig() {
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
-        hikariConfig.setJdbcUrl(JDBC_URL);
-        hikariConfig.setUsername(JDBC_USERNAME);
-        hikariConfig.setPassword(JDBC_PASSWORD);
-        hikariConfig.setConnectionTimeout(Long.valueOf(CONNECTION_TIMEOUT));
-        //hikariConfig.setIdleTimeout(Long.valueOf(IDLE_TIMEOUT));
-        hikariConfig.setMaxLifetime(Long.valueOf(MAX_LIFETIME));
-        return hikariConfig;
+    public DataSource masterDataSource() {
+
+        HikariConfig masterHikariConfig = new HikariConfig();
+        masterHikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
+        masterHikariConfig.setJdbcUrl(JDBC_URL);
+        masterHikariConfig.setUsername(JDBC_USERNAME);
+        masterHikariConfig.setPassword(JDBC_PASSWORD);
+
+        return new HikariDataSource(masterHikariConfig);
     }
 
     @Bean
-    public DataSource dataSource() {
-        DataSource dataSource = new HikariDataSource(hikariConfig());
-        Log4JdbcCustomFormatter formatter = new Log4JdbcCustomFormatter();
-        formatter.setLoggingType(LoggingType.SINGLE_LINE);
-        formatter.setSqlPrefix("[RUNNING SQL] => ");
+    public DataSource slaveDataSource() {
+        HikariConfig slaveHikariConfig = new HikariConfig();
+        slaveHikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
+        slaveHikariConfig.setJdbcUrl(JDBC_URL);
+        slaveHikariConfig.setUsername(JDBC_USERNAME);
+        slaveHikariConfig.setPassword(JDBC_PASSWORD);
 
-        Log4jdbcProxyDataSource log4jdbcDs = new Log4jdbcProxyDataSource(dataSource);
-        log4jdbcDs.setLogFormatter(formatter);
-        return dataSource;
+        return new HikariDataSource(slaveHikariConfig);
+    }
 
+    @Bean
+    public DataSource routingDataSource(@Qualifier("masterDataSource") DataSource masterDataSource,
+                                        @Qualifier("slaveDataSource") DataSource slaveDataSource) {
+
+        var dataSourceMap = new HashMap<>();
+        dataSourceMap.put("master", masterDataSource);
+        dataSourceMap.put("slave", slaveDataSource);
+
+        var routingDataSource = new ReplicationRoutingDataSource();
+        routingDataSource.setTargetDataSources(dataSourceMap);
+        routingDataSource.setDefaultTargetDataSource(masterDataSource);
+
+        return routingDataSource;
+    }
+
+    @Primary
+    @Bean
+    public DataSource dataSource(@Qualifier("routingDataSource") DataSource routingDataSource) {
+        return new LazyConnectionDataSourceProxy(routingDataSource);
     }
 
     @Bean
