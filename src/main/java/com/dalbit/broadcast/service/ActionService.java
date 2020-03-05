@@ -6,6 +6,7 @@ import com.dalbit.broadcast.vo.procedure.P_RoomBoosterVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
+import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -172,8 +173,18 @@ public class ActionService {
             try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
+                String itemNm = "곰토끼";
+                if(Item.곰인형.getItemNo().equals(pRoomGiftVo.getItem_no())) {
+                    itemNm = "곰인형";
+                }else if(Item.도너츠달.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "도너츠달";
+                }else if(Item.도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "도너츠";
+                }
+                itemMap.put("itemNm", itemNm);
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
-                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), itemMap, DalbitUtil.getAuthToken(request));
+                itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
             try{
                 HashMap socketMap = new HashMap();

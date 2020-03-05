@@ -351,7 +351,7 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> giftItem(String roomNo, String memNo, Object item, String authToken){
+    public Map<String, Object> giftItem(String roomNo, String memNo, String giftedMemNo, Object item, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
@@ -363,6 +363,9 @@ public class SocketService {
             }
             vo.setCommand("reqGiftImg");
             vo.setMessage(item);
+            if(giftedMemNo != null && !"".equals(giftedMemNo.trim())){
+                vo.setRecvMemNo(giftedMemNo);
+            }
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
