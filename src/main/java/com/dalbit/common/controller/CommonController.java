@@ -2,10 +2,7 @@ package com.dalbit.common.controller;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.LocationVo;
-import com.dalbit.common.vo.SmsOutVo;
-import com.dalbit.common.vo.SmsVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -69,21 +66,23 @@ public class CommonController {
      */
     @PostMapping("/sms")
     public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
         DalbitUtil.throwValidaionException(bindingResult);
+
         int code = DalbitUtil.getSmscode();
+
         log.debug("휴대폰 번호: {}", smsVo.getPhoneNo());
         log.debug("휴대폰 인증 코드: {}", code);
+
         smsVo.setCode(code);
         smsVo.setSendPhoneNo(DalbitUtil.getProperty("sms.send.phone.no"));
         commonService.requestSms(smsVo);
 
         HttpSession session = request.getSession();
+        long reqTime = System.currentTimeMillis();
         session.setAttribute("CMID", smsVo.getCMID());
-        session.setAttribute("reqTime", DalbitUtil.getCurrentTimeStamp("yyyyMMddhhmmss"));
-
-        log.debug("휴대폰 인증 CMID: {}", session.getAttribute("CMID"));
-        log.debug("인증번호 요청시간: {}", session.getAttribute("reqTime"));
-
+        session.setAttribute("code", code);
+        session.setAttribute("reqTime", reqTime);
 
         SmsOutVo smsOutVo = new SmsOutVo();
         smsOutVo.setCMID(smsVo.getCMID());
@@ -91,6 +90,35 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
     }
 
+    /**
+     * 휴대폰 인증확인
+     */
+    @GetMapping("/sms")
+    public String isSms(@Valid SmsCheckVo smsCheckVo, HttpServletRequest request){
+        long checkTime = System.currentTimeMillis();
+
+        HttpSession session = request.getSession();
+        int id = (int) session.getAttribute("CMID");
+        int code = (int) session.getAttribute("code");
+        long reqTime = (long) session.getAttribute("reqTime");
+
+        log.debug("휴대폰 인증요청 CMID 일치여부: {}", id==smsCheckVo.getCMID());
+        log.debug("인증번호 (확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
+
+        String result;
+        if(code == smsCheckVo.getCode()){
+            if(id == smsCheckVo.getCMID() && DalbitUtil.isSeconds(reqTime, checkTime)){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
+            }else if (!DalbitUtil.isSeconds(reqTime, checkTime)){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
+            }else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+            }
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
+        }
 
 
+        return result;
+    }
 }

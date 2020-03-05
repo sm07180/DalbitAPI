@@ -12,7 +12,14 @@ public enum Status {
     삭제("C004", "delete.success", "삭제"),
     파라미터오류("C005", "param.error", "파라미터 오류 시"),
     비즈니스로직오류("C006", "business.error", "비즈니스로직 오류 시"),
-    인증번호요청("C007", "sms.number.request", "인증번호 요청시"),
+
+    //휴대폰 sms 인증
+    인증번호요청("0", "sms.number.request.success", "인증번호 요청성공 시"),
+    인증확인("1", "sms.number.check.success", "인증확인 성공 시"),
+    인증시간초과("-1", "sms.check.timeout", "인증시간 초과 시"),
+    인증번호불일치("-2", "sms.check.number.error", "인증 번호 일치하지 않을 시"),
+    인증실패("C006", "sms.check.fail", "인증 실패 시"),
+
 
     //로그인
     로그인성공("0", "login.success", "로그인 성공 시"),

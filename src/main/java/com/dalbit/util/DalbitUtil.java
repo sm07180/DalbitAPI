@@ -701,17 +701,11 @@ public class DalbitUtil {
 
 
     /**
-     *  현재시간 패턴에 맞춰서 가져오기
+     *  휴대폰 인증 3분제한 체크
      */
-    public static String getCurrentTimeStamp(String pattern) {
-
-        //String pattern = "yyyyMMddhhmmssSSS";
-        SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
-        Timestamp ts = new Timestamp(System.currentTimeMillis());
-
-        String rtnStr = sdfCurrent.format(ts.getTime());
-
-        return rtnStr;
+    public static boolean isSeconds(long start, long end) {
+        long time = (end-start)/1000;
+        return (time < 180) ? true : false;
     }
 
 
