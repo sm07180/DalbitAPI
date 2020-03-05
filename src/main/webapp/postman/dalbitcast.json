@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.05",
+		"name": "달빛라디오 API 정의서_2020.03.06",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4212,13 +4212,13 @@
 									"response": []
 								},
 								{
-									"name": "휴대폰 SMS 인증",
+									"name": "휴대폰 SMS 인증번호 요청_20200306",
 									"request": {
 										"method": "POST",
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMzk1NTgxLCJleHAiOjE1ODU5ODc1ODF9.6-GyhFTXi_ZCVGDC0KV5rSTak4W1cwGoXy_jFbTweng",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzNDE3MTc0LCJleHAiOjE1ODYwMDkxNzR9.m0PWRcXUdqlCuJgJPtxF7IDDxFeAgfvTMhYBKOvWYMg",
 												"type": "text"
 											},
 											{
@@ -4253,6 +4253,54 @@
 											],
 											"path": [
 												"sms"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "휴대폰 SMS 인증확인_20200306",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzNDE3MTc0LCJleHAiOjE1ODYwMDkxNzR9.m0PWRcXUdqlCuJgJPtxF7IDDxFeAgfvTMhYBKOvWYMg"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/sms?CMID=43&code=477970",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"sms"
+											],
+											"query": [
+												{
+													"key": "CMID",
+													"value": "43",
+													"description": "* 인증 ID"
+												},
+												{
+													"key": "code",
+													"value": "477970",
+													"description": "* 인증요청번호"
+												}
 											]
 										}
 									},
