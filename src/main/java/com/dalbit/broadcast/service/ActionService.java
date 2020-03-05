@@ -6,6 +6,7 @@ import com.dalbit.broadcast.vo.procedure.P_RoomBoosterVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
+import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -55,6 +56,7 @@ public class ActionService {
         HashMap returnMap = new HashMap();
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
         procedureVo.setData(returnMap);
 
         String result="";
@@ -69,6 +71,8 @@ public class ActionService {
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                //TODO - 레벨업 유무 소켓추가 추후 확인
+                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
                 socketService.changeCount(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
@@ -161,6 +165,7 @@ public class ActionService {
         returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
         returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
         String result="";
@@ -168,13 +173,25 @@ public class ActionService {
             try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
+                String itemNm = "곰토끼";
+                if(Item.곰인형.getItemNo().equals(pRoomGiftVo.getItem_no())) {
+                    itemNm = "곰인형";
+                }else if(Item.도너츠달.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "도너츠달";
+                }else if(Item.도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "도너츠";
+                }
+                itemMap.put("itemNm", itemNm);
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
-                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), itemMap, DalbitUtil.getAuthToken(request));
+                itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                //TODO - 레벨업 유무 소켓추가 추후 확인
+                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", returnMap.get("fanRank"));
                 socketService.changeCount(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
@@ -215,6 +232,7 @@ public class ActionService {
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
         returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
         returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
@@ -232,6 +250,8 @@ public class ActionService {
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
+                //TODO - 레벨업 유무 소켓추가 추후 확인
+                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
                 socketService.changeCount(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}

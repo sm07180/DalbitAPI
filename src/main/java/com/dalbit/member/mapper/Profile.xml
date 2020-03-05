@@ -26,5 +26,8 @@
             call sp_member_fan_ranking(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id = "callMemberLevelUpCheck" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanRankingVo">
+            call sp_member_level_up(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
 </mapper>

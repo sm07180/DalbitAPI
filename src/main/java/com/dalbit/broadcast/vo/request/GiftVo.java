@@ -19,4 +19,7 @@ public class GiftVo {
 
     @NotNull
     private Integer itemCnt;
+
+    @NotBlank
+    private String isSecret;
 }

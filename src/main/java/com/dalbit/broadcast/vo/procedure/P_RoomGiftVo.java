@@ -12,4 +12,5 @@ public class P_RoomGiftVo {
     private String gifted_mem_no;   //선물받을 회원 번호
     private String item_no;         //선물할 아이템 번호
     private Integer item_cnt;       //아이템 개수
+    private String secret;          //몰래보내기 여부
 }

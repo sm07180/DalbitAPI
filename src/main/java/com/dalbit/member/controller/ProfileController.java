@@ -41,7 +41,7 @@ public class ProfileController {
 
 
     /**
-     * 회원 팬보드 등록하기
+     * 회원 팬보드 댓글달기
      */
     @PostMapping("/board")
     public String fanboardAdd(@Valid FanboardAddVo fanboardAddVo, BindingResult bindingResult) throws GlobalException{
@@ -136,6 +136,19 @@ public class ProfileController {
         P_FanRankingVo apiData = new P_FanRankingVo(fanRankingVo);
 
         String result = profileService.callMemberFanRanking(apiData);
+        return result;
+    }
+
+    /**
+     * 회원 레벨업 확인
+     */
+    @GetMapping("/levelup")
+    public String levelUpCheck(){
+        P_LevelUpCheckVo apiData = new P_LevelUpCheckVo();
+        apiData.setMem_no(MemberVo.getMyMemNo());
+
+        String result = profileService.callMemberLevelUpCheck(apiData);
+
         return result;
     }
 }

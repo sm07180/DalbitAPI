@@ -17,4 +17,5 @@ public interface ProfileDao {
     ProcedureVo callMemberFanboardDelete(ProcedureVo procedureVo);
     List<P_FanboardReplyVo> callMemberFanboardReply(ProcedureVo procedureVo);
     List<P_FanRankingVo> callMemberFanRanking(ProcedureVo procedureVo);
+    ProcedureVo callMemberLevelUpCheck(ProcedureVo procedureVo);
 }
