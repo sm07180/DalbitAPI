@@ -258,12 +258,15 @@ public class RoomService {
             String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
             String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
             HashMap returnMap = new HashMap();
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                //TODO - 레벨업 유무 소켓추가 추후 확인
+                // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", returnMap.get("fanRank"));
                 socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}

@@ -571,6 +571,11 @@ public enum Status {
     블랙리스트해제_블랙회원없음("-3", "mypage.broadcast.blacklist.delete.add.blacklist.no", "등록된 블랙리스트 회원이 없을 시"),
     블랙리스트해제_실패("C006", "mypage.broadcast.blacklist.delete.fail", "블랙리스트 해제 실패 시"),
 
+    // 회원 레벨 업 확인
+    레벨업확인_성공("0", "member.levelup.check.success", "레벨 업 확인 성공 시"),
+    레벨업확인_요청회원번호_회원아님("-1", "member.levelup.check.member.number.error", "요청회원번호가 회원 아닐 시"),
+    레벨업확인_레벨업_없음("-2", "member.levelup.check.no", "레벨업 없을 시"),
+    레벨업확인_실패("C006", "member.levelup.check.fail", "레벨 업 확인 실패 시"),
 
 
     ;

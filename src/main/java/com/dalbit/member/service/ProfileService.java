@@ -71,15 +71,24 @@ public class ProfileService {
 
 
     /**
-     * 팬보드 등록하기
+     * 팬보드 댓글 달기
      */
     public String callMemberFanboardAdd(P_FanboardAddVo pFanboardAddVo) {
         ProcedureVo procedureVo = new ProcedureVo(pFanboardAddVo);
         profileDao.callMemberFanboardAdd(procedureVo);
 
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+
         String result;
         if(Status.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공));
+
+            HashMap socketMap = new HashMap();
+            //TODO - 레벨업 유무 소켓추가 추후 확인
+            //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공, returnMap));
         }else if (Status.팬보드_댓글달기실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_스타회원번호_회원아님));
 
@@ -148,7 +157,7 @@ public class ProfileService {
         profileDao.callMemberFanboardDelete(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) == 0) {
+        if(Status.팬보드_댓글삭제성공.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status. 팬보드_댓글삭제성공));
         } else if(Status.팬보드_댓글삭제실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_스타회원번호_회원아님));
@@ -247,6 +256,34 @@ public class ProfileService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_대상회원_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     *  회원 레벨 업 확인
+     */
+    public String callMemberLevelUpCheck(P_LevelUpCheckVo pLevelUpCheckVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pLevelUpCheckVo);
+        profileDao.callMemberLevelUpCheck(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("oldLevel", DalbitUtil.getIntMap(resultMap, "oldLevel"));
+        returnMap.put("newLevel", DalbitUtil.getIntMap(resultMap, "newLevel"));
+        returnMap.put("oldGrade", DalbitUtil.getStringMap(resultMap, "oldGrade"));
+        returnMap.put("newGrade", DalbitUtil.getStringMap(resultMap, "newGrade"));
+
+        String result;
+        if(procedureVo.getRet().equals(Status.레벨업확인_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_성공, returnMap));
+        }else if(procedureVo.getRet().equals(Status.레벨업확인_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.레벨업확인_레벨업_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_레벨업_없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_실패));
         }
         return result;
     }
