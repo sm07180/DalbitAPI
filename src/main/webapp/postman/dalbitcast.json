@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.04",
+		"name": "달빛라디오 API 정의서_2020.03.05",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2527,6 +2527,43 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 회원 레벨 업 확인_2020.03.05",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMTUwMDM1MUB0cnVlIiwiaWF0IjoxNTgzMzY5Nzc3LCJleHAiOjE1ODU5NjE3Nzd9.prMIDWRfGV7tVcKw_NPsNqXl0SWI6YVl_KIN9_HhFHs",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/profile/levelup",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"profile",
+												"levelup"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -3607,7 +3644,7 @@
 									"response": []
 								},
 								{
-									"name": "[임시] 방송방 부스터 사용하기_2020.02.11",
+									"name": "[완료] 방송방 부스터 사용하기_2020.02.11",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -4169,6 +4206,53 @@
 											],
 											"path": [
 												"location"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "휴대폰 SMS 인증",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMzk1NTgxLCJleHAiOjE1ODU5ODc1ODF9.6-GyhFTXi_ZCVGDC0KV5rSTak4W1cwGoXy_jFbTweng",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "phoneNo",
+													"value": "01031855992",
+													"description": "* 휴대폰 번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/sms",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"sms"
 											]
 										}
 									},
