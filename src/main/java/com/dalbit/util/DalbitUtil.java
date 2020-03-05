@@ -690,4 +690,14 @@ public class DalbitUtil {
 
         return sdf.format(cal.getTime());
     }
+
+    /**
+     * 6자리 인증코드 생성
+     */
+    public static int getSmscode(){
+        int code = (int) (Math.random() * 899999) + 100000;
+        return code;
+    }
+
+
 }

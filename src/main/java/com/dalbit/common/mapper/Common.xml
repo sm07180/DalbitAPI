@@ -9,4 +9,25 @@
       	call sp_code_define_select
     </select>
 
+    <insert id="requestSms" parameterType="SmsVo">
+      <selectKey keyProperty="cmId" resultType="SmsOutVo">
+          SELECT LAST_INSERT_ID()
+      </selectKey>
+      	INSERT INTO hp_msg(
+          UMID
+          , MSG_TYPE
+          , SEND_PHONE
+          , DEST_PHONE
+          , SUBJECT
+          , MSG_BODY
+        ) values(
+          'dalbitdev'
+          , '0'
+          , #{sendPhoneNo}
+          , #{phoneNo}
+          , 'TEST'
+          , CONCAT('[달빛캐스트] 인증번호는', #{code}, '입니다')
+        )
+    </insert>
+
 </mapper>

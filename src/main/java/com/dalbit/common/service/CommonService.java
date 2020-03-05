@@ -322,4 +322,12 @@ public class CommonService {
 
         return result;
     }
+
+
+    /**
+     * 휴대폰 인증번호 요청
+     */
+    public SmsOutVo requestSms(SmsVo smsVo) {
+        return commonDao.requestSms(smsVo);
+    }
 }

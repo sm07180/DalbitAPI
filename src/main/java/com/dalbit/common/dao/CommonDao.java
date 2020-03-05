@@ -1,6 +1,8 @@
 package com.dalbit.common.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.SmsOutVo;
+import com.dalbit.common.vo.SmsVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -11,4 +13,6 @@ public interface CommonDao {
     ProcedureVo callBroadCastRoomStreamIdRequest(ProcedureVo procedureVo);
 
     List<Map> callCodeDefineSelect();
+
+    SmsOutVo requestSms(SmsVo smsVo);
 }

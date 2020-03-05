@@ -385,13 +385,20 @@ public class RoomService {
     /**
      * 방송 정보조회
      */
-    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo){
+    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo) throws GlobalException{
 
         ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
 
         String result = "";
         if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, procedureOutputVo.getOutputBox()));
+
+
+            P_RoomStreamVo apiData = new P_RoomStreamVo();
+            apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+            apiData.setMem_no(MemberVo.getMyMemNo());
+            apiData.setRoom_no(pRoomInfoViewVo.getRoom_no());
+
+            result = callBroadcastRoomStreamSelect(apiData);
         }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
         }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
@@ -540,11 +547,10 @@ public class RoomService {
 
     }
 
-
     /**
      * 방송방 회원정보 조회
      */
-    public String callBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo) {
+    public ProcedureVo getBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
         roomDao.callBroadCastRoomMemberInfo(procedureVo);
 
@@ -578,6 +584,15 @@ public class RoomService {
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
         procedureVo.setData(returnMap);
 
+        return procedureVo;
+    }
+
+    /**
+     * 방송방 회원정보 조회
+     */
+    public String callBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo) {
+        ProcedureVo procedureVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
+
         String result="";
         if(Status.방송방회원정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_성공, procedureVo.getData()));
@@ -593,7 +608,6 @@ public class RoomService {
 
         return result;
     }
-
 
     /**
      * 방송방 토큰 재생성
@@ -711,7 +725,7 @@ public class RoomService {
                     returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
                     log.info("returnMap: {}", returnMap);
 
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회성공, returnMap));
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
                 }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
                 }else if(Status.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
