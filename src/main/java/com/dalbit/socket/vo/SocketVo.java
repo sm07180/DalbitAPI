@@ -84,6 +84,10 @@ public class SocketVo {
         StringBuffer qs = new StringBuffer();
         qs.append("command=");
         qs.append(this.command);
+        qs.append("&memNo=");
+        qs.append(this.memNo);
+        qs.append("&memNk=");
+        qs.append(this.memNk);
         qs.append("&message=");
         qs.append(this.message);
         qs.append("&fan=");
@@ -98,7 +102,6 @@ public class SocketVo {
         qs.append(this.login);
         qs.append("&recvMemNo=");
         qs.append(this.recvMemNo == null ? "" : this.recvMemNo);
-
         qs.append("&recvDj=");
         qs.append(this.recvDj);
         qs.append("&recvManager=");
