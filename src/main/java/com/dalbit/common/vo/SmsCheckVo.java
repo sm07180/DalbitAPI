@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 public class SmsCheckVo {
 
     @NotNull
-    private int CMID;
+    private Integer CMID;
 
     @NotNull
-    private int code;
+    private Integer code;
 }

@@ -712,11 +712,11 @@ public class DalbitUtil {
 
 
     /**
-     *  휴대폰 인증 3분제한 체크
+     *  휴대폰 인증 5분제한 체크
      */
     public static boolean isSeconds(long start, long end) {
         long time = (end-start)/1000;
-        return (time < 180) ? true : false;
+        return (time < 300) ? true : false;
     }
 
 

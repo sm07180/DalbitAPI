@@ -11,6 +11,7 @@ public class SmsVo {
 
     @NotBlank
     private String phoneNo;
+
     private String sendPhoneNo;
     private int code;
     private int CMID;

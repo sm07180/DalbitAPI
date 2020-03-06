@@ -18,6 +18,7 @@ public enum Status {
     인증확인("1", "sms.number.check.success", "인증확인 성공 시"),
     인증시간초과("-1", "sms.check.timeout", "인증시간 초과 시"),
     인증번호불일치("-2", "sms.check.number.error", "인증 번호 일치하지 않을 시"),
+    인증번호재요청("-3","sms.check.id.error","인증번호 다시 요청 시"),
     인증실패("C006", "sms.check.fail", "인증 실패 시"),
 
 
@@ -594,6 +595,11 @@ public enum Status {
     고객센터_공지사항내용조회_성공("0", "customer.center.notice.detail.select.success", "고객센터 공지사항 내용조회 성공 시"),
     고객센터_공지사항내용조회_없음("-1", "customer.center.notice.detail.no.success", "고객센터 공지사항 내용 없을 시"),
     고객센터_공지사항내용조회_실패("C006", "customer.center.notice.detail.select.fail", "고객센터 공지사항 내용조회 실패 시"),
+
+    //고객센터 FAQ 목록 조회
+    고객센터_FAQ조회_성공("C001", "customer.center.faq.select.success", "고객센터 FAQ 조회 성공 시"),
+    고객센터_FAQ조회_없음("0", "customer.center.faq.no.success", "고객센터 FAQ 목록 없을 시"),
+    고객센터_FAQ조회_실패("C006", "customer.center.faq.select.fail", "고객센터 FAQ 조회 실패 시"),
 
     ;
 

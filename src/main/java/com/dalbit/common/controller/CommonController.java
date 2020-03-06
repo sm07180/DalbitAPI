@@ -83,6 +83,7 @@ public class CommonController {
         session.setAttribute("CMID", smsVo.getCMID());
         session.setAttribute("code", code);
         session.setAttribute("reqTime", reqTime);
+        session.setAttribute("authYn", "N");
 
         SmsOutVo smsOutVo = new SmsOutVo();
         smsOutVo.setCMID(smsVo.getCMID());
@@ -94,7 +95,9 @@ public class CommonController {
      * 휴대폰 인증확인
      */
     @GetMapping("/sms")
-    public String isSms(@Valid SmsCheckVo smsCheckVo, HttpServletRequest request){
+    public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
         long checkTime = System.currentTimeMillis();
 
         HttpSession session = request.getSession();
@@ -103,21 +106,29 @@ public class CommonController {
         long reqTime = (long) session.getAttribute("reqTime");
 
         log.debug("휴대폰 인증요청 CMID 일치여부: {}", id==smsCheckVo.getCMID());
-        log.debug("인증번호 (확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
+        log.debug("(확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
 
         String result;
-        if(code == smsCheckVo.getCode()){
-            if(id == smsCheckVo.getCMID() && DalbitUtil.isSeconds(reqTime, checkTime)){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
-            }else if (!DalbitUtil.isSeconds(reqTime, checkTime)){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
-            }else {
+        if(!session.getAttribute("authYn").equals("Y")){
+            if(id == smsCheckVo.getCMID()){
+                if(code == smsCheckVo.getCode()){
+                    if(DalbitUtil.isSeconds(reqTime, checkTime)){
+                        session.setAttribute("authYn", "Y");
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
+                    }else {
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
+                    }
+                } else {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
+                }
+            } else {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
             }
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
         }
 
+        log.debug("인증상태 확인 authYn: {}", session.getAttribute("authYn"));
 
         return result;
     }
