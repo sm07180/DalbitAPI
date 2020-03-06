@@ -268,11 +268,7 @@ public class UserService {
             returnMap.put("grade", profileInfoOutVo.getGrade());
             returnMap.put("dalCnt", profileInfoOutVo.getDalCnt());
             returnMap.put("byeolCnt", profileInfoOutVo.getByeolCnt());
-            if((profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) > 0){
-                returnMap.put("expRate", (int)(((double)(profileInfoOutVo.getExp() - profileInfoOutVo.getExpBegin()) / (double)(profileInfoOutVo.getExpNext() - profileInfoOutVo.getExpBegin())) * 100));
-            }else{
-                returnMap.put("expRate", 0);
-            }
+            returnMap.put("expRate", DalbitUtil.getExpRate(profileInfoOutVo.getExp(), profileInfoOutVo.getExpBegin(), profileInfoOutVo.getExpNext()));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
