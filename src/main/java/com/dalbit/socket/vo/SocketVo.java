@@ -34,6 +34,7 @@ public class SocketVo {
     private String command;
     private String message;
     private String memNo;
+    private String memNk;
     private int fan = 0;
     private int auth = 0;
     private String authName;
@@ -70,6 +71,7 @@ public class SocketVo {
             }
             this.login = DalbitUtil.isLogin() ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
+            this.memNk = DalbitUtil.getStringMap(memInfo, "nickNk");
         }
     }
 

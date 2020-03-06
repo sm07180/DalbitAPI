@@ -345,7 +345,9 @@ public class SocketService {
         if(!"".equals(memNo) && !"".equals(giftedMemNo) && !"".equals(authToken) && dal > 0){
             SocketVo vo = new SocketVo(memNo, giftedMemNo);
             vo.setCommand("reqGiftDal");
-            vo.setMessage(dal + "");
+            HashMap socketMap = new HashMap();
+            socketMap.put("itemCnt", dal);
+            vo.setMessage(socketMap);
             return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
         }
         return null;
@@ -415,23 +417,40 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqKickOut");
-            vo.setMessage(kickedMemNo);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            HashMap kickedMemInfo = getUserInfo(roomNo, kickedMemNo);
+            if(kickedMemInfo != null){
+                HashMap socketMap = new HashMap();
+                socketMap.put("sndAuth", vo.getAuth());
+                socketMap.put("sndMemNo", vo.getMemNo());
+                socketMap.put("sndMemNk", vo.getMemNk());
+                socketMap.put("revMemNo", kickedMemNo);
+                socketMap.put("revMemNk", DalbitUtil.getStringMap(kickedMemInfo, "nickNk"));
+                vo.setMessage(socketMap);
+                return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            }
         }
         return null;
     }
 
     public SocketVo getSocketVo(String roomNo, String memNo){
+        try{
+            return new SocketVo(memNo, getUserInfo(roomNo, memNo));
+        }catch(Exception e){e.getStackTrace();}
+        return null;
+    }
+
+
+    public HashMap getUserInfo(String roomNo, String memNo){
         P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
         pRoomMemberInfoVo.setMem_no(memNo);
         pRoomMemberInfoVo.setRoom_no(roomNo);
         pRoomMemberInfoVo.setTarget_mem_no(memNo);
 
         try{
-        ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
+            ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
             roomDao.callBroadCastRoomMemberInfo(procedureVo);
 
-            return new SocketVo(memNo, new Gson().fromJson(procedureVo.getExt(), HashMap.class));
+            return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         }catch(Exception e){e.getStackTrace();}
         return null;
     }
