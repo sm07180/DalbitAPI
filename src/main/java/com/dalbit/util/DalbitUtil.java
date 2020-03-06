@@ -719,5 +719,18 @@ public class DalbitUtil {
         return (time < 300) ? true : false;
     }
 
-
+    /**
+     * 경험치 비율 계산
+     *
+     * @param exp
+     * @param expBegin
+     * @param expNext
+     * @return
+     */
+    public static int getExpRate(int exp, int expBegin, int expNext){
+        if((exp - expBegin) > 0) {
+            return (int) (((double) (exp - expBegin) / (double) (expNext - expBegin)) * 100);
+        }
+        return 0;
+    }
 }

@@ -424,7 +424,7 @@ public class SocketService {
                 socketMap.put("sndMemNo", vo.getMemNo());
                 socketMap.put("sndMemNk", vo.getMemNk());
                 socketMap.put("revMemNo", kickedMemNo);
-                socketMap.put("revMemNk", DalbitUtil.getStringMap(kickedMemInfo, "nickNk"));
+                socketMap.put("revMemNk", DalbitUtil.getStringMap(kickedMemInfo, "nickName"));
                 vo.setMessage(socketMap);
                 return sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
