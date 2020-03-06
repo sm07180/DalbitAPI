@@ -29,9 +29,10 @@ public class ItemVo {
         this.itemNm = item.getItemNm();
         this.type = item.getType();
         this.cost = item.getCost();
-        this.thumbs = DalbitUtil.getProperty(item.getThumbs());
-        if(DalbitUtil.isEmpty(this.thumbs)){
+        if(item.getThumbs().startsWith("https://")){
             this.thumbs = item.getThumbs();
+        }else{
+            this.thumbs = DalbitUtil.getProperty(item.getThumbs());
         }
         this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
         this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
