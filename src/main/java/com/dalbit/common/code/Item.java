@@ -20,10 +20,8 @@ public enum Item {
             , 1
             , 2.5
             , "bottomRight"
-            , 0
+            , 10
     ),
-
-
     애니_곰인형(
             "1002"
             , "곰인형"
@@ -39,9 +37,8 @@ public enum Item {
             , 1
             , 2.5
             , "bottomRight"
-            , 0
+            , 10
     ),
-
     애니_도너츠달(
             "1003"
             , "도너츠달"
@@ -57,7 +54,7 @@ public enum Item {
             , 1
             , 2.5
             , "bottomRight"
-            , 0
+            , 10
     ),
     애니_도너츠(
             "1004"
@@ -74,7 +71,7 @@ public enum Item {
             , 1
             , 2.5
             , "bottomRight"
-            , 0
+            , 10
     ),
     스티커_곰(
             "1005"
