@@ -34,8 +34,12 @@ public class ItemVo {
         }else{
             this.thumbs = DalbitUtil.getProperty(item.getThumbs());
         }
-        this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
-        this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
+        if(!DalbitUtil.isEmpty(item.getWebpUrl())) {
+            this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
+        }
+        if(!DalbitUtil.isEmpty(item.getLottieUrl())) {
+            this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
+        }
         this.stickerUrl = item.getStickerUrl();
         this.width = item.getWidth();
         this.height = item.getHeight();
