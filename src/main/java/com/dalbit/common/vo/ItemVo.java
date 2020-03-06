@@ -10,29 +10,38 @@ import lombok.Setter;
 public class ItemVo {
     private String itemNo;
     private String itemNm;
+    private String type;
     private int cost;
     private String thumbs;
     private String webpUrl;
     private String lottieUrl;
+    private String stickerUrl;
     private int width;
     private int height;
     private double deviceRate;
     private double widthRate;
     private double heightRate;
-    private String location; // topLeft bottomRight
+    private String location;
+    private int duration;
 
     public ItemVo(Item item){
-        this.itemNm = item.getItemNm();
         this.itemNo = item.getItemNo();
+        this.itemNm = item.getItemNm();
+        this.type = item.getType();
         this.cost = item.getCost();
         this.thumbs = DalbitUtil.getProperty(item.getThumbs());
+        if(DalbitUtil.isEmpty(this.thumbs)){
+            this.thumbs = item.getThumbs();
+        }
         this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
         this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
+        this.stickerUrl = item.getStickerUrl();
         this.width = item.getWidth();
         this.height = item.getHeight();
         this.deviceRate = item.getDeviceRate();
         this.widthRate = item.getWidthRate();
         this.heightRate = item.getHeightRate();
         this.location = item.getLocation();
+        this.duration = item.getDuration();
     }
 }

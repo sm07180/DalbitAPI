@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -59,7 +62,55 @@ public class CommonController {
         return commonService.checkHealthy(request);
     }
 
+    @GetMapping("/store")
+    public String tmpStore()
+    {
+        List<HashMap> list = new ArrayList<>();
+        HashMap store1 = new HashMap();
+        store1.put("storeNo", "3001");
+        store1.put("storeNm", "달 10");
+        store1.put("price", 3000);
+        store1.put("img", "https://devimage.dalbitcast.com/store/store_1.png");
+        store1.put("appleStoreId", "com.dalbitcast.inapp.dal10");
+        HashMap store2= new HashMap();
+        store2.put("storeNo", "3002");
+        store2.put("storeNm", "달 30");
+        store2.put("price", 10000);
+        store2.put("img", "https://devimage.dalbitcast.com/store/store_2.png");
+        store2.put("appleStoreId", "com.dalbitcast.inapp.dal30");
+        HashMap store3 = new HashMap();
+        store3.put("storeNo", "3003");
+        store3.put("storeNm", "달 100");
+        store3.put("price", 30000);
+        store3.put("img", "https://devimage.dalbitcast.com/store/store_3.png");
+        store3.put("appleStoreId", "com.dalbitcast.inapp.dal100");
+        HashMap store4 = new HashMap();
+        store4.put("storeNo", "3004");
+        store4.put("storeNm", "달 500");
+        store4.put("price", 50000);
+        store4.put("img", "https://devimage.dalbitcast.com/store/store_4.png");
+        store4.put("appleStoreId", "com.dalbitcast.inapp.dal500");
+        HashMap store5 = new HashMap();
+        store5.put("storeNo", "3005");
+        store5.put("storeNm", "달 1000");
+        store5.put("price", 100000);
+        store5.put("img", "https://devimage.dalbitcast.com/store/store_5.png");
+        store5.put("appleStoreId", "com.dalbitcast.inapp.dal1000");
+        HashMap store6 = new HashMap();
+        store6.put("storeNo", "3006");
+        store6.put("storeNm", "달 3000");
+        store6.put("price", 300000);
+        store6.put("img", "https://devimage.dalbitcast.com/store/store_6.png");
+        store6.put("appleStoreId", "com.dalbitcast.inapp.dal3000");
+        list.add(store1);
+        list.add(store2);
+        list.add(store3);
+        list.add(store4);
+        list.add(store5);
+        list.add(store6);
 
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+    }
 
     /**
      * 휴대폰 인증요청

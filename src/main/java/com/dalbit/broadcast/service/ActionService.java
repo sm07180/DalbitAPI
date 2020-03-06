@@ -175,11 +175,15 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
                 String itemNm = "곰토끼";
-                if(Item.곰인형.getItemNo().equals(pRoomGiftVo.getItem_no())) {
+                if(Item.애니_곰인형.getItemNo().equals(pRoomGiftVo.getItem_no())) {
                     itemNm = "곰인형";
-                }else if(Item.도너츠달.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                }else if(Item.애니_도너츠달.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "도너츠달";
-                }else if(Item.도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                }else if(Item.애니_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "도너츠";
+                }else if(Item.스티커_곰.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "곰";
+                }else if(Item.스티커_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "도너츠";
                 }
                 itemMap.put("itemNm", itemNm);
