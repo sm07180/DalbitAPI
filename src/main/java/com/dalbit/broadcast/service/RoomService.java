@@ -18,6 +18,7 @@ import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,6 +43,8 @@ public class RoomService {
     CommonService commonService;
     @Autowired
     SocketService socketService;
+    @Value("${room.bg.count}")
+    int ROOM_BG_COUNT;
 
 
     /**
@@ -51,7 +54,11 @@ public class RoomService {
         String bgImg = pRoomCreateVo.getBackgroundImage();
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
-            bgImg = Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+(DalbitUtil.randomValue("number", 1))+".jpg";
+            int random = 1000000;
+            while(random > (ROOM_BG_COUNT - 1)){
+                random = Integer.parseInt(DalbitUtil.randomValue("number", 1));
+            }
+            bgImg = Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+random+".jpg";
         }else{
             if(bgImg.startsWith(Code.포토_배경_임시_PREFIX.getCode())){
                 isDone = true;
