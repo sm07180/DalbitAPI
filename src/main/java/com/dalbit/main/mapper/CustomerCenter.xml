@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.main.dao.CustomerCenterDao" >
+
+    <select id="callNoticeList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_NoticeListVo">
+        call sp_service_center_notice_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callNoticeDetail" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_NoticeListVo">
+        call sp_service_center_notice_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+</mapper>

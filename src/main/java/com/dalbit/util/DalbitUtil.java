@@ -337,6 +337,17 @@ public class DalbitUtil {
         return rtnStr;
     }
 
+    public static Date getDateMap(HashMap map, String key){
+        try{
+            SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = transFormat.parse(map.get(key).toString());
+            return date;
+        }catch (Exception e){
+            log.warn("StringUtil.getDateMap error - key name is [{}]", key);
+            return null;
+        }
+    }
+
 
 
     public static String getStringMap(HashMap map, String key){
