@@ -71,7 +71,7 @@ public class SocketVo {
             }
             this.login = DalbitUtil.isLogin() ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
-            this.memNk = DalbitUtil.getStringMap(memInfo, "nickNk");
+            this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
         }
     }
 
