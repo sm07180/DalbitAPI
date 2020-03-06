@@ -84,13 +84,13 @@ public class CommonService {
         HashMap resultMap = callCodeDefineSelect();
 
         List<ItemVo> items = new ArrayList<>();
-        items.add(new ItemVo(Item.곰토끼));
-        items.add(new ItemVo(Item.곰인형));
-        items.add(new ItemVo(Item.도너츠달));
-        items.add(new ItemVo(Item.도너츠));
-        items.add(new ItemVo(Item.곰토끼));
-        items.add(new ItemVo(Item.곰인형));
-        items.add(new ItemVo(Item.도너츠달));
+        items.add(new ItemVo(Item.애니_곰토끼));
+        items.add(new ItemVo(Item.애니_곰인형));
+        items.add(new ItemVo(Item.애니_도너츠달));
+        items.add(new ItemVo(Item.애니_도너츠));
+        items.add(new ItemVo(Item.스티커_곰));
+        items.add(new ItemVo(Item.스티커_도너츠));
+        items.add(new ItemVo(Item.애니_곰토끼));
         resultMap.put("items", items);
         return resultMap;
     }
