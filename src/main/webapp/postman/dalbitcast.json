@@ -4535,6 +4535,112 @@
 							],
 							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
+						},
+						{
+							"name": "고객센터",
+							"item": [
+								{
+									"name": "[완료] 공지사항 목록 조회_2020.03.06",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzkzMTAyNzI4MEB0cnVlIiwiaWF0IjoxNTgyNzA1MzI1LCJleHAiOjE1ODUyOTczMjV9.ZndB-xjJFxvdC2XyMLbNv9A-16J2VrtDRivx7kI_Ri0",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/center/notice?noticeType=0&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"center",
+												"notice"
+											],
+											"query": [
+												{
+													"key": "noticeType",
+													"value": "0",
+													"description": "* 공지구분타입 ( 0: 전체, 1:공지, 2:이벤트, 3:정기점검, 4:업데이트)"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 공지사항 내용 조회_2020.03.06",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzkzMTAyNzI4MEB0cnVlIiwiaWF0IjoxNTgyNzA1MzI1LCJleHAiOjE1ODUyOTczMjV9.ZndB-xjJFxvdC2XyMLbNv9A-16J2VrtDRivx7kI_Ri0"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/center/notice/detail?noticeIdx=6",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"center",
+												"notice",
+												"detail"
+											],
+											"query": [
+												{
+													"key": "noticeIdx",
+													"value": "6",
+													"description": "* 공지사항번호"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -4758,6 +4864,61 @@
 										"rest",
 										"pay",
 										"phone"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "신용카드 결제 요청_2020.03.06",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authToken",
+										"type": "text",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMzA1NzE1LCJleHAiOjE1ODU4OTc3MTV9.NU9onKaqcNGYlNuX-_Rxp56v88QZPDkoqbSXnf8vXGw"
+									},
+									{
+										"key": "custom-header",
+										"type": "text",
+										"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "Prdtnm",
+											"value": "달달토끼",
+											"description": "* 상품명 (50byte 이하)",
+											"type": "text"
+										},
+										{
+											"key": "Prdtprice",
+											"value": "100",
+											"description": "* 요청금액(10byte 이하)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devpay2.dalbitcast.com/rest/pay/card",
+									"protocol": "https",
+									"host": [
+										"devpay2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"rest",
+										"pay",
+										"card"
 									]
 								}
 							},
