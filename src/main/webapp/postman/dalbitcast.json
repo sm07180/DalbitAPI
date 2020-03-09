@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.06",
+		"name": "달빛라디오 API 정의서_2020.03.09",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4212,13 +4212,13 @@
 									"response": []
 								},
 								{
-									"name": "휴대폰 SMS 인증번호 요청_20200306",
+									"name": "휴대폰 SMS 인증번호 요청_20200309",
 									"request": {
 										"method": "POST",
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzNDE3MTc0LCJleHAiOjE1ODYwMDkxNzR9.m0PWRcXUdqlCuJgJPtxF7IDDxFeAgfvTMhYBKOvWYMg",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzNzE3MzY3LCJleHAiOjE1ODYzMDkzNjd9.Csk3f_qiqPgtB7CECXdYxP3arfawlPpwf_HV_WOjnTM",
 												"type": "text"
 											},
 											{
@@ -4239,6 +4239,12 @@
 													"key": "phoneNo",
 													"value": "01031855992",
 													"description": "* 휴대폰 번호",
+													"type": "text"
+												},
+												{
+													"key": "authType",
+													"value": "1",
+													"description": "* 인증타입 (0: 회원가입, 1: 비밀번호변경)",
 													"type": "text"
 												}
 											]
