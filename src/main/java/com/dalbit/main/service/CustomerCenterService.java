@@ -6,7 +6,9 @@ import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.main.dao.CustomerCenterDao;
+import com.dalbit.main.vo.FaqListOutVo;
 import com.dalbit.main.vo.NoticeListOutVo;
+import com.dalbit.main.vo.procedure.P_FaqListVo;
 import com.dalbit.main.vo.procedure.P_NoticeDetailVo;
 import com.dalbit.main.vo.procedure.P_NoticeListVo;
 import com.dalbit.util.DalbitUtil;
@@ -93,6 +95,41 @@ public class CustomerCenterService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항내용조회_없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항내용조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 고객센터 FAQ 목록 조회
+     */
+    public String callFaqList(P_FaqListVo pFaqListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFaqListVo);
+        List<P_FaqListVo> faqListVoList = customerCenterDao.callFaqList(procedureVo);
+
+        ProcedureOutputVo procedureOutputVo;
+        if(DalbitUtil.isEmpty(faqListVoList)){
+            procedureOutputVo = null;
+        }else{
+            List<FaqListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<faqListVoList.size(); i++){
+                outVoList.add(new FaqListOutVo(faqListVoList.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        }
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap faqList = new HashMap();
+        faqList.put("list", procedureOutputVo.getOutputBox());
+        faqList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result ="";
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_성공, faqList));
+        } else if (procedureVo.getRet().equals(Status.고객센터_FAQ조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_실패));
         }
         return result;
     }

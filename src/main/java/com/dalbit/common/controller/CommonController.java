@@ -4,11 +4,14 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MemberService;
+import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.RedisUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,6 +34,12 @@ public class CommonController {
 
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    MemberService memberService;
+
+    @Autowired
+    RedisUtil redisUtil;
 
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
@@ -117,29 +126,77 @@ public class CommonController {
      */
     @PostMapping("/sms")
     public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
         DalbitUtil.throwValidaionException(bindingResult);
 
-        int code = DalbitUtil.getSmscode();
+        DeviceVo deviceVo = new DeviceVo(request);
+        LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
+        P_LoginVo pLoginVo = new P_LoginVo(
+                DalbitUtil.getProperty("sms.send.default.memSlct")
+                , smsVo.getPhoneNo()
+                , DalbitUtil.getProperty("sms.send.default.password")
+                , deviceVo.getOs()
+                , deviceVo.getDeviceUuid()
+                , deviceVo.getDeviceToken()
+                , deviceVo.getAppVersion()
+                , deviceVo.getAdId()
+                , locationVo.getRegionName()
+                , deviceVo.getIp()
+        );
+
+        ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
+        log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
+        log.debug("결과 코드 : {}", LoginProcedureVo.getRet());
+        boolean isJoin = LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode());
+        boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());
+        int authType = smsVo.getAuthType();
+
+        String result="";
+        int code = DalbitUtil.getSmscode();
+        log.debug("인증타입: {}", authType);
         log.debug("휴대폰 번호: {}", smsVo.getPhoneNo());
         log.debug("휴대폰 인증 코드: {}", code);
-
         smsVo.setCode(code);
         smsVo.setSendPhoneNo(DalbitUtil.getProperty("sms.send.phone.no"));
-        commonService.requestSms(smsVo);
 
-        HttpSession session = request.getSession();
-        long reqTime = System.currentTimeMillis();
-        session.setAttribute("CMID", smsVo.getCMID());
-        session.setAttribute("code", code);
-        session.setAttribute("reqTime", reqTime);
-        session.setAttribute("authYn", "N");
+        if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join"))== authType){
+            commonService.requestSms(smsVo);
 
-        SmsOutVo smsOutVo = new SmsOutVo();
-        smsOutVo.setCMID(smsVo.getCMID());
+            HttpSession session = request.getSession();
+            long reqTime = System.currentTimeMillis();
+            session.setAttribute("CMID", smsVo.getCMID());
+            session.setAttribute("code", code);
+            session.setAttribute("reqTime", reqTime);
+            session.setAttribute("authYn", "N");
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
+            SmsOutVo smsOutVo = new SmsOutVo();
+            smsOutVo.setCMID(smsVo.getCMID());
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
+        }else if (isPassword && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
+            commonService.requestSms(smsVo);
+
+            HttpSession session = request.getSession();
+            long reqTime = System.currentTimeMillis();
+            session.setAttribute("CMID", smsVo.getCMID());
+            session.setAttribute("code", code);
+            session.setAttribute("reqTime", reqTime);
+            session.setAttribute("authYn", "N");
+
+            SmsOutVo smsOutVo = new SmsOutVo();
+            smsOutVo.setCMID(smsVo.getCMID());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청));
+
+        } else {
+            if (DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join"))== authType){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
+            }else if(DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청실패));
+            }
+        }
+        return result;
     }
 
     /**
@@ -160,7 +217,7 @@ public class CommonController {
         log.debug("(확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
 
         String result;
-        if(!session.getAttribute("authYn").equals("Y")){
+        if(session.getAttribute("authYn").equals("N")){
             if(id == smsCheckVo.getCMID()){
                 if(code == smsCheckVo.getCode()){
                     if(DalbitUtil.isSeconds(reqTime, checkTime)){
@@ -173,10 +230,10 @@ public class CommonController {
                     result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
                 }
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+                result = gsonUtil.toJson(new JsonOutputVo(Status.인증CMID불일치));
             }
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
         }
 
         log.debug("인증상태 확인 authYn: {}", session.getAttribute("authYn"));

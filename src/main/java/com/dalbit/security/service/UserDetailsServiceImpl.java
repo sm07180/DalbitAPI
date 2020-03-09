@@ -53,7 +53,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        HashMap map = getParameterMap(request);
+        HashMap map = DalbitUtil.getParameterMap(request);
 
         if(DalbitUtil.isEmpty(map.get("memId"))) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상);
@@ -69,7 +69,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public UserDetails loadUserByUsername() throws UsernameNotFoundException {
 
-        HashMap map = getParameterMap(request);
+        HashMap map = DalbitUtil.getParameterMap(request);
 
         if("p".equals(DalbitUtil.getStringMap(map, "memType")) && DalbitUtil.isEmpty(DalbitUtil.getStringMap(map, "memPwd"))){
             throw new CustomUsernameNotFoundException(Status.파라미터오류);
@@ -157,28 +157,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
-    }
-
-    public HashMap getParameterMap(HttpServletRequest request){
-
-        String memType = DalbitUtil.convertRequestParamToString(request,"memType");
-        String memId = DalbitUtil.convertRequestParamToString(request,"memId");
-        String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
-        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
-        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
-        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
-        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
-        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
-
-        HashMap map = new HashMap();
-        map.put("memType", memType);
-        map.put("memId", memId);
-        map.put("memPwd", memPwd);
-        map.put("os", os);
-        map.put("deviceId", deviceId);
-        map.put("deviceToken", deviceToken);
-        map.put("appVer", appVer);
-        map.put("appAdId", appAdId);
-        return map;
     }
 }
