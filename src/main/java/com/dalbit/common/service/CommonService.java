@@ -115,7 +115,7 @@ public class CommonService {
         TokenVo tokenVo = null;
         String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
         try{
-            if(!DalbitUtil.isEmpty(headerToken)){
+            if(!DalbitUtil.isEmpty(headerToken) && !request.getRequestURI().startsWith("/member/logout")){
                 tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
             }
         }catch(GlobalException e){}
@@ -178,9 +178,15 @@ public class CommonService {
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
 
+
+
         result.put("tokenVo", tokenVo);
         result.put("Status", resultStatus);
         return result;
+    }
+
+    public ProcedureOutputVo anonymousLogin(P_LoginVo pLoginVo){
+        return memberService.callMemberLogin(pLoginVo);
     }
 
     @CachePut(cacheNames = "codeCache", key = "#code")
