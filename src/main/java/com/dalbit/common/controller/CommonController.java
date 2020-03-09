@@ -126,6 +126,7 @@ public class CommonController {
      */
     @PostMapping("/sms")
     public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         DeviceVo deviceVo = new DeviceVo(request);
@@ -146,20 +147,21 @@ public class CommonController {
 
         ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
         log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
-        log.debug("결과 코드 : {}", LoginProcedureVo.getRet());
+        log.debug("결과코드 : {}", LoginProcedureVo.getRet());
+
         boolean isJoin = LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode());
         boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());
         int authType = smsVo.getAuthType();
-
-        String result="";
+        String result;
         int code = DalbitUtil.getSmscode();
+
         log.debug("인증타입: {}", authType);
         log.debug("휴대폰 번호: {}", smsVo.getPhoneNo());
-        log.debug("휴대폰 인증 코드: {}", code);
+        log.debug("휴대폰 인증코드: {}", code);
         smsVo.setCode(code);
         smsVo.setSendPhoneNo(DalbitUtil.getProperty("sms.send.phone.no"));
 
-        if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join"))== authType){
+        if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
             commonService.requestSms(smsVo);
 
             HttpSession session = request.getSession();
@@ -196,6 +198,7 @@ public class CommonController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청실패));
             }
         }
+
         return result;
     }
 
