@@ -15,4 +15,5 @@ public interface CustomerCenterDao {
     List<P_NoticeListVo> callNoticeList(ProcedureVo procedureVo);
     ProcedureVo callNoticeDetail(ProcedureVo procedureVo);
     List<P_FaqListVo> callFaqList(ProcedureVo procedureVo);
+    ProcedureVo callFaqDetail(ProcedureVo procedureVo);
 }

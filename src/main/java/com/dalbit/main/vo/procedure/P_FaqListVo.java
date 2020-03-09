@@ -16,21 +16,19 @@ public class P_FaqListVo {
         int pageNo = DalbitUtil.isEmpty(faqListVo.getPage()) ? 1 : faqListVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(faqListVo.getRecords()) ? 10 : faqListVo.getRecords();
 
-        setSlct_type(faqListVo.getFaqType());
+        setSlctType(faqListVo.getFaqType() == 0 ? -1 : faqListVo.getFaqType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
     }
 
     /* Input */
-    private Integer slct_type;
+    private Integer slctType;
     private int pageNo;
     private int pageCnt;
 
     /* Output */
     private int faqIdx;
-    private int slctType;
-    private String title;
-    private int topFix;
+    private String question;
     private Date writeDate;
 
 }

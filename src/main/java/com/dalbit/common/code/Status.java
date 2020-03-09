@@ -595,13 +595,18 @@ public enum Status {
 
     //고객센터 공지사항 내용 조회
     고객센터_공지사항내용조회_성공("0", "customer.center.notice.detail.select.success", "고객센터 공지사항 내용조회 성공 시"),
-    고객센터_공지사항내용조회_없음("-1", "customer.center.notice.detail.no.success", "고객센터 공지사항 내용 없을 시"),
+    고객센터_공지사항내용조회_없음("-1", "customer.center.notice.detail.no", "고객센터 공지사항 내용 없을 시"),
     고객센터_공지사항내용조회_실패("C006", "customer.center.notice.detail.select.fail", "고객센터 공지사항 내용조회 실패 시"),
 
     //고객센터 FAQ 목록 조회
     고객센터_FAQ조회_성공("C001", "customer.center.faq.select.success", "고객센터 FAQ 조회 성공 시"),
     고객센터_FAQ조회_없음("0", "customer.center.faq.no.success", "고객센터 FAQ 목록 없을 시"),
     고객센터_FAQ조회_실패("C006", "customer.center.faq.select.fail", "고객센터 FAQ 조회 실패 시"),
+
+    //고객센터 FAQ 내용 조회
+    고객센터_FAQ내용조회_성공("0", "customer.center.faq.detail.select.success", "고객센터 FAQ 내용조회 성공 시"),
+    고객센터_FAQ내용조회_없음("-1", "customer.center.faq.detail.no", "고객센터 FAQ 내용 없을 시"),
+    고객센터_FAQ내용조회_실패("C006", "customer.center.faq.detail.select.fail", "고객센터 FAQ 내용조회 실패 시"),
 
     ;
 

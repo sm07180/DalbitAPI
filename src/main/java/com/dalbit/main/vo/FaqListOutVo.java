@@ -11,16 +11,14 @@ public class FaqListOutVo {
 
     private int faqIdx;
     private int faqType;
-    private String title;
-    private boolean isTop;
+    private String question;
     private String writeDt;
     private Long writeTs;
 
     public FaqListOutVo(P_FaqListVo target) {
         setFaqIdx(target.getFaqIdx());
         setFaqType(target.getSlctType());
-        setTitle(target.getTitle());
-        setTop(target.getTopFix() == 1 ? true : false);
+        setQuestion(target.getQuestion());
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
     }

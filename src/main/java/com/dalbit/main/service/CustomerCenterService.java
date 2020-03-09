@@ -8,6 +8,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.main.dao.CustomerCenterDao;
 import com.dalbit.main.vo.FaqListOutVo;
 import com.dalbit.main.vo.NoticeListOutVo;
+import com.dalbit.main.vo.procedure.P_FaqDetailVo;
 import com.dalbit.main.vo.procedure.P_FaqListVo;
 import com.dalbit.main.vo.procedure.P_NoticeDetailVo;
 import com.dalbit.main.vo.procedure.P_NoticeListVo;
@@ -81,6 +82,7 @@ public class CustomerCenterService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
+        returnMap.put("noticeIdx", DalbitUtil.getIntMap(resultMap, "noticeIdx"));
         returnMap.put("noticeType", DalbitUtil.getIntMap(resultMap, "slctType"));
         returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));
         returnMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
@@ -130,6 +132,39 @@ public class CustomerCenterService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 고객센터 FAQ 내용(상세) 조회
+     */
+    public String callFaqDetail(P_FaqDetailVo pFaqDetailVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFaqDetailVo);
+        customerCenterDao.callFaqDetail(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("faqIdx", DalbitUtil.getIntMap(resultMap, "faqIdx"));
+        returnMap.put("faqType", DalbitUtil.getIntMap(resultMap, "slctType"));
+        returnMap.put("question", DalbitUtil.getStringMap(resultMap, "question"));
+        returnMap.put("answer", DalbitUtil.getStringMap(resultMap, "answer"));
+        returnMap.put("writeDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "writeDate")));
+        returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
+        procedureVo.setData(returnMap);
+
+        String result ="";
+        if(procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_성공, procedureVo.getData()));
+        } else if (procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_실패));
         }
         return result;
     }

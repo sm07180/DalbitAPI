@@ -17,6 +17,7 @@ public class DeviceVo {
     private String appVersion;
     private String adId;
     private String ip;
+    private String isHybrid;
 
     public DeviceVo(HttpServletRequest request){
         String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
@@ -26,6 +27,7 @@ public class DeviceVo {
         this.appVersion = DalbitUtil.convertRequestParamToString(request,"appVer");
         this.adId = DalbitUtil.convertRequestParamToString(request,"appAdId");
         this.ip = DalbitUtil.getIp(request);
+        this.isHybrid = DalbitUtil.convertRequestParamToString(request, "isHybrid");
 
         if(customHeader != null && !"".equals(customHeader.trim())){
 
@@ -41,6 +43,8 @@ public class DeviceVo {
                 deviceToken = DalbitUtil.isNullToString(deviceToken);
                 appVersion = DalbitUtil.isNullToString(appVersion);
                 adId = DalbitUtil.isNullToString(adId);
+                isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
+
             }
         }
     }
