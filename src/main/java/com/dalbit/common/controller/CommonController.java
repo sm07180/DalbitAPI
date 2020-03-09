@@ -195,8 +195,7 @@ public class CommonController {
 
             SmsOutVo smsOutVo = new SmsOutVo();
             smsOutVo.setCMID(smsVo.getCMID());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청));
-
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
         } else {
             if (DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
