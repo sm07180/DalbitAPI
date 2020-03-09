@@ -113,9 +113,10 @@ public class CommonService {
         String ip = deviceVo.getIp();
 
         TokenVo tokenVo = null;
+        String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
         try{
-            if(!DalbitUtil.isEmpty(request.getHeader(SSO_HEADER_COOKIE_NAME))){
-                tokenVo = jwtUtil.getTokenVoFromJwt(request.getHeader(SSO_HEADER_COOKIE_NAME));
+            if(!DalbitUtil.isEmpty(headerToken)){
+                tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
             }
         }catch(GlobalException e){}
 
@@ -124,7 +125,6 @@ public class CommonService {
                 tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
                 resultStatus = Status.로그인성공;
             } else {
-
                 P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
                 //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
@@ -163,7 +163,7 @@ public class CommonService {
             resultStatus = Status.로그인성공;
         }
 
-        if (!DalbitUtil.isEmpty(tokenVo)) {
+        if (!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) {
             P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
                     isLogin ? 1 : 0
                     , tokenVo.getMemNo()
