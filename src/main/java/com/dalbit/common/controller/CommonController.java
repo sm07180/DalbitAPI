@@ -170,6 +170,7 @@ public class CommonController {
             session.setAttribute("code", code);
             session.setAttribute("reqTime", reqTime);
             session.setAttribute("authYn", "N");
+            session.setAttribute("phoneNo", smsVo.getPhoneNo());
 
             SmsOutVo smsOutVo = new SmsOutVo();
             smsOutVo.setCMID(smsVo.getCMID());
@@ -184,6 +185,7 @@ public class CommonController {
             session.setAttribute("code", code);
             session.setAttribute("reqTime", reqTime);
             session.setAttribute("authYn", "N");
+            session.setAttribute("phoneNo", smsVo.getPhoneNo());
 
             SmsOutVo smsOutVo = new SmsOutVo();
             smsOutVo.setCMID(smsVo.getCMID());
@@ -196,6 +198,7 @@ public class CommonController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
             } else {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청실패));
+                request.getSession().invalidate();
             }
         }
 
@@ -205,7 +208,7 @@ public class CommonController {
     /**
      * 휴대폰 인증확인
      */
-    @GetMapping("/sms")
+    @PostMapping("/sms/auth")
     public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
@@ -237,6 +240,7 @@ public class CommonController {
             }
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+            request.getSession().invalidate();
         }
 
         log.debug("인증상태 확인 authYn: {}", session.getAttribute("authYn"));
