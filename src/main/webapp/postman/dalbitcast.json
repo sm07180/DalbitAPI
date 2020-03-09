@@ -4559,7 +4559,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzkzMTAyNzI4MEB0cnVlIiwiaWF0IjoxNTgyNzA1MzI1LCJleHAiOjE1ODUyOTczMjV9.ZndB-xjJFxvdC2XyMLbNv9A-16J2VrtDRivx7kI_Ri0",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MzEyMDU5ODgzMEBmYWxzZSIsImlhdCI6MTU4MzczODI2NywiZXhwIjoxNTg2MzMwMjY3fQ.GyJJEi5PDdrUX7SszeoseZPGKAm_JKXzBfg6vLTdDLY",
 												"type": "text"
 											},
 											{
@@ -4645,6 +4645,105 @@
 													"key": "noticeIdx",
 													"value": "6",
 													"description": "* 공지사항번호"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료]  FAQ 목록 조회_2020.03.09",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MzEyMDU5ODgzMEBmYWxzZSIsImlhdCI6MTU4MzczODI2NywiZXhwIjoxNTg2MzMwMjY3fQ.GyJJEi5PDdrUX7SszeoseZPGKAm_JKXzBfg6vLTdDLY"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\", \"isHybrid\":\"N\"}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/center/faq?faqType=0&page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"center",
+												"faq"
+											],
+											"query": [
+												{
+													"key": "faqType",
+													"value": "0",
+													"description": "* FAQ구분타입 ( 0: 전체, 1:공지, 2:이벤트, 3:정기점검, 4:업데이트)"
+												},
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] FAQ 내용 조회_2020.03.09",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzkzMTAyNzI4MEB0cnVlIiwiaWF0IjoxNTgyNzA1MzI1LCJleHAiOjE1ODUyOTczMjV9.ZndB-xjJFxvdC2XyMLbNv9A-16J2VrtDRivx7kI_Ri0"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/center/faq/detail?faqIdx=1",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"center",
+												"faq",
+												"detail"
+											],
+											"query": [
+												{
+													"key": "faqIdx",
+													"value": "1",
+													"description": "* FAQ번호"
 												}
 											]
 										}
