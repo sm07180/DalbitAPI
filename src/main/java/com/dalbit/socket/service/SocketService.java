@@ -2,9 +2,12 @@ package com.dalbit.socket.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberInfoVo;
+import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.P_MemberInfoVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
@@ -38,6 +41,9 @@ public class SocketService {
 
     @Autowired
     RoomDao roomDao;
+
+    @Autowired
+    MypageDao mypageDao;
 
     public Map<String, Object> sendSocketApi(String authToken, String roomNo, String params) {
         HttpURLConnection con = null;
@@ -343,12 +349,16 @@ public class SocketService {
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(giftedMemNo) && !"".equals(authToken) && dal > 0){
-            SocketVo vo = new SocketVo(memNo, giftedMemNo);
-            vo.setCommand("reqGiftDal");
-            HashMap socketMap = new HashMap();
-            socketMap.put("itemCnt", dal);
-            vo.setMessage(socketMap);
-            return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+            HashMap myInfo = getMyInfo(memNo);
+            if(myInfo != null){
+                SocketVo vo = new SocketVo(memNo, giftedMemNo);
+                vo.setMemNk(DalbitUtil.getStringMap(myInfo, "nickName"));
+                vo.setCommand("reqGiftDal");
+                HashMap socketMap = new HashMap();
+                socketMap.put("itemCnt", dal);
+                vo.setMessage(socketMap);
+                return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+            }
         }
         return null;
     }
@@ -452,6 +462,17 @@ public class SocketService {
 
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         }catch(Exception e){e.getStackTrace();}
+        return null;
+    }
+
+    public HashMap getMyInfo(String memNo){
+        P_MemberInfoVo apiData = new P_MemberInfoVo();
+        apiData.setMem_no(memNo);
+        ProcedureVo procedureVo = new ProcedureVo(apiData);
+        mypageDao.callMemberInfo(procedureVo);
+        if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        }
         return null;
     }
 }

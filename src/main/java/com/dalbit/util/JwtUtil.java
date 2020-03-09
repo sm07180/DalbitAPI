@@ -25,6 +25,8 @@ public class JwtUtil {
 
     @Value("${spring.jwt.secret}")
     private String JWT_SECRET_KEY;
+    @Value("${spring.jwt.duration}")
+    private int JWT_DURATION;
 
     final String JWT_SEPARATOR = "@";
 
@@ -61,7 +63,19 @@ public class JwtUtil {
                 }
 
                 boolean isLogin = Boolean.valueOf(splitStrArr[1]);
-                return new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin);
+
+                // 3(JWT_DURATION)시간 이내 토큰일경우 재발행 하지 않음
+                boolean isNew = true;
+                Jws<Claims> jwtClaims = getClaims(jwt);
+                Object issuedAt = jwtClaims.getBody().get(Claims.ISSUED_AT);
+                if(issuedAt != null){
+                    long issuedTs = Long.valueOf(issuedAt.toString());
+                    if((new Date().getTime() / 1000 - issuedTs) < (360 * JWT_DURATION)){
+                        isNew = false;
+                    }
+                }
+
+                return isNew ? new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin) : new TokenVo(jwt, splitStrArr[0], isLogin);
             }else{
                 throw new GlobalException(ErrorStatus.토큰검증오류, "회원번호 or 로그인 여부가 없습니다.");
             }
