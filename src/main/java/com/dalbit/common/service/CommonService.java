@@ -47,6 +47,9 @@ public class CommonService {
     @Autowired
     JwtUtil jwtUtil;
 
+    @Value("${sso.header.cookie.name}")
+    private String SSO_HEADER_COOKIE_NAME;
+
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
      */
@@ -97,7 +100,6 @@ public class CommonService {
 
     public HashMap<String, Object> getJwtTokenInfo(HttpServletRequest request){
         HashMap<String, Object> result = new HashMap<>();
-        TokenVo tokenVo = null;
         Status resultStatus;
         boolean isLogin = DalbitUtil.isLogin();
 
@@ -110,58 +112,68 @@ public class CommonService {
         LocationVo locationVo = DalbitUtil.getLocation(request);
         String ip = deviceVo.getIp();
 
-        if(isLogin){
-            tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
-            resultStatus = Status.로그인성공;
-
-        }else {
-
-            P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
-            //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
-            ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
-            //ProcedureOutputVo LoginProcedureVo;
-            /*if(DalbitUtil.isEmpty(loginList)){
-                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
-            }else{
-                LoginProcedureVo = new ProcedureOutputVo(procedureVo);
-            }*/
-            log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
-            if(DalbitUtil.isEmpty(LoginProcedureVo)){
-                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+        TokenVo tokenVo = null;
+        try{
+            if(!DalbitUtil.isEmpty(request.getHeader(SSO_HEADER_COOKIE_NAME))){
+                tokenVo = jwtUtil.getTokenVoFromJwt(request.getHeader(SSO_HEADER_COOKIE_NAME));
             }
-            if(LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-                resultStatus = Status.로그인실패_회원가입필요;
-            }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-                resultStatus = Status.로그인실패_패스워드틀림;
-            }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-                resultStatus = Status.로그인실패_파라메터이상;
-            }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
-                HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
-                String memNo = DalbitUtil.getStringMap(map,"mem_no");
-                if(DalbitUtil.isEmpty(memNo)){
-                    resultStatus = Status.로그인실패_파라메터이상;
+        }catch(GlobalException e){}
+
+        if(DalbitUtil.isEmpty(tokenVo)) {
+            if (isLogin) {
+                tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
+                resultStatus = Status.로그인성공;
+            } else {
+
+                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
+                //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
+                ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
+                //ProcedureOutputVo LoginProcedureVo;
+                /*if(DalbitUtil.isEmpty(loginList)){
+                    throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
                 }else{
-                    resultStatus = Status.로그인성공;
-                    tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
-                    result.put("tokenVo", tokenVo);
-                    memberService.refreshAnonymousSecuritySession(memNo);
+                    LoginProcedureVo = new ProcedureOutputVo(procedureVo);
+                }*/
+                log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
+                if (DalbitUtil.isEmpty(LoginProcedureVo)) {
+                    throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
                 }
-            }else{
-                resultStatus = Status.로그인오류;
+                if (LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+                    resultStatus = Status.로그인실패_회원가입필요;
+                } else if (LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
+                    resultStatus = Status.로그인실패_패스워드틀림;
+                } else if (LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
+                    resultStatus = Status.로그인실패_파라메터이상;
+                } else if (LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
+                    HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
+                    String memNo = DalbitUtil.getStringMap(map, "mem_no");
+                    if (DalbitUtil.isEmpty(memNo)) {
+                        resultStatus = Status.로그인실패_파라메터이상;
+                    } else {
+                        resultStatus = Status.로그인성공;
+                        tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
+                        result.put("tokenVo", tokenVo);
+                        memberService.refreshAnonymousSecuritySession(memNo);
+                    }
+                } else {
+                    resultStatus = Status.로그인오류;
+                }
             }
+        }else{
+            resultStatus = Status.로그인성공;
         }
 
-        if(!DalbitUtil.isEmpty(tokenVo)){
+        if (!DalbitUtil.isEmpty(tokenVo)) {
             P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
-                isLogin ? 1 : 0
-                , tokenVo.getMemNo()
-                , os
-                , appAdId
-                , deviceId
-                , deviceToken
-                , appVer
-                , locationVo.getRegionName()
-                , deviceVo.getIp()
+                    isLogin ? 1 : 0
+                    , tokenVo.getMemNo()
+                    , os
+                    , appAdId
+                    , deviceId
+                    , deviceToken
+                    , appVer
+                    , locationVo.getRegionName()
+                    , deviceVo.getIp()
             );
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
