@@ -40,8 +40,11 @@ public class MypageService {
     public String callProfileEdit(P_ProfileEditVo pProfileEditVo) throws GlobalException {
         Boolean isDone = false;
         String profImg = pProfileEditVo.getProfileImage();
-        if(DalbitUtil.isEmpty(profImg)){
-            profImg = Code.포토_프로필_디폴트_PREFIX.getCode()+"/"+Code.프로필이미지_파일명_PREFIX.getCode()+pProfileEditVo.getMemSex()+".jpg";
+        if(DalbitUtil.isEmpty(profImg) || profImg.startsWith(Code.포토_프로필_디폴트_PREFIX.getCode())){
+            if(!DalbitUtil.isEmpty(pProfileEditVo.getProfImgDel())){
+                isDone = true;
+            }
+            profImg = "";
         }else{
             if(profImg.startsWith(Code.포토_프로필_임시_PREFIX.getCode())){
                 isDone = true;

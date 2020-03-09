@@ -91,8 +91,8 @@ public class MemberController {
         String memPwd = signUpVo.getMemPwd();
         String profImg = signUpVo.getProfImg();
 
-        if(DalbitUtil.isEmpty(profImg)){
-            profImg = Code.포토_프로필_디폴트_PREFIX.getCode()+"/"+Code.프로필이미지_파일명_PREFIX.getCode()+signUpVo.getGender()+".jpg";
+        if(DalbitUtil.isEmpty(profImg) || profImg.startsWith(Code.포토_프로필_디폴트_PREFIX.getCode())){
+            profImg = "";
         }
         signUpVo.setProfImg(profImg);
 
