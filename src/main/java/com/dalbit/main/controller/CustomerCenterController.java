@@ -2,8 +2,10 @@ package com.dalbit.main.controller;
 
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.CustomerCenterService;
+import com.dalbit.main.vo.procedure.P_FaqListVo;
 import com.dalbit.main.vo.procedure.P_NoticeDetailVo;
 import com.dalbit.main.vo.procedure.P_NoticeListVo;
+import com.dalbit.main.vo.request.FaqListVo;
 import com.dalbit.main.vo.request.NoticeDetailVo;
 import com.dalbit.main.vo.request.NoticeListVo;
 import com.dalbit.util.DalbitUtil;
@@ -44,6 +46,19 @@ public class CustomerCenterController {
         P_NoticeDetailVo apiData = new P_NoticeDetailVo(noticeDetailVo);
 
         String result = customerCenterService.callNoticeDetail(apiData);
+
+        return result;
+    }
+
+    /**
+     * 고객센터 FAQ 목록 조회
+     */
+    @GetMapping("/center/faq")
+    public String customerCenterFaqList(@Valid FaqListVo faqListVo, BindingResult bindingResult) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_FaqListVo apiData = new P_FaqListVo(faqListVo);
+
+        String result = customerCenterService.callFaqList(apiData);
 
         return result;
     }

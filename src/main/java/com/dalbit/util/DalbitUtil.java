@@ -733,4 +733,33 @@ public class DalbitUtil {
         }
         return 0;
     }
+
+
+    /**
+     *  Custom-Header 파라미터 세팅
+     */
+    public static HashMap getParameterMap(HttpServletRequest request){
+
+        String memType = DalbitUtil.convertRequestParamToString(request,"memType");
+        String memId = DalbitUtil.convertRequestParamToString(request,"memId");
+        String memPwd = DalbitUtil.convertRequestParamToString(request,"memPwd");
+        int os = DalbitUtil.convertRequestParamToInteger(request,"os");
+        String deviceId = DalbitUtil.convertRequestParamToString(request,"deviceId");
+        String deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
+        String appVer = DalbitUtil.convertRequestParamToString(request,"appVer");
+        String appAdId = DalbitUtil.convertRequestParamToString(request,"appAdId");
+
+        HashMap map = new HashMap();
+        map.put("memType", memType);
+        map.put("memId", memId);
+        map.put("memPwd", memPwd);
+        map.put("os", os);
+        map.put("deviceId", deviceId);
+        map.put("deviceToken", deviceToken);
+        map.put("appVer", appVer);
+        map.put("appAdId", appAdId);
+        return map;
+    }
 }
+
+

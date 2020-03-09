@@ -1,7 +1,6 @@
 package com.dalbit.common.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.common.vo.SmsOutVo;
 import com.dalbit.common.vo.SmsVo;
 import org.springframework.stereotype.Repository;
 

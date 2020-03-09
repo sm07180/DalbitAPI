@@ -18,7 +18,9 @@ public enum Status {
     인증확인("1", "sms.number.check.success", "인증확인 성공 시"),
     인증시간초과("-1", "sms.check.timeout", "인증시간 초과 시"),
     인증번호불일치("-2", "sms.check.number.error", "인증 번호 일치하지 않을 시"),
-    인증번호재요청("-3","sms.check.id.error","인증번호 다시 요청 시"),
+    인증CMID불일치("-3", "sms.check.cmid.error", "인증 CMID 일치하지 않을 시"),
+    인증번호요청_회원아님("-4","sms.number.request.member.no","인증번호 요청"),
+    인증번호요청실패("C006","sms.number.request.fail","인증번호 요청 실패 시"),
     인증실패("C006", "sms.check.fail", "인증 실패 시"),
 
 
