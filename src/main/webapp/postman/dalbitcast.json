@@ -4265,9 +4265,9 @@
 									"response": []
 								},
 								{
-									"name": "휴대폰 SMS 인증확인_20200306",
+									"name": "휴대폰 SMS 인증확인_20200309",
 									"request": {
-										"method": "GET",
+										"method": "POST",
 										"header": [
 											{
 												"key": "authToken",
@@ -4281,12 +4281,30 @@
 											},
 											{
 												"key": "Content-Type",
-												"type": "text",
-												"value": "application/x-www-form-urlencoded"
+												"name": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
 											}
 										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "CMID",
+													"value": "74",
+													"description": "* 인증고유ID",
+													"type": "text"
+												},
+												{
+													"key": "code",
+													"value": "431769",
+													"description": "* 인증번호",
+													"type": "text"
+												}
+											]
+										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/sms?CMID=43&code=477970",
+											"raw": "https://devapi2.dalbitcast.com/sms/auth",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -4294,19 +4312,8 @@
 												"com"
 											],
 											"path": [
-												"sms"
-											],
-											"query": [
-												{
-													"key": "CMID",
-													"value": "43",
-													"description": "* 인증 ID"
-												},
-												{
-													"key": "code",
-													"value": "477970",
-													"description": "* 인증요청번호"
-												}
+												"sms",
+												"auth"
 											]
 										}
 									},
@@ -4557,7 +4564,7 @@
 											},
 											{
 												"key": "custom-header",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\", \"isHybrid\":\"N\"}",
 												"type": "text"
 											},
 											{
