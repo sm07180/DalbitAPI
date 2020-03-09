@@ -190,7 +190,7 @@ public class CommonController {
             result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청));
 
         } else {
-            if (DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join"))== authType){
+            if (DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
             }else if(DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
