@@ -4,7 +4,6 @@ import com.dalbit.common.code.Code;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.var;
 
 @Getter
 @Setter
@@ -23,11 +22,7 @@ public class ImageVo extends BaseVo{
     public ImageVo(Object path, String gender, String photoServerUrl){
         if(DalbitUtil.isEmpty(path) || DalbitUtil.isEmpty(path.toString())){
             if(!DalbitUtil.isEmpty(gender)) {
-                var imageUrl = new StringBuffer();
-                imageUrl.append(photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + ".jpg");
-                imageUrl.append("?"+ DalbitUtil.randomValue("string", 3) + "=" + DalbitUtil.randomValue("string", 3));
-
-                this.url =  imageUrl.toString();
+                this.url = photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + ".jpg";
                 setThumbs();
             }
         }else{
@@ -56,17 +51,14 @@ public class ImageVo extends BaseVo{
     }
 
     public void setThumbs(){
-
-        boolean containParam = (url.contains("?"));
-
-        this.thumb62x62 = url + (containParam ? "&" : "?") + "62x62";
-        this.thumb80x80 = url + (containParam ? "&" : "?") + "?80x80";
-        this.thumb88x88 = url + (containParam ? "&" : "?") + "?88x88";
-        this.thumb120x120 = url + (containParam ? "&" : "?") + "?120x120";
-        this.thumb150x150 = url + (containParam ? "&" : "?") + "?150x150";
-        this.thumb190x190 = url + (containParam ? "&" : "?") + "?190x190";
-        this.thumb292x292 = url + (containParam ? "&" : "?") + "?292x292";
-        this.thumb336x336 = url + (containParam ? "&" : "?") + "?336x336";
-        this.thumb700x700 = url + (containParam ? "&" : "?") + "?700x700";
+        this.thumb62x62 = url + "?62x62";
+        this.thumb80x80 = url + "?80x80";
+        this.thumb88x88 = url + "?88x88";
+        this.thumb120x120 = url + "?120x120";
+        this.thumb150x150 = url + "?150x150";
+        this.thumb190x190 = url + "?190x190";
+        this.thumb292x292 = url + "?292x292";
+        this.thumb336x336 = url + "?336x336";
+        this.thumb700x700 = url + "?700x700";
     }
 }
