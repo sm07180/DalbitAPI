@@ -18,6 +18,7 @@ import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
+import java.util.Calendar;
 import java.util.Date;
 
 import static jdk.nashorn.internal.objects.NativeString.substr;
@@ -282,18 +283,17 @@ public class SampleVoTest {
 
     @Test
     public void 각종테스트(){
-        String str = "20200212";
+        String str = "yyyyMMdd";
 
-        String year = substr(str,0,4);
+        /*String year = substr(str,0,4);
         String month = substr(str, 4,2);
         String day = substr(str,6,2);
 
-        /*log.info(year);
-        log.info(month);
-        log.info(day);
-*/
-        log.info(DalbitUtil.convertDate(str, "yyyy-MM-dd"));
+        log.info(DalbitUtil.convertDate(str, "yyyy-MM-dd"));*/
 
+        log.debug("오늘날짜: {}", DalbitUtil.getDate(str));
+        log.debug("3 일후: {}", DalbitUtil.getDate(str, 3));
+        log.debug("7 일전: {}", DalbitUtil.getDate(str, -7));
 
     }
 

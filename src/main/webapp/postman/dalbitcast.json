@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.09",
+		"name": "달빛라디오 API 정의서_2020.03.10",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2584,7 +2584,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzQ1OTQ3MEB0cnVlIiwiaWF0IjoxNTgxNTczNDYwLCJleHAiOjE1ODQwNzkwNjB9.c_9bgeHb57a6iLs8RxEu37sB9f1qLOs1-YPb_P0HbMc",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzMwODk2NjY1NkB0cnVlIiwiaWF0IjoxNTgzODA1NTcyLCJleHAiOjE1ODYzOTc1NzJ9.mX90SSBToti_Zn9d5boUkd7oNuLCQlrIQIRsTHySZ4I",
 												"type": "text"
 											},
 											{
@@ -2604,13 +2604,13 @@
 												},
 												{
 													"key": "title",
-													"value": "이미지수정테스트",
+													"value": "팬해제방테스트",
 													"description": "* 제목",
 													"type": "text"
 												},
 												{
 													"key": "bgImg",
-													"value": "/bg_1/20567664000/20200220125402436375.png",
+													"value": "",
 													"description": "백그라운드 이미지 경로 ( photo서버에서 받은 path경로만 입력)",
 													"type": "text"
 												},
@@ -2663,7 +2663,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTY0NTI5OTk3NkB0cnVlIiwiaWF0IjoxNTgxNjQ1MzAxLCJleHAiOjE1ODQxNTA5MDF9.hkZUTLhDimNiTVcIQbXa1YUq8mMaeZZWvKP9idTa2fw",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzODA1NjMxLCJleHAiOjE1ODYzOTc2MzF9.JQpp01FpR6oQysOV4w2dhwCIKdtJ7TnSpbGlVvr0OQw",
 												"type": "text"
 											},
 											{
@@ -2682,7 +2682,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581579368921",
+													"value": "91583805598499",
 													"description": "* 방번호",
 													"type": "text"
 												}
@@ -4103,14 +4103,62 @@
 											"urlencoded": [
 												{
 													"key": "memNo",
-													"value": "11581573459470",
+													"value": "11583308966656",
 													"description": "* 스타회원번호",
 													"type": "text"
 												},
 												{
 													"key": "roomNo",
-													"value": "91582597115346",
+													"value": "91583805598499",
 													"description": "* 방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/broad/fan",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"broad",
+												"fan"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 방송방 팬 해제_2020.03.10",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzODA1NjMxLCJleHAiOjE1ODYzOTc2MzF9.JQpp01FpR6oQysOV4w2dhwCIKdtJ7TnSpbGlVvr0OQw",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11583308966656",
+													"description": "* 스타회원번호",
 													"type": "text"
 												}
 											]
@@ -5031,6 +5079,116 @@
 										"rest",
 										"pay",
 										"card"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "가상계좌 결제 요청_2020.03.10",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authToken",
+										"type": "text",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMzA1NzE1LCJleHAiOjE1ODU4OTc3MTV9.NU9onKaqcNGYlNuX-_Rxp56v88QZPDkoqbSXnf8vXGw"
+									},
+									{
+										"key": "custom-header",
+										"type": "text",
+										"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "Prdtnm",
+											"value": "달달토끼",
+											"description": "* 상품명 (50byte 이하)",
+											"type": "text"
+										},
+										{
+											"key": "Prdtprice",
+											"value": "100",
+											"description": "* 요청금액(10byte 이하)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devpay2.dalbitcast.com/rest/pay/virtual",
+									"protocol": "https",
+									"host": [
+										"devpay2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"rest",
+										"pay",
+										"virtual"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "실계좌이체 결제 요청_2020.03.10",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authToken",
+										"type": "text",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzMzA1NzE1LCJleHAiOjE1ODU4OTc3MTV9.NU9onKaqcNGYlNuX-_Rxp56v88QZPDkoqbSXnf8vXGw"
+									},
+									{
+										"key": "custom-header",
+										"type": "text",
+										"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+									},
+									{
+										"key": "Content-Type",
+										"type": "text",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "Prdtnm",
+											"value": "달달토끼",
+											"description": "* 상품명 (50byte 이하)",
+											"type": "text"
+										},
+										{
+											"key": "Prdtprice",
+											"value": "100",
+											"description": "* 요청금액(10byte 이하)",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://devpay2.dalbitcast.com/rest/pay/bank",
+									"protocol": "https",
+									"host": [
+										"devpay2",
+										"dalbitcast",
+										"com"
+									],
+									"path": [
+										"rest",
+										"pay",
+										"bank"
 									]
 								}
 							},

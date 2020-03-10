@@ -252,19 +252,26 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendLike(String roomNo, String memNo, String authToken){
+    public Map<String, Object> sendLike(String roomNo, String memNo, boolean isFirst, String authToken){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            if(isFirst){
+                SocketVo vo = getSocketVo(roomNo, memNo);
+                if(vo.getFan() == 0){
+                    vo.setCommand("reqGoodFirst");
+                    vo.setRecvMemNo(memNo);
+                    vo.setMessage("{\"time\" : 30}");
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
+            }
             SocketVo vo = getSocketVo(roomNo, memNo);
             if(vo.getMemNo() == null){
                 return null;
             }
             vo.setCommand("reqGood");
-            vo.setRecvDj(0);
-            vo.setRecvTime(3);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
@@ -281,6 +288,7 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqBooster");
+            //vo.setMessage("{\"time\" : 1800}");
             vo.setRecvTime(3);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
@@ -427,7 +435,7 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqKickOut");
-            HashMap kickedMemInfo = getUserInfo(roomNo, kickedMemNo);
+            HashMap kickedMemInfo = getMyInfo(kickedMemNo);
             if(kickedMemInfo != null){
                 HashMap socketMap = new HashMap();
                 socketMap.put("sndAuth", vo.getAuth());
@@ -438,6 +446,25 @@ public class SocketService {
                 vo.setMessage(socketMap);
                 return sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
+        }
+        return null;
+    }
+
+    public Map<String, Object> banWord(String roomNo, String memNo, String authToken){
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqBanWord");
+            HashMap socketMap = new HashMap();
+            socketMap.put("channel", roomNo);
+            socketMap.put("memNo", vo.getMemNo());
+            vo.setMessage(socketMap);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
     }

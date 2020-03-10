@@ -1,5 +1,7 @@
 package com.dalbit.member.service;
 
+import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
@@ -33,6 +35,8 @@ public class MypageService {
     RestService restService;
     @Autowired
     SocketService socketService;
+    @Autowired
+    RoomDao roomDao;
 
     /**
      * 프로필 편집
@@ -725,7 +729,7 @@ public class MypageService {
     /**
      * 방송설정 금지어 저장
      */
-    public String callMypageInsertBanWord(P_BanWordInsertVo pBanWordInsertVo) {
+    public String callMypageInsertBanWord(P_BanWordInsertVo pBanWordInsertVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pBanWordInsertVo);
         mypageDao.callMypageInsertBanWord(procedureVo);
 
@@ -741,6 +745,18 @@ public class MypageService {
 
         String result;
         if(Status.금지어저장_성공.getMessageCode().equals(procedureVo.getRet())) {
+            // 진행중인 방이 있을 경우 소켓으로 금지어 업데이트 요청
+            P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo = new P_MemberBroadcastingCheckVo();
+            pMemberBroadcastingCheckVo.setMem_no(MemberVo.getMyMemNo());
+            ProcedureVo procedureCheckVo = new ProcedureVo(pMemberBroadcastingCheckVo);
+            roomDao.callMemberBroadcastingCheck(procedureCheckVo);
+            if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureCheckVo.getRet())) {
+                HashMap resultCheckMap = new Gson().fromJson(procedureCheckVo.getExt(), HashMap.class);
+                try{
+                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), MemberVo.getMyMemNo(), DalbitUtil.getAuthToken(request));
+                }catch(Exception e){}
+
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.금지어저장_성공, procedureVo.getData()));
         }else if(Status.금지어저장_요청번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.금지어저장_요청번호_회원아님));

@@ -75,6 +75,10 @@ public class SocketVo {
         }
     }
 
+    public void setMessage(String message){
+        this.message = message;
+    }
+
     public void setMessage(Object message){
         this.message = new Gson().toJson(message);
         //this.message = message;

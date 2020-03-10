@@ -240,16 +240,16 @@ public class ProfileService {
         }
 
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap notificationList = new HashMap();
-        notificationList.put("list", procedureOutputVo.getOutputBox());
-        notificationList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+        HashMap fanRankingList = new HashMap();
+        fanRankingList.put("list", procedureOutputVo.getOutputBox());
+        fanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result ="";
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_성공, notificationList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_성공, fanRankingList));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_팬없음.getMessageCode())) {
-            notificationList.put("list", new ArrayList<>());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, notificationList));
+            fanRankingList.put("list", new ArrayList<>());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_요청회원_회원아님));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_대상회원_회원아님.getMessageCode())) {

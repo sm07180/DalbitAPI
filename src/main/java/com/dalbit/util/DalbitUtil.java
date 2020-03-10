@@ -760,6 +760,25 @@ public class DalbitUtil {
         map.put("appAdId", appAdId);
         return map;
     }
+
+    /**
+     *  날짜 Pattern 형식에 맞춰 현재날짜 계산
+     */
+    public static String getDate(String pattern) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
+        Calendar cal = Calendar.getInstance();
+        return formatter.format(cal.getTime());
+    }
+
+    /**
+     *  날짜 Pattern 형식, 날짜 '+','-' 계산
+     */
+    public static String getDate(String pattern, int day) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_MONTH, day);
+        return formatter.format(cal.getTime());
+    }
 }
 
 

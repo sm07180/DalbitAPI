@@ -205,6 +205,23 @@ public class UserController {
         return result;
     }
 
+    /**
+     * 방송방 팬 해제
+     */
+    @DeleteMapping("/fan")
+    public String fanstarDelete(@Valid BroadFanstartDeleteVo broadFanstartDeleteVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        P_BroadFanstarDeleteVo apiData = new P_BroadFanstarDeleteVo();
+        apiData.setFan_mem_no(MemberVo.getMyMemNo());
+        apiData.setStar_mem_no(broadFanstartDeleteVo.getMemNo());
+
+        String result = userService.callFanstarDelete(apiData);
+
+        return result;
+    }
+
 
     /* #################### 여기까지 API명세서 기준 작업완료 ######################## */
 

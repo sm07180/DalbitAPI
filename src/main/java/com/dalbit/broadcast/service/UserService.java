@@ -397,6 +397,32 @@ public class UserService {
     }
 
 
+    /**
+     * 방송방 팬 해제
+     */
+    public String callFanstarDelete(P_BroadFanstarDeleteVo pBroadFanstarDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadFanstarDeleteVo);
+        userDao.callFanstarDelete(procedureVo);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if (procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공));
+        } else if (procedureVo.getRet().equals(Status.팬해제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬해제_스타회원번호이상.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제_스타회원번호이상));
+        } else if (procedureVo.getRet().equals(Status.팬해제_팬아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제_팬아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제실패));
+        }
+        return result;
+    }
+
+
 
     /* ######################## Native 연동에서만 필요한 부분 ########################## */
     public List<DevRoomVo> getDevBjRoom(String memNo){
