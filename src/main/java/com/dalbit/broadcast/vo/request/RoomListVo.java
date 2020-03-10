@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 public class RoomListVo {
 
-    @Size(max = 2)
+    @Size(min = 2, max = 2)
     private String roomType;
 
     @Min(1)
