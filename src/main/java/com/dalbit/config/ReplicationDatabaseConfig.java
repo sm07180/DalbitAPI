@@ -34,8 +34,11 @@ public class ReplicationDatabaseConfig {
     @Value("${spring.datasource.driverClassName}")
     private String JDBC_DRIVER_CLASS_NAME;
 
-    @Value("${spring.datasource.url}")
-    private String JDBC_URL;
+    @Value("${spring.datasource.master.url}")
+    private String JDBC_MASTER_URL;
+
+    @Value("${spring.datasource.slave.url}")
+    private String JDBC_SLAVE_URL;
 
     @Value("${spring.datasource.username}")
     private String JDBC_USERNAME;
@@ -48,7 +51,7 @@ public class ReplicationDatabaseConfig {
 
         HikariConfig masterHikariConfig = new HikariConfig();
         masterHikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
-        masterHikariConfig.setJdbcUrl(JDBC_URL);
+        masterHikariConfig.setJdbcUrl(JDBC_MASTER_URL);
         masterHikariConfig.setUsername(JDBC_USERNAME);
         masterHikariConfig.setPassword(JDBC_PASSWORD);
 
@@ -59,7 +62,7 @@ public class ReplicationDatabaseConfig {
     public DataSource slaveDataSource() {
         HikariConfig slaveHikariConfig = new HikariConfig();
         slaveHikariConfig.setDriverClassName(JDBC_DRIVER_CLASS_NAME);
-        slaveHikariConfig.setJdbcUrl(JDBC_URL);
+        slaveHikariConfig.setJdbcUrl(JDBC_SLAVE_URL);
         slaveHikariConfig.setUsername(JDBC_USERNAME);
         slaveHikariConfig.setPassword(JDBC_PASSWORD);
 

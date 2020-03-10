@@ -58,7 +58,7 @@ public class RoomService {
             while(random > (ROOM_BG_COUNT - 1)){
                 random = Integer.parseInt(DalbitUtil.randomValue("number", 1));
             }
-            bgImg = Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+random+".jpg";
+            bgImg = Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+"200310_"+random+".jpg";
         }else{
             if(bgImg.startsWith(Code.포토_배경_임시_PREFIX.getCode())){
                 isDone = true;
