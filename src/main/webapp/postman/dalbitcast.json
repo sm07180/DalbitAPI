@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.10",
+		"name": "달빛라디오 API 정의서_2020.03.11",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -652,7 +652,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 회원 신고하기_2020.02.11",
+									"name": "[완료] 회원 신고하기_2020.03.11",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -663,7 +663,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzODE1NTk1LCJleHAiOjE1ODY0MDc1OTV9.9QZCnSPHcAi_o4ImZI2Oj8ZTWuaZbU_PjcXHXsIAFy0",
 												"type": "text"
 											},
 											{
@@ -690,7 +690,13 @@
 												{
 													"key": "cont",
 													"value": "신고내용",
-													"description": "* 상세내용",
+													"description": "기타 사유 내용이 있을 경우",
+													"type": "text"
+												},
+												{
+													"key": "roomNo",
+													"value": "",
+													"description": "방번호(방송방 안에서 신고할 경우)",
 													"type": "text"
 												}
 											]
