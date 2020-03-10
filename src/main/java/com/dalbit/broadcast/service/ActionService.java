@@ -64,17 +64,19 @@ public class ActionService {
             String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
             String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
             String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
-            try{
-                socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(), DalbitUtil.getAuthToken(request));
+            try{ //좋아요 발송
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(), (DalbitUtil.getIntMap(resultMap, "firstGood") == 1), DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
-            try{
+            try{ //좋아요수, 랭킹, 팬랭킹 발송
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
-                //TODO - 레벨업 유무 소켓추가 추후 확인
-                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
                 socketService.changeCount(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            //TODO - 레벨업 유무 소켓추가 추후 확인
+            try{
+                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData()));
         }else if(Status.좋아요_회원아님.getMessageCode().equals(procedureVo.getRet())){

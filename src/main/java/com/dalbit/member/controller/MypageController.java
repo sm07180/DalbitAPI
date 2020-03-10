@@ -419,14 +419,14 @@ public class MypageController {
      * 방송설정 금지어 저장
      */
     @PostMapping("/banword")
-    public String insertBanWrod(@Valid BanWordVo banWordVo, BindingResult bindingResult) throws GlobalException{
+    public String insertBanWrod(@Valid BanWordVo banWordVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_BanWordInsertVo apiData = new P_BanWordInsertVo();
         apiData.setMem_no(MemberVo.getMyMemNo());
         apiData.setBanWord(banWordVo.getBanWord());
 
-        String result = mypageService.callMypageInsertBanWord(apiData);
+        String result = mypageService.callMypageInsertBanWord(apiData, request);
 
         return result;
     }
