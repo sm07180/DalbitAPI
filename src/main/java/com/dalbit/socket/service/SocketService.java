@@ -288,6 +288,7 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqBooster");
+            //vo.setMessage("{\"time\" : 1800}");
             vo.setRecvTime(3);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
