@@ -12,6 +12,7 @@ public class MemberReportAddVo {
     private String memNo;
     @NotNull
     private Integer reason;
-    @NotBlank
+
     private String cont;
+    private String roomNo;
 }

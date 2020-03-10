@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
@@ -145,15 +146,11 @@ public class MypageController {
      * 회원 신고하기
      */
     @PostMapping("/declar")
-    public String memberReportAdd(@Valid MemberReportAddVo memberReportAddVo, BindingResult bindingResult)throws GlobalException{
+    public String memberReportAdd(@Valid MemberReportAddVo memberReportAddVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_MemberReportAddVo apiData = new P_MemberReportAddVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
-        apiData.setReported_mem_no(memberReportAddVo.getMemNo());
-        apiData.setReason(memberReportAddVo.getReason());
-        apiData.setEtc(memberReportAddVo.getCont());
+        P_MemberReportAddVo apiData = new P_MemberReportAddVo(memberReportAddVo, new DeviceVo(request), request);
 
         String result = mypageService.callMemberReportAdd(apiData);
 
