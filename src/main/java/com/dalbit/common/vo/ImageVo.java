@@ -59,14 +59,14 @@ public class ImageVo extends BaseVo{
 
         boolean containParam = (url.contains("?"));
 
-        this.thumb62x62 = (containParam ? "&" : "?") + "62x62";
-        this.thumb80x80 = (containParam ? "&" : "?") + "?80x80";
-        this.thumb88x88 = (containParam ? "&" : "?") + "?88x88";
-        this.thumb120x120 = (containParam ? "&" : "?") + "?120x120";
-        this.thumb150x150 = (containParam ? "&" : "?") + "?150x150";
-        this.thumb190x190 = (containParam ? "&" : "?") + "?190x190";
-        this.thumb292x292 = (containParam ? "&" : "?") + "?292x292";
-        this.thumb336x336 = (containParam ? "&" : "?") + "?336x336";
-        this.thumb700x700 = (containParam ? "&" : "?") + "?700x700";
+        this.thumb62x62 = url + (containParam ? "&" : "?") + "62x62";
+        this.thumb80x80 = url + (containParam ? "&" : "?") + "?80x80";
+        this.thumb88x88 = url + (containParam ? "&" : "?") + "?88x88";
+        this.thumb120x120 = url + (containParam ? "&" : "?") + "?120x120";
+        this.thumb150x150 = url + (containParam ? "&" : "?") + "?150x150";
+        this.thumb190x190 = url + (containParam ? "&" : "?") + "?190x190";
+        this.thumb292x292 = url + (containParam ? "&" : "?") + "?292x292";
+        this.thumb336x336 = url + (containParam ? "&" : "?") + "?336x336";
+        this.thumb700x700 = url + (containParam ? "&" : "?") + "?700x700";
     }
 }
