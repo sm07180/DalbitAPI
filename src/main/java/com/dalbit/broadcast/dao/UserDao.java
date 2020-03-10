@@ -17,10 +17,12 @@ public interface UserDao {
     ProcedureVo callBroadCastRoomManagerAdd(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomManagerDel(ProcedureVo procedureVo);
     ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
+    ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
 
     List<DevRoomVo> selectBjRoom(String memNo);
     List<DevRoomVo> selectJoinRoom(String memNo);
     List<DevRoomVo> selectDisconnectRoom(String memNo);
     void updateNormalRoom(String roomNo);
+
 
 }

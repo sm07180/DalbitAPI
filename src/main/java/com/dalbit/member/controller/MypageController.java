@@ -68,7 +68,7 @@ public class MypageController {
 
 
     /**
-     * 팬등록
+     * 팬 등록
      */
     @PostMapping("/fan")
     public String fanstarInsert(@Valid FanstartInsertVo fanstartInsertVo, BindingResult bindingResult)throws GlobalException{
@@ -86,7 +86,7 @@ public class MypageController {
 
 
     /**
-     * 팬해제
+     * 팬 해제
      */
     @DeleteMapping("/fan")
     public String fanstarDelete(@Valid FanstarDeleteVo fanstarDeleteVo, BindingResult bindingResult)throws GlobalException{
