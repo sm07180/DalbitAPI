@@ -320,7 +320,7 @@ public class RoomService {
             }
 
             HashMap returnMap = new HashMap();
-            returnMap.put("roomType", pRoomEditOutVo.getRoomNo());
+            returnMap.put("roomType", pRoomEditOutVo.getSubject_type());
             returnMap.put("title", pRoomEditOutVo.getTitle());
             returnMap.put("welcomMsg", pRoomEditOutVo.getMsg_welcom());
             returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
