@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 
 @Slf4j
 @RestController
-@RequestMapping("mypage")
+@RequestMapping("/mypage")
 public class MypageController {
 
     @Autowired

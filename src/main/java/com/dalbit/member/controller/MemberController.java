@@ -61,7 +61,7 @@ public class MemberController {
     /**
      * 토큰조회
      */
-    @GetMapping("token")
+    @GetMapping("/token")
     public String token(HttpServletRequest request){
         HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
 
@@ -80,7 +80,7 @@ public class MemberController {
     /**
      * 회원가입
      */
-    @PostMapping("member/signup")
+    @PostMapping("/member/signup")
     public String signup(@Valid SignUpVo signUpVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         //벨리데이션 체크
@@ -183,7 +183,7 @@ public class MemberController {
     /**
      * 닉네임 중복체크
      */
-    @GetMapping("member/nick")
+    @GetMapping("/member/nick")
     public String nick(@Valid NickNmDupleCheckVo nickNmDupleCheckVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
@@ -198,7 +198,7 @@ public class MemberController {
     /**
      * 비밀번호 변경
      */
-    @PostMapping("member/pwd")
+    @PostMapping("/member/pwd")
     public String pwd(@Valid ChangePwVo changePwVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
@@ -217,7 +217,7 @@ public class MemberController {
     /**
      * ID 리스트 가져오기 (임시 테스트용)
      */
-    @GetMapping("id")
+    @GetMapping("/id")
     @Profile({"local", "dev"})
     public List<SampleVo> selectMemid(){
 

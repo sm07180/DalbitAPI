@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("broad")
+@RequestMapping("/broad")
 public class ActionController {
 
     @Autowired
