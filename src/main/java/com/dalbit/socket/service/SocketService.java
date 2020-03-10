@@ -434,7 +434,7 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqKickOut");
-            HashMap kickedMemInfo = getUserInfo(roomNo, kickedMemNo);
+            HashMap kickedMemInfo = getMyInfo(kickedMemNo);
             if(kickedMemInfo != null){
                 HashMap socketMap = new HashMap();
                 socketMap.put("sndAuth", vo.getAuth());

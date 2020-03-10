@@ -15,7 +15,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("profile")
+@RequestMapping("/profile")
 public class ProfileController {
 
     @Autowired
