@@ -42,7 +42,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         String jwtToken = jwtUtil.generateToken(MemberVo.getMyMemNo(), true);
 
-        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberVo.isAdmin() ? Status.관리자로그인성공 : Status.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(request), true)));
+        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberVo.isAdmin() ? Status.관리자로그인성공 : Status.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(), true)));
     }
 
     /**
