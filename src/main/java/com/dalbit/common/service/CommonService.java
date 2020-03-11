@@ -121,6 +121,9 @@ public class CommonService {
         }catch(GlobalException e){}
 
         if(DalbitUtil.isEmpty(tokenVo)) {
+            if(request.getRequestURI().startsWith("/member/logout")){
+                isLogin = false;
+            }
             if (isLogin) {
                 tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
                 resultStatus = Status.로그인성공;

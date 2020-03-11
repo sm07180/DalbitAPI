@@ -76,7 +76,6 @@ public class SsoAuthenticationFilter implements Filter {
             String headerAuthToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
             try {
                 if (DalbitUtil.isEmpty(authentication)) {
-
                     if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
                         if(!request.getRequestURI().startsWith("/token")){
                             throw new GlobalException(ErrorStatus.토큰검증오류);
@@ -84,7 +83,6 @@ public class SsoAuthenticationFilter implements Filter {
                     }else{
                         checkToken(request, response);
                     }
-
                 }else{
                     log.debug("=================================  토큰 컨텍스트에서 통과 정보  ============================================");
                     log.debug(authentication.getPrincipal() + " : " +authentication.toString());

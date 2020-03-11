@@ -47,27 +47,27 @@ public class CommonRestControllerAop {
             }
         }
         String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
-            String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
+        String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
-            log.debug("[restController] [memNo : {}] - start : {}", memNo, proceedName);
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
+        log.debug("[restController] [memNo : {}] - start : {}", memNo, proceedName);
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
 
-            Object result = proceedingJoinPoint.proceed();
+        Object result = proceedingJoinPoint.proceed();
 
-            stopWatch.stop();
+        stopWatch.stop();
 
-            log.info("[{}] [memNo : {}] - 실행시간 : {}", proceedName, memNo, stopWatch.getTotalTimeMillis() + " (ms)");
+        log.info("[{}] [memNo : {}] - 실행시간 : {}", proceedName, memNo, stopWatch.getTotalTimeMillis() + " (ms)");
 
-            try {
-                log.debug("[{}] 헤더정보 : {}, ", proceedName, gsonUtil.toJson(new DeviceVo(request)));
-            }catch (Exception e){
-                ArrayList list = new ArrayList<String>();
-                list.add(request.getHeader(DalbitUtil.getProperty("rest.custom.header.name")));
-                throw new GlobalException(ErrorStatus.커스텀헤더정보이상, null, list);
-            }
+        /*try {
+            log.debug("[{}] 헤더정보 : {}, ", proceedName, gsonUtil.toJson(new DeviceVo(request)));
+        }catch (Exception e){
+            ArrayList list = new ArrayList<String>();
+            list.add(request.getHeader(DalbitUtil.getProperty("rest.custom.header.name")));
+            throw new GlobalException(ErrorStatus.커스텀헤더정보이상, null, list);
+        }*/
 
-            log.info("[memNo : {}] 실행결과 {}", memNo, gsonUtil.toJson(result));
+        log.info("[memNo : {}] 실행결과 {}", memNo, gsonUtil.toJson(result));
 
             return result;
 
