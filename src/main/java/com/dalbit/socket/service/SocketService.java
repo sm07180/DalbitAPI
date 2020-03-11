@@ -112,14 +112,14 @@ public class SocketService {
     }
 
     public Map<String, Object> sendMessage(HttpServletRequest request){
-        String memNo = MemberVo.getMyMemNo();
+        String memNo = new MemberVo().getMyMemNo(request);
         String roomNo = DalbitUtil.convertRequestParamToString(request,"roomNo");
         String message = DalbitUtil.convertRequestParamToString(request,"message");
         String authToken = DalbitUtil.getAuthToken(request);
         memNo = memNo == null ? "" : memNo.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(message) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             log.debug("send vo : " + vo.toString());
             if(vo.getMemNo() == null){
                 return null;
@@ -137,13 +137,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken){
+    public Map<String, Object> changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -170,13 +170,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, int state, String authToken){
+    public Map<String, Object> changeRoomState(String roomNo, String memNo, int state, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -200,13 +200,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken){
+    public Map<String, Object> changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(menagerMemNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -218,13 +218,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken){
+    public Map<String, Object> changeRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -235,13 +235,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> changeCount(String roomNo, String memNo, HashMap roomInfo, String authToken){
+    public Map<String, Object> changeCount(String roomNo, String memNo, HashMap roomInfo, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -252,14 +252,14 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendLike(String roomNo, String memNo, boolean isFirst, String authToken){
+    public Map<String, Object> sendLike(String roomNo, String memNo, boolean isFirst, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
             if(isFirst){
-                SocketVo vo = getSocketVo(roomNo, memNo);
+                SocketVo vo = getSocketVo(roomNo, memNo, request);
                 if(vo.getFan() == 0){
                     vo.setCommand("reqGoodFirst");
                     vo.setRecvMemNo(memNo);
@@ -267,7 +267,7 @@ public class SocketService {
                     sendSocketApi(authToken, roomNo, vo.toQueryString());
                 }
             }
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -277,13 +277,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendBooster(String roomNo, String memNo, String authToken){
+    public Map<String, Object> sendBooster(String roomNo, String memNo, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = memNo == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -295,13 +295,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendNotice(String roomNo, String memNo, String notice, String authToken){
+    public Map<String, Object> sendNotice(String roomNo, String memNo, String notice, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         notice = notice == null ? "" : notice.trim();
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -314,13 +314,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendStory(String roomNo, String memNo, Object story, String authToken){
+    public Map<String, Object> sendStory(String roomNo, String memNo, Object story, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && story != null){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -334,13 +334,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> addFan(String roomNo, String memNo, String authToken){
+    public Map<String, Object> addFan(String roomNo, String memNo, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -351,7 +351,7 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> giftDal(String memNo, String giftedMemNo, int dal, String authToken){
+    public Map<String, Object> giftDal(String memNo, String giftedMemNo, int dal, String authToken, HttpServletRequest request){
         memNo = memNo == null ? "" : memNo.trim();
         giftedMemNo = giftedMemNo == null ? "" : giftedMemNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
@@ -359,7 +359,7 @@ public class SocketService {
         if(!"".equals(memNo) && !"".equals(giftedMemNo) && !"".equals(authToken) && dal > 0){
             HashMap myInfo = getMyInfo(memNo);
             if(myInfo != null){
-                SocketVo vo = new SocketVo(memNo, giftedMemNo);
+                SocketVo vo = new SocketVo(memNo, giftedMemNo, request);
                 vo.setMemNk(DalbitUtil.getStringMap(myInfo, "nickName"));
                 vo.setCommand("reqGiftDal");
                 HashMap socketMap = new HashMap();
@@ -371,13 +371,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> giftItem(String roomNo, String memNo, String giftedMemNo, Object item, String authToken){
+    public Map<String, Object> giftItem(String roomNo, String memNo, String giftedMemNo, Object item, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && item != null){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -400,7 +400,7 @@ public class SocketService {
      * @param authToken 토큰
      * @return
      */
-    public Map<String, Object> execGuest(String roomNo, String bjMemNo, String gstMemNo, int type, String authToken){
+    public Map<String, Object> execGuest(String roomNo, String bjMemNo, String gstMemNo, int type, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         bjMemNo = bjMemNo == null ? "" : bjMemNo.trim();
         gstMemNo = gstMemNo == null ? "" : gstMemNo.trim();
@@ -412,7 +412,7 @@ public class SocketService {
                 recvMemNo = bjMemNo;
                 sendMemno = gstMemNo;
             }
-            SocketVo vo = getSocketVo(roomNo, sendMemno);
+            SocketVo vo = getSocketVo(roomNo, sendMemno, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -424,13 +424,13 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken){
+    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         kickedMemNo = kickedMemNo == null ? "" : kickedMemNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(kickedMemNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -450,12 +450,12 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> banWord(String roomNo, String memNo, String authToken){
+    public Map<String, Object> banWord(String roomNo, String memNo, String authToken, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
-            SocketVo vo = getSocketVo(roomNo, memNo);
+            SocketVo vo = getSocketVo(roomNo, memNo, request);
             if(vo.getMemNo() == null){
                 return null;
             }
@@ -469,9 +469,9 @@ public class SocketService {
         return null;
     }
 
-    public SocketVo getSocketVo(String roomNo, String memNo){
+    public SocketVo getSocketVo(String roomNo, String memNo, HttpServletRequest request){
         try{
-            return new SocketVo(memNo, getUserInfo(roomNo, memNo));
+            return new SocketVo(memNo, getUserInfo(roomNo, memNo), request);
         }catch(Exception e){e.getStackTrace();}
         return null;
     }

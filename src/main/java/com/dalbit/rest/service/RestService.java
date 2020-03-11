@@ -9,6 +9,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -43,7 +44,7 @@ public class RestService {
      * @return String : 리턴된 JSON 스트링
      * @throws Exception
      */
-    public Map<String, Object> callRest(String server_url, String url_path, HashMap<String, String> params, int method) throws GlobalException{
+    public Map<String, Object> callRest(String server_url, String url_path, HashMap<String, String> params, int method, HttpServletRequest request) throws GlobalException{
 
         try {
             StringBuffer paramString = new StringBuffer();
@@ -58,7 +59,7 @@ public class RestService {
                 }
             }
 
-            return callRest(server_url, url_path, paramString.toString(), method);
+            return callRest(server_url, url_path, paramString.toString(), method, request);
         }catch (Exception e){
             throw new GlobalException(ErrorStatus.호출에러);
         }
@@ -74,7 +75,7 @@ public class RestService {
      * @return String : 리턴된 JSON 스트링
      * @throws Exception
      */
-    public Map<String, Object> callRest(String server_url, String url_path, String params, int method) throws GlobalException{
+    public Map<String, Object> callRest(String server_url, String url_path, String params, int method, HttpServletRequest request) throws GlobalException{
         HttpURLConnection con = null;
         URL url = null;
         String method_str = "GET";
@@ -113,11 +114,11 @@ public class RestService {
                 out.flush();
             }
 
-            result = readStream(con.getInputStream(), server_url, url_path, params);
+            result = readStream(con.getInputStream(), server_url, url_path, params, request);
         }catch(IOException e){
             log.debug("{} error {}", request_uri, e.getMessage());
             if(con != null){
-                result = readStream(con.getErrorStream(), server_url, url_path, params);
+                result = readStream(con.getErrorStream(), server_url, url_path, params, request);
             }
         }
 
@@ -129,7 +130,7 @@ public class RestService {
 
         }catch (Exception e){
             ArrayList messageList = new ArrayList<String>();
-            messageList.add("회원번호 : "+ MemberVo.getMyMemNo());
+            messageList.add("회원번호 : "+ new MemberVo().getMyMemNo(request));
             messageList.add("server_url : "+ server_url);
             messageList.add("url_path : "+ url_path);
             messageList.add("params : "+ params);
@@ -150,7 +151,7 @@ public class RestService {
      * @return
      * @throws GlobalException
      */
-    private String readStream(InputStream stream, String server_url, String url_path, String params) throws GlobalException{
+    private String readStream(InputStream stream, String server_url, String url_path, String params, HttpServletRequest request) throws GlobalException{
         try {
             StringBuffer pageContents = new StringBuffer();
             InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
@@ -169,10 +170,10 @@ public class RestService {
             //방송 생성 후 publish token 생성시 오류 일때 방송방 삭제
             if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
                 String stream_id = params.substring(3, params.indexOf("&"));
-                deleteAntRoom(stream_id);
+                deleteAntRoom(stream_id, request);
 
                 log.error("방송 생성 후 publish token 생성시 오류 일때 방송방 삭제");
-                log.error("회원번호 : {}", MemberVo.getMyMemNo());
+                log.error("회원번호 : {}", new MemberVo().getMyMemNo(request));
                 log.error("server_url : {}", server_url);
                 log.error("url_path : {}", url_path);
                 log.error("params : {}", params);
@@ -188,9 +189,9 @@ public class RestService {
      * @return
      * @throws GlobalException
      */
-    public Map<String, Object> urlImgSave(String url) throws GlobalException {
+    public Map<String, Object> urlImgSave(String url, HttpServletRequest request) throws GlobalException {
         try {
-            return callRest(photoServer, "/upload", "imageUrl=" + URLEncoder.encode(url, "UTF-8"), 1);
+            return callRest(photoServer, "/upload", "imageUrl=" + URLEncoder.encode(url, "UTF-8"), 1, request);
         }catch (Exception e){
             throw new GlobalException(ErrorStatus.호출에러);
         }
@@ -203,8 +204,8 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> imgDone(String tempImg) throws GlobalException{
-        return imgDone(tempImg, "");
+    public Map<String, Object> imgDone(String tempImg, HttpServletRequest request) throws GlobalException{
+        return imgDone(tempImg, "", request);
     }
 
     /**
@@ -215,14 +216,14 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> imgDone(String tempImg, String delImg) throws GlobalException{
+    public Map<String, Object> imgDone(String tempImg, String delImg, HttpServletRequest request) throws GlobalException{
         delImg = StringUtils.defaultIfEmpty(delImg, "").trim();
         String params = "tempFileURI=" + tempImg;
         if(!"".equals(delImg)){
             params += "&deleteFileURI=" + delImg;
         }
 
-        return callRest(photoServer, "/done", params, 1);
+        return callRest(photoServer, "/done", params, 1, request);
     }
 
     /**
@@ -232,11 +233,11 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> antCreate(String roomNm) throws GlobalException {
+    public Map<String, Object> antCreate(String roomNm, HttpServletRequest request) throws GlobalException {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", roomNm);
 
-        return callRest(antServer, "/" + antName + "/rest/broadcast/create", new Gson().toJson(map), 1);
+        return callRest(antServer, "/" + antName + "/rest/broadcast/create", new Gson().toJson(map), 1, request);
     }
 
     /**
@@ -246,8 +247,8 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> antToken(String streamId) throws GlobalException{
-        return antToken(streamId, "publish");
+    public Map<String, Object> antToken(String streamId, HttpServletRequest request) throws GlobalException{
+        return antToken(streamId, "publish", request);
     }
 
     /**
@@ -258,7 +259,7 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> antToken(String streamId, String type) throws GlobalException{
+    public Map<String, Object> antToken(String streamId, String type, HttpServletRequest request) throws GlobalException{
         if (streamId == null) {
             Map<String, Object> map = new HashMap<>();
             map.put("tokenId", "");
@@ -274,7 +275,7 @@ public class RestService {
 
         String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
 
-        return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0);
+        return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0, request);
     }
 
     /**
@@ -284,8 +285,8 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> deleteAntToken(String streamId) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2);
+    public Map<String, Object> deleteAntToken(String streamId, HttpServletRequest request) throws GlobalException{
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2, request);
     }
 
     /**
@@ -295,8 +296,8 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> deleteAntRoom(String streamId) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2);
+    public Map<String, Object> deleteAntRoom(String streamId, HttpServletRequest request) throws GlobalException{
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
     }
 
     /**
@@ -306,10 +307,10 @@ public class RestService {
      * @return
      * @throws Exception
      */
-    public Map<String, Object> deleteAntAll(String streamId) throws GlobalException{
+    public Map<String, Object> deleteAntAll(String streamId, HttpServletRequest request) throws GlobalException{
         Map<String, Object> result = new HashMap<>();
-        result.put("token", deleteAntToken(streamId));
-        result.put("room", deleteAntRoom(streamId));
+        result.put("token", deleteAntToken(streamId, request));
+        result.put("room", deleteAntRoom(streamId, request));
         return result;
     }
 }

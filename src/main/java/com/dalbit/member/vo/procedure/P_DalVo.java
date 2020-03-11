@@ -6,17 +6,18 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
 public class P_DalVo {
 
     public P_DalVo(){}
-    public P_DalVo(DalVo dalVo){
+    public P_DalVo(DalVo dalVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(dalVo.getPage()) ? 1 : dalVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(dalVo.getRecords()) ? 10 : dalVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(new MemberVo().getMyMemNo(request));
         setSlct_type(dalVo.getWalletType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

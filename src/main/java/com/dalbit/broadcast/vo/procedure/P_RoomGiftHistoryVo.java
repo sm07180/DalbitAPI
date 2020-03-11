@@ -6,18 +6,19 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
 public class P_RoomGiftHistoryVo {
 
     public P_RoomGiftHistoryVo(){}
-    public P_RoomGiftHistoryVo(RoomGiftHistoryVo roomGiftHistoryVo){
+    public P_RoomGiftHistoryVo(RoomGiftHistoryVo roomGiftHistoryVo, HttpServletRequest request){
 
         int pageNo = DalbitUtil.isEmpty(roomGiftHistoryVo.getPage()) ? 1 : roomGiftHistoryVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(roomGiftHistoryVo.getRecords()) ? 10 : roomGiftHistoryVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(MemberVo.getMyMemNo(request));
         setRoom_no(roomGiftHistoryVo.getRoomNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

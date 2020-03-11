@@ -6,17 +6,18 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
 public class P_MypageReportListenVo {
 
     public P_MypageReportListenVo(){}
-    public P_MypageReportListenVo(MypageReportListenVo mypageReportListenVo){
+    public P_MypageReportListenVo(MypageReportListenVo mypageReportListenVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(mypageReportListenVo.getPage()) ? 1 : mypageReportListenVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mypageReportListenVo.getRecords()) ? 10 : mypageReportListenVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(MemberVo.getMyMemNo(request));
         setSlct_type(mypageReportListenVo.getDateType());
         setStartDate(DalbitUtil.convertDate(mypageReportListenVo.getStartDt(), "yyyy-MM-dd"));
         setEndDate(DalbitUtil.convertDate(mypageReportListenVo.getEndDt(), "yyyy-MM-dd"));

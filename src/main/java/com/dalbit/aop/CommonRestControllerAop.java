@@ -13,6 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -39,9 +40,13 @@ public class CommonRestControllerAop {
      */
     @Around("execution(* com.dalbit.*.controller.*.*(..))")
     public Object restControllerLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
-
-            String memNo = MemberVo.getMyMemNo();
+        HttpServletRequest request = null;
+        for (Object obj : proceedingJoinPoint.getArgs()) {
+            if (obj instanceof HttpServletRequest || obj instanceof MultipartHttpServletRequest) {
+                request = (HttpServletRequest) obj;
+            }
+        }
+        String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
             String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
             log.debug("[restController] [memNo : {}] - start : {}", memNo, proceedName);

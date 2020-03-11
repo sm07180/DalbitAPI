@@ -40,9 +40,9 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
      */
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws ServletException, IOException {
 
-        String jwtToken = jwtUtil.generateToken(MemberVo.getMyMemNo(), true);
+        String jwtToken = jwtUtil.generateToken(MemberVo.getMyMemNo(request), true);
 
-        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberVo.isAdmin() ? Status.관리자로그인성공 : Status.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(), true)));
+        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberVo.isAdmin() ? Status.관리자로그인성공 : Status.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(request), true)));
     }
 
     /**

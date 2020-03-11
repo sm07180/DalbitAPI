@@ -7,16 +7,18 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_MainDjRankingVo {
 
     public P_MainDjRankingVo(){}
-    public P_MainDjRankingVo(MainDjRankingVo mainDjRankingVo){
+    public P_MainDjRankingVo(MainDjRankingVo mainDjRankingVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(mainDjRankingVo.getPage()) ? 1 : mainDjRankingVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mainDjRankingVo.getRecords()) ? 10 : mainDjRankingVo.getRecords();
 
-        setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        setMem_no(MemberVo.getMyMemNo());
+        setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        setMem_no(MemberVo.getMyMemNo(request));
         setSlct_type(mainDjRankingVo.getRankType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

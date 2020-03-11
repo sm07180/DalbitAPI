@@ -41,15 +41,15 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         //토큰생성
-        String streamId = (String) restService.antCreate(roomCreateVo.getTitle()).get("streamId");
-        String publishToken = (String) restService.antToken(streamId, "publish").get("tokenId");
-        String playToken = (String) restService.antToken(streamId, "play").get("tokenId");
+        String streamId = (String) restService.antCreate(roomCreateVo.getTitle(), request).get("streamId");
+        String publishToken = (String) restService.antToken(streamId, "publish", request).get("tokenId");
+        String playToken = "";//(String) restService.antToken(streamId, "play", request).get("tokenId");
         log.info("bj_streamId: {}", streamId);
         log.info("bj_publishToken: {}", publishToken);
         log.info("bj_playToken: {}", playToken);
 
         P_RoomCreateVo apiData = new P_RoomCreateVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(roomCreateVo.getRoomType());
         apiData.setTitle(roomCreateVo.getTitle());
         apiData.setBackgroundImage(roomCreateVo.getBgImg());
@@ -68,7 +68,7 @@ public class RoomController {
         apiData.setBj_publish_tokenid(publishToken);
         apiData.setBj_play_tokenid(playToken);
 
-        String result = roomService.callBroadCastRoomCreate(apiData);
+        String result = roomService.callBroadCastRoomCreate(apiData, request);
 
         return result;
     }
@@ -88,17 +88,17 @@ public class RoomController {
         HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomJoinVo apiData = new P_RoomJoinVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
         //apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
         if(!DalbitUtil.isEmpty(apiData.getGuest_streamid())){
-            apiData.setGuest_play_tokenid((String) restService.antToken(apiData.getGuest_streamid(), "play").get("tokenId"));
+            apiData.setGuest_play_tokenid((String) restService.antToken(apiData.getGuest_streamid(), "play", request).get("tokenId"));
         }
         apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
         //apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
-        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
+        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play", request).get("tokenId"));
         DeviceVo deviceVo = new DeviceVo(request);
         apiData.setDeviceUuid(deviceVo.getDeviceUuid());
         apiData.setOs(deviceVo.getOs());
@@ -118,8 +118,8 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomExitVo apiData = new P_RoomExitVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomExitVo.getRoomNo());
 
         String result = roomService.callBroadCastRoomExit(apiData, request);
@@ -138,7 +138,7 @@ public class RoomController {
         String bgImg = roomEditVo.getBgImg();
 
         P_RoomEditVo apiData = new P_RoomEditVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomEditVo.getRoomNo());
         apiData.setSubjectType(roomEditVo.getRoomType());
         apiData.setTitle(roomEditVo.getTitle());
@@ -165,7 +165,7 @@ public class RoomController {
      * 방송방 리스트
      */
     @GetMapping("/list")
-    public String roomList(@Valid RoomListVo roomListVo, BindingResult bindingResult) throws GlobalException{
+    public String roomList(@Valid RoomListVo roomListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -173,8 +173,8 @@ public class RoomController {
         int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
 
         P_RoomListVo apiData = new P_RoomListVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(roomListVo.getRoomType());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
@@ -189,16 +189,16 @@ public class RoomController {
      * 방송방 정보조회
      */
     @GetMapping("/info")
-    public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult) throws GlobalException{
+    public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomInfo.getRoomNo());
 
-        String result = roomService.callBroadCastRoomInfoView(apiData);
+        String result = roomService.callBroadCastRoomInfoView(apiData, request);
 
         return result;
 
@@ -209,12 +209,12 @@ public class RoomController {
      * 방송방 현재 순위, 아이템 사용 현황 조회
      */
     @GetMapping("/boost")
-    public String roomLiveRankInfo(@Valid LiveRankInfoVo liveRankInfoVo, BindingResult bindingResult) throws GlobalException{
+    public String roomLiveRankInfo(@Valid LiveRankInfoVo liveRankInfoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomLiveRankInfoVo apiData = new P_RoomLiveRankInfoVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(liveRankInfoVo.getRoomNo());
 
         String result = roomService.callBroadCastRoomLiveRankInfo(apiData);
@@ -227,11 +227,11 @@ public class RoomController {
      * 방송방 선물받은 내역보기
      */
     @GetMapping("/history")
-    public String roomGiftHistory(@Valid RoomGiftHistoryVo roomGiftHistoryVo, BindingResult bindingResult) throws GlobalException{
+    public String roomGiftHistory(@Valid RoomGiftHistoryVo roomGiftHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_RoomGiftHistoryVo apiData = new P_RoomGiftHistoryVo(roomGiftHistoryVo);
+        P_RoomGiftHistoryVo apiData = new P_RoomGiftHistoryVo(roomGiftHistoryVo, request);
         String result = roomService.callBroadCastRoomGiftHistory(apiData);
 
         return result;
@@ -242,10 +242,10 @@ public class RoomController {
      * 방송방 회원정보 조회
      */
     @GetMapping("/member/profile")
-    public String roomMemberInfo(@Valid RoomMemberInfoVo roomMemberInfoVo, BindingResult bindingResult) throws GlobalException{
+    public String roomMemberInfo(@Valid RoomMemberInfoVo roomMemberInfoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_RoomMemberInfoVo apiData = new P_RoomMemberInfoVo(roomMemberInfoVo);
+        P_RoomMemberInfoVo apiData = new P_RoomMemberInfoVo(roomMemberInfoVo, request);
         String result = roomService.callBroadCastRoomMemberInfo(apiData);
         return result;
     }
@@ -254,15 +254,15 @@ public class RoomController {
      * 방송방 토큰 재 생성
      */
     @PostMapping("/reToken")
-    public String roomRefreshToken(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult) throws GlobalException{
+    public String roomRefreshToken(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
         P_RoomStreamVo apiData = new P_RoomStreamVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomTokenVo.getRoomNo());
 
-        return roomService.callBroadcastRoomStreamSelect(apiData);
+        return roomService.callBroadcastRoomStreamSelect(apiData, request);
     }
 
     /**
@@ -280,7 +280,7 @@ public class RoomController {
      * 회원 방송진행여부 체크
      */
     @GetMapping("/check")
-    public String checkBroadcasting() throws GlobalException {
-        return roomService.callMemberBroadcastingCheck();
+    public String checkBroadcasting(HttpServletRequest request) throws GlobalException {
+        return roomService.callMemberBroadcastingCheck(request);
     }
 }

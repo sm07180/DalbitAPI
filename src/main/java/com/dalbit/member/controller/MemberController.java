@@ -118,7 +118,7 @@ public class MemberController {
         );
 
         String result = "";
-        ProcedureVo procedureVo = memberService.signup(joinVo);
+        ProcedureVo procedureVo = memberService.signup(joinVo, request);
         //휴대폰 인증했던 번호와 일치여부 확인
         //if(request.getSession().getAttribute("phoneNo").equals(memId)){
             if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){

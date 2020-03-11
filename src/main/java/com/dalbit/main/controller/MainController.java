@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -34,9 +35,9 @@ public class MainController {
      * 팬 랭킹
      */
     @GetMapping("/rank/fan")
-    public String mainFanRanking(@Valid MainFanRankingVo mainFanRankingVo, BindingResult bindingResult) throws GlobalException {
+    public String mainFanRanking(@Valid MainFanRankingVo mainFanRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult);
-        P_MainFanRankingVo apiData = new P_MainFanRankingVo(mainFanRankingVo);
+        P_MainFanRankingVo apiData = new P_MainFanRankingVo(mainFanRankingVo, request);
 
         String result = mainService.callMainFanRanking(apiData);
 
@@ -48,9 +49,9 @@ public class MainController {
      * DJ 랭킹
      */
     @GetMapping("/rank/dj")
-    public String mainDjRanking(@Valid MainDjRankingVo mainDjRankingVo, BindingResult bindingResult) throws GlobalException {
+    public String mainDjRanking(@Valid MainDjRankingVo mainDjRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult);
-        P_MainDjRankingVo apiData = new P_MainDjRankingVo(mainDjRankingVo);
+        P_MainDjRankingVo apiData = new P_MainDjRankingVo(mainDjRankingVo, request);
 
         String result = mainService.callMainDjRanking(apiData);
 

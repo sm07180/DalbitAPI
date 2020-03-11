@@ -38,7 +38,7 @@ public class CustomerCenterController {
     public String customerCenterNoticeList(@Valid NoticeListVo noticeListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult);
 
-        MemberVo memberVo = redisUtil.getMemberInfo();
+        MemberVo memberVo = redisUtil.getMemberInfo(request);
         P_NoticeListVo apiData = new P_NoticeListVo(noticeListVo, request, memberVo);
 
         String result = customerCenterService.callNoticeList(apiData);

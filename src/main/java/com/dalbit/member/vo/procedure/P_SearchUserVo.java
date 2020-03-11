@@ -6,15 +6,17 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_SearchUserVo {
 
     public P_SearchUserVo(){}
-    public P_SearchUserVo(SearchUserVo searchUserVo){
+    public P_SearchUserVo(SearchUserVo searchUserVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(searchUserVo.getPage()) ? 1 : searchUserVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(searchUserVo.getRecords()) ? 10 : searchUserVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(MemberVo.getMyMemNo(request));
         setSlct_type(searchUserVo.getUserType());
         setSearchText(searchUserVo.getSearch());
         setPageNo(pageNo);

@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +54,7 @@ public class MemberService {
     /**
      * 회원 가입
      */
-    public ProcedureVo signup(P_JoinVo pLoginVo) throws GlobalException {
+    public ProcedureVo signup(P_JoinVo pLoginVo, HttpServletRequest request) throws GlobalException {
 
         String profImg = pLoginVo.getProfileImage();
         Boolean isDone = false;
@@ -65,7 +66,7 @@ public class MemberService {
         memberDao.callMemberJoin(procedureVo);
 
         if(isDone){
-            restService.imgDone(DalbitUtil.replaceDonePath(pLoginVo.getProfileImage()));
+            restService.imgDone(DalbitUtil.replaceDonePath(pLoginVo.getProfileImage()), request);
         }
 
         return procedureVo;

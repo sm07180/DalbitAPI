@@ -6,17 +6,18 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
 public class P_NotificationVo {
 
     public P_NotificationVo(){}
-    public P_NotificationVo(NotificationVo notificationVo){
+    public P_NotificationVo(NotificationVo notificationVo, HttpServletRequest request){
 
         int pageNo = DalbitUtil.isEmpty(notificationVo.getPage()) ? 1 : notificationVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(notificationVo.getRecords()) ? 10 : notificationVo.getRecords();
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(new MemberVo().getMyMemNo(request));
         setPageNo(pageNo);
         setPageCnt(pageCnt);
 

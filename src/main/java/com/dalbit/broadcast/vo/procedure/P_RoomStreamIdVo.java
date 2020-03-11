@@ -6,13 +6,15 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_RoomStreamIdVo {
 
     public P_RoomStreamIdVo(){}
-    public P_RoomStreamIdVo(RoomStreamIdVo roomStreamIdVo){
-        setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        setMem_no(MemberVo.getMyMemNo());
+    public P_RoomStreamIdVo(RoomStreamIdVo roomStreamIdVo, HttpServletRequest request){
+        setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        setMem_no(MemberVo.getMyMemNo(request));
         setRoom_no(roomStreamIdVo.getRoomNo());
     }
 

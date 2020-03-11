@@ -1,9 +1,13 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.JwtUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @Getter
@@ -12,13 +16,21 @@ public class MemberVo extends ProfileInfoOutVo {
 
     private static final long serialVersionUID = 1L;
 
-    public static String getMyMemNo() {
+    public static String getMyMemNo(HttpServletRequest request) {
         try{
-            return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            JwtUtil jwtUtil = new JwtUtil(DalbitUtil.getProperty("spring.jwt.secret"), Integer.parseInt(DalbitUtil.getProperty("spring.jwt.duration")));
+            log.debug("Header Name {}", DalbitUtil.getProperty("sso.header.cookie.name"));
+            log.debug("Header {}", request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name")));
+            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name")));
+            log.debug("tokenVo {}", tokenVo);
+            if(tokenVo != null){
+                return tokenVo.getMemNo();
+            }
         }catch (Exception e){
             log.warn("MemberVo.getMyMemNo() return null : {}", e.getMessage());
-            return null;
+            e.printStackTrace();
         }
+        return null;
     }
 
     public static boolean isAdmin(){

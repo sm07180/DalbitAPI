@@ -29,7 +29,7 @@ public class P_MemberReportAddVo {
 
     public P_MemberReportAddVo() { }
     public P_MemberReportAddVo(MemberReportAddVo memberReportAddVo, DeviceVo deviceVo, HttpServletRequest request) {
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(new MemberVo().getMyMemNo(request));
         setReported_mem_no(memberReportAddVo.getMemNo());
         setReason(memberReportAddVo.getReason());
         setEtc(memberReportAddVo.getCont());

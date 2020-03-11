@@ -101,7 +101,7 @@ public class CommonService {
     public HashMap<String, Object> getJwtTokenInfo(HttpServletRequest request){
         HashMap<String, Object> result = new HashMap<>();
         Status resultStatus;
-        boolean isLogin = DalbitUtil.isLogin();
+        boolean isLogin = DalbitUtil.isLogin(request);
 
         DeviceVo deviceVo = new DeviceVo(request);
         int os = deviceVo.getOs();
@@ -122,7 +122,7 @@ public class CommonService {
 
         if(DalbitUtil.isEmpty(tokenVo)) {
             if (isLogin) {
-                tokenVo = new TokenVo(jwtUtil.generateToken(MemberVo.getMyMemNo(), isLogin), MemberVo.getMyMemNo(), isLogin);
+                tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
                 resultStatus = Status.로그인성공;
             } else {
                 P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);

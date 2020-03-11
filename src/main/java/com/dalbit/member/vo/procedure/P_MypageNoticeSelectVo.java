@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 
@@ -15,11 +16,11 @@ import java.util.Date;
 public class P_MypageNoticeSelectVo {
 
     public P_MypageNoticeSelectVo(){}
-    public P_MypageNoticeSelectVo(MypageNoticeSelectVo mypageNoticeSelectVo){
+    public P_MypageNoticeSelectVo(MypageNoticeSelectVo mypageNoticeSelectVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(mypageNoticeSelectVo.getPage()) ? 1 : mypageNoticeSelectVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mypageNoticeSelectVo.getRecords()) ? 10 : mypageNoticeSelectVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(new MemberVo().getMyMemNo(request));
         setTarget_mem_no(mypageNoticeSelectVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

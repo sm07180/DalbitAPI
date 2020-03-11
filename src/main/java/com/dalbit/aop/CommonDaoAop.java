@@ -8,6 +8,9 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * 공통 DAO AOP 정의
@@ -25,8 +28,13 @@ public class CommonDaoAop {
      */
     @Around("execution(* com.dalbit.*.dao.*.*(..))")
     public Object daoLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-
-        String memNo = MemberVo.getMyMemNo();
+        HttpServletRequest request = null;
+        for (Object obj : proceedingJoinPoint.getArgs()) {
+            if (obj instanceof HttpServletRequest || obj instanceof MultipartHttpServletRequest) {
+                request = (HttpServletRequest) obj;
+            }
+        }
+        String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
         log.debug("[dao] [memNo : {}] - start : {}", memNo, proceedName);

@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @Component
 public class RedisUtil {
@@ -45,7 +47,7 @@ public class RedisUtil {
         return getMemberInfo(memNo);
     }
 
-    public MemberVo getMemberInfo(){
-        return getMemberInfo(MemberVo.getMyMemNo());
+    public MemberVo getMemberInfo(HttpServletRequest request){
+        return getMemberInfo(new MemberVo().getMyMemNo(request));
     }
 }

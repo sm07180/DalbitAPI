@@ -6,17 +6,18 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
 public class P_ByeolVo {
 
     public P_ByeolVo(){}
-    public P_ByeolVo(ByeolVo byeolVo){
+    public P_ByeolVo(ByeolVo byeolVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(byeolVo.getPage()) ? 1 : byeolVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(byeolVo.getRecords()) ? 10 : byeolVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(new MemberVo().getMyMemNo(request));
         setSlct_type(byeolVo.getWalletType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

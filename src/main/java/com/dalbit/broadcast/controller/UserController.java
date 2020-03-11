@@ -39,7 +39,7 @@ public class UserController {
      * 방송방 참여자 리스트
      */
     @GetMapping("/listeners")
-    public String roomMemberList(@Valid JoinMemberListVo joinMemberListVo, BindingResult bindingResult) throws GlobalException{
+    public String roomMemberList(@Valid JoinMemberListVo joinMemberListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -47,7 +47,7 @@ public class UserController {
         int pageCnt = DalbitUtil.isEmpty(joinMemberListVo.getRecords()) ? 10 : joinMemberListVo.getRecords();
 
         P_RoomMemberListVo apiData = new P_RoomMemberListVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(joinMemberListVo.getRoomNo());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
@@ -71,9 +71,9 @@ public class UserController {
         HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
 
         //Guest 토큰생성
-        String guestStreamId = (String) restService.antCreate(guestAddVo.getTitle()).get("streamId");
-        String guestPublishToken = (String) restService.antToken(guestStreamId, "publish").get("tokenId");
-        String guestPlayToken = (String) restService.antToken(guestStreamId, "play").get("tokenId");
+        String guestStreamId = (String) restService.antCreate(guestAddVo.getTitle(), request).get("streamId");
+        String guestPublishToken = (String) restService.antToken(guestStreamId, "publish", request).get("tokenId");
+        String guestPlayToken = "";//(String) restService.antToken(guestStreamId, "play", request).get("tokenId");
 
         log.info("guest_streamid: {}", guestStreamId);
         log.info("guest_publish_tokenid: {}", guestPublishToken);
@@ -81,14 +81,14 @@ public class UserController {
 
         P_RoomGuestAddVo apiData = new P_RoomGuestAddVo();
         apiData.setRoom_no(roomNo);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setGuest_mem_no(guestAddVo.getMemNo());
         apiData.setGuest_streamid(guestStreamId);
         apiData.setGuest_publish_tokenid(guestPublishToken);
         apiData.setGuest_play_tokenid(guestPlayToken);
         apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
         apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
-        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play").get("tokenId"));
+        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play", request).get("tokenId"));
 
         String result = userService.callBroadCastRoomGuestAdd(apiData, request);
 
@@ -109,7 +109,7 @@ public class UserController {
         HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
 
         P_RoomGuestDeleteVo apiData = new P_RoomGuestDeleteVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setGuest_mem_no(guestDelVo.getMemNo());
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
@@ -134,7 +134,7 @@ public class UserController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomKickoutVo apiData = new P_RoomKickoutVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(kickOutVo.getRoomNo());
         apiData.setBlocked_mem_no(kickOutVo.getBlockNo());
 
@@ -148,9 +148,9 @@ public class UserController {
      * 개인 정보 조회(방송생성, 참여 시)
      */
     @GetMapping("/profile")
-    public String memberInfo(){
-        int memLogin = DalbitUtil.isLogin() ? 1 : 0;
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo());
+    public String memberInfo(HttpServletRequest request){
+        int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request));
         String result = userService.callMemberInfo(apiData);
 
         return result;
@@ -165,7 +165,7 @@ public class UserController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_ManagerAddVo apiData = new P_ManagerAddVo(managerAddVo);
+        P_ManagerAddVo apiData = new P_ManagerAddVo(managerAddVo, request);
         String result = userService.callBroadCastRoomManagerAdd(apiData, request);
 
         return result;
@@ -180,7 +180,7 @@ public class UserController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_ManagerDelVo apiData = new P_ManagerDelVo(managerDelVo);
+        P_ManagerDelVo apiData = new P_ManagerDelVo(managerDelVo, request);
         String result = userService.callBroadCastRoomManagerDel(apiData, request);
 
         return result;
@@ -196,7 +196,7 @@ public class UserController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_BroadFanstarInsertVo apiData = new P_BroadFanstarInsertVo();
-        apiData.setFan_mem_no(MemberVo.getMyMemNo());
+        apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
         apiData.setStar_mem_no(broadFanstartInsertVo.getMemNo());
         apiData.setRoom_no(broadFanstartInsertVo.getRoomNo());
 
@@ -209,12 +209,12 @@ public class UserController {
      * 방송방 팬 해제
      */
     @DeleteMapping("/fan")
-    public String fanstarDelete(@Valid BroadFanstartDeleteVo broadFanstartDeleteVo, BindingResult bindingResult)throws GlobalException{
+    public String fanstarDelete(@Valid BroadFanstartDeleteVo broadFanstartDeleteVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_BroadFanstarDeleteVo apiData = new P_BroadFanstarDeleteVo();
-        apiData.setFan_mem_no(MemberVo.getMyMemNo());
+        apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
         apiData.setStar_mem_no(broadFanstartDeleteVo.getMemNo());
 
         String result = userService.callFanstarDelete(apiData);
@@ -297,20 +297,20 @@ public class UserController {
     @Profile({"local", "dev"})
     @GetMapping("devBroad/bj")
     public String getDevBjRoom(HttpServletRequest request){
-        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevBjRoom(MemberVo.getMyMemNo())));
+        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevBjRoom(MemberVo.getMyMemNo(request))));
     }
 
     @Profile({"local", "dev"})
     @GetMapping("devBroad/join")
     public String getDevJoinRoom(HttpServletRequest request){
-        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo())));
+        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo(request))));
     }
 
 
     @Profile({"local", "dev"})
     @GetMapping("devBroad/disconnect")
     public String selectDisconnectRoom(HttpServletRequest request){
-        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.selectDisconnectRoom(MemberVo.getMyMemNo())));
+        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.selectDisconnectRoom(MemberVo.getMyMemNo(request))));
     }
 
     @Profile({"local", "dev"})

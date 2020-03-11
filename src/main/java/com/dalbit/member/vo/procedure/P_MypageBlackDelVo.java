@@ -6,6 +6,8 @@ import com.dalbit.member.vo.request.MypageManagerDelVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_MypageBlackDelVo {
 
@@ -13,8 +15,8 @@ public class P_MypageBlackDelVo {
     private String black_mem_no;
 
     public P_MypageBlackDelVo(){}
-    public P_MypageBlackDelVo(MypageBlackDelVo mypageBlackDelVo) {
-        setMem_no(MemberVo.getMyMemNo());
+    public P_MypageBlackDelVo(MypageBlackDelVo mypageBlackDelVo, HttpServletRequest request) {
+        setMem_no(new MemberVo().getMyMemNo(request));
         setBlack_mem_no(mypageBlackDelVo.getMemNo());
     }
 }

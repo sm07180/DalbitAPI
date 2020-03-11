@@ -43,7 +43,7 @@ public class MypageService {
     /**
      * 프로필 편집
      */
-    public String callProfileEdit(P_ProfileEditVo pProfileEditVo) throws GlobalException {
+    public String callProfileEdit(P_ProfileEditVo pProfileEditVo, HttpServletRequest request) throws GlobalException {
         Boolean isDone = false;
         String profImg = pProfileEditVo.getProfileImage();
         if(DalbitUtil.isEmpty(profImg) || profImg.startsWith(Code.포토_프로필_디폴트_PREFIX.getCode())){
@@ -58,7 +58,7 @@ public class MypageService {
             profImg = DalbitUtil.replacePath(profImg);
         }
         pProfileEditVo.setProfileImage(profImg);
-        HashMap myInfo = socketService.getMyInfo(MemberVo.getMyMemNo());
+        HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
         String result;
         if(myInfo != null){
             if(pProfileEditVo.getNickName().equals(DalbitUtil.getStringMap(myInfo, "nickName"))){
@@ -69,11 +69,11 @@ public class MypageService {
 
             if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
                 if(isDone){
-                    restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
+                    restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel(), request);
                 }
-                int memLogin = DalbitUtil.isLogin() ? 1 : 0;
-                P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), MemberVo.getMyMemNo());
-                String resultProfile = profileService.callMemberInfo(apiData);
+                int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+                P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, new MemberVo().getMyMemNo(request), new MemberVo().getMyMemNo(request));
+                String resultProfile = profileService.callMemberInfo(apiData, request);
                 HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
                 result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, profileMap.get("data")));
             } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
@@ -390,7 +390,7 @@ public class MypageService {
         String result;
         if(procedureVo.getRet().equals(Status.루비선물_성공.getMessageCode())) {
             try{
-                socketService.giftDal(MemberVo.getMyMemNo(), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request));
+                socketService.giftDal(new MemberVo().getMyMemNo(request), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request), request);
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_성공));
         }else if(procedureVo.getRet().equals(Status.루비선물_요청회원번호_회원아님.getMessageCode())) {
@@ -761,13 +761,13 @@ public class MypageService {
         if(Status.금지어저장_성공.getMessageCode().equals(procedureVo.getRet())) {
             // 진행중인 방이 있을 경우 소켓으로 금지어 업데이트 요청
             P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo = new P_MemberBroadcastingCheckVo();
-            pMemberBroadcastingCheckVo.setMem_no(MemberVo.getMyMemNo());
+            pMemberBroadcastingCheckVo.setMem_no(new MemberVo().getMyMemNo(request));
             ProcedureVo procedureCheckVo = new ProcedureVo(pMemberBroadcastingCheckVo);
             roomDao.callMemberBroadcastingCheck(procedureCheckVo);
             if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureCheckVo.getRet())) {
                 HashMap resultCheckMap = new Gson().fromJson(procedureCheckVo.getExt(), HashMap.class);
                 try{
-                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), MemberVo.getMyMemNo(), DalbitUtil.getAuthToken(request));
+                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), request);
                 }catch(Exception e){}
 
             }

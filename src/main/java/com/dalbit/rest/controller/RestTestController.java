@@ -28,16 +28,16 @@ public class RestTestController {
     @PostMapping("/ex/rest/img")
     @ResponseBody
     public Map<String, Object> img(HttpServletRequest request) throws Exception{
-        return restService.imgDone(request.getParameter("tmpImg"), request.getParameter("delImg"));
+        return restService.imgDone(request.getParameter("tmpImg"), request.getParameter("delImg"), request);
     }
 
     @PostMapping("/ex/rest/broad")
     @ResponseBody
     public Map<String, Object> broad(HttpServletRequest request) throws Exception{
         Map<String, Object> result = new HashMap<>();
-        result.put("streamId", restService.antCreate(request.getParameter("roomNm")).get("streamId"));
-        result.put("pubToken", restService.antToken((String)result.get("streamId"), "publish").get("tokenId"));
-        result.put("playToken", restService.antToken((String)result.get("streamId"), "play").get("tokenId"));
+        result.put("streamId", restService.antCreate(request.getParameter("roomNm"), request).get("streamId"));
+        result.put("pubToken", restService.antToken((String)result.get("streamId"), "publish", request).get("tokenId"));
+        result.put("playToken", restService.antToken((String)result.get("streamId"), "play", request).get("tokenId"));
 
         return result;
     }

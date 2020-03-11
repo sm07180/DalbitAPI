@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -27,11 +28,11 @@ public class SearchController {
      * 회원 닉네임 검색
      */
     @GetMapping("member")
-    public String memberNickSearch(@Valid SearchVo searchVo, BindingResult bindingResult) throws GlobalException {
+    public String memberNickSearch(@Valid SearchVo searchVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_MemberSearchVo apiData = new P_MemberSearchVo(searchVo);
+        P_MemberSearchVo apiData = new P_MemberSearchVo(searchVo, request);
 
         String result = searchService.callMemberNickSearch(apiData);
 
@@ -42,11 +43,11 @@ public class SearchController {
      * 라이브 방송 검색
      */
     @GetMapping("live")
-    public String liveRoomSearch(@Valid SearchVo searchVo, BindingResult bindingResult) throws GlobalException {
+    public String liveRoomSearch(@Valid SearchVo searchVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        P_LiveRoomSearchVo apiData = new P_LiveRoomSearchVo(searchVo);
+        P_LiveRoomSearchVo apiData = new P_LiveRoomSearchVo(searchVo, request);
 
         String result = searchService.callLiveRoomSearch(apiData);
 

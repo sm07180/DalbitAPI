@@ -391,8 +391,9 @@ public class DalbitUtil {
 
     }
 
-    public static boolean isLogin(){
-        return !(DalbitUtil.isEmpty(MemberVo.getMyMemNo()) || "anonymousUser".equals(MemberVo.getMyMemNo()) || MemberVo.getMyMemNo().startsWith("8"));
+    public static boolean isLogin(HttpServletRequest request){
+        String memNo = new MemberVo().getMyMemNo(request);
+        return !(DalbitUtil.isEmpty(memNo) || "anonymousUser".equals(memNo) || memNo.startsWith("8"));
     }
 
     /**

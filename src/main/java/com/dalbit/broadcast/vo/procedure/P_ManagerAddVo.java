@@ -5,12 +5,14 @@ import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_ManagerAddVo {
 
     public P_ManagerAddVo(){}
-    public P_ManagerAddVo(ManagerAddVo managerAddVo){
-        setMem_no(MemberVo.getMyMemNo());
+    public P_ManagerAddVo(ManagerAddVo managerAddVo, HttpServletRequest request){
+        setMem_no(new MemberVo().getMyMemNo(request));
         setRoom_no(managerAddVo.getRoomNo());
         setManager_mem_no(managerAddVo.getMemNo());
         setControl_role(managerAddVo.getRole());

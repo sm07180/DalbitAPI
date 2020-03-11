@@ -5,6 +5,8 @@ import com.dalbit.member.vo.request.MypageManagerAddVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_MypageManagerAddVo {
 
@@ -13,8 +15,8 @@ public class P_MypageManagerAddVo {
     private String control_role;
 
     public P_MypageManagerAddVo(){}
-    public P_MypageManagerAddVo(MypageManagerAddVo mypageManagerAddVo) {
-        setMem_no(MemberVo.getMyMemNo());
+    public P_MypageManagerAddVo(MypageManagerAddVo mypageManagerAddVo, HttpServletRequest request) {
+        setMem_no(MemberVo.getMyMemNo(request));
         setManager_mem_no(mypageManagerAddVo.getMemNo());
         setControl_role(mypageManagerAddVo.getRole());
     }

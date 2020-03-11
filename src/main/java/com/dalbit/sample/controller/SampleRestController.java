@@ -81,7 +81,7 @@ public class SampleRestController {
     @GetMapping("checkMe")
     public String checkMe(HttpServletRequest request)throws GlobalException{
 
-        MemberVo memberVo = redisUtil.getMemberInfo();
+        MemberVo memberVo = redisUtil.getMemberInfo(request);
 
         String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
         if(jwtUtil.validateToken(authToken)){

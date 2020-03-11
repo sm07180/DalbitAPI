@@ -52,7 +52,7 @@ public class RoomService {
     /**
      * 방송방 생성
      */
-    public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo) throws GlobalException{
+    public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo, HttpServletRequest request) throws GlobalException{
         String bgImg = pRoomCreateVo.getBackgroundImage();
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
@@ -81,7 +81,7 @@ public class RoomService {
             log.info(" ### 방송방 정보 조회 시작 ###");
 
             P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
-            pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
+            pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
             pRoomInfoViewVo.setMem_no(pRoomCreateVo.getMem_no());
             pRoomInfoViewVo.setRoom_no(roomNo);
 
@@ -125,7 +125,7 @@ public class RoomService {
             procedureVo.setData(returnMap);
 
             if(isDone){
-                restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()));
+                restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()), request);
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송생성, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
@@ -214,7 +214,7 @@ public class RoomService {
 
             if(target.getState() == 2 || target.getState() == 3){
                 try{
-                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), target.getState(), DalbitUtil.getAuthToken(request));
+                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), target.getState(), DalbitUtil.getAuthToken(request), request);
                 }catch(Exception e){}
             }
 
@@ -223,7 +223,7 @@ public class RoomService {
                 socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
-                socketService.changeCount(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+                socketService.changeCount(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), request);
             }catch(Exception e){}
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여성공, procedureVo.getData()));
@@ -280,7 +280,7 @@ public class RoomService {
                 //TODO - 레벨업 유무 소켓추가 추후 확인
                 // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", returnMap.get("fanRank"));
-                socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(), socketMap, DalbitUtil.getAuthToken(request));
+                socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), request);
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
@@ -320,7 +320,7 @@ public class RoomService {
                 if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                     delImg = null;
                 }
-                restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg);
+                restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg, request);
             }
 
             HashMap returnMap = new HashMap();
@@ -330,7 +330,7 @@ public class RoomService {
             returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
             try{
-                socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(), returnMap, DalbitUtil.getAuthToken(request));
+                socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), returnMap, DalbitUtil.getAuthToken(request), request);
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
@@ -396,7 +396,7 @@ public class RoomService {
     /**
      * 방송 정보조회
      */
-    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo) throws GlobalException{
+    public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request) throws GlobalException{
 
         ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
 
@@ -405,11 +405,11 @@ public class RoomService {
 
 
             P_RoomStreamVo apiData = new P_RoomStreamVo();
-            apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-            apiData.setMem_no(MemberVo.getMyMemNo());
+            apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+            apiData.setMem_no(MemberVo.getMyMemNo(request));
             apiData.setRoom_no(pRoomInfoViewVo.getRoom_no());
 
-            result = callBroadcastRoomStreamSelect(apiData);
+            result = callBroadcastRoomStreamSelect(apiData, request);
         }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
         }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
@@ -456,9 +456,9 @@ public class RoomService {
     /**
      * 방송중인 DJ 체크
      */
-    public String callMemberBroadcastingCheck() {
+    public String callMemberBroadcastingCheck(HttpServletRequest request) {
         P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo = new P_MemberBroadcastingCheckVo();
-        pMemberBroadcastingCheckVo.setMem_no(MemberVo.getMyMemNo());
+        pMemberBroadcastingCheckVo.setMem_no(MemberVo.getMyMemNo(request));
         ProcedureVo procedureVo = new ProcedureVo(pMemberBroadcastingCheckVo);
         roomDao.callMemberBroadcastingCheck(procedureVo);
         String result = "";
@@ -623,7 +623,7 @@ public class RoomService {
     /**
      * 방송방 토큰 재생성
      */
-    public String callBroadcastRoomStreamSelect(P_RoomStreamVo pRoomStreamVo) throws GlobalException {
+    public String callBroadcastRoomStreamSelect(P_RoomStreamVo pRoomStreamVo, HttpServletRequest request) throws GlobalException {
         ProcedureVo procedureVo = new ProcedureVo(pRoomStreamVo);
         roomDao.callBroadcastRoomStreamSelect(procedureVo);
 
@@ -638,33 +638,24 @@ public class RoomService {
             String gstPubToken = "";
             String gstPlayToken = "";
             if(auth == 3){ // DJ
-                bjPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
+                bjPubToken = (String)restService.antToken(bjStreamId, "publish", request).get("tokenId");
                 if(!DalbitUtil.isEmpty(gstStreamId)){
-                    //bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
-                    //gstPubToken = (String)restService.antToken(gstStreamId, "publish").get("tokenId");
-                    gstPlayToken = (String)restService.antToken(gstStreamId, "play").get("tokenId");
+                    gstPlayToken = (String)restService.antToken(gstStreamId, "play", request).get("tokenId");
                 }
             }else{
-                bjPlayToken = (String)restService.antToken(bjStreamId, "play").get("tokenId");
+                bjPlayToken = (String)restService.antToken(bjStreamId, "play", request).get("tokenId");
                 if(!DalbitUtil.isEmpty(gstStreamId)){
                     if(auth == 2) { //게스트
-                        gstPubToken = (String)restService.antToken(gstStreamId, "publish").get("tokenId");
+                        gstPubToken = (String)restService.antToken(gstStreamId, "publish", request).get("tokenId");
                     }else{
-                        gstPlayToken = (String)restService.antToken(gstStreamId, "play").get("tokenId");
+                        gstPlayToken = (String)restService.antToken(gstStreamId, "play", request).get("tokenId");
                     }
                 }
-                /*if(!DalbitUtil.isEmpty(gstStreamId)){
-                    gstPlayToken = (String)restService.antToken(gstStreamId, "play").get("tokenId");
-                }
-                if(auth == 2){ //게스트
-                    bjPubToken = (String)restService.antToken(bjStreamId, "publish").get("tokenId");
-                    gstPubToken = (String)restService.antToken(gstStreamId, "publish").get("tokenId");
-                }*/
             }
 
             P_RoomStreamTokenVo pRoomStreamTokenVo = new P_RoomStreamTokenVo();
-            pRoomStreamTokenVo.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-            pRoomStreamTokenVo.setMem_no(MemberVo.getMyMemNo());
+            pRoomStreamTokenVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+            pRoomStreamTokenVo.setMem_no(MemberVo.getMyMemNo(request));
             pRoomStreamTokenVo.setRoom_no(pRoomStreamVo.getRoom_no());
             pRoomStreamTokenVo.setBj_publish_tokenid(bjPubToken);
             pRoomStreamTokenVo.setBj_play_tokenid(bjPlayToken);
@@ -731,7 +722,7 @@ public class RoomService {
                     if(auth == 3) { // DJ
                         //사연조회
                         P_RoomStoryListVo apiData = new P_RoomStoryListVo();
-                        apiData.setMem_no(MemberVo.getMyMemNo());
+                        apiData.setMem_no(MemberVo.getMyMemNo(request));
                         apiData.setRoom_no(pRoomStreamVo.getRoom_no());
                         apiData.setPageNo(1);
                         apiData.setPageCnt(1);
@@ -791,8 +782,8 @@ public class RoomService {
      */
     public String callBroadCastRoomStateUpate(StateVo stateVo, HttpServletRequest request) {
         P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
-        pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        pRoomInfoViewVo.setMem_no(MemberVo.getMyMemNo());
+        pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        pRoomInfoViewVo.setMem_no(MemberVo.getMyMemNo(request));
         pRoomInfoViewVo.setRoom_no(stateVo.getRoomNo());
         ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
 
@@ -801,7 +792,7 @@ public class RoomService {
             RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();
             int old_state = target.getState();
             P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
-            pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo());
+            pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo(request));
             pRoomStateUpdateVo.setRoom_no(stateVo.getRoomNo());
             int state = 1;
             if("1".equals(stateVo.getIsCall()) || "TRUE".equals(stateVo.getIsCall().toUpperCase())) {
@@ -820,7 +811,7 @@ public class RoomService {
 
             if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
                 try{
-                    socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(), old_state, state, DalbitUtil.getAuthToken(request));
+                    socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), old_state, state, DalbitUtil.getAuthToken(request), request);
                 }catch(Exception e){}
                 result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
             } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {

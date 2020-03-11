@@ -38,7 +38,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomGoodVo apiData = new P_RoomGoodVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setRoom_no(goodVo.getRoomNo());
 
         String result = actionService.callBroadCastRoomGood(apiData, request);
@@ -51,13 +51,13 @@ public class ActionController {
      * 방송방 공유링크 확인
      */
     @GetMapping("/link")
-    public String roomShareLink(@Valid ShareLinkVo shareLinkVo, BindingResult bindingResult) throws GlobalException{
+    public String roomShareLink(@Valid ShareLinkVo shareLinkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomShareLinkVo apiData = new P_RoomShareLinkVo();
-        apiData.setMemLogin(DalbitUtil.isLogin() ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setLinkCode(shareLinkVo.getLink());
 
         String result = actionService.callBroadCastShareLink(apiData);
@@ -75,7 +75,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomGiftVo apiData = new P_RoomGiftVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setRoom_no(giftVo.getRoomNo());
         apiData.setGifted_mem_no(giftVo.getMemNo());
         apiData.setItem_no(giftVo.getItemNo());
@@ -97,7 +97,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomBoosterVo apiData = new P_RoomBoosterVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setRoom_no(boosterVo.getRoomNo());
         apiData.setItem_no(boosterVo.getItemNo());
         apiData.setItem_cnt(boosterVo.getItemCnt());

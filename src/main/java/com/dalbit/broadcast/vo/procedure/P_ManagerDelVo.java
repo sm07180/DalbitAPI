@@ -5,12 +5,14 @@ import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_ManagerDelVo {
 
     public P_ManagerDelVo(){}
-    public P_ManagerDelVo(ManagerDelVo managerDelVo){
-        setMem_no(MemberVo.getMyMemNo());
+    public P_ManagerDelVo(ManagerDelVo managerDelVo, HttpServletRequest request){
+        setMem_no(new MemberVo().getMyMemNo(request));
         setRoom_no(managerDelVo.getRoomNo());
         setManager_mem_no(managerDelVo.getMemNo());
     }

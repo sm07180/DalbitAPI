@@ -43,14 +43,14 @@ public class LogoutHandlerImpl implements LogoutHandler {
 
         DalbitUtil.setHeader(request, response);
 
-        ProcedureVo procedureVo = roomService.callMemberBroadcastingCheck(new P_MemberBroadcastingCheckVo(MemberVo.getMyMemNo()));
+        ProcedureVo procedureVo = roomService.callMemberBroadcastingCheck(new P_MemberBroadcastingCheckVo(MemberVo.getMyMemNo(request)));
         log.debug("방송중인 DJ체크 : {}", procedureVo.toString());
 
         HashMap broadcastingInfo = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         String state = DalbitUtil.getStringMap(broadcastingInfo, "state");
         boolean isBroadcast = state.equals(Code.방송중체크_방송중.getCode()) ? true : false;
 
-        if(DalbitUtil.isLogin() && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
+        if(DalbitUtil.isLogin(request) && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
 
             try {
                 gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃실패_진행중인방송));

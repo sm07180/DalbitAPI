@@ -30,6 +30,12 @@ public class JwtUtil {
 
     final String JWT_SEPARATOR = "@";
 
+    JwtUtil(){}
+    public JwtUtil(String JWT_SECRET_KEY, int JWT_DURATION){
+        this.JWT_SECRET_KEY = JWT_SECRET_KEY;
+        this.JWT_DURATION = JWT_DURATION;
+    }
+
     /**
      * 이름으로 Jwt Token을 생성한다.
      */
@@ -80,6 +86,7 @@ public class JwtUtil {
                 throw new GlobalException(ErrorStatus.토큰검증오류, "회원번호 or 로그인 여부가 없습니다.");
             }
         }catch (Exception e){
+            e.printStackTrace();
             throw new GlobalException(ErrorStatus.토큰검증오류, "이상한 토큰이 넘어왔어요.");
         }
     }

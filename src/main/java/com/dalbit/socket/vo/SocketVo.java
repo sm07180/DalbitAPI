@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 
@@ -50,13 +51,13 @@ public class SocketVo {
     private int recvTime = 0;
 
 
-    public SocketVo(String memNo, String recvMemNo){
+    public SocketVo(String memNo, String recvMemNo, HttpServletRequest request){
         this.memNo = memNo;
         this.recvMemNo = recvMemNo;
-        this.login = DalbitUtil.isLogin() ? 1 : 0;
+        this.login = DalbitUtil.isLogin(request) ? 1 : 0;
     }
 
-    public SocketVo(String memNo, HashMap memInfo){
+    public SocketVo(String memNo, HashMap memInfo, HttpServletRequest request){
         if(memInfo != null){
             this.memNo = memNo;
             this.fan = "0".equals(DalbitUtil.getStringMap(memInfo, "enableFan")) ? 1 : 0;
@@ -69,7 +70,7 @@ public class SocketVo {
             }else if(this.auth == 1){
                 this.authName = "매니저";
             }
-            this.login = DalbitUtil.isLogin() ? 1 : 0;
+            this.login = DalbitUtil.isLogin(request) ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
             this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
         }

@@ -24,12 +24,12 @@ public class ContentController {
      * 공지조회
      */
     @GetMapping("/notice")
-    public String noticeSelect(@Valid NoticeViewVo noticeViewVo, BindingResult bindingResult) throws GlobalException {
+    public String noticeSelect(@Valid NoticeViewVo noticeViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomNoticeVo apiData = new P_RoomNoticeVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(noticeViewVo.getRoomNo());
 
         String result = contentService.callBroadCastRoomNoticeSelect(apiData);
@@ -47,7 +47,7 @@ public class ContentController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomNoticeEditVo apiData = new P_RoomNoticeEditVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(noticeEditVo.getRoomNo());
         apiData.setNotice(noticeEditVo.getNotice());
 
@@ -66,7 +66,7 @@ public class ContentController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomNoticeVo apiData = new P_RoomNoticeVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(noticeDelVo.getRoomNo());
 
         String result = contentService.callBroadCastRoomNoticeDelete(apiData, request);
@@ -84,7 +84,7 @@ public class ContentController {
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_RoomStoryAddVo apiData = new P_RoomStoryAddVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(storyAddVo.getRoomNo());
         apiData.setContents(storyAddVo.getContents());
 
@@ -98,7 +98,7 @@ public class ContentController {
      * 방송방 사연 조회
      */
     @GetMapping("/story")
-    public String getStory(@Valid StoryViewVo storyViewVo, BindingResult bindingResult) throws GlobalException{
+    public String getStory(@Valid StoryViewVo storyViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -106,7 +106,7 @@ public class ContentController {
         int pageCnt = DalbitUtil.isEmpty(storyViewVo.getRecords()) ? 10 : storyViewVo.getRecords();
 
         P_RoomStoryListVo apiData = new P_RoomStoryListVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(storyViewVo.getRoomNo());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
@@ -121,7 +121,7 @@ public class ContentController {
      * 방송방 사연 삭제
      */
     @DeleteMapping("/story")
-    public String deleteStory(@Valid StoryDelVo storyDelVo, BindingResult bindingResult) throws GlobalException{
+    public String deleteStory(@Valid StoryDelVo storyDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
 
@@ -129,7 +129,7 @@ public class ContentController {
         int records = DalbitUtil.isEmpty(storyDelVo.getRecords()) ? 10 : storyDelVo.getRecords();
 
         P_RoomStoryDeleteVo apiData = new P_RoomStoryDeleteVo();
-        apiData.setMem_no(MemberVo.getMyMemNo());
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(storyDelVo.getRoomNo());
         apiData.setStory_idx(storyDelVo.getStoryIdx());
         apiData.setPage(page);

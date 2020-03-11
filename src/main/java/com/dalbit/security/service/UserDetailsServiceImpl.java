@@ -19,12 +19,8 @@ import com.dalbit.util.RedisUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -141,13 +137,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                     , memberVo.getMemPasswd()
                     , isAdmin ? DalbitUtil.getAdminAuthorities() : DalbitUtil.getAuthorities());
             securityUserVo.setMemberVo(memberVo);
-
-            Authentication authentication = new UsernamePasswordAuthenticationToken(
-                    memberVo.getMemId()
-                    , memberVo.getMemPasswd()
-                    , isAdmin ? DalbitUtil.getAdminAuthorities() : DalbitUtil.getAuthorities());
-            SecurityContext securityContext = SecurityContextHolder.getContext();
-            securityContext.setAuthentication(authentication);
 
             return securityUserVo;
 

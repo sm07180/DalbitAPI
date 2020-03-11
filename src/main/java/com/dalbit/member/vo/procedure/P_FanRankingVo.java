@@ -6,15 +6,17 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Getter @Setter
 public class P_FanRankingVo {
 
     public P_FanRankingVo(){}
-    public P_FanRankingVo(FanRankingVo fanRankingVo){
+    public P_FanRankingVo(FanRankingVo fanRankingVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(fanRankingVo.getPage()) ? 1 : fanRankingVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(fanRankingVo.getRecords()) ? 10 : fanRankingVo.getRecords();
 
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(new MemberVo().getMyMemNo(request));
         setStar_mem_no(fanRankingVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
