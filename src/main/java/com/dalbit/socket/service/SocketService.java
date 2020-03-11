@@ -263,7 +263,7 @@ public class SocketService {
                 if(vo.getFan() == 0){
                     vo.setCommand("reqGoodFirst");
                     vo.setRecvMemNo(memNo);
-                    vo.setMessage("{\"time\" : 30}");
+                    vo.setMessage("{\"time\" : 0}");
                     sendSocketApi(authToken, roomNo, vo.toQueryString());
                 }
             }
