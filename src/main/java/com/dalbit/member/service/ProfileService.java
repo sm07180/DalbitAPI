@@ -7,11 +7,9 @@ import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.ProfileDao;
-import com.dalbit.member.vo.FanRankingOutVo;
-import com.dalbit.member.vo.FanboardReplyOutVo;
-import com.dalbit.member.vo.FanboardVo;
-import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -34,6 +32,8 @@ public class ProfileService {
     GsonUtil gsonUtil;
     @Autowired
     CommonService commonService;
+    @Autowired
+    SocketService socketService;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -58,6 +58,8 @@ public class ProfileService {
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            HashMap myInfo = socketService.getMyInfo(MemberVo.getMyMemNo());
+            profileInfoOutVo.setBirth(DalbitUtil.getBirth(DalbitUtil.getStringMap(myInfo, "birthYear"), DalbitUtil.getStringMap(myInfo, "birthMonth"), DalbitUtil.getStringMap(myInfo, "birthDay")));
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));

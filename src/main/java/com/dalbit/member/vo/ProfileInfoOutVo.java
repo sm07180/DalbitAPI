@@ -21,6 +21,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private String  nickNm;
     private String  gender;
     private int     age;
+    private String  birth;
     private String  memId;
     private ImageVo profImg;
     private String  profMsg;
