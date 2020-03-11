@@ -19,18 +19,23 @@ public class MemberVo extends ProfileInfoOutVo {
     public static String getMyMemNo(HttpServletRequest request) {
         try{
             JwtUtil jwtUtil = new JwtUtil(DalbitUtil.getProperty("spring.jwt.secret"), Integer.parseInt(DalbitUtil.getProperty("spring.jwt.duration")));
-            log.debug("Header Name {}", DalbitUtil.getProperty("sso.header.cookie.name"));
-            log.debug("Header {}", request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name")));
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name")));
-            log.debug("tokenVo {}", tokenVo);
             if(tokenVo != null){
                 return tokenVo.getMemNo();
             }
         }catch (Exception e){
             log.warn("MemberVo.getMyMemNo() return null : {}", e.getMessage());
-            e.printStackTrace();
         }
         return null;
+    }
+
+    public static String getMyMemNo() {
+        try{
+            return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        }catch (Exception e){
+            log.warn("MemberVo.getMyMemNo() return null : {}", e.getMessage());
+            return null;
+        }
     }
 
     public static boolean isAdmin(){
