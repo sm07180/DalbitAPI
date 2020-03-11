@@ -40,7 +40,7 @@ public class P_MemberReportAddVo {
         customHeader = java.net.URLDecoder.decode(customHeader);
         HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
         int os = DalbitUtil.getIntMap(headers,"os");
-
+        String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
         String browser = request.getHeader("User-Agent");
 
         if(os == 1){
@@ -49,7 +49,7 @@ public class P_MemberReportAddVo {
             setPlatform("IOS-Mobile");
         } else if(os == 3){
             setPlatform("PC");
-        } else if(DalbitUtil.convertRequestParamToString(request,"isHybrid").equals("Y")){
+        } else if(isHybrid.equals("Y")){
             setPlatform("Web-Mobile");
         }
 

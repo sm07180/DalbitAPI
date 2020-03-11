@@ -119,46 +119,52 @@ public class MemberController {
 
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo);
-        if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
-            //로그인 처리
-            P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
-            ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
-            log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
+        //휴대폰 인증했던 번호와 일치여부 확인
+        //if(request.getSession().getAttribute("phoneNo").equals(memId)){
+            if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
+                //로그인 처리
+                P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
+                ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
+                log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
 
-            HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
-            String memNo = DalbitUtil.getStringMap(map, "mem_no");
-            String jwtToken = jwtUtil.generateToken(memNo, true);
+                HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
+                String memNo = DalbitUtil.getStringMap(map, "mem_no");
+                String jwtToken = jwtUtil.generateToken(memNo, true);
 
-            ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
+                ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
 
-            MemberVo memberVo = null;
-            if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+                MemberVo memberVo = null;
+                if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
 
-                P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, null));
-                memberVo.setMemSlct(memType);
-                memberVo.setMemPasswd(memPwd);
+                    P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
+                    memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, null));
+                    memberVo.setMemSlct(memType);
+                    memberVo.setMemPasswd(memPwd);
+                }else{
+                    new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+                }
+
+                SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), DalbitUtil.getAuthorities());
+                securityUserVo.setMemberVo(memberVo);
+
+                loginUtil.saveSecuritySession(request, securityUserVo);
+                //loginUtil.ssoCookieRenerate(response, jwtToken);
+
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
+
+            }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
+            }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복));
+            }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
             }else{
-                new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
             }
-
-            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), DalbitUtil.getAuthorities());
-            securityUserVo.setMemberVo(memberVo);
-
-            loginUtil.saveSecuritySession(request, securityUserVo);
-            //loginUtil.ssoCookieRenerate(response, jwtToken);
-
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
-
-        }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
-        }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복));
-        }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
+        /*} else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-        }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
-        }
+            request.getSession().invalidate();
+        }*/
 
         return result;
     }
@@ -171,7 +177,6 @@ public class MemberController {
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
-
         String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckVo.getNickNm()));
 
         return result;
