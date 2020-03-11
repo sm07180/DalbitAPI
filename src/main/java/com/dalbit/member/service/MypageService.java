@@ -37,6 +37,8 @@ public class MypageService {
     SocketService socketService;
     @Autowired
     RoomDao roomDao;
+    @Autowired
+    ProfileService profileService;
 
     /**
      * 프로필 편집
@@ -69,7 +71,11 @@ public class MypageService {
                 if(isDone){
                     restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
                 }
-                result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공));
+                int memLogin = DalbitUtil.isLogin() ? 1 : 0;
+                P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(), MemberVo.getMyMemNo());
+                String resultProfile = profileService.callMemberInfo(apiData);
+                HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
+                result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, profileMap.get("data")));
             } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복));
             } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
