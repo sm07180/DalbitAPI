@@ -56,20 +56,28 @@ public class MypageService {
             profImg = DalbitUtil.replacePath(profImg);
         }
         pProfileEditVo.setProfileImage(profImg);
-        ProcedureVo procedureVo = new ProcedureVo(pProfileEditVo);
-        mypageDao.callProfileEdit(procedureVo);
-
+        HashMap myInfo = socketService.getMyInfo(MemberVo.getMyMemNo());
         String result;
-        if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
-            if(isDone){
-                restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
+        if(myInfo != null){
+            if(pProfileEditVo.getNickName().equals(DalbitUtil.getStringMap(myInfo, "nickName"))){
+                pProfileEditVo.setNickName("");
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공));
-        } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복));
-        } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복));
-        } else{
+            ProcedureVo procedureVo = new ProcedureVo(pProfileEditVo);
+            mypageDao.callProfileEdit(procedureVo);
+
+            if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
+                if(isDone){
+                    restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel());
+                }
+                result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공));
+            } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복));
+            } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복));
+            } else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집오류));
+            }
+        }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집오류));
         }
         return result;
