@@ -52,6 +52,7 @@ public class SsoAuthenticationFilter implements Filter {
     private final String[] IGNORE_URLS = {
         "/favicon.ico"
         , "/login", "/logout", "/splash"
+        , "/member/login", "/member/logout", "/token"
         , "/sample", "/rest/sample"
         , "/postman/dalbitcast.json"
         , "/ctrl/check/service"
