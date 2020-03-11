@@ -43,6 +43,8 @@ public class RoomService {
     CommonService commonService;
     @Autowired
     SocketService socketService;
+    @Autowired
+    ContentService contentService;
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -96,22 +98,23 @@ public class RoomService {
             returnMap.put("title", target.getTitle());
             returnMap.put("bgImg", target.getBgImg());
             returnMap.put("link", target.getLink());
-            returnMap.put("state", target.getState());
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("isRecomm", target.getIsRecomm());
-            returnMap.put("isPop", target.getIsPop());
-            returnMap.put("isNew", target.getIsNew());
-            returnMap.put("startDt", target.getStartDt());
-            returnMap.put("startTs", target.getStartTs());
-            // 임의정보
             returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
             returnMap.put("likes", 0);
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", 3);
             returnMap.put("ctrlRole", "1111111111");
             returnMap.put("isFan", false);
+            returnMap.put("isRecomm", target.getIsRecomm());
+            returnMap.put("isPop", target.getIsPop());
+            returnMap.put("isNew", target.getIsNew());
+            returnMap.put("startDt", target.getStartDt());
+            returnMap.put("startTs", target.getStartTs());
+            returnMap.put("state", target.getState());
+            returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
+            returnMap.put("hasStory", false);
 
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
@@ -181,23 +184,24 @@ public class RoomService {
             returnMap.put("bjMemNo", target.getBjMemNo());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
+            returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
             returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
             returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
             returnMap.put("gstProfImg", target.getGstProfImg());
             returnMap.put("remainTime", remainTime);
-            returnMap.put("isRecomm", target.getIsRecomm());
-            returnMap.put("isPop", target.getIsPop());
-            returnMap.put("isNew", target.getIsNew());
-            returnMap.put("startDt", target.getStartDt());
-            returnMap.put("startTs", target.getStartTs());
-            // 임의정보
-            returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
             returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
             returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
             returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
             returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
+            returnMap.put("isRecomm", target.getIsRecomm());
+            returnMap.put("isPop", target.getIsPop());
+            returnMap.put("isNew", target.getIsNew());
+            returnMap.put("startTs", target.getStartTs());
+            returnMap.put("startDt", target.getStartDt());
+            returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
+            returnMap.put("hasStory", false);
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
@@ -707,22 +711,42 @@ public class RoomService {
                     returnMap.put("bjMemNo", target.getBjMemNo());
                     returnMap.put("bjNickNm", target.getBjNickNm());
                     returnMap.put("bjProfImg", target.getBjProfImg());
+                    returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
                     returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                     returnMap.put("gstProfImg", target.getGstProfImg());
-                    returnMap.put("isRecomm", target.getIsRecomm());
-                    returnMap.put("isPop", target.getIsPop());
-                    returnMap.put("isNew", target.getIsNew());
-                    returnMap.put("startDt", target.getStartDt());
-                    returnMap.put("startTs", target.getStartTs());
-                    // 임의정보
-                    returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+                    returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
                     returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                     returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                     returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
                     returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
                     returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
                     returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
+                    returnMap.put("isRecomm", target.getIsRecomm());
+                    returnMap.put("isPop", target.getIsPop());
+                    returnMap.put("isNew", target.getIsNew());
+                    returnMap.put("startDt", target.getStartDt());
+                    returnMap.put("startTs", target.getStartTs());
+                    returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
+                    if(auth == 3) { // DJ
+                        //사연조회
+                        P_RoomStoryListVo apiData = new P_RoomStoryListVo();
+                        apiData.setMem_no(MemberVo.getMyMemNo());
+                        apiData.setRoom_no(pRoomStreamVo.getRoom_no());
+                        apiData.setPageNo(1);
+                        apiData.setPageCnt(1);
+
+                        String resultStory = contentService.callGetStory(apiData);
+                        HashMap storyMap = new Gson().fromJson(resultStory, HashMap.class);
+                        if(storyMap.get("result") != null && "success".equals(storyMap.get("result").toString()) && storyMap.get("data") != null && ((HashMap)storyMap.get("data")).get("paging") != null){
+                            HashMap pagingMap = (HashMap)((HashMap)storyMap.get("data")).get("paging");
+                            returnMap.put("hasStory", DalbitUtil.getIntMap(pagingMap, "total") > 0);
+                        }else{
+                            returnMap.put("hasStory", false);
+                        }
+                    }else{
+                        returnMap.put("hasStory", false);
+                    }
                     /*returnMap.put("level", target.getLevel());
                     returnMap.put("grade", target.getGrade());
                     returnMap.put("exp", target.getExp());
