@@ -56,6 +56,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/sample", "/rest/sample"
         , "/postman/dalbitcast.json"
         , "/ctrl/check/service"
+        , "/social"
     };
 
     @Override

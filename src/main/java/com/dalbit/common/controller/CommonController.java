@@ -220,35 +220,39 @@ public class CommonController {
         long checkTime = System.currentTimeMillis();
 
         HttpSession session = request.getSession();
-        int id = (int) session.getAttribute("CMID");
-        int code = (int) session.getAttribute("code");
-        long reqTime = (long) session.getAttribute("reqTime");
-
-        log.debug("휴대폰 인증요청 CMID 일치여부: {}", id==smsCheckVo.getCMID());
-        log.debug("(확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
-
         String result;
-        if(session.getAttribute("authYn").equals("N")){
-            if(id == smsCheckVo.getCMID()){
-                if(code == smsCheckVo.getCode()){
-                    if(DalbitUtil.isSeconds(reqTime, checkTime)){
-                        session.setAttribute("authYn", "Y");
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
-                    }else {
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
+        if(session != null){
+            int id = (int) session.getAttribute("CMID");
+            int code = (int) session.getAttribute("code");
+            long reqTime = (long) session.getAttribute("reqTime");
+
+            log.debug("휴대폰 인증요청 CMID 일치여부: {}", id==smsCheckVo.getCMID());
+            log.debug("(확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
+
+            if(session.getAttribute("authYn").equals("N")){
+                if(id == smsCheckVo.getCMID()){
+                    if(code == smsCheckVo.getCode()){
+                        if(DalbitUtil.isSeconds(reqTime, checkTime)){
+                            session.setAttribute("authYn", "Y");
+                            result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
+                        }else {
+                            result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
+                        }
+                    } else {
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
                     }
                 } else {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.인증CMID불일치));
                 }
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.인증CMID불일치));
+                result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+                request.getSession().invalidate();
             }
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
-            request.getSession().invalidate();
-        }
 
-        log.debug("인증상태 확인 authYn: {}", session.getAttribute("authYn"));
+            log.debug("인증상태 확인 authYn: {}", session.getAttribute("authYn"));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
+        }
 
         return result;
     }
