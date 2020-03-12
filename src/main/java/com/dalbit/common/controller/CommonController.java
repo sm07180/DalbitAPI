@@ -220,7 +220,7 @@ public class CommonController {
         long checkTime = System.currentTimeMillis();
 
         HttpSession session = request.getSession(false);
-        if(!request.isRequestedSessionIdValid()){
+        if(session == null){
             session = request.getSession();
         }
 
