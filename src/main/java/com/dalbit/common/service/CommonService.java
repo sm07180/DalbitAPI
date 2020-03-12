@@ -272,7 +272,7 @@ public class CommonService {
                     sampleFanVo.setNickNm("임시팬랭킹1");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(10);
-                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
+                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20584512000/20200306194248279103.jpeg", DalbitUtil.getProperty("server.photo.url")));
 
                 }else if(i == 1){
                     sampleFanVo.setRank(i+1);
@@ -288,7 +288,7 @@ public class CommonService {
                     sampleFanVo.setNickNm("임시팬랭킹3");
                     sampleFanVo.setGender("m");
                     sampleFanVo.setAge(30);
-                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213133546969166.png", DalbitUtil.getProperty("server.photo.url")));
+                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20590128000/20200311101232448980.png", DalbitUtil.getProperty("server.photo.url")));
                 }
                 memberFanVoList.add(sampleFanVo);
             }
