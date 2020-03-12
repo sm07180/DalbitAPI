@@ -729,9 +729,14 @@ public class RoomService {
 
                         String resultStory = contentService.callGetStory(apiData);
                         HashMap storyMap = new Gson().fromJson(resultStory, HashMap.class);
-                        if(storyMap.get("result") != null && "success".equals(storyMap.get("result").toString()) && storyMap.get("data") != null && ((HashMap)storyMap.get("data")).get("paging") != null){
-                            HashMap pagingMap = (HashMap)((HashMap)storyMap.get("data")).get("paging");
-                            returnMap.put("hasStory", DalbitUtil.getIntMap(pagingMap, "total") > 0);
+                        if(storyMap.get("result") != null && "success".equals(storyMap.get("result").toString()) && storyMap.get("data") != null){
+                            HashMap storyDataMap = new Gson().fromJson(storyMap.get("data").toString(), HashMap.class);
+                            if(storyDataMap.get("paging") != null){
+                                HashMap storyPagingMap = new Gson().fromJson(storyDataMap.get("paging").toString(), HashMap.class);
+                                returnMap.put("hasStory", DalbitUtil.getIntMap(storyPagingMap, "total") > 0);
+                            }else{
+                                returnMap.put("hasStory", false);
+                            }
                         }else{
                             returnMap.put("hasStory", false);
                         }
