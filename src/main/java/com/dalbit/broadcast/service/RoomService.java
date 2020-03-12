@@ -587,6 +587,7 @@ public class RoomService {
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
         returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));
         returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
+        returnMap.put("expRate", DalbitUtil.getExpRate(DalbitUtil.getIntMap(resultMap, "exp"), DalbitUtil.getIntMap(resultMap, "expBegin"), DalbitUtil.getIntMap(resultMap, "expNext")));
         returnMap.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCount"));
         returnMap.put("starCnt", DalbitUtil.getIntMap(resultMap, "starCount"));
         returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
