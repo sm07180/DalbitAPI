@@ -208,6 +208,7 @@ public class CommonController {
         }
 
         HttpSession session = request.getSession();
+        log.debug("SESSION ID : {}", session.getId());
         log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
         log.debug("SESSION code : {}", session.getAttribute("code"));
         log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
@@ -227,6 +228,7 @@ public class CommonController {
         HttpSession session = request.getSession();
 
         String result;
+        log.debug("SESSION ID : {}", session.getId());
         log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
         log.debug("SESSION code : {}", session.getAttribute("code"));
         log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
