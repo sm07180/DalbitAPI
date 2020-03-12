@@ -67,7 +67,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
 
-    public UserDetails loadUserByUsername() throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername() throws CustomUsernameNotFoundException{
 
         HashMap map = DalbitUtil.getParameterMap(request);
 
@@ -109,6 +109,22 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
+
+        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_블럭상태.getMessageCode())) {
+
+            HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
+            String blockDay = DalbitUtil.getStringMap(resultMap, "block_day");
+            String blockEndDt = DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "expected_end_date"));
+            long blockEndTs = DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "expected_end_date"));
+            HashMap returnMap = new HashMap();
+            returnMap.put("blockDay", blockDay);
+            returnMap.put("blockEndDt", blockEndDt);
+            returnMap.put("blockEndTs", blockEndTs);
+
+            throw new CustomUsernameNotFoundException(Status.로그인실패_블럭상태, returnMap);
+
+        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_탈퇴.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(Status.로그인실패_탈퇴.getMessageKey());
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
             MemberVo paramMemberVo = new MemberVo();
