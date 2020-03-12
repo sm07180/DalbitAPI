@@ -106,6 +106,74 @@ public enum Item {
             , 0
             , "midLeft"
             , 10
+    ),
+    애니_파이어웍(
+            "1007"
+            , "파이어웍"
+            , "ani"
+            , 50
+            , "https://devimage.dalbitcast.com/ani/thumbs/item_thumb_firework.png"
+            , "https://devimage.dalbitcast.com/ani/webp/item_firework.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/item_firework.json"
+            , ""
+            , 720
+            , 504
+            , 1
+            , 1
+            , 0.7
+            , "topLeft"
+            , 10
+    ),
+    애니_토끼(
+            "1008"
+            , "토끼"
+            , "ani"
+            , 70
+            , "https://devimage.dalbitcast.com/ani/thumbs/item_thumb_rabbit.png"
+            , "https://devimage.dalbitcast.com/ani/webp/item_rabbit.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/item_rabbit.json"
+            , ""
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+    애니_로켓(
+            "1009"
+            , "로켓"
+            , "ani"
+            , 100
+            , "https://devimage.dalbitcast.com/ani/thumbs/item_thumb_rocket.png"
+            , "https://devimage.dalbitcast.com/ani/webp/item_rocket.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/item_rocket.json"
+            , ""
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+    애니_UFO(
+            "1009"
+            , "UFO"
+            , "ani"
+            , 200
+            , "https://devimage.dalbitcast.com/ani/thumbs/item_thumb_UFO.png"
+            , "https://devimage.dalbitcast.com/ani/webp/item_UFO.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/item_UFO.json"
+            , ""
+            , 720
+            , 504
+            , 1
+            , 1
+            , 0.7
+            , "topLeft"
+            , 10
     )
 
    ;

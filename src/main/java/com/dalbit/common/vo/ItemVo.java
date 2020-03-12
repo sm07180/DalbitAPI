@@ -35,12 +35,22 @@ public class ItemVo {
             this.thumbs = DalbitUtil.getProperty(item.getThumbs());
         }
         if(!DalbitUtil.isEmpty(item.getWebpUrl())) {
-            this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
+            if(item.getWebpUrl().startsWith("https://")){
+                this.webpUrl = item.getWebpUrl();
+            }else{
+                this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
+            }
         }
         if(!DalbitUtil.isEmpty(item.getLottieUrl())) {
-            this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
+            if(item.getLottieUrl().startsWith("https://")) {
+                this.lottieUrl = item.getLottieUrl();
+            }else{
+                this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
+            }
         }
-        this.stickerUrl = item.getStickerUrl();
+        if(!DalbitUtil.isEmpty(item.getWebpUrl())) {
+            this.stickerUrl = item.getStickerUrl();
+        }
         this.width = item.getWidth();
         this.height = item.getHeight();
         this.deviceRate = item.getDeviceRate();
