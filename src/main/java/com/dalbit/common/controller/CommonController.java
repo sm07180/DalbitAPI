@@ -207,6 +207,11 @@ public class CommonController {
             }
         }
 
+        HttpSession session = request.getSession();
+        log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
+        log.debug("SESSION code : {}", session.getAttribute("code"));
+        log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
+
         return result;
     }
 
@@ -219,12 +224,12 @@ public class CommonController {
         DalbitUtil.throwValidaionException(bindingResult);
         long checkTime = System.currentTimeMillis();
 
-        HttpSession session = request.getSession(false);
-        if(session == null){
-            session = request.getSession();
-        }
+        HttpSession session = request.getSession();
 
         String result;
+        log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
+        log.debug("SESSION code : {}", session.getAttribute("code"));
+        log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
         int id = (int) session.getAttribute("CMID");
         int code = (int) session.getAttribute("code");
         long reqTime = (long) session.getAttribute("reqTime");
