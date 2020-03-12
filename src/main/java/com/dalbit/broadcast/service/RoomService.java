@@ -194,7 +194,7 @@ public class RoomService {
             returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
             returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
             returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
-            returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
+            returnMap.put("isLike", "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")));
             returnMap.put("isRecomm", target.getIsRecomm());
             returnMap.put("isPop", target.getIsPop());
             returnMap.put("isNew", target.getIsNew());
@@ -713,7 +713,7 @@ public class RoomService {
                     returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
                     returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
                     returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
-                    returnMap.put("isLike", "0".equals(DalbitUtil.getStringMap(resultMap, "isLike")));
+                    returnMap.put("isLike", "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")));
                     returnMap.put("isRecomm", target.getIsRecomm());
                     returnMap.put("isPop", target.getIsPop());
                     returnMap.put("isNew", target.getIsNew());
