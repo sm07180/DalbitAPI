@@ -159,7 +159,7 @@ public enum Item {
             , 10
     ),
     애니_UFO(
-            "1009"
+            "1010"
             , "UFO"
             , "ani"
             , 200

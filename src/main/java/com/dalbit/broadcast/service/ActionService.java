@@ -187,6 +187,17 @@ public class ActionService {
                     itemNm = "곰";
                 }else if(Item.스티커_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "도너츠";
+                }else if(Item.스티커_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "도너츠";
+
+                }else if(Item.애니_파이어웍.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "파이어웍";
+                }else if(Item.애니_토끼.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "토끼";
+                }else if(Item.애니_로켓.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "로켓";
+                }else if(Item.애니_UFO.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "UFO";
                 }
                 itemMap.put("itemNm", itemNm);
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
