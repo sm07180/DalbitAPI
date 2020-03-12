@@ -48,7 +48,7 @@ public class ItemVo {
                 this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
             }
         }
-        if(!DalbitUtil.isEmpty(item.getWebpUrl())) {
+        if(!DalbitUtil.isEmpty(item.getStickerUrl())) {
             this.stickerUrl = item.getStickerUrl();
         }
         this.width = item.getWidth();
