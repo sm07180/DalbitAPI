@@ -15,6 +15,7 @@ public class CustomUsernameNotFoundException extends UsernameNotFoundException {
     MessageUtil messageUtil;
 
     private Status status;
+    private Object Data;
 
     public CustomUsernameNotFoundException(String msg) {
         super(msg);
@@ -23,6 +24,12 @@ public class CustomUsernameNotFoundException extends UsernameNotFoundException {
     public CustomUsernameNotFoundException(Status status) {
         super(status.getMessageCode());
         setStatus(status);
+    }
+
+    public CustomUsernameNotFoundException(Status status, Object data) {
+        super(status.getMessageCode());
+        setStatus(status);
+        setData(data);
     }
 
     public CustomUsernameNotFoundException(String msg, Throwable t) {
