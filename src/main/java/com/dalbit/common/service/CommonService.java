@@ -28,10 +28,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -97,6 +94,12 @@ public class CommonService {
         items.add(new ItemVo(Item.애니_곰인형));
         items.add(new ItemVo(Item.애니_도너츠달));
         items.add(new ItemVo(Item.애니_도너츠));
+        Collections.sort(items, new Comparator<ItemVo>() {
+            @Override
+            public int compare(ItemVo a, ItemVo b) {
+                return a.getItemNo().compareTo(b.getItemNo());
+            }
+        });
         resultMap.put("items", items);
         return resultMap;
     }
