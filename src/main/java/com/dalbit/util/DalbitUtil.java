@@ -802,6 +802,17 @@ public class DalbitUtil {
         }
         return browser;
     }
+
+    /**
+     * String to Date 패턴변경
+     */
+    public static String stringToDatePattern(String str, String beforePattern, String afterPattern) throws ParseException{
+        SimpleDateFormat beForeFormat = new SimpleDateFormat(beforePattern);
+        Date beforeDate = beForeFormat.parse(str);
+        SimpleDateFormat afterFormat = new SimpleDateFormat(afterPattern);
+        return afterFormat.format(beforeDate);
+    }
+
 }
 
 
