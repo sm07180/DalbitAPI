@@ -250,11 +250,6 @@ public class CommonService {
             setFanVo(memberFanVoList, rank3);
         }
 
-        //개발 로컬일때 없을경우 임시데이터 셋팅
-        if(DalbitUtil.isEmpty(rank1) && DalbitUtil.isEmpty(rank2) && DalbitUtil.isEmpty(rank3)){
-            setFanVo(memberFanVoList, null);
-        }
-
         return memberFanVoList;
     }
 
@@ -262,45 +257,12 @@ public class CommonService {
 
         HashMap map = new Gson().fromJson(fanRank, HashMap.class);
         MemberFanVo fanVo = new MemberFanVo();
-        //개발 로컬일때 없을경우 임시데이터 셋팅
-        if(DalbitUtil.isEmpty(map) && (DalbitUtil.profileCheck("local") || DalbitUtil.profileCheck("dev"))){
-            for(int i= memberFanVoList.size(); i < 3; i++){
-                MemberFanVo sampleFanVo = new MemberFanVo();
-                if(i == 0){
-                    sampleFanVo.setRank(i+1);
-                    sampleFanVo.setMemNo("11583120890262");
-                    sampleFanVo.setNickNm("임시팬랭킹1");
-                    sampleFanVo.setGender("m");
-                    sampleFanVo.setAge(10);
-                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20584512000/20200306194248279103.jpeg", DalbitUtil.getProperty("server.photo.url")));
-
-                }else if(i == 1){
-                    sampleFanVo.setRank(i+1);
-                    sampleFanVo.setMemNo("11583128215641");
-                    sampleFanVo.setNickNm("임시팬랭킹2");
-                    sampleFanVo.setGender("m");
-                    sampleFanVo.setAge(20);
-                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20559801600/20200213141031308290.jpeg", DalbitUtil.getProperty("server.photo.url")));
-
-                }else if(i == 2){
-                    sampleFanVo.setRank(i+1);
-                    sampleFanVo.setMemNo("11583121468981");
-                    sampleFanVo.setNickNm("임시팬랭킹3");
-                    sampleFanVo.setGender("m");
-                    sampleFanVo.setAge(30);
-                    sampleFanVo.setProfImg(new ImageVo("/profile_0/20590128000/20200311101232448980.png", DalbitUtil.getProperty("server.photo.url")));
-                }
-                memberFanVoList.add(sampleFanVo);
-            }
-            return memberFanVoList;
-        }else{
-            fanVo.setRank(memberFanVoList.size()+1);
-            fanVo.setMemNo(DalbitUtil.getStringMap(map, "mem_no"));
-            fanVo.setNickNm(DalbitUtil.getStringMap(map, "nickName"));
-            fanVo.setGender(DalbitUtil.getStringMap(map, "memSex"));
-            fanVo.setAge(DalbitUtil.getIntMap(map, "age"));
-            fanVo.setProfImg(new ImageVo(DalbitUtil.isNullToString(map.get("profileImage")), DalbitUtil.getProperty("server.photo.url")));
-        }
+        fanVo.setRank(memberFanVoList.size()+1);
+        fanVo.setMemNo(DalbitUtil.getStringMap(map, "mem_no"));
+        fanVo.setNickNm(DalbitUtil.getStringMap(map, "nickName"));
+        fanVo.setGender(DalbitUtil.getStringMap(map, "memSex"));
+        fanVo.setAge(DalbitUtil.getIntMap(map, "age"));
+        fanVo.setProfImg(new ImageVo(DalbitUtil.isNullToString(map.get("profileImage")), DalbitUtil.getProperty("server.photo.url")));
         memberFanVoList.add(fanVo);
 
         return memberFanVoList;
