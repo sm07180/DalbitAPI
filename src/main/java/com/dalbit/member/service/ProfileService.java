@@ -53,12 +53,14 @@ public class ProfileService {
     public String callMemberInfo(P_ProfileInfoVo pProfileInfo, HttpServletRequest request) {
 
         ProcedureVo procedureVo = getProfile(pProfileInfo);
-        P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
-        List fanRankList = commonService.getFanRankList(profileInfo.getFanRank1(), profileInfo.getFanRank2(), profileInfo.getFanRank3());
-        ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), fanRankList);
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
+
+            List fanRankList = commonService.getFanRankList(profileInfo.getFanRank1(), profileInfo.getFanRank2(), profileInfo.getFanRank3());
+            ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList);
+
             HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(DalbitUtil.getStringMap(myInfo, "birthYear"), DalbitUtil.getStringMap(myInfo, "birthMonth"), DalbitUtil.getStringMap(myInfo, "birthDay")));
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));

@@ -45,7 +45,7 @@ public class ProfileInfoOutVo extends BaseVo {
     List fanRank;
 
     public ProfileInfoOutVo(){}
-    public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, List fanRank) {
+    public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
         this.memNo = target_mem_no;
         this.nickNm = target.getNickName();
         this.gender = target.getMemSex();
@@ -59,7 +59,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
 
-        if(target_mem_no.equals(target.getMem_no())){
+        if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();
             this.expNext = target.getExpNext();

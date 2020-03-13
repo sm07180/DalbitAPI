@@ -137,7 +137,7 @@ public class MemberController {
                 if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
 
                     P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                    memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, null));
+                    memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, memNo, null));
                     memberVo.setMemSlct(memType);
                     memberVo.setMemPasswd(memPwd);
                 }else{
