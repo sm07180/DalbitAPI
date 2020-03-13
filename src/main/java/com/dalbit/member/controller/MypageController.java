@@ -145,7 +145,7 @@ public class MypageController {
     /**
      * 회원 신고하기
      */
-    @GetMapping("/declar")
+    @PostMapping("/declar")
     public String memberReportAdd(@Valid MemberReportAddVo memberReportAddVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
