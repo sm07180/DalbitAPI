@@ -40,12 +40,7 @@ public class CommonRestControllerAop {
      */
     @Around("execution(* com.dalbit.*.controller.*.*(..))")
     public Object restControllerLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        HttpServletRequest request = null;
-        for (Object obj : proceedingJoinPoint.getArgs()) {
-            if (obj instanceof HttpServletRequest || obj instanceof MultipartHttpServletRequest) {
-                request = (HttpServletRequest) obj;
-            }
-        }
+
         String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
