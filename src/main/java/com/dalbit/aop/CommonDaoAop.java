@@ -6,9 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -20,6 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class CommonDaoAop {
 
+    @Autowired
+    HttpServletRequest request;
+
     /**
      * 공통 DAO 로깅처리
      * @param proceedingJoinPoint
@@ -28,12 +31,6 @@ public class CommonDaoAop {
      */
     @Around("execution(* com.dalbit.*.dao.*.*(..))")
     public Object daoLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        HttpServletRequest request = null;
-        for (Object obj : proceedingJoinPoint.getArgs()) {
-            if (obj instanceof HttpServletRequest || obj instanceof MultipartHttpServletRequest) {
-                request = (HttpServletRequest) obj;
-            }
-        }
         String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 

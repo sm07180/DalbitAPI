@@ -16,6 +16,7 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
 import org.springframework.session.ReactiveMapSessionRepository;
 import org.springframework.session.ReactiveSessionRepository;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import java.util.concurrent.ConcurrentHashMap;
 @Slf4j
 @Configuration
 @EnableRedisRepositories
+@EnableRedisHttpSession
 public class RedisRepositoryConfig {
 
     @Value("${spring.redis.master.host}")
