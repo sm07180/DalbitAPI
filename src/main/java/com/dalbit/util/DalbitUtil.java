@@ -780,6 +780,28 @@ public class DalbitUtil {
         cal.add(Calendar.DAY_OF_MONTH, day);
         return formatter.format(cal.getTime());
     }
+
+    /**
+     * 브라우저 정보 가져오기
+     */
+    public static String getUserAgent(HttpServletRequest request){
+        String userAgent  = request.getHeader("User-Agent");
+        String browser;
+        if (userAgent .indexOf("MSIE") > -1 || userAgent .indexOf("Trident") > -1) {
+            browser = "MSIE";
+        } else if (userAgent .indexOf("Opera") > -1) {
+            browser =  "Opera";
+        } else if (userAgent .indexOf("Firefox") > -1) {
+            browser = "Firefox";
+        } else if (userAgent .indexOf("Chrome") > -1) {
+            browser = "Chrome";
+        } else if (userAgent .indexOf("Safari") > -1) {
+            browser = "Safari";
+        }else {
+            browser = "Firefox";
+        }
+        return browser;
+    }
 }
 
 

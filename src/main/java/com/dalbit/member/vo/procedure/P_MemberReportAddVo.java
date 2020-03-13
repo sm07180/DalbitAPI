@@ -41,7 +41,6 @@ public class P_MemberReportAddVo {
         HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
         int os = DalbitUtil.getIntMap(headers,"os");
         String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
-        String browser = request.getHeader("User-Agent");
 
         if(os == 1){
             setPlatform("Android-Mobile");
@@ -53,15 +52,7 @@ public class P_MemberReportAddVo {
             setPlatform("Web-Mobile");
         }
 
-        if (browser.toUpperCase().indexOf("CHROME") > -1) {
-            setBrowser("Chrome");
-        }else if (browser.toUpperCase().indexOf("WHALE") > -1){
-            setBrowser("Whale");
-        }else if (browser.toUpperCase().indexOf("FIREFOX") > -1){
-            setBrowser("Firefox");
-        } else {
-            setBrowser("Internet Explorer");
-        }
+        setBrowser(DalbitUtil.getUserAgent(request));
     }
 
 }
