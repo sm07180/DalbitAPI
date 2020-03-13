@@ -2,6 +2,7 @@ package com.dalbit.exception.handler;
 
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +28,15 @@ public class RestControllerAdvice {
     @ExceptionHandler(org.springframework.security.access.AccessDeniedException.class)
     @ResponseStatus(HttpStatus.FORBIDDEN)
     public String exceptionAdvice(HttpServletRequest httpServletRequest){
+
+        String result = gsonUtil.toJson(new JsonOutputVo(ErrorStatus.권한없음));
+        log.error(result);
+
+        return result;
+    }
+
+    @ExceptionHandler(CustomUsernameNotFoundException.class)
+    public String customUsernameNotFoundExceptionAdvice(HttpServletRequest httpServletRequest, CustomUsernameNotFoundException exception){
 
         String result = gsonUtil.toJson(new JsonOutputVo(ErrorStatus.권한없음));
         log.error(result);

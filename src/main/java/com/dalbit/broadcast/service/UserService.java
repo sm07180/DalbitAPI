@@ -258,7 +258,7 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
             P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
             profileInfo.setMem_no(pProfileInfo.getTarget_mem_no());
-            ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), null);
+            ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getTarget_mem_no(), null);
 
             HashMap returnMap = new HashMap();
             returnMap.put("level", profileInfoOutVo.getLevel());

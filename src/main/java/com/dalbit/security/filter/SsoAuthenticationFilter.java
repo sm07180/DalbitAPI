@@ -56,6 +56,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/sample", "/rest/sample"
         , "/postman/dalbitcast.json"
         , "/ctrl/check/service"
+        , "/social"
     };
 
     @Override
@@ -148,7 +149,7 @@ public class SsoAuthenticationFilter implements Filter {
                         if (profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
 
                             P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                            memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), null));
+                            memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), tokenVo.getMemNo(), null));
                             SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
                             securityUserVo.setMemberVo(memberVo);
 

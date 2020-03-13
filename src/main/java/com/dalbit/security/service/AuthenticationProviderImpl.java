@@ -1,5 +1,6 @@
 package com.dalbit.security.service;
 
+import com.dalbit.exception.GlobalException;
 import com.dalbit.security.vo.SecurityUserVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     String SPRING_SESSION_MEMBERINFO_KEY;
 
     @Override
-    public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+    public Authentication authenticate(Authentication authentication) throws AuthenticationException{
         //String userName = authentication.getName();
         //String password = (String)authentication.getCredentials();
 

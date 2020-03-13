@@ -207,6 +207,12 @@ public class CommonController {
             }
         }
 
+        HttpSession session = request.getSession();
+        log.debug("SESSION ID : {}", session.getId());
+        log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
+        log.debug("SESSION code : {}", session.getAttribute("code"));
+        log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
+
         return result;
     }
 
@@ -220,6 +226,12 @@ public class CommonController {
         long checkTime = System.currentTimeMillis();
 
         HttpSession session = request.getSession();
+
+        String result;
+        log.debug("SESSION ID : {}", session.getId());
+        log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
+        log.debug("SESSION code : {}", session.getAttribute("code"));
+        log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
         int id = (int) session.getAttribute("CMID");
         int code = (int) session.getAttribute("code");
         long reqTime = (long) session.getAttribute("reqTime");
@@ -227,7 +239,6 @@ public class CommonController {
         log.debug("휴대폰 인증요청 CMID 일치여부: {}", id==smsCheckVo.getCMID());
         log.debug("(확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
 
-        String result;
         if(session.getAttribute("authYn").equals("N")){
             if(id == smsCheckVo.getCMID()){
                 if(code == smsCheckVo.getCode()){
