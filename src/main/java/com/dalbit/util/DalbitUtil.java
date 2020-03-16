@@ -327,7 +327,7 @@ public class DalbitUtil {
      */
     public static String getTimeStamp() {
 
-        String pattern = "yyyyMMddhhmmssSSS";
+        String pattern = "yyyyMMddHHmmssSSS";
 
         SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, LocaleContextHolder.getLocale());
         Timestamp ts = new Timestamp(System.currentTimeMillis());
