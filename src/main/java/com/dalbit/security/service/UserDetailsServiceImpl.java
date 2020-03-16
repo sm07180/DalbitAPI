@@ -89,6 +89,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , deviceVo.getAdId()
                 , locationVo.getRegionName()
                 , deviceVo.getIp()
+                , DalbitUtil.getUserAgent(request)
         );
 
         ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);

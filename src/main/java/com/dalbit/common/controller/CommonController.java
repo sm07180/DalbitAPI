@@ -149,6 +149,7 @@ public class CommonController {
                 , deviceVo.getAdId()
                 , locationVo.getRegionName()
                 , deviceVo.getIp()
+                , DalbitUtil.getUserAgent(request)
         );
 
         ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);

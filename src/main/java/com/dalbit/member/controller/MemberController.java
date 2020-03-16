@@ -103,6 +103,7 @@ public class MemberController {
         String appVer = deviceVo.getAppVersion();
         String appAdId = deviceVo.getAdId();
         String ip = deviceVo.getIp();
+        String browser = DalbitUtil.getUserAgent(request);
 
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
@@ -115,6 +116,7 @@ public class MemberController {
                 , appAdId
                 , locationVo.getRegionName()
                 , ip
+                , browser
         );
 
         String result = "";
@@ -123,7 +125,7 @@ public class MemberController {
         //if(request.getSession().getAttribute("phoneNo").equals(memId)){
             if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
                 //로그인 처리
-                P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
+                P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
                 log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
 

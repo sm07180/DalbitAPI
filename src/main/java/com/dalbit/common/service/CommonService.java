@@ -127,6 +127,7 @@ public class CommonService {
         String appAdId = deviceVo.getAdId();
         LocationVo locationVo = DalbitUtil.getLocation(request);
         String ip = deviceVo.getIp();
+        String browser = DalbitUtil.getUserAgent(request);
 
         TokenVo tokenVo = null;
         String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
@@ -144,7 +145,7 @@ public class CommonService {
                 tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
                 resultStatus = Status.로그인성공;
             } else {
-                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip);
+                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser);
                 //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
                 //ProcedureOutputVo LoginProcedureVo;
@@ -193,6 +194,7 @@ public class CommonService {
                     , appVer
                     , locationVo.getRegionName()
                     , deviceVo.getIp()
+                    , browser
             );
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }

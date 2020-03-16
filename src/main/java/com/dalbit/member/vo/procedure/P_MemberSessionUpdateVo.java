@@ -9,7 +9,7 @@ public class P_MemberSessionUpdateVo {
 
     P_MemberSessionUpdateVo(){}
 
-    public P_MemberSessionUpdateVo(int memLogin, String mem_no, int os, String adId, String deviceUuid, String deviceToken, String appVersion, String location, String ip){
+    public P_MemberSessionUpdateVo(int memLogin, String mem_no, int os, String adId, String deviceUuid, String deviceToken, String appVersion, String location, String ip, String browser){
         setMemLogin(memLogin);
         setMem_no(mem_no);
         setOs(os);
@@ -19,6 +19,7 @@ public class P_MemberSessionUpdateVo {
         setAppVersion(appVersion);
         setLocation(location);
         setIp(ip);
+        setBrowser(browser);
     }
 
     private int memLogin;
@@ -30,4 +31,5 @@ public class P_MemberSessionUpdateVo {
     private String appVersion;
     private String location;
     private String ip;
+    private String browser;
 }
