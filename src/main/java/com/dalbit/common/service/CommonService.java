@@ -99,11 +99,12 @@ public class CommonService {
         resultMap.put("items", items);
 
         List<ItemVo> particles = new ArrayList<>();
-        particles.add(new ItemVo(Item.파티클_1));
+        /*particles.add(new ItemVo(Item.파티클_1));
         particles.add(new ItemVo(Item.파티클_2));
         particles.add(new ItemVo(Item.파티클_3));
         particles.add(new ItemVo(Item.파티클_4));
-        particles.add(new ItemVo(Item.파티클_5));
+        particles.add(new ItemVo(Item.파티클_5));*/
+        particles.add(new ItemVo(Item.파티클_6));
         Collections.sort(particles, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {

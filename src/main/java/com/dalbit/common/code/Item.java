@@ -181,6 +181,22 @@ public enum Item {
             , 2.5
             , "bottomRight"
             , 10
+    ),
+    파티클_6(
+            "9006"
+            , "파티클_6"
+            , "particle"
+            , 0
+            , ""
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart6.webp"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart6.json"
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
     )
 
    ;
