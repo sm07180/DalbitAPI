@@ -40,4 +40,6 @@ public class P_MainDjRankingVo {
     private String profileImage;
     private int level;
     private String grade;
+    private int goodCount;
+    private int listenerCount;
 }

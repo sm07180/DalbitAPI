@@ -19,6 +19,8 @@ public class MainDjRankingOutVo {
     private ImageVo profImg;
     private int level;
     private String grade;
+    private int likes;
+    private int listeners;
 
     public MainDjRankingOutVo(){}
     public MainDjRankingOutVo(P_MainDjRankingVo target) {
@@ -31,5 +33,7 @@ public class MainDjRankingOutVo {
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setLevel(target.getLevel());
         setGrade(target.getGrade());
+        setLikes(target.getGoodCount());
+        setListeners(target.getListenerCount());
     }
 }

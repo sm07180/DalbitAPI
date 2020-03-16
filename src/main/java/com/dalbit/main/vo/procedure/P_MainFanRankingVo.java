@@ -39,6 +39,4 @@ public class P_MainFanRankingVo {
     private String profileImage;
     private int level;
     private String grade;
-    private int goodCount;
-    private int listenerCount;
 }
