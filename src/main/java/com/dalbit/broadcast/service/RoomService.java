@@ -603,6 +603,7 @@ public class RoomService {
         returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
         returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
         returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
+        returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
         procedureVo.setData(returnMap);
 
