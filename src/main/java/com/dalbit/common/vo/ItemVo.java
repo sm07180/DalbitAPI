@@ -15,7 +15,6 @@ public class ItemVo {
     private String thumbs;
     private String webpUrl;
     private String lottieUrl;
-    private String stickerUrl;
     private int width;
     private int height;
     private double deviceRate;
@@ -29,28 +28,9 @@ public class ItemVo {
         this.itemNm = item.getItemNm();
         this.type = item.getType();
         this.cost = item.getCost();
-        if(item.getThumbs().startsWith("https://")){
-            this.thumbs = item.getThumbs();
-        }else{
-            this.thumbs = DalbitUtil.getProperty(item.getThumbs());
-        }
-        if(!DalbitUtil.isEmpty(item.getWebpUrl())) {
-            if(item.getWebpUrl().startsWith("https://")){
-                this.webpUrl = item.getWebpUrl();
-            }else{
-                this.webpUrl = DalbitUtil.getProperty(item.getWebpUrl());
-            }
-        }
-        if(!DalbitUtil.isEmpty(item.getLottieUrl())) {
-            if(item.getLottieUrl().startsWith("https://")) {
-                this.lottieUrl = item.getLottieUrl();
-            }else{
-                this.lottieUrl = DalbitUtil.getProperty(item.getLottieUrl());
-            }
-        }
-        if(!DalbitUtil.isEmpty(item.getStickerUrl())) {
-            this.stickerUrl = item.getStickerUrl();
-        }
+        this.thumbs = item.getThumbs();
+        this.webpUrl = item.getWebpUrl();
+        this.lottieUrl = item.getLottieUrl();
         this.width = item.getWidth();
         this.height = item.getHeight();
         this.deviceRate = item.getDeviceRate();

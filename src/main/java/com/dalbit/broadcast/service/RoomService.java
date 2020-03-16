@@ -115,6 +115,8 @@ public class RoomService {
             returnMap.put("state", target.getState());
             returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
             returnMap.put("hasStory", false);
+            returnMap.put("isLike", true);
+            returnMap.put("useBoost", false);
 
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
@@ -194,7 +196,11 @@ public class RoomService {
             returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
             returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
             returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
-            returnMap.put("isLike", "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")));
+            if(DalbitUtil.isLogin(request)){
+                returnMap.put("isLike", "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")));
+            }else{
+                returnMap.put("isLike", true);
+            }
             returnMap.put("isRecomm", target.getIsRecomm());
             returnMap.put("isPop", target.getIsPop());
             returnMap.put("isNew", target.getIsNew());
@@ -202,6 +208,10 @@ public class RoomService {
             returnMap.put("startDt", target.getStartDt());
             returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
             returnMap.put("hasStory", false);
+
+            //부스터 사용여부
+            returnMap.put("useBoost", existsBoostByRoom(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no()));
+
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
@@ -708,12 +718,16 @@ public class RoomService {
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                     returnMap.put("gstProfImg", target.getGstProfImg());
                     returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-                    returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
-                    returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-                    returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
-                    returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
-                    returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
-                    returnMap.put("isLike", "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")));
+                    returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
+                    returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
+                    returnMap.put("auth", DalbitUtil.getIntMap(resultUpdateMap, "auth"));
+                    returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultUpdateMap, "controlRole"));
+                    returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isFan")));
+                    if(DalbitUtil.isLogin(request)){
+                        returnMap.put("isLike", "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isGood")));
+                    }else{
+                        returnMap.put("isLike", true);
+                    }
                     returnMap.put("isRecomm", target.getIsRecomm());
                     returnMap.put("isPop", target.getIsPop());
                     returnMap.put("isNew", target.getIsNew());
@@ -744,6 +758,8 @@ public class RoomService {
                     }else{
                         returnMap.put("hasStory", false);
                     }
+                    //부스터 사용여부
+                    returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));
                     /*returnMap.put("level", target.getLevel());
                     returnMap.put("grade", target.getGrade());
                     returnMap.put("exp", target.getExp());
@@ -842,5 +858,19 @@ public class RoomService {
         }
 
         return result;
+    }
+
+    public boolean existsBoostByRoom(String roomNo, String memNo){
+        P_RoomLiveRankInfoVo pRoomLiveRankInfoVo = new P_RoomLiveRankInfoVo();
+        pRoomLiveRankInfoVo.setRoom_no(roomNo);
+        pRoomLiveRankInfoVo.setMem_no(memNo);
+        ProcedureVo procedureVo = new ProcedureVo(pRoomLiveRankInfoVo);
+        roomDao.callBroadCastRoomLiveRankInfo(procedureVo);
+
+        if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            return DalbitUtil.getIntMap(resultMap, "usedItemCnt") > 0;
+        }
+        return false;
     }
 }

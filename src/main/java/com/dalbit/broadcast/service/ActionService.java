@@ -177,19 +177,10 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
                 String itemNm = "곰토끼";
-                if(Item.애니_곰인형.getItemNo().equals(pRoomGiftVo.getItem_no())) {
-                    itemNm = "곰인형";
-                }else if(Item.애니_도너츠달.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    itemNm = "도너츠달";
-                }else if(Item.애니_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    itemNm = "도너츠";
-                }else if(Item.스티커_곰.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    itemNm = "곰";
-                }else if(Item.스티커_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    itemNm = "도너츠";
-                }else if(Item.스티커_도너츠.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    itemNm = "도너츠";
-
+                if(Item.스티커_게.getItemNo().equals(pRoomGiftVo.getItem_no())) {
+                    itemNm = "게";
+                }else if(Item.스티커_사브르.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    itemNm = "사브르";
                 }else if(Item.애니_파이어웍.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "파이어웍";
                 }else if(Item.애니_토끼.getItemNo().equals(pRoomGiftVo.getItem_no())){

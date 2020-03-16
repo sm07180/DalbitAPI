@@ -258,6 +258,9 @@ public class SocketService {
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            if(DalbitUtil.profileCheck("local") || DalbitUtil.profileCheck("dev")){
+                isFirst = true;
+            }
             if(isFirst){
                 SocketVo vo = getSocketVo(roomNo, memNo, request);
                 if(vo.getFan() == 0){
@@ -334,7 +337,7 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> addFan(String roomNo, String memNo, String authToken, HttpServletRequest request){
+    public Map<String, Object> addFan(String roomNo, String memNo, String authToken, String fan, HttpServletRequest request){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
@@ -345,7 +348,7 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqFan");
-            vo.setMessage("1");
+            vo.setMessage(fan);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;

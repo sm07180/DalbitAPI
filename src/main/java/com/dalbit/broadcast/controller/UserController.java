@@ -216,8 +216,9 @@ public class UserController {
         P_BroadFanstarDeleteVo apiData = new P_BroadFanstarDeleteVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
         apiData.setStar_mem_no(broadFanstartDeleteVo.getMemNo());
+        apiData.setRoom_no(broadFanstartDeleteVo.getRoomNo());
 
-        String result = userService.callFanstarDelete(apiData);
+        String result = userService.callFanstarDelete(apiData, request);
 
         return result;
     }

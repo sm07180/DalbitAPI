@@ -11,5 +11,6 @@ public class BroadFanstartDeleteVo {
 
     @NotBlank
     private String memNo;
-
+    @NotBlank
+    private String roomNo;
 }

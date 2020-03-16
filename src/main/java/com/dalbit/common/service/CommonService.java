@@ -84,16 +84,12 @@ public class CommonService {
         HashMap resultMap = callCodeDefineSelect();
 
         List<ItemVo> items = new ArrayList<>();
-        items.add(new ItemVo(Item.스티커_곰));
-        items.add(new ItemVo(Item.스티커_도너츠));
+        items.add(new ItemVo(Item.스티커_게));
+        items.add(new ItemVo(Item.스티커_사브르));
         items.add(new ItemVo(Item.애니_파이어웍));
         items.add(new ItemVo(Item.애니_토끼));
         items.add(new ItemVo(Item.애니_로켓));
         items.add(new ItemVo(Item.애니_UFO));
-        items.add(new ItemVo(Item.애니_곰토끼));
-        items.add(new ItemVo(Item.애니_곰인형));
-        items.add(new ItemVo(Item.애니_도너츠달));
-        items.add(new ItemVo(Item.애니_도너츠));
         Collections.sort(items, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {
@@ -101,6 +97,20 @@ public class CommonService {
             }
         });
         resultMap.put("items", items);
+
+        List<ItemVo> particles = new ArrayList<>();
+        particles.add(new ItemVo(Item.파티클_1));
+        particles.add(new ItemVo(Item.파티클_2));
+        particles.add(new ItemVo(Item.파티클_3));
+        particles.add(new ItemVo(Item.파티클_4));
+        particles.add(new ItemVo(Item.파티클_5));
+        Collections.sort(particles, new Comparator<ItemVo>() {
+            @Override
+            public int compare(ItemVo a, ItemVo b) {
+                return a.getItemNo().compareTo(b.getItemNo());
+            }
+        });
+        resultMap.put("particles", particles);
         return resultMap;
     }
 

@@ -378,7 +378,7 @@ public class UserService {
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
-                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), request);
+                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "1", request);
                 }catch(Exception e){}
                 log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
@@ -400,7 +400,7 @@ public class UserService {
     /**
      * 방송방 팬 해제
      */
-    public String callFanstarDelete(P_BroadFanstarDeleteVo pBroadFanstarDeleteVo) {
+    public String callFanstarDelete(P_BroadFanstarDeleteVo pBroadFanstarDeleteVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pBroadFanstarDeleteVo);
         userDao.callFanstarDelete(procedureVo);
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -409,6 +409,19 @@ public class UserService {
 
         String result;
         if (procedureVo.getRet().equals(Status.팬해제성공.getMessageCode())) {
+            //방 정보 조회
+            P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
+            apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+            apiData.setMem_no(pBroadFanstarDeleteVo.getStar_mem_no());
+            apiData.setRoom_no(pBroadFanstarDeleteVo.getRoom_no());
+
+            P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
+            if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
+                try{
+                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "0", request);
+                }catch(Exception e){}
+                log.info("Bj 팬해재 확인 {}", pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공));
         } else if (procedureVo.getRet().equals(Status.팬해제_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제_회원아님));
