@@ -64,7 +64,6 @@ public class MemberController {
      */
     @GetMapping("/token")
     public String token(HttpServletRequest request, HttpServletResponse response){
-        DalbitUtil.setHeader(request, response);
         HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
 
         if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_회원가입필요.getMessageCode())) {

@@ -71,44 +71,48 @@ public class SsoAuthenticationFilter implements Filter {
 
         DalbitUtil.setHeader(request, response);
 
-        if(!isIgnore(request) && !HttpMethod.OPTIONS.name().equals(request.getMethod())) {
-            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (HttpMethod.OPTIONS.name().equalsIgnoreCase(request.getMethod())) {
+            response.setStatus(HttpServletResponse.SC_OK);
+        } else {
+            if(!isIgnore(request)) {
+                Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-            String headerAuthToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
-            try {
-                if (DalbitUtil.isEmpty(authentication)) {
-                    if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
-                        if(!request.getRequestURI().startsWith("/token")){
-                            throw new GlobalException(ErrorStatus.토큰검증오류);
-                        }
-                    }else{
-                        checkToken(request, response);
-                    }
-                }else{
-                    log.debug("=================================  토큰 컨텍스트에서 통과 정보  ============================================");
-                    log.debug(authentication.getPrincipal() + " : " +authentication.toString());
-                    log.debug(headerAuthToken);
-                    log.debug("=========================================================================================================");
-
-                    if(DalbitUtil.isAnonymousUser(authentication.getPrincipal())){
+                String headerAuthToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
+                try {
+                    if (DalbitUtil.isEmpty(authentication)) {
                         if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
-                            if(!request.getRequestURI().startsWith("/token")) {
+                            if(!request.getRequestURI().startsWith("/token")){
                                 throw new GlobalException(ErrorStatus.토큰검증오류);
                             }
                         }else{
                             checkToken(request, response);
                         }
+                    }else{
+                        log.debug("=================================  토큰 컨텍스트에서 통과 정보  ============================================");
+                        log.debug(authentication.getPrincipal() + " : " +authentication.toString());
+                        log.debug(headerAuthToken);
+                        log.debug("=========================================================================================================");
+
+                        if(DalbitUtil.isAnonymousUser(authentication.getPrincipal())){
+                            if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
+                                if(!request.getRequestURI().startsWith("/token")) {
+                                    throw new GlobalException(ErrorStatus.토큰검증오류);
+                                }
+                            }else{
+                                checkToken(request, response);
+                            }
+                        }
                     }
+                } catch (GlobalException e) {
+                    e.printStackTrace();
+
+                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus(), e.getData()));
+                    return;
                 }
-            } catch (GlobalException e) {
-                e.printStackTrace();
-
-                gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus(), e.getData()));
-                return;
             }
-        }
 
-        filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
+        }
     }
 
     @Override
