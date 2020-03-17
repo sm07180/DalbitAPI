@@ -177,21 +177,29 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
                 String itemNm = "곰토끼";
+                String itemThumbs = "";
                 if(Item.스티커_게.getItemNo().equals(pRoomGiftVo.getItem_no())) {
                     itemNm = "게";
+                    itemThumbs = Item.스티커_게.getThumbs();
                 }else if(Item.스티커_사브르.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "사브르";
+                    itemThumbs = Item.스티커_사브르.getThumbs();
                 }else if(Item.애니_파이어웍.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "파이어웍";
+                    itemThumbs = Item.애니_파이어웍.getThumbs();
                 }else if(Item.애니_토끼.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "토끼";
+                    itemThumbs = Item.애니_토끼.getThumbs();
                 }else if(Item.애니_로켓.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "로켓";
+                    itemThumbs = Item.애니_로켓.getThumbs();
                 }else if(Item.애니_UFO.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     itemNm = "UFO";
+                    itemThumbs = Item.애니_UFO.getThumbs();
                 }
                 itemMap.put("itemNm", itemNm);
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
+                itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), request);
             }catch(Exception e){}

@@ -1,5 +1,6 @@
 package com.dalbit.socket.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.Getter;
@@ -36,6 +37,7 @@ public class SocketVo {
     private String message;
     private String memNo;
     private String memNk;
+    private String memImg;
     private int fan = 0;
     private int auth = 0;
     private String authName;
@@ -64,12 +66,14 @@ public class SocketVo {
             this.auth = DalbitUtil.getIntMap(memInfo, "auth");
             this.authName = "청취자";
             if(this.auth == 3){
-                this.authName = "방장";
+                this.authName = "달D";
             }else if(this.auth == 2){
                 this.authName = "게스트";
             }else if(this.auth == 1){
                 this.authName = "매니저";
             }
+            ImageVo img = new ImageVo(DalbitUtil.getStringMap(memInfo, "profileImage"), DalbitUtil.getStringMap(memInfo, "memSex"), DalbitUtil.getProperty("server.photo.url"));
+            this.memImg = img.getThumb120x120();
             this.login = DalbitUtil.isLogin(request) ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
             this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
