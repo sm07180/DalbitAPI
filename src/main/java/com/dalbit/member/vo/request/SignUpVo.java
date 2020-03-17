@@ -3,6 +3,7 @@ package com.dalbit.member.vo.request;
 import com.dalbit.validator.annotation.Password;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,7 +21,7 @@ public class SignUpVo {
     @Password
     private String memPwd;
 
-    @NotBlank @Size(max = 1)
+    @Size(max = 1)
     private String gender;
 
     @NotBlank @Size(max = 20)

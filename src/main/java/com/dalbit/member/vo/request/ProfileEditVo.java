@@ -10,7 +10,7 @@ import javax.validation.constraints.Size;
 @Setter
 public class ProfileEditVo {
 
-    @NotBlank @Size(max = 1)
+    @Size(max = 1)
     private String gender;
 
     @NotBlank @Size(max = 20)
