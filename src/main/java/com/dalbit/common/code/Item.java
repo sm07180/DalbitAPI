@@ -102,14 +102,65 @@ public enum Item {
             , 10
     ),
 
+    애니_당근(
+            "1007"
+            , "당근"
+            , "ani"
+            , 100
+            , "https://devimage.dalbitcast.com/ani/thumbs/200317/item_carrot_thumbs.png"
+            , "https://devimage.dalbitcast.com/ani/webp/200317/item_carrot_20200317.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/200317/item_carrot_20200317.json"
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+
+    애니_당근케익(
+            "1008"
+            , "당근케익"
+            , "ani"
+            , 150
+            , "https://devimage.dalbitcast.com/ani/thumbs/200317/item_carrotcake_thumbs.png"
+            , "https://devimage.dalbitcast.com/ani/webp/200317/item_carrotcake_20200317.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/200317/item_carrotcake_20200317.json"
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+
+    애니_선물상자(
+            "1009"
+            , "선물상자"
+            , "ani"
+            , 200
+            , "https://devimage.dalbitcast.com/ani/thumbs/200317/item_presentbox_thumbs.png"
+            , "https://devimage.dalbitcast.com/ani/webp/200317/item_presentbox_20200317.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/200317/item_presentbox_20200317.json"
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+
     파티클_1(
             "9001"
             , "파티클_1"
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart1.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart1.json"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart1.webp"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart1.json"
             , 360
             , 900
             , 0.5
@@ -124,8 +175,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart2.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart2.json"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart2.webp"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart2.json"
             , 360
             , 900
             , 0.5
@@ -140,8 +191,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart3.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart3.json"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart3.webp"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart3.json"
             , 360
             , 900
             , 0.5
@@ -156,8 +207,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart4.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart4.json"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart4.webp"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart4.json"
             , 360
             , 900
             , 0.5
@@ -172,8 +223,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart5.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart5.json"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart5.webp"
+            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart5.json"
             , 360
             , 900
             , 0.5

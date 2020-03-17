@@ -90,6 +90,9 @@ public class CommonService {
         items.add(new ItemVo(Item.애니_토끼));
         items.add(new ItemVo(Item.애니_로켓));
         items.add(new ItemVo(Item.애니_UFO));
+        items.add(new ItemVo(Item.애니_당근));
+        items.add(new ItemVo(Item.애니_당근케익));
+        items.add(new ItemVo(Item.애니_선물상자));
         Collections.sort(items, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {
@@ -99,12 +102,11 @@ public class CommonService {
         resultMap.put("items", items);
 
         List<ItemVo> particles = new ArrayList<>();
-        /*particles.add(new ItemVo(Item.파티클_1));
+        particles.add(new ItemVo(Item.파티클_1));
         particles.add(new ItemVo(Item.파티클_2));
         particles.add(new ItemVo(Item.파티클_3));
         particles.add(new ItemVo(Item.파티클_4));
-        particles.add(new ItemVo(Item.파티클_5));*/
-        particles.add(new ItemVo(Item.파티클_6));
+        particles.add(new ItemVo(Item.파티클_5));
         Collections.sort(particles, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {
