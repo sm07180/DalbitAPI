@@ -17,4 +17,6 @@ public class RoomListVo {
     @Min(1)
     private Integer records;
 
+    private Integer searchType;
+
 }

@@ -12,6 +12,7 @@ public class P_RoomListVo{
     /* Input */
     private int memLogin;                   //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;                  //방리스트 요청 회원번호
+    private Integer slctType;               //검색구분 -1 or 0: null, 1: 추천, 2:인기, 3:신입
     private String subjectType;             //방주제, 리스트 우선순위 설정
     private int pageNo;                     //현재 페이지 번호
     private int pageCnt;                    //페이지당 리스트 개수

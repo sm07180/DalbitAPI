@@ -176,6 +176,7 @@ public class RoomController {
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(roomListVo.getRoomType());
+        apiData.setSlctType(roomListVo.getSearchType());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 
