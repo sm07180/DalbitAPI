@@ -10,9 +10,9 @@ public enum Item {
             , "게"
             , "sticker"
             , 10
-            , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_hermitcrab_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/item_hermitcrab_200316.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/item_hermitcrab_200316.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_hermitcrab_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_hermitcrab_200316.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200316/item_hermitcrab_200316.json"
             , 108
             , 108
             , 1
@@ -26,9 +26,9 @@ public enum Item {
             , "사브르 "
             , "sticker"
             , 30
-            , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/item_UFO_200316.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/item_lightsaber_200316.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_UFO_200316.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200316/item_lightsaber_200316.json"
             , 108
             , 108
             , 1
@@ -42,9 +42,9 @@ public enum Item {
             , "파이어웍"
             , "ani"
             , 50
-            , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_firework_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/item_firework_200316.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/item_firework_200316.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_firework_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_firework_200316.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200316/item_firework_200316.json"
             , 720
             , 504
             , 1
@@ -58,9 +58,9 @@ public enum Item {
             , "토끼"
             , "ani"
             , 70
-            , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_rabbit_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/item_rabbit_200316.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/item_rabbit_200316.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_rabbit_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_rabbit_200316.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200316/item_rabbit_200316.json"
             , 360
             , 900
             , 0.5
@@ -74,9 +74,9 @@ public enum Item {
             , "로켓"
             , "ani"
             , 100
-            , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_roket_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/20200317_rocket.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/20200317_rocket.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_roket_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/20200317_rocket.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200316/20200317_rocket.json"
             , 360
             , 900
             , 0.5
@@ -90,9 +90,9 @@ public enum Item {
             , "UFO"
             , "ani"
             , 200
-            , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/item_UFO_200316.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/item_UFO_200316.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_UFO_200316.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200316/item_UFO_200316.json"
             , 720
             , 504
             , 1
@@ -107,9 +107,9 @@ public enum Item {
             , "당근"
             , "ani"
             , 100
-            , "https://devimage.dalbitcast.com/ani/thumbs/200317/img_carrot.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200317/item_carrot_20200317.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200317/item_carrot_20200317.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200317/img_carrot.png"
+            , "https://image.dalbitcast.com/ani/webp/200317/item_carrot_20200317.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200317/item_carrot_20200317.json"
             , 360
             , 900
             , 0.5
@@ -124,9 +124,9 @@ public enum Item {
             , "당근케익"
             , "ani"
             , 150
-            , "https://devimage.dalbitcast.com/ani/thumbs/200317/img_carrotcake.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200317/item_carrotcake_20200317.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200317/item_carrotcake_20200317.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200317/img_carrotcake.png"
+            , "https://image.dalbitcast.com/ani/webp/200317/item_carrotcake_20200317.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200317/item_carrotcake_20200317.json"
             , 360
             , 900
             , 0.5
@@ -141,9 +141,9 @@ public enum Item {
             , "선물상자"
             , "ani"
             , 200
-            , "https://devimage.dalbitcast.com/ani/thumbs/200317/img_presentbox.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200317/item_presentbox_20200317.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200317/item_presentbox_20200317.json"
+            , "https://image.dalbitcast.com/ani/thumbs/200317/img_presentbox.png"
+            , "https://image.dalbitcast.com/ani/webp/200317/item_presentbox_20200317.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200317/item_presentbox_20200317.json"
             , 360
             , 900
             , 0.5
@@ -159,8 +159,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart1.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart1.json"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart1.webp"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart1.json"
             , 360
             , 900
             , 0.5
@@ -175,8 +175,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart2.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart2.json"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart2.webp"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart2.json"
             , 360
             , 900
             , 0.5
@@ -191,8 +191,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart3.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart3.json"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart3.webp"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart3.json"
             , 360
             , 900
             , 0.5
@@ -207,8 +207,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart4.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart4.json"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart4.webp"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart4.json"
             , 360
             , 900
             , 0.5
@@ -223,8 +223,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart5.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200317_heart5.json"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart5.webp"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200317_heart5.json"
             , 360
             , 900
             , 0.5
@@ -239,8 +239,8 @@ public enum Item {
             , "particle"
             , 0
             , ""
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart6.webp"
-            , "https://devimage.dalbitcast.com/ani/likeparticle/20200316_heart6.json"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200316_heart6.webp"
+            , "https://image.dalbitcast.com/ani/likeparticle/20200316_heart6.json"
             , 360
             , 900
             , 0.5
