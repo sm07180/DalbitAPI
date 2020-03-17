@@ -75,8 +75,8 @@ public enum Item {
             , "ani"
             , 100
             , "https://devimage.dalbitcast.com/ani/thumbs/200316/item_roket_thumbs_200316.png"
-            , "https://devimage.dalbitcast.com/ani/webp/200316/item_rocket_200316.webp"
-            , "https://devimage.dalbitcast.com/ani/lottie/200316/item_rocket_200316.json"
+            , "https://devimage.dalbitcast.com/ani/webp/200316/20200317_rocket.webp"
+            , "https://devimage.dalbitcast.com/ani/lottie/200316/20200317_rocket.json"
             , 360
             , 900
             , 0.5
