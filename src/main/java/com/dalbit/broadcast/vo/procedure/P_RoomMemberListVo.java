@@ -17,6 +17,7 @@ public class P_RoomMemberListVo {
 
     /* Output */
     private String nickName;
+    private String userID;
     private String memSex;
     private int birthYear;
     private Object profileImage;

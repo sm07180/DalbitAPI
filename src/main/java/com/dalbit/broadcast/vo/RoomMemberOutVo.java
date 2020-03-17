@@ -12,6 +12,7 @@ public class RoomMemberOutVo{
 
     private String memNo;
     private String nickNm;
+    private String memId;
     private String gender;
     private int age;
     private ImageVo profImg;
@@ -25,6 +26,7 @@ public class RoomMemberOutVo{
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();
         this.nickNm = target.getNickName();
+        this.memId = target.getUserID();
         this.gender = target.getMemSex();
         this.age = DalbitUtil.ageCalculation(target.getBirthYear());
         this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
