@@ -179,7 +179,7 @@ public class MemberController {
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult);
-        String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckVo.getNickNm()));
+        String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckVo.getNickNm().trim()));
 
         return result;
     }
