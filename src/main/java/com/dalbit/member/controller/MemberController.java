@@ -35,6 +35,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,8 @@ public class MemberController {
      * 토큰조회
      */
     @GetMapping("/token")
-    public String token(HttpServletRequest request){
+    public String token(HttpServletRequest request, HttpServletResponse response){
+        DalbitUtil.setHeader(request, response);
         HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
 
         if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
