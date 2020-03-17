@@ -12,22 +12,22 @@ public class ParamCheckInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
-        log.debug("========================== Start Request uri = " + request.getRequestURI());
+        log.info("========================== Start Request uri = " + request.getRequestURI());
         for(Enumeration<String> itertor = (Enumeration<String>)request.getParameterNames(); itertor.hasMoreElements();){
             String key = itertor.nextElement();
             String[] values = request.getParameterValues(key);
             if (values != null && values.length > 0){
                 if(values.length == 1){
-                    log.debug("========================================= " + request.getRequestURI() + " " + key + " = |" + values[0] + "|");
+                    log.info("========================================= " + request.getRequestURI() + " " + key + " = |" + values[0] + "|");
                 }else{
                     for(int i = 0; i < values.length; i++){
-                        log.debug("========================================= " + request.getRequestURI() + " " + key + "." + i + " = |" + values[i] + "|");
+                        log.info("========================================= " + request.getRequestURI() + " " + key + "." + i + " = |" + values[i] + "|");
                     }
                 }
             }
         }
-        log.debug("========================== " + request.getRequestURI() + " HEADER authToken : " + request.getHeader("authToken"));
-        log.debug("========================== End Request uri = " + request.getRequestURI());
+        log.info("========================== " + request.getRequestURI() + " HEADER authToken : " + request.getHeader("authToken"));
+        log.info("========================== End Request uri = " + request.getRequestURI());
 
         return true;
     }
