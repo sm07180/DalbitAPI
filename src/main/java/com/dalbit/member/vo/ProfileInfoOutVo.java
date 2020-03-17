@@ -51,7 +51,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.gender = target.getMemSex();
         this.age = target.getAge();
         this.memId = target.getMemId();
-        this.profImg = new ImageVo(target.getProfileImage(), DalbitUtil.getProperty("server.photo.url"));
+        this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.profMsg = target.getProfileMsg();
         this.level = target.getLevel();
         this.fanCnt = target.getFanCount();
