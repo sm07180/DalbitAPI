@@ -29,11 +29,13 @@ public class RoomOutVo {
     private String startDt;
     private long startTs;
     private String bjMemNo;
+    private String bjMemId;
     private String bjNickNm;
     private String bjGender;
     private int bjAge;
     private ImageVo bjProfImg;
     private String gstMemNo;
+    private String gstMemId;
     private String gstNickNm;
     private String gstGender;
     private int gstAge;
@@ -96,11 +98,13 @@ public class RoomOutVo {
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();
+        this.bjMemId = target.getBj_userId();
         this.bjNickNm = target.getBj_nickName();
         this.bjGender = target.getBj_memSex();
         this.bjAge = DalbitUtil.ageCalculation(target.getBj_birthYear());
         this.bjProfImg = new ImageVo(target.getBj_profileImage(), target.getBj_memSex(), DalbitUtil.getProperty("server.photo.url"));
         this.gstMemNo = target.getGuest_mem_no();
+        this.gstMemId = target.getGuest_userId();
         this.gstNickNm = target.getGuest_nickName();
         this.gstGender = target.getGuest_memSex();
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());

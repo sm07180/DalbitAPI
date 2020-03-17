@@ -99,6 +99,7 @@ public class RoomService {
             returnMap.put("bgImg", target.getBgImg());
             returnMap.put("link", target.getLink());
             returnMap.put("bjMemNo", target.getBjMemNo());
+            returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
             returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
