@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.util.ArrayList;
@@ -43,38 +42,38 @@ public class CommonController {
     RedisUtil redisUtil;
 
     @GetMapping("/splash")
-    public String getSplash(HttpServletRequest request, HttpServletResponse response){
-        DalbitUtil.setHeader(request, response);
+    public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getCodeCache("splash")));
     }
 
     @PostMapping("/splash")
-    public String updateSplash(HttpServletRequest request, HttpServletResponse response){
-        DalbitUtil.setHeader(request, response);
+    public String updateSplash(){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));
+    }
+
+    @GetMapping("/check/service")
+    public String checkService(){
+        return "pong";
     }
 
     /**
      * 위치정보가져오기
      */
     @GetMapping("/location")
-    public LocationVo GetLocateByIp(HttpServletRequest request, HttpServletResponse response) {
-        DalbitUtil.setHeader(request, response);
+    public LocationVo GetLocateByIp(HttpServletRequest request) {
         return DalbitUtil.getLocation(request);
     }
 
     @GetMapping("/ctrl/check/service")
     @ResponseBody
-    public String checkService(HttpServletRequest request, HttpServletResponse response){
-        DalbitUtil.setHeader(request, response);
+    public String checkService(HttpServletRequest request){
         return commonService.checkHealthy(request);
     }
 
     @GetMapping("/store")
-    public String tmpStore(HttpServletRequest request, HttpServletResponse response)
+    public String tmpStore()
     {
-        DalbitUtil.setHeader(request, response);
         List<HashMap> list = new ArrayList<>();
         HashMap store1 = new HashMap();
         store1.put("storeNo", "3001");
@@ -116,7 +115,7 @@ public class CommonController {
         store6.put("storeNm", "달 3000");
         store6.put("price", 300000);
         store6.put("priceNm", "");
-        store6.put("img", "https://image.dalbitcast.com/store/store_6.png");
+        store6.put("img", "https://devimage.dalbitcast.com/store/store_6.png");
         store6.put("appleStoreId", "com.dalbitcast.inapp.dal3000");
         list.add(store1);
         list.add(store2);
