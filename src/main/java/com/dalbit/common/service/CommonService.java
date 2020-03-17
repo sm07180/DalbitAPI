@@ -136,7 +136,9 @@ public class CommonService {
         String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
         try{
             if(!DalbitUtil.isEmpty(headerToken) && !request.getRequestURI().startsWith("/member/logout")){
+                log.info("check HeaderToken : " + headerToken);
                 tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
+                log.info("tokenVo : " + tokenVo);
             }
         }catch(GlobalException e){}
 
