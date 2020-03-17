@@ -135,6 +135,10 @@ public class CommonController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
+        if(!smsVo.getPhoneNo().startsWith("01")){
+            throw new GlobalException(Status.인증번호요청_유효하지않은번호);
+        }
+
         DeviceVo deviceVo = new DeviceVo(request);
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
