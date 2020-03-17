@@ -107,7 +107,7 @@ public enum Item {
             , "당근"
             , "ani"
             , 100
-            , "https://devimage.dalbitcast.com/ani/thumbs/200317/item_carrot_thumbs.png"
+            , "https://devimage.dalbitcast.com/ani/thumbs/200317/img_carrot.png"
             , "https://devimage.dalbitcast.com/ani/webp/200317/item_carrot_20200317.webp"
             , "https://devimage.dalbitcast.com/ani/lottie/200317/item_carrot_20200317.json"
             , 360
@@ -124,7 +124,7 @@ public enum Item {
             , "당근케익"
             , "ani"
             , 150
-            , "https://devimage.dalbitcast.com/ani/thumbs/200317/item_carrotcake_thumbs.png"
+            , "https://devimage.dalbitcast.com/ani/thumbs/200317/img_carrotcake.png"
             , "https://devimage.dalbitcast.com/ani/webp/200317/item_carrotcake_20200317.webp"
             , "https://devimage.dalbitcast.com/ani/lottie/200317/item_carrotcake_20200317.json"
             , 360
@@ -141,7 +141,7 @@ public enum Item {
             , "선물상자"
             , "ani"
             , 200
-            , "https://devimage.dalbitcast.com/ani/thumbs/200317/item_presentbox_thumbs.png"
+            , "https://devimage.dalbitcast.com/ani/thumbs/200317/img_presentbox.png"
             , "https://devimage.dalbitcast.com/ani/webp/200317/item_presentbox_20200317.webp"
             , "https://devimage.dalbitcast.com/ani/lottie/200317/item_presentbox_20200317.json"
             , 360

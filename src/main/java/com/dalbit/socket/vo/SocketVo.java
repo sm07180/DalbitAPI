@@ -53,16 +53,16 @@ public class SocketVo {
     private int recvTime = 0;
 
 
-    public SocketVo(String memNo, String recvMemNo, HttpServletRequest request){
+    public SocketVo(String memNo, String recvMemNo, boolean isLogin){
         this.memNo = memNo;
         this.recvMemNo = recvMemNo;
-        this.login = DalbitUtil.isLogin(request) ? 1 : 0;
+        this.login = isLogin ? 1 : 0;
     }
 
-    public SocketVo(String memNo, HashMap memInfo, HttpServletRequest request){
+    public SocketVo(String memNo, HashMap memInfo, boolean isLogin){
         if(memInfo != null){
             this.memNo = memNo;
-            this.fan = "0".equals(DalbitUtil.getStringMap(memInfo, "enableFan")) ? 1 : 0;
+            this.fan = DalbitUtil.getIntMap(memInfo, "enableFan") == 0 ? 1 : 0;
             this.auth = DalbitUtil.getIntMap(memInfo, "auth");
             this.authName = "청취자";
             if(this.auth == 3){
@@ -74,7 +74,7 @@ public class SocketVo {
             }
             ImageVo img = new ImageVo(DalbitUtil.getStringMap(memInfo, "profileImage"), DalbitUtil.getStringMap(memInfo, "memSex"), DalbitUtil.getProperty("server.photo.url"));
             this.memImg = img.getThumb120x120();
-            this.login = DalbitUtil.isLogin(request) ? 1 : 0;
+            this.login = isLogin ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
             this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
         }

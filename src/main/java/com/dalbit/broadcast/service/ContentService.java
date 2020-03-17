@@ -76,7 +76,7 @@ public class ContentService {
         String result;
         if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
             try{
-                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), request);
+                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정성공));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_정상회원이아님.getMessageCode())) {
@@ -105,7 +105,7 @@ public class ContentService {
         String result;
         if (procedureVo.getRet().equals(Status.공지삭제하기성공.getMessageCode())) {
             try{
-                socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), request);
+                socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기성공));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_정상회원이아님.getMessageCode())) {
@@ -153,7 +153,7 @@ public class ContentService {
                 socketMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
                 socketMap.put("writeDt", DalbitUtil.getUTCFormat((Date)resultMap.get("writeDate")));
                 socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((Date)resultMap.get("writeDate")));
-                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), request);
+                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공, returnMap));
         }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){

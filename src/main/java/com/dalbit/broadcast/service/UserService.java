@@ -122,7 +122,7 @@ public class UserService {
         String result="";
         if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
             try{
-                socketService.execGuest(pRoomGuestAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomGuestAddVo.getGuest_mem_no(), 3, DalbitUtil.getAuthToken(request), request);
+                socketService.execGuest(pRoomGuestAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomGuestAddVo.getGuest_mem_no(), 3, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
@@ -167,7 +167,7 @@ public class UserService {
         String result = "";
         if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
             try{
-                socketService.execGuest(pRoomGuestDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomGuestDeleteVo.getGuest_mem_no(), 6, DalbitUtil.getAuthToken(request), request);
+                socketService.execGuest(pRoomGuestDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomGuestDeleteVo.getGuest_mem_no(), 6, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
@@ -212,14 +212,14 @@ public class UserService {
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
             try{
-                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), request);
+                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
-                socketService.changeCount(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), request);
+                socketService.changeCount(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장, returnMap));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_회원아님.getMessageCode())) {
@@ -295,7 +295,7 @@ public class UserService {
         String result;
         if (procedureVo.getRet().equals(Status.매니저지정_성공.getMessageCode())) {
             try{
-                socketService.changeManager(pManagerAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request), request);
+                socketService.changeManager(pManagerAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_성공));
         } else if (procedureVo.getRet().equals(Status.매니저지정_회원아님.getMessageCode())) {
@@ -335,7 +335,7 @@ public class UserService {
         String result;
         if (procedureVo.getRet().equals(Status.매니저취소_성공.getMessageCode())) {
             try{
-                socketService.changeManager(pManagerDelVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request), request);
+                socketService.changeManager(pManagerDelVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_성공));
         } else if (procedureVo.getRet().equals(Status.매니저취소_회원아님.getMessageCode())) {
@@ -378,7 +378,7 @@ public class UserService {
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
-                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "1", request);
+                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request));
                 }catch(Exception e){}
                 log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
@@ -418,7 +418,7 @@ public class UserService {
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
-                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "0", request);
+                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request));
                 }catch(Exception e){}
                 log.info("Bj 팬해재 확인 {}", pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }

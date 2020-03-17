@@ -390,7 +390,7 @@ public class MypageService {
         String result;
         if(procedureVo.getRet().equals(Status.루비선물_성공.getMessageCode())) {
             try{
-                socketService.giftDal(new MemberVo().getMyMemNo(request), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request), request);
+                socketService.giftDal(new MemberVo().getMyMemNo(request), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_성공));
         }else if(procedureVo.getRet().equals(Status.루비선물_요청회원번호_회원아님.getMessageCode())) {
@@ -767,7 +767,7 @@ public class MypageService {
             if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureCheckVo.getRet())) {
                 HashMap resultCheckMap = new Gson().fromJson(procedureCheckVo.getExt(), HashMap.class);
                 try{
-                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), request);
+                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
                 }catch(Exception e){}
 
             }
