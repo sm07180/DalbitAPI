@@ -135,7 +135,7 @@ public class CommonController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        if(!smsVo.getPhoneNo().startsWith("01")){
+        if(!DalbitUtil.isSmsPhoneNoChk(smsVo.getPhoneNo())){
             throw new GlobalException(Status.인증번호요청_유효하지않은번호);
         }
 

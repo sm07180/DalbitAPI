@@ -813,6 +813,17 @@ public class DalbitUtil {
         return afterFormat.format(beforeDate);
     }
 
+    /**
+     * 휴대폰 유효성 체크
+     */
+    public static boolean isSmsPhoneNoChk(String phoneNo){
+        boolean chk = true;
+        if(!phoneNo.startsWith("01")){
+            chk = false;
+        }
+        return chk;
+    }
+
 }
 
 
