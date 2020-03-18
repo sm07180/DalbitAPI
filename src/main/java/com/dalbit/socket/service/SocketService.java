@@ -271,9 +271,6 @@ public class SocketService {
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            //if(DalbitUtil.profileCheck("local") || DalbitUtil.profileCheck("dev")){
-                isFirst = true;
-            //}
             if(isFirst){
                 SocketVo vo = getSocketVo(roomNo, memNo, isLogin);
                 if(vo.getFan() == 0){

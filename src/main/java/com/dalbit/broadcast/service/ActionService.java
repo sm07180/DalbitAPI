@@ -65,7 +65,11 @@ public class ActionService {
             String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
             String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
             try{ //좋아요 발송
-                socketService.sendLike(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), (DalbitUtil.getIntMap(resultMap, "firstGood") == 1), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                boolean isFirst = true;
+                if(DalbitUtil.profileCheck("real")){
+                    isFirst = (DalbitUtil.getIntMap(resultMap, "firstGood") == 1);
+                }
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             try{ //좋아요수, 랭킹, 팬랭킹 발송
                 HashMap socketMap = new HashMap();
