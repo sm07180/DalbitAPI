@@ -20,5 +20,6 @@ public class SmsVo {
     private String sendPhoneNo;
     private int code;
     private int CMID;
+    private String umId;
 
 }

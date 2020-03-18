@@ -21,7 +21,7 @@
           , SUBJECT
           , MSG_BODY
         ) values(
-          'dalbitdev'
+          #{umId}
           , '0'
           , #{sendPhoneNo}
           , #{phoneNo}
