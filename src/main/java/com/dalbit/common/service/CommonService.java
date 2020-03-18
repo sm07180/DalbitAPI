@@ -93,6 +93,7 @@ public class CommonService {
         items.add(new ItemVo(Item.애니_당근));
         items.add(new ItemVo(Item.애니_당근케익));
         items.add(new ItemVo(Item.애니_선물상자));
+        items.add(new ItemVo(Item.애니_런닝머신));
         Collections.sort(items, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {

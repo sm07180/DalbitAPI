@@ -198,6 +198,8 @@ public class ActionService {
                     item = Item.애니_당근케익;
                 }else if(Item.애니_선물상자.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     item = Item.애니_선물상자;
+                }else if(Item.애니_런닝머신.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    item = Item.애니_런닝머신;
                 }
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
