@@ -378,7 +378,7 @@ public class UserService {
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
-                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request));
+                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request));
                 }catch(Exception e){}
                 log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
@@ -418,7 +418,7 @@ public class UserService {
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(apiData);
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
-                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request));
+                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request));
                 }catch(Exception e){}
                 log.info("Bj 팬해재 확인 {}", pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }

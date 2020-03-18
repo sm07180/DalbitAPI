@@ -347,7 +347,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> addFan(String roomNo, String memNo, String authToken, String fan, boolean isLogin){
+    public Map<String, Object> addFan(String roomNo, String memNo, String recvMemNo, String authToken, String fan, boolean isLogin){
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
@@ -359,6 +359,7 @@ public class SocketService {
             }
             vo.setCommand("reqFan");
             vo.setMessage(fan);
+            vo.setRecvMemNo(recvMemNo);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
