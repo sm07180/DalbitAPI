@@ -484,6 +484,14 @@ public class DalbitUtil {
         return dt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 
+    public static LocalDateTime getUTC(String dt) {
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            return getUTC(transFormat.parse(dt));
+        }catch(ParseException e){}
+        return null;
+    }
+
     /**
      * UTC기준 날짜 문자 변환
      *
@@ -494,6 +502,14 @@ public class DalbitUtil {
         return getUTC(dt).format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
     }
 
+    public static String getUTCFormat(String dt){
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            return getUTCFormat(transFormat.parse(dt));
+        }catch(ParseException e){}
+        return null;
+    }
+
     /**
      * UTC기준 타임스탬프 변환
      *
@@ -502,6 +518,13 @@ public class DalbitUtil {
      */
     public static long getUTCTimeStamp(Date dt){
         return Timestamp.valueOf(getUTC(dt)).getTime() / 1000;
+    }
+    public static long getUTCTimeStamp(String dt){
+        SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try{
+            return getUTCTimeStamp(transFormat.parse(dt));
+        }catch(ParseException e){}
+        return 0;
     }
 
     /**
