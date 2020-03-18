@@ -382,7 +382,6 @@ public class UserService {
                 }catch(Exception e){}
                 log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
-
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공));
         } else if(procedureVo.getRet().equals(Status.팬등록_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_회원아님));
