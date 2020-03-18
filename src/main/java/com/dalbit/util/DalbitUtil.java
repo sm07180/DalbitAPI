@@ -840,9 +840,9 @@ public class DalbitUtil {
      * 휴대폰 유효성 체크
      */
     public static boolean isSmsPhoneNoChk(String phoneNo){
-        boolean chk = true;
-        if(!phoneNo.startsWith("01")){
-            chk = false;
+        boolean chk = false;
+        if(phoneNo.startsWith("010") || !phoneNo.startsWith("011") || !phoneNo.startsWith("016") || !phoneNo.startsWith("017") || !phoneNo.startsWith("018") || !phoneNo.startsWith("018")){
+            chk = true;
         }
         return chk;
     }

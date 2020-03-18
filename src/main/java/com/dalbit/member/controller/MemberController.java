@@ -123,7 +123,7 @@ public class MemberController {
         String result = "";
         ProcedureVo procedureVo = memberService.signup(joinVo, request);
         //휴대폰 인증했던 번호와 일치여부 확인
-        //if(request.getSession().getAttribute("phoneNo").equals(memId)){
+        if(request.getSession().getAttribute("phoneNo").equals(memId)){
             if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
                 //로그인 처리
                 P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser);
@@ -164,10 +164,10 @@ public class MemberController {
             }else{
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
             }
-        /*} else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
             request.getSession().invalidate();
-        }*/
+        }
 
         return result;
     }
