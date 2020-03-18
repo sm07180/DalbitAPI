@@ -121,9 +121,10 @@ public class MemberController {
         );
 
         String result = "";
-        ProcedureVo procedureVo = memberService.signup(joinVo, request);
-        //휴대폰 인증했던 번호와 일치여부 확인
-        if(request.getSession().getAttribute("phoneNo").equals(memId)){
+        if(request.getSession().getAttribute("phoneNo").toString().equals(memId)){
+            ProcedureVo procedureVo = memberService.signup(joinVo, request);
+            //휴대폰 인증했던 번호와 일치여부 확인
+
             if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
                 //로그인 처리
                 P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser);
