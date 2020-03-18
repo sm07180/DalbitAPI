@@ -26,8 +26,8 @@ public enum Item {
             , "사브르 "
             , "sticker"
             , 30
-            , "https://image.dalbitcast.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
-            , "https://image.dalbitcast.com/ani/webp/200316/item_UFO_200316.webp"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_lightsaber_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_lightsaber_200316.webp"
             , "https://image.dalbitcast.com/ani/lottie/200316/item_lightsaber_200316.json"
             , 108
             , 108
