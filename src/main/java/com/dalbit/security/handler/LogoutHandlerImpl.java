@@ -70,7 +70,8 @@ public class LogoutHandlerImpl implements LogoutHandler {
                 gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃성공, result.get("tokenVo")));
 
             } catch (IOException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
+                log.info(e.getMessage());
             }
         }
     }

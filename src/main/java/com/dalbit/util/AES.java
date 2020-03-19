@@ -30,11 +30,11 @@ public class AES {
             }
             catch (NoSuchAlgorithmException e) {
                   log.error("AES.setKey NoSuchAlgorithmException - myKey : [{}]", myKey);
-                  e.printStackTrace();
+                  //e.printStackTrace();
             }
             catch (UnsupportedEncodingException e) {
                   log.error("AES.setKey UnsupportedEncodingException - myKey : [{}]", myKey);
-                  e.printStackTrace();
+                  //e.printStackTrace();
             }
       }
 
@@ -47,7 +47,7 @@ public class AES {
             }catch (Exception e){
                   log.error("AES.encrypt Error - strToEncrypt : [{}]", strToEncrypt);
                   log.error("AES.encrypt Error - secret : [{}]", secret);
-                  e.printStackTrace();
+                  //e.printStackTrace();
             }
             return null;
       }
@@ -61,7 +61,7 @@ public class AES {
             }catch (Exception e){
                   log.error("AES.decrypt Error - strToEncrypt : [{}]", strToDecrypt);
                   log.error("AES.decrypt Error - secret : [{}]", secret);
-                  e.printStackTrace();
+                  //e.printStackTrace();
             }
             return null;
       }

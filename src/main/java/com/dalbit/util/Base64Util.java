@@ -30,7 +30,7 @@ public class Base64Util {
             return returnFile;
         } catch (IOException e) {
             log.error(e.getMessage());
-            e.printStackTrace();
+            //e.printStackTrace();
             return null;
         }
     }

@@ -86,7 +86,7 @@ public class JwtUtil {
                 throw new GlobalException(ErrorStatus.토큰검증오류, "회원번호 or 로그인 여부가 없습니다.");
             }
         }catch (Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             throw new GlobalException(ErrorStatus.토큰검증오류, "이상한 토큰이 넘어왔어요.");
         }
     }
