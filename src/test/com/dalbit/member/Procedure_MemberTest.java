@@ -52,13 +52,13 @@ public class Procedure_MemberTest {
         Assert.assertEquals(Status.로그인성공.getMessageCode(), procedureVo.getRet());
     }
 
-    @Test
+    /*@Test
     public void 회원가입()throws GlobalException{
 
         P_JoinVo joinVo = new P_JoinVo();
 
         memberService.signup(joinVo);
-    }
+    }*/
 
     @Test
     public void 닉네임중복체크(){
