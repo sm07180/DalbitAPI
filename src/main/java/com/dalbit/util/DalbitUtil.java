@@ -934,7 +934,7 @@ public class DalbitUtil {
             msgChk="Y";
         } else {
             throw new GlobalException(Status.본인인증검증오류);
-        }*/
+        }
 
         return "";
     }*/
