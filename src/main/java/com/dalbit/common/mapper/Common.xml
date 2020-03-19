@@ -21,12 +21,12 @@
           , SUBJECT
           , MSG_BODY
         ) values(
-          'dalbitdev'
+          #{umId}
           , '0'
           , #{sendPhoneNo}
           , #{phoneNo}
           , 'TEST'
-          , CONCAT('[달빛라디오] 인증번호는', #{code}, '입니다')
+          , CONCAT('[달빛라디오] 인증번호는 (', #{code}, ') 입니다.')
         )
     </insert>
 

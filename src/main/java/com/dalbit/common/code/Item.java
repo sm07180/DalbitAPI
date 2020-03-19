@@ -26,8 +26,8 @@ public enum Item {
             , "사브르 "
             , "sticker"
             , 30
-            , "https://image.dalbitcast.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
-            , "https://image.dalbitcast.com/ani/webp/200316/item_UFO_200316.webp"
+            , "https://image.dalbitcast.com/ani/thumbs/200316/item_lightsaber_thumbs_200316.png"
+            , "https://image.dalbitcast.com/ani/webp/200316/item_lightsaber_200316.webp"
             , "https://image.dalbitcast.com/ani/lottie/200316/item_lightsaber_200316.json"
             , 108
             , 108
@@ -144,6 +144,23 @@ public enum Item {
             , "https://image.dalbitcast.com/ani/thumbs/200317/img_presentbox.png"
             , "https://image.dalbitcast.com/ani/webp/200317/item_presentbox_20200317.webp"
             , "https://image.dalbitcast.com/ani/lottie/200317/item_presentbox_20200317.json"
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+
+    애니_런닝머신(
+            "1010"
+            , "런닝머신"
+            , "ani"
+            , 250
+            , "https://image.dalbitcast.com/ani/thumbs/200318/img_treadmill.png"
+            , "https://image.dalbitcast.com/ani/webp/200318/20200318_treadmill.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200318/20200318_treadmill.json"
             , 360
             , 900
             , 0.5

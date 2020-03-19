@@ -97,6 +97,8 @@ public class SocketVo {
         qs.append(this.memNo);
         qs.append("&memNk=");
         qs.append(this.memNk);
+        qs.append("&memImg=");
+        qs.append(this.memImg);
         qs.append("&message=");
         qs.append(this.message);
         qs.append("&fan=");

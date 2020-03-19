@@ -171,6 +171,7 @@ public class CommonController {
         log.debug("휴대폰 인증코드: {}", code);
         smsVo.setCode(code);
         smsVo.setSendPhoneNo(DalbitUtil.getProperty("sms.send.phone.no"));
+        smsVo.setUmId(DalbitUtil.getProperty("sms.umid"));
 
         if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
             commonService.requestSms(smsVo);

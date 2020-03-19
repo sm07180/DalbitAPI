@@ -151,8 +151,8 @@ public class ContentService {
                 socketMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
                 socketMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
                 socketMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
-                socketMap.put("writeDt", DalbitUtil.getUTCFormat((Date)resultMap.get("writeDate")));
-                socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((Date)resultMap.get("writeDate")));
+                socketMap.put("writeDt", DalbitUtil.getUTCFormat((String)resultMap.get("writeDate")));
+                socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((String)resultMap.get("writeDate")));
                 socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공, returnMap));
