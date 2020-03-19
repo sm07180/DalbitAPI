@@ -22,9 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -166,8 +164,9 @@ public class CommonController {
         boolean isJoin = LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode());
         boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());
         int authType = smsVo.getAuthType();
-        String result;
         int code = DalbitUtil.getSmscode();
+        boolean isRequestSms = false;
+        String result="";
 
         log.debug("인증타입: {}", authType);
         log.debug("휴대폰 번호: {}", smsVo.getPhoneNo());
@@ -177,43 +176,41 @@ public class CommonController {
         smsVo.setUmId(DalbitUtil.getProperty("sms.umid"));
 
         if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
-            commonService.requestSms(smsVo);
-
-            HttpSession session = request.getSession();
-            long reqTime = System.currentTimeMillis();
-            session.setAttribute("CMID", smsVo.getCMID());
-            session.setAttribute("code", code);
-            session.setAttribute("reqTime", reqTime);
-            session.setAttribute("authYn", "N");
-            session.setAttribute("phoneNo", smsVo.getPhoneNo());
-
-            SmsOutVo smsOutVo = new SmsOutVo();
-            smsOutVo.setCMID(smsVo.getCMID());
-
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
-        }else if (isPassword && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
-            commonService.requestSms(smsVo);
-
-            HttpSession session = request.getSession();
-            long reqTime = System.currentTimeMillis();
-            session.setAttribute("CMID", smsVo.getCMID());
-            session.setAttribute("code", code);
-            session.setAttribute("reqTime", reqTime);
-            session.setAttribute("authYn", "N");
-            session.setAttribute("phoneNo", smsVo.getPhoneNo());
-
-            SmsOutVo smsOutVo = new SmsOutVo();
-            smsOutVo.setCMID(smsVo.getCMID());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
-        } else {
+            // 회원가입 필요
+            isRequestSms = true;
+        }else if(!isJoin && isPassword && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
+            //회원이면서 비밀번호 변경
+            isRequestSms = true;
+        }else{
+            // 이미 가입된 회원이 회원가입 할 경우
             if (DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
-            }else if(DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
+            // 비회원이 패스워드 변경을 요청한 경우
+            } else if(DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType) {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
+            // 예외
             } else {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청실패));
-                request.getSession().invalidate();
             }
+            request.getSession().invalidate();
+        }
+
+        // 위의 예외처리에 걸리지 않은 경우 인증요청
+        if(isRequestSms){
+            commonService.requestSms(smsVo);
+
+            HttpSession session = request.getSession();
+            long reqTime = System.currentTimeMillis();
+            session.setAttribute("CMID", smsVo.getCMID());
+            session.setAttribute("code", code);
+            session.setAttribute("reqTime", reqTime);
+            session.setAttribute("authYn", "N");
+            session.setAttribute("phoneNo", smsVo.getPhoneNo());
+
+            SmsOutVo smsOutVo = new SmsOutVo();
+            smsOutVo.setCMID(smsVo.getCMID());
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
         }
 
         HttpSession session = request.getSession();
@@ -223,6 +220,7 @@ public class CommonController {
         log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
 
         return result;
+
     }
 
     /**
@@ -272,4 +270,42 @@ public class CommonController {
 
         return result;
     }
+
+
+    /**
+     * 본인인증요청
+     */
+    @PostMapping("self/auth")
+    public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult);
+
+        selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
+        selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
+        selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
+        selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
+
+        SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
+        selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
+        selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.url"));    //결과수신URL
+        selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));    //IFrame사용여부
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
+    }
+
+
+    /**
+     * 본인인증확인
+    */
+    @GetMapping("self/auth")
+    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException {
+        String rec_cert = request.getParameter("rec_cert").trim();  //암호화 수신값
+        String k_certNum = request.getParameter("certNum").trim();
+
+        //수신된 certNum를 이용하여 복호화
+        DalbitUtil.getDecAuthInfo(rec_cert, k_certNum);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
+    }
+
 }

@@ -8,13 +8,11 @@
 	//************************************************************************
 %>
 <%
-	response.setHeader("Pragma","no-cache");			// HTTP1.0 캐쉬 방지
+	/*response.setHeader("Pragma","no-cache");			// HTTP1.0 캐쉬 방지
 	response.setDateHeader("Expires",0);				// proxy 서버의 캐쉬 방지
 	response.setHeader("Pragma", "no-store");			// HTTP1.1 캐쉬 방지
-    response.setHeader("authToken", "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg0NTA0OTg3LCJleHAiOjE1ODcwOTY5ODd9.NPIkCX4DEVYd5P5USyjDWnNvqxAQSxCh3dvIYZW5fQs");
-    response.setHeader("custom-header", "{\"os\":\"3\",\"deviceId\":\"44d91617-28a4-4870-a92d-ff0f0b8859b9\",\"appVer\":\"1.0.0.0\",\"locale\":\"ko-KR\",\"language\":\"ko-KR\"}");
 	if(request.getProtocol().equals("HTTP/1.1"))
-			response.setHeader("Cache-Control", "no-cache"); // HTTP1.1 캐쉬 방지
+			response.setHeader("Cache-Control", "no-cache"); // HTTP1.1 캐쉬 방지*/
 %>
 <%@ page  contentType = "text/html;charset=utf-8"%>
 <%@ page import ="java.util.*,java.text.SimpleDateFormat"%>
@@ -95,7 +93,7 @@
                     <tr>
                         <td align=center>본인인증방법</td>
                         <td align=left>
-                            <select name="certMet" style="width:300">
+                            <select name="certMet" style="width:300px">
                                 <option value="A">인증방법선택 화면</option>
                                 <option value="M"selected>휴대폰인증 화면</option>
                                 <option value="C">신용카드인증 화면</option>
@@ -105,42 +103,42 @@
                     </tr>
                     <tr>
                         <td align=center>이용자성명</td>
-                        <td align=left><input type="text" name="name"  size="41" maxlength ='20' value="이형원"></td>
+                        <td align=left><input type="text" name="name"  size="41" maxlength ='20' value=""></td>
                     </tr>
                     <tr>
                         <td align=center>휴대폰번호</td>
                         <td align=left>
-						  <input type="text" name="phoneNo" id="textfield" style="width:160px;" class="hpinput" maxlength="11" value="01031855992"/>
+						  <input type="text" name="phoneNo" id="textfield" style="width:160px;" class="hpinput" maxlength="11" value=""/>
 						</td>
                     </tr>
                     <tr>
                         <td align=center>이통사</td>
                         <td align=left>
-						<input type="radio" name="phoneCorp" id="radio" value="SKT" checked> SKT
-						<input type="radio" name="phoneCorp" id="radio" value="KTF"> KT 
-						<input type="radio" name="phoneCorp" id="radio" value="LGT"> LG U+ 
-						<input type="radio" name="phoneCorp" id="radio" value="SKM"> SKTmvno
-						<input type="radio" name="phoneCorp" id="radio" value="KTM"> KTmvno
-						<input type="radio" name="phoneCorp" id="radio" value="LGM"> LGU+mvno
+						<input type="radio" name="phoneCorp" value="SKT"> SKT
+						<input type="radio" name="phoneCorp" value="KTF"> KT
+						<input type="radio" name="phoneCorp" value="LGT"> LG U+
+						<input type="radio" name="phoneCorp" value="SKM"> SKTmvno
+						<input type="radio" name="phoneCorp" value="KTM"> KTmvno
+						<input type="radio" name="phoneCorp" value="LGM"> LGU+mvno
 						</td>
                     </tr>
                     <tr>
                         <td align=center>생년월일</td>
                         <td align=left>
-						  <input type="text" name="birthDay" id="textfield" style="width:160px;" class="hpinput" maxlength="8" value="19890927"/>
+						  <input type="text" name="birthDay" style="width:160px;" class="hpinput" maxlength="8" value=""/>
 						</td>
                     </tr>
                     <tr>
                         <td align=center>이용자성별</td>
-                        <td align=left><input type="radio" name="gender" id="radio" value="0" checked> 남 <input type="radio" name="gender" id="radio" value="1"> 여</td>
+                        <td align=left><input type="radio" name="gender" value="0"> 남 <input type="radio" name="gender" id="radio" value="1"> 여</td>
                     </tr>
                     <tr>
                         <td align=center>내외국인</td>
                         <td align=left>
 						<select name="nation" id="select" style="width:160px;">
-							<option value = "">-선택-</a>
-							<option value = "0" selected>내국인</a>
-							<option value = "1">외국인</a>
+                            <option value = "">-선택-</option>
+                            <option value = "0" selected>내국인</option>
+                            <option value = "1">외국인</option>
 						</select>
 						</td>
                     </tr>
@@ -155,7 +153,7 @@
                     <tr>
                         <td align=center>IFrame사용여부</td>
                         <td align=left>
-                            <select name="tr_add" style="width:300">
+                            <select name="tr_add" style="width:300px">
                                 <option value="N"selected>미사용</option>
                                 <option value="Y">사용</option>
                             </select>

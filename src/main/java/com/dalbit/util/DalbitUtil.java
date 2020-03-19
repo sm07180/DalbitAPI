@@ -3,10 +3,13 @@ package com.dalbit.util;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.LocationVo;
+import com.dalbit.common.vo.SelfAuthVo;
+import com.dalbit.common.vo.SmsCheckOutVo;
 import com.dalbit.common.vo.ValidationResultVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
+import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -847,6 +850,96 @@ public class DalbitUtil {
         return chk;
     }
 
+
+    /**
+     * 본인인증 요청일자 생성
+     */
+    public static String getReqDay(){
+        Calendar today = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+        String day = sdf.format(today.getTime());
+        return day;
+    }
+
+    /**
+     * 본인인증 요청번호 생성
+     */
+    public static String getReqNum(String day){
+        java.util.Random ran = new Random();
+        //랜덤 문자 길이
+        int numLength = 6;
+        String randomStr = "";
+
+        for (int i = 0; i < numLength; i++) {
+            //0 ~ 9 랜덤 숫자 생성
+            randomStr += ran.nextInt(10);
+        }
+
+        //reqNum은 최대 40byte 까지 사용 가능
+        String reqNum = day + randomStr;
+        return reqNum;
+    }
+
+    /**
+     * 본인인증 정보 암호화
+     */
+    public static String getEncAuthInfo(SelfAuthVo selfAuthVo){
+
+        String extendVar     = "0000000000000000";                  // 확장변수
+        IcertSecuManager seed  = new IcertSecuManager();
+
+        //02. 1차 암호화 (tr_cert 데이터변수 조합 후 암호화)
+        String tr_cert="";
+        String enc_tr_cert="";
+        tr_cert = selfAuthVo.getCpId() +"/"+ selfAuthVo.getUrlCode() +"/"+ selfAuthVo.getCertNum() +"/"+ selfAuthVo.getDate() +"/"+ selfAuthVo.getCertMet() +"/"+ selfAuthVo.getBirthDay() +"/"+ selfAuthVo.getGender() +"/"+ selfAuthVo.getName() +"/"+ selfAuthVo.getPhoneNo() +"/"+ selfAuthVo.getPhoneCorp() +"/"+ selfAuthVo.getNation() +"/"+ selfAuthVo.getPlusInfo() +"/"+ extendVar;
+        enc_tr_cert = seed.getEnc(tr_cert, "");
+
+        //03. 1차 암호화 데이터에 대한 위변조 검증값 생성 (HMAC)
+        String hmacMsg = "";
+        hmacMsg = seed.getMsg(enc_tr_cert);
+
+        //04. 2차 암호화 (1차 암호화 데이터, HMAC 데이터, extendVar 조합 후 암호화)
+        tr_cert  = seed.getEnc(enc_tr_cert + "/" + hmacMsg + "/" + extendVar, "");
+
+        return tr_cert;
+    }
+
+
+    /**
+     * 본인인증 정보 복호화
+     */
+    public static String getDecAuthInfo(String rec_cert, String k_certNum) throws GlobalException{
+        String encPara		= "";
+        String encMsg1		= "";
+        String encMsg2		= "";
+        String msgChk       = "N";
+
+        IcertSecuManager seed = new IcertSecuManager();
+
+        //02. 1차 복호화
+        //수신된 certNum를 이용하여 복호화
+        rec_cert  = seed.getDec(rec_cert, k_certNum);
+
+        //03. 1차 파싱
+        int inf1 = rec_cert.indexOf("/",0);
+        int inf2 = rec_cert.indexOf("/",inf1+1);
+
+        encPara  = rec_cert.substring(0,inf1);         //암호화된 통합 파라미터
+        encMsg1  = rec_cert.substring(inf1+1,inf2);    //암호화된 통합 파라미터의 Hash값
+
+        //04. 위변조 검증
+        encMsg2  = seed.getMsg(encPara);
+
+        if(encMsg2.equals(encMsg1)){
+            msgChk="Y";
+        } else {
+            throw new GlobalException(Status.본인인증검증오류);
+        }
+
+        return "";
+    }
+
 }
+
 
 
