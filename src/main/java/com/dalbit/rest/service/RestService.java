@@ -3,6 +3,7 @@ package com.dalbit.rest.service;
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -89,7 +90,11 @@ public class RestService {
 
         params = StringUtils.defaultIfEmpty(params, "").trim();
 
-        String request_uri = server_url + url_path;
+        String request_uri = server_url;
+        if(server_url.startsWith("https://") && server_url.endsWith(".dalbitcast.com") && (DalbitUtil.profileCheck("dev") || DalbitUtil.profileCheck("real"))){
+            request_uri = server_url.replace("https://", "http://");
+        }
+        request_uri += url_path;
         if(method != 1 && !"".equals(params)){
             request_uri += "?" + params;
         }
