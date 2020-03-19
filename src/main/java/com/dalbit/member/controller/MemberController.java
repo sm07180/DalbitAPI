@@ -121,7 +121,8 @@ public class MemberController {
         );
 
         String result = "";
-        if(request.getSession().getAttribute("phoneNo").toString().equals(memId)){
+        log.debug("휴대폰번호{} - 세션 = |{}| / 인풋 = |{}|", memType, request.getSession().getAttribute("phoneNo").toString(), memId);
+        if(!"p".equals(memType) || ("p".equals(memType) && request.getSession().getAttribute("phoneNo").toString().equals(memId))){
             ProcedureVo procedureVo = memberService.signup(joinVo, request);
             //휴대폰 인증했던 번호와 일치여부 확인
 
