@@ -116,7 +116,7 @@ public class RestService {
 
             result = readStream(con.getInputStream(), server_url, url_path, params, request);
         }catch(IOException e){
-            log.debug("{} error {}", request_uri, e.getMessage());
+            log.info("{} error {}", request_uri, e.getMessage());
             if(con != null){
                 result = readStream(con.getErrorStream(), server_url, url_path, params, request);
             }
@@ -167,6 +167,7 @@ public class RestService {
 
             return pageContents.toString();
         }catch (Exception e){
+            log.info("{} {} error {}", server_url, url_path, e.getMessage());
             //방송 생성 후 publish token 생성시 오류 일때 방송방 삭제
             if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
                 String stream_id = params.substring(3, params.indexOf("&"));
