@@ -9,7 +9,6 @@ import com.dalbit.common.vo.ValidationResultVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
-import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -884,9 +883,9 @@ public class DalbitUtil {
      * 본인인증 정보 암호화
      */
     public static String getEncAuthInfo(SelfAuthVo selfAuthVo){
-
+/*
         String extendVar     = "0000000000000000";                  // 확장변수
-        IcertSecuManager seed  = new IcertSecuManager();
+        IcertSecuManager er seed  = new IcertSecuManager();
 
         //02. 1차 암호화 (tr_cert 데이터변수 조합 후 암호화)
         String tr_cert="";
@@ -901,7 +900,7 @@ public class DalbitUtil {
         //04. 2차 암호화 (1차 암호화 데이터, HMAC 데이터, extendVar 조합 후 암호화)
         tr_cert  = seed.getEnc(enc_tr_cert + "/" + hmacMsg + "/" + extendVar, "");
 
-        return tr_cert;
+        return tr_cert;*/return "";
     }
 
 
@@ -909,6 +908,7 @@ public class DalbitUtil {
      * 본인인증 정보 복호화
      *//*
     public static String getDecAuthInfo(String rec_cert, String k_certNum) throws GlobalException{
+        /*
         String encPara		= "";
         String encMsg1		= "";
         String encMsg2		= "";
@@ -934,7 +934,7 @@ public class DalbitUtil {
             msgChk="Y";
         } else {
             throw new GlobalException(Status.본인인증검증오류);
-        }
+        }*/
 
         return "";
     }*/
