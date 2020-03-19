@@ -882,8 +882,8 @@ public class DalbitUtil {
     /**
      * 본인인증 정보 암호화
      */
-    public static String getEncAuthInfo(SelfAuthVo selfAuthVo){
-/*
+/*    public static String getEncAuthInfo(SelfAuthVo selfAuthVo){
+
         String extendVar     = "0000000000000000";                  // 확장변수
         IcertSecuManager er seed  = new IcertSecuManager();
 
@@ -900,8 +900,8 @@ public class DalbitUtil {
         //04. 2차 암호화 (1차 암호화 데이터, HMAC 데이터, extendVar 조합 후 암호화)
         tr_cert  = seed.getEnc(enc_tr_cert + "/" + hmacMsg + "/" + extendVar, "");
 
-        return tr_cert;*/return "";
-    }
+        return tr_cert;return "";
+    }*/
 
 
     /**
