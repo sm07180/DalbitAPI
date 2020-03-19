@@ -102,23 +102,23 @@ public class JwtUtil {
         try {
             return Jwts.parser().setSigningKey(JWT_SECRET_KEY).parseClaimsJws(jwt);
         } catch (SignatureException ex) {
-            log.info("Invalid JWT signature");
+            log.debug("Invalid JWT signature");
             throwGlobalException(ErrorStatus.토큰검증오류);
 
         } catch (MalformedJwtException ex) {
-            log.info("Invalid JWT token");
+            log.debug("Invalid JWT token");
             throwGlobalException(ErrorStatus.토큰검증오류);
 
         } catch (ExpiredJwtException ex) {
-            log.info("Expired JWT token");
+            log.debug("Expired JWT token");
             throwGlobalException(ErrorStatus.토큰만료오류);
 
         } catch (UnsupportedJwtException ex) {
-            log.info("Unsupported JWT token");
+            log.debug("Unsupported JWT token");
             throwGlobalException(ErrorStatus.토큰검증오류);
 
         } catch (IllegalArgumentException ex) {
-            log.info("JWT claims string is empty.");
+            log.debug("JWT claims string is empty.");
             throwGlobalException(ErrorStatus.토큰검증오류);
         }
 

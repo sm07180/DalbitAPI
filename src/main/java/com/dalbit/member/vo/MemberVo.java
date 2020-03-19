@@ -24,7 +24,7 @@ public class MemberVo extends ProfileInfoOutVo {
                 return tokenVo.getMemNo();
             }
         }catch (Exception e){
-            log.warn("MemberVo.getMyMemNo() return null : {}", e.getMessage());
+            log.debug("MemberVo.getMyMemNo(request) return null : {}", e.getMessage());
         }
         return null;
     }
@@ -33,7 +33,7 @@ public class MemberVo extends ProfileInfoOutVo {
         try{
             return (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }catch (Exception e){
-            log.warn("MemberVo.getMyMemNo() return null : {}", e.getMessage());
+            log.debug("MemberVo.getMyMemNo() return null : {}", e.getMessage());
             return null;
         }
     }
@@ -42,7 +42,7 @@ public class MemberVo extends ProfileInfoOutVo {
         try{
             return 0 < SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream().filter(auth -> auth.getAuthority().equals("ROLE_ADMIN")).count();
         }catch (Exception e){
-            log.warn("MemberVo.isAdmin() return false : {}", e.getMessage());
+            log.debug("MemberVo.isAdmin() return false : {}", e.getMessage());
             return false;
         }
     }
