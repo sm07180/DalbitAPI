@@ -38,7 +38,7 @@ public class BroadCastTest {
     RestService restService;
 
 
-    @Test
+    /*@Test
     public void 방송방생성테스트() throws GlobalException{
 
         log.debug("방송방생성 테스트");
@@ -66,7 +66,7 @@ public class BroadCastTest {
 
         log.info(" ### 방송방생성 결과 ###");
         log.info(result);
-    }
+    }*/
 
     @Test
     public void 방송방참여하기(){
