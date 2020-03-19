@@ -907,7 +907,7 @@ public class DalbitUtil {
 
     /**
      * 본인인증 정보 복호화
-     */
+     *//*
     public static String getDecAuthInfo(String rec_cert, String k_certNum) throws GlobalException{
         String encPara		= "";
         String encMsg1		= "";
@@ -937,7 +937,7 @@ public class DalbitUtil {
         }
 
         return "";
-    }
+    }*/
 
 }
 

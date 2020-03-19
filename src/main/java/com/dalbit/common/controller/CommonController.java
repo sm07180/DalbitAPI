@@ -274,7 +274,7 @@ public class CommonController {
 
     /**
      * 본인인증요청
-     */
+     *//*
     @PostMapping("self/auth")
     public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
@@ -294,9 +294,9 @@ public class CommonController {
     }
 
 
-    /**
+    *//**
      * 본인인증확인
-    */
+    *//*
     @GetMapping("self/auth")
     public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException {
         String rec_cert = request.getParameter("rec_cert").trim();  //암호화 수신값
@@ -306,6 +306,6 @@ public class CommonController {
         DalbitUtil.getDecAuthInfo(rec_cert, k_certNum);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
-    }
+    }*/
 
 }
