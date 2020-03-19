@@ -10,8 +10,20 @@ import java.util.Enumeration;
 @Slf4j
 public class ParamCheckInterceptor extends HandlerInterceptorAdapter {
 
+    private final String[] IGNORE_URLS = {
+        "/ctrl/check/service"
+    };
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception{
+
+        String uri = request.getRequestURI();
+        for(String ignoreUri : IGNORE_URLS) {
+            if(uri.startsWith(ignoreUri)) {
+                return true;
+            }
+        }
+
         log.info("========================== Start Request uri = " + request.getRequestURI());
         for(Enumeration<String> itertor = (Enumeration<String>)request.getParameterNames(); itertor.hasMoreElements();){
             String key = itertor.nextElement();

@@ -38,7 +38,8 @@ public class CommonRestControllerAop {
      * @return
      * @throws Throwable
      */
-    @Around("execution(* com.dalbit.*.controller.*.*(..))")
+    @Around("execution(* com.dalbit.*.controller.*.*(..))"
+            + "&& !@annotation(com.dalbit.common.annotation.NoLogging)")
     public Object restControllerLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
@@ -53,18 +54,9 @@ public class CommonRestControllerAop {
         stopWatch.stop();
 
         log.info("[{}] [memNo : {}] - 실행시간 : {}", proceedName, memNo, stopWatch.getTotalTimeMillis() + " (ms)");
-
-        /*try {
-            log.debug("[{}] 헤더정보 : {}, ", proceedName, gsonUtil.toJson(new DeviceVo(request)));
-        }catch (Exception e){
-            ArrayList list = new ArrayList<String>();
-            list.add(request.getHeader(DalbitUtil.getProperty("rest.custom.header.name")));
-            throw new GlobalException(ErrorStatus.커스텀헤더정보이상, null, list);
-        }*/
-
         log.info("[memNo : {}] 실행결과 {}", memNo, gsonUtil.toJson(result));
 
-            return result;
+        return result;
 
     }
 }

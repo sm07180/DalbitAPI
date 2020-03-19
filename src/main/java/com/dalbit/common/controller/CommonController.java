@@ -1,5 +1,6 @@
 package com.dalbit.common.controller;
 
+import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
@@ -52,6 +53,7 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));
     }
 
+    @NoLogging
     @GetMapping("/check/service")
     public String checkService(){
         return "pong";
@@ -65,6 +67,7 @@ public class CommonController {
         return DalbitUtil.getLocation(request);
     }
 
+    @NoLogging
     @GetMapping("/ctrl/check/service")
     @ResponseBody
     public String checkService(HttpServletRequest request){

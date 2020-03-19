@@ -1,6 +1,7 @@
 package com.dalbit.common.service;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
+import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
@@ -291,6 +292,7 @@ public class CommonService {
     @Value("${server.healthy.check.postfix}")
     private String HEALTHY_POSTFIX;
 
+    @NoLogging
     public String checkHealthy(HttpServletRequest request) {
         String rootDir = request.getSession().getServletContext().getRealPath("/");
         String instance;

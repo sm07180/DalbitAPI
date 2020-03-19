@@ -28,7 +28,8 @@ public class CommonServiceAop {
      * @return
      * @throws Throwable
      */
-    @Around("execution(* com.dalbit.*.service.*.*(..))")
+    @Around("execution(* com.dalbit.*.service.*.*(..))"
+            + "&& !@annotation(com.dalbit.common.annotation.NoLogging)")
     public Object serviceLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
