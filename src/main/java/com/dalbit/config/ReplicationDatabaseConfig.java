@@ -54,6 +54,11 @@ public class ReplicationDatabaseConfig {
         masterHikariConfig.setJdbcUrl(JDBC_MASTER_URL);
         masterHikariConfig.setUsername(JDBC_USERNAME);
         masterHikariConfig.setPassword(JDBC_PASSWORD);
+        //masterHikariConfig.addDataSourceProperty("autoReconnect",true);
+        masterHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
+        masterHikariConfig.setMaximumPoolSize(100);
+        masterHikariConfig.setMinimumIdle(10);
+        masterHikariConfig.setIdleTimeout(1);
 
         return new HikariDataSource(masterHikariConfig);
     }
@@ -65,6 +70,11 @@ public class ReplicationDatabaseConfig {
         slaveHikariConfig.setJdbcUrl(JDBC_SLAVE_URL);
         slaveHikariConfig.setUsername(JDBC_USERNAME);
         slaveHikariConfig.setPassword(JDBC_PASSWORD);
+        //slaveHikariConfig.addDataSourceProperty("autoReconnect",true);
+        slaveHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
+        slaveHikariConfig.setMaximumPoolSize(100);
+        slaveHikariConfig.setMinimumIdle(10);
+        slaveHikariConfig.setIdleTimeout(1);
 
         return new HikariDataSource(slaveHikariConfig);
     }
