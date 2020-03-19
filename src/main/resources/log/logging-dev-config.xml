@@ -29,16 +29,23 @@
         </encoder>
     </appender>
 
+    <logger name="org.springframework.web" level="DEBUG" />
+    <logger name="jdbc" level="OFF" />
+    <logger name="jdbc.sqlonly" level="INFO" />
+    <logger name="jdbc.sqltiming" level="OFF" />
+    <logger name="jdbc.audit" level="OFF" />
+    <logger name="jdbc.resultset" level="OFF" />
+    <logger name="jdbc.resultsettable" level="INFO" />
+    <logger name="jdbc.connection" level="WARN" />
+    <logger name="log4jdbc.log4j2" level="OFF" />
+    <logger name="io.lettuce" level="WARN" />
+    <logger name="com.zaxxer.hikari" level="WARN" />
+    <logger name="o.s.w.servlet.DispatcherServlet" level="off" />
+
     <root level="INFO">
         <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <appender-ref ref="ERROR_FILE" />
     </root>
-
-    <logger name="org.springframework.web" level="DEBUG">
-        <appender-ref ref="STDOUT" />
-        <appender-ref ref="FILE" />
-        <appender-ref ref="ERROR_FILE" />
-    </logger>
 
 </configuration>

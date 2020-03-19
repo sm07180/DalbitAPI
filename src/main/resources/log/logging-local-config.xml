@@ -18,6 +18,7 @@
         <appender-ref ref="console" />
     </logger>
 
+    <logger name="org.springframework.web" level="DEBUG" />
     <logger name="jdbc" level="OFF" />
     <logger name="jdbc.sqlonly" level="INFO" />
     <logger name="jdbc.sqltiming" level="OFF" />
@@ -28,6 +29,7 @@
     <logger name="log4jdbc.log4j2" level="OFF" />
     <logger name="io.lettuce" level="WARN" />
     <logger name="com.zaxxer.hikari" level="WARN" />
+    <logger name="o.s.w.servlet.DispatcherServlet" level="off" />
 
     <root level="INFO">
         <appender-ref ref="console"/>
