@@ -14,7 +14,7 @@ public enum Status {
     비즈니스로직오류("C006", "business.error", "비즈니스로직 오류 시"),
 
     //휴대폰 sms 인증
-    인증번호요청("0", "sms.number.request.success", "인증번호 요청성공 시"),
+    인증번호요청("0", "sms.number.request.success", "인증번호 요청 성공 시"),
     인증확인("1", "sms.number.check.success", "인증확인 성공 시"),
     인증시간초과("-1", "sms.check.timeout", "인증시간 초과 시"),
     인증번호불일치("-2", "sms.check.number.error", "인증 번호 일치하지 않을 시"),
@@ -24,6 +24,14 @@ public enum Status {
     인증번호요청실패("C006","sms.number.request.fail","인증번호 요청 실패 시"),
     인증실패("C006", "sms.check.fail", "인증 실패 시"),
 
+    //본인인증요청
+    본인인증요청("0", "self.auth.request.success", "본인인증 요청 성공 시"),
+    본인인증요청실패("C006", "self.auth.request.fail", "본인인증 요청 실패 시"),
+
+    //본인인증확인
+    본인인증확인("0", "self.auth.response.success", "본인인증 확인 성공 시"),
+    본인인증검증오류("-1", "self.auth.response.check.error", "본인인증 검증 오류 시"),
+    본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
 
     //로그인
     로그인성공("0", "login.success", "로그인 성공 시"),
