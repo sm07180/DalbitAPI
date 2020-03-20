@@ -85,8 +85,8 @@ public class CommonService {
         HashMap resultMap = callCodeDefineSelect();
 
         List<ItemVo> items = new ArrayList<>();
-        items.add(new ItemVo(Item.스티커_게));
-        items.add(new ItemVo(Item.스티커_사브르));
+        //items.add(new ItemVo(Item.스티커_게));
+        //items.add(new ItemVo(Item.스티커_사브르));
         items.add(new ItemVo(Item.애니_파이어웍));
         items.add(new ItemVo(Item.애니_토끼));
         items.add(new ItemVo(Item.애니_로켓));
