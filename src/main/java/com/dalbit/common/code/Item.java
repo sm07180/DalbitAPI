@@ -170,6 +170,40 @@ public enum Item {
             , 10
     ),
 
+    애니_도넛(
+            "1011"
+            , "도넛"
+            , "ani"
+            , 300
+            , "https://image.dalbitcast.com/ani/thumbs/200319/20200319_doughnut.png"
+            , "https://image.dalbitcast.com/ani/webp/200319/20200319_doughnut.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200319/20200319_doughnut.json"
+            , 720
+            , 504
+            , 1
+            , 1
+            , 0.7
+            , "topLeft"
+            , 10
+    ),
+
+    애니_곰돌이(
+            "1012"
+            , "곰돌이"
+            , "ani"
+            , 300
+            , "https://image.dalbitcast.com/ani/thumbs/200319/20200319_teddybear.png"
+            , "https://image.dalbitcast.com/ani/webp/200320/20200320_teddybear.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200320/20200320_teddybear.json"
+            , 360
+            , 900
+            , 0.5
+            , 1
+            , 2.5
+            , "bottomRight"
+            , 10
+    ),
+
     파티클_1(
             "9001"
             , "파티클_1"

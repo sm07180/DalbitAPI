@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.*;
 
 @Slf4j
@@ -139,7 +140,8 @@ public class CommonController {
         if(!DalbitUtil.isSmsPhoneNoChk(smsVo.getPhoneNo())){
             throw new GlobalException(Status.인증번호요청_유효하지않은번호);
         }
-
+        //휴대폰번호 '-' 치환
+        smsVo.setPhoneNo(smsVo.getPhoneNo().replaceAll("-",""));
         DeviceVo deviceVo = new DeviceVo(request);
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
@@ -162,7 +164,7 @@ public class CommonController {
         log.debug("결과코드 : {}", LoginProcedureVo.getRet());
 
         boolean isJoin = LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode());
-        boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());
+        //boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());  추후 이전 비밀번호 체크시...
         int authType = smsVo.getAuthType();
         int code = DalbitUtil.getSmscode();
         boolean isRequestSms = false;
@@ -178,7 +180,7 @@ public class CommonController {
         if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
             // 회원가입 필요
             isRequestSms = true;
-        }else if(!isJoin && isPassword && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
+        }else if(!isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType /*&& isPassword*/ ){
             //회원이면서 비밀번호 변경
             isRequestSms = true;
         }else{
@@ -274,7 +276,7 @@ public class CommonController {
 
     /**
      * 본인인증요청
-     *//*
+     */
     @PostMapping("self/auth")
     public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
@@ -294,18 +296,20 @@ public class CommonController {
     }
 
 
-    *//**
+    /**
      * 본인인증확인
-    *//*
+    */
     @GetMapping("self/auth")
-    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException {
-        String rec_cert = request.getParameter("rec_cert").trim();  //암호화 수신값
-        String k_certNum = request.getParameter("certNum").trim();
-
+    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException, ParseException {
+        String result;
         //수신된 certNum를 이용하여 복호화
-        DalbitUtil.getDecAuthInfo(rec_cert, k_certNum);
-
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
-    }*/
+        SelfAuthChkVo selfAuthChkVo = DalbitUtil.getDecAuthInfo(request);
+        if(selfAuthChkVo.getMsg().equals("정상")){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
+        }
+        return result;
+    }
 
 }

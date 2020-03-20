@@ -200,6 +200,10 @@ public class ActionService {
                     item = Item.애니_선물상자;
                 }else if(Item.애니_런닝머신.getItemNo().equals(pRoomGiftVo.getItem_no())){
                     item = Item.애니_런닝머신;
+                }else if(Item.애니_도넛.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    item = Item.애니_도넛;
+                }else if(Item.애니_곰돌이.getItemNo().equals(pRoomGiftVo.getItem_no())){
+                    item = Item.애니_곰돌이;
                 }
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();

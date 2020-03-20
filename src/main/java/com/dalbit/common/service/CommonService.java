@@ -95,6 +95,8 @@ public class CommonService {
         items.add(new ItemVo(Item.애니_당근케익));
         items.add(new ItemVo(Item.애니_선물상자));
         items.add(new ItemVo(Item.애니_런닝머신));
+        items.add(new ItemVo(Item.애니_도넛));
+        items.add(new ItemVo(Item.애니_곰돌이));
         Collections.sort(items, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {
@@ -130,7 +132,7 @@ public class CommonService {
         String deviceToken = deviceVo.getDeviceToken();
         String appVer = deviceVo.getAppVersion();
         String appAdId = deviceVo.getAdId();
-        LocationVo locationVo = DalbitUtil.getLocation(request);
+        LocationVo locationVo = null;
         String ip = deviceVo.getIp();
         String browser = DalbitUtil.getUserAgent(request);
 
@@ -152,7 +154,9 @@ public class CommonService {
                 tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
                 resultStatus = Status.로그인성공;
             } else {
-                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser);
+
+                locationVo = DalbitUtil.getLocation(request);
+                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo == null ? "" : locationVo.getRegionName(), ip, browser);
                 //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
                 //ProcedureOutputVo LoginProcedureVo;
@@ -191,6 +195,9 @@ public class CommonService {
         }
 
         if (!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) {
+            if(locationVo == null){
+                locationVo = DalbitUtil.getLocation(request);
+            }
             P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
                     isLogin ? 1 : 0
                     , tokenVo.getMemNo()
@@ -199,7 +206,7 @@ public class CommonService {
                     , deviceId
                     , deviceToken
                     , appVer
-                    , locationVo.getRegionName()
+                    , locationVo == null ? "" : locationVo.getRegionName()
                     , deviceVo.getIp()
                     , browser
             );

@@ -5,6 +5,7 @@ import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.service.MemberService;
@@ -51,28 +52,37 @@ public class LogoutHandlerImpl implements LogoutHandler {
         boolean isBroadcast = state.equals(Code.방송중체크_방송중.getCode()) ? true : false;
 
         if(DalbitUtil.isLogin(request) && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
+            DeviceVo deviceVo = new DeviceVo(request);
+            String device_uuid = DalbitUtil.getStringMap(broadcastingInfo, "device_uuid");
+            device_uuid = device_uuid == null ? "" : device_uuid;
+            if(device_uuid.equals(deviceVo.getDeviceUuid())){
+                try {
+                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃실패_진행중인방송));
 
-            try {
-                gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃실패_진행중인방송));
-
-            }catch (Exception e){
-                log.error("LogoutHandlerImpl.logout : {}", e.getMessage());
+                }catch (Exception e){
+                    log.error("LogoutHandlerImpl.logout : {}", e.getMessage());
+                }
+            }else{
+                logout(request, response);
             }
         }else{
+            logout(request, response);
+        }
+    }
 
-            try {
-                CookieUtil.deleteCookie(DalbitUtil.getProperty("server.servlet.session.cookie.name"), "", "", 0);
-                CookieUtil.deleteCookie(DalbitUtil.getProperty("sso.cookie.name"), "", "", 0);
+    public void logout(HttpServletRequest request, HttpServletResponse response){
+        try {
+            CookieUtil.deleteCookie(DalbitUtil.getProperty("server.servlet.session.cookie.name"), "", "", 0);
+            CookieUtil.deleteCookie(DalbitUtil.getProperty("sso.cookie.name"), "", "", 0);
 
-                memberService.refreshAnonymousSecuritySession("anonymousUser");
+            memberService.refreshAnonymousSecuritySession("anonymousUser");
 
-                HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
-                gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃성공, result.get("tokenVo")));
+            HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
+            gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃성공, result.get("tokenVo")));
 
-            } catch (IOException e) {
-                //e.printStackTrace();
-                log.info(e.getMessage());
-            }
+        } catch (IOException e) {
+            //e.printStackTrace();
+            log.info(e.getMessage());
         }
     }
 }
