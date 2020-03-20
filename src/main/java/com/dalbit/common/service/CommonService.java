@@ -85,8 +85,8 @@ public class CommonService {
         HashMap resultMap = callCodeDefineSelect();
 
         List<ItemVo> items = new ArrayList<>();
-        //items.add(new ItemVo(Item.스티커_게));
-        //items.add(new ItemVo(Item.스티커_사브르));
+        items.add(new ItemVo(Item.스티커_게));
+        items.add(new ItemVo(Item.스티커_사브르));
         items.add(new ItemVo(Item.애니_파이어웍));
         items.add(new ItemVo(Item.애니_토끼));
         items.add(new ItemVo(Item.애니_로켓));
@@ -132,7 +132,7 @@ public class CommonService {
         String deviceToken = deviceVo.getDeviceToken();
         String appVer = deviceVo.getAppVersion();
         String appAdId = deviceVo.getAdId();
-        LocationVo locationVo = DalbitUtil.getLocation(request);
+        LocationVo locationVo = null;
         String ip = deviceVo.getIp();
         String browser = DalbitUtil.getUserAgent(request);
 
@@ -154,7 +154,9 @@ public class CommonService {
                 tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
                 resultStatus = Status.로그인성공;
             } else {
-                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser);
+
+                locationVo = DalbitUtil.getLocation(request);
+                P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo == null ? "" : locationVo.getRegionName(), ip, browser);
                 //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
                 //ProcedureOutputVo LoginProcedureVo;
@@ -193,6 +195,9 @@ public class CommonService {
         }
 
         if (!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) {
+            if(locationVo == null){
+                locationVo = DalbitUtil.getLocation(request);
+            }
             P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
                     isLogin ? 1 : 0
                     , tokenVo.getMemNo()
@@ -201,7 +206,7 @@ public class CommonService {
                     , deviceId
                     , deviceToken
                     , appVer
-                    , locationVo.getRegionName()
+                    , locationVo == null ? "" : locationVo.getRegionName()
                     , deviceVo.getIp()
                     , browser
             );
