@@ -294,6 +294,8 @@ public class CommonController {
         selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.url"));    //결과수신URL
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));    //IFrame사용여부
 
+        log.info("URL CODE: {}", selfAuthVo.getUrlCode());
+
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
     }
 
