@@ -139,7 +139,8 @@ public class CommonController {
         if(!DalbitUtil.isSmsPhoneNoChk(smsVo.getPhoneNo())){
             throw new GlobalException(Status.인증번호요청_유효하지않은번호);
         }
-
+        //휴대폰번호 '-' 치환
+        smsVo.setPhoneNo(smsVo.getPhoneNo().replaceAll("-",""));
         DeviceVo deviceVo = new DeviceVo(request);
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
@@ -162,7 +163,7 @@ public class CommonController {
         log.debug("결과코드 : {}", LoginProcedureVo.getRet());
 
         boolean isJoin = LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode());
-        boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());
+        //boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());  추후 이전 비밀번호 체크시...
         int authType = smsVo.getAuthType();
         int code = DalbitUtil.getSmscode();
         boolean isRequestSms = false;
@@ -178,7 +179,7 @@ public class CommonController {
         if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
             // 회원가입 필요
             isRequestSms = true;
-        }else if(!isJoin && isPassword && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType){
+        }else if(!isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType /*&& isPassword*/ ){
             //회원이면서 비밀번호 변경
             isRequestSms = true;
         }else{
