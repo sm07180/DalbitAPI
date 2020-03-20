@@ -85,8 +85,8 @@ public class CommonService {
         HashMap resultMap = callCodeDefineSelect();
 
         List<ItemVo> items = new ArrayList<>();
-        items.add(new ItemVo(Item.스티커_게));
-        items.add(new ItemVo(Item.스티커_사브르));
+        //items.add(new ItemVo(Item.스티커_게));
+        //items.add(new ItemVo(Item.스티커_사브르));
         items.add(new ItemVo(Item.애니_파이어웍));
         items.add(new ItemVo(Item.애니_토끼));
         items.add(new ItemVo(Item.애니_로켓));
@@ -95,6 +95,8 @@ public class CommonService {
         items.add(new ItemVo(Item.애니_당근케익));
         items.add(new ItemVo(Item.애니_선물상자));
         items.add(new ItemVo(Item.애니_런닝머신));
+        items.add(new ItemVo(Item.애니_도넛));
+        items.add(new ItemVo(Item.애니_곰돌이));
         Collections.sort(items, new Comparator<ItemVo>() {
             @Override
             public int compare(ItemVo a, ItemVo b) {
