@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.text.ParseException;
 import java.util.*;
 
 @Slf4j
@@ -275,7 +276,7 @@ public class CommonController {
 
     /**
      * 본인인증요청
-     *//*
+     */
     @PostMapping("self/auth")
     public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
@@ -295,18 +296,20 @@ public class CommonController {
     }
 
 
-    *//**
+    /**
      * 본인인증확인
-    *//*
+    */
     @GetMapping("self/auth")
-    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException {
-        String rec_cert = request.getParameter("rec_cert").trim();  //암호화 수신값
-        String k_certNum = request.getParameter("certNum").trim();
-
+    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException, ParseException {
+        String result;
         //수신된 certNum를 이용하여 복호화
-        DalbitUtil.getDecAuthInfo(rec_cert, k_certNum);
-
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
-    }*/
+        SelfAuthChkVo selfAuthChkVo = DalbitUtil.getDecAuthInfo(request);
+        if(selfAuthChkVo.getMsg().equals("정상")){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
+        }
+        return result;
+    }
 
 }

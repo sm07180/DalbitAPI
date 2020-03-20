@@ -30,7 +30,7 @@ public enum Status {
 
     //본인인증확인
     본인인증확인("0", "self.auth.response.success", "본인인증 확인 성공 시"),
-    본인인증검증오류("-1", "self.auth.response.check.error", "본인인증 검증 오류 시"),
+    본인인증검증_비정상접근("-1", "self.auth.response.check.error", "본인인증 비정상적인 접근 시"),
     본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
 
     //로그인

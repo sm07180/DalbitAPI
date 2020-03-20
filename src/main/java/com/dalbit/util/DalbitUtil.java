@@ -2,13 +2,11 @@ package com.dalbit.util;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.LocationVo;
-import com.dalbit.common.vo.SelfAuthVo;
-import com.dalbit.common.vo.SmsCheckOutVo;
-import com.dalbit.common.vo.ValidationResultVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
+import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -32,6 +30,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -882,10 +881,10 @@ public class DalbitUtil {
     /**
      * 본인인증 정보 암호화
      */
-/*    public static String getEncAuthInfo(SelfAuthVo selfAuthVo){
+    public static String getEncAuthInfo(SelfAuthVo selfAuthVo){
 
-        String extendVar     = "0000000000000000";                  // 확장변수
-        IcertSecuManager er seed  = new IcertSecuManager();
+        String extendVar = "0000000000000000";                  // 확장변수
+        IcertSecuManager seed  = new IcertSecuManager();
 
         //02. 1차 암호화 (tr_cert 데이터변수 조합 후 암호화)
         String tr_cert="";
@@ -899,20 +898,38 @@ public class DalbitUtil {
 
         //04. 2차 암호화 (1차 암호화 데이터, HMAC 데이터, extendVar 조합 후 암호화)
         tr_cert  = seed.getEnc(enc_tr_cert + "/" + hmacMsg + "/" + extendVar, "");
-
-        return tr_cert;return "";
-    }*/
+        return tr_cert;
+    }
 
 
     /**
      * 본인인증 정보 복호화
-     *//*
-    public static String getDecAuthInfo(String rec_cert, String k_certNum) throws GlobalException{
-        /*
+     */
+    public static SelfAuthChkVo getDecAuthInfo(HttpServletRequest request) throws GlobalException, ParseException{
+        String rec_cert     = request.getParameter("rec_cert").trim();   // 결과수신DATA
+        String k_certNum    = request.getParameter("certNum").trim();   // 파라미터로 수신한 요청번호
+        String certNum		= "";			// 요청번호
+        String date			= "";			// 요청일시
+        String CI	    	= "";			// 연계정보(CI)
+        String DI	    	= "";			// 중복가입확인정보(DI)
+        String phoneNo		= "";			// 휴대폰번호
+        String phoneCorp	= "";			// 이동통신사
+        String birthDay		= "";			// 생년월일
+        String gender		= "";			// 성별
+        String nation		= "";			// 내국인
+        String name			= "";			// 성명
+        String M_name		= "";			// 미성년자 성명
+        String M_birthDay	= "";			// 미성년자 생년월일
+        String M_Gender		= "";			// 미성년자 성별
+        String M_nation		= "";			// 미성년자 내외국인
+        String result		= "";			// 결과값
+
+        String certMet		= "";			// 인증방법
+        String ip			= "";			// ip주소
+        String plusInfo		= "";
         String encPara		= "";
         String encMsg1		= "";
         String encMsg2		= "";
-        String msgChk       = "N";
 
         IcertSecuManager seed = new IcertSecuManager();
 
@@ -930,16 +947,199 @@ public class DalbitUtil {
         //04. 위변조 검증
         encMsg2  = seed.getMsg(encPara);
 
-        if(encMsg2.equals(encMsg1)){
-            msgChk="Y";
-        } else {
-            throw new GlobalException(Status.본인인증검증오류);
+        if(!encMsg2.equals(encMsg1)){
+            throw new GlobalException(Status.본인인증검증_비정상접근);
         }
 
-        return "";
-    }*/
+        //05. 2차 복호화
+        rec_cert  = seed.getDec(encPara, k_certNum);
+
+        //06. 2차 파싱
+        int info1  = rec_cert.indexOf("/",0);
+        int info2  = rec_cert.indexOf("/",info1+1);
+        int info3  = rec_cert.indexOf("/",info2+1);
+        int info4  = rec_cert.indexOf("/",info3+1);
+        int info5  = rec_cert.indexOf("/",info4+1);
+        int info6  = rec_cert.indexOf("/",info5+1);
+        int info7  = rec_cert.indexOf("/",info6+1);
+        int info8  = rec_cert.indexOf("/",info7+1);
+        int info9  = rec_cert.indexOf("/",info8+1);
+        int info10 = rec_cert.indexOf("/",info9+1);
+        int info11 = rec_cert.indexOf("/",info10+1);
+        int info12 = rec_cert.indexOf("/",info11+1);
+        int info13 = rec_cert.indexOf("/",info12+1);
+        int info14 = rec_cert.indexOf("/",info13+1);
+        int info15 = rec_cert.indexOf("/",info14+1);
+        int info16 = rec_cert.indexOf("/",info15+1);
+        int info17 = rec_cert.indexOf("/",info16+1);
+        int info18 = rec_cert.indexOf("/",info17+1);
+
+        certNum		= rec_cert.substring(0,info1);
+        date		= rec_cert.substring(info1+1,info2);
+        CI			= rec_cert.substring(info2+1,info3);
+        phoneNo		= rec_cert.substring(info3+1,info4);
+        phoneCorp	= rec_cert.substring(info4+1,info5);
+        birthDay	= rec_cert.substring(info5+1,info6);
+        gender		= rec_cert.substring(info6+1,info7);
+        nation		= rec_cert.substring(info7+1,info8);
+        name		= rec_cert.substring(info8+1,info9);
+        result		= rec_cert.substring(info9+1,info10);
+        certMet		= rec_cert.substring(info10+1,info11);
+        ip			= rec_cert.substring(info11+1,info12);
+        M_name		= rec_cert.substring(info12+1,info13);
+        M_birthDay	= rec_cert.substring(info13+1,info14);
+        M_Gender	= rec_cert.substring(info14+1,info15);
+        M_nation	= rec_cert.substring(info15+1,info16);
+        plusInfo	= rec_cert.substring(info16+1,info17);
+        DI      	= rec_cert.substring(info17+1,info18);
+
+        //07. CI, DI 복호화
+        CI  = seed.getDec(CI, k_certNum);
+        DI  = seed.getDec(DI, k_certNum);
+
+        String regex = "";
+        String msg = "정상";
+        if( certNum.length() == 0 || certNum.length() > 40){
+            msg = "요청번호 비정상";
+        }
+
+        regex = "[0-9]*";
+        if( date.length() != 14 || !paramChk(regex, date) ){
+            msg = ("요청일시 비정상");
+        }
+
+        regex = "[A-Z]*";
+        if( certMet.length() != 1 || !paramChk(regex, certMet) ){
+            msg = "본인인증방법 비정상" + certMet;
+        }
+
+        regex = "[0-9]*";
+        if( (phoneNo.length() != 10 && phoneNo.length() != 11) || !paramChk(regex, phoneNo) ){
+            msg = "휴대폰번호 비정상";
+        }
+
+        regex = "[A-Z]*";
+        if( phoneCorp.length() != 3 || !paramChk(regex, phoneCorp) ){
+            msg = "이동통신사 비정상";
+        }
+
+        regex = "[0-9]*";
+        if( birthDay.length() != 8 || !paramChk(regex, birthDay) ){
+            msg = "생년월일 비정상";
+        }
+
+        regex = "[0-9]*";
+        if( gender.length() != 1 || !paramChk(regex, gender) ){
+            msg = "성별 비정상";
+        }
+
+        regex = "[0-9]*";
+        if( nation.length() != 1 || !paramChk(regex, nation) ){
+            msg = "내/외국인 비정상";
+        }
+
+        regex = "[\\sA-Za-z가-�R.,-]*";
+        if( name.length() > 60 || !paramChk(regex, name) ){
+            msg = "성명 비정상";
+        }
+
+        regex = "[A-Z]*";
+        if( result.length() != 1 || !paramChk(regex, result) ){
+            msg = "결과값 비정상";
+        }
+
+        regex = "[\\sA-Za-z가-?.,-]*";
+        if( M_name.length() != 0 ){
+            if( M_name.length() > 60 || !paramChk(regex, M_name) ){
+                msg = "미성년자 성명 비정상";
+            }
+        }
+
+        regex = "[0-9]*";
+        if( M_birthDay.length() != 0 ){
+            if( M_birthDay.length() != 8 || !paramChk(regex, M_birthDay) ){
+                msg = "미성년자 생년월일 비정상";
+            }
+        }
+
+        regex = "[0-9]*";
+        if( M_Gender.length() != 0 ){
+            if( M_Gender.length() != 1 || !paramChk(regex, M_Gender) ){
+                msg = "미성년자 성별 비정상";
+            }
+        }
+
+        regex = "[0-9]*";
+        if( M_nation.length() != 0 ){
+            if( M_nation.length() != 1 || !paramChk(regex, M_nation) ){
+                msg = "미성년자 내/외국인 비정상";
+            }
+        }
+
+        // Start - 수신내역 유효성 검증(사설망의 사설 IP로 인해 미사용, 공용망의 경우 확인 후 사용) *********************/
+        // 1. date 값 검증
+        SimpleDateFormat formatter	= new SimpleDateFormat("yyyyMMddHHmmss",Locale.KOREAN); // 현재 서버 시각 구하기
+        String strCurrentTime	= formatter.format(new Date());
+
+        Date toDate				= formatter.parse(strCurrentTime);
+        Date fromDate			= formatter.parse(date);
+        long timediff			= toDate.getTime()-fromDate.getTime();
+
+        if ( timediff < -30*60*1000 || 30*60*100 < timediff  ){
+            msg = "비정상적인 접근입니다. (요청시간경과)";
+        }
+
+        // 2. ip 값 검증
+        String client_ip = request.getHeader("HTTP_X_FORWARDED_FOR"); // 사용자IP 구하기
+        if ( client_ip != null ){
+            if( client_ip.indexOf(",") != -1 )
+                client_ip = client_ip.substring(0,client_ip.indexOf(","));
+        }
+        if ( client_ip==null || client_ip.length()==0 ){
+            client_ip = request.getRemoteAddr();
+        }
+
+        if( !client_ip.equals(ip) ){
+            msg = "비정상적인 접근입니다. (IP불일치)";
+        }
+
+        SelfAuthChkVo selfAuthChkVo = new SelfAuthChkVo();
+        selfAuthChkVo.setEncMsg1(encMsg1);
+        selfAuthChkVo.setEncMsg2(encMsg2);
+        selfAuthChkVo.setCertNum(certNum);
+        selfAuthChkVo.setDate(date);
+        selfAuthChkVo.setCI(CI);
+        selfAuthChkVo.setDI(DI);
+        selfAuthChkVo.setPhoneNo(phoneNo);
+        selfAuthChkVo.setPhoneCorp(phoneCorp);
+        selfAuthChkVo.setBirthDay(birthDay);
+        selfAuthChkVo.setNation(nation);
+        selfAuthChkVo.setGender(gender);
+        selfAuthChkVo.setName(name);
+        selfAuthChkVo.setResult(result);
+        selfAuthChkVo.setCertMet(certMet);
+        selfAuthChkVo.setIp(ip);
+        selfAuthChkVo.setM_name(M_name);
+        selfAuthChkVo.setM_birthDay(M_birthDay);
+        selfAuthChkVo.setM_Gender(M_Gender);
+        selfAuthChkVo.setM_nation(M_nation);
+        selfAuthChkVo.setPlusInfo(plusInfo);
+        selfAuthChkVo.setRec_cert(rec_cert);
+        selfAuthChkVo.setMsg(msg);
+
+        return selfAuthChkVo;
+    }
+
+
+    /**
+     * 본인인증 파라미터 유효성 검증
+     */
+    public static Boolean paramChk(String patn, String param){
+        boolean b = true;
+        Pattern pattern = Pattern.compile(patn);
+        Matcher matcher = pattern.matcher(param);
+        b = matcher.matches();
+        return b;
+    }
 
 }
-
-
-
