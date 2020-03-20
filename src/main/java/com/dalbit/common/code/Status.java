@@ -33,6 +33,18 @@ public enum Status {
     본인인증검증_비정상접근("-1", "self.auth.response.check.error", "본인인증 비정상적인 접근 시"),
     본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
 
+    //본인인증(DB저장)
+    본인인증성공("0", "member.certification.success", "본인인증 성공 시"),
+    본인인증_회원아님("-1", "member.certification.not.member", "요청회원번호 회원이 아닐 시"),
+    본인인증_중복("0", "member.certification.already", "본인인증 이미 되어있는 회원일 시"),
+    본인인증저장실패("C006", "member.certification.save.fail", "본인인증 저장 실패 시"),
+
+    //본인인증 여부체크
+    본인인증여부_확인("1", "member.certification.check.success", "본인인증 했을 시"),
+    본인인증여부_안됨("0", "member.certification.check.no", "본인인증 하지 않았을 시"),
+    본인인증여부_회원아님("-1", "member.certification.check.not.member", "요청회원번호 회원이 아닐 시"),
+    본인인증여부_실패("C006", "member.certification.check.fail", "본인인증 체크 실패 시"),
+
     //로그인
     로그인성공("0", "login.success", "로그인 성공 시"),
     관리자로그인성공("0", "admin.login.success", "관리자 아이디로 로그인 성공 시"),

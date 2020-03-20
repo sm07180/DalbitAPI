@@ -906,7 +906,8 @@ public class DalbitUtil {
      * 본인인증 정보 복호화
      */
     public static SelfAuthChkVo getDecAuthInfo(HttpServletRequest request) throws GlobalException, ParseException{
-        String rec_cert     = request.getParameter("rec_cert").trim();   // 결과수신DATA
+        //수신된 certNum를 이용하여 복호화
+        String rec_cert     = request.getParameter("rec_cert").trim();  // 결과수신DATA
         String k_certNum    = request.getParameter("certNum").trim();   // 파라미터로 수신한 요청번호
         String certNum		= "";			// 요청번호
         String date			= "";			// 요청일시
@@ -1141,5 +1142,4 @@ public class DalbitUtil {
         b = matcher.matches();
         return b;
     }
-
 }

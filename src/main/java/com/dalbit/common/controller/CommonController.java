@@ -6,6 +6,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -275,7 +276,7 @@ public class CommonController {
 
 
     /**
-     * 본인인증요청
+     * 본인인증 요청
      */
     @PostMapping("self/auth")
     public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -286,6 +287,7 @@ public class CommonController {
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request));
 
         SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
@@ -297,19 +299,49 @@ public class CommonController {
 
 
     /**
-     * 본인인증확인
+     * 본인인증 확인
     */
     @GetMapping("self/auth")
     public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException, ParseException {
         String result;
-        //수신된 certNum를 이용하여 복호화
         SelfAuthChkVo selfAuthChkVo = DalbitUtil.getDecAuthInfo(request);
+
         if(selfAuthChkVo.getMsg().equals("정상")){
+
+            P_SelfAuthVo apiData = new P_SelfAuthVo();
+            apiData.setMem_no(selfAuthChkVo.getPlusInfo()); //요청시 보낸 회원번호 (추가정보)
+            apiData.setName(selfAuthChkVo.getName());
+            apiData.setPhoneNum(selfAuthChkVo.getPhoneNo());
+            apiData.setMemSex(selfAuthChkVo.getGender());
+            apiData.setBirthYear(selfAuthChkVo.getBirthDay().substring(0,4));
+            apiData.setBirthMonth(selfAuthChkVo.getBirthDay().substring(4,6));
+            apiData.setBirthDay(selfAuthChkVo.getBirthDay().substring(6,8));
+            apiData.setCommCompany(selfAuthChkVo.getPhoneCorp());
+            apiData.setForeignYN(selfAuthChkVo.getNation());
+            apiData.setCertCode(selfAuthChkVo.getCI());
+
+            //회원본인인증 DB 저장
+            commonService.callMemberCertification(apiData);
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
         }
+
         return result;
     }
 
+    /**
+     * 본인인증 여부 체크
+     */
+    @GetMapping("/self/auth/check")
+    public String getCertificationChk(HttpServletRequest request){
+
+        P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+
+        String result = commonService.getCertificationChk(apiData);
+
+        return result;
+    }
 }

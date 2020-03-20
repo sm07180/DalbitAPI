@@ -15,6 +15,7 @@ import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -44,6 +45,9 @@ public class CommonService {
 
     @Autowired
     JwtUtil jwtUtil;
+
+    @Autowired
+    GsonUtil gsonUtil;
 
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
@@ -345,5 +349,49 @@ public class CommonService {
      */
     public void requestSms(SmsVo smsVo) {
         commonDao.requestSms(smsVo);
+    }
+
+
+    /**
+     * 회원 본인 인증
+     */
+    public String callMemberCertification(P_SelfAuthVo pSelfAuthVo) throws GlobalException{
+        ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
+        commonDao.callMemberCertification(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        String result ="";
+        if(procedureVo.getRet().equals(Status.본인인증성공.getMessageCode())) {
+            result = Status.본인인증성공.getMessageCode();
+        } else if(procedureVo.getRet().equals(Status.본인인증_회원아님.getMessageCode())) {
+            throw new GlobalException(Status.본인인증_회원아님);
+        } else if(procedureVo.getRet().equals(Status.본인인증_중복.getMessageCode())) {
+            throw new GlobalException(Status.본인인증_중복);
+        } else {
+            throw new GlobalException(Status.본인인증저장실패);
+        }
+        return result;
+    }
+
+    /**
+     * 회원 본인 인증 여부 체크
+     */
+    public String getCertificationChk(P_SelfAuthChkVo pSelfAuthVo){
+        ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
+        commonDao.getCertificationChk(procedureVo);
+
+        String result ="";
+        if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
+        } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_안됨));
+        } else if(procedureVo.getRet().equals(Status.본인인증여부_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_회원아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_실패));
+        }
+        return result;
     }
 }

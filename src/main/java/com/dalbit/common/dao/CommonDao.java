@@ -14,4 +14,8 @@ public interface CommonDao {
     List<Map> callCodeDefineSelect();
 
     void requestSms(SmsVo smsVo);
+
+    ProcedureVo callMemberCertification(ProcedureVo procedureVo);
+
+    ProcedureVo getCertificationChk(ProcedureVo procedureVo);
 }
