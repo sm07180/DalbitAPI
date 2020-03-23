@@ -4406,48 +4406,55 @@
 													"key": "name",
 													"value": "이형원",
 													"description": "* 이름",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "phoneNo",
 													"value": "01031855992",
 													"description": "* 휴대폰번호",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "phoneCorp",
 													"value": "SKT",
 													"description": "* 통신사",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "birthDay",
 													"value": "19890927",
 													"description": "* 생년월일",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "gender",
 													"value": "0",
 													"description": "* 성별",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												},
 												{
 													"key": "nation",
 													"value": "0",
 													"description": "* 내외국",
-													"type": "text"
+													"type": "text",
+													"disabled": true
 												}
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/self/auth/req",
+											"raw": "https://devm-hwlee.dalbitcast.com:4431/self/auth/req",
 											"protocol": "https",
 											"host": [
-												"devapi2",
+												"devm-hwlee",
 												"dalbitcast",
 												"com"
 											],
+											"port": "4431",
 											"path": [
 												"self",
 												"auth",
