@@ -247,7 +247,14 @@ public class RoomService {
         } else if (procedureVo.getRet().equals(Status.방송참여_종료된방송.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_종료된방송));
         } else if (procedureVo.getRet().equals(Status.방송참여_이미참가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가));
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String auth = DalbitUtil.getStringMap(resultMap, "auth");
+            CodeVo codeVo = commonService.getCodeList("roomRight").stream().filter(code -> code.getCdNm().equals("방장")).findFirst().orElse(null);
+            if(! DalbitUtil.isEmpty(codeVo) && auth.equals(codeVo.getCd())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_방송중));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가));
+            }
         } else if (procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_입장제한));
         } else if (procedureVo.getRet().equals(Status.방송참여_나이제한.getMessageCode())) {

@@ -221,6 +221,7 @@ public enum Status {
     방송참여_입장제한("-5", "broadcast.room.join.no", "입장제한 시"),
     방송참여_나이제한("-6", "broadcast.room.join.no.age", "나이제한 시"),
     방송참여_강퇴시간제한("-7", "broadcast.room.join.kickout.timelimit", "강제퇴장후 24시간이 지나지 않았을 시"),
+    방송참여_방송중("-8", "broadcast.room.join.already.live.dj", "방송중인 본인방 참가할 시"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기

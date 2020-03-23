@@ -279,9 +279,7 @@ public class CommonController {
      * 본인인증 요청
      */
     @PostMapping("self/auth/req")
-    public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
-        DalbitUtil.throwValidaionException(bindingResult);
+    public String requestSelfAuth(SelfAuthVo selfAuthVo, HttpServletRequest request){
 
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
