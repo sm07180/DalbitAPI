@@ -36,7 +36,7 @@ public enum Status {
     //본인인증(DB저장)
     본인인증성공("0", "member.certification.success", "본인인증 성공 시"),
     본인인증_회원아님("-1", "member.certification.not.member", "요청회원번호 회원이 아닐 시"),
-    본인인증_중복("0", "member.certification.already", "본인인증 이미 되어있는 회원일 시"),
+    본인인증_중복("-2", "member.certification.already", "본인인증 이미 되어있는 회원일 시"),
     본인인증저장실패("C006", "member.certification.save.fail", "본인인증 저장 실패 시"),
 
     //본인인증 여부체크

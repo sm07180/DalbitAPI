@@ -364,13 +364,13 @@ public class CommonService {
 
         String result ="";
         if(procedureVo.getRet().equals(Status.본인인증성공.getMessageCode())) {
-            result = Status.본인인증성공.getMessageCode();
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증성공));
         } else if(procedureVo.getRet().equals(Status.본인인증_회원아님.getMessageCode())) {
-            throw new GlobalException(Status.본인인증_회원아님);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_회원아님));
         } else if(procedureVo.getRet().equals(Status.본인인증_중복.getMessageCode())) {
-            throw new GlobalException(Status.본인인증_중복);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_중복));
         } else {
-            throw new GlobalException(Status.본인인증저장실패);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증저장실패));
         }
         return result;
     }

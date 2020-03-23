@@ -278,7 +278,7 @@ public class CommonController {
     /**
      * 본인인증 요청
      */
-    @PostMapping("self/auth")
+    @PostMapping("self/auth/req")
     public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
@@ -303,29 +303,28 @@ public class CommonController {
     /**
      * 본인인증 확인
     */
-    @GetMapping("self/auth")
-    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException, ParseException {
+    @PostMapping("self/auth/res")
+    public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
+        DalbitUtil.throwValidaionException(bindingResult);
         String result;
-        SelfAuthChkVo selfAuthChkVo = DalbitUtil.getDecAuthInfo(request);
+        SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
 
-        if(selfAuthChkVo.getMsg().equals("정상")){
+        if(selfAuthSaveVo.getMsg().equals("정상")){
 
             P_SelfAuthVo apiData = new P_SelfAuthVo();
-            apiData.setMem_no(selfAuthChkVo.getPlusInfo()); //요청시 보낸 회원번호 (추가정보)
-            apiData.setName(selfAuthChkVo.getName());
-            apiData.setPhoneNum(selfAuthChkVo.getPhoneNo());
-            apiData.setMemSex(selfAuthChkVo.getGender());
-            apiData.setBirthYear(selfAuthChkVo.getBirthDay().substring(0,4));
-            apiData.setBirthMonth(selfAuthChkVo.getBirthDay().substring(4,6));
-            apiData.setBirthDay(selfAuthChkVo.getBirthDay().substring(6,8));
-            apiData.setCommCompany(selfAuthChkVo.getPhoneCorp());
-            apiData.setForeignYN(selfAuthChkVo.getNation());
-            apiData.setCertCode(selfAuthChkVo.getCI());
+            apiData.setMem_no(selfAuthSaveVo.getPlusInfo()); //요청시 보낸 회원번호 (추가정보)
+            apiData.setName(selfAuthSaveVo.getName());
+            apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
+            apiData.setMemSex(selfAuthSaveVo.getGender());
+            apiData.setBirthYear(selfAuthSaveVo.getBirthDay().substring(0,4));
+            apiData.setBirthMonth(selfAuthSaveVo.getBirthDay().substring(4,6));
+            apiData.setBirthDay(selfAuthSaveVo.getBirthDay().substring(6,8));
+            apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
+            apiData.setForeignYN(selfAuthSaveVo.getNation());
+            apiData.setCertCode(selfAuthSaveVo.getCI());
 
             //회원본인인증 DB 저장
-            commonService.callMemberCertification(apiData);
-
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
+            result = commonService.callMemberCertification(apiData);
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
         }
