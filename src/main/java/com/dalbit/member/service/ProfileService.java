@@ -64,6 +64,7 @@ public class ProfileService {
             HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(DalbitUtil.getStringMap(myInfo, "birthYear"), DalbitUtil.getStringMap(myInfo, "birthMonth"), DalbitUtil.getStringMap(myInfo, "birthDay")));
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));
+
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
@@ -92,17 +93,13 @@ public class ProfileService {
             HashMap socketMap = new HashMap();
             //TODO - 레벨업 유무 소켓추가 추후 확인
             //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공, returnMap));
         }else if (Status.팬보드_댓글달기실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_스타회원번호_회원아님));
-
         }else if (Status.팬보드_댓글달기실패_작성자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_작성자회원번호_회원아님));
-
         }else if (Status.팬보드_댓글달기실패_잘못된댓글그룹번호.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_잘못된댓글그룹번호));
-
         }else if (Status.팬보드_댓글달기실패_depth값_오류.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_depth값_오류));
         } else {
@@ -120,17 +117,17 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanboardListVo);
         List<P_FanboardListVo> fanboardVoList = profileDao.callMemberFanboardList(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(fanboardVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<FanboardVo> outVoList = new ArrayList<>();
-            for (int i=0; i<fanboardVoList.size(); i++){
-                outVoList.add(new FanboardVo(fanboardVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
         HashMap fanBoardList = new HashMap();
+        if(DalbitUtil.isEmpty(fanboardVoList)){
+            fanBoardList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
+        }
+
+        List<FanboardVo> outVoList = new ArrayList<>();
+        for (int i=0; i<fanboardVoList.size(); i++){
+            outVoList.add(new FanboardVo(fanboardVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         fanBoardList.put("list", procedureOutputVo.getOutputBox());
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
@@ -140,8 +137,6 @@ public class ProfileService {
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드조회성공, fanBoardList));
-        }else if(Status.팬보드_댓글없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음));
         } else if(Status.팬보드_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_요청회원번호_회원아님));
         } else if(Status.팬보드_스타회원번호_회원아님.getMessageCode().equals((procedureVo.getRet()))){
@@ -191,18 +186,17 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanboardReplyVo);
         List<P_FanboardReplyVo> fanboardVoReplyList = profileDao.callMemberFanboardReply(procedureVo);
 
-
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(fanboardVoReplyList)){
-            procedureOutputVo = null;
-        }else{
-            List<FanboardReplyOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<fanboardVoReplyList.size(); i++){
-                outVoList.add(new FanboardReplyOutVo(fanboardVoReplyList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
         HashMap fanboardReplyList = new HashMap();
+        if(DalbitUtil.isEmpty(fanboardVoReplyList)){
+            fanboardReplyList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, fanboardReplyList));
+        }
+
+        List<FanboardReplyOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<fanboardVoReplyList.size(); i++){
+            outVoList.add(new FanboardReplyOutVo(fanboardVoReplyList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         fanboardReplyList.put("list", procedureOutputVo.getOutputBox());
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
@@ -212,8 +206,6 @@ public class ProfileService {
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReplyList));
-        } else if(Status.팬보드_대댓글조회실패_대댓글없음.getMessageCode().equals(procedureOutputVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음));
         } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
             result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_요청회원번호_회원아님)));
         } else if(Status.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
@@ -233,28 +225,24 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanRankingVo);
         List<P_FanRankingVo> fanRankingVoList = profileDao.callMemberFanRanking(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap fanRankingList = new HashMap();
         if(DalbitUtil.isEmpty(fanRankingVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<FanRankingOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<fanRankingVoList.size(); i++){
-                outVoList.add(new FanRankingOutVo(fanRankingVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            fanRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
         }
 
+        List<FanRankingOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<fanRankingVoList.size(); i++){
+            outVoList.add(new FanRankingOutVo(fanRankingVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap fanRankingList = new HashMap();
         fanRankingList.put("list", procedureOutputVo.getOutputBox());
         fanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_성공, fanRankingList));
-        } else if (procedureVo.getRet().equals(Status.팬랭킹조회_팬없음.getMessageCode())) {
-            fanRankingList.put("list", new ArrayList<>());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_요청회원_회원아님));
         } else if (procedureVo.getRet().equals(Status.팬랭킹조회_대상회원_회원아님.getMessageCode())) {

@@ -109,6 +109,7 @@ public class MypageController {
      */
     @GetMapping("/broad")
     public String broadBasic(HttpServletRequest request){
+
         P_BroadBasicVo apiData = new P_BroadBasicVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
 
@@ -267,7 +268,7 @@ public class MypageController {
     }
 
     /**
-     * 회원 루비선물하기
+     * 회원 달 선물하기
      */
     @PostMapping("/gift")
     public String memberGift(@Valid RubyVo rubyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
@@ -299,6 +300,7 @@ public class MypageController {
      */
     @PostMapping("/notice/add")
     public String noticeAdd(@Valid MypageNoticeAddVo mypageNoticeAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeAddVo apiData = new P_MypageNoticeAddVo(mypageNoticeAddVo, request);
 
@@ -312,6 +314,7 @@ public class MypageController {
      */
     @PostMapping("/notice/edit")
     public String noticeEdit(@Valid MypageNoticeEditVo mypageNoticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeEditVo apiData = new P_MypageNoticeEditVo(mypageNoticeEditVo, request);
 
@@ -326,6 +329,7 @@ public class MypageController {
      */
     @DeleteMapping("/notice")
     public String noticeDel(@Valid MypageNoticeDelVo mypageNoticeDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeDelVo apiData = new P_MypageNoticeDelVo(mypageNoticeDelVo, request);
 
@@ -339,6 +343,7 @@ public class MypageController {
      */
     @GetMapping("/notice")
     public String noticeView(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageNoticeSelectVo apiData = new P_MypageNoticeSelectVo(mypageNoticeSelectVo, request);
 
@@ -352,6 +357,7 @@ public class MypageController {
      */
     @GetMapping("/dal")
     public String dalView(@Valid DalVo dalVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_DalVo apiData = new P_DalVo(dalVo, request);
 
@@ -365,6 +371,7 @@ public class MypageController {
      */
     @GetMapping("/byeol")
     public String byeolView(@Valid ByeolVo byeolVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_ByeolVo apiData = new P_ByeolVo(byeolVo, request);
 
@@ -378,6 +385,7 @@ public class MypageController {
      */
     @GetMapping("/report/broad")
     public String reportBroadView(@Valid MypageReportBroadVo mypageReportBroadVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageReportBroadVo apiData = new P_MypageReportBroadVo(mypageReportBroadVo, request);
 
@@ -391,6 +399,7 @@ public class MypageController {
      */
     @GetMapping("/report/listen")
     public String reportListenView(@Valid MypageReportListenVo mypageReportListenVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
         P_MypageReportListenVo apiData = new P_MypageReportListenVo(mypageReportListenVo, request);
 
@@ -404,6 +413,7 @@ public class MypageController {
      */
     @GetMapping("/banwrod")
     public String getBanWrod(HttpServletRequest request){
+
         P_BanWordSelectVo apiData = new P_BanWordSelectVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
 
@@ -417,6 +427,7 @@ public class MypageController {
      */
     @PostMapping("/banword")
     public String insertBanWrod(@Valid BanWordVo banWordVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_BanWordInsertVo apiData = new P_BanWordInsertVo();
@@ -433,6 +444,7 @@ public class MypageController {
      */
     @GetMapping("/search")
     public String searchUser(@Valid SearchUserVo searchUserVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_SearchUserVo apiData = new P_SearchUserVo(searchUserVo, request);
@@ -460,6 +472,7 @@ public class MypageController {
      */
     @PostMapping("/manager/add")
     public String addManager(@Valid MypageManagerAddVo mypageManagerAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_MypageManagerAddVo apiData = new P_MypageManagerAddVo(mypageManagerAddVo, request);
@@ -474,6 +487,7 @@ public class MypageController {
      */
     @PostMapping("/manager/edit")
     public String editManager(@Valid MypageManagerEditVo mypageManagerEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_MypageManagerEditVo apiData = new P_MypageManagerEditVo(mypageManagerEditVo, request);
@@ -488,6 +502,7 @@ public class MypageController {
      */
     @DeleteMapping("/manager")
     public String delManager(@Valid MypageManagerDelVo mypageManagerDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_MypageManagerDelVo apiData = new P_MypageManagerDelVo(mypageManagerDelVo, request);
@@ -501,6 +516,7 @@ public class MypageController {
      */
     @GetMapping("/black")
     public String getBlackList(@Valid MypageBlackVo mypageBlackVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_MypageBlackVo apiData = new P_MypageBlackVo(mypageBlackVo, request);
@@ -514,6 +530,7 @@ public class MypageController {
      */
     @PostMapping("/black/add")
     public String addBlackList(@Valid MypageBlackAddVo mypageBlackAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_MypageBlackAddVo apiData = new P_MypageBlackAddVo(mypageBlackAddVo, request);
@@ -527,6 +544,7 @@ public class MypageController {
      */
     @DeleteMapping("/black")
     public String delBlackList(@Valid MypageBlackDelVo mypageBlackDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
         DalbitUtil.throwValidaionException(bindingResult);
 
         P_MypageBlackDelVo apiData = new P_MypageBlackDelVo(mypageBlackDelVo, request);

@@ -41,27 +41,24 @@ public class CustomerCenterService {
         ProcedureVo procedureVo = new ProcedureVo(pNoticeListVo);
         List<P_NoticeListVo> noticeListVoList = customerCenterDao.callNoticeList(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap noticeList = new HashMap();
         if(DalbitUtil.isEmpty(noticeListVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<NoticeListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<noticeListVoList.size(); i++){
-                outVoList.add(new NoticeListOutVo(noticeListVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            noticeList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항조회_없음, noticeList));
         }
 
+        List<NoticeListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<noticeListVoList.size(); i++){
+            outVoList.add(new NoticeListOutVo(noticeListVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap noticeList = new HashMap();
         noticeList.put("list", procedureOutputVo.getOutputBox());
         noticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항조회_성공, noticeList));
-        } else if (procedureVo.getRet().equals(Status.고객센터_공지사항조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항조회_없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항조회_실패));
         }
@@ -90,7 +87,7 @@ public class CustomerCenterService {
         returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
         procedureVo.setData(returnMap);
 
-        String result ="";
+        String result;
         if(procedureVo.getRet().equals(Status.고객센터_공지사항내용조회_성공.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항내용조회_성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.고객센터_공지사항내용조회_없음.getMessageCode())) {
@@ -109,27 +106,24 @@ public class CustomerCenterService {
         ProcedureVo procedureVo = new ProcedureVo(pFaqListVo);
         List<P_FaqListVo> faqListVoList = customerCenterDao.callFaqList(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap faqList = new HashMap();
         if(DalbitUtil.isEmpty(faqListVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<FaqListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<faqListVoList.size(); i++){
-                outVoList.add(new FaqListOutVo(faqListVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            faqList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_없음, faqList));
         }
 
+        List<FaqListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<faqListVoList.size(); i++){
+            outVoList.add(new FaqListOutVo(faqListVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap faqList = new HashMap();
         faqList.put("list", procedureOutputVo.getOutputBox());
         faqList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_성공, faqList));
-        } else if (procedureVo.getRet().equals(Status.고객센터_FAQ조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ조회_실패));
         }
@@ -158,7 +152,7 @@ public class CustomerCenterService {
         returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
         procedureVo.setData(returnMap);
 
-        String result ="";
+        String result;
         if(procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_성공.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_없음.getMessageCode())) {

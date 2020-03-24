@@ -17,7 +17,7 @@ public class P_MemberInfoVo {
     private String memId;               //자동생성된아이디8자
     private String profileImage;        //프로필이미지
     private String profileMsg;          //프로필메세지
-    private String ruby;               //보유 루비수(본인)
-    private String gold;               //보유 골드수(본인)
+    private String ruby;               //보유 루비수(본인) -> 달 수
+    private String gold;               //보유 골드수(본인) -> 별 수
 
 }

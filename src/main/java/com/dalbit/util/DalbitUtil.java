@@ -108,7 +108,7 @@ public class DalbitUtil {
      * @return
      */
     public static boolean isEmpty(List list){
-        if(list != null){
+        if(list != null && list.size() != 0){
             return false;
         }
         return 0 < list.size() ? false : true;
@@ -1142,4 +1142,18 @@ public class DalbitUtil {
         b = matcher.matches();
         return b;
     }
+
+    /**
+     * 배경이미지 번호 랜덤 추출
+     */
+    public static String randomBgValue() {
+        StringBuffer strPwd = new StringBuffer();
+        int[] strs = new int[1];
+        for (int i = 0; i < 1; ++i) {
+            strs[0] = (int) (Math.random() * 6.0D);
+            strPwd.append(strs[0]);
+        }
+        return strPwd.toString();
+    }
+
 }

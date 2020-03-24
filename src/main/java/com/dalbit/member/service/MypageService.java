@@ -75,7 +75,9 @@ public class MypageService {
                 P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, new MemberVo().getMyMemNo(request), new MemberVo().getMyMemNo(request));
                 String resultProfile = profileService.callMemberInfo(apiData, request);
                 HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
+
                 result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, profileMap.get("data")));
+
             } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임중복));
             } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
@@ -186,6 +188,7 @@ public class MypageService {
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
+
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_대상아님.getMessageCode())) {
@@ -193,7 +196,7 @@ public class MypageService {
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_실패));
         }
-        log.info("result:{}" + result);
+        log.info("result: {}", result);
         return result;
     }
 
@@ -381,28 +384,30 @@ public class MypageService {
 
 
     /**
-     * 회원 루비선물하기
+     * 회원 달 선물하기
      */
     public String callMemberGiftRuby(P_RubyVo pRubyVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRubyVo);
         mypageDao.callMemberGiftRuby(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.루비선물_성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(Status.달선물_성공.getMessageCode())) {
             try{
                 socketService.giftDal(new MemberVo().getMyMemNo(request), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
-            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_성공));
-        }else if(procedureVo.getRet().equals(Status.루비선물_요청회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_요청회원번호_회원아님));
-        }else if(procedureVo.getRet().equals(Status.루비선물_받는회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_받는회원번호_회원아님));
-        }else if(procedureVo.getRet().equals(Status.루비선물_루비개수_비정상.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_루비개수_비정상));
-        }else if(procedureVo.getRet().equals(Status.루비선물_루비개수_부족.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_루비개수_부족));
+            }catch(Exception e){
+                log.info("Socket Service giftDal Exception {}", e);
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_성공));
+        }else if(procedureVo.getRet().equals(Status.달선물_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.달선물_받는회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_받는회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(Status.달선물_달개수_비정상.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_달개수_비정상));
+        }else if(procedureVo.getRet().equals(Status.달선물_달개수_부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_달개수_부족));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.루비선물_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_실패));
         }
 
         return result;
@@ -416,27 +421,24 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pNotificationVo);
         List<P_NotificationVo> notificationVoList = mypageDao.callMemberNotification(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap notificationList = new HashMap();
         if(DalbitUtil.isEmpty(notificationVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<NotificationOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<notificationVoList.size(); i++){
-                outVoList.add(new NotificationOutVo(notificationVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            notificationList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_알림없음, notificationList));
         }
 
+        List<NotificationOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<notificationVoList.size(); i++){
+            outVoList.add(new NotificationOutVo(notificationVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap notificationList = new HashMap();
         notificationList.put("list", procedureOutputVo.getOutputBox());
         notificationList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_성공, notificationList));
-        } else if (procedureVo.getRet().equals(Status.회원알림내용조회_알림없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_알림없음));
         } else if (procedureVo.getRet().equals(Status.회원알림내용조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_회원아님));
         }else{
@@ -530,27 +532,24 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypagNoticeSelectVo);
         List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap mypageNoticeList = new HashMap();
         if(DalbitUtil.isEmpty(mypageNoticeListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<mypageNoticeListVo.size(); i++){
-                outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            mypageNoticeList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, mypageNoticeList));
         }
 
+        List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<mypageNoticeListVo.size(); i++){
+            outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap mypageNoticeList = new HashMap();
         mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
         mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, mypageNoticeList));
-        } else if (procedureVo.getRet().equals(Status.공지조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음));
         } else if (procedureVo.getRet().equals(Status.공지조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_요청회원번호_회원아님));
         } else if (procedureVo.getRet().equals(Status.공지조회_대상회원번호_회원아님.getMessageCode())) {
@@ -569,28 +568,26 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pDalVo);
         List<P_DalVo> dalListVo = mypageDao.callMemberWalletDal(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap mypageDalList = new HashMap();
         if(DalbitUtil.isEmpty(dalListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<WalletDalListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<dalListVo.size(); i++){
-                outVoList.add(new WalletDalListOutVo(dalListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            mypageDalList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_없음, mypageDalList));
         }
 
+        List<WalletDalListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<dalListVo.size(); i++){
+            outVoList.add(new WalletDalListOutVo(dalListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap mypageDalList = new HashMap();
         mypageDalList.put("dalTotCnt", DalbitUtil.getIntMap(resultMap, "dal"));
         mypageDalList.put("list", procedureOutputVo.getOutputBox());
         mypageDalList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_성공, mypageDalList));
-        } else if (procedureVo.getRet().equals(Status.달사용내역조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_없음));
         } else if (procedureVo.getRet().equals(Status.달사용내역조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_요청회원번호_회원아님));
         }else{
@@ -607,28 +604,25 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pByeolVo);
         List<P_ByeolVo> byeolListVo = mypageDao.callMemberWalletByeol(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap mypageByeolList = new HashMap();
         if(DalbitUtil.isEmpty(byeolListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<WalletByeolListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<byeolListVo.size(); i++){
-                outVoList.add(new WalletByeolListOutVo(byeolListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            mypageByeolList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_없음, mypageByeolList));
         }
 
+        List<WalletByeolListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<byeolListVo.size(); i++){
+            outVoList.add(new WalletByeolListOutVo(byeolListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap mypageByeolList = new HashMap();
         mypageByeolList.put("byeolTotCnt", DalbitUtil.getIntMap(resultMap, "byeol"));
         mypageByeolList.put("list", procedureOutputVo.getOutputBox());
         mypageByeolList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_성공, mypageByeolList));
-        } else if (procedureVo.getRet().equals(Status.별사용내역조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_없음));
         } else if (procedureVo.getRet().equals(Status.별사용내역조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_요청회원번호_회원아님));
         }else{
@@ -645,27 +639,23 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypageReportBroadVo);
         List<P_MypageReportBroadVo> reportBoradListVo = mypageDao.callMypageMypageReportBroad(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(reportBoradListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<MypageReportBroadListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<reportBoradListVo.size(); i++){
-                outVoList.add(new MypageReportBroadListOutVo(reportBoradListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
-
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         HashMap reportBroadList = new HashMap();
+        if(DalbitUtil.isEmpty(reportBoradListVo)){
+            reportBroadList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_없음, reportBroadList));
+        }
+        List<MypageReportBroadListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<reportBoradListVo.size(); i++){
+            outVoList.add(new MypageReportBroadListOutVo(reportBoradListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         reportBroadList.put("list", procedureOutputVo.getOutputBox());
         reportBroadList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_성공, reportBroadList));
-        } else if (procedureVo.getRet().equals(Status.방송내역조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_없음));
         } else if (procedureVo.getRet().equals(Status.방송내역조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송내역조회_요청회원번호_회원아님));
         }else{
@@ -681,27 +671,24 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypageReportListenVo);
         List<P_MypageReportListenVo> reportListenListVo = mypageDao.callMypageMypageReportListen(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap reportListenList = new HashMap();
         if(DalbitUtil.isEmpty(reportListenListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<MypageReportListenListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<reportListenListVo.size(); i++){
-                outVoList.add(new MypageReportListenListOutVo(reportListenListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            reportListenList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_없음, reportListenList));
         }
 
+        List<MypageReportListenListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<reportListenListVo.size(); i++){
+            outVoList.add(new MypageReportListenListOutVo(reportListenListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap reportListenList = new HashMap();
         reportListenList.put("list", procedureOutputVo.getOutputBox());
         reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_성공, reportListenList));
-        } else if (procedureVo.getRet().equals(Status.청취내역조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_없음));
         } else if (procedureVo.getRet().equals(Status.청취내역조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.청취내역조회_요청회원번호_회원아님));
         }else{
@@ -768,8 +755,9 @@ public class MypageService {
                 HashMap resultCheckMap = new Gson().fromJson(procedureCheckVo.getExt(), HashMap.class);
                 try{
                     socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                }catch(Exception e){}
-
+                }catch(Exception e){
+                    log.info("Socket Service banWord Exception {}", e);
+                }
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.금지어저장_성공, procedureVo.getData()));
         }else if(Status.금지어저장_요청번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
@@ -791,27 +779,24 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pSearchUserVo);
         List<P_SearchUserVo> searchUserListVo = mypageDao.callMypageSearchUser(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap searchUserList = new HashMap();
         if(DalbitUtil.isEmpty(searchUserListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<SearchUserOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<searchUserListVo.size(); i++){
-                outVoList.add(new SearchUserOutVo(searchUserListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            searchUserList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.유저검색_없음, searchUserList));
         }
 
+        List<SearchUserOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<searchUserListVo.size(); i++){
+            outVoList.add(new SearchUserOutVo(searchUserListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap reportListenList = new HashMap();
-        reportListenList.put("list", procedureOutputVo.getOutputBox());
-        reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+        searchUserList.put("list", procedureOutputVo.getOutputBox());
+        searchUserList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_성공, reportListenList));
-        } else if (procedureVo.getRet().equals(Status.유저검색_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_없음));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_성공, searchUserList));
         } else if (procedureVo.getRet().equals(Status.유저검색_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.유저검색_요청회원번호_회원아님));
         }else{
@@ -828,26 +813,22 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypageManagerVo);
         List<P_MypageManagerVo> managerListVo = mypageDao.callMypageManager(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap managerList = new HashMap();
         if(DalbitUtil.isEmpty(managerListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<ManagerOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<managerListVo.size(); i++){
-                outVoList.add(new ManagerOutVo(managerListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            managerList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_없음, managerList));
         }
 
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap reportListenList = new HashMap();
-        reportListenList.put("list", procedureOutputVo.getOutputBox());
+        List<ManagerOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<managerListVo.size(); i++){
+            outVoList.add(new ManagerOutVo(managerListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        managerList.put("list", procedureOutputVo.getOutputBox());
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_성공, reportListenList));
-        } else if (procedureVo.getRet().equals(Status.고정매니저조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_없음));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_성공, managerList));
         } else if (procedureVo.getRet().equals(Status.고정매니저조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저조회_요청회원번호_회원아님));
         }else{
@@ -938,27 +919,24 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypageBlackVo);
         List<P_MypageBlackVo> blackListVo = mypageDao.callMypageBlackListView(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap blackList = new HashMap();
         if(DalbitUtil.isEmpty(blackListVo)){
-            procedureOutputVo = null;
-        }else{
-            List<BlackListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<blackListVo.size(); i++){
-                outVoList.add(new BlackListOutVo(blackListVo.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            blackList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_없음, blackList));
         }
 
+        List<BlackListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<blackListVo.size(); i++){
+            outVoList.add(new BlackListOutVo(blackListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap reportListenList = new HashMap();
-        reportListenList.put("list", procedureOutputVo.getOutputBox());
-        reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+        blackList.put("list", procedureOutputVo.getOutputBox());
+        blackList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_성공, reportListenList));
-        } else if (procedureVo.getRet().equals(Status.블랙리스트조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_없음));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_성공, blackList));
         } else if (procedureVo.getRet().equals(Status.블랙리스트조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트조회_요청회원번호_회원아님));
         }else{

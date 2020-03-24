@@ -135,15 +135,13 @@ public class RoomController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
-        String bgImg = roomEditVo.getBgImg();
-
         P_RoomEditVo apiData = new P_RoomEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomEditVo.getRoomNo());
         apiData.setSubjectType(roomEditVo.getRoomType());
         apiData.setTitle(roomEditVo.getTitle());
-        if(!DalbitUtil.isEmpty(bgImg)){
-            apiData.setBackgroundImage(bgImg);
+        if(!DalbitUtil.isEmpty(roomEditVo.getBgImg())){
+            apiData.setBackgroundImage(roomEditVo.getBgImg());
         }
         apiData.setBackgroundImageDelete(roomEditVo.getBgImgDel());
         apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomEditVo.getBgImgRacy()));
@@ -281,7 +279,7 @@ public class RoomController {
      * 회원 방송진행여부 체크
      */
     @GetMapping("/check")
-    public String checkBroadcasting(HttpServletRequest request) throws GlobalException {
+    public String checkBroadcasting(HttpServletRequest request) {
         return roomService.callMemberBroadcastingCheck(request);
     }
 }

@@ -38,28 +38,24 @@ public class MainService {
         ProcedureVo procedureVo = new ProcedureVo(pMainFanRankingVo);
         List<P_MainFanRankingVo> mainFanRankingVoList = mainDao.callMainFanRanking(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(mainFanRankingVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<MainFanRankingOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<mainFanRankingVoList.size(); i++){
-                outVoList.add(new MainFanRankingOutVo(mainFanRankingVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
-
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         HashMap mainFanRankingList = new HashMap();
+        if(DalbitUtil.isEmpty(mainFanRankingVoList)){
+            mainFanRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_내역없음, mainFanRankingList));
+        }
+        List<MainFanRankingOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<mainFanRankingVoList.size(); i++){
+            outVoList.add(new MainFanRankingOutVo(mainFanRankingVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("list", procedureOutputVo.getOutputBox());
         mainFanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_성공, mainFanRankingList));
-        } else if (procedureVo.getRet().equals(Status.메인_팬랭킹조회_내역없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_내역없음));
         } else if (procedureVo.getRet().equals(Status.메인_팬랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_요청회원_회원아님));
         }else{
@@ -76,28 +72,25 @@ public class MainService {
         ProcedureVo procedureVo = new ProcedureVo(pMainDjRankingVo);
         List<P_MainDjRankingVo> mainDjRankingVoList = mainDao.callMainDjRanking(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap mainDjRankingList = new HashMap();
         if(DalbitUtil.isEmpty(mainDjRankingVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<MainDjRankingOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<mainDjRankingVoList.size(); i++){
-                outVoList.add(new MainDjRankingOutVo(mainDjRankingVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            mainDjRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_내역없음, mainDjRankingList));
         }
 
+        List<MainDjRankingOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<mainDjRankingVoList.size(); i++){
+            outVoList.add(new MainDjRankingOutVo(mainDjRankingVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap mainDjRankingList = new HashMap();
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("list", procedureOutputVo.getOutputBox());
         mainDjRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_성공, mainDjRankingList));
-        } else if (procedureVo.getRet().equals(Status.메인_DJ랭킹조회_내역없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_내역없음));
         } else if (procedureVo.getRet().equals(Status.메인_DJ랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_요청회원_회원아님));
         }else{
