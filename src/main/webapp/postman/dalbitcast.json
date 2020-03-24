@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.23",
+		"name": "달빛라디오 API 정의서_2020.03.24",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1398,25 +1398,25 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 회원 루비 선물하기_2020.02.14",
+									"name": "[완료] 회원 달 선물하기_2020.02.14",
 									"request": {
 										"method": "POST",
 										"header": [
 											{
 												"key": "Content-Type",
 												"name": "Content-Type",
-												"value": "application/x-www-form-urlencoded",
-												"type": "text"
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
-												"type": "text"
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4"
 											},
 											{
 												"key": "custom-header",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-												"type": "text"
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
 											}
 										],
 										"body": {
@@ -3556,7 +3556,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 개인정보조회(레벨, 경험치, 등급, 루비, 골드)_2020.02.03",
+									"name": "[완료] 개인정보조회(레벨, 경험치, 등급, 달, 별)_2020.02.03",
 									"request": {
 										"method": "GET",
 										"header": [
