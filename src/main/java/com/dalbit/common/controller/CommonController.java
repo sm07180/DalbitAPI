@@ -302,11 +302,11 @@ public class CommonController {
     /**
      * 본인인증 확인
      */
-    /*@GetMapping("self/auth/res")
+    @GetMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
         DalbitUtil.throwValidaionException(bindingResult);
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
-
+        String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
 
             P_SelfAuthVo apiData = new P_SelfAuthVo();
@@ -322,13 +322,13 @@ public class CommonController {
             apiData.setCertCode(selfAuthSaveVo.getCI());
 
             //회원본인인증 DB 저장
-            commonService.callMemberCertification(apiData);
+            result = commonService.callMemberCertification(apiData);
         } else {
-            log.error("본인인증실패, {}", gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패)));
+            //log.error("본인인증실패, {}", gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패)));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
         }
-
-        return  "/auth";
-    }*/
+        return  result;
+    }
 
 
     /**
