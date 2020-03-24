@@ -14,20 +14,22 @@ import com.dalbit.util.RedisUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
-@RestController
+@Controller
 public class CommonController {
 
     @Autowired
@@ -43,18 +45,21 @@ public class CommonController {
     RedisUtil redisUtil;
 
     @GetMapping("/splash")
+    @ResponseBody
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getCodeCache("splash")));
     }
 
     @PostMapping("/splash")
+    @ResponseBody
     public String updateSplash(){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));
     }
 
     @NoLogging
     @GetMapping("/check/service")
+    @ResponseBody
     public String checkService(){
         return "pong";
     }
@@ -75,6 +80,7 @@ public class CommonController {
     }
 
     @GetMapping("/store")
+    @ResponseBody
     public String tmpStore()
     {
         List<HashMap> list = new ArrayList<>();
@@ -134,6 +140,7 @@ public class CommonController {
      * 휴대폰 인증요청
      */
     @PostMapping("/sms")
+    @ResponseBody
     public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
@@ -230,6 +237,7 @@ public class CommonController {
      * 휴대폰 인증확인
      */
     @PostMapping("/sms/auth")
+    @ResponseBody
     public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
@@ -279,6 +287,7 @@ public class CommonController {
      * 본인인증 요청
      */
     @PostMapping("self/auth/req")
+    @ResponseBody
     public String requestSelfAuth(SelfAuthVo selfAuthVo, HttpServletRequest request){
 
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
@@ -297,43 +306,43 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
     }
 
-
     /**
      * 본인인증 확인
-    */
-    @PostMapping("self/auth/res")
+     */
+    @GetMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
         DalbitUtil.throwValidaionException(bindingResult);
-        String result;
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
 
-        if(selfAuthSaveVo.getMsg().equals("정상")){
+        if (selfAuthSaveVo.getMsg().equals("정상")) {
 
             P_SelfAuthVo apiData = new P_SelfAuthVo();
             apiData.setMem_no(selfAuthSaveVo.getPlusInfo()); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
             apiData.setMemSex(selfAuthSaveVo.getGender());
-            apiData.setBirthYear(selfAuthSaveVo.getBirthDay().substring(0,4));
-            apiData.setBirthMonth(selfAuthSaveVo.getBirthDay().substring(4,6));
-            apiData.setBirthDay(selfAuthSaveVo.getBirthDay().substring(6,8));
+            apiData.setBirthYear(selfAuthSaveVo.getBirthDay().substring(0, 4));
+            apiData.setBirthMonth(selfAuthSaveVo.getBirthDay().substring(4, 6));
+            apiData.setBirthDay(selfAuthSaveVo.getBirthDay().substring(6, 8));
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
 
             //회원본인인증 DB 저장
-            result = commonService.callMemberCertification(apiData);
+            commonService.callMemberCertification(apiData);
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
+            log.error("본인인증실패, {}", gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패)));
         }
 
-        return result;
+        return  "/auth";
     }
+
 
     /**
      * 본인인증 여부 체크
      */
     @GetMapping("/self/auth/check")
+    @ResponseBody
     public String getCertificationChk(HttpServletRequest request){
 
         P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
