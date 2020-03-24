@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -29,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
-@Controller
+@RestController
 public class CommonController {
 
     @Autowired
@@ -45,21 +46,18 @@ public class CommonController {
     RedisUtil redisUtil;
 
     @GetMapping("/splash")
-    @ResponseBody
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getCodeCache("splash")));
     }
 
     @PostMapping("/splash")
-    @ResponseBody
     public String updateSplash(){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));
     }
 
     @NoLogging
     @GetMapping("/check/service")
-    @ResponseBody
     public String checkService(){
         return "pong";
     }
@@ -74,13 +72,11 @@ public class CommonController {
 
     @NoLogging
     @GetMapping("/ctrl/check/service")
-    @ResponseBody
     public String checkService(HttpServletRequest request){
         return commonService.checkHealthy(request);
     }
 
     @GetMapping("/store")
-    @ResponseBody
     public String tmpStore()
     {
         List<HashMap> list = new ArrayList<>();
@@ -140,7 +136,6 @@ public class CommonController {
      * 휴대폰 인증요청
      */
     @PostMapping("/sms")
-    @ResponseBody
     public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult);
@@ -237,7 +232,6 @@ public class CommonController {
      * 휴대폰 인증확인
      */
     @PostMapping("/sms/auth")
-    @ResponseBody
     public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult);
@@ -287,7 +281,6 @@ public class CommonController {
      * 본인인증 요청
      */
     @PostMapping("self/auth/req")
-    @ResponseBody
     public String requestSelfAuth(SelfAuthVo selfAuthVo, HttpServletRequest request){
 
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
@@ -309,7 +302,7 @@ public class CommonController {
     /**
      * 본인인증 확인
      */
-    @GetMapping("self/auth/res")
+    /*@GetMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
         DalbitUtil.throwValidaionException(bindingResult);
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
@@ -335,14 +328,13 @@ public class CommonController {
         }
 
         return  "/auth";
-    }
+    }*/
 
 
     /**
      * 본인인증 여부 체크
      */
     @GetMapping("/self/auth/check")
-    @ResponseBody
     public String getCertificationChk(HttpServletRequest request){
 
         P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
