@@ -570,6 +570,9 @@ public class MypageService {
 
         HashMap mypageDalList = new HashMap();
         if(DalbitUtil.isEmpty(dalListVo)){
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            mypageDalList.put("dalTotCnt", DalbitUtil.getIntMap(resultMap, "dal"));
             mypageDalList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.달사용내역조회_없음, mypageDalList));
         }
@@ -606,6 +609,9 @@ public class MypageService {
 
         HashMap mypageByeolList = new HashMap();
         if(DalbitUtil.isEmpty(byeolListVo)){
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            mypageByeolList.put("byeolTotCnt", DalbitUtil.getIntMap(resultMap, "byeol"));
             mypageByeolList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.별사용내역조회_없음, mypageByeolList));
         }
