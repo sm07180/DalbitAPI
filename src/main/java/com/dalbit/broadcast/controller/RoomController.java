@@ -230,6 +230,9 @@ public class RoomController {
 
         DalbitUtil.throwValidaionException(bindingResult);
 
+        roomGiftHistoryVo.setPage(null);
+        roomGiftHistoryVo.setRecords(null);
+
         P_RoomGiftHistoryVo apiData = new P_RoomGiftHistoryVo(roomGiftHistoryVo, request);
         String result = roomService.callBroadCastRoomGiftHistory(apiData);
 
