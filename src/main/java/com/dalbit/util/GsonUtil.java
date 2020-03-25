@@ -17,7 +17,7 @@ public class GsonUtil {
     @Autowired MessageUtil messageUtil;
 
     public static GsonBuilder getGsonBuilder(){
-        return new GsonBuilder().disableHtmlEscaping()
+        return new GsonBuilder()
                 .registerTypeAdapter(String.class, new StringAdapter())
                 .registerTypeAdapter(Integer.class, new IntegerAdapter())
                 .registerTypeAdapter(Float.class, new FloatAdapter())
