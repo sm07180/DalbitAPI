@@ -6,8 +6,10 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.member.vo.procedure.P_MemberInfoVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RedisUtil;
@@ -43,6 +45,9 @@ public class CommonController {
     @Autowired
     RedisUtil redisUtil;
 
+    @Autowired
+    MypageService mypageService;
+
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
@@ -75,8 +80,22 @@ public class CommonController {
     }
 
     @GetMapping("/store")
-    public String tmpStore()
+    public String tmpStore(HttpServletRequest request)
     {
+        int dalCnt = 0;
+        if(DalbitUtil.isLogin(request)){
+            P_MemberInfoVo apiData = new P_MemberInfoVo();
+            apiData.setMem_no(MemberVo.getMyMemNo(request));
+            String result = mypageService.callMemberInfo(apiData);
+            HashMap infoView = new Gson().fromJson(result, HashMap.class);
+            if(!DalbitUtil.isEmpty(infoView) && !DalbitUtil.isEmpty(infoView.get("result")) && "success".equals(infoView.get("result").toString()) && !DalbitUtil.isEmpty(infoView.get("data"))){
+                HashMap infoMap = new Gson().fromJson(new Gson().toJson(infoView.get("data")), HashMap.class);
+                if(!DalbitUtil.isEmpty(infoMap) && !DalbitUtil.isEmpty(infoMap.get("dalCnt"))){
+                    dalCnt = DalbitUtil.getIntMap(infoMap, "dalCnt");
+                }
+            }
+        }
+
         List<HashMap> list = new ArrayList<>();
         HashMap store1 = new HashMap();
         store1.put("storeNo", "3001");
@@ -127,7 +146,11 @@ public class CommonController {
         list.add(store5);
         list.add(store6);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+        HashMap returnMap = new HashMap();
+        returnMap.put("dalCnt", dalCnt);
+        returnMap.put("list", list);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
     }
 
     /**
