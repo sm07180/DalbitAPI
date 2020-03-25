@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * JSON output을 위한 VO
@@ -38,6 +39,7 @@ public class JsonOutputVo {
 
     public JsonOutputVo(ErrorStatus errorStatus){
         setErrorStatus(errorStatus);
+        setData(new HashMap());
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
