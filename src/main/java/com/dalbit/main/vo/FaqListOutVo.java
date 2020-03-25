@@ -15,6 +15,7 @@ public class FaqListOutVo {
     private String writeDt;
     private Long writeTs;
 
+    public FaqListOutVo() {}
     public FaqListOutVo(P_FaqListVo target) {
         setFaqIdx(target.getFaqIdx());
         setFaqType(target.getSlctType());

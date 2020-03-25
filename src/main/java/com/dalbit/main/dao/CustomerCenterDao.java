@@ -1,10 +1,7 @@
 package com.dalbit.main.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.main.vo.procedure.P_FaqListVo;
-import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
-import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
-import com.dalbit.main.vo.procedure.P_NoticeListVo;
+import com.dalbit.main.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,4 +18,8 @@ public interface CustomerCenterDao {
     List<P_FaqListVo> callFaqList(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callFaqDetail(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    ProcedureVo callQnaAdd(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    List<P_QnaListVo> callQnaList(ProcedureVo procedureVo);
 }

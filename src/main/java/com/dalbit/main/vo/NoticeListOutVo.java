@@ -15,6 +15,7 @@ public class NoticeListOutVo {
     private String writeDt;
     private Long writeTs;
 
+    public NoticeListOutVo() {}
     public NoticeListOutVo(P_NoticeListVo target) {
         setNoticeIdx(target.getNoticeIdx());
         setNoticeType(target.getSlctType());

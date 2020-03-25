@@ -382,7 +382,7 @@ public class CommonService {
         ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
         commonDao.getCertificationChk(procedureVo);
 
-        String result ="";
+        String result;
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {

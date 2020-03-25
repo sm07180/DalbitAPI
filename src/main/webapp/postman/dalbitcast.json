@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.24",
+		"name": "달빛라디오 API 정의서_2020.03.25",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2570,6 +2570,47 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 회원탈퇴_2020.03.25",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTIzNzUwLCJleHAiOjE1ODc3MTU3NTB9.FWWgC3OVNSyHdnr0Mz2d0hlG8MLc6NImMRsZO8C1N54"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": []
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/member/withdrawal",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"member",
+												"withdrawal"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -4988,6 +5029,129 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 1:1문의하기 작성_2020.03.25",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTE1NTg5LCJleHAiOjE1ODc3MDc1ODl9.3KA1KWg8qSLL_MCetGezz_Pyy_xiBDb9Nqi13gaS-rw",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "qnaType",
+													"value": "1",
+													"description": "* 문의타입(1: 회원정보, 2: 방송, 3: 청취, 4: 결제, 5: 건의, 6: 장애/버그, 7:선물/아이",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "문의제목",
+													"description": "* 문의제목",
+													"type": "text"
+												},
+												{
+													"key": "contents",
+													"value": "문의내용",
+													"description": "* 문의내용",
+													"type": "text"
+												},
+												{
+													"key": "questionFile",
+													"value": "/qna_1/20605852800/20200325150953038440.jpeg",
+													"description": "첨부파일(이미지)",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "yosigoon@gmail.com",
+													"description": "* 이메일",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/center/qna/add",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"center",
+												"qna",
+												"add"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료]  1:1문의하기 조회_2020.03.25",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTE1NTg5LCJleHAiOjE1ODc3MDc1ODl9.3KA1KWg8qSLL_MCetGezz_Pyy_xiBDb9Nqi13gaS-rw",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											},
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/center/qna/list?page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"center",
+												"qna",
+												"list"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1",
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": "10",
+													"description": "페이지 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -5044,7 +5208,7 @@
 											"key": "file",
 											"description": "* ",
 											"type": "file",
-											"src": "/C:/Users/USER/Desktop/요시/개인자료/여보야.png"
+											"src": "/C:/Users/USER/Desktop/요시/개인자료/모바일_화면흐름도.jpg"
 										},
 										{
 											"key": "dataURL",
@@ -5060,7 +5224,7 @@
 										},
 										{
 											"key": "uploadType",
-											"value": "bg",
+											"value": "qna",
 											"description": "* bg: 배경이미지 , profile : 프로필이미지",
 											"type": "text"
 										}
