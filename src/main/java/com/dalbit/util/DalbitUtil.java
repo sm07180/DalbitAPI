@@ -1100,9 +1100,9 @@ public class DalbitUtil {
             client_ip = request.getRemoteAddr();
         }
 
-        if( !client_ip.equals(ip) ){
+        /*if( !client_ip.equals(ip) ){
             msg = "비정상적인 접근입니다. (IP불일치)";
-        }
+        }*/
 
         SelfAuthSaveVo selfAuthSaveVo = new SelfAuthSaveVo();
         selfAuthSaveVo.setEncMsg1(encMsg1);

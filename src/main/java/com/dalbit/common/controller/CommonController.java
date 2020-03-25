@@ -322,8 +322,7 @@ public class CommonController {
             //회원본인인증 DB 저장
             result = commonService.callMemberCertification(apiData);
         } else {
-            //log.error("본인인증실패, {}", gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패)));
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패, selfAuthSaveVo.getMsg()));
         }
         return  result;
     }
