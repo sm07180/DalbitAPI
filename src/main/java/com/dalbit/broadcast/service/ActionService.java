@@ -159,29 +159,29 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
         actionDao.callBroadCastRoomGift(procedureVo);
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", resultMap);
-        log.info(" ### 프로시저 호출결과 ###");
-
-        HashMap returnMap = new HashMap();
-        returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
-        returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
-        returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
-        returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));
-        returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
-        returnMap.put("expRate", DalbitUtil.getExpRate(DalbitUtil.getIntMap(resultMap, "exp"), DalbitUtil.getIntMap(resultMap, "expBegin"), DalbitUtil.getIntMap(resultMap, "expNext")));
-        returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
-        returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
-        returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
-
         String result="";
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+            log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+            log.info("프로시저 응답 데이타: {}", resultMap);
+            log.info(" ### 프로시저 호출결과 ###");
+
+            HashMap returnMap = new HashMap();
+            returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
+            returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
+            returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+            returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));
+            returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
+            returnMap.put("expRate", DalbitUtil.getExpRate(DalbitUtil.getIntMap(resultMap, "exp"), DalbitUtil.getIntMap(resultMap, "expBegin"), DalbitUtil.getIntMap(resultMap, "expNext")));
+            returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
+            returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
+            returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+            returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
             try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
@@ -261,21 +261,26 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomBoosterVo);
         actionDao.callBroadCastRoomBooster(procedureVo);
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
-        returnMap.put("roomCnt", DalbitUtil.getIntMap(resultMap, "totalRoomCnt"));
-        returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-        returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
-        returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
         String result="";
         if(Status.부스터성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+            int roomCnt = DalbitUtil.getIntMap(resultMap, "totalRoomCnt");
+            int rank = DalbitUtil.getIntMap(resultMap, "rank");
+            if(rank > roomCnt){
+                roomCnt = rank;
+            }
+            returnMap.put("roomCnt", roomCnt);
+            returnMap.put("rank", rank);
+            returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
+            returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+
+            log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+            log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+            log.info(" ### 프로시저 호출결과 ###");
+
             try{
                 socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){

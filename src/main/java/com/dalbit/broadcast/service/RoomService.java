@@ -487,15 +487,19 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomLiveRankInfoVo);
         roomDao.callBroadCastRoomLiveRankInfo(procedureVo);
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("roomCnt", DalbitUtil.getIntMap(resultMap, "totalRoomCnt"));
-        returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-        returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
-        returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-
         String result="";
         if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            int roomCnt = DalbitUtil.getIntMap(resultMap, "totalRoomCnt");
+            int rank = DalbitUtil.getIntMap(resultMap, "rank");
+            if(rank > roomCnt){
+                roomCnt = rank;
+            }
+            returnMap.put("roomCnt", roomCnt);
+            returnMap.put("rank", rank);
+            returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
+            returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공, returnMap));
         }else if(Status.순위아이템사용_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_번호비정상));
