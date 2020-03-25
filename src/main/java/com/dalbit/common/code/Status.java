@@ -632,6 +632,16 @@ public enum Status {
     고객센터_FAQ내용조회_없음("-1", "customer.center.faq.detail.no", "고객센터 FAQ 내용 없을 시"),
     고객센터_FAQ내용조회_실패("C006", "customer.center.faq.detail.select.fail", "고객센터 FAQ 내용조회 실패 시"),
 
+    //고객센터 1:1문의작성 등록
+    고객센터_문의작성_성공("0", "customer.center.qna.add.success", "고객센터 1:1문의하기 작성 성공 시"),
+    고객센터_문의작성_요청회원번호_회원아님("-1", "customer.center.qna.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    고객센터_문의작성_실패("C006", "customer.center.qna.add.fail", "고객센터 1:1문의하기 작성 실패 시"),
+
+    //고객센터 문의내역 조회
+    고객센터_문의내역조회_성공("C001", "customer.center.qna.select.success", "고객센터 문의내역 조회 성공 시"),
+    고객센터_문의내역_없음("0", "customer.center.qna.no.success", "고객센터 문의내역 없을 시"),
+    고객센터_문의내역조회_실패("C006", "customer.center.qna.select.fail", "고객센터 문의내역 조회 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";

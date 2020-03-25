@@ -1,7 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
 import com.dalbit.main.vo.request.FaqListVo;
-import com.dalbit.main.vo.request.NoticeListVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
