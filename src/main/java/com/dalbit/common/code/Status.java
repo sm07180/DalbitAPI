@@ -642,6 +642,12 @@ public enum Status {
     고객센터_문의내역_없음("0", "customer.center.qna.no.success", "고객센터 문의내역 없을 시"),
     고객센터_문의내역조회_실패("C006", "customer.center.qna.select.fail", "고객센터 문의내역 조회 실패 시"),
 
+    //회원탈퇴
+    회원탈퇴_성공("0", "member.withdrawal.success", "회원탈퇴 성공 시"),
+    회원탈퇴_회원아님("-1", "member.withdrawal.member.number.error", "요청회원번호 회원 아닐 시"),
+    회원탈퇴_이미탈퇴("-2", "member.withdrawal.already", "이미 탈퇴한 회원일 시"),
+    회원탈퇴_실패("C006", "member.withdrawal.fail", "회원탈퇴 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";
