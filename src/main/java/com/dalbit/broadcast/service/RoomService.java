@@ -533,6 +533,7 @@ public class RoomService {
             giftHistoryList.put("totalCnt", 0);
             giftHistoryList.put("totalGold", 0);
             giftHistoryList.put("paging", new PagingVo(0, pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역없음, giftHistoryList));
         }else if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             HashMap giftHistoryList = new HashMap();
