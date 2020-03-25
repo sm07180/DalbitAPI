@@ -11,7 +11,7 @@ public class RoomCreateVo {
     @NotBlank @Size(min = 2, max = 2)
     private String roomType;
 
-    @NotBlank
+    @NotBlank @Size(max = 20)
     private String title;
 
     private String bgImg;
