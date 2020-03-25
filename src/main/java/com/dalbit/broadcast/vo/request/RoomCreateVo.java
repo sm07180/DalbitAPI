@@ -18,6 +18,7 @@ public class RoomCreateVo {
 
     private String bgImgRacy;
 
+    @Size(max = 100)
     private String welcomMsg;
 
     private String notice;
