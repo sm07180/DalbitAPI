@@ -38,27 +38,24 @@ public class SearchService {
         ProcedureVo procedureVo = new ProcedureVo(pMemberSearchVo);
         List<P_MemberSearchVo> memberSearchVoList = searchDao.callMemberNickSearch(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
+        HashMap memberSearchList = new HashMap();
         if(DalbitUtil.isEmpty(memberSearchVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<MemberSearchOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<memberSearchVoList.size(); i++){
-                outVoList.add(new MemberSearchOutVo(memberSearchVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            memberSearchList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_결과없음, memberSearchList));
         }
 
+        List<MemberSearchOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<memberSearchVoList.size(); i++){
+            outVoList.add(new MemberSearchOutVo(memberSearchVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap memberSearchList = new HashMap();
         memberSearchList.put("list", procedureOutputVo.getOutputBox());
         memberSearchList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_성공, memberSearchList));
-        } else if (procedureVo.getRet().equals(Status.회원닉네임검색_결과없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_결과없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_실패));
         }
@@ -73,27 +70,23 @@ public class SearchService {
         ProcedureVo procedureVo = new ProcedureVo(pLiveRoomSearchVo);
         List<P_LiveRoomSearchVo> liveRoomSearchVoList = searchDao.callLiveRoomSearch(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(liveRoomSearchVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<RoomSearchOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<liveRoomSearchVoList.size(); i++){
-                outVoList.add(new RoomSearchOutVo(liveRoomSearchVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
-
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         HashMap roomSearchList = new HashMap();
+        if(DalbitUtil.isEmpty(liveRoomSearchVoList)){
+            roomSearchList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_결과없음, roomSearchList));
+        }
+        List<RoomSearchOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<liveRoomSearchVoList.size(); i++){
+            outVoList.add(new RoomSearchOutVo(liveRoomSearchVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         roomSearchList.put("list", procedureOutputVo.getOutputBox());
         roomSearchList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_성공, roomSearchList));
-        } else if (procedureVo.getRet().equals(Status.라이브방송검색_결과없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_결과없음));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_실패));
         }

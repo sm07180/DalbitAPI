@@ -73,7 +73,7 @@ public class UserController {
         //Guest 토큰생성
         String guestStreamId = (String) restService.antCreate(guestAddVo.getTitle(), request).get("streamId");
         String guestPublishToken = (String) restService.antToken(guestStreamId, "publish", request).get("tokenId");
-        String guestPlayToken = "";//(String) restService.antToken(guestStreamId, "play", request).get("tokenId");
+        String guestPlayToken = ""; //(String) restService.antToken(guestStreamId, "play", request).get("tokenId");
 
         log.info("guest_streamid: {}", guestStreamId);
         log.info("guest_publish_tokenid: {}", guestPublishToken);
@@ -149,6 +149,7 @@ public class UserController {
      */
     @GetMapping("/profile")
     public String memberInfo(HttpServletRequest request){
+
         int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request));
         String result = userService.callMemberInfo(apiData);

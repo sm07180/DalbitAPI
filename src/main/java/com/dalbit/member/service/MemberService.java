@@ -79,8 +79,6 @@ public class MemberService {
 
         memberDao.callNickNameCheck(procedureVo);
 
-        log.debug("닉네임중복체크 결과 : {}", procedureVo.toString());
-
         String result;
         if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복));
@@ -112,16 +110,12 @@ public class MemberService {
 
     /**
      * 비회원 토큰 업데이트
-     * @param memNo
      */
     public void refreshAnonymousSecuritySession(String memNo){
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         authorities.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 
-        Authentication authentication = new UsernamePasswordAuthenticationToken(
-                memNo
-                , ""
-                , authorities);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(memNo, "", authorities);
 
         SecurityContext securityContext = SecurityContextHolder.getContext();
         securityContext.setAuthentication(authentication);
@@ -134,8 +128,7 @@ public class MemberService {
     public void callMemberSessionUpdate(P_MemberSessionUpdateVo pMemberSessionUpdateVo){
         ProcedureVo procedureVo = new ProcedureVo(pMemberSessionUpdateVo);
         memberDao.callMemberSessionUpdate(procedureVo);
-
-        log.debug("세션 업데이트 결과: {}", procedureVo.toString());
+        //log.debug("세션 업데이트 결과: {}", procedureVo.toString());
     }
 
 }

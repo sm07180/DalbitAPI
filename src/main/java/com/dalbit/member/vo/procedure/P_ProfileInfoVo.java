@@ -42,8 +42,8 @@ public class P_ProfileInfoVo {
     private int     expNext;                    //다음 레벨업 필요 경험치
     private String  room_no;                    //진행중인 방 번호
     private String  grade;                      //등급
-    private String  ruby;                       //루비
-    private String  gold;                       //골드
+    private String  ruby;                       //루비 -> 달
+    private String  gold;                       //골드 -> 별
     private String  fanRank1;                   //팬랭킹1위 정보
     private String  fanRank2;                   //팬랭킹2위 정보
     private String  fanRank3;                   //팬랭킹3위 정보

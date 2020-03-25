@@ -108,7 +108,7 @@ public class DalbitUtil {
      * @return
      */
     public static boolean isEmpty(List list){
-        if(list != null){
+        if(list != null && list.size() != 0){
             return false;
         }
         return 0 < list.size() ? false : true;
@@ -905,9 +905,10 @@ public class DalbitUtil {
     /**
      * 본인인증 정보 복호화
      */
-    public static SelfAuthChkVo getDecAuthInfo(HttpServletRequest request) throws GlobalException, ParseException{
-        String rec_cert     = request.getParameter("rec_cert").trim();   // 결과수신DATA
-        String k_certNum    = request.getParameter("certNum").trim();   // 파라미터로 수신한 요청번호
+    public static SelfAuthSaveVo getDecAuthInfo(SelfAuthChkVo selfAuthChkVo, HttpServletRequest request) throws GlobalException, ParseException{
+        //수신된 certNum를 이용하여 복호화
+        String rec_cert     = selfAuthChkVo.getRec_cert().trim();  // 결과수신DATA
+        String k_certNum    = selfAuthChkVo.getCertNum().trim();   // 파라미터로 수신한 요청번호
         String certNum		= "";			// 요청번호
         String date			= "";			// 요청일시
         String CI	    	= "";			// 연계정보(CI)
@@ -1099,35 +1100,35 @@ public class DalbitUtil {
             client_ip = request.getRemoteAddr();
         }
 
-        if( !client_ip.equals(ip) ){
+        /*if( !client_ip.equals(ip) ){
             msg = "비정상적인 접근입니다. (IP불일치)";
-        }
+        }*/
 
-        SelfAuthChkVo selfAuthChkVo = new SelfAuthChkVo();
-        selfAuthChkVo.setEncMsg1(encMsg1);
-        selfAuthChkVo.setEncMsg2(encMsg2);
-        selfAuthChkVo.setCertNum(certNum);
-        selfAuthChkVo.setDate(date);
-        selfAuthChkVo.setCI(CI);
-        selfAuthChkVo.setDI(DI);
-        selfAuthChkVo.setPhoneNo(phoneNo);
-        selfAuthChkVo.setPhoneCorp(phoneCorp);
-        selfAuthChkVo.setBirthDay(birthDay);
-        selfAuthChkVo.setNation(nation);
-        selfAuthChkVo.setGender(gender);
-        selfAuthChkVo.setName(name);
-        selfAuthChkVo.setResult(result);
-        selfAuthChkVo.setCertMet(certMet);
-        selfAuthChkVo.setIp(ip);
-        selfAuthChkVo.setM_name(M_name);
-        selfAuthChkVo.setM_birthDay(M_birthDay);
-        selfAuthChkVo.setM_Gender(M_Gender);
-        selfAuthChkVo.setM_nation(M_nation);
-        selfAuthChkVo.setPlusInfo(plusInfo);
-        selfAuthChkVo.setRec_cert(rec_cert);
-        selfAuthChkVo.setMsg(msg);
+        SelfAuthSaveVo selfAuthSaveVo = new SelfAuthSaveVo();
+        selfAuthSaveVo.setEncMsg1(encMsg1);
+        selfAuthSaveVo.setEncMsg2(encMsg2);
+        selfAuthSaveVo.setCertNum(certNum);
+        selfAuthSaveVo.setDate(date);
+        selfAuthSaveVo.setCI(CI);
+        selfAuthSaveVo.setDI(DI);
+        selfAuthSaveVo.setPhoneNo(phoneNo);
+        selfAuthSaveVo.setPhoneCorp(phoneCorp);
+        selfAuthSaveVo.setBirthDay(birthDay);
+        selfAuthSaveVo.setNation(nation);
+        selfAuthSaveVo.setGender(gender);
+        selfAuthSaveVo.setName(name);
+        selfAuthSaveVo.setResult(result);
+        selfAuthSaveVo.setCertMet(certMet);
+        selfAuthSaveVo.setIp(ip);
+        selfAuthSaveVo.setM_name(M_name);
+        selfAuthSaveVo.setM_birthDay(M_birthDay);
+        selfAuthSaveVo.setM_Gender(M_Gender);
+        selfAuthSaveVo.setM_nation(M_nation);
+        selfAuthSaveVo.setPlusInfo(plusInfo);
+        selfAuthSaveVo.setRec_cert(rec_cert);
+        selfAuthSaveVo.setMsg(msg);
 
-        return selfAuthChkVo;
+        return selfAuthSaveVo;
     }
 
 
@@ -1140,6 +1141,19 @@ public class DalbitUtil {
         Matcher matcher = pattern.matcher(param);
         b = matcher.matches();
         return b;
+    }
+
+    /**
+     * 배경이미지 번호 랜덤 추출
+     */
+    public static String randomBgValue() {
+        StringBuffer strPwd = new StringBuffer();
+        int[] strs = new int[1];
+        for (int i = 0; i < 1; ++i) {
+            strs[0] = (int) (Math.random() * 6.0D);
+            strPwd.append(strs[0]);
+        }
+        return strPwd.toString();
     }
 
 }

@@ -193,8 +193,8 @@ public enum Item {
             , "ani"
             , 300
             , "https://image.dalbitcast.com/ani/thumbs/200319/20200319_teddybear.png"
-            , "https://image.dalbitcast.com/ani/webp/200320/20200320_teddybear.webp"
-            , "https://image.dalbitcast.com/ani/lottie/200320/20200320_teddybear.json"
+            , "https://image.dalbitcast.com/ani/webp/200320/20200320_teddybear_2.webp"
+            , "https://image.dalbitcast.com/ani/lottie/200320/20200320_teddybear_2.json"
             , 360
             , 900
             , 0.5

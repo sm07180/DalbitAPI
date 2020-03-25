@@ -62,18 +62,17 @@ public class UserService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
         List<P_RoomMemberListVo> roomMemberVoList = userDao.callBroadCastRoomMemberList(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(roomMemberVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<RoomMemberOutVo> outVoList = new ArrayList<>();
-            for (int i = 0; i< roomMemberVoList.size(); i++){
-                outVoList.add(new RoomMemberOutVo(roomMemberVoList.get(i)));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
         HashMap roomMemberList = new HashMap();
+        if(DalbitUtil.isEmpty(roomMemberVoList)){
+            roomMemberList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
+        }
 
+        List<RoomMemberOutVo> outVoList = new ArrayList<>();
+        for (int i = 0; i< roomMemberVoList.size(); i++){
+            outVoList.add(new RoomMemberOutVo(roomMemberVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         roomMemberList.put("list", procedureOutputVo.getOutputBox());
         roomMemberList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
 
@@ -81,12 +80,9 @@ public class UserService {
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        String result="";
+        String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberList));
-        }else if(Status.방송참여자리스트없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            roomMemberList.put("list", new ArrayList<>());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
         }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님));
         }else if(Status.방송참여자리스트_방없음.getMessageCode().equals(procedureOutputVo.getRet())){
@@ -123,7 +119,9 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
             try{
                 socketService.execGuest(pRoomGuestAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomGuestAddVo.getGuest_mem_no(), 3, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service execGuest Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트지정_회원아님));
@@ -168,7 +166,9 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
             try{
                 socketService.execGuest(pRoomGuestDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomGuestDeleteVo.getGuest_mem_no(), 6, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service execGuest Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소, returnMap));
         }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.게스트취소_회원아님));
@@ -213,14 +213,19 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
             try{
                 socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service kickout Exception {}", e);
+            }
+
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
                 socketService.changeCount(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service changeCount Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장, returnMap));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_회원아님));
@@ -296,7 +301,9 @@ public class UserService {
         if (procedureVo.getRet().equals(Status.매니저지정_성공.getMessageCode())) {
             try{
                 socketService.changeManager(pManagerAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service changeManager Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_성공));
         } else if (procedureVo.getRet().equals(Status.매니저지정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_회원아님));
@@ -336,7 +343,9 @@ public class UserService {
         if (procedureVo.getRet().equals(Status.매니저취소_성공.getMessageCode())) {
             try{
                 socketService.changeManager(pManagerDelVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service changeManager Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_성공));
         } else if (procedureVo.getRet().equals(Status.매니저취소_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_회원아님));
@@ -379,7 +388,9 @@ public class UserService {
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
                     socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request));
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.info("Socket Service addFan Exception {}", e);
+                }
                 log.info("Bj 팬등록 확인 {}", pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록성공));
@@ -418,7 +429,9 @@ public class UserService {
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 try{
                     socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request));
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.info("Socket Service addFan Exception {}", e);
+                }
                 log.info("Bj 팬해재 확인 {}", pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no()));
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제성공));

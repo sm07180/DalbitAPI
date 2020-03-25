@@ -16,7 +16,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -77,7 +76,9 @@ public class ContentService {
         if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
             try{
                 socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service sendNotice Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정성공));
         } else if(procedureVo.getRet().equals(Status.공지입력수정실패_정상회원이아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_정상회원이아님));
@@ -106,7 +107,9 @@ public class ContentService {
         if (procedureVo.getRet().equals(Status.공지삭제하기성공.getMessageCode())) {
             try{
                 socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service sendNotice Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기성공));
         } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_정상회원이아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_정상회원이아님));
@@ -154,7 +157,9 @@ public class ContentService {
                 socketMap.put("writeDt", DalbitUtil.getUTCFormat((String)resultMap.get("writeDate")));
                 socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((String)resultMap.get("writeDate")));
                 socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-            }catch(Exception e){}
+            }catch(Exception e){
+                log.info("Socket Service sendStory Exception {}", e);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공, returnMap));
         }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님, returnMap));
@@ -173,32 +178,24 @@ public class ContentService {
 
 
     /**
-     * 방송방 조회
-     */
-    public ProcedureOutputVo callGetStoryList(P_RoomStoryListVo pRoomStoryListVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pRoomStoryListVo);
-        List<P_RoomStoryListVo> storyVoList = contentDao.callGetStory(procedureVo);
-
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(storyVoList)){
-            procedureOutputVo = null;
-        }else{
-            List<RoomStoryListOutVo> outVoList = new ArrayList<>();
-            for (int i=0; i<storyVoList.size(); i++){
-                outVoList.add(new RoomStoryListOutVo(storyVoList.get(i), pRoomStoryListVo.getMem_no()));
-            }
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
-        return procedureOutputVo;
-    }
-
-    /**
      * 방송방 사연 조회
      */
     public String callGetStory(P_RoomStoryListVo pRoomStoryListVo) {
 
-        ProcedureOutputVo procedureOutputVo = callGetStoryList(pRoomStoryListVo);
+        ProcedureVo procedureVo = new ProcedureVo(pRoomStoryListVo);
+        List<P_RoomStoryListVo> storyVoList = contentDao.callGetStory(procedureVo);
+
         HashMap storyList = new HashMap();
+        if(DalbitUtil.isEmpty(storyVoList)){
+            storyList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_등록된사연없음, storyList));
+        }
+
+        List<RoomStoryListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<storyVoList.size(); i++){
+            outVoList.add(new RoomStoryListOutVo(storyVoList.get(i), pRoomStoryListVo.getMem_no()));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         storyList.put("list", procedureOutputVo.getOutputBox());
         storyList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
 
@@ -209,8 +206,6 @@ public class ContentService {
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회성공, storyList));
-        }else if(Status.방송방사연조회_등록된사연없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_등록된사연없음, storyList));
         }else if(Status.방송방사연조회_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_회원아님));
         }else if(Status.방송방사연조회_해당방이없음.getMessageCode().equals(procedureOutputVo.getRet())){

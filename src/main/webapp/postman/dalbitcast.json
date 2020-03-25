@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.17",
+		"name": "달빛라디오 API 정의서_2020.03.24",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -1398,25 +1398,25 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 회원 루비 선물하기_2020.02.14",
+									"name": "[완료] 회원 달 선물하기_2020.02.14",
 									"request": {
 										"method": "POST",
 										"header": [
 											{
 												"key": "Content-Type",
 												"name": "Content-Type",
-												"value": "application/x-www-form-urlencoded",
-												"type": "text"
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4",
-												"type": "text"
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4"
 											},
 											{
 												"key": "custom-header",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-												"type": "text"
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
 											}
 										],
 										"body": {
@@ -3556,7 +3556,7 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 개인정보조회(레벨, 경험치, 등급, 루비, 골드)_2020.02.03",
+									"name": "[완료] 개인정보조회(레벨, 경험치, 등급, 달, 별)_2020.02.03",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -4373,6 +4373,186 @@
 											"path": [
 												"sms",
 												"auth"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "본인인증 요청_20200319",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4NDQ5NDA5NTM3M0BmYWxzZSIsImlhdCI6MTU4NDU3OTA1OCwiZXhwIjoxNTg3MTcxMDU4fQ.-4zucZEI5hT9L5r15IZTY5v_NJ6d-VQdXSmmQ2PPSwM",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":3, \"deviceId\":\"2200DDD1-77B\", \"deviceToken\":\"45E3156FDE20E7F11AB\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123zxc\",\" isHybrid\":\"N\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "이형원",
+													"description": "* 이름",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "phoneNo",
+													"value": "01031855992",
+													"description": "* 휴대폰번호",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "phoneCorp",
+													"value": "SKT",
+													"description": "* 통신사",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "birthDay",
+													"value": "19890927",
+													"description": "* 생년월일",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "gender",
+													"value": "0",
+													"description": "* 성별",
+													"type": "text",
+													"disabled": true
+												},
+												{
+													"key": "nation",
+													"value": "0",
+													"description": "* 내외국",
+													"type": "text",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devm-hwlee.dalbitcast.com:4431/self/auth/req",
+											"protocol": "https",
+											"host": [
+												"devm-hwlee",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"self",
+												"auth",
+												"req"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "본인인증 요청 확인_20200323",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4NDQ5NDA5NTM3M0BmYWxzZSIsImlhdCI6MTU4NDU3OTA1OCwiZXhwIjoxNTg3MTcxMDU4fQ.-4zucZEI5hT9L5r15IZTY5v_NJ6d-VQdXSmmQ2PPSwM",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":3, \"deviceId\":\"2200DDD1-77B\", \"deviceToken\":\"45E3156FDE20E7F11AB\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123zxc\",\" isHybrid\":\"N\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "rec_cert",
+													"value": "227BCF1B3C9AC011E411606D1488264D760EC6B77E8A08C9710A373BD2CAD40056FB08571D6CC6A8E001D881A61E35963880222D0CE452F4FE1959C17FA6CB785E5602794A1E142EC4665898F3446FE538AE5390147C28563D92FC6A0A3764BC34ABEE272B612B797FBBBD931A295B74DDC7BAAD6DD9974B3D1BBF7CF432131217B93D4E3F007A00E0A35B0D673F0A6DBD814B82E84C7494C9293C527B5C879B2950F0C2E384C73E828F21DFCDC8D07B0363C43137E8EBC445233711B2143B3D10F03A146AC25A29C60ED9B6A6EDB009F7DD15B4F32DF69C530C28A5E299E58500A1661ED15D588CD3B76E31A5B20F8776F514962276AEC282B781D0BC016F2628D4B848CC801A24221DA0337ED05FAC8D532EEAD9647EBD41062772D9DA141B779CB580DFF533314B39B360EDDB137C464B64659F94C38E7A17BF1A42924D12C494AC4A55D34801321491DF639BBE26ED5BFBDD5E3FD4468B593A709F2315A6B2051B0CE8C2E74D7F92791640F436BF308A5040F19725B8286FC374156FF74ABEC3AA5EAB9627431893F10E1ABBEBE5FCCAF678DF25BBD9709A748A21B1C3136C5AAF56B217CF1631664FCA4345E6F1335B617DD857EB18AC843217DD0FD4D9FE18E2AE7E424DFBCDAE4474DCE0E232384B37066381165F4519CF3CFAD87BFEF5B738A1926B2203BBAD36EA556FAEDD11DECF154C6EFB52C8BDCB99E186B47BD988AF1DBC2787A08D2A45911F1E6FB0896EA5E71CD71DEB84FFC6384B8E9862A539A5B5CAB91D98D84D050BEDBC76FD8D41825253CF49EE1AD301D9B70E75DBB20D3D5CB7D4E9AAB06DEC8B1011D3FE4463654C4C3D65B7B7238079058D8482C04FE163CF905B5F6C0C315A7DB7921F8A845857D0CB3A894975FD1D2620BD5F06F1A68EEC0E3596F257C175B233143517B3604982AA0CAF36B42200DA65C467C9A24D567296C791B43D44217AA66E02C4D502B2CAC3D6CCBD5BD1B9D7F94D6B5A090537A9F844D47D14ADB0A652E6CAA9D947B57EC57A22D6924B060509C6D5BAEF2013A417F68139655C3D72C160B24818D00D02D97564F62D9D3EADE390DBB2FC5DB520F6942A04971C41E3F9C23830E7B42CE46B65B0BAB3337AF20567F2B4158E938E2E36D26CA6BECB86A73B0756149807EC5F23F8F880936753FEC1AF332785A5ED2017EDEA1DF24F06F5D74E73EABA2C0FBA020B6D5C2E86DE433AC593E0ACF48917A56FB36EF6841244FDC7CE32327F0469101FA115AD0965AA61ED37980A7A789323E0D342F31D92C9031D8732FB5088E76DE2DA3CBEED71F8B6680775A495C374981F259168D51E41CE4A1E780DD3E41E0392C9A837C671F7F1FD618671C8D690C2F3EB5B9C7C57694D00A212D2DFD49A6393314743F51026F7FD",
+													"description": "* 결과수신 DATA",
+													"type": "text"
+												},
+												{
+													"key": "certNum",
+													"value": "20200323105217588165",
+													"description": "* 수신한 요청번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com/self/auth/res",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"self",
+												"auth",
+												"res"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "본인인증 여부 체크_2020.03.20",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg0OTI4MjkwLCJleHAiOjE1ODc1MjAyOTB9.1IfWSGcqjO-X2kL3QPLHKR8Dn_DpeLbeVkb2te8cVTo",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":3, \"deviceId\":\"2200DDD1-77B\", \"deviceToken\":\"45E3156FDE20E7F11AB\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123zxc\",\" isHybrid\":\"N\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitcast.com//self/auth/check",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitcast",
+												"com"
+											],
+											"path": [
+												"",
+												"self",
+												"auth",
+												"check"
 											]
 										}
 									},

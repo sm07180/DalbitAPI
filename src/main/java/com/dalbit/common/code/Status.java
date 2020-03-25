@@ -33,6 +33,18 @@ public enum Status {
     본인인증검증_비정상접근("-1", "self.auth.response.check.error", "본인인증 비정상적인 접근 시"),
     본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
 
+    //본인인증(DB저장)
+    본인인증성공("0", "member.certification.success", "본인인증 성공 시"),
+    본인인증_회원아님("-1", "member.certification.not.member", "요청회원번호 회원이 아닐 시"),
+    본인인증_중복("-2", "member.certification.already", "본인인증 이미 되어있는 회원일 시"),
+    본인인증저장실패("C006", "member.certification.save.fail", "본인인증 저장 실패 시"),
+
+    //본인인증 여부체크
+    본인인증여부_확인("1", "member.certification.check.success", "본인인증 했을 시"),
+    본인인증여부_안됨("0", "member.certification.check.no", "본인인증 하지 않았을 시"),
+    본인인증여부_회원아님("-1", "member.certification.check.not.member", "요청회원번호 회원이 아닐 시"),
+    본인인증여부_실패("C006", "member.certification.check.fail", "본인인증 체크 실패 시"),
+
     //로그인
     로그인성공("0", "login.success", "로그인 성공 시"),
     관리자로그인성공("0", "admin.login.success", "관리자 아이디로 로그인 성공 시"),
@@ -179,13 +191,13 @@ public enum Status {
     팬보드_대댓글조회실패_스타회원번호_회원아님("-2", "fanboard.reply.starNo.notMember", "스타 회원번호가 회원이 아닐 시"),
     팬보드_대댓글조회오류("C006", "fanboard.reply.error", "팬보드 대댓글 보기 실패 시"),
 
-    //회원 루비선물하기
-    루비선물_성공("0", "mypage.member.gift.ruby.success", "루비 선물 성공 시"),
-    루비선물_요청회원번호_회원아님("-1", "mypage.member.gift.ruby.member.no", "요청회원번호가 회원이 아닐 시"),
-    루비선물_받는회원번호_회원아님("-2", "mypage.member.gift.ruby.object.member.no", "받는회원번호가 회원이 아닐 시"),
-    루비선물_루비개수_비정상("-3", "mypage.member.gift.ruby.count.error", "선물하는 루비 개수가 비정상일 시"),
-    루비선물_루비개수_부족("-4", "mypage.member.gift.ruby.limit", "루비 개수가 부족할 시"),
-    루비선물_실패("C006", "mypage.member.gift.ruby.fail", "루비 선물 실패 시"),
+    //회원 달 선물하기
+    달선물_성공("0", "mypage.member.gift.dal.success", "달 선물 성공 시"),
+    달선물_요청회원번호_회원아님("-1", "mypage.member.gift.dal.member.no", "요청회원번호가 회원이 아닐 시"),
+    달선물_받는회원번호_회원아님("-2", "mypage.member.gift.dal.object.member.no", "받는회원번호가 회원이 아닐 시"),
+    달선물_달개수_비정상("-3", "mypage.member.gift.dal.count.error", "선물하는 달 개수가 비정상일 시"),
+    달선물_달개수_부족("-4", "mypage.member.gift.dal.limit", "달 개수가 부족할 시"),
+    달선물_실패("C006", "mypage.member.gift.dal.fail", "달 선물 실패 시"),
 
     //방송생성
     방송생성("0", "broadcast.room.start.success", "방송 생성 시"),
@@ -209,6 +221,7 @@ public enum Status {
     방송참여_입장제한("-5", "broadcast.room.join.no", "입장제한 시"),
     방송참여_나이제한("-6", "broadcast.room.join.no.age", "나이제한 시"),
     방송참여_강퇴시간제한("-7", "broadcast.room.join.kickout.timelimit", "강제퇴장후 24시간이 지나지 않았을 시"),
+    방송참여_방송중("-8", "broadcast.room.join.already.live.dj", "방송중인 본인방 참가할 시"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기
@@ -224,7 +237,7 @@ public enum Status {
     방송정보수정_회원아님("-1", "broadcast.room.edit.member.no", "회원이 아닐 시"),
     방송정보수정_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
     방송정보수정_해당방에없는회원번호("-3", "broadcast.room.member.number.no", "해당 방에 없는 회원번호일 시"),
-    방송정보수정_수정권이없는회원("-4", "broadcast.room.member.edit.no", "수정권한이 없는 회원일 시"),
+    방송정보수정_수정권한없는회원("-4", "broadcast.room.member.edit.no", "수정권한이 없는 회원일 시"),
     방송정보수정실패("C006", "broadcast.room.edit.fail", "방송정보 수정 실패 시"),
 
     //방송리스트
@@ -251,7 +264,7 @@ public enum Status {
     방송진행여부체크_방송중("1", "broadcasting.ing.success", "방송중"),
     방송진행여부체크_비정상("2", "broadcasting.disconnect.success", "비정상종료된 방송 존재"),
     방송진행여부체크_요청회원아님("-1", "broadcasting.member.no", "요청회원이 아님"),
-    방송진행여부체크_실페("C006", "broadcasting.fail", "방송중인 방이없음"),
+    방송진행여부체크_실패("C006", "broadcasting.fail", "방송중인 방이없음"),
 
     //방송방 사연 등록
     방송방사연등록성공("0", "broadcast.room.story.add.success", "방송방 사연 등록 성공 시"),
@@ -374,7 +387,7 @@ public enum Status {
     부스터_요청회원_해당방청취자아님("-4", "broadcast.room.booster.member.join.no", "요청회원이 해당방 청취자가 아닐 시"),
     부스터_아이템번호없음("-5", "broadcast.room.booster.item.number.no", "아이템번호가 없을 시"),
     부스터_사용불가능아이템번호("-6", "broadcast.room.booster.item.number.error", "사용할 수 없는 아이템번호일 시"),
-    부스터_루비부족("-8", "broadcast.room.booster.ruby.shortage", "루비가 부족할 시"),
+    부스터_달부족("-8", "broadcast.room.booster.dal.shortage", "달이 부족할 시"),
     부스터_실패("C006", "broadcast.room.booster.fail", "부스터 실패 시"),
 
     //방송방 순위 아이템사용 조회

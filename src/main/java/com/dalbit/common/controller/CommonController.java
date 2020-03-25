@@ -6,7 +6,10 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
+import com.dalbit.member.service.MypageService;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.member.vo.procedure.P_MemberInfoVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RedisUtil;
@@ -16,14 +19,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -40,6 +44,9 @@ public class CommonController {
 
     @Autowired
     RedisUtil redisUtil;
+
+    @Autowired
+    MypageService mypageService;
 
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
@@ -68,14 +75,27 @@ public class CommonController {
 
     @NoLogging
     @GetMapping("/ctrl/check/service")
-    @ResponseBody
     public String checkService(HttpServletRequest request){
         return commonService.checkHealthy(request);
     }
 
     @GetMapping("/store")
-    public String tmpStore()
+    public String tmpStore(HttpServletRequest request)
     {
+        int dalCnt = 0;
+        if(DalbitUtil.isLogin(request)){
+            P_MemberInfoVo apiData = new P_MemberInfoVo();
+            apiData.setMem_no(MemberVo.getMyMemNo(request));
+            String result = mypageService.callMemberInfo(apiData);
+            HashMap infoView = new Gson().fromJson(result, HashMap.class);
+            if(!DalbitUtil.isEmpty(infoView) && !DalbitUtil.isEmpty(infoView.get("result")) && "success".equals(infoView.get("result").toString()) && !DalbitUtil.isEmpty(infoView.get("data"))){
+                HashMap infoMap = new Gson().fromJson(new Gson().toJson(infoView.get("data")), HashMap.class);
+                if(!DalbitUtil.isEmpty(infoMap) && !DalbitUtil.isEmpty(infoMap.get("dalCnt"))){
+                    dalCnt = DalbitUtil.getIntMap(infoMap, "dalCnt");
+                }
+            }
+        }
+
         List<HashMap> list = new ArrayList<>();
         HashMap store1 = new HashMap();
         store1.put("storeNo", "3001");
@@ -126,7 +146,11 @@ public class CommonController {
         list.add(store5);
         list.add(store6);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+        HashMap returnMap = new HashMap();
+        returnMap.put("dalCnt", dalCnt);
+        returnMap.put("list", list);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
     }
 
     /**
@@ -275,41 +299,69 @@ public class CommonController {
 
 
     /**
-     * 본인인증요청
+     * 본인인증 요청
      */
-    @PostMapping("self/auth")
-    public String requestSelfAuth(@Valid SelfAuthVo selfAuthVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
-        DalbitUtil.throwValidaionException(bindingResult);
+    @PostMapping("self/auth/req")
+    public String requestSelfAuth(SelfAuthVo selfAuthVo, HttpServletRequest request){
 
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request));
 
         SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
         selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.url"));    //결과수신URL
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));    //IFrame사용여부
 
+        log.info("URL CODE: {}", selfAuthVo.getUrlCode());
+
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
+    }
+
+    /**
+     * 본인인증 확인
+     */
+    @PostMapping("self/auth/res")
+    public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
+        DalbitUtil.throwValidaionException(bindingResult);
+        SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
+        String result;
+        if (selfAuthSaveVo.getMsg().equals("정상")) {
+
+            P_SelfAuthVo apiData = new P_SelfAuthVo();
+            apiData.setMem_no(selfAuthSaveVo.getPlusInfo()); //요청시 보낸 회원번호 (추가정보)
+            apiData.setName(selfAuthSaveVo.getName());
+            apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
+            apiData.setMemSex(selfAuthSaveVo.getGender());
+            apiData.setBirthYear(selfAuthSaveVo.getBirthDay().substring(0, 4));
+            apiData.setBirthMonth(selfAuthSaveVo.getBirthDay().substring(4, 6));
+            apiData.setBirthDay(selfAuthSaveVo.getBirthDay().substring(6, 8));
+            apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
+            apiData.setForeignYN(selfAuthSaveVo.getNation());
+            apiData.setCertCode(selfAuthSaveVo.getCI());
+
+            //회원본인인증 DB 저장
+            result = commonService.callMemberCertification(apiData);
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패, selfAuthSaveVo.getMsg()));
+        }
+        return  result;
     }
 
 
     /**
-     * 본인인증확인
-    */
-    @GetMapping("self/auth")
-    public String responseSelfAuthChk(HttpServletRequest request) throws GlobalException, ParseException {
-        String result;
-        //수신된 certNum를 이용하여 복호화
-        SelfAuthChkVo selfAuthChkVo = DalbitUtil.getDecAuthInfo(request);
-        if(selfAuthChkVo.getMsg().equals("정상")){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패));
-        }
+     * 본인인증 여부 체크
+     */
+    @GetMapping("/self/auth/check")
+    public String getCertificationChk(HttpServletRequest request){
+
+        P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+
+        String result = commonService.getCertificationChk(apiData);
+
         return result;
     }
-
 }
