@@ -1,5 +1,6 @@
 package com.dalbit;
 
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.sample.service.SampleService;
@@ -18,10 +19,8 @@ import org.springframework.util.MultiValueMap;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Security;
-import java.util.Calendar;
 import java.util.Date;
 
-import static jdk.nashorn.internal.objects.NativeString.substr;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @Slf4j
@@ -34,6 +33,9 @@ public class SampleVoTest {
 
     @Autowired
     private SampleService sampleService;
+
+    @Autowired
+    private CommonService commonService;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -283,7 +285,34 @@ public class SampleVoTest {
 
     @Test
     public void 각종테스트(){
-        String str = "yyyyMMdd";
+
+        /*for(int i=0; i < 50; i++ ){
+            log.info("bg value: {}", Integer.parseInt(DalbitUtil.randomBgValue()));
+        }*/
+
+        //List code =  commonService.getCodeList("roomRight");
+
+        //CodeVo codeVo = commonService.getCodeList("roomRight").stream().filter(code -> code.getCdNm().equals("방장")).findFirst().orElse(null);
+        //log.info(codeVo.getCd());
+
+        /*List names = new ArrayList();
+        names.add("Sehoon");
+        names.add("Songwoo");
+        names.add("Chan");
+        names.add("Youngsuk");
+        names.add("Dajung");*/
+
+        //java 7
+        /*for(Object name : names) {
+            log.info("java 7: {}" ,name);
+        }*/
+
+        //log.info("===========================================");
+
+        //java 8 Lambda
+        //names.stream().map(name -> name.toString()).forEach(out -> log.info("Lambda: {}", out));
+
+        //String str = "yyyyMMdd";
 
         /*String year = substr(str,0,4);
         String month = substr(str, 4,2);
@@ -291,11 +320,29 @@ public class SampleVoTest {
 
         log.info(DalbitUtil.convertDate(str, "yyyy-MM-dd"));*/
 
-        log.debug("오늘날짜: {}", DalbitUtil.getDate(str));
-        log.debug("3 일후: {}", DalbitUtil.getDate(str, 3));
-        log.debug("7 일전: {}", DalbitUtil.getDate(str, -7));
+        //log.debug("오늘날짜: {}", DalbitUtil.getDate(str));
+        //log.debug("3 일후: {}", DalbitUtil.getDate(str, 3));
+        //log.debug("7 일전: {}", DalbitUtil.getDate(str, -7));
+
+        /*String tmp = "1";
+        String isGood = "0";
+
+        if(DalbitUtil.isEmpty(tmp)){
+            log.info("isLike: {}", "1".equals(isGood));
+        }else{
+            log.info("isLike: {}", true);
+
+        }
+
+        log.info("isLike.. {}",DalbitUtil.isEmpty(tmp) ? "1".equals(isGood) : true );*/
+
+
 
     }
+
+
+
+
 
 }
 

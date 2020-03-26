@@ -16,5 +16,7 @@ public class P_SelfAuthVo {
     private String commCompany;
     private String foreignYN;
     private String certCode;
+    private String os;
+    private String isHybrid;
 
 }

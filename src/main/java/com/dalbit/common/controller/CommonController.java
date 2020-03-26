@@ -303,12 +303,17 @@ public class CommonController {
      */
     @PostMapping("self/auth/req")
     public String requestSelfAuth(SelfAuthVo selfAuthVo, HttpServletRequest request){
+        String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+        customHeader = java.net.URLDecoder.decode(customHeader);
+        HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
+        int os = DalbitUtil.getIntMap(headers,"os");
+        String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
 
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request));
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid);
 
         SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
@@ -331,7 +336,7 @@ public class CommonController {
         if (selfAuthSaveVo.getMsg().equals("정상")) {
 
             P_SelfAuthVo apiData = new P_SelfAuthVo();
-            apiData.setMem_no(selfAuthSaveVo.getPlusInfo()); //요청시 보낸 회원번호 (추가정보)
+            apiData.setMem_no(selfAuthSaveVo.getPlusInfo().split("_")[0]); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
             apiData.setMemSex(selfAuthSaveVo.getGender());
@@ -341,6 +346,8 @@ public class CommonController {
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
+            apiData.setOs((selfAuthSaveVo.getPlusInfo().split("_")[1]));
+            apiData.setIsHybrid((selfAuthSaveVo.getPlusInfo().split("_")[2]));
 
             //회원본인인증 DB 저장
             result = commonService.callMemberCertification(apiData);
