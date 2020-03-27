@@ -71,7 +71,7 @@
             <br><br><br>
             <span class="style1">본인인증서비스 테스트</span><br>
 
-            <form name="reqForm" method="post" action="https://devm-hwlee.dalbitcast.com:4431/sample/auth/step2">
+            <form name="reqForm" method="post" action="https://devm-hwlee.dalbitlive.com:4431/sample/auth/step2">
                 <table cellpadding=1 cellspacing=1>
                     <tr>
                         <td align=center>회원사ID</td>
@@ -148,7 +148,7 @@
                     </tr>
                     <tr>
                         <td align=center>결과수신URL</td>
-                        <td align=left><input type="text" name="tr_url" size="41" value="https://devm-hwlee.dalbitcast.com:4431/sample/auth/step4"></td>
+                        <td align=left><input type="text" name="tr_url" size="41" value="https://devm-hwlee.dalbitlive.com:4431/sample/auth/step4"></td>
                     </tr>
                     <tr>
                         <td align=center>IFrame사용여부</td>

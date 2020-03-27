@@ -36,7 +36,7 @@
 <head>
 <meta name="robots" content="noindex">
 <script type="text/javascript">
-	var move_page_url = "https://devm-hwlee.dalbitcast.com:4431/sample/auth/step4";
+	var move_page_url = "https://devm-hwlee.dalbitlive.com:4431/sample/auth/step4";
 	
 
 	function end() {

@@ -131,11 +131,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/member/signup",
+											"raw": "https://devapi2.dalbitlive.com/member/signup",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -191,11 +191,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/member/login",
+											"raw": "https://devapi2.dalbitlive.com/member/login",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -235,11 +235,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/member/nick?nickNm=radiodalbit",
+											"raw": "https://devapi2.dalbitlive.com/member/nick?nickNm=radiodalbit",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -296,11 +296,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/member/pwd",
+											"raw": "https://devapi2.dalbitlive.com/member/pwd",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -381,11 +381,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/profile",
+											"raw": "https://devapi2.dalbitlive.com/mypage/profile",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -429,11 +429,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/fan",
+											"raw": "https://devapi2.dalbitlive.com/mypage/fan",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -477,11 +477,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/fan",
+											"raw": "https://devapi2.dalbitlive.com/mypage/fan",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -521,11 +521,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage",
+											"raw": "https://devapi2.dalbitlive.com/mypage",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -552,11 +552,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/broad",
+											"raw": "https://devapi2.dalbitlive.com/mypage/broad",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -636,11 +636,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/broad",
+											"raw": "https://devapi2.dalbitlive.com/mypage/broad",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -702,11 +702,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/declar",
+											"raw": "https://devapi2.dalbitlive.com/mypage/declar",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -750,11 +750,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/block",
+											"raw": "https://devapi2.dalbitlive.com/mypage/block",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -798,11 +798,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/block",
+											"raw": "https://devapi2.dalbitlive.com/mypage/block",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -842,11 +842,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notify",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notify",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -926,11 +926,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notify",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notify",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -958,11 +958,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile?memNo=11584421670103",
+											"raw": "https://devapi2.dalbitlive.com/profile?memNo=11584421670103",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1029,11 +1029,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile/board/",
+											"raw": "https://devapi2.dalbitlive.com/profile/board/",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1091,11 +1091,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile/board/",
+											"raw": "https://devapi2.dalbitlive.com/profile/board/",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1146,11 +1146,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile/board/",
+											"raw": "https://devapi2.dalbitlive.com/profile/board/",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1184,11 +1184,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile/board/reply?memNo=11577931027280&boardNo=5",
+											"raw": "https://devapi2.dalbitlive.com/profile/board/reply?memNo=11577931027280&boardNo=5",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1241,11 +1241,11 @@
 											"formdata": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/shortcut",
+											"raw": "https://devapi2.dalbitlive.com/mypage/shortcut",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1307,11 +1307,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/shortcut",
+											"raw": "https://devapi2.dalbitlive.com/mypage/shortcut",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1383,11 +1383,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/token",
+											"raw": "https://devapi2.dalbitlive.com/token",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1437,11 +1437,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/gift",
+											"raw": "https://devapi2.dalbitlive.com/mypage/gift",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1474,11 +1474,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notification?page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notification?page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1521,11 +1521,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile/fan?page=1&records=10&memNo=11581573459470",
+											"raw": "https://devapi2.dalbitlive.com/profile/fan?page=1&records=10&memNo=11581573459470",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1605,11 +1605,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notice/add",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notice/add",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1678,11 +1678,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notice/edit",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notice/edit",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1733,11 +1733,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notice",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notice",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1770,11 +1770,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/notice?memNo=11581579183705&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/notice?memNo=11581579183705&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1824,11 +1824,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/dal?walletType=0&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/dal?walletType=0&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1878,11 +1878,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/byeol?walletType=0&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/byeol?walletType=0&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1932,11 +1932,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/report/broad?dateType=3&startDt=20200201&endDt=20200226&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/report/broad?dateType=3&startDt=20200201&endDt=20200226&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -1997,11 +1997,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/report/listen?dateType=3&startDt=20200201&endDt=20200226&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/report/listen?dateType=3&startDt=20200201&endDt=20200226&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2062,11 +2062,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/banwrod",
+											"raw": "https://devapi2.dalbitlive.com/mypage/banwrod",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2111,11 +2111,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/banword",
+											"raw": "https://devapi2.dalbitlive.com/mypage/banword",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2149,11 +2149,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/search?userType=0&search=형원&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/search?userType=0&search=형원&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2209,11 +2209,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/manager",
+											"raw": "https://devapi2.dalbitlive.com/mypage/manager",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2264,11 +2264,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/manager/add",
+											"raw": "https://devapi2.dalbitlive.com/mypage/manager/add",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2320,11 +2320,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/manager/edit",
+											"raw": "https://devapi2.dalbitlive.com/mypage/manager/edit",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2370,11 +2370,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/manager",
+											"raw": "https://devapi2.dalbitlive.com/mypage/manager",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2408,11 +2408,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/black?page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/mypage/black?page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2469,11 +2469,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/black/add",
+											"raw": "https://devapi2.dalbitlive.com/mypage/black/add",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2519,11 +2519,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/mypage/black",
+											"raw": "https://devapi2.dalbitlive.com/mypage/black",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2556,11 +2556,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/profile/levelup",
+											"raw": "https://devapi2.dalbitlive.com/profile/levelup",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2597,11 +2597,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/member/withdrawal",
+											"raw": "https://devapi2.dalbitlive.com/member/withdrawal",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2688,11 +2688,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/create",
+											"raw": "https://devapi2.dalbitlive.com/broad/create",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2736,11 +2736,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/join",
+											"raw": "https://devapi2.dalbitlive.com/broad/join",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2784,11 +2784,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/exit",
+											"raw": "https://devapi2.dalbitlive.com/broad/exit",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2874,11 +2874,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/edit",
+											"raw": "https://devapi2.dalbitlive.com/broad/edit",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2911,11 +2911,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/list?roomType=&page=1&records=30&searchType=",
+											"raw": "https://devapi2.dalbitlive.com/broad/list?roomType=&page=1&records=30&searchType=",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -2976,11 +2976,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/listeners?roomNo=91578893643149&page=1&records=5",
+											"raw": "https://devapi2.dalbitlive.com/broad/listeners?roomNo=91578893643149&page=1&records=5",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3038,11 +3038,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/likes",
+											"raw": "https://devapi2.dalbitlive.com/broad/likes",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3098,11 +3098,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/guest",
+											"raw": "https://devapi2.dalbitlive.com/broad/guest",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3152,11 +3152,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/guest",
+											"raw": "https://devapi2.dalbitlive.com/broad/guest",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3189,11 +3189,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/notice?roomNo=91578888356181",
+											"raw": "https://devapi2.dalbitlive.com/broad/notice?roomNo=91578888356181",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3255,11 +3255,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/notice",
+											"raw": "https://devapi2.dalbitlive.com/broad/notice",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3303,11 +3303,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/notice",
+											"raw": "https://devapi2.dalbitlive.com/broad/notice",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3335,11 +3335,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/link?link=o3qh7f8vcy",
+											"raw": "https://devapi2.dalbitlive.com/broad/link?link=o3qh7f8vcy",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3391,11 +3391,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/story",
+											"raw": "https://devapi2.dalbitlive.com/broad/story",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3430,11 +3430,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/story?roomNo=91578896569103&page=1&records=15",
+											"raw": "https://devapi2.dalbitlive.com/broad/story?roomNo=91578896569103&page=1&records=15",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3476,11 +3476,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/story?roomNo=91578896569103&storyIdx=1",
+											"raw": "https://devapi2.dalbitlive.com/broad/story?roomNo=91578896569103&storyIdx=1",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3542,11 +3542,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/kickout",
+											"raw": "https://devapi2.dalbitlive.com/broad/kickout",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3574,11 +3574,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/info?roomNo=91580717628329",
+											"raw": "https://devapi2.dalbitlive.com/broad/info?roomNo=91580717628329",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3613,11 +3613,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/profile",
+											"raw": "https://devapi2.dalbitlive.com/broad/profile",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3679,11 +3679,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/gift",
+											"raw": "https://devapi2.dalbitlive.com/broad/gift",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3740,11 +3740,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/boost",
+											"raw": "https://devapi2.dalbitlive.com/broad/boost",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3801,11 +3801,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/manager",
+											"raw": "https://devapi2.dalbitlive.com/broad/manager",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3856,11 +3856,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/manager",
+											"raw": "https://devapi2.dalbitlive.com/broad/manager",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3888,11 +3888,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/history?roomNo=91581573678831&page&records",
+											"raw": "https://devapi2.dalbitlive.com/broad/history?roomNo=91581573678831&page&records",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -3943,11 +3943,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/member/profile?memNo=11583121591768&roomNo=91583985753203",
+											"raw": "https://devapi2.dalbitlive.com/broad/member/profile?memNo=11583121591768&roomNo=91583985753203",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4000,11 +4000,11 @@
 											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/boost?roomNo=91581493968953",
+											"raw": "https://devapi2.dalbitlive.com/broad/boost?roomNo=91581493968953",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4054,11 +4054,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/reToken",
+											"raw": "https://devapi2.dalbitlive.com/broad/reToken",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4114,11 +4114,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/state",
+											"raw": "https://devapi2.dalbitlive.com/broad/state",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4168,11 +4168,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/fan",
+											"raw": "https://devapi2.dalbitlive.com/broad/fan",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4216,11 +4216,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/fan",
+											"raw": "https://devapi2.dalbitlive.com/broad/fan",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4248,11 +4248,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/broad/check",
+											"raw": "https://devapi2.dalbitlive.com/broad/check",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4276,11 +4276,11 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/splash",
+											"raw": "https://devapi2.dalbitlive.com/splash",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4297,11 +4297,11 @@
 										"method": "GET",
 										"header": [],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/location",
+											"raw": "https://devapi2.dalbitlive.com/location",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4350,11 +4350,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/sms",
+											"raw": "https://devapi2.dalbitlive.com/sms",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4404,11 +4404,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/sms/auth",
+											"raw": "https://devapi2.dalbitlive.com/sms/auth",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4488,11 +4488,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devm-hwlee.dalbitcast.com:4431/self/auth/req",
+											"raw": "https://devm-hwlee.dalbitlive.com:4431/self/auth/req",
 											"protocol": "https",
 											"host": [
 												"devm-hwlee",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"port": "4431",
@@ -4544,11 +4544,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/self/auth/res",
+											"raw": "https://devapi2.dalbitlive.com/self/auth/res",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4582,11 +4582,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com//self/auth/check",
+											"raw": "https://devapi2.dalbitlive.com//self/auth/check",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4629,11 +4629,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/search/member?search=달빛&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/search/member?search=달빛&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4681,11 +4681,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/search/live?search=프론트&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/search/live?search=프론트&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4739,11 +4739,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/rank/fan?rankType=3&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/rank/fan?rankType=3&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4793,11 +4793,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/rank/dj?rankType=3&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/rank/dj?rankType=3&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4854,11 +4854,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/center/notice?noticeType=0&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/center/notice?noticeType=0&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4908,11 +4908,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/center/notice/detail?noticeIdx=6",
+											"raw": "https://devapi2.dalbitlive.com/center/notice/detail?noticeIdx=6",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -4953,11 +4953,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/center/faq?faqType=0&page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/center/faq?faqType=0&page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -5007,11 +5007,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/center/faq/detail?faqIdx=1",
+											"raw": "https://devapi2.dalbitlive.com/center/faq/detail?faqIdx=1",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -5087,11 +5087,11 @@
 											]
 										},
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/center/qna/add",
+											"raw": "https://devapi2.dalbitlive.com/center/qna/add",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -5125,11 +5125,11 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitcast.com/center/qna/list?page=1&records=10",
+											"raw": "https://devapi2.dalbitlive.com/center/qna/list?page=1&records=10",
 											"protocol": "https",
 											"host": [
 												"devapi2",
-												"dalbitcast",
+												"dalbitlive",
 												"com"
 											],
 											"path": [
@@ -5170,11 +5170,11 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "https://devphoto2.dalbitcast.com/2020/01/07/09/20200107095944413261.jpg",
+									"raw": "https://devphoto2.dalbitlive.com/2020/01/07/09/20200107095944413261.jpg",
 									"protocol": "https",
 									"host": [
 										"devphoto2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5231,11 +5231,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devphoto2.dalbitcast.com/upload",
+									"raw": "https://devphoto2.dalbitlive.com/upload",
 									"protocol": "https",
 									"host": [
 										"devphoto2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5276,11 +5276,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devphoto2.dalbitcast.com/done",
+									"raw": "https://devphoto2.dalbitlive.com/done",
 									"protocol": "https",
 									"host": [
 										"devphoto2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5308,11 +5308,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devphoto2.dalbitcast.com/delete",
+									"raw": "https://devphoto2.dalbitlive.com/delete",
 									"protocol": "https",
 									"host": [
 										"devphoto2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5368,11 +5368,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devapi2.dalbitcast.com/rest/pay/phone",
+									"raw": "https://devapi2.dalbitlive.com/rest/pay/phone",
 									"protocol": "https",
 									"host": [
 										"devapi2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5423,11 +5423,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devpay2.dalbitcast.com/rest/pay/card",
+									"raw": "https://devpay2.dalbitlive.com/rest/pay/card",
 									"protocol": "https",
 									"host": [
 										"devpay2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5478,11 +5478,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devpay2.dalbitcast.com/rest/pay/virtual",
+									"raw": "https://devpay2.dalbitlive.com/rest/pay/virtual",
 									"protocol": "https",
 									"host": [
 										"devpay2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5533,11 +5533,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devpay2.dalbitcast.com/rest/pay/bank",
+									"raw": "https://devpay2.dalbitlive.com/rest/pay/bank",
 									"protocol": "https",
 									"host": [
 										"devpay2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [
@@ -5588,11 +5588,11 @@
 									]
 								},
 								"url": {
-									"raw": "https://devpay2.dalbitcast.com/rest/pay/ios",
+									"raw": "https://devpay2.dalbitlive.com/rest/pay/ios",
 									"protocol": "https",
 									"host": [
 										"devpay2",
-										"dalbitcast",
+										"dalbitlive",
 										"com"
 									],
 									"path": [

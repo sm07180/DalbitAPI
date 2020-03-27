@@ -373,7 +373,7 @@
             rec_cert : <%=rec_cert%> <br>
             <br>
             <br>
-            <a href="https://devm-hwlee.dalbitcast.com:4431/sample/auth/step1">[다시 테스트]</a>
+            <a href="https://devm-hwlee.dalbitlive.com:4431/sample/auth/step1">[다시 테스트]</a>
 	</body>
 </html>
         <%

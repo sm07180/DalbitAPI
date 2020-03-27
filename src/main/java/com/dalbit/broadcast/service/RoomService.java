@@ -97,7 +97,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+            returnMap.put("bjHolder", "https://devimage.dalbitlive.com/holder/gold.png");
             returnMap.put("likes", 0);
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", 3);
