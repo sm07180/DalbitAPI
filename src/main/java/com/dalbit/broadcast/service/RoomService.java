@@ -240,7 +240,27 @@ public class RoomService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             String auth = DalbitUtil.getStringMap(resultMap, "auth");
             CodeVo codeVo = commonService.getCodeList("roomRight").stream().filter(code -> code.getCdNm().equals("방장")).findFirst().orElse(null);
-            result = (!DalbitUtil.isEmpty(codeVo) && auth.equals(codeVo.getCd())) ? gsonUtil.toJson(new JsonOutputVo(Status.방송참여_방송중)) : gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가));
+            if((!DalbitUtil.isEmpty(codeVo) && auth.equals(codeVo.getCd()))){ //방송중 다른방 참가
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_방송중));
+            }else{
+                String deviceUuid = DalbitUtil.getStringMap(resultMap, "deviceUuid");
+                deviceUuid = deviceUuid == null ? "" : deviceUuid.trim();
+                if(deviceUuid.equals(pRoomJoinVo.getDeviceUuid())){ //동일기기 참가일때 /reToken과 동일로직
+                    P_RoomStreamVo apiData = new P_RoomStreamVo();
+                    apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+                    apiData.setMem_no(MemberVo.getMyMemNo(request));
+                    apiData.setRoom_no(pRoomJoinVo.getRoom_no());
+
+                    try{
+                        result = callBroadcastRoomStreamSelect(apiData, request);
+                    }catch(GlobalException e){
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가));
+                    }
+                }else{
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_이미참가));
+                }
+            }
+
         } else if (procedureVo.getRet().equals(Status.방송참여_입장제한.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_입장제한));
         } else if (procedureVo.getRet().equals(Status.방송참여_나이제한.getMessageCode())) {
