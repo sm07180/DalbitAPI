@@ -361,16 +361,17 @@ public class CommonService {
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        procedureVo.setData(pSelfAuthVo);
 
         String result ="";
         if(procedureVo.getRet().equals(Status.본인인증성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증성공));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증성공, procedureVo.getData()));
         } else if(procedureVo.getRet().equals(Status.본인인증_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_회원아님));
         } else if(procedureVo.getRet().equals(Status.본인인증_중복.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_중복));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증저장실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증저장실패, procedureVo.getData()));
         }
         return result;
     }
@@ -382,7 +383,7 @@ public class CommonService {
         ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
         commonDao.getCertificationChk(procedureVo);
 
-        String result ="";
+        String result;
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {

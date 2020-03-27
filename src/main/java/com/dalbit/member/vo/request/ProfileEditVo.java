@@ -23,6 +23,7 @@ public class ProfileEditVo {
     private String profImgRacy;
     private String profImg;
     private String profImgDel;
+    @Size(max = 100)
     private String profMsg;
 
 }

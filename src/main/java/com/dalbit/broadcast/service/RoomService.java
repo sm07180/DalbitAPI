@@ -523,27 +523,30 @@ public class RoomService {
     public String callBroadCastRoomGiftHistory(P_RoomGiftHistoryVo pRoomGiftHistoryVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftHistoryVo);
         List<P_RoomGiftHistoryVo> giftHistoryListVo = roomDao.callBroadCastRoomGiftHistory(procedureVo);
-
-        HashMap giftHistoryList = new HashMap();
-        if(DalbitUtil.isEmpty(giftHistoryListVo)){
-            giftHistoryList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역없음, giftHistoryList));
-        }
-
         List<RoomGiftHistoryOutVo> outVoList = new ArrayList<>();
-        for (int i=0; i<giftHistoryListVo.size(); i++){
-            outVoList.add(new RoomGiftHistoryOutVo(giftHistoryListVo.get(i)));
-        }
-
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        giftHistoryList.put("totalCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
-        giftHistoryList.put("totalGold", DalbitUtil.getIntMap(resultMap, "totalGold"));
-        giftHistoryList.put("list", procedureOutputVo.getOutputBox());
-        giftHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
 
         String result;
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+        if(Integer.parseInt(procedureOutputVo.getRet()) == 0 || DalbitUtil.isEmpty(giftHistoryListVo)) {
+            HashMap giftHistoryList = new HashMap();
+            giftHistoryList.put("list", new ArrayList<>());
+            giftHistoryList.put("totalCnt", 0);
+            giftHistoryList.put("totalGold", 0);
+            giftHistoryList.put("paging", new PagingVo(0, pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역없음, giftHistoryList));
+        }else if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            HashMap giftHistoryList = new HashMap();
+            for (int i=0; i<giftHistoryListVo.size(); i++){
+                outVoList.add(new RoomGiftHistoryOutVo(giftHistoryListVo.get(i)));
+            }
+
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            giftHistoryList.put("totalCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
+            giftHistoryList.put("totalGold", DalbitUtil.getIntMap(resultMap, "totalGold"));
+            giftHistoryList.put("list", procedureOutputVo.getOutputBox());
+            giftHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역조회, giftHistoryList));
         }else if(Status.선물내역조회_회원번호정상아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물내역조회_회원번호정상아님));

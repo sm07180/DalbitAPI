@@ -11,14 +11,14 @@ public class RoomCreateVo {
     @NotBlank @Size(min = 2, max = 2)
     private String roomType;
 
-    @NotBlank
+    @NotBlank @Size(min = 2, max = 20)
     private String title;
 
     private String bgImg;
 
     private String bgImgRacy;
 
-    @Size(max = 100)
+    @Size(min = 10, max = 100)
     private String welcomMsg;
 
     private String notice;

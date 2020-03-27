@@ -8,10 +8,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
-import com.dalbit.member.vo.procedure.P_ChangePasswordVo;
-import com.dalbit.member.vo.procedure.P_JoinVo;
-import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
+import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -131,4 +128,24 @@ public class MemberService {
         //log.debug("세션 업데이트 결과: {}", procedureVo.toString());
     }
 
+
+    /**
+     * 회원탈퇴
+     */
+    public String callMemberWithdrawal(P_WithdrawalVo pWithdrawalVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pWithdrawalVo);
+        memberDao.callMemberWithdrawal(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.회원탈퇴_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_성공));
+        } else if(procedureVo.getRet().equals(Status.회원탈퇴_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_회원아님));
+        } else if(procedureVo.getRet().equals(Status.회원탈퇴_이미탈퇴.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_이미탈퇴));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_실패));
+        }
+        return result;
+    }
 }
