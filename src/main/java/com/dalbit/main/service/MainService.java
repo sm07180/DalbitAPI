@@ -143,24 +143,28 @@ public class MainService {
 
         List<P_MainRecommandVo> recommandVoList = mainDao.callMainRecommandList(memNo);
 
-        List list = new ArrayList();
-
-        for (int i=0; i < recommandVoList.size(); i++){
-            MainRecommandOutVo outVo = new MainRecommandOutVo();
-            outVo.setMemNo(recommandVoList.get(i).getMemNo());
-            outVo.setNickNm(recommandVoList.get(i).getNickNm());
-            outVo.setGender(recommandVoList.get(i).getGender());
-            outVo.setProfImg(new ImageVo(recommandVoList.get(i).getProfileUrl(), recommandVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
-            outVo.setRoomType(recommandVoList.get(i).getRoomType());
-            outVo.setRoomNo(recommandVoList.get(i).getRoomNo());
-            outVo.setTitle(recommandVoList.get(i).getTitle());
-            outVo.setListeners(recommandVoList.get(i).getListeners());
-            outVo.setLikes(recommandVoList.get(i).getLikes());
-            list.add(outVo);
-        }
-
         String result;
         if(!DalbitUtil.isEmpty(recommandVoList)){
+            List list = new ArrayList();
+
+            for (int i=0; i < recommandVoList.size(); i++){
+                MainRecommandOutVo outVo = new MainRecommandOutVo();
+                outVo.setMemNo(recommandVoList.get(i).getMemNo());
+                outVo.setNickNm(recommandVoList.get(i).getNickNm());
+                outVo.setGender(recommandVoList.get(i).getGender());
+                outVo.setProfImg(new ImageVo(recommandVoList.get(i).getProfileUrl(), recommandVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
+                outVo.setRoomType(recommandVoList.get(i).getRoomType());
+                outVo.setRoomNo(recommandVoList.get(i).getRoomNo());
+                if(DalbitUtil.isEmpty(recommandVoList.get(i).getTitle())){
+                    outVo.setTitle("방송 준비중");
+                }else{
+                    outVo.setTitle(recommandVoList.get(i).getTitle());
+                }
+                outVo.setListeners(recommandVoList.get(i).getListeners());
+                outVo.setLikes(recommandVoList.get(i).getLikes());
+                list.add(outVo);
+            }
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_조회성공, list));
         } else if (recommandVoList.size()==0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_없음));
