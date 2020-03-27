@@ -42,8 +42,9 @@ public class MainController {
     public String mainRecommandList(HttpServletRequest request){
 
         P_MainRecommandVo apiData = new P_MainRecommandVo();
+        String memNo = (DalbitUtil.getProperty("inforex.plan.memNo"));
 
-        String result = mainService.callMainRecommandList(apiData);
+        String result = mainService.callMainRecommandList(memNo);
 
         return result;
     }

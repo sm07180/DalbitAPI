@@ -19,5 +19,5 @@ public interface MainDao {
     @Transactional(readOnly = true)
     List<P_MainMyDjVo> callMainMyDjList(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
-    List<P_MainRecommandVo> callMainRecommandList(P_MainRecommandVo pMainRecommandVo);
+    List<P_MainRecommandVo> callMainRecommandList(String memNo);
 }

@@ -1,10 +1,7 @@
 package com.dalbit.main.service;
 
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.PagingVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.vo.MainDjRankingOutVo;
 import com.dalbit.main.vo.MainFanRankingOutVo;
@@ -13,6 +10,7 @@ import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
 import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
 import com.dalbit.main.vo.procedure.P_MainMyDjVo;
 import com.dalbit.main.vo.procedure.P_MainRecommandVo;
+import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -141,13 +139,28 @@ public class MainService {
     /**
      * 추천 BJ 리스트
      */
-    public String callMainRecommandList(P_MainRecommandVo pMainRecommandVo) {
+    public String callMainRecommandList(String memNo) {
 
-        List<P_MainRecommandVo> recommandVoList = mainDao.callMainRecommandList(pMainRecommandVo);
+        List<P_MainRecommandVo> recommandVoList = mainDao.callMainRecommandList(memNo);
+
+        List list = new ArrayList();
+
+        for (int i=0; i < recommandVoList.size(); i++){
+            MainRecommandOutVo outVo = new MainRecommandOutVo();
+            outVo.setMemNo(recommandVoList.get(i).getMemNo());
+            outVo.setNickNm(recommandVoList.get(i).getNickNm());
+            outVo.setGender(recommandVoList.get(i).getGender());
+            outVo.setProfImg(new ImageVo(recommandVoList.get(i).getProfileUrl(), recommandVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
+            outVo.setRoomType(recommandVoList.get(i).getRoomType());
+            outVo.setTitle(recommandVoList.get(i).getTitle());
+            outVo.setListeners(recommandVoList.get(i).getListeners());
+            outVo.setLikes(recommandVoList.get(i).getLikes());
+            list.add(outVo);
+        }
 
         String result;
         if(!DalbitUtil.isEmpty(recommandVoList)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_조회성공, recommandVoList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_조회성공, list));
         } else if (recommandVoList.size()==0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_없음));
         } else {
