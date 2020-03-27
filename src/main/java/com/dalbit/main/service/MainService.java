@@ -152,6 +152,7 @@ public class MainService {
             outVo.setGender(recommandVoList.get(i).getGender());
             outVo.setProfImg(new ImageVo(recommandVoList.get(i).getProfileUrl(), recommandVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
             outVo.setRoomType(recommandVoList.get(i).getRoomType());
+            outVo.setRoomNo(recommandVoList.get(i).getRoomNo());
             outVo.setTitle(recommandVoList.get(i).getTitle());
             outVo.setListeners(recommandVoList.get(i).getListeners());
             outVo.setLikes(recommandVoList.get(i).getLikes());
