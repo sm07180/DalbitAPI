@@ -181,7 +181,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+            returnMap.put("bjHolder", "https://devimage.dalbitlive.com/holder/gold.png");
             returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
             returnMap.put("gstMemId", target.getGstMemId() == null ? "" : target.getGstMemId());
             returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
@@ -582,7 +582,7 @@ public class RoomService {
         returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
         returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
-        returnMap.put("holder", "https://devimage.dalbitcast.com/holder/gold.png");
+        returnMap.put("holder", "https://devimage.dalbitlive.com/holder/gold.png");
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
@@ -705,7 +705,7 @@ public class RoomService {
                     returnMap.put("bjMemNo", target.getBjMemNo());
                     returnMap.put("bjNickNm", target.getBjNickNm());
                     returnMap.put("bjProfImg", target.getBjProfImg());
-                    returnMap.put("bjHolder", "https://devimage.dalbitcast.com/holder/gold.png");
+                    returnMap.put("bjHolder", "https://devimage.dalbitlive.com/holder/gold.png");
                     returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                     returnMap.put("gstProfImg", target.getGstProfImg());

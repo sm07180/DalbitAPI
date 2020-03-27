@@ -95,7 +95,7 @@ public class RestService {
         params = StringUtils.defaultIfEmpty(params, "").trim();
 
         String request_uri = server_url;
-        /*if(server_url.startsWith("https://") && server_url.endsWith(".dalbitcast.com") && (DalbitUtil.profileCheck("dev") || DalbitUtil.profileCheck("real"))){
+        /*if(server_url.startsWith("https://") && server_url.endsWith(".dalbitlive.com") && (DalbitUtil.profileCheck("dev") || DalbitUtil.profileCheck("real"))){
             request_uri = server_url.replace("https://", "http://");
         }*/
         request_uri += url_path;
