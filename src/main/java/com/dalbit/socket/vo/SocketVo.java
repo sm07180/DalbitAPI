@@ -52,6 +52,7 @@ public class SocketVo {
     private int recvLevel = 0;
     private int recvTime = 0;
 
+    public SocketVo(){};
 
     public SocketVo(String memNo, String recvMemNo, boolean isLogin){
         this.memNo = memNo;

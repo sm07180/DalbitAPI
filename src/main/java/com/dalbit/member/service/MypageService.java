@@ -76,6 +76,14 @@ public class MypageService {
                 String resultProfile = profileService.callMemberInfo(apiData, request);
                 HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
 
+                try{
+                    ProfileInfoOutVo profileInfoVo = (ProfileInfoOutVo)profileMap.get("data");
+                    HashMap socketMap = new HashMap();
+                    socketMap.put("nk", profileInfoVo.getNickNm());
+                    socketMap.put("sex", profileInfoVo.getGender());
+                    socketMap.put("image", profileInfoVo.getProfImg().getUrl() + "?60x60");
+                }catch(Exception e){}
+
                 result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, profileMap.get("data")));
 
             } else if (procedureVo.getRet().equals(Status.프로필편집실패_닉네임중복.getMessageCode())) {
