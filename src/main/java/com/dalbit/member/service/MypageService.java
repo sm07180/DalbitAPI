@@ -82,6 +82,7 @@ public class MypageService {
                     socketMap.put("nk", profileInfoVo.getNickNm());
                     socketMap.put("sex", profileInfoVo.getGender());
                     socketMap.put("image", profileInfoVo.getProfImg().getUrl() + "?60x60");
+                    socketService.changeMemberInfo(pProfileEditVo.getMem_no(), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
                 }catch(Exception e){}
 
                 result = gsonUtil.toJson(new JsonOutputVo(Status.프로필편집성공, profileMap.get("data")));
