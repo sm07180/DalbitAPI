@@ -77,11 +77,16 @@ public class MypageService {
                 HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
 
                 try{
-                    ProfileInfoOutVo profileInfoVo = (ProfileInfoOutVo)profileMap.get("data");
+                    HashMap profileInfoVo = new Gson().fromJson(new Gson().toJson(profileMap.get("data")), HashMap.class);
                     HashMap socketMap = new HashMap();
-                    socketMap.put("nk", profileInfoVo.getNickNm());
-                    socketMap.put("sex", profileInfoVo.getGender());
-                    socketMap.put("image", profileInfoVo.getProfImg().getUrl() + "?60x60");
+                    socketMap.put("nk", profileInfoVo.get("nickNm"));
+                    socketMap.put("sex", profileInfoVo.get("gender"));
+                    HashMap profImgMap = new Gson().fromJson(new Gson().toJson(profileInfoVo.get("profImg")), HashMap.class);
+                    if(DalbitUtil.isEmpty(profImgMap.get("url"))){
+                        socketMap.put("image", "");
+                    }else{
+                        socketMap.put("image", profImgMap.get("url") + "?60x60");
+                    }
                     socketService.changeMemberInfo(pProfileEditVo.getMem_no(), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
                 }catch(Exception e){}
 
