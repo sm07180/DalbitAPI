@@ -308,7 +308,7 @@ public class CommonController {
         HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
         int os = DalbitUtil.getIntMap(headers,"os");
         String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
-
+        isHybrid = DalbitUtil.isEmpty(isHybrid) ? "N" : isHybrid;
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
