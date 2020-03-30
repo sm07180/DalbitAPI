@@ -18,5 +18,6 @@ public class P_SelfAuthVo {
     private String certCode;
     private String os;
     private String isHybrid;
+    private String returnUrl;
 
 }
