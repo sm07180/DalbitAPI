@@ -395,4 +395,22 @@ public class CommonService {
         }
         return result;
     }
+
+
+    /**
+     * 에러 로그 저장
+     */
+    public String saveErrorLog(P_ErrorLogVo pErrorLogVo){
+        ProcedureVo procedureVo = new ProcedureVo(pErrorLogVo);
+        commonDao.saveErrorLog(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.에러로그저장_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_성공));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_실패));
+        }
+        return result;
+    }
+
 }

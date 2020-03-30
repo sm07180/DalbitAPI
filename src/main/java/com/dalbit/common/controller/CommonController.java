@@ -371,4 +371,18 @@ public class CommonController {
 
         return result;
     }
+
+
+    /**
+     * 에러 로그 저장
+     */
+    @PostMapping("/error/log")
+    public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
+
+        String result = commonService.saveErrorLog(apiData);
+
+        return result;
+    }
 }
