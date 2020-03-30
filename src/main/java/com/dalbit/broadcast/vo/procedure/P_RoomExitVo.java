@@ -10,4 +10,11 @@ public class P_RoomExitVo {
     private int memLogin;       //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;      //나가려는 회원번호
     private String room_no;     //나가려는 방 번호
+
+    private int os;
+    private String deviceUuid;
+    private String ip;
+    private String appVersion;
+    private String deviceToken;
+    private String isHybrid;
 }
