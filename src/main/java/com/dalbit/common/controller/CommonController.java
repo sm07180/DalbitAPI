@@ -137,7 +137,7 @@ public class CommonController {
         store6.put("storeNm", "달 3000");
         store6.put("price", 300000);
         store6.put("priceNm", "");
-        store6.put("img", "https://devimage.dalbitlive.com/store/store_6.png");
+        store6.put("img", "https://image.dalbitlive.com/store/store_6.png");
         store6.put("appleStoreId", "com.dalbitcast.inapp.dal3000");
         list.add(store1);
         list.add(store2);

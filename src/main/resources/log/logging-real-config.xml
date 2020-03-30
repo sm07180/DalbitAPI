@@ -4,32 +4,35 @@
     <property name="LOG_PATH" value="/home/dalbit/logs" />
     <property name="LOG_FILE_NAME_PREFIX" value="radio_api" />
     <property name="LOG_ERROR_FILE_NAME_PREFIX" value="error_radio_api" />
-    <timestamp key="yyyyMMdd" datePattern="yyyyMMdd" />
 
-    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
-        <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n</Pattern>
-        </layout>
-    </appender>
-
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>${LOG_PATH}/${LOG_FILE_NAME_PREFIX}.${yyyyMMdd}.log</file>
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/${LOG_FILE_NAME_PREFIX}.log</file>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>[API] - [%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME_PREFIX}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
     </appender>
 
-    <appender name="ERROR_FILE" class="ch.qos.logback.core.FileAppender">
+    <appender name="ERROR_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
             <level>ERROR</level>
         </filter>
-        <file>${LOG_PATH}/${LOG_ERROR_FILE_NAME_PREFIX}.${yyyyMMdd}.log</file>
+        <file>${LOG_PATH}/${LOG_ERROR_FILE_NAME_PREFIX}.log</file>
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>[API] - [%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/${LOG_ERROR_FILE_NAME_PREFIX}.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
     </appender>
 
     <logger name="org.springframework.web" level="WARN" />
+    <logger name="org.springframework.security" level="WARN" />
+    <logger name="org.springframework.boot" level="WARN" />
     <logger name="jdbc" level="OFF" />
     <logger name="jdbc.sqlonly" level="OFF" />
     <logger name="jdbc.sqltiming" level="OFF" />
@@ -41,8 +44,11 @@
     <logger name="io.lettuce" level="WARN" />
     <logger name="com.zaxxer.hikari" level="WARN" />
 
+    <logger name="com.dalbit" level="WARN" />
+    <logger name="com.dalbit.aop" level="OFF" />
+    <logger name="com.dalbit.interceptor" level="OFF" />
+
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
         <appender-ref ref="FILE" />
         <appender-ref ref="ERROR_FILE" />
     </root>
