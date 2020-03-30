@@ -10,5 +10,29 @@
         call sp_ranking_dj(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMainMyDjList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MainMyDjVo">
+        call sp_broadcast_room_list_mydj(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMainRecommandList" parameterType="String" resultType="P_MainRecommandVo">
+        SELECT
+            T1.mem_no AS memNo
+            , T1.mem_nick AS nickNm
+            , T1.mem_sex AS gender
+            , T2.image_profile AS profileUrl
+            , T3.room_no AS roomNo
+            , T3.subject_type AS roomType
+            , T3.title as title
+            , IFNULL(T3.count_entry, 0) as listeners
+            , IFNULL(T3.count_good, 0) as likes
+        FROM tb_member_basic T1 INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
+        LEFT OUTER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state <![CDATA[<]]> 4
+        LEFT OUTER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
+        WHERE T1.mem_no IN (${value})
+          AND T1.mem_state = 1
+        ORDER BY T3.room_no DESC, RAND(1)
+    </select>
+
+
 
 </mapper>

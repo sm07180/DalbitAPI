@@ -648,6 +648,18 @@ public enum Status {
     회원탈퇴_이미탈퇴("-2", "member.withdrawal.already", "이미 탈퇴한 회원일 시"),
     회원탈퇴_실패("C006", "member.withdrawal.fail", "회원탈퇴 실패 시"),
 
+    //메인 마이DJ
+    메인_마이DJ_조회성공("C001", "main.my.dj.select.success", "마이DJ 조회 성공 시"),
+    메인_마이DJ_리스트없음("0", "main.my.dj.select.no.success", "마이DJ 내역 없을 시"),
+    메인_마이DJ_요청회원_회원아님("-1", "main.my.dj.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    메인_마이DJ_조회실패("C006", "main.my.dj.select.fail", "마이DJ 조회 실패 시"),
+
+    //메인 추천DJ 리스트
+    메인_추천DJ리스트_조회성공("C001", "main.recommand.dj.select.success", "추천 DJ리스트 조회 성공 시"),
+    메인_추천DJ리스트_없음("0", "main.recommand.dj.select.no.success", "추천 DJ리스트 없음"),
+    메인_추천DJ리스트_조회실패("C006", "main.recommand.dj.select.fail", "추천 DJ리스트 조회 실패 시"),
+
+
     ;
 
     final private String RESULT_SUCCESS = "success";

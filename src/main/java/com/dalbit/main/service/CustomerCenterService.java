@@ -175,8 +175,8 @@ public class CustomerCenterService {
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(qnaFile) && qnaFile.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
             isDone = true;
+            qnaFile = DalbitUtil.replacePath(qnaFile);
         }
-        qnaFile = DalbitUtil.replacePath(qnaFile);
         pQnaVo.setAddFile(qnaFile);
 
         ProcedureVo procedureVo = new ProcedureVo(pQnaVo);

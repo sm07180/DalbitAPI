@@ -26,7 +26,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4MzEyMDU5ODgzMEBmYWxzZSIsImlhdCI6MTU4NDQwNTkyOSwiZXhwIjoxNTg2OTk3OTI5fQ.SqFOhRb-n_JKPbeEnU95yRdtjJ3kp436pYObOHX5GAI",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiI4MTU4NDQ5NDA5NTM3M0BmYWxzZSIsImlhdCI6MTU4NTEyMzYzNCwiZXhwIjoxNTg3NzE1NjM0fQ.eJVrot9elkSNotXGDsBJFpYBB46epzTlZOhENKEDRYg",
 												"type": "text"
 											},
 											{
@@ -46,7 +46,7 @@
 												},
 												{
 													"key": "memId",
-													"value": "01031855992",
+													"value": "010-3185-5995",
 													"description": "* 아이디 / 소셜아이디",
 													"type": "text"
 												},
@@ -58,13 +58,13 @@
 												},
 												{
 													"key": "gender",
-													"value": "n",
+													"value": "m",
 													"description": "성별",
 													"type": "text"
 												},
 												{
 													"key": "nickNm",
-													"value": "요시",
+													"value": "탈퇴용",
 													"description": "* 닉네임",
 													"type": "text"
 												},
@@ -408,7 +408,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU3NzY5MDY1NTk0NiIsImlhdCI6MTU3OTIyNDk4MywiZXhwIjoxNTgxOTAzMzgzfQ.-YR7a_QSOI_b2Uytj5OdABOPgT8wDfybbrHdpqC9-To",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwMzk3MDkzM0B0cnVlIiwiaWF0IjoxNTg1MjkxODQzLCJleHAiOjE1ODc4ODM4NDN9.7u7SsQDu9gcPFRpv5T_G4-2cLY7ygswuB1G1LyDNmsk",
 												"type": "text"
 											},
 											{
@@ -422,7 +422,7 @@
 											"urlencoded": [
 												{
 													"key": "memNo",
-													"value": "11577931027280",
+													"value": "11584421670103",
 													"description": "* 스타회원번호",
 													"type": "text"
 												}
@@ -1411,7 +1411,7 @@
 											{
 												"key": "authToken",
 												"type": "text",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MDY5MTM5Mjg1MUB0cnVlIiwiaWF0IjoxNTgxNjQ3OTcwLCJleHAiOjE1ODQxNTM1NzB9.0CM776PKq5vl9Ins0w3nozUjkcBz_aJ0wMFyoKBCuS4"
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwMzk3NzY1MkB0cnVlIiwiaWF0IjoxNTg1MTgzMzU2LCJleHAiOjE1ODc3NzUzNTZ9.Al6x90trm4YDbzfuTi0LbnQo5Aru0fOryfqaNK740A0"
 											},
 											{
 												"key": "custom-header",
@@ -1424,7 +1424,7 @@
 											"urlencoded": [
 												{
 													"key": "memNo",
-													"value": "11581645188545",
+													"value": "11584421670103",
 													"description": "* 선물받는 회원 번호",
 													"type": "text"
 												},
@@ -2631,7 +2631,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg0NDI1NTQxLCJleHAiOjE1ODcwMTc1NDF9.JFiUNvyuammqTBUKalJIFpfX9pPdBNJUPYUAlyJNDVk",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwMzk3NzY1MkB0cnVlIiwiaWF0IjoxNTg1MTgzMzU2LCJleHAiOjE1ODc3NzUzNTZ9.Al6x90trm4YDbzfuTi0LbnQo5Aru0fOryfqaNK740A0",
 												"type": "text"
 											},
 											{
@@ -2651,7 +2651,7 @@
 												},
 												{
 													"key": "title",
-													"value": "bjMemId테스트방",
+													"value": "선물하기방테스트",
 													"description": "* 제목",
 													"type": "text"
 												},
@@ -2669,7 +2669,7 @@
 												},
 												{
 													"key": "welcomMsg",
-													"value": "환영합니다.",
+													"value": "선물해주세요요요요요요요요요요요요요",
 													"description": "환영 메시지",
 													"type": "text"
 												},
@@ -2710,7 +2710,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzEyMjQwMTIwM0B0cnVlIiwiaWF0IjoxNTgzODA1NjMxLCJleHAiOjE1ODYzOTc2MzF9.JQpp01FpR6oQysOV4w2dhwCIKdtJ7TnSpbGlVvr0OQw",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTgzOTEzLCJleHAiOjE1ODc3NzU5MTN9._I5_Jh9ZwzQ5IoffWy7ho4D_XWdfFUszY75r7DwpShg",
 												"type": "text"
 											},
 											{
@@ -2729,7 +2729,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91583805598499",
+													"value": "91585184403968",
 													"description": "* 방번호",
 													"type": "text"
 												}
@@ -2763,7 +2763,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU2MDU4OTYwNUB0cnVlIiwiaWF0IjoxNTgxOTkwMjc2LCJleHAiOjE1ODQ0OTU4NzZ9.FpiCQZJougLqr65G1DlnFt6nKAfvDpe6SpZzTR8T-QI",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTgzOTEzLCJleHAiOjE1ODc3NzU5MTN9._I5_Jh9ZwzQ5IoffWy7ho4D_XWdfFUszY75r7DwpShg",
 												"type": "text"
 											},
 											{
@@ -2777,7 +2777,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581668099107",
+													"value": "91585184249313",
 													"description": "방번호",
 													"type": "text"
 												}
@@ -3635,7 +3635,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MTU3MzUzMjMyN0B0cnVlIiwiaWF0IjoxNTgxNTczNTMyLCJleHAiOjE1ODQwNzkxMzJ9.o_Ys3rubStTjG1KF3PqF17pB4Fr4X228VScyORK0fKk",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTgzOTEzLCJleHAiOjE1ODc3NzU5MTN9._I5_Jh9ZwzQ5IoffWy7ho4D_XWdfFUszY75r7DwpShg",
 												"type": "text"
 											},
 											{
@@ -3654,13 +3654,13 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91581573678831",
+													"value": "91585184403968",
 													"description": "* 해당 방 번호",
 													"type": "text"
 												},
 												{
 													"key": "memNo",
-													"value": "11581573459470",
+													"value": "11584403977652",
 													"description": "* 선물받을 회원번호",
 													"type": "text"
 												},
@@ -3672,8 +3672,14 @@
 												},
 												{
 													"key": "itemCnt",
-													"value": "2",
+													"value": "1",
 													"description": "* 아이템 개수",
+													"type": "text"
+												},
+												{
+													"key": "isSecret",
+													"value": "false",
+													"description": "* 몰래선물여부",
 													"type": "text"
 												}
 											]
@@ -4582,7 +4588,7 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitlive.com//self/auth/check",
+											"raw": "https://devapi2.dalbitlive.com/self/auth/check",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -4590,7 +4596,6 @@
 												"com"
 											],
 											"path": [
-												"",
 												"self",
 												"auth",
 												"check"
@@ -4820,6 +4825,89 @@
 													"value": "10",
 													"description": "페이지당 리스트 수"
 												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 마이 DJ 조회_2020.03.27",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwMzk3MDkzM0B0cnVlIiwiaWF0IjoxNTg1MjkxODQzLCJleHAiOjE1ODc4ODM4NDN9.7u7SsQDu9gcPFRpv5T_G4-2cLY7ygswuB1G1LyDNmsk",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/my/dj?page=1&records=10",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"my",
+												"dj"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": "1"
+												},
+												{
+													"key": "records",
+													"value": "10"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 메인 추천DJ 조회_2020.03.27",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwNjIzNjgzMUB0cnVlIiwiaWF0IjoxNTg1Mjg1ODAxLCJleHAiOjE1ODc4Nzc4MDF9.NAaqVgqLsP_zEbpK9pjpyL5-zfd9wdiATXInWYb_sAc"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/recommand",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"recommand"
 											]
 										}
 									},
@@ -5599,6 +5687,45 @@
 										"rest",
 										"pay",
 										"ios"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "결제 여부 체크_2020.03.26",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									},
+									{
+										"key": "authToken",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg0OTI4MjkwLCJleHAiOjE1ODc1MjAyOTB9.1IfWSGcqjO-X2kL3QPLHKR8Dn_DpeLbeVkb2te8cVTo",
+										"type": "text"
+									},
+									{
+										"key": "custom-header",
+										"value": "{\"os\":3, \"deviceId\":\"2200DDD1-77B\", \"deviceToken\":\"45E3156FDE20E7F11AB\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123zxc\",\" isHybrid\":\"N\"}",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "https://devapi2.dalbitlive.com//self/auth/check",
+									"protocol": "https",
+									"host": [
+										"devapi2",
+										"dalbitlive",
+										"com"
+									],
+									"path": [
+										"",
+										"self",
+										"auth",
+										"check"
 									]
 								}
 							},

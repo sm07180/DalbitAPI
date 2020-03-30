@@ -22,7 +22,7 @@ public class ImageVo extends BaseVo{
     public ImageVo(Object path, String gender, String photoServerUrl){
         if(DalbitUtil.isEmpty(path) || DalbitUtil.isEmpty(path.toString())){
             if(!DalbitUtil.isEmpty(gender)) {
-                this.url = photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + "_200318." + ("m".equals(gender) || "f".equals(gender) ? "jpg" : "png");
+                this.url = photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + "_200327.jpg";
                 setThumbs();
             }
         }else{

@@ -4,8 +4,11 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.MainService;
 import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
 import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
+import com.dalbit.main.vo.procedure.P_MainMyDjVo;
+import com.dalbit.main.vo.procedure.P_MainRecommandVo;
 import com.dalbit.main.vo.request.MainDjRankingVo;
 import com.dalbit.main.vo.request.MainFanRankingVo;
+import com.dalbit.main.vo.request.MainMyDjVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,22 @@ public class MainController {
         return "";
     }
 
+
+    /**
+     * 추천BJ 리스트
+     */
+    @GetMapping("/recommand")
+    public String mainRecommandList(HttpServletRequest request){
+
+        P_MainRecommandVo apiData = new P_MainRecommandVo();
+        String memNo = (DalbitUtil.getProperty("inforex.plan.memNo"));
+
+        String result = mainService.callMainRecommandList(memNo);
+
+        return result;
+    }
+
+
     /**
      * 팬 랭킹
      */
@@ -55,6 +74,19 @@ public class MainController {
 
         String result = mainService.callMainDjRanking(apiData);
 
+        return result;
+    }
+
+
+    /**
+     * 마이 DJ
+     */
+    @GetMapping("/my/dj")
+    public String mainMyDjList(@Valid MainMyDjVo mainMyDjVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_MainMyDjVo adiData = new P_MainMyDjVo(mainMyDjVo, request);
+
+        String result = mainService.callMainMyDjList(adiData);
         return result;
     }
 
