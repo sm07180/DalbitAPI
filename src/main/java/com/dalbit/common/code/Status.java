@@ -659,6 +659,10 @@ public enum Status {
     메인_추천DJ리스트_없음("0", "main.recommand.dj.select.no.success", "추천 DJ리스트 없음"),
     메인_추천DJ리스트_조회실패("C006", "main.recommand.dj.select.fail", "추천 DJ리스트 조회 실패 시"),
 
+    //에러 로그 저장
+    에러로그저장_성공("0", "error.log.save.success", "에러 로그 저장 성공 시"),
+    에러로그저장_실패("C006", "error.log.save.fail", "에러 로그 저장 실패 시"),
+
 
     ;
 

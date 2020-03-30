@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.25",
+		"name": "달빛라디오 API 정의서_2020.03.30",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2631,7 +2631,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwMzk3NzY1MkB0cnVlIiwiaWF0IjoxNTg1MTgzMzU2LCJleHAiOjE1ODc3NzUzNTZ9.Al6x90trm4YDbzfuTi0LbnQo5Aru0fOryfqaNK740A0",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8",
 												"type": "text"
 											},
 											{
@@ -2651,7 +2651,7 @@
 												},
 												{
 													"key": "title",
-													"value": "선물하기방테스트",
+													"value": "개발테스트용방 참가X",
 													"description": "* 제목",
 													"type": "text"
 												},
@@ -2669,7 +2669,7 @@
 												},
 												{
 													"key": "welcomMsg",
-													"value": "선물해주세요요요요요요요요요요요요요",
+													"value": "개발테스트용방 참가X",
 													"description": "환영 메시지",
 													"type": "text"
 												},
@@ -2710,7 +2710,7 @@
 										"header": [
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTgzOTEzLCJleHAiOjE1ODc3NzU5MTN9._I5_Jh9ZwzQ5IoffWy7ho4D_XWdfFUszY75r7DwpShg",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzgzMjMzMDg0MkB0cnVlIiwiaWF0IjoxNTg1NTI3Njg5LCJleHAiOjE1ODgxMTk2ODl9.xaYK_PJPyEXPPhP4OeIMb_A1WDb5IA3OFC2KBASjP1Y",
 												"type": "text"
 											},
 											{
@@ -2729,7 +2729,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91585184403968",
+													"value": "91585527657322",
 													"description": "* 방번호",
 													"type": "text"
 												}
@@ -2763,7 +2763,7 @@
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1MTgzOTEzLCJleHAiOjE1ODc3NzU5MTN9._I5_Jh9ZwzQ5IoffWy7ho4D_XWdfFUszY75r7DwpShg",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4MzgzMjMzMDg0MkB0cnVlIiwiaWF0IjoxNTg1NTI3Njg5LCJleHAiOjE1ODgxMTk2ODl9.xaYK_PJPyEXPPhP4OeIMb_A1WDb5IA3OFC2KBASjP1Y",
 												"type": "text"
 											},
 											{
@@ -2777,7 +2777,7 @@
 											"urlencoded": [
 												{
 													"key": "roomNo",
-													"value": "91585184249313",
+													"value": "91585527657322",
 													"description": "방번호",
 													"type": "text"
 												}
@@ -4599,6 +4599,66 @@
 												"self",
 												"auth",
 												"check"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "에러 로그 저장_2020.03.30",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "dataType",
+													"value": "Object",
+													"description": "* Data Type",
+													"type": "text"
+												},
+												{
+													"key": "commandType",
+													"value": "test error log save",
+													"description": "* Command Type",
+													"type": "text"
+												},
+												{
+													"key": "desc",
+													"value": "{\"result\":\"test error\"}",
+													"description": "* String JSON",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/error/log",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"error",
+												"log"
 											]
 										}
 									},

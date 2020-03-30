@@ -18,4 +18,6 @@ public interface CommonDao {
     ProcedureVo callMemberCertification(ProcedureVo procedureVo);
 
     ProcedureVo getCertificationChk(ProcedureVo procedureVo);
+
+    ProcedureVo saveErrorLog(ProcedureVo procedureVo);
 }

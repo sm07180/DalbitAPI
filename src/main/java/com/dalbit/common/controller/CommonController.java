@@ -313,7 +313,7 @@ public class CommonController {
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid);
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getReturnUrl());
 
         SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
@@ -348,6 +348,7 @@ public class CommonController {
             apiData.setCertCode(selfAuthSaveVo.getCI());
             apiData.setOs((selfAuthSaveVo.getPlusInfo().split("_")[1]));
             apiData.setIsHybrid((selfAuthSaveVo.getPlusInfo().split("_")[2]));
+            apiData.setReturnUrl(selfAuthSaveVo.getPlusInfo().split("_")[3]);
 
             //회원본인인증 DB 저장
             result = commonService.callMemberCertification(apiData);
@@ -368,6 +369,20 @@ public class CommonController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = commonService.getCertificationChk(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 에러 로그 저장
+     */
+    @PostMapping("/error/log")
+    public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
+
+        String result = commonService.saveErrorLog(apiData);
 
         return result;
     }
