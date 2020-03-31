@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.30",
+		"name": "달빛라디오 API 정의서_2020.03.31",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4268,6 +4268,54 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 방송 시간 연장_2020.03.31",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											},
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91585622125109",
+													"description": "* 방번호",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/broad/extend",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"broad",
+												"extend"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -4448,60 +4496,16 @@
 										],
 										"body": {
 											"mode": "urlencoded",
-											"urlencoded": [
-												{
-													"key": "name",
-													"value": "이형원",
-													"description": "* 이름",
-													"type": "text",
-													"disabled": true
-												},
-												{
-													"key": "phoneNo",
-													"value": "01031855992",
-													"description": "* 휴대폰번호",
-													"type": "text",
-													"disabled": true
-												},
-												{
-													"key": "phoneCorp",
-													"value": "SKT",
-													"description": "* 통신사",
-													"type": "text",
-													"disabled": true
-												},
-												{
-													"key": "birthDay",
-													"value": "19890927",
-													"description": "* 생년월일",
-													"type": "text",
-													"disabled": true
-												},
-												{
-													"key": "gender",
-													"value": "0",
-													"description": "* 성별",
-													"type": "text",
-													"disabled": true
-												},
-												{
-													"key": "nation",
-													"value": "0",
-													"description": "* 내외국",
-													"type": "text",
-													"disabled": true
-												}
-											]
+											"urlencoded": []
 										},
 										"url": {
-											"raw": "https://devm-hwlee.dalbitlive.com:4431/self/auth/req",
+											"raw": "https://devapi2.dalbitlive.com/self/auth/req",
 											"protocol": "https",
 											"host": [
-												"devm-hwlee",
+												"devapi2",
 												"dalbitlive",
 												"com"
 											],
-											"port": "4431",
 											"path": [
 												"self",
 												"auth",
