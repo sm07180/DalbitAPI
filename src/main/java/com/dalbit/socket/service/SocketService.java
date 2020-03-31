@@ -514,6 +514,10 @@ public class SocketService {
             }
             vo.setCommand("chatEnd");
             vo.setMessage("bjOut");
+
+            log.info(" @@@ chatEnd @@@");
+            log.info(vo.toQueryString());
+            log.info(" @@@ chatEnd @@@");
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
