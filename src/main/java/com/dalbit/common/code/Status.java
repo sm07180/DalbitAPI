@@ -677,6 +677,13 @@ public enum Status {
 
 
 
+    //메인 나의스타 리스트
+    메인_나의스타_조회성공("C001", "main.star.dj.select.success", "나의스타 조회 성공 시"),
+    메인_나의스타_없음("0", "main.star.dj.select.no.success", "나의스타 없음"),
+    메인_나의스타_회원아님("-1", "main.star.dj.select.no.member", "회원아님"),
+    메인_나의스타_조회실패("C006", "main.star.dj.select.fail", "나의스타 조회 실패 시"),
+
+
     ;
 
     final private String RESULT_SUCCESS = "success";

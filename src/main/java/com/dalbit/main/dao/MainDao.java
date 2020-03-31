@@ -1,10 +1,7 @@
 package com.dalbit.main.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
-import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
-import com.dalbit.main.vo.procedure.P_MainMyDjVo;
-import com.dalbit.main.vo.procedure.P_MainRecommandVo;
+import com.dalbit.main.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,4 +17,6 @@ public interface MainDao {
     List<P_MainMyDjVo> callMainMyDjList(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_MainRecommandVo> callMainRecommandList(String memNo);
+    @Transactional(readOnly = true)
+    List<P_MainStarVo> callMainStarList(String memNo);
 }

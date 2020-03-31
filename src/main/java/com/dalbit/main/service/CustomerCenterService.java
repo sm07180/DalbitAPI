@@ -92,7 +92,7 @@ public class CustomerCenterService {
 
         String result;
         if(procedureVo.getRet().equals(Status.고객센터_공지사항내용조회_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항내용조회_성공, procedureVo.getData()));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.고객센터_공지사항내용조회_성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.고객센터_공지사항내용조회_없음.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항내용조회_없음));
         }else{
@@ -157,7 +157,7 @@ public class CustomerCenterService {
 
         String result;
         if(procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_성공, procedureVo.getData()));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.고객센터_FAQ내용조회_성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_없음.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_없음));
         }else{

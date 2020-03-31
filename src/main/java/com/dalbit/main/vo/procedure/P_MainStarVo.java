@@ -4,16 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class P_MainRecommandVo {
-
+public class P_MainStarVo {
     private String memNo;
     private String nickNm;
     private String gender;
-    private String profileUrl;
+    private String profImgUrl;
     private String roomNo;
-    private String roomType;
     private String title;
-    private int listeners;
-    private int likes;
-
+    private String roomType;
+    private String roomTypeNm;
 }

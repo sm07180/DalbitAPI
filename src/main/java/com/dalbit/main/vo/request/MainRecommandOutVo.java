@@ -19,7 +19,7 @@ public class MainRecommandOutVo {
     private String roomNo;
     private String roomType;
     private String title;
-    private String listeners;
-    private String likes;
+    private int listeners;
+    private int likes;
 
 }

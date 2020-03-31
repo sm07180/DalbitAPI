@@ -34,5 +34,31 @@
     </select>
 
 
+    <select id="callMainStarList" parameterType="String" resultType="P_MainStarVo">
+        SELECT
+            T1.mem_no_star AS memNo
+            , T2.mem_nick AS nickNm
+            , T2.mem_sex AS gender
+            , T3.image_profile AS profImgUrl
+            , T4.room_no AS roomNo
+            , T4.title AS title
+            , T4.subject_type AS roomType
+            , T4.code AS roomTypeNm
+        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no
+            INNER JOIN tb_member_profile T3 ON T1.mem_no_star = T3.mem_no
+            LEFT OUTER JOIN (
+                SELECT
+                S1.room_no
+                , S1.mem_no
+                , S1.title
+                , S1.subject_type
+                , S3.code
+                FROM tb_broadcast_room S1 INNER JOIN tb_broadcast_room_member S2 ON S1.mem_no = S2.mem_no AND S2.auth = 3 and S2.state = 0
+                INNER JOIN tbl_code_define S3 ON S1.subject_type = S3.value AND S3.type = 'subject_type'
+                WHERE S1.state &lt; 4
+            ) T4 ON T1.mem_no_star = T4.mem_no
+        WHERE T1.mem_no_fan = #{value}
+        LIMIT 0, 10
+    </select>
 
 </mapper>

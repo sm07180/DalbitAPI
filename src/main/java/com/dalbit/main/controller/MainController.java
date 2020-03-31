@@ -30,8 +30,8 @@ public class MainController {
      * 메인 TODO- 반환 서비스 추후 정의필요
      */
     @GetMapping("/main")
-    public String main(){
-        return "";
+    public String main(HttpServletRequest request){
+        return mainService.getMain(request);
     }
 
 
@@ -49,6 +49,17 @@ public class MainController {
         return result;
     }
 
+
+    /**
+     * 나의 스타 리스트
+     */
+    @GetMapping("/star")
+    public String mainStarList(HttpServletRequest request){
+
+        String result = mainService.callMainStarList(request);
+
+        return result;
+    }
 
     /**
      * 팬 랭킹

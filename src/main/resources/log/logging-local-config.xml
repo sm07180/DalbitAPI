@@ -11,23 +11,23 @@
         </layout>
     </appender>
 
-    <logger name="org.springframework" level="INFO" />
+    <logger name="org.springframework" level="DEBUG" />
     <logger name="jdbc" level="OFF" />
-    <logger name="jdbc.sqlonly" level="INFO" />
+    <logger name="jdbc.sqlonly" level="DEBUG" />
     <logger name="jdbc.sqltiming" level="OFF" />
     <logger name="jdbc.audit" level="OFF" />
     <logger name="jdbc.resultset" level="OFF" />
-    <logger name="jdbc.resultsettable" level="INFO" />
-    <logger name="jdbc.connection" level="WARN" />
+    <logger name="jdbc.resultsettable" level="DEBUG" />
+    <logger name="jdbc.connection" level="DEBUG" />
     <logger name="log4jdbc.log4j2" level="OFF" />
-    <logger name="io.lettuce" level="WARN" />
-    <logger name="com.zaxxer.hikari" level="WARN" />
+    <logger name="io.lettuce" level="DEBUG" />
+    <logger name="com.zaxxer.hikari" level="DEBUG" />
 
-    <logger name="com.dalbit" level="INFO" />
-    <logger name="com.dalbit.aop" level="INFO" />
-    <logger name="com.dalbit.interceptor" level="INFO" />
+    <logger name="com.dalbit" level="DEBUG" />
+    <logger name="com.dalbit.aop" level="DEBUG" />
+    <logger name="com.dalbit.interceptor" level="DEBUG" />
 
-    <root level="INFO">
+    <root level="DEBUG">
         <appender-ref ref="console"/>
     </root>
 

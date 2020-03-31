@@ -6,11 +6,10 @@ import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.vo.MainDjRankingOutVo;
 import com.dalbit.main.vo.MainFanRankingOutVo;
 import com.dalbit.main.vo.MainMyDjOutVo;
-import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
-import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
-import com.dalbit.main.vo.procedure.P_MainMyDjVo;
-import com.dalbit.main.vo.procedure.P_MainRecommandVo;
+import com.dalbit.main.vo.MainStarVo;
+import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -18,6 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +30,114 @@ public class MainService {
     GsonUtil gsonUtil;
     @Autowired
     MainDao mainDao;
+
+    public String getMain(HttpServletRequest request){
+        String result = "";
+
+        int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+        String memNo = MemberVo.getMyMemNo(request);
+
+        //상위 추천 데이터 조회
+        List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(DalbitUtil.getProperty("inforex.plan.memNo"));
+
+        //DJ랭킹 조회
+        P_MainDjRankingVo pMainDjRankingVo = new P_MainDjRankingVo();
+        pMainDjRankingVo.setMemLogin(isLogin);
+        pMainDjRankingVo.setMem_no(memNo);
+        pMainDjRankingVo.setSlct_type(1);
+        pMainDjRankingVo.setPageNo(1);
+        pMainDjRankingVo.setPageCnt(5);
+        ProcedureVo procedureDjRankVo = new ProcedureVo(pMainDjRankingVo);
+        List<P_MainDjRankingVo> mainDjRankingVoList = mainDao.callMainDjRanking(procedureDjRankVo);
+        if(DalbitUtil.isEmpty(mainDjRankingVoList)){
+            pMainDjRankingVo.setSlct_type(2);
+            procedureDjRankVo = new ProcedureVo(pMainDjRankingVo);
+            mainDjRankingVoList = mainDao.callMainDjRanking(procedureDjRankVo);
+        }
+
+        //팬랭킹조회
+        P_MainFanRankingVo pMainFanRankingVo = new P_MainFanRankingVo();
+        pMainFanRankingVo.setMemLogin(isLogin);
+        pMainFanRankingVo.setMem_no(memNo);
+        pMainFanRankingVo.setSlct_type(1);
+        pMainFanRankingVo.setPageNo(1);
+        pMainFanRankingVo.setPageCnt(5);
+        ProcedureVo procedureFanRankVo = new ProcedureVo(pMainFanRankingVo);
+        List<P_MainFanRankingVo> mainFanRankingVoList = mainDao.callMainFanRanking(procedureFanRankVo);
+        if(DalbitUtil.isEmpty(mainFanRankingVoList)){
+            pMainFanRankingVo.setPageNo(2);
+            procedureFanRankVo = new ProcedureVo(pMainFanRankingVo);
+            mainFanRankingVoList = mainDao.callMainFanRanking(procedureFanRankVo);
+        }
+
+        //마이스타
+        List<P_MainStarVo> starVoList = null;
+        if(isLogin == 1){
+            starVoList = mainDao.callMainStarList(memNo);
+        }
+
+        HashMap mainMap = new HashMap();
+
+        List recommend = new ArrayList();
+        if(!DalbitUtil.isEmpty(recommendVoList)){
+            String photoUrl = DalbitUtil.getProperty("server.photo.url");
+            for (int i=0; i < recommendVoList.size(); i++){
+                MainRecommandOutVo outVo = new MainRecommandOutVo();
+                outVo.setMemNo(recommendVoList.get(i).getMemNo());
+                outVo.setNickNm(recommendVoList.get(i).getNickNm());
+                outVo.setGender(recommendVoList.get(i).getGender());
+                outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoUrl));
+                outVo.setRoomType(recommendVoList.get(i).getRoomType());
+                outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
+                if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
+                    outVo.setTitle("방송 준비중");
+                }else{
+                    outVo.setTitle(recommendVoList.get(i).getTitle());
+                }
+                outVo.setListeners(recommendVoList.get(i).getListeners());
+                outVo.setLikes(recommendVoList.get(i).getLikes());
+                recommend.add(outVo);
+            }
+        }
+        mainMap.put("recommend", recommend);
+
+        List djRank = new ArrayList();
+        if(!DalbitUtil.isEmpty(mainDjRankingVoList)){
+            for (int i=0; i<mainDjRankingVoList.size(); i++){
+                djRank.add(new MainDjRankingOutVo(mainDjRankingVoList.get(i)));
+            }
+        }
+        mainMap.put("djRank", djRank);
+
+        List fanRank = new ArrayList();
+        for (int i=0; i<mainFanRankingVoList.size(); i++){
+            fanRank.add(new MainFanRankingOutVo(mainFanRankingVoList.get(i)));
+        }
+        mainMap.put("fanRank", fanRank);
+
+        if(isLogin == 1 && !DalbitUtil.isEmpty(starVoList)){
+            List<MainStarVo> myStar = new ArrayList();
+            for(P_MainStarVo data : starVoList){
+                MainStarVo outVo = new MainStarVo();
+                outVo.setMemNo(data.getMemNo());
+                outVo.setNickNm(data.getNickNm());
+                outVo.setGender(data.getGender());
+                outVo.setProfImg(new ImageVo(data.getProfImgUrl(), data.getGender(), DalbitUtil.getProperty("server.photo.url")));
+                outVo.setRoomType(data.getRoomType());
+                outVo.setRoomTypeNm(data.getRoomTypeNm());
+                outVo.setRoomNo(data.getRoomNo());
+                if(DalbitUtil.isEmpty(data.getTitle())){
+                    outVo.setTitle("방송 준비중");
+                }else{
+                    outVo.setTitle(data.getTitle());
+                }
+                myStar.add(outVo);
+            }
+            mainMap.put("myStar", myStar);
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
+    }
 
 
     /**
@@ -166,12 +274,46 @@ public class MainService {
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_조회성공, list));
-        } else if (recommandVoList.size()==0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_조회실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_추천DJ리스트_없음));
         }
 
+        return result;
+    }
+
+    public String callMainStarList(HttpServletRequest request) {
+        String result = "";
+        if(DalbitUtil.isLogin(request)){
+            List<P_MainStarVo> starVoList = mainDao.callMainStarList(MemberVo.getMyMemNo(request));
+            if(!DalbitUtil.isEmpty(starVoList)){
+                if(starVoList.size() > 0){
+                    List<MainStarVo> list = new ArrayList();
+                    for(P_MainStarVo data : starVoList){
+                        MainStarVo outVo = new MainStarVo();
+                        outVo.setMemNo(data.getMemNo());
+                        outVo.setNickNm(data.getNickNm());
+                        outVo.setGender(data.getGender());
+                        outVo.setProfImg(new ImageVo(data.getProfImgUrl(), data.getGender(), DalbitUtil.getProperty("server.photo.url")));
+                        outVo.setRoomType(data.getRoomType());
+                        outVo.setRoomTypeNm(data.getRoomTypeNm());
+                        outVo.setRoomNo(data.getRoomNo());
+                        if(DalbitUtil.isEmpty(data.getTitle())){
+                            outVo.setTitle("방송 준비중");
+                        }else{
+                            outVo.setTitle(data.getTitle());
+                        }
+                        list.add(outVo);
+                    }
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.메인_나의스타_조회성공, list));
+                }else{
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.메인_나의스타_없음));
+                }
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.메인_나의스타_조회실패));
+            }
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_나의스타_회원아님));
+        }
         return result;
     }
 }
