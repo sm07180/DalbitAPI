@@ -115,8 +115,8 @@ public class MainService {
         }
         mainMap.put("fanRank", fanRank);
 
+        List<MainStarVo> myStar = new ArrayList();
         if(isLogin == 1 && !DalbitUtil.isEmpty(starVoList)){
-            List<MainStarVo> myStar = new ArrayList();
             for(P_MainStarVo data : starVoList){
                 MainStarVo outVo = new MainStarVo();
                 outVo.setMemNo(data.getMemNo());
@@ -133,8 +133,8 @@ public class MainService {
                 }
                 myStar.add(outVo);
             }
-            mainMap.put("myStar", myStar);
         }
+        mainMap.put("myStar", myStar);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
     }
