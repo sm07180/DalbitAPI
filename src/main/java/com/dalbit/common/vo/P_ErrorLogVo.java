@@ -13,8 +13,16 @@ public class P_ErrorLogVo {
     public P_ErrorLogVo(ErrorLogVo errorLogVo, HttpServletRequest request){
         DeviceVo deviceVo = new DeviceVo(request);
         setMem_no(MemberVo.getMyMemNo(request));
-        setOs(deviceVo.getOs());
-        setVersion(deviceVo.getAppVersion());
+        if(request.getParameter("os") != null){
+            setOs(Integer.parseInt(request.getParameter("os")));
+        }else{
+            setOs(deviceVo.getOs());
+        }
+        if(request.getParameter("appVer") != null) {
+            setVersion(request.getParameter("appVer"));
+        }else{
+            setVersion(deviceVo.getAppVersion());
+        }
         setDtype(errorLogVo.getDataType());
         setCtype(errorLogVo.getCommandType());
         setDesc(errorLogVo.getDesc());
