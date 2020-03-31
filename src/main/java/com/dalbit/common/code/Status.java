@@ -663,6 +663,19 @@ public enum Status {
     에러로그저장_성공("0", "error.log.save.success", "에러 로그 저장 성공 시"),
     에러로그저장_실패("C006", "error.log.save.fail", "에러 로그 저장 실패 시"),
 
+    //방송시간 연장
+    시간연장성공("0", "broadcast.time.extend.success", "방송시간 연장 성공 시"),
+    시간연장_회원아님("-1", "broadcast.time.extend.member.number.error", "회원 번호 아닐 시"),
+    시간연장_방번호없음("-2", "broadcast.time.extend.room.number.no", "방번호 없을 시"),
+    시간연장_종료된방("-3", "broadcast.time.extend.room.exit", "종료된 방일 시"),
+    시간연장_이미한번연장("-4", "broadcast.time.extend.already.once", "이미 한번 연장 했을 시"),
+    시간연장_남은시간_5분안됨("-5", "broadcast.time.extend.not.remain.5min", "남은시간이 5분 아닐 시"),
+    시간연장실패("C006", "broadcast.time.extend.fail", "방송시간 연장 실패 시"),
+
+
+
+
+
 
     ;
 

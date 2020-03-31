@@ -18,4 +18,10 @@
       call sp_broadcast_room_use_item(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callroomExtendTime" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_extend_time(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+
 </mapper>

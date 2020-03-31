@@ -2,10 +2,7 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ActionDao;
 import com.dalbit.broadcast.vo.*;
-import com.dalbit.broadcast.vo.procedure.P_RoomBoosterVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
+import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
@@ -58,7 +55,7 @@ public class ActionService {
         returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
         procedureVo.setData(returnMap);
 
-        String result="";
+        String result;
         if(Status.좋아요.getMessageCode().equals(procedureVo.getRet())) {
             String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
             String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
@@ -159,7 +156,7 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
         actionDao.callBroadCastRoomGift(procedureVo);
 
-        String result="";
+        String result;
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
@@ -261,7 +258,7 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomBoosterVo);
         actionDao.callBroadCastRoomBooster(procedureVo);
 
-        String result="";
+        String result;
         if(Status.부스터성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
@@ -319,6 +316,34 @@ public class ActionService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_달부족));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송 시간 연장
+     */
+    public String callroomExtendTime(P_ExtendTimeVo pExtendTimeVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pExtendTimeVo);
+        actionDao.callroomExtendTime(procedureVo);
+
+        String result;
+        if(Status.시간연장성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장성공));
+        }else if(Status.시간연장_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_회원아님));
+        }else if(Status.시간연장_방번호없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_방번호없음));
+        }else if(Status.시간연장_종료된방.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_종료된방));
+        }else if(Status.시간연장_이미한번연장.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_이미한번연장));
+        }else if(Status.시간연장_남은시간_5분안됨.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_남은시간_5분안됨));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장실패));
         }
 
         return result;

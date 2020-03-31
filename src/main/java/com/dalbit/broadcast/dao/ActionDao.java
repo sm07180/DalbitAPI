@@ -14,4 +14,5 @@ public interface ActionDao {
     List<P_RoomShareLinkVo> callBroadCastRoomShareLink(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomGift(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomBooster(ProcedureVo procedureVo);
+    ProcedureVo callroomExtendTime(ProcedureVo procedureVo);
 }

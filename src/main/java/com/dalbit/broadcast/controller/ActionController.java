@@ -1,14 +1,8 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ActionService;
-import com.dalbit.broadcast.vo.procedure.P_RoomBoosterVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGoodVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
-import com.dalbit.broadcast.vo.request.BoosterVo;
-import com.dalbit.broadcast.vo.request.GiftVo;
-import com.dalbit.broadcast.vo.request.GoodVo;
-import com.dalbit.broadcast.vo.request.ShareLinkVo;
+import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -105,7 +99,22 @@ public class ActionController {
         String result = actionService.callBroadCastRoomBooster(apiData, request);
 
         return result;
+    }
 
+
+    /**
+     * 방송 시간 연장
+     */
+    @PostMapping("/extend")
+    public String roomExtendTime(@Valid ExtendTimeVo extendTimeVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult);
+        P_ExtendTimeVo apiData = new P_ExtendTimeVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(extendTimeVo.getRoomNo());
+
+        String result = actionService.callroomExtendTime(apiData, request);
+
+        return result;
     }
 
 }
