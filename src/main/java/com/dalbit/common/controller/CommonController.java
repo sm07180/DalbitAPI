@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -380,7 +381,8 @@ public class CommonController {
      * 에러 로그 저장
      */
     @PostMapping("/error/log")
-    public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws GlobalException{
+        DalbitUtil.setHeader(request, response);
         DalbitUtil.throwValidaionException(bindingResult);
         P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
 
