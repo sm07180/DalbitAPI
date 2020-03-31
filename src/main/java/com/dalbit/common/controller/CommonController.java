@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
@@ -309,11 +310,13 @@ public class CommonController {
         int os = DalbitUtil.getIntMap(headers,"os");
         String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
         isHybrid = DalbitUtil.isEmpty(isHybrid) ? "N" : isHybrid;
+        String returnUrl = DalbitUtil.isEmpty(selfAuthVo.getReturnUrl()) ? "" : selfAuthVo.getReturnUrl();
+
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getReturnUrl());
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+returnUrl);
 
         SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
@@ -378,7 +381,8 @@ public class CommonController {
      * 에러 로그 저장
      */
     @PostMapping("/error/log")
-    public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws GlobalException{
+        DalbitUtil.setHeader(request, response);
         DalbitUtil.throwValidaionException(bindingResult);
         P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
 

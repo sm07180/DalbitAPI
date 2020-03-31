@@ -58,6 +58,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/ctrl/check/service"
         , "/social"
         , "/self"
+        , "/error/log"
     };
 
     @Override
