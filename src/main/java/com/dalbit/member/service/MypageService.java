@@ -671,6 +671,10 @@ public class MypageService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         reportBroadList.put("list", procedureOutputVo.getOutputBox());
+        reportBroadList.put("broadcastTime", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
+        reportBroadList.put("byeolTotCnt", DalbitUtil.getIntMap(resultMap, "goldTotal"));
+        reportBroadList.put("goodTotCnt", DalbitUtil.getIntMap(resultMap, "goodTotal"));
+        reportBroadList.put("listenerTotCnt", DalbitUtil.getIntMap(resultMap, "listenerTotal"));
         reportBroadList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
@@ -704,6 +708,10 @@ public class MypageService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         reportListenList.put("list", procedureOutputVo.getOutputBox());
+        reportListenList.put("listeningTime", DalbitUtil.getIntMap(resultMap, "listeningTime"));
+        reportListenList.put("giftDalTotCnt", DalbitUtil.getIntMap(resultMap, "giftRubyTotal"));
+        reportListenList.put("byeolTotCnt", DalbitUtil.getIntMap(resultMap, "goldTotal"));
+        reportListenList.put("guestTime", DalbitUtil.getIntMap(resultMap, "guestTime"));
         reportListenList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;

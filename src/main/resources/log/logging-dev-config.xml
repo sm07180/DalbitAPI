@@ -44,7 +44,10 @@
     <logger name="io.lettuce" level="WARN" />
     <logger name="com.zaxxer.hikari" level="WARN" />
     <logger name="o.s.w.servlet.DispatcherServlet" level="off" />
-    <logger name="com.dalbit.interceptor" level="OFF" />
+
+    <logger name="com.dalbit" level="WARN" />
+    <logger name="com.dalbit.aop" level="INFO" />
+    <logger name="com.dalbit.interceptor" level="INFO" />
 
     <root level="INFO">
         <appender-ref ref="FILE" />

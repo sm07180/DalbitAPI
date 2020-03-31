@@ -308,12 +308,14 @@ public class CommonController {
         HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
         int os = DalbitUtil.getIntMap(headers,"os");
         String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
+        isHybrid = DalbitUtil.isEmpty(isHybrid) ? "N" : isHybrid;
+        String returnUrl = DalbitUtil.isEmpty(selfAuthVo.getReturnUrl()) ? "" : selfAuthVo.getReturnUrl();
 
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));          //회원사ID
         selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));    //URL코드
         selfAuthVo.setDate(DalbitUtil.getReqDay());                             //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));      //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getReturnUrl());
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+returnUrl);
 
         SelfAuthOutVo selfAuthOutVo = new SelfAuthOutVo();
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));        //요정정보(암호화)
