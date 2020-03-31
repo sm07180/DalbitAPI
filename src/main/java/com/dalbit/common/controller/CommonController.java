@@ -160,10 +160,10 @@ public class CommonController {
     @PostMapping("/sms")
     public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         if(!DalbitUtil.isSmsPhoneNoChk(smsVo.getPhoneNo())){
-            throw new GlobalException(Status.인증번호요청_유효하지않은번호);
+            throw new GlobalException(Status.인증번호요청_유효하지않은번호, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         //휴대폰번호 '-' 치환
         smsVo.setPhoneNo(smsVo.getPhoneNo().replaceAll("-",""));
@@ -256,7 +256,7 @@ public class CommonController {
     @PostMapping("/sms/auth")
     public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         long checkTime = System.currentTimeMillis();
 
         HttpSession session = request.getSession();
@@ -332,7 +332,7 @@ public class CommonController {
      */
     @PostMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
@@ -381,7 +381,7 @@ public class CommonController {
     @PostMapping("/error/log")
     public String saveErrorLog(@Valid ErrorLogVo errorLogVo, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws GlobalException{
         DalbitUtil.setHeader(request, response);
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
 
         String result = commonService.saveErrorLog(apiData);

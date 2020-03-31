@@ -26,7 +26,7 @@ public class ContentController {
     @GetMapping("/notice")
     public String noticeSelect(@Valid NoticeViewVo noticeViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomNoticeVo apiData = new P_RoomNoticeVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -44,7 +44,7 @@ public class ContentController {
     @PostMapping("/notice")
     public String noticeEdit(@Valid NoticeEditVo noticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomNoticeEditVo apiData = new P_RoomNoticeEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -63,7 +63,7 @@ public class ContentController {
     @DeleteMapping("/notice")
     public String noticeDelete(@Valid NoticeDelVo noticeDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomNoticeVo apiData = new P_RoomNoticeVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -81,7 +81,7 @@ public class ContentController {
     @PostMapping("/story")
     public String insertStory(@Valid StoryAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomStoryAddVo apiData = new P_RoomStoryAddVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -100,7 +100,7 @@ public class ContentController {
     @GetMapping("/story")
     public String getStory(@Valid StoryViewVo storyViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         int pageNo = DalbitUtil.isEmpty(storyViewVo.getPage()) ? 1 : storyViewVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(storyViewVo.getRecords()) ? 10 : storyViewVo.getRecords();
@@ -123,7 +123,7 @@ public class ContentController {
     @DeleteMapping("/story")
     public String deleteStory(@Valid StoryDelVo storyDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         int page = DalbitUtil.isEmpty(storyDelVo.getPage()) ? 1 : storyDelVo.getPage();
         int records = DalbitUtil.isEmpty(storyDelVo.getRecords()) ? 10 : storyDelVo.getRecords();

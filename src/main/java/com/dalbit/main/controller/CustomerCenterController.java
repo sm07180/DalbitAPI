@@ -33,7 +33,7 @@ public class CustomerCenterController {
      */
     @GetMapping("/center/notice")
     public String customerCenterNoticeList(@Valid NoticeListVo noticeListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         MemberVo memberVo = redisUtil.getMemberInfo(request);
         P_NoticeListVo apiData = new P_NoticeListVo(noticeListVo, request, memberVo);
@@ -48,7 +48,7 @@ public class CustomerCenterController {
      */
     @GetMapping("/center/notice/detail")
     public String customerCenterNoticeView(@Valid NoticeDetailVo noticeDetailVo, BindingResult bindingResult) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_NoticeDetailVo apiData = new P_NoticeDetailVo(noticeDetailVo);
 
         String result = customerCenterService.callNoticeDetail(apiData);
@@ -61,7 +61,7 @@ public class CustomerCenterController {
      */
     @GetMapping("/center/faq")
     public String customerCenterFaqList(@Valid FaqListVo faqListVo, BindingResult bindingResult) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_FaqListVo apiData = new P_FaqListVo(faqListVo);
 
         String result = customerCenterService.callFaqList(apiData);
@@ -74,7 +74,7 @@ public class CustomerCenterController {
      */
     @GetMapping("/center/faq/detail")
     public String customerCenterFaqView(@Valid FaqDetailVo faqDetailVo, BindingResult bindingResult) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_FaqDetailVo apiData = new P_FaqDetailVo(faqDetailVo);
 
         String result = customerCenterService.callFaqDetail(apiData);
@@ -88,7 +88,7 @@ public class CustomerCenterController {
      */
     @PostMapping("/center/qna/add")
     public String callQnaAdd(@Valid QnaVo qnaVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_QnaVo apiData = new P_QnaVo(qnaVo, request);
 
         String result = customerCenterService.callQnaAdd(apiData, request);
@@ -101,7 +101,7 @@ public class CustomerCenterController {
      */
     @GetMapping("/center/qna/list")
     public String callQnaList(@Valid QnaListVo qnaListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_QnaListVo apiData = new P_QnaListVo(qnaListVo, request);
 
         String result = customerCenterService.callQnaList(apiData);

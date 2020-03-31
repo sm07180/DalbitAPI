@@ -38,7 +38,7 @@ public class RoomController {
     @PostMapping("/create")
     public String roomCreate(@Valid RoomCreateVo roomCreateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         //토큰생성
         String streamId = (String) restService.antCreate(roomCreateVo.getTitle(), request).get("streamId");
@@ -80,7 +80,7 @@ public class RoomController {
     @PostMapping("/join")
     public String roomJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         String roomNo = roomJoinVo.getRoomNo();
 
@@ -120,7 +120,7 @@ public class RoomController {
     @DeleteMapping("/exit")
     public String roomExit(@Valid RoomExitVo roomExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomExitVo apiData = new P_RoomExitVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
@@ -146,7 +146,7 @@ public class RoomController {
     @PostMapping("/edit")
     public String roomEdit(@Valid RoomEditVo roomEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomEditVo apiData = new P_RoomEditVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -178,7 +178,7 @@ public class RoomController {
     @GetMapping("/list")
     public String roomList(@Valid RoomListVo roomListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
@@ -203,7 +203,7 @@ public class RoomController {
     @GetMapping("/info")
     public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
@@ -223,7 +223,7 @@ public class RoomController {
     @GetMapping("/boost")
     public String roomLiveRankInfo(@Valid LiveRankInfoVo liveRankInfoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomLiveRankInfoVo apiData = new P_RoomLiveRankInfoVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -241,7 +241,7 @@ public class RoomController {
     @GetMapping("/history")
     public String roomGiftHistory(@Valid RoomGiftHistoryVo roomGiftHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         roomGiftHistoryVo.setPage(null);
         roomGiftHistoryVo.setRecords(null);
@@ -258,7 +258,7 @@ public class RoomController {
      */
     @GetMapping("/member/profile")
     public String roomMemberInfo(@Valid RoomMemberInfoVo roomMemberInfoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomMemberInfoVo apiData = new P_RoomMemberInfoVo(roomMemberInfoVo, request);
         String result = roomService.callBroadCastRoomMemberInfo(apiData);
@@ -271,7 +271,7 @@ public class RoomController {
     @PostMapping("/reToken")
     public String roomRefreshToken(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_RoomStreamVo apiData = new P_RoomStreamVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -286,7 +286,7 @@ public class RoomController {
     @PostMapping("/state")
     public String roomStateUpdate(@Valid StateVo stateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         return roomService.callBroadCastRoomStateUpate(stateVo, request);
     }

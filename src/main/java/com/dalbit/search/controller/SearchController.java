@@ -30,7 +30,7 @@ public class SearchController {
     @GetMapping("member")
     public String memberNickSearch(@Valid SearchVo searchVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_MemberSearchVo apiData = new P_MemberSearchVo(searchVo, request);
 
@@ -45,7 +45,7 @@ public class SearchController {
     @GetMapping("live")
     public String liveRoomSearch(@Valid SearchVo searchVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_LiveRoomSearchVo apiData = new P_LiveRoomSearchVo(searchVo, request);
 

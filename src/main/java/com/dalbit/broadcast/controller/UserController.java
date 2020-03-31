@@ -41,7 +41,7 @@ public class UserController {
     @GetMapping("/listeners")
     public String roomMemberList(@Valid JoinMemberListVo joinMemberListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         int pageNo = DalbitUtil.isEmpty(joinMemberListVo.getPage()) ? 1 : joinMemberListVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(joinMemberListVo.getRecords()) ? 10 : joinMemberListVo.getRecords();
@@ -64,7 +64,7 @@ public class UserController {
     @PostMapping("/guest")
     public String roomGuestAdd(@Valid GuestAddVo guestAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         String roomNo = guestAddVo.getRoomNo();
         //게스트 지정을 위한 BJ토큰 조회
@@ -102,7 +102,7 @@ public class UserController {
     @DeleteMapping("/guest")
     public String roomGuestDelete(@Valid GuestDelVo guestDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         String roomNo = guestDelVo.getRoomNo();
         //게스트 취소를 위한 토큰 조회
@@ -131,7 +131,7 @@ public class UserController {
     @PostMapping("/kickout")
     public String roomKickout(@Valid KickOutVo kickOutVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomKickoutVo apiData = new P_RoomKickoutVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -164,7 +164,7 @@ public class UserController {
     @PostMapping("/manager")
     public String managerAdd(@Valid ManagerAddVo managerAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ManagerAddVo apiData = new P_ManagerAddVo(managerAddVo, request);
         String result = userService.callBroadCastRoomManagerAdd(apiData, request);
@@ -179,7 +179,7 @@ public class UserController {
     @DeleteMapping("/manager")
     public String managerDel(@Valid ManagerDelVo managerDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ManagerDelVo apiData = new P_ManagerDelVo(managerDelVo, request);
         String result = userService.callBroadCastRoomManagerDel(apiData, request);
@@ -194,7 +194,7 @@ public class UserController {
     @PostMapping("/fan")
     public String fanstarInsert(@Valid BroadFanstartInsertVo broadFanstartInsertVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BroadFanstarInsertVo apiData = new P_BroadFanstarInsertVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
@@ -212,7 +212,7 @@ public class UserController {
     @DeleteMapping("/fan")
     public String fanstarDelete(@Valid BroadFanstartDeleteVo broadFanstartDeleteVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BroadFanstarDeleteVo apiData = new P_BroadFanstarDeleteVo();
         apiData.setFan_mem_no(MemberVo.getMyMemNo(request));

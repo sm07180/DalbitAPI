@@ -55,7 +55,7 @@ public class MainController {
      */
     @GetMapping("/rank/fan")
     public String mainFanRanking(@Valid MainFanRankingVo mainFanRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MainFanRankingVo apiData = new P_MainFanRankingVo(mainFanRankingVo, request);
 
         String result = mainService.callMainFanRanking(apiData);
@@ -69,7 +69,7 @@ public class MainController {
      */
     @GetMapping("/rank/dj")
     public String mainDjRanking(@Valid MainDjRankingVo mainDjRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MainDjRankingVo apiData = new P_MainDjRankingVo(mainDjRankingVo, request);
 
         String result = mainService.callMainDjRanking(apiData);
@@ -83,7 +83,7 @@ public class MainController {
      */
     @GetMapping("/my/dj")
     public String mainMyDjList(@Valid MainMyDjVo mainMyDjVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MainMyDjVo adiData = new P_MainMyDjVo(mainMyDjVo, request);
 
         String result = mainService.callMainMyDjList(adiData);

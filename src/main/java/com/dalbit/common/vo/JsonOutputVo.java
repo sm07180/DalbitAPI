@@ -29,12 +29,12 @@ public class JsonOutputVo {
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
-    public JsonOutputVo(Status status, Object data, ArrayList validationMessageDetail){
+    public JsonOutputVo(Status status, Object data, ArrayList validationMessageDetail, String methodName){
         setStatus(status);
         setData(data);
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
-
         setValidationMessageDetail(validationMessageDetail);
+        setMethodName(methodName);
     }
 
     public JsonOutputVo(ErrorStatus errorStatus){
@@ -43,18 +43,19 @@ public class JsonOutputVo {
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 
-    public JsonOutputVo(ErrorStatus errorStatus, Object data){
+    public JsonOutputVo(ErrorStatus errorStatus, Object data, String methodName){
         setErrorStatus(errorStatus);
         setData(data);
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
+        setMethodName(methodName);
     }
 
-    public JsonOutputVo(ErrorStatus errorStatus, Object data, ArrayList validationMessageDetail){
+    public JsonOutputVo(ErrorStatus errorStatus, Object data, ArrayList validationMessageDetail, String methodName){
         setErrorStatus(errorStatus);
         setData(data);
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
-
         setValidationMessageDetail(validationMessageDetail);
+        setMethodName(methodName);
     }
 
     private String result;
@@ -64,10 +65,10 @@ public class JsonOutputVo {
     private String message;
 
     private Object data;
-
     private String timestamp;
-
     private ArrayList validationMessageDetail = new ArrayList<String>();
+    private String methodName;
+
 
     public void setStatus(Status status){
         setCode(status.getMessageCode());

@@ -84,7 +84,7 @@ public class SsoAuthenticationFilter implements Filter {
                     if (DalbitUtil.isEmpty(authentication)) {
                         if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
                             if(!request.getRequestURI().startsWith("/token")){
-                                throw new GlobalException(ErrorStatus.토큰검증오류);
+                                throw new GlobalException(ErrorStatus.토큰검증오류, Thread.currentThread().getStackTrace()[1].getMethodName());
                             }
                         }else{
                             checkToken(request, response);
@@ -98,7 +98,7 @@ public class SsoAuthenticationFilter implements Filter {
                         if(DalbitUtil.isAnonymousUser(authentication.getPrincipal())){
                             if(DalbitUtil.isEmptyHeaderAuthToken(headerAuthToken)){
                                 if(!request.getRequestURI().startsWith("/token")) {
-                                    throw new GlobalException(ErrorStatus.토큰검증오류);
+                                    throw new GlobalException(ErrorStatus.토큰검증오류, Thread.currentThread().getStackTrace()[1].getMethodName());
                                 }
                             }else{
                                 checkToken(request, response);
@@ -109,7 +109,7 @@ public class SsoAuthenticationFilter implements Filter {
                     //e.printStackTrace();
                     log.info(e.getMessage());
 
-                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus(), e.getData()));
+                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(e.getErrorStatus(), e.getData(), e.getMethodName()));
                     return;
                 }
             }
@@ -132,7 +132,7 @@ public class SsoAuthenticationFilter implements Filter {
 
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(headerAuthToken);
             if(DalbitUtil.isEmpty(tokenVo)){
-                throw new GlobalException(ErrorStatus.토큰검증오류);
+                throw new GlobalException(ErrorStatus.토큰검증오류, Thread.currentThread().getStackTrace()[1].getMethodName());
             }else{
                 log.debug("SsoAuthenticationFilter get request header > JWT FROM TokenVo : {}", tokenVo.toString());
             }
@@ -147,7 +147,7 @@ public class SsoAuthenticationFilter implements Filter {
 
             if(DalbitUtil.isEmpty(userDetails)) {
                 if (tokenVo.getMemNo() == null) {
-                    throw new GlobalException(ErrorStatus.토큰검증오류);
+                    throw new GlobalException(ErrorStatus.토큰검증오류, Thread.currentThread().getStackTrace()[1].getMethodName());
                 } else {
                     if (tokenVo.isLogin()) {
                         ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));

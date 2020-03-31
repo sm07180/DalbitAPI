@@ -128,8 +128,8 @@ public class JwtUtil {
     private void throwGlobalException(ErrorStatus errorStatus) throws GlobalException{
         if(!DalbitUtil.isEmpty(request) && request.getRequestURI().startsWith("/token")){
             HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
-            throw new GlobalException(errorStatus, result.get("tokenVo"));
+            throw new GlobalException(errorStatus, result.get("tokenVo"), Thread.currentThread().getStackTrace()[1].getMethodName());
         }
-        throw new GlobalException(errorStatus);
+        throw new GlobalException(errorStatus, Thread.currentThread().getStackTrace()[1].getMethodName());
     }
 }

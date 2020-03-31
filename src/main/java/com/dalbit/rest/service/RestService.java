@@ -66,7 +66,7 @@ public class RestService {
 
             return callRest(server_url, url_path, paramString.toString(), method, request);
         }catch (Exception e){
-            throw new GlobalException(ErrorStatus.호출에러);
+            throw new GlobalException(ErrorStatus.호출에러, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -146,7 +146,7 @@ public class RestService {
             messageList.add("method : "+ method);
             messageList.add("result : "+ result);
 
-            throw new GlobalException(ErrorStatus.호출에러, messageList);
+            throw new GlobalException(ErrorStatus.호출에러, messageList, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -188,7 +188,7 @@ public class RestService {
                 log.error("url_path : {}", url_path);
                 log.error("params : {}", params);
             }
-            throw new GlobalException(ErrorStatus.호출에러);
+            throw new GlobalException(ErrorStatus.호출에러, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 
@@ -203,7 +203,7 @@ public class RestService {
         try {
             return callRest(photoServer, "/upload", "imageUrl=" + URLEncoder.encode(url, "UTF-8"), 1, request);
         }catch (Exception e){
-            throw new GlobalException(ErrorStatus.호출에러);
+            throw new GlobalException(ErrorStatus.호출에러, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
 

@@ -29,7 +29,7 @@ public class ActionController {
     @PostMapping("/likes")
     public String roomGood(@Valid GoodVo goodVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomGoodVo apiData = new P_RoomGoodVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
@@ -47,7 +47,7 @@ public class ActionController {
     @GetMapping("/link")
     public String roomShareLink(@Valid ShareLinkVo shareLinkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomShareLinkVo apiData = new P_RoomShareLinkVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
@@ -66,7 +66,7 @@ public class ActionController {
     @PostMapping("/gift")
     public String roomGift(@Valid GiftVo giftVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomGiftVo apiData = new P_RoomGiftVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
@@ -88,7 +88,7 @@ public class ActionController {
     @PostMapping("/boost")
     public String roomBooster(@Valid BoosterVo boosterVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomBoosterVo apiData = new P_RoomBoosterVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
@@ -107,7 +107,7 @@ public class ActionController {
      */
     @PostMapping("/extend")
     public String roomExtendTime(@Valid ExtendTimeVo extendTimeVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_ExtendTimeVo apiData = new P_ExtendTimeVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(extendTimeVo.getRoomNo());

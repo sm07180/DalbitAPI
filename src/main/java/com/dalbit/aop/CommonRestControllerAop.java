@@ -1,10 +1,6 @@
 package com.dalbit.aop;
 
-import com.dalbit.common.code.ErrorStatus;
-import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,10 +9,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StopWatch;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 
 /**
  * 공통 rest controller AOP 정의

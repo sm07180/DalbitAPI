@@ -68,11 +68,11 @@ public class CommonService {
         String tokenFailData = "";
 
         if (procedureVo.getRet().equals(Status.방송참여토큰_해당방이없음.getMessageCode())) {
-            throw new GlobalException(Status.방송참여토큰_해당방이없음, procedureVo.getData());
+            throw new GlobalException(Status.방송참여토큰_해당방이없음, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
         } else if (procedureVo.getRet().equals(Status.방송참여토큰_방장이없음.getMessageCode())) {
-            throw new GlobalException(Status.방송참여토큰_방장이없음, procedureVo.getData());
+            throw new GlobalException(Status.방송참여토큰_방장이없음, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
         } else if(procedureVo.getRet().equals(Status.방송참여토큰발급_실패.getMessageCode())){
-            throw new GlobalException(Status.방송참여토큰발급_실패, procedureVo.getData());
+            throw new GlobalException(Status.방송참여토큰발급_실패, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
         }
 
         boolean isTokenSuccess = procedureVo.getRet().equals(Status.방송참여토큰발급.getMessageCode());

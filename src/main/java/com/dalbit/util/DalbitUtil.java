@@ -563,7 +563,7 @@ public class DalbitUtil {
     /**
      * Validation 체크
      */
-    public static void throwValidaionException(BindingResult bindingResult) throws GlobalException {
+    public static void throwValidaionException(BindingResult bindingResult, String methodName) throws GlobalException {
 
         ValidationResultVo validationResultVo = new ValidationResultVo();
         if(bindingResult.hasErrors()){
@@ -577,7 +577,7 @@ public class DalbitUtil {
                 bindingMessageList.add("field : " + fieldError.getField()  + ", value : "+ fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage());
             }
             validationResultVo.setValidationMessageDetail(bindingMessageList);
-            throw new GlobalException(Status.파라미터오류, null, validationResultVo.getValidationMessageDetail());
+            throw new GlobalException(Status.파라미터오류, null, validationResultVo.getValidationMessageDetail(), methodName);
         }
 
     }
@@ -949,7 +949,7 @@ public class DalbitUtil {
         encMsg2  = seed.getMsg(encPara);
 
         if(!encMsg2.equals(encMsg1)){
-            throw new GlobalException(Status.본인인증검증_비정상접근);
+            throw new GlobalException(Status.본인인증검증_비정상접근, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
 
         //05. 2차 복호화

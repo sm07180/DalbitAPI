@@ -82,7 +82,7 @@ public class MemberController {
     public String signup(@Valid SignUpVo signUpVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         //벨리데이션 체크
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         String memType = signUpVo.getMemType();
         String memId = signUpVo.getMemId();
@@ -180,7 +180,7 @@ public class MemberController {
     public String nick(@Valid NickNmDupleCheckVo nickNmDupleCheckVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckVo.getNickNm().trim()));
 
         return result;
@@ -194,7 +194,7 @@ public class MemberController {
     public String pwd(@Valid ChangePwVo changePwVo, BindingResult bindingResult) throws GlobalException{
 
         //벨리데이션 체크
-        DalbitUtil.throwValidaionException(bindingResult);
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ChangePasswordVo pChangePasswordVo = new P_ChangePasswordVo();
         pChangePasswordVo.setPhoneNo(changePwVo.getMemId());

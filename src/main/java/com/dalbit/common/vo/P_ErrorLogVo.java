@@ -14,9 +14,9 @@ public class P_ErrorLogVo {
         DeviceVo deviceVo = new DeviceVo(request);
         setMem_no(MemberVo.getMyMemNo(request));
         if(request.getParameter("os") != null){
-            setOs(Integer.parseInt(request.getParameter("os")));
+            setOs(request.getParameter("os"));
         }else{
-            setOs(deviceVo.getOs());
+            setOs(String.valueOf(deviceVo.getOs()));
         }
         if(request.getParameter("appVer") != null) {
             setVersion(request.getParameter("appVer"));
@@ -29,7 +29,7 @@ public class P_ErrorLogVo {
     }
 
     private String mem_no;
-    private int os;
+    private String os;
     private String version;
     private String dtype;
     private String ctype;
