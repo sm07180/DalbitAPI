@@ -12,7 +12,6 @@ public class SelfAuthVo {
     private String birthDay="";     //생년월일 8자리
     private String gender="";       //성별
     private String nation="";       //내외국인 0:내국인, 1:외국인
-    private String returnUrl="";    //resturn Url
 
     private String cpId;            //회원사ID
     private String urlCode;         //URL코드
