@@ -11,7 +11,7 @@
         </layout>
     </appender>
 
-    <logger name="org.springframework" level="DEBUG" />
+    <logger name="org.springframework" level="WARN" />
     <logger name="jdbc" level="OFF" />
     <logger name="jdbc.sqlonly" level="DEBUG" />
     <logger name="jdbc.sqltiming" level="OFF" />

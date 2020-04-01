@@ -13,7 +13,7 @@
 
 		<typeAlias type="com.dalbit.common.vo.ProcedureVo" alias="ProcedureVo" />
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
-		<typeAlias type="com.dalbit.common.vo.SmsVo" alias="SmsVo" />
+		<typeAlias type="com.dalbit.common.vo.request.SmsVo" alias="SmsVo" />
 		<typeAlias type="com.dalbit.common.vo.SmsOutVo" alias="SmsOutVo" />
 
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainFanRankingVo" alias="P_MainFanRankingVo" />

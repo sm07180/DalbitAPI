@@ -1,7 +1,7 @@
 package com.dalbit.common.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.common.vo.SmsVo;
+import com.dalbit.common.vo.request.SmsVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -20,4 +20,6 @@ public interface CommonDao {
     ProcedureVo getCertificationChk(ProcedureVo procedureVo);
 
     ProcedureVo saveErrorLog(ProcedureVo procedureVo);
+
+    ProcedureVo callPushAdd(ProcedureVo procedureVo);
 }

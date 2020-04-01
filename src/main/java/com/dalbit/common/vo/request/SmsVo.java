@@ -1,4 +1,4 @@
-package com.dalbit.common.vo;
+package com.dalbit.common.vo.request;
 
 import lombok.Getter;
 import lombok.Setter;

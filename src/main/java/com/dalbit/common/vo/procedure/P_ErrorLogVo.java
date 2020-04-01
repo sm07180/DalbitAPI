@@ -1,5 +1,7 @@
-package com.dalbit.common.vo;
+package com.dalbit.common.vo.procedure;
 
+import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.request.ErrorLogVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;

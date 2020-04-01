@@ -6,6 +6,11 @@ import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.*;
+import com.dalbit.common.vo.procedure.P_ErrorLogVo;
+import com.dalbit.common.vo.procedure.P_PushVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthChkVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
+import com.dalbit.common.vo.request.SmsVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
@@ -413,4 +418,28 @@ public class CommonService {
         return result;
     }
 
+
+    /**
+     * PUSH 발송 추가
+     */
+    public String callPushAdd(P_PushVo pPushVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pPushVo);
+        commonDao.callPushAdd(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        String result;
+        if(procedureVo.getRet().equals(Status.푸시성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시성공));
+        } else if(procedureVo.getRet().equals(Status.푸시_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시_회원아님));
+        } else if(procedureVo.getRet().equals(Status.푸시_디바이스토큰없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시_디바이스토큰없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시실패));
+        }
+        return result;
+
+    }
 }
