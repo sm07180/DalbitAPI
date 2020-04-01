@@ -35,6 +35,8 @@ public class ActionService {
     CommonService commonService;
     @Autowired
     SocketService socketService;
+    @Autowired
+    RoomService roomService;
 
 
     /**
@@ -148,6 +150,26 @@ public class ActionService {
         return result;
     }
 
+
+    public String callBroadCastRoomShareLink(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request){
+        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        String result = "";
+        if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+            RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();
+            HashMap returnMap = new HashMap();
+            returnMap.put("roomNo", pRoomInfoViewVo.getRoom_no());
+            // TODO - 추후 동적 링크로 변경 필요
+            returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
+        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
+        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+        }
+        return result;
+    }
 
     /**
      * 방송방 선물하기

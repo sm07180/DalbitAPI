@@ -61,6 +61,25 @@ public class ActionController {
 
 
     /**
+     * 방송방 공유 경로 조회
+     */
+    @GetMapping("/share")
+    public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(roomInfo.getRoomNo());
+
+        String result = actionService.callBroadCastRoomShareLink(apiData, request);
+
+        return result;
+
+    }
+
+    /**
      * 방송방 선물하기
      */
     @PostMapping("/gift")
