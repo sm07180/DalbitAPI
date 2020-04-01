@@ -42,5 +42,8 @@
       call sp_log_error_data(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callPushAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_stmp_push_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
 </mapper>

@@ -4,6 +4,11 @@ import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.common.vo.procedure.P_ErrorLogVo;
+import com.dalbit.common.vo.procedure.P_PushVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthChkVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
+import com.dalbit.common.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
@@ -385,6 +390,21 @@ public class CommonController {
         P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
 
         String result = commonService.saveErrorLog(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * PUSH 발송 추가
+     */
+    @PostMapping("/push")
+    public String pushAdd(@Valid PushVo pushVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_PushVo apiData = new P_PushVo(pushVo, request);
+
+        String result = commonService.callPushAdd(apiData);
 
         return result;
     }

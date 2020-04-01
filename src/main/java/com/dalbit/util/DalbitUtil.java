@@ -3,6 +3,7 @@ package com.dalbit.util;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
+import com.dalbit.common.vo.request.SelfAuthChkVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
