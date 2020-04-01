@@ -331,6 +331,10 @@ public class ActionService {
 
         String result;
         if(Status.시간연장성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            try{
+                socketService.roomChangeTime(pExtendTimeVo.getRoom_no(), pExtendTimeVo.getMem_no(), DalbitUtil.getStringMap(resultMap, "extendEndDate"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장성공));
         }else if(Status.시간연장_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_회원아님));

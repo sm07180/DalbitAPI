@@ -515,9 +515,9 @@ public class SocketService {
             vo.setCommand("chatEnd");
             vo.setMessage("bjOut");
 
-            log.info(" @@@ chatEnd @@@");
-            log.info(vo.toQueryString());
-            log.info(" @@@ chatEnd @@@");
+            log.debug(" @@@ chatEnd @@@");
+            log.debug(vo.toQueryString());
+            log.debug(" @@@ chatEnd @@@");
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
@@ -535,6 +535,24 @@ public class SocketService {
             vo.setCommand("reqMyInfo");
             vo.setMessage(message);
             return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+        }
+        return null;
+    }
+    @Async("threadTaskExecutor")
+    public Map<String, Object> roomChangeTime(String roomNo, String memNo, String extendedTime, String authToken, boolean isLogin) {
+        log.info("Socket Start : changeMemberInfo {}, {}, {}, {}, {}", roomNo, memNo, extendedTime, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        extendedTime = extendedTime == null ? "" : extendedTime.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(extendedTime) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo, isLogin);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqRoomChangeTime");
+            vo.setMessage(extendedTime);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
     }
