@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.03.31",
+		"name": "달빛라디오 API 정의서_2020.04.01",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4366,7 +4366,7 @@
 									"response": []
 								},
 								{
-									"name": "휴대폰 SMS 인증번호 요청_20200309",
+									"name": "[완료] 휴대폰 SMS 인증번호 요청_20200309",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -4419,7 +4419,7 @@
 									"response": []
 								},
 								{
-									"name": "휴대폰 SMS 인증확인_20200309",
+									"name": "[완료] 휴대폰 SMS 인증확인_20200309",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -4474,7 +4474,7 @@
 									"response": []
 								},
 								{
-									"name": "본인인증 요청_20200319",
+									"name": "[완료] 본인인증 요청_20200319",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -4516,7 +4516,7 @@
 									"response": []
 								},
 								{
-									"name": "본인인증 요청 확인_20200323",
+									"name": "[완료] 본인인증 요청 확인_20200323",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -4571,7 +4571,7 @@
 									"response": []
 								},
 								{
-									"name": "본인인증 여부 체크_2020.03.20",
+									"name": "[완료] 본인인증 여부 체크_2020.03.20",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -4609,7 +4609,7 @@
 									"response": []
 								},
 								{
-									"name": "에러 로그 저장_2020.03.30",
+									"name": "[완료] 에러 로그 저장_2020.03.30",
 									"request": {
 										"method": "POST",
 										"header": [
@@ -4663,6 +4663,65 @@
 											"path": [
 												"error",
 												"log"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 푸쉬 발송_2020.04.01",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "pushType",
+													"value": "1",
+													"description": "* 푸시 타입",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "푸시 제목",
+													"description": "* 푸시 제목",
+													"type": "text"
+												},
+												{
+													"key": "contents",
+													"value": "푸시 내용",
+													"description": "* 푸시 내용",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/push",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"push"
 											]
 										}
 									},

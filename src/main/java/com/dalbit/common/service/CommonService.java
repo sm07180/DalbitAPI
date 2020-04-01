@@ -430,14 +430,14 @@ public class CommonService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
 
         String result;
-        if(procedureVo.getRet().equals(Status.푸쉬성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸쉬성공));
-        } else if(procedureVo.getRet().equals(Status.푸쉬_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸쉬_회원아님));
-        } else if(procedureVo.getRet().equals(Status.푸쉬_디바이스토큰없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸쉬_디바이스토큰없음));
+        if(procedureVo.getRet().equals(Status.푸시성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시성공));
+        } else if(procedureVo.getRet().equals(Status.푸시_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시_회원아님));
+        } else if(procedureVo.getRet().equals(Status.푸시_디바이스토큰없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시_디바이스토큰없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸쉬실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시실패));
         }
         return result;
 
