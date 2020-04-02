@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.04.01",
+		"name": "달빛라디오 API 정의서_2020.04.02",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -918,9 +918,15 @@
 													"type": "text"
 												},
 												{
-													"key": "isEvent",
+													"key": "isPush",
 													"value": "1",
-													"description": "* 이벤트 및 마케팅 정보 수신 알림",
+													"description": "* 푸쉬알림",
+													"type": "text"
+												},
+												{
+													"key": "isLike",
+													"value": "1",
+													"description": "* 좋아요 알림",
 													"type": "text"
 												}
 											]
