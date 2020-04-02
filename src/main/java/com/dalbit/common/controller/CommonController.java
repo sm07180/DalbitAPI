@@ -102,49 +102,112 @@ public class CommonController {
             }
         }
 
+        DeviceVo deviceVo = new DeviceVo(request);
+
         List<HashMap> list = new ArrayList<>();
         HashMap store1 = new HashMap();
-        store1.put("storeNo", "3001");
-        store1.put("storeNm", "달 10");
-        store1.put("price", 3000);
-        store1.put("priceNm", "");
-        store1.put("img", "https://image.dalbitlive.com/store/store_1.png");
-        store1.put("appleStoreId", "com.dalbitcast.inapp.dal10");
         HashMap store2= new HashMap();
-        store2.put("storeNo", "3002");
-        store2.put("storeNm", "달 30");
-        store2.put("price", 10000);
-        store2.put("priceNm", "");
-        store2.put("img", "https://image.dalbitlive.com/store/store_2.png");
-        store2.put("appleStoreId", "com.dalbitcast.inapp.dal30");
         HashMap store3 = new HashMap();
-        store3.put("storeNo", "3003");
-        store3.put("storeNm", "달 100");
-        store3.put("price", 30000);
-        store3.put("priceNm", "");
-        store3.put("img", "https://image.dalbitlive.com/store/store_3.png");
-        store3.put("appleStoreId", "com.dalbitcast.inapp.dal100");
         HashMap store4 = new HashMap();
-        store4.put("storeNo", "3004");
-        store4.put("storeNm", "달 500");
-        store4.put("price", 50000);
-        store4.put("priceNm", "");
-        store4.put("img", "https://image.dalbitlive.com/store/store_4.png");
-        store4.put("appleStoreId", "com.dalbitcast.inapp.dal500");
         HashMap store5 = new HashMap();
-        store5.put("storeNo", "3005");
-        store5.put("storeNm", "달 1000");
-        store5.put("price", 100000);
-        store5.put("priceNm", "");
-        store5.put("img", "https://image.dalbitlive.com/store/store_5.png");
-        store5.put("appleStoreId", "com.dalbitcast.inapp.dal1000");
         HashMap store6 = new HashMap();
-        store6.put("storeNo", "3006");
-        store6.put("storeNm", "달 3000");
-        store6.put("price", 300000);
-        store6.put("priceNm", "");
-        store6.put("img", "https://image.dalbitlive.com/store/store_6.png");
-        store6.put("appleStoreId", "com.dalbitcast.inapp.dal3000");
+        if(deviceVo.getOs() == 2){
+            store1.put("storeNo", "3201");
+            store1.put("storeNm", "달 49");
+            store1.put("givenDal", 49);
+            store1.put("price", 5900);
+            store1.put("priceNm", "");
+            store1.put("img", "https://image.dalbitlive.com/store/store_1.png");
+            store1.put("appleStoreId", "com.dalbitlive.inapp.dal.49");
+
+            store2.put("storeNo", "3202");
+            store2.put("storeNm", "달 100");
+            store2.put("givenDal", 100);
+            store2.put("price", 12000);
+            store2.put("priceNm", "");
+            store2.put("img", "https://image.dalbitlive.com/store/store_2.png");
+            store2.put("appleStoreId", "com.dalbitlive.inapp.dal.100");
+
+            store3.put("storeNo", "3203");
+            store3.put("storeNm", "달 300");
+            store3.put("givenDal", 300);
+            store3.put("price", 36000);
+            store3.put("priceNm", "");
+            store3.put("img", "https://image.dalbitlive.com/store/store_3.png");
+            store3.put("appleStoreId", "com.dalbitlive.inapp.dal.300");
+
+            store4.put("storeNo", "3204");
+            store4.put("storeNm", "달 420");
+            store4.put("givenDal", 420);
+            store4.put("price", 50000);
+            store4.put("priceNm", "");
+            store4.put("img", "https://image.dalbitlive.com/store/store_4.png");
+            store4.put("appleStoreId", "ccom.dalbitlive.inapp.dal.420");
+
+            store5.put("storeNo", "3205");
+            store5.put("storeNm", "달 920");
+            store5.put("givenDal", 920);
+            store5.put("price", 109000);
+            store5.put("priceNm", "");
+            store5.put("img", "https://image.dalbitlive.com/store/store_5.png");
+            store5.put("appleStoreId", "com.dalbitlive.inapp.dal.920");
+
+            store6.put("storeNo", "3206");
+            store6.put("storeNm", "달 2530");
+            store6.put("givenDal", 2530);
+            store6.put("price", 29900);
+            store6.put("priceNm", "");
+            store6.put("img", "https://image.dalbitlive.com/store/store_6.png");
+            store6.put("appleStoreId", "com.dalbitlive.inapp.dal.2530");
+        }else{
+            store1.put("storeNo", "3001");
+            store1.put("storeNm", "달 10");
+            store1.put("givenDal", 10);
+            store1.put("price", 3000);
+            store1.put("priceNm", "");
+            store1.put("img", "https://image.dalbitlive.com/store/store_1.png");
+            store1.put("appleStoreId", "");
+
+            store2.put("storeNo", "3002");
+            store2.put("storeNm", "달 30");
+            store2.put("givenDal", 30);
+            store2.put("price", 10000);
+            store2.put("priceNm", "");
+            store2.put("img", "https://image.dalbitlive.com/store/store_2.png");
+            store2.put("appleStoreId", "");
+
+            store3.put("storeNo", "3003");
+            store3.put("storeNm", "달 100");
+            store3.put("givenDal", 100);
+            store3.put("price", 30000);
+            store3.put("priceNm", "");
+            store3.put("img", "https://image.dalbitlive.com/store/store_3.png");
+            store3.put("appleStoreId", "");
+
+            store4.put("storeNo", "3004");
+            store4.put("storeNm", "달 500");
+            store4.put("givenDal", 500);
+            store4.put("price", 50000);
+            store4.put("priceNm", "");
+            store4.put("img", "https://image.dalbitlive.com/store/store_4.png");
+            store4.put("appleStoreId", "");
+
+            store5.put("storeNo", "3005");
+            store5.put("storeNm", "달 1000");
+            store5.put("givenDal", 1000);
+            store5.put("price", 100000);
+            store5.put("priceNm", "");
+            store5.put("img", "https://image.dalbitlive.com/store/store_5.png");
+            store5.put("appleStoreId", "");
+
+            store6.put("storeNo", "3006");
+            store6.put("storeNm", "달 3000");
+            store6.put("givenDal", 3000);
+            store6.put("price", 300000);
+            store6.put("priceNm", "");
+            store6.put("img", "https://image.dalbitlive.com/store/store_6.png");
+            store6.put("appleStoreId", "");
+        }
         list.add(store1);
         list.add(store2);
         list.add(store3);
