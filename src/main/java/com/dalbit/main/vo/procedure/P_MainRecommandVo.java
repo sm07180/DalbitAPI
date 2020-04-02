@@ -13,6 +13,7 @@ public class P_MainRecommandVo {
     private String roomNo;
     private String roomType;
     private String title;
+    private String bannerUrl;
     private int listeners;
     private int likes;
 

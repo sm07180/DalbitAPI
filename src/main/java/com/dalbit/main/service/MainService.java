@@ -96,6 +96,7 @@ public class MainService {
                 }
                 outVo.setListeners(recommendVoList.get(i).getListeners());
                 outVo.setLikes(recommendVoList.get(i).getLikes());
+                outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
                 recommend.add(outVo);
             }
         }

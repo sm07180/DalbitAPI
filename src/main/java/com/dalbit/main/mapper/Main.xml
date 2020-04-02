@@ -25,6 +25,7 @@
             , T3.title as title
             , IFNULL(T3.count_entry, 0) as listeners
             , IFNULL(T3.count_good, 0) as likes
+            , T2.image_background as bannerUrl
         FROM tb_member_basic T1 INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
         LEFT OUTER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state <![CDATA[<]]> 4
         LEFT OUTER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
