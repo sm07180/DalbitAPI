@@ -158,6 +158,7 @@ public class ActionService {
             RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();
             HashMap returnMap = new HashMap();
             returnMap.put("roomNo", pRoomInfoViewVo.getRoom_no());
+            returnMap.put("title", target.getTitle());
             // TODO - 추후 동적 링크로 변경 필요
             returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
