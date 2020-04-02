@@ -2068,7 +2068,7 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitlive.com/mypage/banwrod",
+											"raw": "https://devapi2.dalbitlive.com/mypage/banword",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -2077,7 +2077,7 @@
 											],
 											"path": [
 												"mypage",
-												"banwrod"
+												"banword"
 											]
 										}
 									},
