@@ -225,7 +225,8 @@ public class MypageController {
         apiData.setSet_3(memberNotifyEditVo.getIsFan());
         apiData.setSet_4(memberNotifyEditVo.getIsComment());
         apiData.setSet_5(memberNotifyEditVo.getIsRadio());
-        apiData.setSet_6(memberNotifyEditVo.getIsEvent());
+        apiData.setSet_6(memberNotifyEditVo.getIsPush());
+        apiData.setSet_7(memberNotifyEditVo.getIsLike());
 
         String result = mypageService.callMemberNotifyEdit(apiData);
 

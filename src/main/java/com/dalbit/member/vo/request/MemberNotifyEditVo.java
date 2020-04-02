@@ -21,5 +21,7 @@ public class MemberNotifyEditVo {
     @NotNull
     private int isRadio;
     @NotNull
-    private int isEvent;
+    private int isPush;
+    @NotNull
+    private int isLike;
 }

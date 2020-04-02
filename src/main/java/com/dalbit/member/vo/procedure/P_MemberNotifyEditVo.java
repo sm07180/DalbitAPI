@@ -14,5 +14,7 @@ public class P_MemberNotifyEditVo {
     private int set_3;          //팬 알림
     private int set_4;          //댓글 알림
     private int set_5;          //달빛 라디오 알림
-    private int set_6;          //이벤트 및 마케팅 정보 수신
+    private int set_6;          //push 알림
+    private int set_7;          //좋아요 알림
+
 }
