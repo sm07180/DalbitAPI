@@ -313,7 +313,7 @@ public class DalbitUtil {
             rtnStr = strTxt.toString();
 
         } catch (NullPointerException e) {
-            log.warn("StringUtil.getSpclStrCnvr NullPointerException - srcString : [{}]", srcString);
+            log.debug("StringUtil.getSpclStrCnvr NullPointerException - srcString : [{}]", srcString);
             return srcString;
         }
 
@@ -345,7 +345,7 @@ public class DalbitUtil {
             Date date = transFormat.parse(map.get(key).toString());
             return date;
         }catch (Exception e){
-            log.warn("StringUtil.getDateMap error - key name is [{}]", key);
+            log.debug("StringUtil.getDateMap error - key name is [{}]", key);
             return null;
         }
     }
@@ -356,7 +356,7 @@ public class DalbitUtil {
         try{
             return map.get(key).toString();
         }catch (Exception e){
-            log.warn("StringUtil.getStringMap error - key name is [{}]", key);
+            log.debug("StringUtil.getStringMap error - key name is [{}]", key);
             return "";
         }
     }
@@ -365,7 +365,7 @@ public class DalbitUtil {
         try{
             return (int) Math.floor(getDoubleMap(map, key));
         }catch (Exception e){
-            log.warn("StringUtil.getIntMap error - key name is [{}]", key);
+            log.debug("StringUtil.getIntMap error - key name is [{}]", key);
             return 0;
         }
     }
@@ -374,7 +374,7 @@ public class DalbitUtil {
         try{
             return Double.valueOf(getStringMap(map, key));
         }catch (Exception e){
-            log.warn("StringUtil.getDoubleMap error - key name is [{}]", key);
+            log.debug("StringUtil.getDoubleMap error - key name is [{}]", key);
             return 0.0;
         }
     }
@@ -383,7 +383,7 @@ public class DalbitUtil {
         try{
             return Boolean.valueOf(getStringMap(map, key));
         }catch (Exception e){
-            log.warn("StringUtil.getBooleanMap error - key name is [{}]", key);
+            log.debug("StringUtil.getBooleanMap error - key name is [{}]", key);
             return false;
         }
     }
@@ -455,7 +455,7 @@ public class DalbitUtil {
         try {
             locationVo = new Gson().fromJson(apiResult, LocationVo.class);
         }catch (Exception e){
-            log.warn("StringUtil.getLocation error - ip : [{}], apiResult : [{}]", ip, apiResult);
+            log.debug("StringUtil.getLocation error - ip : [{}], apiResult : [{}]", ip, apiResult);
             locationVo.setRegionName("정보없음");
         }
 
