@@ -26,5 +26,6 @@ public class P_FanboardListVo {
     private int replyCnt;           // 대댓글 총 개수
     private int status;             // 상태값 1. 정상 2. 비정상
     private Date writeDate;         // 작성일자
+    private String userId;          // 회원 아이디
 
 }
