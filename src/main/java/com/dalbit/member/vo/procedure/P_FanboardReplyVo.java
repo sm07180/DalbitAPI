@@ -23,5 +23,6 @@ public class P_FanboardReplyVo {
     private String contents;        // 댓글내용
     private int status;             // 상태값 1. 정상 2. 삭제됨
     private Date writeDate;         // 작성일자
+    private String userId;          // 회원 아이디
 
 }
