@@ -9,7 +9,7 @@ public enum Item {
             "1001"
             , "게"
             , "sticker"
-            , 10
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200316/item_hermitcrab_thumbs_200316.png"
             , "https://image.dalbitlive.com/ani/webp/200316/item_hermitcrab_200316.webp"
             , "https://image.dalbitlive.com/ani/lottie/200316/item_hermitcrab_200316.json"
@@ -25,7 +25,7 @@ public enum Item {
             "1002"
             , "사브르 "
             , "sticker"
-            , 30
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200316/item_lightsaber_thumbs_200316.png"
             , "https://image.dalbitlive.com/ani/webp/200316/item_lightsaber_200316.webp"
             , "https://image.dalbitlive.com/ani/lottie/200316/item_lightsaber_200316.json"
@@ -41,7 +41,7 @@ public enum Item {
             "1003"
             , "파이어웍"
             , "ani"
-            , 50
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200316/item_firework_thumbs_200316.png"
             , "https://image.dalbitlive.com/ani/webp/200316/item_firework_200316.webp"
             , "https://image.dalbitlive.com/ani/lottie/200316/item_firework_200316.json"
@@ -57,7 +57,7 @@ public enum Item {
             "1004"
             , "토끼"
             , "ani"
-            , 70
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200316/item_rabbit_thumbs_200316.png"
             , "https://image.dalbitlive.com/ani/webp/200316/item_rabbit_200316.webp"
             , "https://image.dalbitlive.com/ani/lottie/200316/item_rabbit_200316.json"
@@ -73,7 +73,7 @@ public enum Item {
             "1005"
             , "로켓"
             , "ani"
-            , 100
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200316/item_roket_thumbs_200316.png"
             , "https://image.dalbitlive.com/ani/webp/200317/20200317_rocket.webp"
             , "https://image.dalbitlive.com/ani/lottie/200317/20200317_rocket.json"
@@ -89,7 +89,7 @@ public enum Item {
             "1006"
             , "UFO"
             , "ani"
-            , 200
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200316/item_UFO_thumbs_200316.png"
             , "https://image.dalbitlive.com/ani/webp/200316/item_UFO_200316.webp"
             , "https://image.dalbitlive.com/ani/lottie/200316/item_UFO_200316.json"
@@ -106,7 +106,7 @@ public enum Item {
             "1007"
             , "당근"
             , "ani"
-            , 100
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200317/img_carrot.png"
             , "https://image.dalbitlive.com/ani/webp/200317/item_carrot_20200317.webp"
             , "https://image.dalbitlive.com/ani/lottie/200317/item_carrot_20200317.json"
@@ -123,7 +123,7 @@ public enum Item {
             "1008"
             , "당근케익"
             , "ani"
-            , 150
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200317/img_carrotcake.png"
             , "https://image.dalbitlive.com/ani/webp/200317/item_carrotcake_20200317.webp"
             , "https://image.dalbitlive.com/ani/lottie/200317/item_carrotcake_20200317.json"
@@ -140,7 +140,7 @@ public enum Item {
             "1009"
             , "선물상자"
             , "ani"
-            , 200
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200317/img_presentbox.png"
             , "https://image.dalbitlive.com/ani/webp/200317/item_presentbox_20200317.webp"
             , "https://image.dalbitlive.com/ani/lottie/200317/item_presentbox_20200317.json"
@@ -157,7 +157,7 @@ public enum Item {
             "1010"
             , "런닝머신"
             , "ani"
-            , 250
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200318/img_treadmill.png"
             , "https://image.dalbitlive.com/ani/webp/200318/20200318_treadmill.webp"
             , "https://image.dalbitlive.com/ani/lottie/200318/20200318_treadmill.json"
@@ -174,7 +174,7 @@ public enum Item {
             "1011"
             , "도넛"
             , "ani"
-            , 300
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200319/20200319_doughnut.png"
             , "https://image.dalbitlive.com/ani/webp/200319/20200319_doughnut.webp"
             , "https://image.dalbitlive.com/ani/lottie/200319/20200319_doughnut.json"
@@ -191,7 +191,7 @@ public enum Item {
             "1012"
             , "곰돌이"
             , "ani"
-            , 300
+            , 1
             , "https://image.dalbitlive.com/ani/thumbs/200319/20200319_teddybear.png"
             , "https://image.dalbitlive.com/ani/webp/200320/20200320_teddybear_2.webp"
             , "https://image.dalbitlive.com/ani/lottie/200320/20200320_teddybear_2.json"
