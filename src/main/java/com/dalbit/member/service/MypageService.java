@@ -318,7 +318,8 @@ public class MypageService {
         returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "set_3"));
         returnMap.put("isComment", DalbitUtil.getIntMap(resultMap, "set_4"));
         returnMap.put("isRadio", DalbitUtil.getIntMap(resultMap, "set_5"));
-        returnMap.put("isEvent", DalbitUtil.getIntMap(resultMap, "set_6"));
+        returnMap.put("isPush", DalbitUtil.getIntMap(resultMap, "set_6"));
+        returnMap.put("isLike", DalbitUtil.getIntMap(resultMap, "set_7"));
         procedureVo.setData(returnMap);
 
         String result;
