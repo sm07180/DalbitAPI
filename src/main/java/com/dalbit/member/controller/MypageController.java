@@ -412,7 +412,7 @@ public class MypageController {
     /**
      * 방송설정 금지어 단어 조회
      */
-    @GetMapping("/banwrod")
+    @GetMapping("/banword")
     public String getBanWrod(HttpServletRequest request){
 
         P_BanWordSelectVo apiData = new P_BanWordSelectVo();
