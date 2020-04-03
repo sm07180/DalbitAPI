@@ -159,7 +159,7 @@ public class ActionService {
             returnMap.put("roomNo", pRoomInfoViewVo.getRoom_no());
             returnMap.put("title", target.getTitle());
             // TODO - 추후 동적 링크로 변경 필요
-            Map<String, Object> firebaseMap = restService.makeFirebaseDynamicLink(pRoomInfoViewVo.getCode_link(), pRoomInfoViewVo.getBj_nickName(), new ImageVo(pRoomInfoViewVo.getBj_profileImage(), pRoomInfoViewVo.getBj_memSex(), DalbitUtil.getProperty("server.photo.url") ).getUrl(), pRoomInfoViewVo.getTitle(), request);
+            /*Map<String, Object> firebaseMap = restService.makeFirebaseDynamicLink(pRoomInfoViewVo.getCode_link(), pRoomInfoViewVo.getBj_nickName(), new ImageVo(pRoomInfoViewVo.getBj_profileImage(), pRoomInfoViewVo.getBj_memSex(), DalbitUtil.getProperty("server.photo.url") ).getUrl(), pRoomInfoViewVo.getTitle(), request);
             String dynamicLink = "";
             if(!DalbitUtil.isEmpty(firebaseMap) && !DalbitUtil.isEmpty(firebaseMap.get("shortLink"))){
                 dynamicLink = (String)firebaseMap.get("shortLink");
@@ -168,7 +168,8 @@ public class ActionService {
                 returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
             }else{
                 returnMap.put("shareLink", dynamicLink);
-            }
+            }*/
+            returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
         }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
