@@ -6,10 +6,13 @@ import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -21,6 +24,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.List;
 
 @Slf4j
@@ -37,6 +41,8 @@ public class ActionService {
     SocketService socketService;
     @Autowired
     RoomService roomService;
+    @Autowired
+    RestService restService;
 
 
     /**
@@ -112,36 +118,29 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(p_roomShareLinkVo);
         List<P_RoomShareLinkVo> roomVoList = actionDao.callBroadCastRoomShareLink(procedureVo);
 
-        HashMap roomList = new HashMap();
-        //방송방 종료 또는 없을 시 방송방 정보 List 가져오기
-        if(DalbitUtil.isEmpty(roomVoList)){
-            roomList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.링크체크_해당방이없음, roomList));
-        }
-
-        List<RoomShareLinkOutVo> outVoList = new ArrayList<>();
-        for (int i=0; i<roomVoList.size(); i++){
-            outVoList.add(new RoomShareLinkOutVo(roomVoList.get(i)));
-        }
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        roomList.put("list", procedureOutputVo.getOutputBox());
-
-        log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
-
-        //링크체크 성공시 방번호 가져오기
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String roomNo = DalbitUtil.getStringMap(resultMap, "room_no");
-        HashMap linkCheck = new HashMap();
-        linkCheck.put("roomNo", roomNo);
+        log.debug("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.debug("프로시저 응답 데이타: {}", procedureVo.getExt());
+        log.debug(" ### 프로시저 호출결과 ###");
 
         String result;
         if(Status.링크체크_성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String roomNo = DalbitUtil.getStringMap(resultMap, "room_no");
+            HashMap linkCheck = new HashMap();
+            linkCheck.put("roomNo", roomNo);
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.링크체크_성공, linkCheck));
         }else if(Status.링크체크_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.링크체크_회원아님));
         }else if(Status.링크체크_방이종료되어있음.getMessageCode().equals(procedureVo.getRet())){
+            HashMap roomList = new HashMap();
+            List<RoomShareLinkOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<roomVoList.size(); i++){
+                outVoList.add(new RoomShareLinkOutVo(roomVoList.get(i)));
+            }
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            roomList.put("list", procedureOutputVo.getOutputBox());
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.링크체크_방이종료되어있음, roomList));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.링크체크_실패));
@@ -151,7 +150,7 @@ public class ActionService {
     }
 
 
-    public String callBroadCastRoomShareLink(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request){
+    public String callBroadCastRoomShareLink(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request) throws GlobalException{
         ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
         String result = "";
         if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
@@ -160,7 +159,16 @@ public class ActionService {
             returnMap.put("roomNo", pRoomInfoViewVo.getRoom_no());
             returnMap.put("title", target.getTitle());
             // TODO - 추후 동적 링크로 변경 필요
-            returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
+            Map<String, Object> firebaseMap = restService.makeFirebaseDynamicLink(pRoomInfoViewVo.getCode_link(), pRoomInfoViewVo.getBj_nickName(), new ImageVo(pRoomInfoViewVo.getBj_profileImage(), pRoomInfoViewVo.getBj_memSex(), DalbitUtil.getProperty("server.photo.url") ).getUrl(), pRoomInfoViewVo.getTitle(), request);
+            String dynamicLink = "";
+            if(!DalbitUtil.isEmpty(firebaseMap) && !DalbitUtil.isEmpty(firebaseMap.get("shortLink"))){
+                dynamicLink = (String)firebaseMap.get("shortLink");
+            }
+            if(DalbitUtil.isEmpty(dynamicLink)){
+                returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
+            }else{
+                returnMap.put("shareLink", dynamicLink);
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
         }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
