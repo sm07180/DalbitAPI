@@ -1,6 +1,6 @@
 package com.dalbit.common.vo;
 
-import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -16,7 +16,7 @@ public class ProcedureVo {
     public ProcedureVo(){}
 
     public ProcedureVo(Object paramVo){
-        setData(new Gson().toJson(paramVo));
+        setData(new GsonBuilder().disableHtmlEscaping().create().toJson(paramVo));
     }
 
     public ProcedureVo(String nickNm){
