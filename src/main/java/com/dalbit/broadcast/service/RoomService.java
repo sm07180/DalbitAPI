@@ -213,7 +213,7 @@ public class RoomService {
 
             if(target.getState() == 2 || target.getState() == 3){
                 try{
-                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), target.getState(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), target.getState(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), "join");
                 }catch(Exception e){
                     log.info("Socket Service changeRoomState Exception {}", e);
                 }
@@ -311,10 +311,19 @@ public class RoomService {
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
-            try{
-                if(isBj){
-                    socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                }else{
+            if(isBj){
+                try{
+                    socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 3, DalbitUtil.isLogin(request));
+                }catch(Exception e){
+                    log.info("Socket Service changeCount Exception {}", e);
+                }
+            }else{
+                try{
+                    socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request));
+                }catch(Exception e){
+                    log.info("Socket Service changeCount Exception {}", e);
+                }
+                try{
                     HashMap socketMap = new HashMap();
                     socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                     socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
@@ -322,11 +331,11 @@ public class RoomService {
                     //TODO - 레벨업 유무 소켓추가 추후 확인
                     // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                     socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                }catch(Exception e){
+                    log.info("Socket Service changeCount Exception {}", e);
                 }
-            }catch(Exception e){
-                log.info("Socket Service changeCount Exception {}", e);
             }
-            //***
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
         } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
