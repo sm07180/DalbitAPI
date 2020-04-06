@@ -15,6 +15,7 @@ public class DeviceVo {
     private String deviceUuid;
     private String deviceToken;
     private String appVersion;
+    private String appBuild;
     private String adId;
     private String ip;
     private String isHybrid;
@@ -25,9 +26,14 @@ public class DeviceVo {
         this.deviceUuid = DalbitUtil.convertRequestParamToString(request,"deviceId");
         this.deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
         this.appVersion = DalbitUtil.convertRequestParamToString(request,"appVer");
+        this.appBuild = DalbitUtil.convertRequestParamToString(request,"appBuild");
         this.adId = DalbitUtil.convertRequestParamToString(request,"appAdId");
         this.ip = DalbitUtil.getIp(request);
         this.isHybrid = DalbitUtil.convertRequestParamToString(request, "isHybrid");
+
+        if(DalbitUtil.isEmpty(this.appVersion)){
+            appVersion = DalbitUtil.convertRequestParamToString(request,"appVersion");
+        }
 
         if(customHeader != null && !"".equals(customHeader.trim())){
 
@@ -35,16 +41,19 @@ public class DeviceVo {
             HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
 
             if(!DalbitUtil.isEmpty(headers.get("os")) && !DalbitUtil.isEmpty(headers.get("deviceId"))){
-                os = (int)DalbitUtil.getDoubleMap(headers, "os");
-                deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
-                deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
-                appVersion = DalbitUtil.getStringMap(headers, "appVer");
-                adId = DalbitUtil.getStringMap(headers, "appAdId");
-                deviceToken = DalbitUtil.isNullToString(deviceToken);
-                appVersion = DalbitUtil.isNullToString(appVersion);
-                adId = DalbitUtil.isNullToString(adId);
-                isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
-
+                this.os = (int)DalbitUtil.getDoubleMap(headers, "os");
+                this.deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
+                this.deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
+                this.appVersion = DalbitUtil.getStringMap(headers, "appVer");
+                this.adId = DalbitUtil.getStringMap(headers, "appAdId");
+                if(DalbitUtil.isEmpty(this.appVersion)){
+                    this.appVersion = DalbitUtil.getStringMap(headers, "appVersion");
+                }
+                this.appBuild = DalbitUtil.getStringMap(headers, "appBuild");
+                this.deviceToken = DalbitUtil.isNullToString(deviceToken);
+                this.appVersion = DalbitUtil.isNullToString(appVersion);
+                this.adId = DalbitUtil.isNullToString(adId);
+                this.isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
             }
         }
     }

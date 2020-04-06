@@ -265,7 +265,7 @@ public class CommonController {
             store4.put("price", 50000);
             store4.put("priceNm", "");
             store4.put("img", "https://image.dalbitlive.com/store/store_4.png");
-            store4.put("appleStoreId", "ccom.dalbitlive.inapp.dal.420");
+            store4.put("appleStoreId", "com.dalbitlive.inapp.dal.420");
 
             store5.put("storeNo", "3205");
             store5.put("storeNm", "달 920");
@@ -278,7 +278,7 @@ public class CommonController {
             store6.put("storeNo", "3206");
             store6.put("storeNm", "달 2530");
             store6.put("givenDal", 2530);
-            store6.put("price", 29900);
+            store6.put("price", 299000);
             store6.put("priceNm", "");
             store6.put("img", "https://image.dalbitlive.com/store/store_6.png");
             store6.put("appleStoreId", "com.dalbitlive.inapp.dal.2530");

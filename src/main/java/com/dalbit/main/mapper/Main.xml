@@ -27,8 +27,8 @@
             , IFNULL(T3.count_good, 0) as likes
             , T2.image_background as bannerUrl
         FROM tb_member_basic T1 INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
-        LEFT OUTER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state <![CDATA[<]]> 4
-        LEFT OUTER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
+            INNER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state <![CDATA[<]]> 4
+            INNER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
         WHERE T1.mem_no IN (${value})
           AND T1.mem_state = 1
         ORDER BY T3.room_no DESC, RAND(1)

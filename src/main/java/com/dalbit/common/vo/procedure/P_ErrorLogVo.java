@@ -25,6 +25,16 @@ public class P_ErrorLogVo {
         }else{
             setVersion(deviceVo.getAppVersion());
         }
+        if(request.getParameter("appVer") != null) {
+            setVersion(request.getParameter("appVer"));
+        }else{
+            setVersion(deviceVo.getAppVersion());
+        }
+        if(request.getParameter("appBuild") != null) {
+            setBuild(request.getParameter("appBuild"));
+        }else{
+            setBuild(deviceVo.getAppBuild());
+        }
         setDtype(errorLogVo.getDataType());
         setCtype(errorLogVo.getCommandType());
         setDesc(errorLogVo.getDesc());
@@ -33,6 +43,7 @@ public class P_ErrorLogVo {
     private String mem_no;
     private String os;
     private String version;
+    private String build;
     private String dtype;
     private String ctype;
     private String desc;

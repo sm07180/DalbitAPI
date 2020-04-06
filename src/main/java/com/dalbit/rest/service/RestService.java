@@ -39,6 +39,24 @@ public class RestService {
     @Value("${inforex.plan.memNo}")
     private String[] INFOREX_PLAN_MEMNO;
 
+    @Value("${app.package.aos}")
+    private String APP_PACKAGE_AOS;
+
+    @Value("${app.bundle.ios}")
+    private String APP_BUNDLE_IOS;
+
+    @Value("${firebase.app.key}")
+    private String FIREBASE_APP_KEY;
+
+    @Value("${firebase.dynamic.link.url}")
+    private String FIREBASE_DYNAMIC_LINK_URL;
+
+    @Value("${firebase.dynamic.link.prefix}")
+    private String FIREBASE_DYNAMIC_LINK_PREFIX;
+
+    @Value("${server.www.url}")
+    private String SERVER_WWW_URL;
+
     /**
      * Rest API 호출
      *
@@ -108,7 +126,7 @@ public class RestService {
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod(method_str);
             if(method == 1 && !"".equals(params)){
-                if(antServer.equals(server_url)){
+                if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
                     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 }else{
                     con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -332,5 +350,27 @@ public class RestService {
         result.put("token", deleteAntToken(streamId, request));
         result.put("room", deleteAntRoom(streamId, request));
         return result;
+    }
+
+    public Map<String, Object> makeFirebaseDynamicLink(String link, String nickNm, String profImg, String title, HttpServletRequest request) throws GlobalException{
+        HashMap<String, String> androidInfo = new HashMap<>();
+        androidInfo.put("androidPackageName", APP_PACKAGE_AOS);
+        HashMap<String, String> iosInfo = new HashMap<>();
+        iosInfo.put("iosBundleId", APP_BUNDLE_IOS);
+        HashMap<String, String> socialMetaTagInfo = new HashMap<>();
+        iosInfo.put("socialTitle", nickNm);
+        iosInfo.put("socialDescription", title);
+        iosInfo.put("socialImageLink", profImg);
+        HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
+        dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);
+        dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link);
+        dynamicLinkInfo.put("androidInfo", androidInfo);
+        dynamicLinkInfo.put("iosInfo", iosInfo);
+        dynamicLinkInfo.put("socialMetaTagInfo", socialMetaTagInfo);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("dynamicLinkInfo", dynamicLinkInfo);
+
+        return callRest(FIREBASE_DYNAMIC_LINK_URL, "/v1/shortLinks?key=" + FIREBASE_APP_KEY, new Gson().toJson(map), 1, request);
     }
 }
