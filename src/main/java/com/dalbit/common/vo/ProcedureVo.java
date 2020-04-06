@@ -16,7 +16,7 @@ public class ProcedureVo {
     public ProcedureVo(){}
 
     public ProcedureVo(Object paramVo){
-        setData(new GsonBuilder().disableHtmlEscaping().create().toJson(paramVo));
+        setData(new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create().toJson(paramVo));
     }
 
     public ProcedureVo(String nickNm){
