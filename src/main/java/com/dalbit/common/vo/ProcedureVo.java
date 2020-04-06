@@ -16,7 +16,7 @@ public class ProcedureVo {
     public ProcedureVo(){}
 
     public ProcedureVo(Object paramVo){
-        setData(new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create().toJson(paramVo).replace("\\\\", "\\"));
+        setData(new GsonBuilder().disableHtmlEscaping().create().toJson(paramVo).replace("\\\\", "\\").replace("\n", "\r"));
     }
 
     public ProcedureVo(String nickNm){
