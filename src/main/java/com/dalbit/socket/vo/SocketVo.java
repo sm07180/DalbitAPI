@@ -86,8 +86,10 @@ public class SocketVo {
     }
 
     public void setMessage(Object message){
-        this.message = new Gson().toJson(message);
-        //this.message = message;
+        if(message != null){
+            this.message = new Gson().toJson(message).replace("\\\\", "\\");
+            //this.message = message;
+        }
     }
 
     public String toQueryString(){
