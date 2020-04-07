@@ -164,7 +164,7 @@ public class CommonService {
                 resultStatus = Status.로그인성공;
             } else {
 
-                locationVo = DalbitUtil.getLocation(request);
+                //locationVo = DalbitUtil.getLocation(request);
                 P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo == null ? "" : locationVo.getRegionName(), ip, browser);
                 //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
@@ -204,9 +204,9 @@ public class CommonService {
         }
 
         if (!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) {
-            if(locationVo == null){
+            /*if(locationVo == null){
                 locationVo = DalbitUtil.getLocation(request);
-            }
+            }*/
             P_MemberSessionUpdateVo pMemberSessionUpdateVo = new P_MemberSessionUpdateVo(
                     isLogin ? 1 : 0
                     , tokenVo.getMemNo()
