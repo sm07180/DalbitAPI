@@ -378,10 +378,10 @@ public class RoomService {
             }
 
             HashMap returnMap = new HashMap();
-            returnMap.put("roomType", pRoomEditOutVo.getSubject_type());
-            returnMap.put("title", pRoomEditOutVo.getTitle());
-            returnMap.put("welcomMsg", pRoomEditOutVo.getMsg_welcom());
-            returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("roomType", pRoomEditVo.getSubjectType());
+            returnMap.put("title", pRoomEditVo.getTitle());
+            returnMap.put("welcomMsg", pRoomEditVo.getWelcomMsg());
+            returnMap.put("bgImg", new ImageVo(pRoomEditVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
             try{
                 socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
