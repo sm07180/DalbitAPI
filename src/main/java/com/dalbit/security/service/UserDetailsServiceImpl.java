@@ -109,7 +109,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상.getMessageKey());
+            throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_블럭상태.getMessageCode())) {
 
@@ -125,7 +125,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new CustomUsernameNotFoundException(Status.로그인실패_블럭상태, returnMap);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_탈퇴.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_탈퇴.getMessageKey());
+            throw new CustomUsernameNotFoundException(Status.로그인실패_탈퇴);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
             MemberVo paramMemberVo = new MemberVo();
