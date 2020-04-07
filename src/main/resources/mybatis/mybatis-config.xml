@@ -51,6 +51,8 @@
 
 		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
 		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />
+
+		<typeAlias type="com.dalbit.store.vo.StoreChargeVo" alias="StoreChargeVo" />
 	</typeAliases>
 
 </configuration>
