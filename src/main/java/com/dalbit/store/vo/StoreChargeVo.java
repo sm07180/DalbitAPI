@@ -13,4 +13,5 @@ public class StoreChargeVo {
     private int discountRate;
     private int salePrice;
     private String iosPrice = "";
+    private int givenDal;
 }
