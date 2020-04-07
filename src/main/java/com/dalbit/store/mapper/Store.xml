@@ -10,6 +10,7 @@
             , IF(platform = '001', item_price_ios, item_price) itemPrice
             , discount_rate AS discountRate
             , sale_price AS salePrice
+            , dal as givenDal
         FROM rd_data.tbl_charge_item
         WHERE view_yn = 1
             AND platform = #{value}
