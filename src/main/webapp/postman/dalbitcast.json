@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
+		"_postman_id": "cfa695b5-3676-4ac9-9c18-57134796aed1",
 		"name": "달빛라디오 API 정의서_2020.04.07",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -5510,6 +5510,89 @@
 							],
 							"protocolProfileBehavior": {},
 							"_postman_isSubFolder": true
+						},
+						{
+							"name": "스토어",
+							"item": [
+								{
+									"name": "[완료] 충전상품 목록 조회 파람에 의해 20.04.07",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDU5NDcyNTg2OUB0cnVlIiwiaWF0IjoxNTg2MjM3NTUwLCJleHAiOjE1ODg4Mjk1NTB9.xu2M8IKDuZyBJfxJjqFajS33lcZBf9cZKFCgTO1jCWA",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "%7B%22os%22%3A%223%22%2C%22deviceId%22%3A%22b657a129-0cf0-4dd9-9bef-12d291812b59%22%2C%22appVer%22%3A%221.0.0.0%22%2C%22locale%22%3A%22ko%22%2C%22language%22%3A%22ko-KR%22%2C%22appVersion%22%3A%221.0.1%22%7D",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "os",
+													"value": "2",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devm-coreano81.dalbitcast.com:4431/paycall/store",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"paycall",
+												"store"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 충전상품  목록 조회 20.04.07",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDU5NDcyNTg2OUB0cnVlIiwiaWF0IjoxNTg2MjM3NTUwLCJleHAiOjE1ODg4Mjk1NTB9.xu2M8IKDuZyBJfxJjqFajS33lcZBf9cZKFCgTO1jCWA",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "%7B%22os%22%3A%223%22%2C%22deviceId%22%3A%22b657a129-0cf0-4dd9-9bef-12d291812b59%22%2C%22appVer%22%3A%221.0.0.0%22%2C%22locale%22%3A%22ko%22%2C%22language%22%3A%22ko-KR%22%2C%22appVersion%22%3A%221.0.1%22%7D",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devm-coreano81.dalbitcast.com:4431/store/charge",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"store",
+												"charge"
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"protocolProfileBehavior": {},
+							"_postman_isSubFolder": true
 						}
 					],
 					"protocolProfileBehavior": {},
@@ -5980,7 +6063,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://devapi2.dalbitlive.com//self/auth/check",
+									"raw": "https://devapi2.dalbitlive.com/self/auth/check",
 									"protocol": "https",
 									"host": [
 										"devapi2",
@@ -5988,7 +6071,6 @@
 										"com"
 									],
 									"path": [
-										"",
 										"self",
 										"auth",
 										"check"
