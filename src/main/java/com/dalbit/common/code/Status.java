@@ -678,13 +678,26 @@ public enum Status {
     푸시_디바이스토큰없음("-2", "push.add.device.token.no", "디바이스 토큰 없을 시"),
     푸시실패("C006", "push.add.fail", "푸시 실패 시"),
 
-
     //메인 나의스타 리스트
     메인_나의스타_조회성공("C001", "main.star.dj.select.success", "나의스타 조회 성공 시"),
     메인_나의스타_없음("0", "main.star.dj.select.no.success", "나의스타 없음"),
     메인_나의스타_회원아님("-1", "main.star.dj.select.no.member", "회원아님"),
     메인_나의스타_조회실패("C006", "main.star.dj.select.fail", "나의스타 조회 실패 시"),
 
+    //별 달 교환아이템 조회
+    별_달_교환아이템_조회_성공("C001", "mypage.change.item.select.success", "별 달 교환아이템 조회 성공 시"),
+    별_달_교환아이템_조회_없음("0", "mypage.change.item.select.no.success", "별 달 교환아이템 없음"),
+    별_달_교환아이템_조회_요청회원번호_회원아님("-1", "mypage.change.item.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    별_달_교환아이템_조회_IOS_지원안함("-2", "mypage.change.item.select.no.support.ios", "IOS 지원 안할 시"),
+    별_달_교환아이템_조회_실패("C006", "mypage.change.item.select.fail", "별 달 교환아이템 조회 실패 시"),
+
+    //별 달 교환하기
+    별_달_교환하기_성공("0", "mypage.change.item.success", "별 달 교환하기 성공 시"),
+    별_달_교환하기_요청회원번호_회원아님("-1", "mypage.change.item.member.number.error", "요청회원번호 회원 아닐 시"),
+    별_달_교환하기_IOS_지원안함("-2", "mypage.change.item.no.support.ios", "IOS 지원 안할 시"),
+    별_달_교환하기_상품코드없음("-3", "mypage.change.item.no.item.code", "상품코드 없을 시"),
+    별_달_교환하기_별부족("-4", "mypage.change.item.byeol.lack", "별 부족 시"),
+    별_달_교환하기_실패("C006", "mypage.change.item.fail", "별 달 교환하기 실패 시"),
 
     ;
 

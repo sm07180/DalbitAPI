@@ -1021,4 +1021,83 @@ public class MypageService {
 
         return result;
     }
+
+
+    /**
+     * 별 달 교환 아이템 가져오기
+     */
+    public String changeItemSelect(P_ChangeItemListVo pChangeItemVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pChangeItemVo);
+        List<P_ChangeItemListVo> changeItemListVo = mypageDao.changeItemSelect(procedureVo);
+
+        HashMap changeItemList = new HashMap();
+        if(DalbitUtil.isEmpty(changeItemListVo)){
+            changeItemList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환아이템_조회_없음, changeItemList));
+        }
+
+        List<ChangeItemListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<changeItemListVo.size(); i++){
+            outVoList.add(new ChangeItemListOutVo(changeItemListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        changeItemList.put("list", procedureOutputVo.getOutputBox());
+        changeItemList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환아이템_조회_성공, changeItemList));
+        } else if (procedureVo.getRet().equals(Status.별_달_교환아이템_조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환아이템_조회_요청회원번호_회원아님));
+        } else if (procedureVo.getRet().equals(Status.별_달_교환아이템_조회_IOS_지원안함.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환아이템_조회_IOS_지원안함));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환아이템_조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 별 달 교환하기
+     */
+    public String changeItem(P_ChangeItemVo pChangeItemVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pChangeItemVo);
+        mypageDao.changeItem(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", resultMap);
+        log.info(" ### 프로시저 호출결과 ###");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
+        returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
+        returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+        returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));
+        returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
+        returnMap.put("isLevelUp", DalbitUtil.getBooleanMap(resultMap, "levelUp"));
+        returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "dal"));
+        returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "byeol"));
+        procedureVo.setData(returnMap);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.별_달_교환하기_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_성공, procedureVo.getData()));
+        } else if (procedureVo.getRet().equals(Status.별_달_교환하기_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_요청회원번호_회원아님));
+        } else if (procedureVo.getRet().equals(Status.별_달_교환하기_IOS_지원안함.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_IOS_지원안함));
+        } else if (procedureVo.getRet().equals(Status.별_달_교환하기_상품코드없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_상품코드없음));
+        } else if (procedureVo.getRet().equals(Status.별_달_교환하기_별부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_별부족));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_실패));
+        }
+
+        return result;
+
+    }
 }

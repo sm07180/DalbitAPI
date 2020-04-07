@@ -56,6 +56,7 @@ public interface MypageDao {
     List<P_MypageBlackVo> callMypageBlackListView(ProcedureVo procedureVo);
     ProcedureVo callMypageBlackListAdd(ProcedureVo procedureVo);
     ProcedureVo callMypageBlackListDel(ProcedureVo procedureVo);
-
-
+    @Transactional(readOnly = true)
+    List<P_ChangeItemListVo> changeItemSelect(ProcedureVo procedureVo);
+    ProcedureVo changeItem(ProcedureVo procedureVo);
 }

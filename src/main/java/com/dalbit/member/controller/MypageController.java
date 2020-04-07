@@ -553,4 +553,33 @@ public class MypageController {
 
         return result;
     }
+
+
+    /**
+     * 별 달 교환 아이템 가져오기
+     */
+    @GetMapping("/change/item")
+    public String changeItemSelect(@Valid ChangeItemListVo changeItemListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ChangeItemListVo apiData = new P_ChangeItemListVo(changeItemListVo, request);
+        String result = mypageService.changeItemSelect(apiData);
+
+        return result;
+    }
+
+    /**
+     * 별 달 교환하기
+     */
+    @PostMapping("/change/item")
+    public String changeItem(@Valid ChangeItemVo changeItemVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ChangeItemVo apiData = new P_ChangeItemVo(changeItemVo, request);
+        String result = mypageService.changeItem(apiData);
+
+        return result;
+    }
 }
