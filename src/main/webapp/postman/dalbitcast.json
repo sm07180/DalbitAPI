@@ -1,7 +1,7 @@
 {
 	"info": {
 		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.04.02",
+		"name": "달빛라디오 API 정의서_2020.04.07",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2613,6 +2613,105 @@
 											"path": [
 												"member",
 												"withdrawal"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 별_달 교환아이템 조회_2020.04.07",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/mypage/change/item?page&records",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"change",
+												"item"
+											],
+											"query": [
+												{
+													"key": "page",
+													"value": null,
+													"description": "페이지번호"
+												},
+												{
+													"key": "records",
+													"value": null,
+													"description": "페이지당 리스트 수"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 별_달 교환_2020.04.07",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "itemCode",
+													"value": "L1252",
+													"description": "* 상품코드",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/mypage/change/item",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"change",
+												"item"
 											]
 										}
 									},
