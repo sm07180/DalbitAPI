@@ -14,4 +14,6 @@ public class P_MypageManagerVo {
     private String mem_nick;
     private String mem_id;
     private String controlRole;
+    private String memSex;
+    private String profileImage;
 }

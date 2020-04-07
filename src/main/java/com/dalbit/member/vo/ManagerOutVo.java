@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.member.vo.procedure.P_MypageManagerVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -13,6 +14,7 @@ public class ManagerOutVo {
     private String nickNm;
     private String memId;
     private String ctrlRole;
+    private ImageVo profImg;
 
     public ManagerOutVo(){}
     public ManagerOutVo(P_MypageManagerVo target) {
@@ -22,5 +24,6 @@ public class ManagerOutVo {
         setNickNm(target.getMem_nick());
         setMemId(target.getMem_id());
         setCtrlRole(target.getControlRole());
+        setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
     }
 }

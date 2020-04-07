@@ -33,6 +33,6 @@ public class P_SearchUserVo {
     /* Output */
     private String mem_nick;
     private String mem_id;
-    private String memSex;          // 작성자 성별
-    private String profileImage;    // 작성자 프로필 이미지
+    private String memSex;
+    private String profileImage;
 }

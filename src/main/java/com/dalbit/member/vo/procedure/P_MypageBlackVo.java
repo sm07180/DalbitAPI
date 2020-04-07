@@ -21,6 +21,8 @@ public class P_MypageBlackVo {
     private Date regDate;
     private String mem_nick;
     private String mem_id;
+    private String memSex;
+    private String profileImage;
 
     public P_MypageBlackVo(){}
     public P_MypageBlackVo(MypageBlackVo mypageBlackVo, HttpServletRequest request){
