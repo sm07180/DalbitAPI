@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "cfa695b5-3676-4ac9-9c18-57134796aed1",
-		"name": "달빛라디오 API 정의서_2020.04.07",
+		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
+		"name": "달빛라디오 API 정의서_2020.04.08",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2712,6 +2712,67 @@
 												"mypage",
 												"change",
 												"item"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 팬보드 수정하기_2020.04.08",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
+											},
+											{
+												"key": "authToken",
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwMzg4MjM2NUB0cnVlIiwiaWF0IjoxNTg2MzMyMDQ0LCJleHAiOjE1ODg5MjQwNDR9.amB2tGhYgMeBRzSflVe2GFRD-7Nn-0LFszNvPpMgfd8"
+											},
+											{
+												"key": "custom-header",
+												"type": "text",
+												"value": "{\"os\":3, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "memNo",
+													"value": "11584403882365",
+													"description": "* 팬보드 스타 회원번호",
+													"type": "text"
+												},
+												{
+													"key": "boardIdx",
+													"value": "1005",
+													"description": "* 댓글 인덱스번호",
+													"type": "text"
+												},
+												{
+													"key": "content",
+													"value": "댓글내용수정",
+													"description": "* 내용",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/profile/board/edit",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"profile",
+												"board",
+												"edit"
 											]
 										}
 									},
@@ -5541,14 +5602,13 @@
 											]
 										},
 										"url": {
-											"raw": "https://devm-coreano81.dalbitcast.com:4431/paycall/store",
+											"raw": "https://devapi2.dalbitlive.com/paycall/store",
 											"protocol": "https",
 											"host": [
-												"devm-coreano81",
-												"dalbitcast",
+												"devapi2",
+												"dalbitlive",
 												"com"
 											],
-											"port": "4431",
 											"path": [
 												"paycall",
 												"store"
@@ -5574,14 +5634,13 @@
 											}
 										],
 										"url": {
-											"raw": "https://devm-coreano81.dalbitcast.com:4431/store/charge",
+											"raw": "https://devapi2.dalbitlive.com/store/charge",
 											"protocol": "https",
 											"host": [
-												"devm-coreano81",
-												"dalbitcast",
+												"devapi2",
+												"dalbitlive",
 												"com"
 											],
-											"port": "4431",
 											"path": [
 												"store",
 												"charge"
@@ -6063,7 +6122,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://devapi2.dalbitlive.com/self/auth/check",
+									"raw": "https://devapi2.dalbitlive.com//self/auth/check",
 									"protocol": "https",
 									"host": [
 										"devapi2",
@@ -6071,6 +6130,7 @@
 										"com"
 									],
 									"path": [
+										"",
 										"self",
 										"auth",
 										"check"
