@@ -17,7 +17,7 @@ public class GiftVo {
     @NotBlank
     private String itemNo;
 
-    @NotNull
+    @NotNull @Min(1)
     private Integer itemCnt;
 
     @NotBlank
