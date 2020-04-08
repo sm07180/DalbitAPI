@@ -182,7 +182,17 @@ public enum Status {
     팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름("-4", "fanboard.delete.notSame.IndexNoStarNo", "요청 인덱스번호의 스타 회원번호가 다름"),
     팬보드_댓글삭제실패_이미삭제됨("-5", "fanboard.delete.already.delete", "이미 삭제됨"),
     팬보드_댓글삭제실패_삭제권한없음("-6", "fanboard.delete.authorization.not", "삭제 권한이 없음"),
-    팬보드_댓글삭제오류("C006", "fanboard.delete.error", "팬보드 댓글 삭제 실패"),
+    팬보드_댓글삭제오류("C006", "fanboard.delete.fail", "팬보드 댓글 삭제 실패"),
+
+    //회원 마이페이지 팬보드 댓글 수정
+    팬보드_댓글수정성공("0", "fanboard.edit.success", "댓글수정 성공 시"),
+    팬보드_댓글수정실패_스타회원번호_회원아님("-1", "fanboard.edit.fail.StarNo.notMember", "스타 회원번호가 회원이 아닐 시"),
+    팬보드_댓글수정실패_수정자회원번호_회원아님("-2", "fanboard.edit.fail.writerNo.notMember", "수정자 회원번호가 회원이 아닐 시"),
+    팬보드_댓글수정실패_잘못된댓글인덱스번호("-3", "fanboard.edit.fail.wrong.board.idx", "댓글 인덱스가 잘못된 번호일 시"),
+    팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름("-4", "fanboard.edit.fail.board.idx.not.star.member.number", "댓글 인덱스번호와 스타회원번호가 다를 시"),
+    팬보드_댓글수정실패_삭제댓글_수정불가("-5", "fanboard.edit.fail.delete.reply", "이미 삭제되어 수정 불가 시" ),
+    팬보드_댓글수정실패_수정권한없음("-6", "fanboard.edit.fail.authorization.not", "수정 권한이 없을 시"),
+    팬보드_댓글수정실패("C006", "fanboard.edit.fail", "댓글 수정 실패 시"),
 
     //회원 마이페이지 팬보드 대댓글 보기
     팬보드_대댓글조회성공("C001", "fanboard.reply.comment.success", "팬보드 대댓글 조회 시"),

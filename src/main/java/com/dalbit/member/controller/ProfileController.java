@@ -105,6 +105,26 @@ public class ProfileController {
         return result;
     }
 
+    /**
+     * 회원 팬보드 댓글수정
+     */
+    @PostMapping("/board/edit")
+    public String fanboardEdit(@Valid FanboardEditVo fanboardEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanboardEditVo adpiData = new P_FanboardEditVo();
+        adpiData.setStar_mem_no(fanboardEditVo.getMemNo());
+        adpiData.setEdit_mem_no(MemberVo.getMyMemNo(request));
+        adpiData.setBoard_idx(fanboardEditVo.getBoardIdx());
+        adpiData.setContents(fanboardEditVo.getContent());
+
+        String result = profileService.callMemberFanboardEdit(adpiData);
+
+        return result;
+    }
+
 
     /**
      * 회원 팬보드 대댓글 조회하기

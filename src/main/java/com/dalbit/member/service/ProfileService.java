@@ -280,4 +280,34 @@ public class ProfileService {
         }
         return result;
     }
+
+
+    /**
+     * 회원 팬보드 댓글수정
+     */
+    public String callMemberFanboardEdit(P_FanboardEditVo pFanboardEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanboardEditVo);
+        profileDao.callMemberFanboardEdit(procedureVo);
+
+        String result;
+        if(Status.팬보드_댓글수정성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정성공));
+        }else if (Status.팬보드_댓글수정실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_스타회원번호_회원아님));
+        }else if (Status.팬보드_댓글수정실패_수정자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_수정자회원번호_회원아님));
+        }else if (Status.팬보드_댓글수정실패_잘못된댓글인덱스번호.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_잘못된댓글인덱스번호));
+        }else if (Status.팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름));
+        }else if (Status.팬보드_댓글수정실패_삭제댓글_수정불가.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_삭제댓글_수정불가));
+        }else if (Status.팬보드_댓글수정실패_수정권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_수정권한없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패));
+        }
+
+        return result;
+    }
 }

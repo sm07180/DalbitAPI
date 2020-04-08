@@ -23,4 +23,5 @@ public interface ProfileDao {
     List<P_FanRankingVo> callMemberFanRanking(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callMemberLevelUpCheck(ProcedureVo procedureVo);
+    ProcedureVo callMemberFanboardEdit(ProcedureVo procedureVo);
 }
