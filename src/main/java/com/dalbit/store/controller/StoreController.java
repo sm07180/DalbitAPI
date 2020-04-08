@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +29,10 @@ public class StoreController {
     @GetMapping("/store/charge")
     public String getChargeList(HttpServletRequest request){
         List<StoreChargeVo> list = storeService.getStoreChargeList(request);
-        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, list == null ? new ArrayList<>() : list));
+        HashMap data = new HashMap();
+        data.put("dalCnt", storeService.getDalCnt(request));
+        data.put("list", list == null ? new ArrayList<>() : list);
+        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
 
     @PostMapping("/paycall/store")
