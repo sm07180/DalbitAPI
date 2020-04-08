@@ -33,4 +33,7 @@ public class P_NotificationVo {
     private String target_mem_no;   // 알림 주체 회원번호
     private String room_no;         // DJ 방송방 번호
     private Date regDate;           // 작성일자
+    private String memSex;
+    private String profileImage;
+
 }

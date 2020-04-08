@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.member.vo.procedure.P_NotificationVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -14,6 +15,7 @@ public class NotificationOutVo {
     private String roomNo;
     private String regDt;
     private long regTs;
+    private ImageVo profImg;
 
     public NotificationOutVo(P_NotificationVo target) {
         setNotiType(target.getNotiType());
@@ -22,6 +24,7 @@ public class NotificationOutVo {
         setRoomNo(target.getRoom_no());
         setRegDt(DalbitUtil.getUTCFormat(target.getRegDate()));
         setRegTs(DalbitUtil.getUTCTimeStamp(target.getRegDate()));
+        setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
     }
 
 
