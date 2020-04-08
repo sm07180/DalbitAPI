@@ -24,7 +24,7 @@ public class RoomGiftHistoryOutVo {
     public RoomGiftHistoryOutVo(P_RoomGiftHistoryVo target) {
         this.memNo = target.getMem_no();
         this.nickNm = target.getNickName();
-        this.profImg = new ImageVo(target.getProfileImage(), DalbitUtil.getProperty("server.photo.url"));
+        this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.itemNo = target.getItem_no();
         this.itemNm = target.getItem_name();
         this.gold = target.getGold();

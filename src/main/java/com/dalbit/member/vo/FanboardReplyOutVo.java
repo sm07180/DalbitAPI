@@ -27,7 +27,7 @@ public class FanboardReplyOutVo {
         this.boardIdx=target.getBoard_idx();
         this.writerNo=target.getWriter_mem_no();
         this.nickNm=target.getNickName();
-        this.profImg=new ImageVo(target.getProfileImage(),DalbitUtil.getProperty("server.photo.url"));
+        this.profImg=new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.contents=target.getContents();
         this.status=target.getStatus();
         this.writeDt = DalbitUtil.getUTCFormat(target.getWriteDate());

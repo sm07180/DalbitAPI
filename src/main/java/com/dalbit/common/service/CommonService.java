@@ -297,7 +297,7 @@ public class CommonService {
         fanVo.setNickNm(DalbitUtil.getStringMap(map, "nickName"));
         fanVo.setGender(DalbitUtil.getStringMap(map, "memSex"));
         fanVo.setAge(DalbitUtil.getIntMap(map, "age"));
-        fanVo.setProfImg(new ImageVo(DalbitUtil.isNullToString(map.get("profileImage")), DalbitUtil.getProperty("server.photo.url")));
+        fanVo.setProfImg(new ImageVo(DalbitUtil.isNullToString(map.get("profileImage")), DalbitUtil.getStringMap(map, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         memberFanVoList.add(fanVo);
 
         return memberFanVoList;
