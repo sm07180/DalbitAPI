@@ -76,7 +76,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         DeviceVo deviceVo = new DeviceVo(request);
-        LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
+        //LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
         P_LoginVo pLoginVo = new P_LoginVo(
                 DalbitUtil.getStringMap(map, "memType")
@@ -87,7 +87,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , deviceVo.getDeviceToken()
                 , deviceVo.getAppVersion()
                 , deviceVo.getAdId()
-                , locationVo.getRegionName()
+                , "" //locationVo.getRegionName()
                 , deviceVo.getIp()
                 , DalbitUtil.getUserAgent(request)
         );
