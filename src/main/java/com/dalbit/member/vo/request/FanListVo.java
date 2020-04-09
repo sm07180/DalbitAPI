@@ -5,12 +5,12 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter @Setter
-public class FanRankingVo {
+@Getter
+@Setter
+public class FanListVo {
 
     @NotBlank
     private String memNo;
     private int page;
     private int records;
-
 }

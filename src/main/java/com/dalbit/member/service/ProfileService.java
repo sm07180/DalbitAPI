@@ -312,6 +312,10 @@ public class ProfileService {
         return result;
     }
 
+
+    /**
+     * 회원 스타 랭킹 조회
+     */
     public List<StarRankingVo> selectStarRanking(com.dalbit.member.vo.request.StarRankingVo starRankingVo, HttpServletRequest request){
         if(!DalbitUtil.isLogin(request)){
             return new ArrayList();
@@ -325,5 +329,41 @@ public class ProfileService {
             }
         }
         return returnList;
+    }
+
+
+    /**
+     * 회원 팬 전체 리스트
+     */
+    public String callFanList(P_FanListVo pFanListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanListVo);
+        List<P_FanListVo> fanListVoList = profileDao.callFanList(procedureVo);
+
+        HashMap fanRankingList = new HashMap();
+        if(DalbitUtil.isEmpty(fanListVoList)){
+            fanRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬조회_팬없음, fanRankingList));
+        }
+
+        List<FanListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<fanListVoList.size(); i++){
+            outVoList.add(new FanListOutVo(fanListVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        fanRankingList.put("list", procedureOutputVo.getOutputBox());
+        fanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_성공, fanRankingList));
+        } else if (procedureVo.getRet().equals(Status.팬조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_대상회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_실패));
+        }
+        return result;
     }
 }

@@ -49,6 +49,7 @@
 		<typeAlias type="com.dalbit.member.vo.procedure.P_MypageBlackVo" alias="P_MypageBlackVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_ChangeItemListVo" alias="P_ChangeItemListVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_StarRankingVo" alias="P_StarRankingVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_FanListVo" alias="P_FanListVo" />
 
 		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
 		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />

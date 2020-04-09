@@ -1,10 +1,7 @@
 package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.member.vo.procedure.P_FanRankingVo;
-import com.dalbit.member.vo.procedure.P_FanboardListVo;
-import com.dalbit.member.vo.procedure.P_FanboardReplyVo;
-import com.dalbit.member.vo.procedure.P_StarRankingVo;
+import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,4 +25,6 @@ public interface ProfileDao {
 
     @Transactional(readOnly = true)
     List<P_StarRankingVo> selectStarRanking(P_StarRankingVo procedureVo);
+
+    List<P_FanListVo> callFanList(ProcedureVo procedureVo);
 }

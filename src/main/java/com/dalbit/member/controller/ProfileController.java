@@ -180,12 +180,25 @@ public class ProfileController {
     GsonUtil gsonUtil;
 
     /**
-     * 회원 팬 랭킹 조회
+     * 회원 스타 랭킹 조회
      */
     @GetMapping("/star")
     public String starRanking(@Valid StarRankingVo starRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileService.selectStarRanking(starRankingVo, request)));
+    }
+
+    /**
+     * 회원 팬 전체 리스트
+     */
+    @GetMapping("/fan/list")
+    public String fanList(@Valid FanListVo fanListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanListVo apiData = new P_FanListVo(fanListVo, request);
+
+        String result = profileService.callFanList(apiData);
+        return result;
     }
 }

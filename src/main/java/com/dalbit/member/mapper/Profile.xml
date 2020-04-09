@@ -34,6 +34,12 @@
             call sp_member_fanboard_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id = "callFanList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanListVo">
+            call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+
     <select id="selectStarRanking" parameterType="P_StarRankingVo" resultType="P_StarRankingVo">
         SELECT
             T2.mem_no AS memNo

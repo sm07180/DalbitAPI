@@ -710,6 +710,13 @@ public enum Status {
     별_달_교환하기_별부족("-4", "mypage.change.item.byeol.lack", "별 부족 시"),
     별_달_교환하기_실패("C006", "mypage.change.item.fail", "별 달 교환하기 실패 시"),
 
+    //팬 조회
+    팬조회_성공("C001", "member.fan.list.select.success", "팬 랭킹 조회 성공 시"),
+    팬조회_팬없음("0", "member.fan.list.no.fan.success", "팬 없을 시"),
+    팬조회_요청회원_회원아님("-1", "member.fan.list.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    팬조회_대상회원_회원아님("-2", "member.fan.list.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    팬조회_실패("C006", "member.fan.list.select.fail", "팬 랭킹 조회 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";
