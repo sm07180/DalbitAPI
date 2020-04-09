@@ -13,6 +13,7 @@ import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.common.vo.request.SmsVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberFanVo;
 import com.dalbit.member.vo.MemberVo;
@@ -47,6 +48,9 @@ public class CommonService {
 
     @Autowired
     CommonDao commonDao;
+
+    @Autowired
+    MemberDao memberDao;
 
     @Autowired
     JwtUtil jwtUtil;
@@ -155,6 +159,14 @@ public class CommonService {
             }
         }catch(GlobalException e){}
 
+        if (isLogin) { //토큰의 회원번호가 탈퇴 했거나 정상,경고가 아닐 경우 로그아웃처리
+            Integer mem_state = memberDao.selectMemState(MemberVo.getMyMemNo(request));
+            if(mem_state == null || (mem_state < 1 && mem_state > 2)){
+                isLogin = false;
+                tokenVo = null;
+            }
+        }
+
         if(DalbitUtil.isEmpty(tokenVo)) {
             if(request.getRequestURI().startsWith("/member/logout")){
                 isLogin = false;
@@ -162,8 +174,8 @@ public class CommonService {
             if (isLogin) {
                 tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
                 resultStatus = Status.로그인성공;
-            } else {
 
+            } else {
                 //locationVo = DalbitUtil.getLocation(request);
                 P_LoginVo pLoginVo = new P_LoginVo("a", os, deviceId, deviceToken, appVer, appAdId, locationVo == null ? "" : locationVo.getRegionName(), ip, browser);
                 //ProcedureVo procedureVo = new ProcedureVo(pLoginVo);

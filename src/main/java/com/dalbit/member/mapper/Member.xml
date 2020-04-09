@@ -30,6 +30,8 @@
         call sp_member_withdrawal(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-
+    <select id="selectMemState" parameterType="String" resultType="Integer">
+        select mem_state from tb_member_basic where mem_no = #{value}
+    </select>
 
 </mapper>

@@ -19,4 +19,6 @@ public interface MemberDao {
     ProcedureVo callMemberInfoView(ProcedureVo procedureVo);
     ProcedureVo callMemberSessionUpdate(ProcedureVo procedureVo);
     ProcedureVo callMemberWithdrawal(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    Integer selectMemState(String mem_no);
 }
