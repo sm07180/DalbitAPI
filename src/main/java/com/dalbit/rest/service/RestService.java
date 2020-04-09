@@ -125,6 +125,7 @@ public class RestService {
             url = new URL(request_uri);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod(method_str);
+            con.setConnectTimeout(5);
             if(method == 1 && !"".equals(params)){
                 if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
                     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
