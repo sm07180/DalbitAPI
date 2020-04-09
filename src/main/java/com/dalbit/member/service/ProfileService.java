@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -309,5 +310,20 @@ public class ProfileService {
         }
 
         return result;
+    }
+
+    public List<StarRankingVo> selectStarRanking(com.dalbit.member.vo.request.StarRankingVo starRankingVo, HttpServletRequest request){
+        if(!DalbitUtil.isLogin(request)){
+            return new ArrayList();
+        }
+        P_StarRankingVo param = new P_StarRankingVo(starRankingVo, MemberVo.getMyMemNo(request));
+        List<P_StarRankingVo> list = profileDao.selectStarRanking(param);
+        List<StarRankingVo> returnList = new ArrayList<>();
+        if(!DalbitUtil.isEmpty(list)){
+            for(P_StarRankingVo data : list){
+                returnList.add(new StarRankingVo(data, DalbitUtil.getProperty("server.photo.url")));
+            }
+        }
+        return returnList;
     }
 }
