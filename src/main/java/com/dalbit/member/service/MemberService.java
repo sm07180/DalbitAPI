@@ -143,6 +143,8 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_회원아님));
         } else if(procedureVo.getRet().equals(Status.회원탈퇴_이미탈퇴.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_이미탈퇴));
+        } else if(procedureVo.getRet().equals(Status.회원탈퇴_방접속중.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_방접속중));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_실패));
         }
