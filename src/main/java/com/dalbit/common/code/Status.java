@@ -656,6 +656,7 @@ public enum Status {
     회원탈퇴_성공("0", "member.withdrawal.success", "회원탈퇴 성공 시"),
     회원탈퇴_회원아님("-1", "member.withdrawal.member.number.error", "요청회원번호 회원 아닐 시"),
     회원탈퇴_이미탈퇴("-2", "member.withdrawal.already", "이미 탈퇴한 회원일 시"),
+    회원탈퇴_방접속중("-3", "member.withdrawal.playing", "방송방 접속중일 시"),
     회원탈퇴_실패("C006", "member.withdrawal.fail", "회원탈퇴 실패 시"),
 
     //메인 마이DJ
