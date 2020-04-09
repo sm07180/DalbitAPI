@@ -1,11 +1,14 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -171,5 +174,18 @@ public class ProfileController {
         String result = profileService.callMemberLevelUpCheck(apiData);
 
         return result;
+    }
+
+    @Autowired
+    GsonUtil gsonUtil;
+
+    /**
+     * 회원 팬 랭킹 조회
+     */
+    @GetMapping("/star")
+    public String starRanking(@Valid StarRankingVo starRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileService.selectStarRanking(starRankingVo, request)));
     }
 }
