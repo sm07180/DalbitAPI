@@ -153,9 +153,10 @@ public class RoomController {
         apiData.setRoom_no(roomEditVo.getRoomNo());
         apiData.setSubjectType(roomEditVo.getRoomType());
         apiData.setTitle(roomEditVo.getTitle());
-        apiData.setBackgroundImage("");
         if(!DalbitUtil.isEmpty(roomEditVo.getBgImg())){
             apiData.setBackgroundImage(roomEditVo.getBgImg());
+        } else {
+            apiData.setBackgroundImage("");
         }
         apiData.setBackgroundImageDelete(roomEditVo.getBgImgDel());
         apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomEditVo.getBgImgRacy()));
