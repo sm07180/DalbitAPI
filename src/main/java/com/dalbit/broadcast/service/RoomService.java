@@ -369,11 +369,13 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
+            String delImg = pRoomEditVo.getBackgroundImageDelete();
+            if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
+                delImg = null;
+            }
+
+            //Done 처리
             if(isDone){
-                String delImg = pRoomEditVo.getBackgroundImageDelete();
-                if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
-                    delImg = null;
-                }
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg, request);
             }
 
