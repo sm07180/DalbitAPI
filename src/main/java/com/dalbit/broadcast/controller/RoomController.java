@@ -281,6 +281,21 @@ public class RoomController {
     }
 
     /**
+     * 방송방 토큰 재 생성 (스트리밍 아이디 포함)
+     */
+    @PostMapping("/refresh")
+    public String roomRefreshAnt(@Valid RoomTokenVo roomTokenVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_RoomStreamVo apiData = new P_RoomStreamVo();
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(roomTokenVo.getRoomNo());
+
+        return roomService.callAntRefresh(apiData, request);
+    }
+
+    /**
      * 방송방 상태 변경
      */
     @PostMapping("/state")

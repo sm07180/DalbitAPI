@@ -97,7 +97,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("bjHolder", "https://devimage.dalbitlive.com/holder/gold.png");
+            returnMap.put("bjHolder", "https://image.dalbitlive.com/holder/gold.png");
             returnMap.put("likes", 0);
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", 3);
@@ -181,7 +181,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("bjHolder", "https://devimage.dalbitlive.com/holder/gold.png");
+            returnMap.put("bjHolder", "https://image.dalbitlive.com/holder/gold.png");
             returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
             returnMap.put("gstMemId", target.getGstMemId() == null ? "" : target.getGstMemId());
             returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
@@ -633,7 +633,7 @@ public class RoomService {
         returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
         returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
-        returnMap.put("holder", "https://devimage.dalbitlive.com/holder/gold.png");
+        returnMap.put("holder", "https://image.dalbitlive.com/holder/gold.png");
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
@@ -756,7 +756,7 @@ public class RoomService {
                     returnMap.put("bjMemNo", target.getBjMemNo());
                     returnMap.put("bjNickNm", target.getBjNickNm());
                     returnMap.put("bjProfImg", target.getBjProfImg());
-                    returnMap.put("bjHolder", "https://devimage.dalbitlive.com/holder/gold.png");
+                    returnMap.put("bjHolder", "https://image.dalbitlive.com/holder/gold.png");
                     returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                     returnMap.put("gstProfImg", target.getGstProfImg());
@@ -773,30 +773,7 @@ public class RoomService {
                     returnMap.put("startDt", target.getStartDt());
                     returnMap.put("startTs", target.getStartTs());
                     returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
-                    if(auth == 3) { // DJ
-                        //사연조회
-                        P_RoomStoryListVo apiData = new P_RoomStoryListVo();
-                        apiData.setMem_no(MemberVo.getMyMemNo(request));
-                        apiData.setRoom_no(pRoomStreamVo.getRoom_no());
-                        apiData.setPageNo(1);
-                        apiData.setPageCnt(1);
-
-                        String resultStory = contentService.callGetStory(apiData);
-                        HashMap storyMap = new Gson().fromJson(resultStory, HashMap.class);
-                        if(storyMap.get("result") != null && "success".equals(storyMap.get("result").toString()) && storyMap.get("data") != null){
-                            HashMap storyDataMap = new Gson().fromJson(storyMap.get("data").toString(), HashMap.class);
-                            if(storyDataMap.get("paging") != null){
-                                HashMap storyPagingMap = new Gson().fromJson(storyDataMap.get("paging").toString(), HashMap.class);
-                                returnMap.put("hasStory", DalbitUtil.getIntMap(storyPagingMap, "total") > 0);
-                            }else{
-                                returnMap.put("hasStory", false);
-                            }
-                        }else{
-                            returnMap.put("hasStory", false);
-                        }
-                    }else{
-                        returnMap.put("hasStory", false);
-                    }
+                    returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
                     returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
@@ -901,6 +878,124 @@ public class RoomService {
         return result;
     }
 
+    public String callAntRefresh(P_RoomStreamVo pRoomStreamVo, HttpServletRequest request) throws GlobalException {
+        String result = "";
+        //방정보 조회
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        pRoomInfoViewVo.setMemLogin(pRoomStreamVo.getMemLogin());
+        pRoomInfoViewVo.setMem_no(pRoomStreamVo.getMem_no());
+        pRoomInfoViewVo.setRoom_no(pRoomStreamVo.getRoom_no());
+        ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+
+        if(Status.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
+            ProcedureVo procedureVo = new ProcedureVo(pRoomStreamVo);
+            roomDao.callBroadcastRoomStreamSelect(procedureVo);
+
+            if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+                RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
+                HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                int auth = DalbitUtil.getIntMap(resultMap, "auth");
+                String bjStreamId = DalbitUtil.getStringMap(resultMap, "bj_streamid");
+                String bjPubToken = "";
+                String bjPlayToken = "";
+                String gstStreamId = "";
+                String gstPubToken = "";
+                String gstPlayToken = "";
+
+                P_RoomStreamTokenVo pRoomStreamTokenVo = new P_RoomStreamTokenVo();
+                pRoomStreamTokenVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+                pRoomStreamTokenVo.setMem_no(MemberVo.getMyMemNo(request));
+                pRoomStreamTokenVo.setRoom_no(pRoomStreamVo.getRoom_no());
+                pRoomStreamTokenVo.setGuest_streamid("");
+                pRoomStreamTokenVo.setGuest_publish_tokenid("");
+                pRoomStreamTokenVo.setGuest_play_tokenid("");
+                if(auth == 3){ // DJ
+                    bjStreamId = (String)restService.antCreate(target.getTitle(), request).get("streamId");
+                    bjPubToken = (String)restService.antToken(bjStreamId, "publish", request).get("tokenId");
+                    pRoomStreamTokenVo.setBj_streamid(bjStreamId);
+                    pRoomStreamTokenVo.setBj_publish_tokenid(bjPubToken);
+                    pRoomStreamTokenVo.setState("0");
+                }else{
+                    bjPlayToken = (String)restService.antToken(bjStreamId, "play", request).get("tokenId");
+                    pRoomStreamTokenVo.setBj_play_tokenid(bjPlayToken);
+                }
+
+                procedureVo.setData(pRoomStreamTokenVo);
+                ProcedureVo procedureUpdateVo = new ProcedureVo(pRoomStreamTokenVo);
+
+                //토큰 업데이트
+                roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
+                if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
+                    HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                    String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
+                    String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
+                    String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");
+
+                    HashMap returnMap = new HashMap();
+                    returnMap.put("roomNo", pRoomStreamVo.getRoom_no());
+                    returnMap.put("bjStreamId", bjStreamId);
+                    returnMap.put("bjPubToken", bjPubToken);
+                    returnMap.put("bjPlayToken", bjPlayToken);
+                    returnMap.put("gstStreamId", gstStreamId);
+                    returnMap.put("gstPubToken", gstPubToken);
+                    returnMap.put("gstPlayToken", gstPlayToken);
+                    returnMap.put("title", target.getTitle());
+                    returnMap.put("bgImg", target.getBgImg());
+                    returnMap.put("link", target.getLink());
+                    returnMap.put("state", target.getState());
+                    returnMap.put("bjMemNo", target.getBjMemNo());
+                    returnMap.put("bjNickNm", target.getBjNickNm());
+                    returnMap.put("bjProfImg", target.getBjProfImg());
+                    returnMap.put("bjHolder", "https://image.dalbitlive.com/holder/gold.png");
+                    returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
+                    returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
+                    returnMap.put("gstProfImg", target.getGstProfImg());
+                    returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+                    returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
+                    returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
+                    returnMap.put("auth", DalbitUtil.getIntMap(resultUpdateMap, "auth"));
+                    returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultUpdateMap, "controlRole"));
+                    returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isFan")));
+                    returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isGood")) : true);
+                    returnMap.put("isRecomm", target.getIsRecomm());
+                    returnMap.put("isPop", target.getIsPop());
+                    returnMap.put("isNew", target.getIsNew());
+                    returnMap.put("startDt", target.getStartDt());
+                    returnMap.put("startTs", target.getStartTs());
+                    returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
+                    returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
+                    returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
+                    returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
+                }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
+                }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
+                }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+                }else{
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+                }
+            }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
+            }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
+            }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+            }
+        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
+        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+        }
+        return result;
+    }
+
     /**
      * 부스터 사용여부
      */
@@ -915,6 +1010,28 @@ public class RoomService {
         if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             return DalbitUtil.getIntMap(resultMap, "usedItemCnt") > 0;
+        }
+        return false;
+    }
+
+    public boolean getHasStory(int auth, String room_no, String mem_no){
+        if(auth == 3) { // DJ
+            //사연조회
+            P_RoomStoryListVo apiData = new P_RoomStoryListVo();
+            apiData.setMem_no(mem_no);
+            apiData.setRoom_no(room_no);
+            apiData.setPageNo(1);
+            apiData.setPageCnt(1);
+
+            String resultStory = contentService.callGetStory(apiData);
+            HashMap storyMap = new Gson().fromJson(resultStory, HashMap.class);
+            if(storyMap.get("result") != null && "success".equals(storyMap.get("result").toString()) && storyMap.get("data") != null){
+                HashMap storyDataMap = new Gson().fromJson(storyMap.get("data").toString(), HashMap.class);
+                if(storyDataMap.get("paging") != null){
+                    HashMap storyPagingMap = new Gson().fromJson(storyDataMap.get("paging").toString(), HashMap.class);
+                    return DalbitUtil.getIntMap(storyPagingMap, "total") > 0;
+                }
+            }
         }
         return false;
     }
