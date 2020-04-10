@@ -13,6 +13,6 @@ public class RubyVo {
     @NotBlank
     private String memNo;
 
-    @NotNull @Min(10)
+    @NotNull @Min(1)
     private int dal;
 }
