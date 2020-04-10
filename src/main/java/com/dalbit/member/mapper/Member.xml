@@ -30,8 +30,34 @@
         call sp_member_withdrawal(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectMemState" parameterType="String" resultType="Integer">
-        select mem_state from tb_member_basic where mem_no = #{value}
+    <select id="selectMemState" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
+        select
+          idx
+          , mem_no
+          , mem_id
+          , mem_passwd
+          , mem_phone
+          , mem_nick
+          , mem_userid
+          , mem_name
+          , mem_email
+          , foreign_yn
+          , mem_sex
+          , mem_birth_year
+          , mem_birth_month
+          , mem_birth_day
+          , mem_slct
+          , mem_adid
+          , mem_state
+          , block_day
+          , block_end_date
+          , mem_join_date
+          , os_type
+          , location
+          , ip
+          , last_upd_date
+        from tb_member_basic
+        where mem_no = #{value}
     </select>
 
 </mapper>

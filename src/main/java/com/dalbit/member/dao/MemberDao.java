@@ -2,6 +2,7 @@ package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.ConnectRoomVo;
+import com.dalbit.member.vo.TokenCheckVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,5 +21,5 @@ public interface MemberDao {
     ProcedureVo callMemberSessionUpdate(ProcedureVo procedureVo);
     ProcedureVo callMemberWithdrawal(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
-    Integer selectMemState(String mem_no);
+    TokenCheckVo selectMemState(String mem_no);
 }
