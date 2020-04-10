@@ -43,13 +43,19 @@
             T2.mem_no AS memNo
             , T2.mem_nick AS nickNm
             , T2.mem_sex AS gender
-            , T3.image_profile AS profUrl
+            , T2.image_profile AS profUrl
             , (CASE
                 WHEN T1.mem_no_star = #{selfMemNo} THEN 0
                 ELSE IF((SELECT IFNULL(COUNT(*), 0) FROM tb_member_fanstar S1 WHERE S1.mem_no_fan = #{selfMemNo} AND S1.mem_no_star = T1.mem_no_star) = 0 , 0, 1)
             END) AS isFan
-        FROM tb_member_fanstar T1 LEFT OUTER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no AND T2.mem_state &lt; 4
-          INNER JOIN tb_member_profile T3 ON T2.mem_no = T3.mem_no
+        FROM tb_member_fanstar T1 LEFT OUTER JOIN (
+                SELECT
+                    T2.mem_no
+                    , T2.mem_nick
+                    , T2.mem_sex
+                    , T3.image_profile
+                FROM tb_member_basic T2 INNER JOIN tb_member_profile T3 ON T2.mem_no = T3.mem_no
+        ) T2 ON T1.mem_no_star = T2.mem_no
         WHERE T1.mem_no_fan = #{targetMemNo}
     </select>
 
