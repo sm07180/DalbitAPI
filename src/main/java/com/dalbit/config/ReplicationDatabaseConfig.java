@@ -46,6 +46,15 @@ public class ReplicationDatabaseConfig {
     @Value("${spring.datasource.password}")
     private String JDBC_PASSWORD;
 
+    @Value("${spring.datasource.connection.timeout}")
+    private long CONNECTION_TIMEOUT;
+
+    @Value("${spring.datasource.max.lifetime}")
+    private long MAX_LIFETIME;
+
+    @Value("${spring.datasource.hikari.idle-timeout}")
+    private long IDLE_TIMEOUT;
+
     @Bean
     public DataSource masterDataSource() {
 
@@ -58,7 +67,9 @@ public class ReplicationDatabaseConfig {
         masterHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
         masterHikariConfig.setMaximumPoolSize(100);
         masterHikariConfig.setMinimumIdle(10);
-        masterHikariConfig.setIdleTimeout(1);
+        masterHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
+        masterHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
+        masterHikariConfig.setMaxLifetime(MAX_LIFETIME);
 
         return new HikariDataSource(masterHikariConfig);
     }
@@ -74,7 +85,9 @@ public class ReplicationDatabaseConfig {
         slaveHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
         slaveHikariConfig.setMaximumPoolSize(100);
         slaveHikariConfig.setMinimumIdle(10);
-        slaveHikariConfig.setIdleTimeout(1);
+        slaveHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
+        slaveHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
+        slaveHikariConfig.setMaxLifetime(MAX_LIFETIME);
 
         return new HikariDataSource(slaveHikariConfig);
     }
