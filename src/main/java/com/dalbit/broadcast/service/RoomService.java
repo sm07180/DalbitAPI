@@ -369,32 +369,20 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
-            //방송방 정보 조회
-            P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
-            pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-            pRoomInfoViewVo.setMem_no(pRoomEditVo.getMem_no());
-            pRoomInfoViewVo.setRoom_no(pRoomEditVo.getRoom_no());
-
-            ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
-            log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
-            RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
-
-
             String delImg = pRoomEditVo.getBackgroundImageDelete();
             if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
                 delImg = null;
             }
-
             //Done 처리
             if(isDone){
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg, request);
             }
 
             HashMap returnMap = new HashMap();
-            returnMap.put("roomType", target.getRoomType());
-            returnMap.put("title", target.getTitle());
-            returnMap.put("welcomMsg", target.getWelcomMsg());
-            returnMap.put("bgImg", new ImageVo(target.getBgImg(), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("roomType", pRoomEditVo.getSubjectType());
+            returnMap.put("title", pRoomEditVo.getTitle());
+            returnMap.put("welcomMsg", pRoomEditVo.getWelcomMsg());
+            returnMap.put("bgImg", new ImageVo(pRoomEditVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
             try{
                 socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
