@@ -17,6 +17,7 @@ import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberFanVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenCheckVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_MemberSessionUpdateVo;
@@ -148,6 +149,7 @@ public class CommonService {
         LocationVo locationVo = null;
         String ip = deviceVo.getIp();
         String browser = DalbitUtil.getUserAgent(request);
+        String dbSelectMemNo = "";
 
         TokenVo tokenVo = null;
         String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
@@ -160,11 +162,24 @@ public class CommonService {
         }catch(GlobalException e){}
 
         if (isLogin) { //토큰의 회원번호가 탈퇴 했거나 정상,경고가 아닐 경우 로그아웃처리
-            Integer mem_state = memberDao.selectMemState(MemberVo.getMyMemNo(request));
-            if(mem_state == null || (mem_state < 1 && mem_state > 2)){
+            TokenCheckVo tokenCheckVo = memberDao.selectMemState(MemberVo.getMyMemNo(request));
+
+            //다른 서버의 memNo가 넘어왔을 시 null이다.
+            if(DalbitUtil.isEmpty(tokenCheckVo)){
+                dbSelectMemNo = "88888888888888";
                 isLogin = false;
                 tokenVo = null;
+            }else if(tokenCheckVo.getMem_state() < 1 && tokenCheckVo.getMem_state() > 2){
+                dbSelectMemNo = tokenCheckVo.getMem_no();
+                isLogin = false;
+                tokenVo = null;
+            }else{
+                dbSelectMemNo = tokenCheckVo.getMem_no();
             }
+            /*if(mem_state == null || (mem_state < 1 && mem_state > 2)){
+                isLogin = false;
+                tokenVo = null;
+            }*/
         }
 
         if(DalbitUtil.isEmpty(tokenVo)) {
@@ -172,7 +187,7 @@ public class CommonService {
                 isLogin = false;
             }
             if (isLogin) {
-                tokenVo = new TokenVo(jwtUtil.generateToken(new MemberVo().getMyMemNo(request), isLogin), new MemberVo().getMyMemNo(request), isLogin);
+                tokenVo = new TokenVo(jwtUtil.generateToken(dbSelectMemNo, isLogin), dbSelectMemNo, isLogin);
                 resultStatus = Status.로그인성공;
 
             } else {

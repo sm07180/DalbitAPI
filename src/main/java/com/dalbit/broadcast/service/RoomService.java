@@ -369,19 +369,24 @@ public class RoomService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
+            if(DalbitUtil.isEmpty(pRoomEditOutVo.getImage_background())){
+                pRoomEditOutVo.setImage_background(Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+"200410.jpg");
+            }
+
+            String delImg = pRoomEditVo.getBackgroundImageDelete();
+            if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
+                delImg = null;
+            }
+            //Done 처리
             if(isDone){
-                String delImg = pRoomEditVo.getBackgroundImageDelete();
-                if(!DalbitUtil.isEmpty(delImg) && delImg.startsWith(Code.포토_배경_디폴트_PREFIX.getCode())){
-                    delImg = null;
-                }
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg, request);
             }
 
             HashMap returnMap = new HashMap();
-            returnMap.put("roomType", pRoomEditVo.getSubjectType());
-            returnMap.put("title", pRoomEditVo.getTitle());
-            returnMap.put("welcomMsg", pRoomEditVo.getWelcomMsg());
-            returnMap.put("bgImg", new ImageVo(pRoomEditVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("roomType", pRoomEditOutVo.getSubject_type());
+            returnMap.put("title", pRoomEditOutVo.getTitle());
+            returnMap.put("welcomMsg", pRoomEditOutVo.getMsg_welcom());
+            returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
             try{
                 socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
