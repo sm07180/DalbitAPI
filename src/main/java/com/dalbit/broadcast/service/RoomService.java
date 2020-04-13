@@ -175,6 +175,7 @@ public class RoomService {
             returnMap.put("gstPlayToken",pRoomJoinVo.getGuest_play_tokenid());
             returnMap.put("title", target.getTitle());
             returnMap.put("bgImg", target.getBgImg());
+            returnMap.put("welcomMsg", target.getWelcomMsg());
             returnMap.put("link", target.getLink());
             returnMap.put("state", target.getState());
             returnMap.put("bjMemNo", target.getBjMemNo());
