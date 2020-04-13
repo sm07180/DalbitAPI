@@ -967,6 +967,14 @@ public class RoomService {
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
                     returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
+                    if(auth == 3) { // DJ
+                        try {
+                            socketService.changeRoomState(pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request), 1, 0, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                        } catch (Exception e) {
+                            log.info("Socket Service changeRoomState Exception {}", e);
+                        }
+                    }
+
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
                 }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
                     result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));

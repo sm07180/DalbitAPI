@@ -152,12 +152,16 @@ public class SocketService {
             }
 
             String command = "reqMicOn";
-            if(state == 3){ //통화중
+            if(state == 0) {
+                command = "reqMediaOff";
+            }else if(state == 3){ //통화중
                 command = "reqCalling";
             }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
             }else{
-                if(old_state == 3){
+                if(old_state == 0){
+                    command = "reqMediaOn";
+                }else if(old_state == 3){
                     command = "reqEndCall";
                 }
             }
