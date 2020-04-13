@@ -1,5 +1,6 @@
 package com.dalbit.exception.conrtoller;
 
+import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
@@ -19,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 @ControllerAdvice
 @RestController
-public class CommonErrorController{
+public class CommonErrorController {
 
     @Autowired
     GsonUtil gsonUtil;
@@ -44,6 +45,12 @@ public class CommonErrorController{
         }else{
             return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData(), globalException.getValidationMessageDetail(), globalException.getMethodName()));
         }
+    }
 
+    @ExceptionHandler(Exception.class)
+    public String exceptionHandle(Exception exception, HttpServletResponse response, HttpServletRequest request){
+        DalbitUtil.setHeader(request, response);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, exception.getMessage(), null, request.getMethod() + ""));
     }
 }
