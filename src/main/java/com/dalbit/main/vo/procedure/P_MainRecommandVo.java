@@ -6,6 +6,10 @@ import lombok.Setter;
 @Getter @Setter
 public class P_MainRecommandVo {
 
+    private String paramMemNo;
+    private String paramDevice;
+    private String paramPlanMemNo;
+
     private String memNo;
     private String nickNm;
     private String gender;

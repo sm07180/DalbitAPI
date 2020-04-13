@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 @Getter
@@ -21,7 +22,7 @@ public class DeviceVo {
     private String isHybrid;
 
     public DeviceVo(HttpServletRequest request){
-        String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+        String customHeader = URLDecoder.decode(request.getHeader(DalbitUtil.getProperty("rest.custom.header.name")));
         this.os = DalbitUtil.convertRequestParamToInteger(request,"os");
         this.deviceUuid = DalbitUtil.convertRequestParamToString(request,"deviceId");
         this.deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
