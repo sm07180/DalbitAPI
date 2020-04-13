@@ -211,9 +211,9 @@ public class ActionService {
 
             try{
                 HashMap itemMap = new HashMap();
-                itemMap.put("itemNo", pRoomGiftVo.getItem_no());
+                itemMap.put("itemNo", pRoomGiftVo.getItem_code());
 
-                ItemVo item = commonDao.selectItem(pRoomGiftVo.getItem_no());
+                ItemVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
