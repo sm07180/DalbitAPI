@@ -1157,4 +1157,44 @@ public class DalbitUtil {
         return strPwd.toString();
     }
 
+    /**
+     *  유니코드 인코딩
+     */
+    public static String encode(String s){
+        StringBuffer uni_s = new StringBuffer();
+        String temp_s = null;
+        for( int i=0 ; i < s.length() ; i++){
+            temp_s = Integer.toHexString( s.charAt(i) );
+            uni_s.append( "\\u"+(temp_s.length()==4 ? temp_s : "00" + temp_s ) );
+        }
+        return uni_s.toString();
+    }
+
+    /**
+     *  유니코드 디코딩
+     */
+    public static String uniDecode(String uni){
+        StringBuffer str = new StringBuffer();
+        for( int i= uni.indexOf("\\u") ; i > -1 ; i = uni.indexOf("\\u") ){// euc-kr(%u), utf-8(//u)
+            str.append( uni.substring( 0, i ) );
+            str.append( String.valueOf( (char)Integer.parseInt( uni.substring( i + 2, i + 6 ) ,16) ) );
+            uni = uni.substring( i +6);
+        }
+        str.append( uni );
+        return str.toString();
+    }
+
+    /**
+     *  html 디코딩
+     */
+    public static String htmlDecode(String data){
+        String decodeStr;
+        decodeStr = data.replace("&lt;", "<");
+        decodeStr = decodeStr.replace("&gt;", ">");
+        decodeStr = decodeStr.replace("&amp;", "&");
+        decodeStr = decodeStr.replace("\\\\", "\\");
+
+        return decodeStr;
+    }
+
 }
