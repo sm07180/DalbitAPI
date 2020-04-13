@@ -15,6 +15,8 @@
 		<typeAlias type="com.dalbit.common.vo.ProcedureOutputVo" alias="ProcedureOutputVo" />
 		<typeAlias type="com.dalbit.common.vo.request.SmsVo" alias="SmsVo" />
 		<typeAlias type="com.dalbit.common.vo.SmsOutVo" alias="SmsOutVo" />
+		<typeAlias type="com.dalbit.common.vo.ItemVo" alias="ItemVo" />
+		<typeAlias type="com.dalbit.common.vo.procedure.P_ItemVo" alias="P_ItemVo" />
 
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainFanRankingVo" alias="P_MainFanRankingVo" />
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainDjRankingVo" alias="P_MainDjRankingVo" />

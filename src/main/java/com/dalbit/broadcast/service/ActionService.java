@@ -3,13 +3,10 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.ActionDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.ImageVo;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
@@ -24,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.List;
 
 @Slf4j
@@ -43,6 +39,8 @@ public class ActionService {
     RoomService roomService;
     @Autowired
     RestService restService;
+    @Autowired
+    CommonDao commonDao;
 
 
     /**
@@ -215,30 +213,7 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_no());
 
-                Item item = Item.스티커_게;
-                if(Item.스티커_사브르.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.스티커_사브르;
-                }else if(Item.애니_파이어웍.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_파이어웍;
-                }else if(Item.애니_토끼.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_토끼;
-                }else if(Item.애니_로켓.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_로켓;
-                }else if(Item.애니_UFO.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_UFO;
-                }else if(Item.애니_당근.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_당근;
-                }else if(Item.애니_당근케익.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_당근케익;
-                }else if(Item.애니_선물상자.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_선물상자;
-                }else if(Item.애니_런닝머신.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_런닝머신;
-                }else if(Item.애니_도넛.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_도넛;
-                }else if(Item.애니_곰돌이.getItemNo().equals(pRoomGiftVo.getItem_no())){
-                    item = Item.애니_곰돌이;
-                }
+                ItemVo item = commonDao.selectItem(pRoomGiftVo.getItem_no());
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);

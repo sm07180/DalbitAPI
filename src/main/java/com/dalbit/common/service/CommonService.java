@@ -2,14 +2,10 @@ package com.dalbit.common.service;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.annotation.NoLogging;
-import com.dalbit.common.code.Item;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.*;
-import com.dalbit.common.vo.procedure.P_ErrorLogVo;
-import com.dalbit.common.vo.procedure.P_PushVo;
-import com.dalbit.common.vo.procedure.P_SelfAuthChkVo;
-import com.dalbit.common.vo.procedure.P_SelfAuthVo;
+import com.dalbit.common.vo.procedure.*;
 import com.dalbit.common.vo.request.SmsVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
@@ -95,43 +91,26 @@ public class CommonService {
     }
 
     @Cacheable(cacheNames = "codeCache", key = "#code")
-    public HashMap getCodeCache(String code) {
+    public HashMap getCodeCache(String code, HttpServletRequest request) {
         HashMap resultMap = callCodeDefineSelect();
-
-        List<ItemVo> items = new ArrayList<>();
-        items.add(new ItemVo(Item.스티커_게));
-        items.add(new ItemVo(Item.스티커_사브르));
-        items.add(new ItemVo(Item.애니_파이어웍));
-        items.add(new ItemVo(Item.애니_토끼));
-        items.add(new ItemVo(Item.애니_로켓));
-        items.add(new ItemVo(Item.애니_UFO));
-        items.add(new ItemVo(Item.애니_당근));
-        items.add(new ItemVo(Item.애니_당근케익));
-        items.add(new ItemVo(Item.애니_선물상자));
-        items.add(new ItemVo(Item.애니_런닝머신));
-        items.add(new ItemVo(Item.애니_도넛));
-        items.add(new ItemVo(Item.애니_곰돌이));
-        Collections.sort(items, new Comparator<ItemVo>() {
-            @Override
-            public int compare(ItemVo a, ItemVo b) {
-                return a.getItemNo().compareTo(b.getItemNo());
+        String platform = "";
+        DeviceVo deviceVo = new DeviceVo(request);
+        for(int i = 1; i < 4; i++){
+            if(i == deviceVo.getOs()){
+                platform += "1";
+            }else{
+                platform += "_";
             }
-        });
-        resultMap.put("items", items);
+        }
 
-        List<ItemVo> particles = new ArrayList<>();
-        particles.add(new ItemVo(Item.파티클_1));
-        particles.add(new ItemVo(Item.파티클_2));
-        particles.add(new ItemVo(Item.파티클_3));
-        particles.add(new ItemVo(Item.파티클_4));
-        particles.add(new ItemVo(Item.파티클_5));
-        Collections.sort(particles, new Comparator<ItemVo>() {
-            @Override
-            public int compare(ItemVo a, ItemVo b) {
-                return a.getItemNo().compareTo(b.getItemNo());
-            }
-        });
-        resultMap.put("particles", particles);
+        P_ItemVo pItemVo = new P_ItemVo();
+        pItemVo.setItem_slct(1);
+        pItemVo.setPlatform(platform);
+
+        resultMap.put("items", commonDao.selectItemList(pItemVo));
+
+        pItemVo.setItem_slct(2);
+        resultMap.put("particles", commonDao.selectItemList(pItemVo));
         return resultMap;
     }
 

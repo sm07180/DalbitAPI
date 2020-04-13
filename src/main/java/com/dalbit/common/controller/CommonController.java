@@ -57,7 +57,7 @@ public class CommonController {
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getCodeCache("splash")));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getCodeCache("splash", request)));
     }
 
     @PostMapping("/splash")
