@@ -5011,24 +5011,24 @@
 									"response": []
 								},
 								{
-									"name": "[완료] 푸쉬 발송_2020.04.01",
+									"name": "[완료] 푸시 발송_2020.04.01",
 									"request": {
 										"method": "POST",
 										"header": [
 											{
 												"key": "Content-Type",
-												"value": "application/x-www-form-urlencoded",
-												"type": "text"
+												"type": "text",
+												"value": "application/x-www-form-urlencoded"
 											},
 											{
 												"key": "authToken",
-												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8",
-												"type": "text"
+												"type": "text",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg1NTI3NjIzLCJleHAiOjE1ODgxMTk2MjN9.EuMBOKZmqaYL0Mkiz6L6y2bWlOvpEtTpugDYMP8Fb-8"
 											},
 											{
 												"key": "custom-header",
-												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
-												"type": "text"
+												"type": "text",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}"
 											}
 										],
 										"body": {
@@ -5037,7 +5037,7 @@
 												{
 													"key": "pushType",
 													"value": "1",
-													"description": "* 푸시 타입",
+													"description": "푸시 대상구분",
 													"type": "text"
 												},
 												{
@@ -5050,6 +5050,36 @@
 													"key": "contents",
 													"value": "푸시 내용",
 													"description": "* 푸시 내용",
+													"type": "text"
+												},
+												{
+													"key": "pushMoveType",
+													"value": "푸시 클릭시 이동 구분타입",
+													"description": "1 : 방송방 [room_no] /  2 : 메인 / 31 : 마이페이지>팬 보드 /  32 : 마이페이지>내 지갑\n33 : 마이페이지>캐스트>캐스트 정보 변경 페이지\n34 : 마이페이지>알림>해당 알림 글\n35 : 마이페이지\n36 : 레벨 업 DJ 마이페이지 [mem_no]\n4 : 등록 된 캐스트\n5 : 스페셜 DJ 선정 페이지\n6 : 이벤트 페이지>해당 이벤트 [board_idx]\n7 :  공지사항 페이지 [board_idx]",
+													"type": "text"
+												},
+												{
+													"key": "imageUrl",
+													"value": "https://devphoto2.dalbitlive.com/profile_0/20557555200/20200211165401431683.jpeg",
+													"description": "푸시에 노출되는 이미지 경로",
+													"type": "text"
+												},
+												{
+													"key": "roomNo",
+													"value": "91583120989613",
+													"description": "타겟회원의 마이페이지 이동할 경우",
+													"type": "text"
+												},
+												{
+													"key": "tartget_mem_no",
+													"value": "11583120887172",
+													"description": "타겟회원의 마이페이지 이동할 경우",
+													"type": "text"
+												},
+												{
+													"key": "boardIdx",
+													"value": "13",
+													"description": "해당 게시판 이동할 경우",
 													"type": "text"
 												}
 											]
