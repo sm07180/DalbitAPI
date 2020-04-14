@@ -16,4 +16,11 @@ public class PushVo {
     @NotBlank
     private String contents;
 
+    private String pushMoveType;
+    private String imageUrl;
+    private String roomNo;
+    private String tartget_mem_no;
+    private String boardIdx;
+
+
 }
