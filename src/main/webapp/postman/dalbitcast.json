@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "32c23b78-1492-4127-b7fb-d5e39ca7944e",
-		"name": "달빛라디오 API 정의서_2020.04.13",
+		"_postman_id": "2eabe425-e822-4f50-87ff-3a234ba545b1",
+		"name": "달빛라디오 API 정의서_2020.04.14",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -3166,7 +3166,7 @@
 											}
 										],
 										"url": {
-											"raw": "https://devapi2.dalbitlive.com/broad/list?roomType=&page=1&records=30&searchType=",
+											"raw": "https://devapi2.dalbitlive.com/broad/list?roomType=&page=1&records=30&searchType=&gender=m",
 											"protocol": "https",
 											"host": [
 												"devapi2",
@@ -3195,7 +3195,13 @@
 												},
 												{
 													"key": "searchType",
-													"value": ""
+													"value": "",
+													"description": "정렬(-1,0 or null: 전체, 1:추천(청취자), 2:인기, 3:신입, 4:좋아요)"
+												},
+												{
+													"key": "gender",
+													"value": "m",
+													"description": "DJ성별"
 												}
 											]
 										}
