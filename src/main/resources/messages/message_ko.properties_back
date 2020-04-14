@@ -1,0 +1,715 @@
+# ErrorStatus.enum
+#ERROR
+http.error.accessDenied=접근이 거부되었습니다.
+http.error.notFound=잘못된 접근입니다.
+http.error.param=잘못된 파라메터값입니다.
+http.error.rest=외부 서비스에 접근할 수 없습니다.
+
+cookie.generate.error=쿠키 생성에 실패했습니다.
+cookie.update.error=쿠키 갱신에 실패했습니다.
+cookie.expire.error=쿠키가 만료 되었습니다.
+
+authToken.invalid.error=유효하지 않은 토큰입니다.
+authToken.expire.error=토큰이 만료되었습니다.
+request.custom.header.error=custom header 값이 잘못되었습니다.
+
+# Status.enum
+# common
+login.success=로그인하였습니다.
+admin.login.success=관리자로 로그인하였습니다.
+login.fail=아이디와 비밀번호를 확인하고\\n다시 로그인해 주세요.
+login.join.need=회원가입 후 서비스를 이용해 주세요.
+login.error=로그인 중 오류가 발생하였습니다.
+param.error=파라미터 오류입니다.
+login.block=회원 블럭상태입니다.
+login.kick.out=회원 탈퇴되어있습니다.
+nick.name.error=닉네임 오류입니다.
+
+logout.success=로그아웃 되었습니다.
+logout.mybroadcast.ing=진행중인 방송이 있습니다.\\n방송 종료 후 로그아웃 가능합니다.
+
+read.success=조회했습니다.
+update.success=수정했습니다.
+create.success=생성했습니다.
+delete.success=삭제했습니다.
+
+# phone sms
+sms.number.request.success=인증번호 요청 성공하였습니다.
+sms.number.check.success=인증 성공하였습니다.
+sms.check.timeout=인증시간 초과되었습니다.
+sms.check.number.error=인증번호가 일치하지 않습니다.
+sms.number.request.fail=인증번호 요청 실패하였습니다.
+sms.phone.number.error.no=유효하지않은 휴대폰 번호입니다.
+sms.check.cmid.error=인증 CMID 일치하지 않습니다.
+sms.check.fail=인증 실패하였습니다.
+
+# self auth
+self.auth.request.success=본인인증 요청 성공하였습니다.
+self.auth.request.fail=본인인증 요청 실패하였습니다.
+
+# self auth response check
+self.auth.response.success=본인인증 확인 성공하였습니다.
+self.auth.response.check.error=본인인증 비정상적인 접근입니다.
+self.auth.response.fail=본인인증 확인 실패하였습니다.
+
+# member certification (DB save)
+member.certification.success=본인인증 성공하였습니다.
+member.certification.not.member=요청회원번호 회원이 아닙니다.
+member.certification.already=본인인증이 이미 되어있습니다.
+member.certification.save.fail=본인인증 저장 실패하였습니다.
+
+# member certification check
+member.certification.check.success=본인인증 확인하였습니다.
+member.certification.check.no=본인인증 미확인 되었습니다.
+member.certification.check.not.member=요청회원번호 회원이 아닙니다.
+member.certification.check.fail=본인인증 체크 실패하였습니다.
+
+dj.broadcast.onair=DJ가 현재 방송중입니다.
+dj.broadcast.offair=DJ가 현재 방송중이 아닙니다.
+dj.notMember=회원이 아닙니다.
+
+# broadcast create
+broadcast.room.start.success=방송이 생성되었습니다.
+broadcast.room.member.no=회원이 아닙니다.
+broadcast.room.existence=방송중인 방이 있습니다.
+broadcast.room.deviceUuid.error=deviceUuid 비정상입니다.
+broadcast.room.fail=방송 생성을 실패하였습니다.
+
+# broadcast token
+broadcast.token.success=방송참여 토큰이 발급되었습니다.
+broadcast.token.room.no=해당 방이 없습니다.
+broadcast.token.bj.no=BJ가 없습니다.
+broadcast.token.fail=토큰 발급 실패하였습니다.
+
+# broadcast room in, out
+broadcast.room.join.success=방송 참가를 하였습니다.
+broadcast.room.no=해당 방송이 없습니다.
+broadcast.room.end=종료된 방송입니다.
+broadcast.room.join.already=다른 기기에서 이미 참가 되어있습니다.\\n퇴장 후 다시 입장하시겠습니까?
+broadcast.room.join.no=입장이 제한되었습니다.
+broadcast.room.join.no.age=나이가 제한되었습니다.
+broadcast.room.join.kickout.timelimit=강제퇴장후 24시간이 지나지 않았습니다.
+broadcast.room.join.fail=방송 참가를 하지 못하였습니다.
+broadcast.room.join.already.live.dj=본인 방송은 입장할 수 없습니다.
+broadcast.room.out.success=방송에서 나갔습니다.
+broadcast.room.join.member.no=방송 참가자가 아닙니다.
+broadcast.out.fail=방송에서 나가지 못하였습니다.
+
+
+# broadcast room edit
+broadcast.room.edit.success=방송정보를 수정하였습니다.
+broadcast.room.edit.member.no=회원이 아닙니다.
+broadcast.room.member.number.no=해당 방송에 없는 회원번호입니다.
+broadcast.room.member.edit.no=수정권한이 없는 회원입니다.
+broadcast.room.edit.fail=방송정보 수정 실패하였습니다.
+
+# broadcast room list
+broadcast.room.list.no.success=방송리스트가 없습니다.
+broadcast.room.list.member.number.no=회원번호가 아닙니다.
+broadcast.room.list.select.success=방송리스트 정보를 조회하였습니다.
+broadcast.room.list.select.fail=방송리스트 정보 조회 실패하였습니다.
+
+# broadcast room member list
+broadcast.room.member.list.select.success=방송참여자리스트 정보 조회하였습니다.
+broadcast.room.member.list.no.success=방송참여자 리스트가 없습니다.
+broadcast.room.member.list.number.no=방송참여자 회원 번호가 아닙니다.
+broadcast.room.member.list.room.no=해당 방이 없습니다.
+broadcast.room.member.list.select.fail=방송참여자 리스트 조회 실패하였습니다.
+
+# broadcast room check
+broadcasting.none.success=진행중인 방송이 없습니다.
+broadcasting.ing.success=진행중인 방송이 있습니다.
+broadcasting.disconnect.success=비정상 종료된 방이 있습니다.
+broadcasting.member.no=방송참여자 회원 번호가 아닙니다.
+broadcasting.fail=방송진행여부 확인을 실패하였습니다.
+
+# broadcast users
+broadcast.user.manager.add=매니저를 지정하였습니다.
+broadcast.user.guest.invite=게스트를 초대하였습니다.
+broadcast.user.guest.join=게스트 초대를 수락하였습니다.
+broadcast.user.guest.apply=게스트 신청하였습니다.
+
+# broadcast action like
+broadcast.like.success=좋아요 성공하였습니다.
+broadcast.like.member.no=회원이 아닙니다.
+broadcast.like.room.no=해당 방송이 없습니다.
+broadcast.like.room.in.no=방송 참가자가 아닙니다.
+broadcast.like.already=좋아요 이미 하였습니다.
+broadcast.like.fail=좋아요 실패하였습니다.
+
+# broadcast action share link
+broadcast.share.link.success=링크체크 성공하였습니다.
+broadcast.share.link.member.no=회원이 아닙니다.
+broadcast.share.link.room.no=해당 방이 없습니다.
+broadcast.share.link.room.end=방이 종료되었습니다.
+broadcast.share.link.fail=링크체크 실패하였습니다.
+
+# broadcast kickout
+broadcast.kickout.success=강제퇴장 성공하였습니다.
+broadcast.kickout.member.no=회원이 아닙니다.
+broadcast.kickout.room.no=해당 방송이 없습니다.
+broadcast.kickout.room.end=방이 종료되었습니다.
+broadcast.kickout.request.room.join.no=요청회원이 방에 소속된 회원이 아닙니다.
+broadcast.kickout.authorization.not=강제퇴장 권한 없습니다.
+broadcast.kickout.object.room.join.no=대상회원이 방에 소속된 회원이 아닙니다.
+broadcast.kickout.guest.not=게스트 이상 강제퇴장 시킬 수 없습니다.
+broadcast.kickout.fail=강제퇴장 실패하였습니다.
+
+# broadcast info view
+broadcast.room.info.view.success=방송방 정보 보기 성공하였습니다.
+broadcast.room.info.view.not.member.number=회원 번호가 아닙니다.
+broadcast.room.info.view.room.no=해당 방이 없습니다.
+broadcast.room.info.view.fail=방송방 정보 보기 실패하였습니다.
+
+
+
+
+
+
+# broadcast guest add
+broadcast.guest.add.success=게스트 지정하였습니다.
+broadcast.guest.add.member.no=회원이 아닙니다.
+broadcast.guest.add.room.no=해당 방송이 없습니다.
+broadcast.guest.add.room.end=방이 종료되었습니다.
+broadcast.guest.add.room.join.no=방에 소속된 회원이 아닙니다.
+broadcast.guest.add.bj.no=방장이 아닙니다.
+broadcast.guest.add.room.join.id.no=방에 소속된 회원아이디가 아닙니다.
+broadcast.guest.add.no=게스트 지정이 안됩니다.
+broadcast.guest.add.fail=게스트 지정을 실패하였습니다.
+
+# broadcast guest cancel
+broadcast.guest.cancel.success=게스트 취소하였습니다.
+broadcast.guest.cancel.member.no=회원이 아닙니다.
+broadcast.guest.cancel.room.no=해당 방송이 없습니다.
+broadcast.guest.cancel.room.end=방이 종료되었습니다.
+broadcast.guest.cancel.room.join.no=방에 소속된 회원이 아닙니다.
+broadcast.guest.cancel.bj.no=방장이 아닙니다.
+broadcast.guest.cancel.room.join.id.no=방에 소속된 회원아이디가 아닙니다.
+broadcast.guest.cancel.no=게스트가 아닙니다.
+broadcast.guest.cancel.fail=게스트 취소 실패하였습니다.
+
+# broadcast notice select
+broadcast.room.notice.select.success=공지 가져오기 성공하였습니다.
+broadcast.room.notice.member.no=회원이 아닙니다.
+broadcast.room.notice.room.no=해당 방송이 없습니다.
+broadcast.room.notice.join.member.no=방 참가자가 아닙니다.
+
+# broadcast notice edit
+broadcast.room.notice.edit.success=공지 입력/수정에 성공하였습니다.
+broadcast.room.notice.edit.member.no=회원이 아닙니다.
+broadcast.room.notice.edit.room.no=해당 방송이 없습니다.
+broadcast.room.notice.edit.join.member.no=방 참가자가 아닙니다.
+broadcast.room.notice.edit.authorization.not=공지 입력/수정 권한이 없습니다.
+broadcast.room.notice.edit.fail=공지 입력/수정에 실패하였습니다.
+
+# broadcast notice delete
+broadcast.room.notice.delete.success=공지 삭제에 성공하였습니다.
+broadcast.room.notice.delete.member.no=회원이 아닙니다.
+broadcast.room.notice.delete.room.no=해당 방송이 없습니다.
+broadcast.room.notice.delete.join.member.no=방 참가자가 아닙니다.
+broadcast.room.notice.delete.authorization.not=공지 삭제 권한이 없습니다.
+broadcast.room.notice.delete.fail=공지 삭제에 실패하였습니다.
+
+# member
+member.join.not=회원가입이 되어있지 않습니다.
+member.join.success=회원가입을 성공하였습니다.
+member.join.already=이미 회원가입된 상태입니다.
+member.join.nick.duplicate=닉네임 중복입니다.
+member.join.nick.success=닉네임 사용가능합니다.
+member.join.error=회원가입 오류입니다.
+
+# member fan insert
+member.insert.fanstar.success=팬 등록 성공하였습니다.
+member.insert.fan.no=회원이 아닙니다.
+member.insert.star.number.strange=스타회원번호가 오류입니다.
+member.insert.fan.already=이미 팬 등록이 되어있습니다.
+member.insert.fanstar.fail=팬 등록 실패하였습니다.
+
+# member fan delete
+member.delete.fanstar.success=팬 해제 성공하였습니다.
+member.delete.fan.no=회원이 아닙니다.
+member.delete.star.number.strange=스타회원번호가 오류입니다.
+member.delete.fan.not=팬이 아닙니다.
+member.delete.fan.fail=팬 해제 실패하였습니다.
+
+# member info view
+member.info.view.success=회원정보보기 성공하였습니다.
+member.no=회원이 아닙니다.
+member.this.no=대상회원이 아닙니다.
+member.info.view.fail=회원정보보기 실패하였습니다.
+
+# member change password
+member.change.password.fail=비밀번호 변경 실패하였습니다.
+member.change.password.success=비밀번호 변경 성공하였습니다.
+member.change.password.error=비밀번호 변경 오류입니다.
+
+# member edit profile
+member.edit.profile.success=프로필 편집 성공하였습니다.
+member.edit.profile.fail.notUser=프로필 편집 실패 - 회원이 아닙니다.
+member.edit.profile.fail.duplicateNickName=프로필 편집 실패 - 닉네임이 중복되었습니다.
+member.edit.profile.error=프로필 편집 오류입니다.
+
+# mypage broad basic
+mypage.broad.basic.success=방송방 기본설정 조회를 성공하였습니다.
+mypage.broad.basic.no=회원이 아닙니다.
+mypage.broad.basic.error=회원 방송방 기본설정 조회 오류입니다.
+
+# mypage broad basic edit
+mypage.broad.basic.edit.success=방송방 기본설정을 수정하였습니다.
+mypage.broad.basic.edit.no=회원이 아닙니다.
+mypage.broad.basic.edit.error=회원 방송방 기본설정 수정 오류입니다.
+
+# mypage member report
+mypage.member.report.add.success=회원 신고가 성공하였습니다.
+mypage.member.report.add.mem.no=요청 회원번호가 정상이 아닙니다.
+mypage.member.report.add.reported.no=신고 회원번호가 정상이 아닙니다,
+mypage.member.reported=이미 신고를 하였습니다.
+mypage.member.reported.error=회원 신고 신청 오류입니다.
+
+# mypage member block
+mypage.member.block.success=회원 차단을 성공하였습니다.
+mypage.member.block.mem.no=요청 회원번호가 정상 아닙니다.
+mypage.member.block.blocked.mem.no=차단 회원번호가 정상 아닙니다.
+mypage.member.block.blocked=이미 차단 상태입니다.
+mypage.member.block.error=회원 차단 신청 오류입니다.
+
+# mypage member block del
+mypage.member.block.del.success=회원 차단 해제를 성공하였습니다.
+mypage.member.block.del.mem.no=요청 회원번호가 정상 아닙니다.
+mypage.member.block.blocked.del.mem.no=차단 회원번호가 정상 아닙니다.
+mypage.member.block.no=차단 상태가 아닙니다.
+mypage.member.block.del.error=차단 해제 신청 오류입니다.
+
+# mypage member notify
+mypage.member.notify.sel.success=알림 설정을 조회 성공하였습니다.
+mypage.member.notify.no=알림설정 회원이 아닙니다.
+mypage.member.notify.error=알림 설정 오류입니다.
+
+# mypage member notify edit
+mypage.member.notify.edit.success=알림 설정을 수정 성공하였습니다.
+mypage.member.notify.edit.no=알림 설정 수정 회원이 아닙니다.
+mypage.member.notify.edit.error=알림 설정 수정 에러입니다.
+
+# mypage member shorucut
+mypage.member.shorucut.success=회원 방송방 빠른말 가져오기를 성공하였습니다.
+mypage.member.shorucut.no=요청번호가 회원이 아닙니다.
+mypage.member.shorucut.error=회원 방송방 빠른말 가져오기 오류입니다.
+
+# mypage member shorucut edit
+mypage.member.shorucut.edit.success=회원 방송방 빠른말 수정을 성공하였습니다.
+mypage.member.shorucut.edit.no=요청번호가 회원이 아닙니다.
+mypage.member.shorucut.edit.error=회원 방송방 빠른말 수정 에러입니다.
+
+# profile add
+fanboard.add.success=팬보드 등록에 성공했습니다.
+fanboard.add.fail.StarNo.notMember=스타 회원번호가 회원이 아닙니다.
+fanboard.add.fail.writerNo.notMember=작성자 회원번호가 회원이 아닙니다.
+fanboard.add.fail.wrong.groupNo=댓글 그룹번호가 잘못되었습니다.
+fanboard.add.fail.wrong.depth=depth가 잘못되었습니다.
+fanboard.add.error=팬보드 댓글 등록에 실패했습니다.
+
+# profile list
+fanboard.list.comment.success=팬보드 목록 조회에 성공했습니다.
+fanboard.list.comment.no.success=댓글이 없습니다.
+fanboard.list.requestNo.notMember=요청 회원번호가 회원이 아닙니다.
+fanboard.list.starNo.notMember=스타 회원번호가 회원이 아닙니다.
+fanboard.list.error=팬보드 댓글 리스트 조회에 실패했습니다.
+
+# profile edit
+fanboard.edit.success=댓글수정 성공하였습니다.
+fanboard.edit.fail.StarNo.notMember=스타 회원번호가 회원이 아닙니다.
+fanboard.edit.fail.writerNo.notMember=수정자 회원번호가 회원이 아닙니다.
+fanboard.edit.fail.wrong.board.idx=댓글 인덱스가 잘못된 번호입니다.
+fanboard.edit.fail.board.idx.not.star.member.number=댓글 인덱스번호와 스타회원번호가 다릅니다.
+fanboard.edit.fail.delete.reply=이미 삭제되어 수정 불가합니다.
+fanboard.edit.fail.authorization.not=수정 권한이 없습니다.
+fanboard.edit.fail=댓글 수정 실패하였습니다.
+
+# profile delete
+fanboard.delete.comment.success=팬보드 댓글 삭제에 성공했습니다.
+fanboard.delete.starNo.notMember=스타 회원번호가 회원이 아닙니다.
+fanboard.delete.writerNo.notMember=삭제자 회원번호가 회원이 아닙니다.
+fanboard.delete.wrong.indexNo=댓글 인덱스번호가 잘못된 번호입니다.
+fanboard.delete.notSame.IndexNoStarNo=요청 인덱스번호의 스타 회원번호가 다릅니다.
+fanboard.delete.already.delete=이미 삭제된 댓글입니다.
+fanboard.delete.authorization.not=삭제 권한이 없습니다.
+fanboard.delete.error=팬보드 댓글 삭제에 실패했습니다.
+
+# profile reply
+fanboard.reply.comment.success=팬보드 대댓글 조회에 성공했습니다.
+fanboard.reply.comment.no.success=대댓글이 없습니다.
+fanboard.reply.requestNo.notMember=요청 회원번호가 회원이 아닙니다.
+fanboard.reply.starNo.notMember=스타 회원번호가 회원이 아닙니다.
+fanboard.reply.error=팬보드 대댓글 조회 오류입니다.
+
+# gift dal
+mypage.member.gift.dal.success=달 선물 성공하였습니다.
+mypage.member.gift.dal.member.no=요청회원번호가 회원이 아닙니다.
+mypage.member.gift.dal.object.member.no=받는회원번호가 회원이 아닙니다.
+mypage.member.gift.dal.count.error=선물하는 달 개수가 비정상입니다.
+mypage.member.gift.dal.limit=달 개수가 부족합니다.
+mypage.member.gift.dal.fail=달 선물 실패하였습니다.
+
+# story add
+broadcast.room.story.add.success=방송방 사연 등록 성공했습니다
+broadcast.room.story.add.no=방송방 사연 등록 회원이 아닙니다.
+broadcast.room.story.add.room.no=방송방 사연등록 해당 방이 없습니다.
+broadcast.room.story.add.member.no=방송방 사연등록 방참가자가 아닙니다.
+broadcast.room.story.add.time=방송방 사연등록 10분에 한번 씩 등록 가능합니다.
+broadcast.room.story.add.fail=방송방 사연등록 실패했습니다.
+
+# story sel
+broadcast.room.story.sel.success=방송방 사연조회 성공했습니다.
+broadcast.room.story.sel.no.success=방송방 사연조회 등록된 사연 없습니다.
+broadcast.room.story.sel.member.no=방송방 사연조회 회원이 아닙니다.
+broadcast.room.story.room.no=방송방 사연조회 해당 방이 없습니다.
+broadcast.room.story.member.no=방송방 사연조회 방 참가자가 아닙니다.
+broadcast.room.story.sel.fail=방송방 사연조회 실패했습니다.
+
+# story del
+broadcast.room.story.del.success=방송방 사연삭제 성공했습니다.
+broadcast.room.story.del.member.no=방송방 사연삭제 회원 아닙니다.
+broadcast.room.story.del.room.no=방송방 사연삭제 해당 방 없습니다.
+broadcast.room.story.member.number.no=방송방 사연삭제 방참가자 아닙니다.
+broadcast.room.story.member.authorization.no=방송방 사연삭제 권한 없습니다.
+broadcast.room.story.del.index.error=방송방 사연삭제 인덱스 오류 발생했습니다.
+broadcast.room.story.del.fail=방송방 사연삭제 실패했습니다.
+
+# broadcast gift
+broadcast.room.gift.success=선물하기 성공하였습니다.
+broadcast.room.gift.member.number.error=요청회원 번호가 비정상입니다.
+broadcast.room.gift.no.room=해당 방 없습니다.
+broadcast.room.gift.room.end=해당 방이 종료되었습니다.
+broadcast.room.gift.member.join.no=요청회원이 해당방 청취자가 아닙니다.
+broadcast.room.gift.member.no=선물받을 회원이 해당방에 없습니다.
+broadcast.room.gift.member.error=선물할 수 없는 대상입니다.
+broadcast.room.gift.item.number.no=선택된 아이템이 없습니다.
+broadcast.room.gift.fail=선물하기 실패하였습니다.
+
+# broadcast booster
+broadcast.room.booster.success=부스터 성공하였습니다.
+broadcast.room.booster.member.number.error=요청회원 번호가 비정상입니다.
+broadcast.room.booster.no.room=해당 방 없습니다.
+broadcast.room.booster.room.end=해당 방이 종료되었습니다.
+broadcast.room.booster.member.join.no=요청회원이 해당방 청취자가 아닙니다.
+broadcast.room.booster.item.number.no=아이템번호가 없습니다.
+broadcast.room.booster.item.number.error=사용할 수 없는 아이템번호입니다.
+broadcast.room.booster.dal.shortage=달이 부족합니다.
+broadcast.room.booster.fail=부스터 실패하였습니다.
+
+# broadcast live rank
+broadcast.room.live.rank.info.success=순위 및 아이템사용 조회 성공하였습니다.
+broadcast.room.live.rank.member.number.error=요청회원 번호가 비정상입니다.
+broadcast.room.live.rank.no.room=해당 방 없습니다.
+broadcast.room.live.rank.room.end=해당 방이 종료되었습니다.
+broadcast.room.live.rank.member.join.no=요청회원이 해당방 청취자가 아닙니다.
+broadcast.room.live.rank.info.fail=순위 및 아이템사용 조회 실패하였습니다.
+
+# broadcast manager add
+broadcast.room.manager.add.success=매니저지정 성공하였습니다.
+broadcast.room.manager.add.member.no=회원이 아닙니다.
+broadcast.room.manager.add.no.room=해당 방 없습니다.
+broadcast.room.manager.add.room.end=방이 종료되었습니다.
+broadcast.room.manager.add.member.join.no=요청회원이 방 소속이 아닙니다.
+broadcast.room.manager.add.member.not.bj=요청회원이 방장이 아닙니다.
+broadcast.room.manager.add.member.not.join.id=대상 회원아이디가 방 소속이 아닙니다.
+broadcast.room.manager.add.error=매니저지정 불가합니다.(이미 매니저거나 방장 권한)
+broadcast.room.manager.add.limit=매니저 수 제한되었습니다.
+broadcast.room.manager.add.fail=매니저지정 실패하였습니다.
+
+# broadcast manager del
+broadcast.room.manager.del.success=매니저취소 성공하였습니다.
+broadcast.room.manager.del.member.no=회원이 아닙니다.
+broadcast.room.manager.del.no.room=해당 방 없습니다.
+broadcast.room.manager.del.room.end=방이 종료되었습니다.
+broadcast.room.manager.del.member.join.no=요청회원이 방 소속이 아닙니다.
+broadcast.room.manager.del.member.not.bj=요청회원이 방장이 아닙니다.
+broadcast.room.manager.del.member.not.join.id=대상 회원아이디가 방 소속이 아닙니다.
+broadcast.room.manager.del.no=매니저가 아닙니다.
+broadcast.room.manager.del.fail=매니저취소 실패하였습니다.
+
+# broadcast stream id select
+broadcast.room.stream.id.success=스트림아이디 조회 성공하였습니다.
+broadcast.room.stream.id.member.no=회원이 아닙니다.
+broadcast.room.stream.id.no.room=해당 방 없습니다.
+broadcast.room.stream.id.member.join.no=요청회원이 방 소속이 아닙니다.
+broadcast.room.stream.id.fail=스트림아이디 조회 실패하였습니다.
+
+# broadcast gift history
+broadcast.room.gift.history.success=선물받은내역 조회 성공하였습니다.
+broadcast.room.gift.history.no.success=선물받은내역 없습니다.
+broadcast.room.gift.history.member.number.error=회원번호가 정상이 아닙니다.
+broadcast.room.gift.history.no.room=해당 방 없습니다.
+broadcast.room.gift.history.fail=선물받은내역 조회 실패하였습니다.
+
+# broadcast member info select
+broadcast.room.member.info.select.success=방송방 회원정보 조회 성공하였습니다.
+broadcast.room.member.info.number.error=요청 회원번호가 정상회원이 아닙니다.
+broadcast.room.member.info.object.member.number.error=대상 회원번호가 정상회원이 아닙니다.
+broadcast.room.member.info.join.no=대상 회원이 방에 없습니다.
+broadcast.room.member.info.select.fail=방송방 회원정보 조회 실패하였습니다.
+
+# mypage member notification select
+mypage.member.notification.select.success=회원 알림내용 조회 성공하였습니다.
+mypage.member.notification.select.no.success=알림 없습니다.
+mypage.member.notification.select.not.member=회원이 아닙니다.
+mypage.member.notification.select.fail=회원 알림내용 조회 실패하였습니다.
+
+# member nick name search
+member.nick.search.success=회원 닉네임 검색 성공하였습니다.
+member.nick.search.no.success=검색 결과 없습니다.
+member.nick.search.fail=회원 닉네임 검색 실패하였습니다.
+
+# live broadcast search
+live.broadcast.search.success=라이브 방송 검색 성공하였습니다.
+live.broadcast.search.no.success=검색 결과 없습니다.
+live.broadcast.search.fail=라이브 방송 검색 실패하였습니다.
+
+# broadcast state update
+broadcast.room.state.update.success=방송방 상태 변경 성공하였습니다.
+broadcast.room.state.update.member.error=요청회원이 정상회원 아닙니다.
+broadcast.room.state.update.no.room=해당 방이 없습니다.
+broadcast.room.state.update.end.room=방이 종료되었습니다.
+broadcast.room.state.update.join.not.member=요청 회원이 방 소속이 아닙니다.
+broadcast.room.state.update.not.bj=요청 회원이 방장 아닙니다.
+broadcast.room.state.update.fail=방송방 상태 변경 실패하였습니다.
+
+# fan ranking select
+member.fan.ranking.select.success=팬 랭킹 조회 성공하였습니다.
+member.fan.ranking.no.fan.success=팬이 없습니다.
+member.fan.ranking.member.number.error=요청 회원번호가 정상회원이 아닙니다.
+member.fan.ranking.object.member.number.error=대상 회원번호가 정상회원이 아닙니다.
+member.fan.ranking.select.fail=팬 랭킹 조회 실패하였습니다.
+
+# mypage notice create
+mypage.notice.create.success=마이페이지 공지등록 성공하였습니다.
+mypage.notice.create.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.notice.create.object.member.number.error=대상회원번호가 회원이 아닙니다.
+mypage.notice.create.authorization.not=공지등록 권한이 없습니다.
+mypage.notice.create.fail=마이페이지 공지등록 실패하였습니다.
+
+# mypage notice edit
+mypage.notice.edit.success=마이페이지 공지수정 성공하였습니다.
+mypage.notice.edit.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.notice.edit.object.member.number.error=대상회원번호가 회원이 아닙니다.
+mypage.notice.edit.authorization.not=공지수정 권한이 없습니다.
+mypage.notice.edit.number.error=공지번호가 잘못된 번호입니다.
+mypage.notice.edit.fail=마이페이지 공지수정 실패하였습니다.
+
+# mypage notice delete
+mypage.notice.delete.success=마이페이지 공지삭제 성공하였습니다.
+mypage.notice.delete.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.notice.delete.object.member.number.error=대상회원번호가 회원이 아닙니다.
+mypage.notice.delete.authorization.not=공지삭제 권한이 없습니다.
+mypage.notice.delete.number.error=공지번호가 잘못된 번호입니다.
+mypage.notice.delete.fail=마이페이지 공지삭제 실패하였습니다.
+
+# mypage notice select
+mypage.notice.select.success=마이페이지 공지조회 성공하였습니다.
+mypage.notice.select.no.success=공지사항이 없습니다.
+mypage.notice.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.notice.select.object.member.number.error=대상회원번호가 회원이 아닙니다.
+mypage.notice.select.fail=마이페이지 공지조회 실패하였습니다.
+
+# mypage wallet dal select
+mypage.wallet.dal.select.success=달 사용내역조회 성공하였습니다.
+mypage.wallet.dal.select.no.success=달 사용내역 없습니다.
+mypage.wallet.dal.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.wallet.dal.select.fail=달 사용내역조회 실패하였습니다.
+
+# mypage wallet byeol select
+mypage.wallet.byeol.select.success=별 사용내역조회 성공하였습니다.
+mypage.wallet.byeol.select.no.success=별 사용내역 없습니다.
+mypage.wallet.byeol.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.wallet.byeol.select.fail=별 사용내역조회 실패하였습니다.
+
+# mypage broadcast report select
+mypage.broadcast.report.select.success=방송내역 조회 성공하였습니다.
+mypage.broadcast.report.select.no.success=방송내역 없습니다.
+mypage.broadcast.report.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.report.select.fail=방송내역 조회 실패하였습니다.
+
+# mypage listen report select
+mypage.listen.report.select.success=청취내역 조회 성공하였습니다.
+mypage.listen.report.select.no.success=청취내역 없습니다.
+mypage.listen.report.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.listen.report.select.fail=청취내역 조회 실패하였습니다.
+
+# main fan ranking select
+main.fan.ranking.select.success=팬 랭킹 조회 성공하였습니다.
+main.fan.ranking.no.ranking.success=랭킹 내역 없습니다.
+main.fan.ranking.member.number.error=요청 회원번호가 정상회원이 아닙니다.
+main.fan.ranking.select.fail=팬 랭킹 조회 실패하였습니다.
+
+# main dj ranking select
+main.dj.ranking.select.success=DJ 랭킹 조회 성공하였습니다.
+main.dj.ranking.no.ranking.success=랭킹 내역 없습니다.
+main.dj.ranking.member.number.error=요청 회원번호가 정상회원이 아닙니다.
+main.dj.ranking.select.fail=DJ 랭킹 조회 실패하였습니다.
+
+# mypage broadcast ban word select
+mypage.broadcast.ban.word.select.success=금지어 조회 성공하였습니다.
+mypage.broadcast.ban.word.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.ban.word.select.fail=금지어 조회 실패하였습니다.
+
+# mypage broadcast ban word save
+mypage.broadcast.ban.word.save.success=금지어 저장 성공하였습니다.
+mypage.broadcast.ban.word.save.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.ban.word.save.limit=금지어 저장 100개 초과하였습니다.
+mypage.broadcast.ban.word.save.fail=금지어 저장 실패하였습니다.
+
+# mypage broadcast search user
+mypage.broadcast.search.user.success=유저 검색 성공하였습니다.
+mypage.broadcast.search.user.no.success=검색 내역 없습니다.
+mypage.broadcast.search.user.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.search.user.fail=유저 검색 실패하였습니다.
+
+# mypage broadcast manager select
+mypage.broadcast.manager.select.success=고정매니저 조회 성공하였습니다.
+mypage.broadcast.manager.select.no.success=조회 내역 없습니다.
+mypage.broadcast.manager.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.select.fail=고정매니저 조회 실패하였습니다.
+
+# mypage broadcast manager add
+mypage.broadcast.manager.add.success=고정매니저 등록 성공하였습니다.
+mypage.broadcast.manager.add.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.add.number.error=매니저 회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.add.five.people.limit=5명초과 등록 안됩니다.
+mypage.broadcast.manager.add.already.add=이미 매니저로 등록 되어있습니다.
+mypage.broadcast.manager.add.fail=고정매니저 등록 실패하였습니다.
+
+# mypage broadcast manager auth edit
+mypage.broadcast.manager.edit.success=고정매니저 권한수정 성공하였습니다.
+mypage.broadcast.manager.edit.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.edit.number.error=매니저 회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.edit.add.manager=등록된 매니저가 아닙니다.
+mypage.broadcast.manager.edit.fail=고정매니저 권한수정 실패하였습니다.
+
+# mypage broadcast manager delete
+mypage.broadcast.manager.delete.success=고정매니저 해제 성공하였습니다.
+mypage.broadcast.manager.delete.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.delete.number.error=매니저 회원번호가 회원이 아닙니다.
+mypage.broadcast.manager.delete.add.manager=등록된 매니저가 아닙니다.
+mypage.broadcast.manager.delete.fail=고정매니저 해제 실패하였습니다.
+
+# mypage broadcast blacklist select
+mypage.broadcast.blacklist.select.success=블랙리스트 조회 성공하였습니다.
+mypage.broadcast.blacklist.select.no.success=조회 내역 없습니다.
+mypage.broadcast.blacklist.select.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.blacklist.select.fail=블랙리스트 조회 실패하였습니다.
+
+# mypage broadcast blacklist add
+mypage.broadcast.blacklist.add.success=블랙리스트 등록 성공하였습니다.
+mypage.broadcast.blacklist.add.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.blacklist.add.number.error=블랙리스트 회원번호가 회원이 아닙니다.
+mypage.broadcast.blacklist.add.already.add=이미 블랙리스트 등록 되어있습니다.
+mypage.broadcast.blacklist.add.fail=블랙리스트 등록 실패하였습니다.
+
+# mypage broadcast blacklist delete
+mypage.broadcast.blacklist.delete.success=블랙리스트 해제 성공하였습니다.
+mypage.broadcast.blacklist.delete.member.number.error=요청회원번호가 회원이 아닙니다.
+mypage.broadcast.blacklist.delete.number.error=블랙리스트 회원번호가 회원이 아닙니다.
+mypage.broadcast.blacklist.delete.add.blacklist.no=등록된 블랙리스트 회원이 없습니다.
+mypage.broadcast.blacklist.delete.fail=블랙리스트 해제 실패하였습니다.
+
+# member level up check
+member.levelup.check.success=레벨 업 확인 성공하였습니다.
+member.levelup.check.member.number.error=요청회원번호가 회원 아닙니다.
+member.levelup.check.no=레벨 업 없습니다.
+member.levelup.check.fail=레벨 업 확인 실패하였습니다.
+
+# customer center notice select
+customer.center.notice.select.success=고객센터 공지사항 조회 성공하였습닏다.
+customer.center.notice.no.success=고객센터 공지사항 목록이 없습니다.
+customer.center.notice.select.fail=고객센터 공지사항 조회 실패하였습니다.
+
+# customer center notice detail select
+customer.center.notice.detail.select.success=고객센터 공지사항 내용조회 성공 하였습니다.
+customer.center.notice.detail.no=고객센터 공지사항 내용 없습니다.
+customer.center.notice.detail.select.fail=고객센터 공지사항 내용조회 실패하였습니다.
+
+# customer center faq select
+customer.center.faq.select.success=고객센터 FAQ 조회 성공하였습닏다.
+customer.center.faq.no.success=고객센터 FAQ 목록이 없습니다.
+customer.center.faq.select.fail=고객센터 FAQ 조회 실패하였습니다.
+
+# customer center notice detail select
+customer.center.faq.detail.select.success=고객센터 FAQ 내용조회 성공 하였습니다.
+customer.center.faq.detail.no=고객센터 FAQ 내용 없습니다.
+customer.center.faq.detail.select.fail=고객센터 FAQ 내용조회 실패하였습니다.
+
+# customer center qna add
+customer.center.qna.add.success=고객센터 1:1문의하기 작성 성공하였습니다
+customer.center.qna.add.member.number.error=요청회원번호가 회원이 아닙니다.
+customer.center.qna.add.fail=고객센터 1:1문의하기 작성 실패하였습니다.
+
+# customer center qna select
+customer.center.qna.select.success=고객센터 문의내역 조회 성공하였습니다.
+customer.center.qna.no.success=고객센터 문의내역 없습니다.
+customer.center.qna.select.fail=고객센터 문의내역 조회 실패하였습니다.
+
+# member withdrawal
+member.withdrawal.success=회원탈퇴 성공하였습니다.
+member.withdrawal.member.number.error=요청회원번호가 회원이 아닙니다.
+member.withdrawal.already=이미 탈퇴한 회원입니다.
+member.withdrawal.playing=방송방 접속중으로 탈퇴불가합니다.
+member.withdrawal.fail=회원탈퇴 실패하였습니다.
+
+# main my dj
+main.my.dj.select.success=마이DJ 조회 성공하였습니다.
+main.my.dj.select.no.success=마이DJ 내역 없습니다.
+main.my.dj.select.member.number.error=요청회원번호가 회원이 아닙니다.
+main.my.dj.select.fail=마이DJ 조회 실패하였습니다.
+
+# main star dj list
+main.star.dj.select.success=나의 스타 조회 성공하였습니다.
+main.star.dj.select.no.success=나의 스타 내역 없습니다.
+main.star.dj.select.no.member=회원 로그인 후 사용하세요.
+main.star.dj.select.fail=나의 스타 조회 실패하였습니다.
+
+# main recommand dj list
+main.recommand.dj.select.success=추천 DJ리스트 조회 성공하였습니다.
+main.recommand.dj.select.no.success=추천 DJ리스트 내역 없습니다.
+main.recommand.dj.select.fail=추천 DJ리스트 조회 실패하였습니다.
+
+# error log save
+error.log.save.success=에러 로그 저장 성공하였습니다.
+error.log.save.fail=에러 로그 저장 실패하였습니다.
+
+# broadcast time extend
+broadcast.time.extend.success=방송시간 연장 성공하였습니다.
+broadcast.time.extend.member.number.error=회원 번호가 아닙니다.
+broadcast.time.extend.room.number.no=방번호가 없습니다.
+broadcast.time.extend.room.exit=종료된 방입니다.
+broadcast.time.extend.already.once=이미 한번 연장하였습니다.
+broadcast.time.extend.not.remain.5min=남은시간이 5분 아닙니다.
+broadcast.time.extend.fail=방송시간 연장 실패하였습니다.
+
+# push add
+push.add.success=푸시 성공하였습니다.
+push.add.member.number.error=회원 번호가 아닙니다.
+push.add.device.token.no=디바이스 토큰이 없습니다.(웹 접속 확인필요)
+push.add.fail=푸시 실패하였습니다.
+
+# change item select
+mypage.change.item.select.success=별 달 교환아이템 조회 성공하였습니다.
+mypage.change.item.select.no.success=별 달 교환아이템 없습니다.
+mypage.change.item.select.member.number.error=요청회원번호 회원 아닙니다.
+mypage.change.item.select.no.support.ios=IOS 지원하지 않습니다.
+mypage.change.item.select.fail=별 달 교환아이템 조회 실패하였습니다.
+
+# change item
+mypage.change.item.success=별 달 교환하기 성공하였습니다.
+mypage.change.item.member.number.error=요청회원번호 회원 아닙니다.
+mypage.change.item.no.support.ios=IOS 지원하지 않습니다.
+mypage.change.item.no.item.code=상품코드 없습니다.
+mypage.change.item.byeol.lack=별이 부족합니다.
+mypage.change.item.fail=별 달 교환하기 실패하였습니다.
+
+
+# fan list select
+member.fan.list.select.success=팬 조회 성공하였습니다.
+member.fan.list.no.fan.success=팬이 없습니다.
+member.fan.list.member.number.error=요청 회원번호가 정상회원이 아닙니다.
+member.fan.list.object.member.number.error=대상 회원번호가 정상회원이 아닙니다.
+member.fan.list.select.fail=팬 조회 실패하였습니다.
