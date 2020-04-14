@@ -498,7 +498,7 @@ public class SocketService {
 
     @Async("threadTaskExecutor")
     public Map<String, Object> banWord(String roomNo, String memNo, String authToken, boolean isLogin){
-        log.info("Socket Start : kickout {}, {}, {}", roomNo, memNo, isLogin);
+        log.info("Socket Start : banWord {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
