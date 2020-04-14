@@ -834,7 +834,9 @@ public class RoomService {
             pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo(request));
             pRoomStateUpdateVo.setRoom_no(stateVo.getRoomNo());
             int state = 1;
-            if("1".equals(stateVo.getIsCall()) || "TRUE".equals(stateVo.getIsCall().toUpperCase())) {
+            if("0".equals(stateVo.getIsAnt()) || "FALSE".equals(stateVo.getIsAnt().toUpperCase())) {
+                state = 0;
+            }else if("1".equals(stateVo.getIsCall()) || "TRUE".equals(stateVo.getIsCall().toUpperCase())) {
                 state = 3;
             }else if("0".equals(stateVo.getIsMic()) || "FALSE".equals(stateVo.getIsMic().toUpperCase())) {
                 state = 2;
@@ -911,11 +913,13 @@ public class RoomService {
                 pRoomStreamTokenVo.setGuest_publish_tokenid("");
                 pRoomStreamTokenVo.setGuest_play_tokenid("");
                 if(auth == 3){ // DJ
-                    bjStreamId = (String)restService.antCreate(target.getTitle(), request).get("streamId");
+                    if("publish".equals(request.getParameter("mode"))){
+                        bjStreamId = (String)restService.antCreate(target.getTitle(), request).get("streamId");
+                    }
                     bjPubToken = (String)restService.antToken(bjStreamId, "publish", request).get("tokenId");
                     pRoomStreamTokenVo.setBj_streamid(bjStreamId);
                     pRoomStreamTokenVo.setBj_publish_tokenid(bjPubToken);
-                    pRoomStreamTokenVo.setState("0");
+                    //pRoomStreamTokenVo.setState("0");
                 }else{
                     bjPlayToken = (String)restService.antToken(bjStreamId, "play", request).get("tokenId");
                     pRoomStreamTokenVo.setBj_play_tokenid(bjPlayToken);

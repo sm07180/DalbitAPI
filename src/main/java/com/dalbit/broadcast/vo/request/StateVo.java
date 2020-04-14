@@ -20,5 +20,8 @@ public class StateVo {
     @NotNull
     private String isCall;
 
+    @NotNull
+    private String isAnt;
+
     private Integer state;
 }
