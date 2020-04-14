@@ -19,4 +19,6 @@ public class RoomListVo {
 
     private Integer searchType;
 
+    private String gender;
+
 }

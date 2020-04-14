@@ -188,6 +188,7 @@ public class RoomController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(roomListVo.getRoomType());
         apiData.setSlctType(roomListVo.getSearchType());
+        apiData.setGender(roomListVo.getGender());
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 

@@ -1,5 +1,6 @@
 package com.dalbit.main.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.main.vo.procedure.P_QnaListVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -16,6 +17,7 @@ public class QnaListOutVo {
     private int state;
     private String writeDt;
     private Long writeTs;
+    private ImageVo addFile;
 
     public QnaListOutVo() {}
     public QnaListOutVo(P_QnaListVo target) {
@@ -27,5 +29,6 @@ public class QnaListOutVo {
         setState(target.getState());
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
+        setAddFile(new ImageVo(target.getAddFile(), DalbitUtil.getProperty("server.photo.url")));
     }
 }
