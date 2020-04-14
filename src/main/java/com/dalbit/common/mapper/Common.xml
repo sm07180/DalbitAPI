@@ -46,4 +46,78 @@
       call sp_stmp_push_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="selectItemList" parameterType="P_ItemVo" resultType="ItemVo">
+        SELECT
+                item_code         AS itemNo
+                , item_name         AS itemNm
+                , (CASE
+                  WHEN use_area = '1' THEN 'particle'
+                  WHEN use_area = '2' THEN 'sticker'
+                  ELSE 'ani'
+                END) AS `type`
+                , item_price        AS cost
+                , item_thumbnail    AS thumbs
+                , webp_image        AS webpUrl
+                , jason_image       AS lottieUrl
+                , (CASE
+                  WHEN use_area in ('1', '4') THEN 360
+                  WHEN use_area = '2' THEN 108
+                  WHEN use_area = '3' THEN 720
+                END) AS width
+                , (CASE
+                  WHEN use_area in ('1', '4') THEN 900
+                  WHEN use_area = '2' THEN 108
+                  WHEN use_area = '3' THEN 504
+                END) AS height
+                , (CASE
+                  WHEN use_area in ('1', '4') THEN 0.5
+                  WHEN use_area = '2' THEN 1
+                  WHEN use_area = '3' THEN 1
+                END) AS deviceRate
+                , (CASE
+                  WHEN use_area in ('1', '4') THEN 1
+                  WHEN use_area = '2' THEN 1
+                  WHEN use_area = '3' THEN 1
+                END) AS widthRate
+                , (CASE
+                  WHEN use_area in ('1', '4') THEN 2.5
+                  WHEN use_area = '2' THEN 1
+                  WHEN use_area = '3' THEN 0.7
+                END) AS heightRate
+                , (CASE
+                  WHEN use_area = '2' THEN 'midLeft'
+                  WHEN use_area = '3' THEN 'topLeft'
+                  ELSE 'bottomRight'
+                END) AS location
+                ,play_time         AS duration
+        FROM rd_data.tbl_gift_item
+        WHERE view_yn = 1
+            AND item_slct = #{item_slct}
+            AND platform like #{platform}
+        ORDER BY use_area, item_price, item_name;
+    </select>
+
+    <select id="selectItem" parameterType="String" resultType="ItemVo">
+        SELECT
+                item_code         AS itemNo
+                , item_name         AS itemNm
+                , item_price        AS cost
+                , item_thumbnail    AS thumbs
+                , webp_image        AS webpUrl
+                , jason_image       AS lottieUrl
+        FROM rd_data.tbl_gift_item
+        WHERE view_yn = 1
+          AND item_code = #{value}
+    </select>
+
+    <select id="selectAppVersion" parameterType="Integer" resultType="AppVersionVo">
+        SELECT
+            version
+            , is_force AS isForce
+        FROM rd_admin.tb_app_version
+        WHERE os = #{value}
+            AND is_use = 1
+        ORDER BY IDX DESC
+        LIMIT 0, 1;
+    </select>
 </mapper>

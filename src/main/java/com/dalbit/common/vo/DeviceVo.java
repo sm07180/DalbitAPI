@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 @Getter
@@ -37,7 +38,7 @@ public class DeviceVo {
 
         if(customHeader != null && !"".equals(customHeader.trim())){
 
-            customHeader = java.net.URLDecoder.decode(customHeader);
+            customHeader = URLDecoder.decode(customHeader);
             HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
 
             if(!DalbitUtil.isEmpty(headers.get("os")) && !DalbitUtil.isEmpty(headers.get("deviceId"))){

@@ -36,9 +36,14 @@ public class MainService {
 
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         String memNo = MemberVo.getMyMemNo(request);
+        DeviceVo deviceVo = new DeviceVo(request);
 
         //상위 추천 데이터 조회
-        List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(DalbitUtil.getProperty("inforex.plan.memNo"));
+        P_MainRecommandVo pMainRecommandVo = new P_MainRecommandVo();
+        pMainRecommandVo.setParamPlanMemNo(DalbitUtil.getProperty("inforex.plan.memNo"));
+        pMainRecommandVo.setParamDevice(deviceVo.getOs() + "");
+        pMainRecommandVo.setParamMemNo(memNo);
+        List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
 
         //DJ랭킹 조회
         P_MainDjRankingVo pMainDjRankingVo = new P_MainDjRankingVo();
@@ -86,7 +91,13 @@ public class MainService {
                 outVo.setMemNo(recommendVoList.get(i).getMemNo());
                 outVo.setNickNm(recommendVoList.get(i).getNickNm());
                 outVo.setGender(recommendVoList.get(i).getGender());
-                outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoUrl));
+                if("banner".equals(outVo.getNickNm())){
+                    ImageVo tmpVo = new ImageVo();
+                    tmpVo.setUrl(recommendVoList.get(i).getProfileUrl());
+                    outVo.setProfImg(tmpVo);
+                }else{
+                    outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
+                }
                 outVo.setRoomType(recommendVoList.get(i).getRoomType());
                 outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
                 if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
@@ -250,7 +261,7 @@ public class MainService {
      */
     public String callMainRecommandList(String memNo) {
 
-        List<P_MainRecommandVo> recommandVoList = mainDao.callMainRecommandList(memNo);
+        List<P_MainRecommandVo> recommandVoList = mainDao.callMainPlanList(memNo);
 
         String result;
         if(!DalbitUtil.isEmpty(recommandVoList)){
@@ -261,7 +272,13 @@ public class MainService {
                 outVo.setMemNo(recommandVoList.get(i).getMemNo());
                 outVo.setNickNm(recommandVoList.get(i).getNickNm());
                 outVo.setGender(recommandVoList.get(i).getGender());
-                outVo.setProfImg(new ImageVo(recommandVoList.get(i).getProfileUrl(), recommandVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
+                if("banner".equals(outVo.getNickNm())){
+                    ImageVo tmpVo = new ImageVo();
+                    tmpVo.setUrl(recommandVoList.get(i).getProfileUrl());
+                    outVo.setProfImg(tmpVo);
+                }else{
+                    outVo.setProfImg(new ImageVo(recommandVoList.get(i).getProfileUrl(), recommandVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
+                }
                 outVo.setRoomType(recommandVoList.get(i).getRoomType());
                 outVo.setRoomNo(recommandVoList.get(i).getRoomNo());
                 if(DalbitUtil.isEmpty(recommandVoList.get(i).getTitle())){

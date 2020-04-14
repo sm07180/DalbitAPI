@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "16f0b664-615c-48a9-b5b5-e13bcffa3b0b",
-		"name": "달빛라디오 API 정의서_2020.04.09",
+		"_postman_id": "32c23b78-1492-4127-b7fb-d5e39ca7944e",
+		"name": "달빛라디오 API 정의서_2020.04.13",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2832,6 +2832,40 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 스타랭킹 조회 20.04.10",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwNDEzMzU3M0B0cnVlIiwiaWF0IjoxNTg2NDk4MDM1LCJleHAiOjE1ODkwOTAwMzV9.xPhqZWEFVXtaBH1SiCvnbBQ1WhYUnSXc3gerhxFS0Zg",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devm-coreano81.dalbitlive.com:4431/profile/star?memNo=11584403882365",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitlive",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"profile",
+												"star"
+											],
+											"query": [
+												{
+													"key": "memNo",
+													"value": "11584403882365"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -4575,6 +4609,49 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 방송방 토큰 재 생성 (스트리밍 아이디 포함) 20.04.10",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQwNDEzMzU3M0B0cnVlIiwiaWF0IjoxNTg2NDk4MDM1LCJleHAiOjE1ODkwOTAwMzV9.xPhqZWEFVXtaBH1SiCvnbBQ1WhYUnSXc3gerhxFS0Zg",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "%7B%22os%22%3A3%2C%22FROM%22%3A%22%40%40%20COOKIE%20%40%40%22%2C%22appVersion%22%3A%221.0.1%22%2C%22locale%22%3A%22ko%22%7D",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91586498167828",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devm-coreano81.dalbitcast.com:4431/broad/refresh",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"broad",
+												"refresh"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -5291,6 +5368,17 @@
 											"path": [
 												"recommand"
 											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 모바일 메인 전체 조회_20.04.13",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": ""
 										}
 									},
 									"response": []
@@ -6177,7 +6265,7 @@
 									}
 								],
 								"url": {
-									"raw": "https://devapi2.dalbitlive.com//self/auth/check",
+									"raw": "https://devapi2.dalbitlive.com/self/auth/check",
 									"protocol": "https",
 									"host": [
 										"devapi2",
@@ -6185,7 +6273,6 @@
 										"com"
 									],
 									"path": [
-										"",
 										"self",
 										"auth",
 										"check"

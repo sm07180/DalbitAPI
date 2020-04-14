@@ -91,7 +91,7 @@ public class ActionController {
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setRoom_no(giftVo.getRoomNo());
         apiData.setGifted_mem_no(giftVo.getMemNo());
-        apiData.setItem_no(giftVo.getItemNo());
+        apiData.setItem_code(giftVo.getItemNo());
         apiData.setItem_cnt(giftVo.getItemCnt());
         apiData.setSecret("1".equals(giftVo.getIsSecret()) || "TRUE".equals(giftVo.getIsSecret().toUpperCase()) ? "1" : "0");
 
