@@ -154,16 +154,21 @@ public class SocketService {
             String command = "reqMicOn";
             if(state == 0) {
                 command = "reqMediaOff";
+                bjAntDisConnect(roomNo, memNo, authToken, isLogin);
             }else if(state == 3){ //통화중
                 command = "reqCalling";
             }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
             }else{
-                if(old_state == 0){
+                if(old_state == 0 || old_state == 6){
                     command = "reqMediaOn";
                 }else if(old_state == 3){
                     command = "reqEndCall";
                 }
+            }
+
+            if(old_state == 0 || old_state == 6){
+                bjAntConnect(roomNo, memNo, authToken, isLogin);
             }
             vo.setCommand(command);
             vo.setMessage(vo.getAuth() + "");
@@ -174,6 +179,44 @@ public class SocketService {
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
 
+        return null;
+    }
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin){
+        log.info("Socket Start : bjReconnect {}, {}, {}", roomNo, memNo, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo, isLogin);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqBjAntConnect");
+            vo.setRecvDj(0);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> bjAntDisConnect(String roomNo, String memNo, String authToken, boolean isLogin){
+        log.info("Socket Start : bjAntDisConnect {}, {}, {}", roomNo, memNo, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
+            SocketVo vo = getSocketVo(roomNo, memNo, isLogin);
+            if(vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqBjAntDisconnect");
+            vo.setRecvDj(0);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
         return null;
     }
 
