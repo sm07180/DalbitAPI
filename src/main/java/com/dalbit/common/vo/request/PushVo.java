@@ -9,7 +9,6 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class PushVo {
 
-    @NotNull
     private Integer pushType;
     @NotBlank
     private String title;
