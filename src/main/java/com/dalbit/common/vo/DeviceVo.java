@@ -22,7 +22,7 @@ public class DeviceVo {
     private String isHybrid;
 
     public DeviceVo(HttpServletRequest request){
-        String customHeader = URLDecoder.decode(request.getHeader(DalbitUtil.getProperty("rest.custom.header.name")));
+        String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
         this.os = DalbitUtil.convertRequestParamToInteger(request,"os");
         this.deviceUuid = DalbitUtil.convertRequestParamToString(request,"deviceId");
         this.deviceToken = DalbitUtil.convertRequestParamToString(request,"deviceToken");
@@ -38,7 +38,7 @@ public class DeviceVo {
 
         if(customHeader != null && !"".equals(customHeader.trim())){
 
-            customHeader = java.net.URLDecoder.decode(customHeader);
+            customHeader = URLDecoder.decode(customHeader);
             HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
 
             if(!DalbitUtil.isEmpty(headers.get("os")) && !DalbitUtil.isEmpty(headers.get("deviceId"))){

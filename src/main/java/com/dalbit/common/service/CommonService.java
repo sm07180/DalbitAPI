@@ -93,6 +93,11 @@ public class CommonService {
     @Cacheable(cacheNames = "codeCache", key = "#code")
     public HashMap getCodeCache(String code, HttpServletRequest request) {
         HashMap resultMap = callCodeDefineSelect();
+
+        return resultMap;
+    }
+
+    public HashMap getItemVersion(HashMap resultMap, HttpServletRequest request){
         String platform = "";
         DeviceVo deviceVo = new DeviceVo(request);
         for(int i = 1; i < 4; i++){
@@ -111,6 +116,15 @@ public class CommonService {
 
         pItemVo.setItem_slct(2);
         resultMap.put("particles", commonDao.selectItemList(pItemVo));
+
+        if(deviceVo.getOs() == 1){
+            resultMap.put("version", "0.1.0");
+            resultMap.put("isForce", false);
+        }else if(deviceVo.getOs() == 2){
+            resultMap.put("version", "1.0.0");
+            resultMap.put("isForce", false);
+        }
+
         return resultMap;
     }
 
