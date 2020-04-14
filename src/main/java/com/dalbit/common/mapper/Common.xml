@@ -109,4 +109,15 @@
         WHERE view_yn = 1
           AND item_code = #{value}
     </select>
+
+    <select id="selectAppVersion" parameterType="Integer" resultType="AppVersionVo">
+        SELECT
+            version
+            , is_force AS isForce
+        FROM rd_admin.tb_app_version
+        WHERE os = #{value}
+            AND is_use = 1
+        ORDER BY IDX DESC
+        LIMIT 0, 1;
+    </select>
 </mapper>

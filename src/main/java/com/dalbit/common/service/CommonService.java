@@ -117,12 +117,10 @@ public class CommonService {
         pItemVo.setItem_slct(2);
         resultMap.put("particles", commonDao.selectItemList(pItemVo));
 
-        if(deviceVo.getOs() == 1){
-            resultMap.put("version", "0.1.0");
-            resultMap.put("isForce", false);
-        }else if(deviceVo.getOs() == 2){
-            resultMap.put("version", "1.0.0");
-            resultMap.put("isForce", false);
+        if(deviceVo.getOs() == 1 || deviceVo.getOs() == 2){
+            AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
+            resultMap.put("version", versionVo.getVersion());
+            resultMap.put("isForce", versionVo.isForce());
         }
 
         return resultMap;

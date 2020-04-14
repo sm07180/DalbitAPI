@@ -1,5 +1,6 @@
 package com.dalbit.common.dao;
 
+import com.dalbit.common.vo.AppVersionVo;
 import com.dalbit.common.vo.ItemVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_ItemVo;
@@ -34,4 +35,7 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     ItemVo selectItem(String item);
+
+    @Transactional(readOnly = true)
+    AppVersionVo selectAppVersion(Integer item);
 }
