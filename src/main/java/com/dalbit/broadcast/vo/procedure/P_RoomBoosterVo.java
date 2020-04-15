@@ -11,4 +11,5 @@ public class P_RoomBoosterVo {
     private String room_no;         //해당 방 번호
     private String item_no;         //선물할 아이템 번호
     private Integer item_cnt;           //아이템 개수
+    private String item_code;         //선물할 아이템 번호
 }
