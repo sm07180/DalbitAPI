@@ -20,20 +20,30 @@
         FROM (
             SELECT
                 T1.mem_no AS memNo
-                , T1.mem_nick AS nickNm
-                , T1.mem_sex AS gender
-                , T2.image_profile AS profileUrl
-                , T3.room_no AS roomNo
-                , T3.subject_type AS roomType
-                , T3.title AS title
-                , IFNULL(T3.count_entry, 0) AS listeners
-                , IFNULL(T3.count_good, 0) AS likes
-                , T2.image_background AS bannerUrl
-            FROM tb_member_basic T1 INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
-                INNER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state &lt; 4
-                INNER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
-            WHERE T1.mem_no IN (${paramPlanMemNo})
-              AND T1.mem_state = 1
+                , (select mem_nick from tb_member_basic where mem_no = T1.mem_no ) AS nickNm
+                , (select mem_sex from tb_member_basic where mem_no = T1.mem_no ) AS gender
+                , (select image_profile from tb_member_profile where mem_no = T1.mem_no ) AS profileUrl
+                , T1.room_no AS roomNo
+                , T1.subject_type AS roomType
+                , T1.title AS title
+                , IFNULL(T1.count_entry, 0) AS listeners
+                , IFNULL(T1.count_good, 0) AS likes
+                , T1.image_background AS bannerUrl
+            FROM (
+                SELECT
+                    a.room_no
+                    , a.mem_no
+                    , a.title
+                    , a.image_background
+                    , a.subject_type
+                    , (count_good + fn_get_point_used_item(a.room_no, 'U1447')) AS count_good
+                    , count_entry
+                    , (select ifnull(sum(ifnull(gold, 0)), 0) from tb_member_broadcast_item where room_no = a.room_no and item_type = 1) as count_gold
+                FROM tb_broadcast_room a
+                WHERE a.state &lt; 4
+            ) T1
+            ORDER BY ((count_good*0.5)+(count_entry*0.3)+(count_gold*0.2)) desc
+            LIMIT 0, 10
 
             UNION ALL
 
@@ -50,7 +60,14 @@
                 , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
             FROM rd_admin.tb_admin_banner
             WHERE is_view = 1
-                AND platform =  2
+                AND (
+                  platform = 0
+                  OR
+                  platform = (CASE
+                    WHEN #{paramDevice} = '3' THEN 1
+                    ELSE 2
+                  END)
+                )
                 AND position = 1
                 AND (
                   view_type = 0

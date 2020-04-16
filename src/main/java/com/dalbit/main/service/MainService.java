@@ -82,6 +82,7 @@ public class MainService {
 
         HashMap mainMap = new HashMap();
 
+        String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
         List recommend = new ArrayList();
         if(!DalbitUtil.isEmpty(recommendVoList)){
 
@@ -94,8 +95,10 @@ public class MainService {
                     ImageVo tmpVo = new ImageVo();
                     tmpVo.setUrl(recommendVoList.get(i).getProfileUrl());
                     outVo.setProfImg(tmpVo);
+                    outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
                 }else{
-                    outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), DalbitUtil.getProperty("server.photo.url")));
+                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?656x240");
+                    outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
                 }
                 outVo.setRoomType(recommendVoList.get(i).getRoomType());
                 outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
@@ -106,7 +109,6 @@ public class MainService {
                 }
                 outVo.setListeners(recommendVoList.get(i).getListeners());
                 outVo.setLikes(recommendVoList.get(i).getLikes());
-                outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
                 recommend.add(outVo);
             }
         }
@@ -133,7 +135,7 @@ public class MainService {
                 outVo.setMemNo(data.getMemNo());
                 outVo.setNickNm(data.getNickNm());
                 outVo.setGender(data.getGender());
-                outVo.setProfImg(new ImageVo(data.getProfImgUrl(), data.getGender(), DalbitUtil.getProperty("server.photo.url")));
+                outVo.setProfImg(new ImageVo(data.getProfImgUrl(), data.getGender(), photoSvrUrl));
                 outVo.setRoomType(data.getRoomType());
                 outVo.setRoomTypeNm(data.getRoomTypeNm());
                 outVo.setRoomNo(data.getRoomNo());
