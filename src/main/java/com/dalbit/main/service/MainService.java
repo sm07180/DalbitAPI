@@ -32,7 +32,6 @@ public class MainService {
     MainDao mainDao;
 
     public String getMain(HttpServletRequest request){
-        String result = "";
 
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         String memNo = MemberVo.getMyMemNo(request);
@@ -85,7 +84,7 @@ public class MainService {
 
         List recommend = new ArrayList();
         if(!DalbitUtil.isEmpty(recommendVoList)){
-            String photoUrl = DalbitUtil.getProperty("server.photo.url");
+
             for (int i=0; i < recommendVoList.size(); i++){
                 MainRecommandOutVo outVo = new MainRecommandOutVo();
                 outVo.setMemNo(recommendVoList.get(i).getMemNo());
