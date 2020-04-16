@@ -573,6 +573,8 @@ public class RoomService {
      * 방송방 선물받은 내역보기
      */
     public String callBroadCastRoomGiftHistory(P_RoomGiftHistoryVo pRoomGiftHistoryVo) {
+        pRoomGiftHistoryVo.setPageNo(1);
+        pRoomGiftHistoryVo.setPageCnt(999999999);
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftHistoryVo);
         List<P_RoomGiftHistoryVo> giftHistoryListVo = roomDao.callBroadCastRoomGiftHistory(procedureVo);
         List<RoomGiftHistoryOutVo> outVoList = new ArrayList<>();

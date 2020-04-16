@@ -14,6 +14,7 @@ public class RoomGiftHistoryOutVo {
     private String nickNm;
     private ImageVo profImg;
     private String itemNo;
+    private String itemCode;
     private String itemNm;
     private int gold;
     private Boolean isSecret;
@@ -25,7 +26,8 @@ public class RoomGiftHistoryOutVo {
         this.memNo = target.getMem_no();
         this.nickNm = target.getNickName();
         this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
-        this.itemNo = target.getItem_no();
+        this.itemNo = target.getItem_code();
+        this.itemCode = target.getItem_code();
         this.itemNm = target.getItem_name();
         this.gold = target.getGold();
         this.isSecret = (target.getSecret() == 1) ? true : false;
