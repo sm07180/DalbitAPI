@@ -42,28 +42,12 @@
                 , 'banner' AS nickNm
                 , '' AS gender
                 , thumb_img_url AS profileUrl
-                ,
-                <choose>
-                    <when test='paramDevice == "3"'>
-                        pc_link_url
-                    </when>
-                    <otherwise>
-                        mobile_link_url
-                    </otherwise>
-                </choose> AS roomNo
+                , IF(#{paramDevice} = '3', pc_link_url, mobile_link_url) AS roomNo
                 , '' AS roomType
                 , title AS title
                 , 0 AS listeners
                 , 0 AS likes
-                ,
-                <choose>
-                    <when test='paramDevice == "3"'>
-                        pc_img_url
-                    </when>
-                    <otherwise>
-                        mobile_img_url
-                    </otherwise>
-                </choose> AS bannerUrl
+                , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
             FROM rd_admin.tb_admin_banner
             WHERE is_view = 1
                 AND platform =  2
