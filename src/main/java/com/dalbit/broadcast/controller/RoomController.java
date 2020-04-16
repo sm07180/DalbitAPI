@@ -188,10 +188,12 @@ public class RoomController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(roomListVo.getRoomType());
         apiData.setSlctType(roomListVo.getSearchType());
-        if(roomListVo.getGender().equals("d")){
-            apiData.setDjType(roomListVo.getGender());
-        } else {
-            apiData.setGender(roomListVo.getGender());
+        if(!DalbitUtil.isEmpty(roomListVo.getGender())){
+            if(roomListVo.getGender().equals("d")){
+                apiData.setDjType(roomListVo.getGender());
+            } else {
+                apiData.setGender(roomListVo.getGender());
+            }
         }
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
