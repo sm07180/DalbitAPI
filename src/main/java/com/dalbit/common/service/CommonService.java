@@ -121,7 +121,7 @@ public class CommonService {
             AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
             resultMap.put("version", versionVo.getVersion());
             resultMap.put("isForce", versionVo.isForce());
-            resultMap.put("isPayment", false);
+            resultMap.put("isPayment", true);
         }
 
         return resultMap;
