@@ -172,6 +172,13 @@ public class CommonService {
                 isLogin = false;
                 tokenVo = null;
             }*/
+        }else{ //비회원토큰 실서버/개발서버와 충돌있는지 확인
+            TokenCheckVo tokenCheckVo = memberDao.selectAnonymousMem(MemberVo.getMyMemNo(request));
+            if(DalbitUtil.isEmpty(tokenCheckVo)){
+                dbSelectMemNo = "88888888888888";
+                isLogin = false;
+                tokenVo = null;
+            }
         }
 
         if(DalbitUtil.isEmpty(tokenVo)) {

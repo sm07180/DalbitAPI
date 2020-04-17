@@ -60,4 +60,10 @@
         where mem_no = #{value}
     </select>
 
+    <select id="selectAnonymousMem" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
+        select
+          idx
+        from tb_member_basic_a
+        where mem_no = 81587080432268;
+    </select>
 </mapper>
