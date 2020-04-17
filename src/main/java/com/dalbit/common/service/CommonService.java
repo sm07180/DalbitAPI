@@ -121,6 +121,9 @@ public class CommonService {
             AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
             resultMap.put("version", versionVo.getVersion());
             resultMap.put("isForce", versionVo.isForce());
+            if(deviceVo.getOs() == 2){
+                resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/my-app/id1490208806?ls=1&mt=8");
+            }
             resultMap.put("isPayment", true);
         }
 
