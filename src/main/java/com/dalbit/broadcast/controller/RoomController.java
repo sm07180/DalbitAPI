@@ -190,7 +190,7 @@ public class RoomController {
         apiData.setSlctType(roomListVo.getSearchType());
         if(!DalbitUtil.isEmpty(roomListVo.getGender())){
             if(roomListVo.getGender().equals("d")){
-                apiData.setDjType(roomListVo.getGender());
+                apiData.setDjType("1");
             } else {
                 apiData.setGender(roomListVo.getGender());
             }
