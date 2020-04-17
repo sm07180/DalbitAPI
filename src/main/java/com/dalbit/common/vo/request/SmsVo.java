@@ -21,5 +21,6 @@ public class SmsVo {
     private int code;
     private int CMID;
     private String umId;
+    private String text;
 
 }

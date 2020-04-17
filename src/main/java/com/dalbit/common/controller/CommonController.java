@@ -133,6 +133,7 @@ public class CommonController {
         smsVo.setCode(code);
         smsVo.setSendPhoneNo(DalbitUtil.getProperty("sms.send.phone.no"));
         smsVo.setUmId(DalbitUtil.getProperty("sms.umid"));
+        smsVo.setText(DalbitUtil.getProperty("sms.text"));
 
         if(isJoin && DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
             // 회원가입 필요
