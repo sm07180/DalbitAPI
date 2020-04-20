@@ -574,7 +574,10 @@ public class SocketService {
             vo.setRecvMemNo(memNo);
             vo.setCommand("chatEnd");
 
-            vo.setMessage(auth == 3 ? "roomOut" : "userOut");
+            HashMap data = new HashMap();
+            data.put("message", auth == 3 ? "roomOut" : "userOut");
+            data.put("authToken", authToken);
+            vo.setMessage(data);
 
             log.debug(" @@@ chatEnd @@@");
             log.debug(vo.toQueryString());

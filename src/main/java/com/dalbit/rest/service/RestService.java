@@ -299,17 +299,9 @@ public class RestService {
         }
 
         int antE = antExpire;
-        if(INFOREX_PLAN_MEMNO != null && INFOREX_PLAN_MEMNO.length > 0){
-            String memNo = MemberVo.getMyMemNo(request);
-            for(int i= 0; i < INFOREX_PLAN_MEMNO.length; i++){
-                if(INFOREX_PLAN_MEMNO[i].equals(memNo)){
-                    antE = 80;
-                    break;
-                }
-            }
-        }
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.HOUR, antE);
+        cal.add(Calendar.MINUTE, 30);
         long expire = cal.getTime().getTime() / 1000;
 
         String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
