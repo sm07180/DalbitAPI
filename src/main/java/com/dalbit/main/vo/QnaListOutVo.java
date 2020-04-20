@@ -18,6 +18,8 @@ public class QnaListOutVo {
     private String writeDt;
     private Long writeTs;
     private ImageVo addFile;
+    private String updateDt;
+    private Long updateTs;
 
     public QnaListOutVo() {}
     public QnaListOutVo(P_QnaListVo target) {
@@ -29,6 +31,8 @@ public class QnaListOutVo {
         setState(target.getState());
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
+        setUpdateDt(DalbitUtil.getUTCFormat(target.getUpdateDate()));
+        setUpdateTs(DalbitUtil.getUTCTimeStamp(target.getUpdateDate()));
         setAddFile(new ImageVo(target.getAddFile(), DalbitUtil.getProperty("server.photo.url")));
     }
 }
