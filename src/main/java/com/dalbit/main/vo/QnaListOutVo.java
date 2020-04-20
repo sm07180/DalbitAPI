@@ -31,8 +31,10 @@ public class QnaListOutVo {
         setState(target.getState());
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
-        setOpDt(DalbitUtil.getUTCFormat(target.getOpDate()));
-        setOpTs(DalbitUtil.getUTCTimeStamp(target.getOpDate()));
+        if(!DalbitUtil.isEmpty(target.getOpDate())){
+            setOpDt(DalbitUtil.getUTCFormat(target.getOpDate()));
+            setOpTs(DalbitUtil.getUTCTimeStamp(target.getOpDate()));
+        }
         setAddFile(new ImageVo(target.getAddFile(), DalbitUtil.getProperty("server.photo.url")));
     }
 }
