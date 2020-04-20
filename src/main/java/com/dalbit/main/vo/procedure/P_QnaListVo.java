@@ -34,7 +34,7 @@ public class P_QnaListVo {
     private int state;
     private String answer;
     private Date writeDate;
-    private Date updateDate;
+    private Date opDate;
     private String addFile;
 
 
