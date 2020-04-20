@@ -19,7 +19,7 @@ public class P_PushVo {
         setImageUrl(pushVo.getImageUrl());
         setPush_type(pushVo.getPushMoveType());
         setRoom_no(pushVo.getRoomNo());
-        setTartget_mem_no(pushVo.getTartget_mem_no());
+        setTarget_mem_no(pushVo.getTarget_mem_no());
         setBoard_idx(pushVo.getBoardIdx());
     }
 
@@ -30,6 +30,6 @@ public class P_PushVo {
     private String imageUrl;
     private String push_type;
     private String room_no;
-    private String tartget_mem_no;
+    private String target_mem_no;
     private String board_idx;
 }
