@@ -18,7 +18,7 @@ public class PushVo {
     private String pushMoveType;
     private String imageUrl;
     private String roomNo;
-    private String tartget_mem_no;
+    private String target_mem_no;
     private String boardIdx;
 
 
