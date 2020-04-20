@@ -32,6 +32,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private int     exp;
     private int     expBegin;
     private int     expNext;
+    private int     expRate;
     private String  grade;
     private int     dalCnt;
     private int     byeolCnt;
@@ -42,6 +43,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private long broadTotTime;
     private long listenTotTime;
     private int likeTotCnt;
+    private String holder;
     List fanRank;
 
     public ProfileInfoOutVo(){}
@@ -58,17 +60,19 @@ public class ProfileInfoOutVo extends BaseVo {
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
-
+        this.holder = "https://image.dalbitlive.com/holder/gold.png";
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();
             this.expNext = target.getExpNext();
+            this.expRate = DalbitUtil.getExpRate(target.getExp(), target.getExpBegin(), target.getExpNext());
             this.dalCnt = target.getRuby() == null ? 0 : Integer.valueOf(target.getRuby());
             this.byeolCnt = target.getGold() == null ? 0 : Integer.valueOf(target.getGold());
         }else{
             this.exp = 0;
             this.expBegin = 0;
             this.expNext = 0;
+            this.expRate = 0;
             this.dalCnt = 0;
             this.byeolCnt = 0;
         }
