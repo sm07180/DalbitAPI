@@ -20,6 +20,8 @@
           , DEST_PHONE
           , SUBJECT
           , MSG_BODY
+          , VXML_FILE
+          , mem_no
         ) values(
           #{umId}
           , '0'
@@ -27,6 +29,8 @@
           , #{phoneNo}
           , 'TEST'
           , CONCAT('[',#{text},'] 인증번호는 (', #{code}, ') 입니다.')
+          , #{authType}
+          , #{memNo}
         )
     </insert>
 
