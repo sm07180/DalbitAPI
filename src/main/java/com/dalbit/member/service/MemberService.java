@@ -76,6 +76,12 @@ public class MemberService {
      * 닉네임 중복체크
      */
     public String callNickNameCheck(String nickNm) {
+
+        //금지어 체크
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), nickNm)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(nickNm);
         memberDao.callNickNameCheck(procedureVo);
 
@@ -83,14 +89,7 @@ public class MemberService {
         if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복));
         }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
-
-            //금지어 체크
-            if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), nickNm)){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
-            } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능));    
-            }
-
+            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
         }
