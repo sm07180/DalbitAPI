@@ -660,7 +660,6 @@ public class RoomService {
      */
     public String callBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo) {
         ProcedureVo procedureVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
-        log.error("정보 조회 에러: {}, {}, {}",procedureVo.getRet(),procedureVo.getExt(),procedureVo.getData());
 
         String result="";
         if(Status.방송방회원정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {

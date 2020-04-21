@@ -52,9 +52,7 @@ public class ProfileService {
      * 정보 조회
      */
     public String callMemberInfo(P_ProfileInfoVo pProfileInfo, HttpServletRequest request) {
-
         ProcedureVo procedureVo = getProfile(pProfileInfo);
-        log.error("정보 조회 에러: {}, {}, {}",procedureVo.getRet(),procedureVo.getExt(),procedureVo.getData());
 
         String result;
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
