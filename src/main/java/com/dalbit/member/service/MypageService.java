@@ -4,6 +4,7 @@ import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
@@ -39,6 +40,8 @@ public class MypageService {
     RoomDao roomDao;
     @Autowired
     ProfileService profileService;
+    @Autowired
+    CommonService commonService;
 
     /**
      * 프로필 편집
@@ -197,7 +200,7 @@ public class MypageService {
             returnMap.put("birth", DalbitUtil.getBirth(DalbitUtil.getStringMap(resultMap, "birthYear"), DalbitUtil.getStringMap(resultMap, "birthMonth"), DalbitUtil.getStringMap(resultMap, "birthDay")));
             returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
             returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
-            returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
+            returnMap.put("profMsg", DalbitUtil.replaceMaskString(commonService.banWordSelect(), DalbitUtil.getStringMap(resultMap, "profileMsg")));
             returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
 

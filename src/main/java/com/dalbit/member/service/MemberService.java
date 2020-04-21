@@ -2,6 +2,7 @@ package com.dalbit.member.service;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -38,6 +39,8 @@ public class MemberService {
     GsonUtil gsonUtil;
     @Autowired
     RestService restService;
+    @Autowired
+    CommonService commonService;
 
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
@@ -72,15 +75,22 @@ public class MemberService {
     /**
      * 닉네임 중복체크
      */
-    public String callNickNameCheck(ProcedureVo procedureVo) {
-
+    public String callNickNameCheck(String nickNm) {
+        ProcedureVo procedureVo = new ProcedureVo(nickNm);
         memberDao.callNickNameCheck(procedureVo);
 
         String result;
         if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복));
         }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능));
+
+            //금지어 체크
+            if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), nickNm)){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능));    
+            }
+
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
         }

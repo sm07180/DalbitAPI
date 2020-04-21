@@ -177,11 +177,11 @@ public class MemberController {
      * 닉네임 중복체크
      */
     @GetMapping("/member/nick")
-    public String nick(@Valid NickNmDupleCheckVo nickNmDupleCheckVo, BindingResult bindingResult) throws GlobalException{
+    public String nick(@Valid NickNmDupleCheckVo nickNmDupleCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        String result = memberService.callNickNameCheck(new ProcedureVo(nickNmDupleCheckVo.getNickNm().trim()));
+        String result = memberService.callNickNameCheck(nickNmDupleCheckVo.getNickNm().trim());
 
         return result;
     }
