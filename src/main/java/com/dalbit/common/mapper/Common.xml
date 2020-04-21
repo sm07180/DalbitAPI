@@ -141,6 +141,8 @@
             ban_word AS banWord
         FROM tbl_banword
         WHERE is_use = 1
+        ORDER BY idx DESC
+        limit 0, 1
     </select>
 
 
