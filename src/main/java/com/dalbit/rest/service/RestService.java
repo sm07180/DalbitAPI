@@ -300,7 +300,8 @@ public class RestService {
 
         int antE = antExpire;
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, antE);
+        //cal.add(Calendar.HOUR, antE);
+        cal.add(Calendar.HOUR, 80);
         cal.add(Calendar.MINUTE, 30);
         long expire = cal.getTime().getTime() / 1000;
 
