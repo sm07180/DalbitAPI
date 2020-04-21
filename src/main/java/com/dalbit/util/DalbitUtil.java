@@ -1197,4 +1197,31 @@ public class DalbitUtil {
         return decodeStr;
     }
 
+
+    /**
+     * 금지어 포함 여부
+     * str: 금지어 문자열, param: 파라미터
+     */
+    public static Boolean isStringMatchCheck(String str, String param){
+        str = "|"+str.trim()+"|";
+        param = "|"+param.trim()+"|";
+        return  str.contains(param);
+    }
+
+    /**
+     * 금지어 *** 변환
+     * str: 금지어 문자열, param: 파라미터
+     */
+    public static String replaceMaskString(String str, String param){
+        String[] splitStr = str.split("\\|");
+
+        for (int i = 0; i < splitStr.length; i++ ){
+            if(param.contains(splitStr[i])){
+                param = param.replaceAll(splitStr[i], "***");
+            }
+        }
+        return param;
+    }
+
+
 }

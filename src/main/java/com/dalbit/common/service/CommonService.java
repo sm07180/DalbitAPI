@@ -473,4 +473,14 @@ public class CommonService {
         return result;
 
     }
+
+
+    /**
+     * 금지어 조회
+     */
+    public String banWordSelect(){
+        BanWordVo banWordVo = commonDao.banWordSelect();
+        return banWordVo.getBanWord();
+    }
+
 }

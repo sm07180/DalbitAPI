@@ -1,11 +1,14 @@
 package com.dalbit;
 
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.BanWordVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.util.*;
+import jdk.nashorn.internal.runtime.regexp.RegExp;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -286,63 +289,26 @@ public class SampleVoTest {
     @Test
     public void 각종테스트(){
 
-        /*for(int i=0; i < 50; i++ ){
-            log.info("bg value: {}", Integer.parseInt(DalbitUtil.randomBgValue()));
-        }*/
+        String str = "안녕하세요 씨발 씨발";
+        //String[] splitStr = str.split(" ");
+        StringBuilder returnStr = new StringBuilder();
+        String[] splitStr = commonService.banWordSelect().split("\\|");
 
-        //List code =  commonService.getCodeList("roomRight");
 
-        //CodeVo codeVo = commonService.getCodeList("roomRight").stream().filter(code -> code.getCdNm().equals("방장")).findFirst().orElse(null);
-        //log.info(codeVo.getCd());
-
-        /*List names = new ArrayList();
-        names.add("Sehoon");
-        names.add("Songwoo");
-        names.add("Chan");
-        names.add("Youngsuk");
-        names.add("Dajung");*/
-
-        //java 7
-        /*for(Object name : names) {
-            log.info("java 7: {}" ,name);
-        }*/
-
-        //log.info("===========================================");
-
-        //java 8 Lambda
-        //names.stream().map(name -> name.toString()).forEach(out -> log.info("Lambda: {}", out));
-
-        //String str = "yyyyMMdd";
-
-        /*String year = substr(str,0,4);
-        String month = substr(str, 4,2);
-        String day = substr(str,6,2);
-
-        log.info(DalbitUtil.convertDate(str, "yyyy-MM-dd"));*/
-
-        //log.debug("오늘날짜: {}", DalbitUtil.getDate(str));
-        //log.debug("3 일후: {}", DalbitUtil.getDate(str, 3));
-        //log.debug("7 일전: {}", DalbitUtil.getDate(str, -7));
-
-        /*String tmp = "1";
-        String isGood = "0";
-
-        if(DalbitUtil.isEmpty(tmp)){
-            log.info("isLike: {}", "1".equals(isGood));
-        }else{
-            log.info("isLike: {}", true);
-
+        for (int i = 0; i < splitStr.length; i++ ){
+            if(str.contains(splitStr[i])){
+                str = str.replaceAll(splitStr[i], "***");
+            }
         }
 
-        log.info("isLike.. {}",DalbitUtil.isEmpty(tmp) ? "1".equals(isGood) : true );*/
+        log.debug("리턴 메시지: {}", str);
 
 
+        //log.debug("금지어: {}", str);
+        //log.debug("금지어 조회: {}", banWordVo.getBanWord());
+        //log.debug("금지어 조회 여부: {}", DalbitUtil.isStringMatchCheck(banWordVo.getBanWord(), str));
 
     }
-
-
-
-
 
 }
 

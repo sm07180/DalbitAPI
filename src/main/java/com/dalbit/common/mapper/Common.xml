@@ -51,6 +51,7 @@
     </select>
 
     <select id="selectItemList" parameterType="P_ItemVo" resultType="ItemVo">
+        /* Common.xml - selectItemList */
         SELECT
                 item_code         AS itemNo
                 , item_name         AS itemNm
@@ -105,10 +106,11 @@
             AND item_code != 'U1447'
             AND item_slct = #{item_slct}
             AND platform like #{platform}
-        ORDER BY use_area, item_price, item_name;
+        ORDER BY use_area, item_price, item_name
     </select>
 
     <select id="selectItem" parameterType="String" resultType="ItemVo">
+        /* Common.xml - selectItem */
         SELECT
                 item_code         AS itemNo
                 , item_name         AS itemNm
@@ -122,6 +124,7 @@
     </select>
 
     <select id="selectAppVersion" parameterType="Integer" resultType="AppVersionVo">
+        /* Common.xml - selectAppVersion */
         SELECT
             version
             , is_force AS isForce
@@ -129,6 +132,16 @@
         WHERE os = #{value}
             AND is_use = 1
         ORDER BY IDX DESC
-        LIMIT 0, 1;
+        LIMIT 0, 1
     </select>
+
+    <select id="banWordSelect" parameterType="String" resultType="BanWordVo">
+        /* Common.xml - banWordSelect */
+        SELECT
+            ban_word AS banWord
+        FROM tbl_banword
+        WHERE is_use = 1
+    </select>
+
+
 </mapper>

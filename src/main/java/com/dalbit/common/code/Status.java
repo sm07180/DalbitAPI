@@ -717,6 +717,9 @@ public enum Status {
     팬조회_대상회원_회원아님("-2", "member.fan.list.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
     팬조회_실패("C006", "member.fan.list.select.fail", "팬 랭킹 조회 실패 시"),
 
+    //금지어 체크
+    닉네임금지("C005", "nick.name.ban.word", "닉네임 금지어 포함 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";

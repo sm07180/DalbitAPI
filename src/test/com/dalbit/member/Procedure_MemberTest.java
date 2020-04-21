@@ -62,10 +62,11 @@ public class Procedure_MemberTest {
 
     @Test
     public void 닉네임중복체크(){
-        ProcedureVo procedureVo = new ProcedureVo();
-        procedureVo.setData("test0005");
+//        ProcedureVo procedureVo = new ProcedureVo();
+//        procedureVo.setData();
+        String nm = "test0005";
 
-        String result = memberService.callNickNameCheck(procedureVo);
+        String result = memberService.callNickNameCheck(nm);
 
         log.debug("닉네임중복체크 결과 : {}", result);
 
