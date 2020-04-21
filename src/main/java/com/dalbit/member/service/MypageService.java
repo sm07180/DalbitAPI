@@ -47,6 +47,12 @@ public class MypageService {
      * 프로필 편집
      */
     public String callProfileEdit(P_ProfileEditVo pProfileEditVo, HttpServletRequest request) throws GlobalException {
+
+        //금지어 체크
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pProfileEditVo.getNickName())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+        }
+
         Boolean isDone = false;
         String profImg = pProfileEditVo.getProfileImage();
         if(DalbitUtil.isEmpty(profImg) || profImg.startsWith(Code.포토_프로필_디폴트_PREFIX.getCode())){
@@ -71,6 +77,7 @@ public class MypageService {
             mypageDao.callProfileEdit(procedureVo);
 
             if (procedureVo.getRet().equals(Status.프로필편집성공.getMessageCode())) {
+
                 if(isDone){
                     restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel(), request);
                 }
