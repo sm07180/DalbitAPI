@@ -153,15 +153,16 @@ public class SocketService {
 
             String command = "reqMicOn";
             if(state == 0) {
-                command = "reqMediaOff";
-                bjAntDisConnect(roomNo, memNo, authToken, isLogin);
+                //command = "reqMediaOff";
+                return bjAntDisConnect(roomNo, memNo, authToken, isLogin);
             }else if(state == 3){ //통화중
                 command = "reqCalling";
             }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
             }else{
                 if(old_state == 0 || old_state == 6){
-                    command = "reqMediaOn";
+                    return bjAntConnect(roomNo, memNo, authToken, isLogin);
+                    //command = "reqMediaOn";
                 }else if(old_state == 3){
                     command = "reqEndCall";
                 }
