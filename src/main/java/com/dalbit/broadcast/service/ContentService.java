@@ -4,6 +4,7 @@ import com.dalbit.broadcast.dao.ContentDao;
 import com.dalbit.broadcast.vo.RoomStoryListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.socket.service.SocketService;
@@ -30,6 +31,8 @@ public class ContentService {
     GsonUtil gsonUtil;
     @Autowired
     SocketService socketService;
+    @Autowired
+    CommonService commonService;
 
 
     /**
@@ -46,6 +49,14 @@ public class ContentService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
 
         HashMap returnMap = new HashMap();
+        //사이트+방송방 금지어 조회 공지사항 마스킹 처리
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setRoomNo(pRoomNoticeSelectVo.getRoom_no());
+        if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
+            notice = DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), notice);
+        } else {
+            notice = DalbitUtil.replaceMaskString(commonService.banWordSelect(), notice);
+        }
         returnMap.put("notice", notice);
         procedureVo.setData(returnMap);
 
@@ -192,7 +203,15 @@ public class ContentService {
         }
 
         List<RoomStoryListOutVo> outVoList = new ArrayList<>();
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setRoomNo(pRoomStoryListVo.getRoom_no());
         for (int i=0; i<storyVoList.size(); i++){
+            //사이트+방송방 금지어 조회 사연 마스킹 처리
+            if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
+                storyVoList.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), storyVoList.get(i).getContents()));
+            }else{
+                storyVoList.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect(), storyVoList.get(i).getContents()));
+            }
             outVoList.add(new RoomStoryListOutVo(storyVoList.get(i), pRoomStoryListVo.getMem_no()));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
