@@ -564,7 +564,17 @@ public class MypageService {
         }
 
         List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(pMypagNoticeSelectVo.getTarget_mem_no());
         for (int i=0; i<mypageNoticeListVo.size(); i++){
+            //사이트+방송방 금지어 조회 마이페이지 공지사항 제목, 내용 마스킹 처리
+            if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
+                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), mypageNoticeListVo.get(i).getTitle()));
+                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), mypageNoticeListVo.get(i).getContents()));
+            }else{
+                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(commonService.banWordSelect(), mypageNoticeListVo.get(i).getTitle()));
+                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect(), mypageNoticeListVo.get(i).getContents()));
+            }
             outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
