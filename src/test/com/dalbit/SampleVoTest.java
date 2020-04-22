@@ -295,7 +295,7 @@ public class SampleVoTest {
         String str = "안녕하세요 bbb 씨발";
 
         //금지어 체크
-        //log.debug("금지어 여부: {}",DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), str));
+        log.debug("금지어 여부: {}",DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), str));
 
         String mem_no = "11583121500351";
         String replaceStr = null;
@@ -310,7 +310,6 @@ public class SampleVoTest {
         }
         log.debug(str);
         log.debug(replaceStr);
-
 
 
         //String[] splitStr = str.split(" ");

@@ -1203,16 +1203,20 @@ public class DalbitUtil {
      * str: 금지어 문자열, param: 파라미터
      */
     public static Boolean isStringMatchCheck(String str, String param){
-        //str = "|"+str.trim()+"|";
-        //param = "|"+param.trim()+"|";
-        //return  str.contains(param);
         boolean isMatch = false;
-        String[] splitStr = str.split("\\|");
-        for (int i = 0; i < splitStr.length; i++ ){
+        str = str.replaceAll("\\|\\|", "\\|");
+
+        Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(param);
+
+        while (m.find()){
+            return isMatch = true;
+        }
+        /*for (int i = 0; i < splitStr.length; i++ ){
             if(param.contains(splitStr[i])){
                 return isMatch = true;
             }
-        }
+        }*/
         return isMatch;
     }
 
@@ -1221,14 +1225,41 @@ public class DalbitUtil {
      * str: 금지어 문자열, param: 파라미터
      */
     public static String replaceMaskString(String str, String param){
-        String[] splitStr = str.split("\\|");
+        str = str.replaceAll("\\|\\|", "\\|");
 
-        for (int i = 0; i < splitStr.length; i++ ){
+        Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
+        Matcher m = p.matcher(param);
+
+        StringBuffer sb = new StringBuffer();
+        while (m.find()){
+            m.appendReplacement(sb, maskWord(m.group()));
+        }
+        m.appendTail(sb);
+
+        /*for (int i = 0; i < splitStr.length; i++ ){
             if(param.contains(splitStr[i])){
                 param = param.replaceAll(splitStr[i], "***");
             }
         }
-        return param;
+        return param;*/
+        return sb.toString();
+    }
+
+    /**
+     * 마스킹 유틸
+     */
+    public static String maskWord(String word) {
+        StringBuffer buff = new StringBuffer();
+        char[] ch = word.toCharArray();
+        for (int i = 0; i < ch.length; i++) {
+            /*if (i < 1) {
+                buff.append(ch[i]);
+            } else {
+                buff.append("*");
+            }*/
+            buff.append("*");
+        }
+        return buff.toString();
     }
 
 
