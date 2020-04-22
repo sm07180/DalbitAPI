@@ -845,9 +845,9 @@ public class RoomService {
             }
             pRoomStateUpdateVo.setState(state);
 
-            if(old_state == state){
+            /*if(old_state == state){
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
-            }
+            }*/
 
             ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
             roomDao.callBroadCastRoomStateUpate(procedureVo);
