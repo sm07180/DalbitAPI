@@ -1203,9 +1203,17 @@ public class DalbitUtil {
      * str: 금지어 문자열, param: 파라미터
      */
     public static Boolean isStringMatchCheck(String str, String param){
-        str = "|"+str.trim()+"|";
-        param = "|"+param.trim()+"|";
-        return  str.contains(param);
+        //str = "|"+str.trim()+"|";
+        //param = "|"+param.trim()+"|";
+        //return  str.contains(param);
+        boolean isMatch = false;
+        String[] splitStr = str.split("\\|");
+        for (int i = 0; i < splitStr.length; i++ ){
+            if(param.contains(splitStr[i])){
+                return isMatch = true;
+            }
+        }
+        return isMatch;
     }
 
     /**

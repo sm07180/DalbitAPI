@@ -1,7 +1,9 @@
 package com.dalbit;
 
+import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.BanWordVo;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.LocationVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -289,19 +291,40 @@ public class SampleVoTest {
     @Test
     public void 각종테스트(){
 
-        String str = "안녕하세요 씨발 씨발";
+        //String str = "안녕하세요 씨발 씨발";
+        String str = "안녕하세요 bbb 씨발";
+
+        //금지어 체크
+        //log.debug("금지어 여부: {}",DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), str));
+
+        String mem_no = "11583121500351";
+        String replaceStr = null;
+        String siteBanWord = commonService.banWordSelect();
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(mem_no);
+        if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
+            log.debug("사이트 + 방송방 금지어: {}", siteBanWord+"|"+commonService.broadcastBanWordSelect(banWordVo));
+            replaceStr = DalbitUtil.replaceMaskString(siteBanWord+"|"+commonService.broadcastBanWordSelect(banWordVo), str);
+        } else {
+            log.debug("사이트 금지어: {}", siteBanWord);
+        }
+        log.debug(str);
+        log.debug(replaceStr);
+
+
+
         //String[] splitStr = str.split(" ");
-        StringBuilder returnStr = new StringBuilder();
-        String[] splitStr = commonService.banWordSelect().split("\\|");
+
+        //String[] splitStr = commonService.banWordSelect().split("\\|");
 
 
-        for (int i = 0; i < splitStr.length; i++ ){
+        /*for (int i = 0; i < splitStr.length; i++ ){
             if(str.contains(splitStr[i])){
-                str = str.replaceAll(splitStr[i], "***");
+                log.debug("금지어 발견");
+                //str = str.replaceAll(splitStr[i], "***");
             }
         }
-
-        log.debug("리턴 메시지: {}", str);
+        log.debug("리턴 메시지: {}", str);*/
 
 
         //log.debug("금지어: {}", str);

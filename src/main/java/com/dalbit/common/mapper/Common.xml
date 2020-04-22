@@ -145,5 +145,23 @@
         limit 0, 1
     </select>
 
+    <select id="broadcastBanWordSelect" parameterType="BanWordVo" resultType="BanWordVo">
+        /* Common.xml - broadcastBanWordSelect */
+        SELECT
+            ban_word AS banWord
+        FROM tb_member_broadcast_banword
+        WHERE 1=1
+        <choose>
+            <when test='memNo != null and memNo != ""'>
+                AND mem_no = #{memNo}
+            </when>
+            <when test='roomNo != null and roomNo != ""'>
+                AND mem_no = (select mem_no from tb_broadcast_room where room_no = #{roomNo})
+            </when>
+            <otherwise>
+                AND mem_no = '99999999999999'
+            </otherwise>
+        </choose>
+    </select>
 
 </mapper>
