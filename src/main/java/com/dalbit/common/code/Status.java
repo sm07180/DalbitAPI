@@ -719,6 +719,10 @@ public enum Status {
 
     //금지어 체크
     닉네임금지("C005", "nick.name.ban.word", "닉네임 금지어 포함 시"),
+    방송방생성제목금지("C005", "broadcast.create.title.ban.word", "방송방 생성 제목 금지어 포함 시"),
+    방송방생성인사말금지("C005", "broadcast.create.welcome.msg.ban.word", "방송방 생성 인사말 금지어 포함 시"),
+    방송방수정제목금지("C005", "broadcast.edit.title.ban.word", "방송방 수정 제목 금지어 포함 시"),
+    방송방수정인사말금지("C005", "broadcast.edit.welcome.msg.ban.word", "방송방 수정 인사말 금지어 포함 시"),
 
     ;
 

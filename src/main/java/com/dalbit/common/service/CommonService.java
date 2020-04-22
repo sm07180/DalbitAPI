@@ -476,11 +476,19 @@ public class CommonService {
 
 
     /**
-     * 금지어 조회
+     * 사이트 금지어 조회
      */
     public String banWordSelect(){
         BanWordVo banWordVo = commonDao.banWordSelect();
         return banWordVo.getBanWord();
+    }
+
+    /**
+     * 방송 금지어 조회(개인)
+     */
+    public String broadcastBanWordSelect(BanWordVo banWordVo){
+        BanWordVo resultVo = commonDao.broadcastBanWordSelect(banWordVo);
+        return DalbitUtil.isEmpty(resultVo) ? null : resultVo.getBanWord();
     }
 
 }

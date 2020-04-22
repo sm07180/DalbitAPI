@@ -53,6 +53,17 @@ public class RoomService {
      * 방송방 생성
      */
     public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo, HttpServletRequest request) throws GlobalException{
+
+        //금지어 체크(제목)
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomCreateVo.getTitle())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방생성제목금지));
+        }
+
+        //금지어 체크(인사말)
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomCreateVo.getWelcomMsg())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방생성인사말금지));
+        }
+
         String bgImg = pRoomCreateVo.getBackgroundImage();
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
@@ -359,6 +370,16 @@ public class RoomService {
      * 방송방 정보 수정
      */
     public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo, HttpServletRequest request) throws GlobalException {
+        //금지어 체크(제목)
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomEditVo.getTitle())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
+        }
+
+        //금지어 체크(인사말)
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomEditVo.getWelcomMsg())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정인사말금지));
+        }
+        
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImage()) && pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
             isDone = true;
@@ -424,7 +445,17 @@ public class RoomService {
         }
 
         List<RoomOutVo> outVoList = new ArrayList<>();
+        BanWordVo banWordVo = new BanWordVo();
         for (int i=0; i<roomVoList.size(); i++){
+            if(!DalbitUtil.isEmpty(roomVoList.get(i).getNotice())){
+                //사이트+방송방 금지어 조회 공지사항 마스킹처리
+                banWordVo.setMemNo(roomVoList.get(i).getBj_mem_no());
+                if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
+                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), roomVoList.get(i).getNotice()));
+                }else{
+                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(commonService.banWordSelect(), roomVoList.get(i).getNotice()));
+                }
+            }
             outVoList.add(new RoomOutVo(roomVoList.get(i)));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);

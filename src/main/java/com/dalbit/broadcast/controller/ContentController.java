@@ -21,7 +21,7 @@ public class ContentController {
     ContentService contentService;
 
     /**
-     * 공지조회
+     * 방송방 공지조회
      */
     @GetMapping("/notice")
     public String noticeSelect(@Valid NoticeViewVo noticeViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
