@@ -92,7 +92,7 @@
                     WHEN use_area in ('1', '4') THEN 2.5
                     WHEN use_area = '2' THEN 1
                     WHEN use_area = '3' THEN 0.7
-                    WHEN use_area = '5' THEN 1.4
+                    WHEN use_area = '5' THEN 1.5
                 END) AS heightRate
                 , (CASE
                     WHEN use_area = '2' THEN 'midLeft'
