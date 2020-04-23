@@ -9,6 +9,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
 import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
@@ -1205,6 +1206,8 @@ public class DalbitUtil {
     public static Boolean isStringMatchCheck(String str, String param){
         boolean isMatch = false;
         str = str.replaceAll("\\|\\|", "\\|");
+        str = StringUtils.replace(str, "(", "\\(");
+        str = StringUtils.replace(str, ")", "\\)");
 
         Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(param);
@@ -1226,6 +1229,8 @@ public class DalbitUtil {
      */
     public static String replaceMaskString(String str, String param){
         str = str.replaceAll("\\|\\|", "\\|");
+        str = StringUtils.replace(str, "(", "\\(");
+        str = StringUtils.replace(str, ")", "\\)");
 
         Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
         Matcher m = p.matcher(param);
