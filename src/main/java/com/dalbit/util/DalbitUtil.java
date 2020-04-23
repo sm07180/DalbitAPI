@@ -1224,15 +1224,17 @@ public class DalbitUtil {
         } catch (Exception e){
             log.error("금지어 체크 오류 isStringMatchCheck");
 
-            P_ErrorLogVo errorLogVo = new P_ErrorLogVo();
-            errorLogVo.setMem_no("99999999999999");
-            errorLogVo.setOs("API");
-            errorLogVo.setVersion("");
-            errorLogVo.setBuild("");
-            errorLogVo.setDtype("banWord");
-            errorLogVo.setCtype("금지어 체크 오류");
-            errorLogVo.setDesc(param);
-            commonService.saveErrorLog(errorLogVo);
+            try {
+                P_ErrorLogVo errorLogVo = new P_ErrorLogVo();
+                errorLogVo.setMem_no("99999999999999");
+                errorLogVo.setOs("API");
+                errorLogVo.setVersion("");
+                errorLogVo.setBuild("");
+                errorLogVo.setDtype("banWord");
+                errorLogVo.setCtype("금지어 체크 오류");
+                errorLogVo.setDesc(param);
+                commonService.saveErrorLog(errorLogVo);
+            } catch (Exception e1){}
 
             return isMatch = true;
         }
@@ -1264,15 +1266,18 @@ public class DalbitUtil {
             sb.append(param);
             log.error("금지어 변환 오류 replaceMaskString");
 
-            P_ErrorLogVo errorLogVo = new P_ErrorLogVo();
-            errorLogVo.setMem_no("99999999999999");
-            errorLogVo.setOs("API");
-            errorLogVo.setVersion("");
-            errorLogVo.setBuild("");
-            errorLogVo.setDtype("banWord");
-            errorLogVo.setCtype("금지어 변환 오류");
-            errorLogVo.setDesc(param);
-            commonService.saveErrorLog(errorLogVo);
+            try{
+                P_ErrorLogVo errorLogVo = new P_ErrorLogVo();
+                errorLogVo.setMem_no("99999999999999");
+                errorLogVo.setOs("API");
+                errorLogVo.setVersion("");
+                errorLogVo.setBuild("");
+                errorLogVo.setDtype("banWord");
+                errorLogVo.setCtype("금지어 변환 오류");
+                errorLogVo.setDesc(param);
+                commonService.saveErrorLog(errorLogVo);
+            } catch (Exception e1){
+            }
 
         }
         return sb.toString();
