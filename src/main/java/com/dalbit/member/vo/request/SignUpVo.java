@@ -15,7 +15,7 @@ public class SignUpVo {
     @NotBlank @Size(max = 1)
     private String memType;
 
-    @NotBlank @Size(max = 25)
+    @NotBlank @Size(max = 50)
     private String memId;
 
     @Password
