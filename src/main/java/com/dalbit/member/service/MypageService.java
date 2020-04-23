@@ -368,7 +368,7 @@ public class MypageService {
      */
     public String callMemberShortCut(P_MemberShortCutVo pMemberShortCut){
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
-        mypageDao.callMemberShortCut(procedureVo);
+        //mypageDao.callMemberShortCut(procedureVo);
         List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
 
         String result;
