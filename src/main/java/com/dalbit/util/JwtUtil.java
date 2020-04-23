@@ -70,7 +70,13 @@ public class JwtUtil {
 
                 boolean isLogin = Boolean.valueOf(splitStrArr[1]);
 
+                /**
+                 * 수정일 : 2020.04.23 - 이재호
+                 * jsessionId가 변경 되면서 token이 변경되어 Frontend와 native 간에 로그인이 풀리는 현상이 있어
+                 * 유효한 토큰이 넘어온 경우 재발행 하지 않고 기존의 토큰을 사용하도록 변경
+                 */
                 // 3(JWT_DURATION)시간 이내 토큰일경우 재발행 하지 않음
+                /*
                 boolean isNew = true;
                 Jws<Claims> jwtClaims = getClaims(jwt);
                 Object issuedAt = jwtClaims.getBody().get(Claims.ISSUED_AT);
@@ -80,8 +86,10 @@ public class JwtUtil {
                         isNew = false;
                     }
                 }
-
                 return isNew ? new TokenVo(generateToken(splitStrArr[0], isLogin), splitStrArr[0], isLogin) : new TokenVo(jwt, splitStrArr[0], isLogin);
+                */
+                return new TokenVo(jwt, splitStrArr[0], isLogin);
+
             }else{
                 throw new GlobalException(ErrorStatus.토큰검증오류, "회원번호 or 로그인 여부가 없습니다.");
             }

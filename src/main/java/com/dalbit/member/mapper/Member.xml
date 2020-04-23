@@ -64,6 +64,6 @@
         select
           idx
         from tb_member_basic_a
-        where mem_no = 81587080432268;
+        where mem_no = #{value}
     </select>
 </mapper>
