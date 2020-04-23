@@ -2,13 +2,17 @@ package com.dalbit.util;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.common.vo.procedure.P_ErrorLogVo;
+import com.dalbit.common.vo.request.ErrorLogVo;
 import com.dalbit.common.vo.request.SelfAuthChkVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.google.gson.Gson;
 import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.core.env.Environment;
@@ -39,6 +43,7 @@ import java.util.regex.Pattern;
 public class DalbitUtil {
 
     private static Environment environment;
+    private static CommonService commonService;
 
     @Autowired
     private Environment activeEnvironment;
@@ -1205,18 +1210,35 @@ public class DalbitUtil {
     public static Boolean isStringMatchCheck(String str, String param){
         boolean isMatch = false;
         str = str.replaceAll("\\|\\|", "\\|");
+        str = StringUtils.replace(str, "(", "\\(");
+        str = StringUtils.replace(str, ")", "\\)");
 
-        Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(param);
 
-        while (m.find()){
-            return isMatch = true;
-        }
-        /*for (int i = 0; i < splitStr.length; i++ ){
-            if(param.contains(splitStr[i])){
+        try {
+            Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(param);
+            while (m.find()){
                 return isMatch = true;
             }
-        }*/
+
+        } catch (Exception e){
+            log.error("금지어 체크 오류 isStringMatchCheck");
+
+            try {
+                P_ErrorLogVo errorLogVo = new P_ErrorLogVo();
+                errorLogVo.setMem_no("99999999999999");
+                errorLogVo.setOs("API");
+                errorLogVo.setVersion("");
+                errorLogVo.setBuild("");
+                errorLogVo.setDtype("banWord");
+                errorLogVo.setCtype("금지어 체크 오류");
+                errorLogVo.setDesc(param);
+                commonService.saveErrorLog(errorLogVo);
+            } catch (Exception e1){}
+
+            return isMatch = true;
+        }
+
         return isMatch;
     }
 
@@ -1226,22 +1248,38 @@ public class DalbitUtil {
      */
     public static String replaceMaskString(String str, String param){
         str = str.replaceAll("\\|\\|", "\\|");
-
-        Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
-        Matcher m = p.matcher(param);
+        str = StringUtils.replace(str, "(", "\\(");
+        str = StringUtils.replace(str, ")", "\\)");
 
         StringBuffer sb = new StringBuffer();
-        while (m.find()){
-            m.appendReplacement(sb, maskWord(m.group()));
-        }
-        m.appendTail(sb);
 
-        /*for (int i = 0; i < splitStr.length; i++ ){
-            if(param.contains(splitStr[i])){
-                param = param.replaceAll(splitStr[i], "***");
+        try {
+
+            Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
+            Matcher m = p.matcher(param);
+            while (m.find()){
+                m.appendReplacement(sb, maskWord(m.group()));
             }
+            m.appendTail(sb);
+        } catch (Exception e){
+            sb.setLength(0);
+            sb.append(param);
+            log.error("금지어 변환 오류 replaceMaskString");
+
+            try{
+                P_ErrorLogVo errorLogVo = new P_ErrorLogVo();
+                errorLogVo.setMem_no("99999999999999");
+                errorLogVo.setOs("API");
+                errorLogVo.setVersion("");
+                errorLogVo.setBuild("");
+                errorLogVo.setDtype("banWord");
+                errorLogVo.setCtype("금지어 변환 오류");
+                errorLogVo.setDesc(param);
+                commonService.saveErrorLog(errorLogVo);
+            } catch (Exception e1){
+            }
+
         }
-        return param;*/
         return sb.toString();
     }
 
