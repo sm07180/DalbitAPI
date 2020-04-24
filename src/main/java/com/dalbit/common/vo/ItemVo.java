@@ -20,4 +20,5 @@ public class ItemVo {
     private double heightRate;
     private String location;
     private int duration;
+    private String iosSelectType = "lottie"; //webp, lottie
 }
