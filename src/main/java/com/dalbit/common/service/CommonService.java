@@ -118,14 +118,16 @@ public class CommonService {
         resultMap.put("particles", commonDao.selectItemList(pItemVo));
 
         if(deviceVo.getOs() == 1 || deviceVo.getOs() == 2){
-            if("real".equals(DalbitUtil.getActiceProfile())){
+            /*if("real".equals(DalbitUtil.getActiceProfile())){
                 AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
                 resultMap.put("version", versionVo.getVersion());
                 resultMap.put("isForce", versionVo.isForce());
             }else{
                 resultMap.put("version", "1.0.0");
                 resultMap.put("isForce", false);
-            }
+            }*/
+            resultMap.put("version", "1.0.0");
+            resultMap.put("isForce", false);
             if(deviceVo.getOs() == 2){
                 resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/my-app/id1490208806?ls=1&mt=8");
             }

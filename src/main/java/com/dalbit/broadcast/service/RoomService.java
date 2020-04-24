@@ -806,7 +806,7 @@ public class RoomService {
                     returnMap.put("isNew", target.getIsNew());
                     returnMap.put("startDt", target.getStartDt());
                     returnMap.put("startTs", target.getStartTs());
-                    returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
+                    returnMap.put("hasNotice", DalbitUtil.getIntMap(resultUpdateMap, "auth") == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
                     returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
@@ -1004,7 +1004,7 @@ public class RoomService {
                     returnMap.put("isNew", target.getIsNew());
                     returnMap.put("startDt", target.getStartDt());
                     returnMap.put("startTs", target.getStartTs());
-                    returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
+                    returnMap.put("hasNotice", DalbitUtil.getIntMap(resultUpdateMap, "auth") == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
                     returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
                     returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
