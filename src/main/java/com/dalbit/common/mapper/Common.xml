@@ -127,7 +127,8 @@
         /* Common.xml - selectAppVersion */
         SELECT
             version
-            , is_force AS isForce
+            , build_no AS buildNo
+            , upBuild_no AS upBuildNo
         FROM rd_admin.tb_app_version
         WHERE os = #{value}
             AND is_use = 1

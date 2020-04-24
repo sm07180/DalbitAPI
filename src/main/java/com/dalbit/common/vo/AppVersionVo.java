@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter @Setter
 public class AppVersionVo {
     private String version;
-    private boolean isForce;
+    private Long buildNo;
+    private Long upBuildNo;
 }
