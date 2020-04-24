@@ -223,7 +223,7 @@ public class RoomService {
             log.info("returnMap: {}",returnMap);
             procedureVo.setData(returnMap);
 
-            if(target.getState() == 2 || target.getState() == 3){
+            if(target.getState() == 2 || target.getState() == 3 || target.getState() == 0){
                 try{
                     socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), target.getState(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), "join");
                 }catch(Exception e){

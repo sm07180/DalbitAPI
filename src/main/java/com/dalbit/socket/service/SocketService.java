@@ -251,6 +251,8 @@ public class SocketService {
                 command = "reqCalling";
             }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
+            }else if(state == 0){ // 미디어 오프
+                command = "reqBjAntDisconnect";
             }
             vo.setCommand(command);
             vo.setMessage(vo.getAuth() + "");
