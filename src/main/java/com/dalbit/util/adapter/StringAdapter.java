@@ -6,6 +6,7 @@ import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 import java.io.IOException;
+import java.net.URLEncoder;
 
 public class StringAdapter extends TypeAdapter<String> {
 
@@ -14,7 +15,7 @@ public class StringAdapter extends TypeAdapter<String> {
         if(value == null){
             writer.value("");
         }else{
-            writer.value(value.trim());
+            writer.value(URLEncoder.encode(value.trim()));
         }
     }
 
