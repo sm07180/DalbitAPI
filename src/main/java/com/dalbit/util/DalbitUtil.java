@@ -1202,6 +1202,16 @@ public class DalbitUtil {
         return decodeStr;
     }
 
+    public static String escapeCharDecode(String data){
+        if(isEmpty(data)){
+            return "";
+        }
+        data = StringUtils.replace(data, "\\\\n", "\\n");
+        data = StringUtils.replace(data, "\\\\r", "\\r");
+        data = StringUtils.replace(data, "\\\\'", "\\'");
+        data = StringUtils.replace(data, "\\\\\"", "\\\"");
+        return data;
+    }
 
     /**
      * 금지어 포함 여부

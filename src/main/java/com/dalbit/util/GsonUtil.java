@@ -3,6 +3,7 @@ package com.dalbit.util;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.util.adapter.*;
 import com.google.gson.GsonBuilder;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -64,7 +65,8 @@ public class GsonUtil {
     public String toJson(JsonOutputVo jsonOutputVo){
         //return DalbitUtil.getSpclStrCnvr(convertJson(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\"));
         //return DalbitUtil.htmlDecode(DalbitUtil.uniDecode(convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo))));
-        return convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\");
+        return DalbitUtil.escapeCharDecode(convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)));
+        //return convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\");
     }
     public String toJsonAdm(JsonOutputVo jsonOutputVo){
         return DalbitUtil.getSpclStrCnvr(convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\"));

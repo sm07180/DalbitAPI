@@ -15,7 +15,8 @@ public class StringAdapter extends TypeAdapter<String> {
         if(value == null){
             writer.value("");
         }else{
-            writer.value(URLEncoder.encode(value.trim()));
+            //writer.value(URLEncoder.encode(value.trim()));
+            writer.value(value.trim());
         }
     }
 
