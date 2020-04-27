@@ -55,4 +55,8 @@
       call sp_broadcast_room_state_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callBroadCastRoomChangeCount" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_change_count(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

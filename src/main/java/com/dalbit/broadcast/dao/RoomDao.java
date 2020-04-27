@@ -32,4 +32,6 @@ public interface RoomDao {
     ProcedureVo callBroadcastRoomStreamSelect(ProcedureVo procedureVo);
     ProcedureVo callBroadcastRoomTokenUpdate(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomStateUpate(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    ProcedureVo callBroadCastRoomChangeCount(ProcedureVo procedureVo);
 }

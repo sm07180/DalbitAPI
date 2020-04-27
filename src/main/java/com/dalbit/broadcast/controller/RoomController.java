@@ -243,6 +243,22 @@ public class RoomController {
 
 
     /**
+     * 방송방 현재 순위, 좋아요수 팬랭킹 조회
+     */
+    @GetMapping("/boost/end")
+    public String roomCountInfo(@Valid LiveRankInfoVo liveRankInfoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_RoomLiveRankInfoVo apiData = new P_RoomLiveRankInfoVo();
+        apiData.setRoom_no(liveRankInfoVo.getRoomNo());
+
+        String result = roomService.callBroadCastRoomChangeCount(apiData, request);
+
+        return result;
+    }
+
+    /**
      * 방송방 선물받은 내역보기
      */
     @GetMapping("/history")

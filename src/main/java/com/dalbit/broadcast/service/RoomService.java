@@ -599,6 +599,36 @@ public class RoomService {
         return result;
     }
 
+    /**
+     * 방송방 현재 순위, 좋아요수 팬랭킹 조회
+     */
+    public String callBroadCastRoomChangeCount(P_RoomLiveRankInfoVo pRoomLiveRankInfoVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomLiveRankInfoVo);
+        roomDao.callBroadCastRoomChangeCount(procedureVo);
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회실패));
+        if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            try{
+                HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+
+                HashMap socketMap = new HashMap();
+                socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                socketService.changeCount(pRoomLiveRankInfoVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            }catch(Exception e){
+                log.info("Socket Service changeCount Exception {}", e);
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공));
+        }else if(Status.순위아이템사용_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_해당방없음));
+        }
+
+        return result;
+    }
 
     /**
      * 방송방 선물받은 내역보기
