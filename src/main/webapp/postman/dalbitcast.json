@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "2eabe425-e822-4f50-87ff-3a234ba545b1",
-		"name": "달빛라디오 API 정의서_2020.04.20",
+		"_postman_id": "656d91dd-6898-4ca8-8a8c-fae60e41f273",
+		"name": "달빛라디오 API 정의서_2020.04.27",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4658,6 +4658,18 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 부스터 완료 20.04.27",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": ""
+										},
+										"description": "완료시점의 랭킹, 좋아요수, 팬랭킹 소켓으로 브로드"
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -6379,7 +6391,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "0f3acf1b-a2a7-400d-808b-a9a2ba8ae96a",
+				"id": "79e9c555-3913-40bd-a026-65f97c1e8ad4",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -6389,7 +6401,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "afcc2d09-3688-4a5d-9a3c-25a978d33ca0",
+				"id": "0b5b785f-1c7b-4abc-8e3b-0ddfbc935c6c",
 				"type": "text/javascript",
 				"exec": [
 					""
