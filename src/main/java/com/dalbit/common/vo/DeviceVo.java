@@ -57,6 +57,10 @@ public class DeviceVo {
                 this.isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
             }
         }
+
+        if(!DalbitUtil.isEmpty(this.appBuild) && this.appBuild.indexOf(".") > -1){
+            this.appBuild = this.appBuild.substring(0, this.appBuild.indexOf("."));
+        }
         if("192.168.10.163".equals(this.ip) || "192.168.10.164".equals(this.ip)){ //소켓서버일경우 3번으로 수정
             this.os =3;
         }
