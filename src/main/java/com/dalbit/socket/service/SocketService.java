@@ -582,9 +582,9 @@ public class SocketService {
             data.put("authToken", authToken);
             vo.setMessage(data);
 
-            log.error(" @@@ chatEnd @@@");
-            log.error(vo.toQueryString());
-            log.error(" @@@ chatEnd @@@");
+            log.debug(" @@@ chatEnd @@@");
+            log.debug(vo.toQueryString());
+            log.debug(" @@@ chatEnd @@@");
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
