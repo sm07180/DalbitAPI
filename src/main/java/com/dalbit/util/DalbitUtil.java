@@ -1208,6 +1208,8 @@ public class DalbitUtil {
         }
         data = StringUtils.replace(data, "\\\\n", "\\n");
         data = StringUtils.replace(data, "\\\\r", "\\r");
+        data = StringUtils.replace(data, "\\\\t", "\\t");
+        data = StringUtils.replace(data, "\\\\/", "\\/");
         data = StringUtils.replace(data, "\\\\'", "\\'");
         data = StringUtils.replace(data, "\\\\\"", "\\\"");
         return data;
