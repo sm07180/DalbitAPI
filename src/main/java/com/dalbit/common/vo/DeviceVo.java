@@ -50,7 +50,12 @@ public class DeviceVo {
                 if(DalbitUtil.isEmpty(this.appVersion)){
                     this.appVersion = DalbitUtil.getStringMap(headers, "appVersion");
                 }
-                this.appBuild = DalbitUtil.getStringMap(headers, "appBuild");
+                String appBulid = DalbitUtil.getStringMap(headers, "appBuild");
+                // ios 오타로 인한 추가 체크 (심사 올라간 버전이라 수정 불가)
+                if(os == 2) {
+                    appBulid = DalbitUtil.getStringMap(headers, "appBulid");
+                }
+                this.appBuild = appBulid;
                 this.deviceToken = DalbitUtil.isNullToString(deviceToken);
                 this.appVersion = DalbitUtil.isNullToString(appVersion);
                 this.adId = DalbitUtil.isNullToString(adId);
