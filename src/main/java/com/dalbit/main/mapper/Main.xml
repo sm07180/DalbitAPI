@@ -128,7 +128,7 @@
             , T4.title AS title
             , T4.subject_type AS roomType
             , T4.code AS roomTypeNm
-        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no
+        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no and T2.mem_state = 1
             INNER JOIN tb_member_profile T3 ON T1.mem_no_star = T3.mem_no
             INNER JOIN (
                 SELECT
@@ -142,7 +142,6 @@
                 WHERE S1.state &lt; 4
             ) T4 ON T1.mem_no_star = T4.mem_no
         WHERE T1.mem_no_fan = #{value}
-          AND T1.mem_no_star = T2.mem_no
         LIMIT 0, 10
     </select>
 
