@@ -582,4 +582,18 @@ public class MypageController {
 
         return result;
     }
+
+    /**
+     * 회원 알림 내용 읽음처리
+     */
+    @PostMapping("/read")
+    public String readNotification(@Valid ReadNotificationVo readNnotificationVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ReadNotificationVo apiData = new P_ReadNotificationVo(readNnotificationVo, request);
+
+        String result = mypageService.callReadNotification(apiData);
+
+        return result;
+    }
 }

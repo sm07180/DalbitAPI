@@ -59,4 +59,5 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     List<P_ChangeItemListVo> changeItemSelect(ProcedureVo procedureVo);
     ProcedureVo changeItem(ProcedureVo procedureVo);
+    ProcedureVo callReadNotification(ProcedureVo procedureVo);
 }

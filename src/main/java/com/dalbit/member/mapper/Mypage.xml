@@ -142,5 +142,9 @@
       call sp_member_change_item(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callReadNotification" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_notification_read(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 
 </mapper>

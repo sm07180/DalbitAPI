@@ -1120,4 +1120,23 @@ public class MypageService {
         return result;
 
     }
+
+
+    /**
+     * 회원 알림 내용 읽음처리
+     */
+    public String callReadNotification(P_ReadNotificationVo pReadNotificationVo){
+        ProcedureVo procedureVo = new ProcedureVo(pReadNotificationVo);
+        mypageDao.callReadNotification(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.알림읽음_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림읽음_성공));
+        }else if(procedureVo.getRet().equals(Status.알림읽음_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림읽음_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림읽음_실패));
+        }
+        return result;
+    }
 }
