@@ -9,6 +9,7 @@ import lombok.Setter;
 @Getter @Setter
 public class NotificationOutVo {
 
+    private int notiIdx;
     private int notiType;
     private String contents;
     private String memNo;
@@ -18,6 +19,7 @@ public class NotificationOutVo {
     private ImageVo profImg;
 
     public NotificationOutVo(P_NotificationVo target) {
+        setNotiIdx(target.getNotiIdx());
         setNotiType(target.getNotiType());
         setContents(target.getContents());
         setMemNo(target.getTarget_mem_no());

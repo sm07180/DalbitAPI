@@ -28,6 +28,7 @@ public class P_NotificationVo {
     private int pageCnt;
 
     /* Output */
+    private int notiIdx;            //알림번호
     private int notiType;           // 알림종류
     private String contents;        // 알림내용
     private String target_mem_no;   // 알림 주체 회원번호
