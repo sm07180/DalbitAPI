@@ -142,7 +142,6 @@
                 WHERE S1.state &lt; 4
             ) T4 ON T1.mem_no_star = T4.mem_no
         WHERE T1.mem_no_fan = #{value}
-          AND T1.mem_no_star = T2.mem_no
         LIMIT 0, 10
     </select>
 
