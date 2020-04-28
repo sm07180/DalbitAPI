@@ -57,6 +57,7 @@
                 FROM tb_member_basic T2 INNER JOIN tb_member_profile T3 ON T2.mem_no = T3.mem_no
         ) T2 ON T1.mem_no_star = T2.mem_no
         WHERE T1.mem_no_fan = #{targetMemNo}
+            AND T2.mem_no IS NOT NULL
     </select>
 
 </mapper>
