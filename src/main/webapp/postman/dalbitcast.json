@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "656d91dd-6898-4ca8-8a8c-fae60e41f273",
-		"name": "달빛라디오 API 정의서_2020.04.27",
+		"_postman_id": "78f7a7e6-1d1f-44ce-815b-260fd5f94a2f",
+		"name": "달빛라디오 API 정의서_2020.04.28",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -2862,6 +2862,53 @@
 													"key": "memNo",
 													"value": "11584403882365"
 												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "[완료] 회원 알림내용 읽음처리_2020.04.28",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/x-www-form-urlencoded",
+												"type": "text"
+											},
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDQyMTY3MDEwM0B0cnVlIiwiaWF0IjoxNTg4MDUxMjI3LCJleHAiOjE1OTA2NDMyMjd9.unmijB4YDNfH6oMPucoaOsmXZlOLMjQ_AX6U1Hxwzuk",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":3, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "notiIdx",
+													"value": "16527",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devapi2.dalbitlive.com/mypage/read",
+											"protocol": "https",
+											"host": [
+												"devapi2",
+												"dalbitlive",
+												"com"
+											],
+											"path": [
+												"mypage",
+												"read"
 											]
 										}
 									},
