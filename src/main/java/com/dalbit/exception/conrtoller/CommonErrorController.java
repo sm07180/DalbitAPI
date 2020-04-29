@@ -78,6 +78,7 @@ public class CommonErrorController {
             apiData.setDtype(deviceVo.getOs()+"|"+request.getMethod());
             apiData.setVersion(deviceVo.getAppVersion());
             apiData.setBuild(deviceVo.getAppBuild());
+            apiData.setMem_no(MemberVo.getMyMemNo(request));
             apiData.setCtype(request.getRequestURL().toString());
             String desc = "";
             if(!DalbitUtil.isEmpty(request.getParameterMap())){
