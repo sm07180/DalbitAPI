@@ -120,10 +120,8 @@ public class CommonService {
         if(deviceVo.getOs() == 1 || deviceVo.getOs() == 2){
             AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
             resultMap.put("version", versionVo.getVersion());
-            log.error("@@@@@@@@@@@@@ 앱 버전 확인 [start] @@@@@@@@@@@@@@@@@");
-            log.error(new Gson().toJson(versionVo));
-            log.error(new Gson().toJson(deviceVo));
-            log.error("############## 앱 버전 확인 [end] ############");
+            log.debug(new Gson().toJson(versionVo));
+            log.debug(new Gson().toJson(deviceVo));
             if(versionVo.getUpBuildNo() != null && !DalbitUtil.isEmpty(deviceVo.getAppBuild())){
                 try{
                     resultMap.put("isForce", (versionVo.getUpBuildNo() > Long.parseLong(deviceVo.getAppBuild())));
