@@ -97,7 +97,8 @@ public class MainService {
                     outVo.setProfImg(tmpVo);
                     outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
                 }else{
-                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?656x240");
+                    //outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?656x240");
+                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
                     outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
                 }
                 outVo.setRoomType(recommendVoList.get(i).getRoomType());

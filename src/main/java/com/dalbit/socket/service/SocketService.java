@@ -5,8 +5,10 @@ import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberInfoVo;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberVo;
@@ -48,6 +50,9 @@ public class SocketService {
     @Autowired
     MypageDao mypageDao;
 
+    @Autowired
+    CommonService commonService;
+
     public Map<String, Object> sendSocketApi(String authToken, String roomNo, String params) {
         HttpURLConnection con = null;
         URL url = null;
@@ -77,11 +82,27 @@ public class SocketService {
 
             result = readStream(con.getInputStream());
         }catch(IOException e){
-            log.info("Socket Rest {} error {}", request_uri, e.getMessage());
+            try {
+                P_ErrorLogVo apiData = new P_ErrorLogVo();
+                apiData.setOs("API");
+                apiData.setDtype("SOCKET");
+                apiData.setCtype(roomNo);
+                String desc = "";
+                if (!DalbitUtil.isEmpty(params)) {
+                    desc = "Data : \n" + params + "\n";
+                }
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                if (sw != null) {
+                    desc += "Exception : \n" + sw.toString();
+                }
+                apiData.setDesc(desc);
+                commonService.saveErrorLog(apiData);
+                //log.info("Socket Rest {} error {}", request_uri, e.getMessage());
+            }catch(Exception e1){}
             if(con != null){
                 result = readStream(con.getErrorStream());
             }
-
         }
 
         log.info("Socket Result {}, {}, {}", roomNo, params, result);
@@ -627,7 +648,7 @@ public class SocketService {
     public SocketVo getSocketVo(String roomNo, String memNo, boolean isLogin){
         try{
             return new SocketVo(memNo, getUserInfo(roomNo, memNo, isLogin), isLogin);
-        }catch(Exception e){e.getStackTrace();}
+        }catch(Exception e){}
         return null;
     }
 
@@ -661,7 +682,7 @@ public class SocketService {
             }
 
             return userInfo;
-        }catch(Exception e){e.getStackTrace();}
+        }catch(Exception e){}
         return null;
     }
 

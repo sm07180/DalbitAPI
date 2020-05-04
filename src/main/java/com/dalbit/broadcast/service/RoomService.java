@@ -24,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -436,7 +437,9 @@ public class RoomService {
     @Transactional(readOnly = true)
     public String callBroadCastRoomList(P_RoomListVo pRoomListVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
+        long st = (new Date()).getTime();
         List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+        log.debug("select time {} ms", ((new Date()).getTime() - st));
 
         HashMap roomList = new HashMap();
         if(DalbitUtil.isEmpty(roomVoList)){
@@ -444,20 +447,24 @@ public class RoomService {
             return gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, roomList));
         }
 
+        st = (new Date()).getTime();
         List<RoomOutVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
+        String systemBanWord = commonService.banWordSelect();
         for (int i=0; i<roomVoList.size(); i++){
             if(!DalbitUtil.isEmpty(roomVoList.get(i).getNotice())){
-                //사이트+방송방 금지어 조회 공지사항 마스킹처리
+                //사이트+방송방 금지어 조회 공지사항 마스킹처리 목록에서 사용하지 않아 주석 처리
                 banWordVo.setMemNo(roomVoList.get(i).getBj_mem_no());
-                if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
-                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), roomVoList.get(i).getNotice()));
-                }else{
-                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(commonService.banWordSelect(), roomVoList.get(i).getNotice()));
+                String banWord = commonService.broadcastBanWordSelect(banWordVo);
+                if(!DalbitUtil.isEmpty(banWord)){
+                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, roomVoList.get(i).getNotice()));
+                }else if(!DalbitUtil.isEmpty(systemBanWord)){
+                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord, roomVoList.get(i).getNotice()));
                 }
             }
             outVoList.add(new RoomOutVo(roomVoList.get(i)));
         }
+        log.debug("set list time {} ms", ((new Date()).getTime() - st));
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         roomList.put("list", procedureOutputVo.getOutputBox());
         roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
