@@ -55,13 +55,15 @@ public class RoomService {
      */
     public String callBroadCastRoomCreate(P_RoomCreateVo pRoomCreateVo, HttpServletRequest request) throws GlobalException{
 
+        String systemBanWord = commonService.banWordSelect();
+
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomCreateVo.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomCreateVo.getTitle())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방생성제목금지));
         }
 
         //금지어 체크(인사말)
-        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomCreateVo.getWelcomMsg())){
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomCreateVo.getWelcomMsg())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방생성인사말금지));
         }
 
@@ -371,13 +373,16 @@ public class RoomService {
      * 방송방 정보 수정
      */
     public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo, HttpServletRequest request) throws GlobalException {
+
+        String systemBanWord = commonService.banWordSelect();
+
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomEditVo.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomEditVo.getTitle())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
         }
 
         //금지어 체크(인사말)
-        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pRoomEditVo.getWelcomMsg())){
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomEditVo.getWelcomMsg())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정인사말금지));
         }
         

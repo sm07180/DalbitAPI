@@ -302,9 +302,10 @@ public class SampleVoTest {
         String siteBanWord = commonService.banWordSelect();
         BanWordVo banWordVo = new BanWordVo();
         banWordVo.setMemNo(mem_no);
-        if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
-            log.debug("사이트 + 방송방 금지어: {}", siteBanWord+"|"+commonService.broadcastBanWordSelect(banWordVo));
-            replaceStr = DalbitUtil.replaceMaskString(siteBanWord+"|"+commonService.broadcastBanWordSelect(banWordVo), str);
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+        if(!DalbitUtil.isEmpty(banWord)){
+            log.debug("사이트 + 방송방 금지어: {}", siteBanWord+"|"+banWord);
+            replaceStr = DalbitUtil.replaceMaskString(siteBanWord+"|"+banWord, str);
         } else {
             log.debug("사이트 금지어: {}", siteBanWord);
         }
