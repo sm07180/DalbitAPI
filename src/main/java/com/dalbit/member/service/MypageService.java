@@ -566,14 +566,16 @@ public class MypageService {
         List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
         banWordVo.setMemNo(pMypagNoticeSelectVo.getTarget_mem_no());
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
         for (int i=0; i<mypageNoticeListVo.size(); i++){
             //사이트+방송방 금지어 조회 마이페이지 공지사항 제목, 내용 마스킹 처리
-            if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
-                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), mypageNoticeListVo.get(i).getTitle()));
-                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), mypageNoticeListVo.get(i).getContents()));
-            }else{
-                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(commonService.banWordSelect(), mypageNoticeListVo.get(i).getTitle()));
-                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect(), mypageNoticeListVo.get(i).getContents()));
+            if(!DalbitUtil.isEmpty(banWord)){
+                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, mypageNoticeListVo.get(i).getTitle()));
+                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, mypageNoticeListVo.get(i).getContents()));
+            }else if (!DalbitUtil.isEmpty(systemBanWord)){
+                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord, mypageNoticeListVo.get(i).getTitle()));
+                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, mypageNoticeListVo.get(i).getContents()));
             }
             outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
         }

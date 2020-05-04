@@ -124,12 +124,14 @@ public class ProfileService {
         List<FanboardVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
         banWordVo.setMemNo(pFanboardListVo.getStar_mem_no());
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
         for (int i=0; i<fanboardVoList.size(); i++){
             //사이트+방송방 금지어 조회 댓글 마스킹 처리
-            if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
-                fanboardVoList.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), fanboardVoList.get(i).getContents()));
-            }else{
-                fanboardVoList.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect(), fanboardVoList.get(i).getContents()));
+            if(!DalbitUtil.isEmpty(banWord)){
+                fanboardVoList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, fanboardVoList.get(i).getContents()));
+            }else if(!DalbitUtil.isEmpty(systemBanWord)){
+                fanboardVoList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, fanboardVoList.get(i).getContents()));
             }
             outVoList.add(new FanboardVo(fanboardVoList.get(i)));
         }
@@ -201,12 +203,14 @@ public class ProfileService {
         List<FanboardReplyOutVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
         banWordVo.setMemNo(pFanboardReplyVo.getStar_mem_no());
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
         for (int i=0; i<fanboardVoReplyList.size(); i++){
             //사이트+방송방 금지어 조회 대댓글 마스킹 처리
-            if(!DalbitUtil.isEmpty(commonService.broadcastBanWordSelect(banWordVo))){
-                fanboardVoReplyList.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect()+"|"+commonService.broadcastBanWordSelect(banWordVo), fanboardVoReplyList.get(i).getContents()));
-            }else{
-                fanboardVoReplyList.get(i).setContents(DalbitUtil.replaceMaskString(commonService.banWordSelect(), fanboardVoReplyList.get(i).getContents()));
+            if(!DalbitUtil.isEmpty(banWord)){
+                fanboardVoReplyList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, fanboardVoReplyList.get(i).getContents()));
+            }else if(!DalbitUtil.isEmpty(systemBanWord)){
+                fanboardVoReplyList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, fanboardVoReplyList.get(i).getContents()));
             }
             outVoList.add(new FanboardReplyOutVo(fanboardVoReplyList.get(i)));
         }
