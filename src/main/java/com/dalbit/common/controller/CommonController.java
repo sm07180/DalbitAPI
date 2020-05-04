@@ -14,7 +14,6 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.member.vo.procedure.P_MemberInfoVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RedisUtil;
@@ -31,9 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @RestController
