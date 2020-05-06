@@ -22,6 +22,7 @@ import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+//import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
@@ -35,6 +36,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
+//import com.nimbusds.jose.util.Base64URL;
+//import com.nimbusds.jwt.SignedJWT;
 
 @Slf4j
 @Service
@@ -130,8 +133,8 @@ public class CommonService {
                 }
             }
             if(deviceVo.getOs() == 2){
-                //resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/my-app/id1490208806?ls=1&mt=8");
-                resultMap.put("storeUrl", "https://apps.apple.com/us/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806?l=ko&ls=1");
+                resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/my-app/id1490208806?ls=1&mt=8");
+                //resultMap.put("storeUrl", "https://apps.apple.com/us/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806?l=ko&ls=1");
             }
             resultMap.put("isPayment", true);
         }
@@ -500,4 +503,54 @@ public class CommonService {
         return DalbitUtil.isEmpty(resultVo) ? null : resultVo.getBanWord();
     }
 
+    /*public String connectGoogleNative(HttpServletRequest request){
+        String result = "error";
+        String id_token = request.getParameter("id_token");
+        if(DalbitUtil.isEmpty(id_token)){
+            result = "blank token";
+        }else{
+            if(id_token.indexOf(".") > -1 && id_token.split("\\.").length == 3){
+                try{
+                    String[] tokens = id_token.split("\\.");
+                    SignedJWT signedJWT = new SignedJWT(new Base64URL(tokens[0]), new Base64URL(tokens[1]), new Base64URL(tokens[2]));
+                    if(signedJWT.getPayload() != null) {
+                        JSONObject googleMap = signedJWT.getPayload().toJSONObject();
+                        HashMap resultMap = new HashMap();
+                        resultMap.put("memType", "g");
+                        if(googleMap.containsKey("sub") && !DalbitUtil.isEmpty(googleMap.getAsString("sub"))) {
+                            resultMap.put("memId", googleMap.getAsString("sub"));
+                        }else{
+                            resultMap.put("memId", googleMap.getAsString("subject"));
+                        }
+
+                        resultMap.put("nickNm", "");
+                        resultMap.put("name", "");
+                        if(googleMap.containsKey("name") && !DalbitUtil.isEmpty(googleMap.getAsString("name"))) {
+                            resultMap.put("nickNm", googleMap.getAsString("name"));
+                            resultMap.put("name", googleMap.getAsString("name"));
+                        }
+
+                        resultMap.put("email", "");
+                        if(googleMap.containsKey("email") && !DalbitUtil.isEmpty(googleMap.getAsString("email"))) {
+                            resultMap.put("email", googleMap.getAsString("email"));
+                        }
+
+                        resultMap.put("profImgUrl", "");
+                        if(googleMap.containsKey("picture") && !DalbitUtil.isEmpty(googleMap.getAsString("picture"))) {
+                            resultMap.put("profImgUrl", googleMap.getAsString("picture"));
+                        }
+                        resultMap.put("gender", "n");
+                    }else{
+                        result = "invalid token";
+                    }
+                }catch(Exception e) {
+                    result = "invalid token";
+                }
+            }else{
+                result = "invalid token";
+            }
+        }
+
+        return result;
+    }*/
 }

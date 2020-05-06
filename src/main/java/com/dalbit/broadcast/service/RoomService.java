@@ -339,13 +339,15 @@ public class RoomService {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
                 try{
-                    HashMap socketMap = new HashMap();
-                    socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
-                    socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-                    socketMap.put("fanRank", returnMap.get("fanRank"));
-                    //TODO - 레벨업 유무 소켓추가 추후 확인
-                    // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-                    socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                    if(resultMap.containsKey("good")){
+                        HashMap socketMap = new HashMap();
+                        socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                        socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                        socketMap.put("fanRank", returnMap.get("fanRank"));
+                        //TODO - 레벨업 유무 소켓추가 추후 확인
+                        // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+                        socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                    }
                 }catch(Exception e){
                     log.info("Socket Service changeCount Exception {}", e);
                 }
