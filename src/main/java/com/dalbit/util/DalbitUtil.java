@@ -580,10 +580,10 @@ public class DalbitUtil {
             for (int i=0; i<bindingResult.getErrorCount(); i++) {
                 FieldError fieldError = (FieldError) errorList.get(i);
 
-                bindingMessageList.add("field : " + fieldError.getField()  + ", value : "+ fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage());
+                bindingMessageList.add("param : " + fieldError.getField()  + ", value : "+ fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage());
             }
             validationResultVo.setValidationMessageDetail(bindingMessageList);
-            throw new GlobalException(Status.파라미터오류, null, validationResultVo.getValidationMessageDetail(), methodName);
+            throw new GlobalException(Status.벨리데이션체크, null, validationResultVo.getValidationMessageDetail(), methodName, true);
         }
 
     }

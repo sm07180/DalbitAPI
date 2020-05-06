@@ -24,6 +24,7 @@ public class GlobalException extends Exception {
     private Status status;
     private Object data;
     private String methodName;
+    private boolean isCustomMessage = false;
 
     private ArrayList validationMessageDetail;
 
@@ -62,6 +63,14 @@ public class GlobalException extends Exception {
         setData(data);
         setValidationMessageDetail(validationMessageDetail);
         setMethodName(methodName);
+    }
+
+    public GlobalException(Status status, Object data, ArrayList validationMessageDetail, String methodName, boolean isCustomMessage){
+        setStatus(status);
+        setData(data);
+        setValidationMessageDetail(validationMessageDetail);
+        setMethodName(methodName);
+        setCustomMessage(isCustomMessage);
     }
 
     public static JsonOutputVo throwException(ErrorStatus errorStatus, String methodName){

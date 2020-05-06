@@ -68,6 +68,11 @@ public class GsonUtil {
         return DalbitUtil.escapeCharDecode(convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)));
         //return convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\");
     }
+
+    public String toJsonCustomMessage(JsonOutputVo jsonOutputVo){
+        return DalbitUtil.escapeCharDecode(convertJsonAdm(jsonOutputVo));
+    }
+
     public String toJsonAdm(JsonOutputVo jsonOutputVo){
         return DalbitUtil.escapeCharDecode(DalbitUtil.getSpclStrCnvr(convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo))));
         //return DalbitUtil.getSpclStrCnvr(convertJsonAdm(messageUtil.setJsonOutputVo(jsonOutputVo)).replace("\\\\", "\\"));

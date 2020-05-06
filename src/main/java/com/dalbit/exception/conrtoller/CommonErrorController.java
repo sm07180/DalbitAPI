@@ -63,7 +63,18 @@ public class CommonErrorController {
         if(globalException.getErrorStatus() != null){
             return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus(), globalException.getData(), globalException.getValidationMessageDetail(), globalException.getMethodName()));
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData(), globalException.getValidationMessageDetail(), globalException.getMethodName()));
+            if(globalException.isCustomMessage()){
+                JsonOutputVo jsonOutputVo = new JsonOutputVo();
+                jsonOutputVo.setStatus(Status.벨리데이션체크);
+                String msg = ((String) globalException.getValidationMessageDetail().get(0)).split(",")[0] + "," + ((String) globalException.getValidationMessageDetail().get(0)).split(",")[2];
+                jsonOutputVo.setMessage(msg);
+                jsonOutputVo.setMethodName(globalException.getMethodName());
+                jsonOutputVo.setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
+                return gsonUtil.toJsonCustomMessage(jsonOutputVo);
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData(), globalException.getValidationMessageDetail(), globalException.getMethodName()));
+            }
+
         }
     }
 

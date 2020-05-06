@@ -13,6 +13,7 @@ public enum Status {
     삭제("C004", "delete.success", "삭제"),
     파라미터오류("C005", "param.error", "파라미터 오류 시"),
     비즈니스로직오류("C006", "business.error", "비즈니스로직 오류 시"),
+    벨리데이션체크("C007", "validation.error", "벨리데이션체크 오류 시"),
 
     //휴대폰 sms 인증
     인증번호요청("0", "sms.number.request.success", "인증번호 요청 성공 시"),
