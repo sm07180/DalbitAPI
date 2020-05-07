@@ -141,6 +141,7 @@ public class CommonService {
             resultMap.put("isPayment", true);
         }
 
+        //TODO - 추후 삭제
         if(DalbitUtil.isEmpty(request.getHeader("custom-header"))){
             resultMap.put("isForce", true);
         }
