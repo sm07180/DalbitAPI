@@ -267,7 +267,7 @@
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>oauth2-oidc-sdk</artifactId>
-            <version>5.45</version>
+            <version>8.0</version>
         </dependency>
 
         <!-- 로컬 jar 추가-->
