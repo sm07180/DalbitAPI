@@ -132,6 +132,11 @@ public class CommonService {
                     resultMap.put("isForce", false);
                 }
             }
+            
+            if(DalbitUtil.isEmpty(request.getHeader("custom-header"))){
+                resultMap.put("isForce", true);
+            }
+
             if(deviceVo.getOs() == 2){
                 resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/id1490208806?l=ko&ls=1");
                 //resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/달빛-라이브-개인-라디오-방송-라이브-채팅-서비스/id1490208806?l=ko&ls=1");
