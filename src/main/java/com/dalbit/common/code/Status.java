@@ -732,6 +732,11 @@ public enum Status {
     알림읽음_실패("C006", "member.notification.read.fail", "알림 읽음 실패 시"),
 
 
+    //구글 로그인
+    구글로그인_성공("0", "google.login.success", "성공"),
+    구글로그인_토큰없음("-1", "google.login.blank.token", "토큰없음"),
+    구글로그인_토큰인증실패("-2", "google.login.invalid.token", "인증실패"),
+    구글로그인_오류("C006", "google.login.error", "오류"),
     ;
 
     final private String RESULT_SUCCESS = "success";

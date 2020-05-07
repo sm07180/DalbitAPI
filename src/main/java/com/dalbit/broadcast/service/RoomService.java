@@ -334,7 +334,9 @@ public class RoomService {
                 }
             }else{
                 try{
-                    socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request));
+                    if(!"0".equals(request.getParameter("isSocket"))){
+                        socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request));
+                    }
                 }catch(Exception e){
                     log.info("Socket Service changeCount Exception {}", e);
                 }

@@ -22,7 +22,7 @@ import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
-//import net.minidev.json.JSONObject;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
@@ -36,8 +36,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
-//import com.nimbusds.jose.util.Base64URL;
-//import com.nimbusds.jwt.SignedJWT;
+import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jwt.SignedJWT;
 
 @Slf4j
 @Service
@@ -504,9 +504,12 @@ public class CommonService {
         return DalbitUtil.isEmpty(resultVo) ? null : resultVo.getBanWord();
     }
 
-    /*public String connectGoogleNative(HttpServletRequest request){
+    public String connectGoogleNative(HttpServletRequest request){
         String result = "error";
-        String id_token = request.getParameter("id_token");
+        HashMap resultMap = new HashMap();
+
+        String id_token = request.getParameter("idToken");
+        log.debug("Connect Google Login start : {}", id_token);
         if(DalbitUtil.isEmpty(id_token)){
             result = "blank token";
         }else{
@@ -515,8 +518,8 @@ public class CommonService {
                     String[] tokens = id_token.split("\\.");
                     SignedJWT signedJWT = new SignedJWT(new Base64URL(tokens[0]), new Base64URL(tokens[1]), new Base64URL(tokens[2]));
                     if(signedJWT.getPayload() != null) {
+                        log.debug("Connect Google Login parse result : {}", signedJWT.getPayload());
                         JSONObject googleMap = signedJWT.getPayload().toJSONObject();
-                        HashMap resultMap = new HashMap();
                         resultMap.put("memType", "g");
                         if(googleMap.containsKey("sub") && !DalbitUtil.isEmpty(googleMap.getAsString("sub"))) {
                             resultMap.put("memId", googleMap.getAsString("sub"));
@@ -541,6 +544,7 @@ public class CommonService {
                             resultMap.put("profImgUrl", googleMap.getAsString("picture"));
                         }
                         resultMap.put("gender", "n");
+                        result = "success";
                     }else{
                         result = "invalid token";
                     }
@@ -552,6 +556,17 @@ public class CommonService {
             }
         }
 
+        log.debug("Connect Google Login end : {}", result);
+        if("success".equals(result)) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_성공, resultMap));
+        }else if("invalid token".equals(result)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_토큰인증실패));
+        }else if("blank token".equals(result)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_토큰없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_오류));
+
+        }
         return result;
-    }*/
+    }
 }

@@ -339,4 +339,9 @@ public class CommonController {
 
         return result;
     }
+
+    @PostMapping("/social/google/callback")
+    public String pushAdd(HttpServletRequest request){
+        return commonService.connectGoogleNative(request);
+    }
 }
