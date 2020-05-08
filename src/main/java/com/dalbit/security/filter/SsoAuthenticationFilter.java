@@ -59,6 +59,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/social"
         , "/self"
         , "/error/log"
+        , "/socket"
         , "/paycall/store"
     };
 

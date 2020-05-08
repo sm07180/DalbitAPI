@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "78f7a7e6-1d1f-44ce-815b-260fd5f94a2f",
+		"_postman_id": "4fdff356-859a-460e-a750-6f7c99409d6f",
 		"name": "달빛라디오 API 정의서_2020.04.28",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -6429,6 +6429,44 @@
 					],
 					"protocolProfileBehavior": {},
 					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Socket",
+					"item": [
+						{
+							"name": "관리자시스템메세지발송",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "message",
+											"value": "TEST 관리자 메세지\nadsadasdasdasda",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "https://api.dalbitlive.com/socket/sendSystemMessage",
+									"protocol": "https",
+									"host": [
+										"api",
+										"dalbitlive",
+										"com"
+									],
+									"path": [
+										"socket",
+										"sendSystemMessage"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"protocolProfileBehavior": {},
+					"_postman_isSubFolder": true
 				}
 			],
 			"protocolProfileBehavior": {}
@@ -6438,7 +6476,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "79e9c555-3913-40bd-a026-65f97c1e8ad4",
+				"id": "4293ae40-48f8-459b-81aa-d4997de3ea19",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -6448,7 +6486,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "0b5b785f-1c7b-4abc-8e3b-0ddfbc935c6c",
+				"id": "6130c014-97ae-4fd2-8416-99697b6c67eb",
 				"type": "text/javascript",
 				"exec": [
 					""

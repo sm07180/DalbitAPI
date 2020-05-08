@@ -3,7 +3,10 @@ package com.dalbit.socket.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
+import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberInfoVo;
+import com.dalbit.broadcast.vo.request.RoomJoinVo;
+import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.ProcedureOutputVo;
@@ -26,7 +29,9 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -157,6 +162,42 @@ public class SocketService {
         }
 
         return null;
+    }
+
+    @Async("threadTaskExecutor")
+    public String sendMessage(String message) {
+        log.info("Socket Start : sendMessage {}", message);
+        RoomListVo pRoomListVo = new RoomListVo();
+        pRoomListVo.setPage(1);
+        pRoomListVo.setRecords(100);
+        ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
+        List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+        String result = "error";
+        if(DalbitUtil.isEmpty(roomVoList)){
+            result = "broadcast is nothing";
+        }else{
+            for(int i = 0; i < roomVoList.size(); i++){
+                if(roomVoList.get(i).getState() != 4){
+                    sendMessage(roomVoList.get(i), message);
+                }
+            }
+
+        }
+        return result;
+    }
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> sendMessage(P_RoomListVo roomListVo, String message) {
+        SocketVo vo = new SocketVo();
+        vo.setMemNo(roomListVo.getBj_mem_no());
+        vo.setLogin(1);
+        vo.setCommand("reqBcStart");
+        vo.setMessage(message);
+        vo.setCtrlRole("0");
+        vo.setRecvType("system");
+        vo.setAuth(3);
+        vo.setAuthName("운영자");
+        return sendSocketApi(roomListVo.getBj_mem_no(), roomListVo.getRoomNo(), vo.toQueryString());
     }
 
     @Async("threadTaskExecutor")
