@@ -36,28 +36,30 @@ public class CommonErrorController {
         DalbitUtil.setHeader(request, response);
 
         try {
-            DeviceVo deviceVo = new DeviceVo(request);
-            P_ErrorLogVo apiData = new P_ErrorLogVo();
-            apiData.setOs("API");
-            apiData.setDtype(deviceVo.getOs()+"|"+globalException.getMethodName());
-            apiData.setVersion(deviceVo.getAppVersion());
-            apiData.setBuild(deviceVo.getAppBuild());
-            apiData.setMem_no(MemberVo.getMyMemNo(request));
-            apiData.setCtype(request.getRequestURL().toString());
-            String desc = "";
-            if(!DalbitUtil.isEmpty(globalException.getData())){
-                desc = "Data : \n" + globalException.getData().toString() + "\n";
+            if(globalException.getStatus() != Status.벨리데이션체크 || !request.getRequestURL().toString().endsWith("/error/log")) {
+                DeviceVo deviceVo = new DeviceVo(request);
+                P_ErrorLogVo apiData = new P_ErrorLogVo();
+                apiData.setOs("API");
+                apiData.setDtype(deviceVo.getOs() + "|" + globalException.getMethodName());
+                apiData.setVersion(deviceVo.getAppVersion());
+                apiData.setBuild(deviceVo.getAppBuild());
+                apiData.setMem_no(MemberVo.getMyMemNo(request));
+                apiData.setCtype(request.getRequestURL().toString());
+                String desc = "";
+                if (!DalbitUtil.isEmpty(globalException.getData())) {
+                    desc = "Data : \n" + globalException.getData().toString() + "\n";
+                }
+                if (!DalbitUtil.isEmpty(globalException.getValidationMessageDetail())) {
+                    desc += "Validation : \n" + globalException.getValidationMessageDetail().toString() + "\n";
+                }
+                StringWriter sw = new StringWriter();
+                globalException.printStackTrace(new PrintWriter(sw));
+                if (sw != null) {
+                    desc += "GlobalException : \n" + sw.toString();
+                }
+                apiData.setDesc(desc);
+                commonService.saveErrorLog(apiData);
             }
-            if(!DalbitUtil.isEmpty(globalException.getValidationMessageDetail())){
-                desc += "Validation : \n" + globalException.getValidationMessageDetail().toString() + "\n";
-            }
-            StringWriter sw = new StringWriter();
-            globalException.printStackTrace(new PrintWriter(sw));
-            if(sw != null){
-                desc += "GlobalException : \n" + sw.toString();
-            }
-            apiData.setDesc(desc);
-            commonService.saveErrorLog(apiData);
         }catch (Exception e){}
 
         if(globalException.getErrorStatus() != null){
