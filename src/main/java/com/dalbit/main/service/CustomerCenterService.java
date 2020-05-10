@@ -80,18 +80,18 @@ public class CustomerCenterService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("noticeIdx", DalbitUtil.getIntMap(resultMap, "noticeIdx"));
-        returnMap.put("noticeType", DalbitUtil.getIntMap(resultMap, "slctType"));
-        returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));
-        returnMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
-        returnMap.put("writeDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "writeDate")));
-        returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
-        procedureVo.setData(returnMap);
-
         String result;
         if(procedureVo.getRet().equals(Status.고객센터_공지사항내용조회_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("noticeIdx", DalbitUtil.getIntMap(resultMap, "noticeIdx"));
+            returnMap.put("noticeType", DalbitUtil.getIntMap(resultMap, "slctType"));
+            returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));
+            returnMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
+            returnMap.put("writeDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "writeDate")));
+            returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
+            procedureVo.setData(returnMap);
+
             result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.고객센터_공지사항내용조회_성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.고객센터_공지사항내용조회_없음.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_공지사항내용조회_없음));
@@ -145,18 +145,18 @@ public class CustomerCenterService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("faqIdx", DalbitUtil.getIntMap(resultMap, "faqIdx"));
-        returnMap.put("faqType", DalbitUtil.getIntMap(resultMap, "slctType"));
-        returnMap.put("question", DalbitUtil.getStringMap(resultMap, "question"));
-        returnMap.put("answer", DalbitUtil.getStringMap(resultMap, "answer"));
-        returnMap.put("writeDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "writeDate")));
-        returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
-        procedureVo.setData(returnMap);
-
         String result;
         if(procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("faqIdx", DalbitUtil.getIntMap(resultMap, "faqIdx"));
+            returnMap.put("faqType", DalbitUtil.getIntMap(resultMap, "slctType"));
+            returnMap.put("question", DalbitUtil.getStringMap(resultMap, "question"));
+            returnMap.put("answer", DalbitUtil.getStringMap(resultMap, "answer"));
+            returnMap.put("writeDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "writeDate")));
+            returnMap.put("writeTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "writeDate")));
+            procedureVo.setData(returnMap);
+
             result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.고객센터_FAQ내용조회_성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.고객센터_FAQ내용조회_없음.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_FAQ내용조회_없음));
