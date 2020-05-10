@@ -567,9 +567,13 @@ public class RoomService {
         }else if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
-            returnMap.put("roomNo", DalbitUtil.getStringMap(resultMap, "roomNo"));
-            returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
-            result = (DalbitUtil.getIntMap(resultMap, "state") == 5) ? gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_비정상, returnMap)) : gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송중, returnMap));
+            if(DalbitUtil.getIntMap(resultMap, "mem_state") != 0 && DalbitUtil.getIntMap(resultMap, "mem_state") != 2){ //방송중인 방이 있으나 tb_broadcast_room_member 테이블에 방장으로 없거나 종료 했을 경우
+                //해당방 종료 시키고 방송방 없음으로 처리 함
+            }else{
+                returnMap.put("roomNo", DalbitUtil.getStringMap(resultMap, "roomNo"));
+                returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
+                result = (DalbitUtil.getIntMap(resultMap, "state") == 5) ? gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_비정상, returnMap)) : gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송중, returnMap));
+            }
         }else if(Status.방송진행여부체크_요청회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_요청회원아님));
         }else{
