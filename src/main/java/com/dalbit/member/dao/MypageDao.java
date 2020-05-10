@@ -20,10 +20,10 @@ public interface MypageDao {
     ProcedureVo callMemberReportAdd(ProcedureVo procedureVo);
     ProcedureVo callMemberBlockAdd(ProcedureVo procedureVo);
     ProcedureVo callMemberBlockDel(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo callMemberNotify(ProcedureVo procedureVo);
     ProcedureVo callMemberNotifyEdit(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_MemberShortCutVo> callMemberShortCut(ProcedureVo procedureVo);
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
     ProcedureVo callMemberGiftRuby(ProcedureVo procedureVo);

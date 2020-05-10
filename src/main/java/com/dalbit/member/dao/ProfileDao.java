@@ -18,6 +18,7 @@ public interface ProfileDao {
     ProcedureVo callMemberFanboardDelete(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_FanboardReplyVo> callMemberFanboardReply(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
     List<P_FanRankingVo> callMemberFanRanking(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callMemberLevelUpCheck(ProcedureVo procedureVo);
@@ -26,5 +27,6 @@ public interface ProfileDao {
     @Transactional(readOnly = true)
     List<P_StarRankingVo> selectStarRanking(P_StarRankingVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_FanListVo> callFanList(ProcedureVo procedureVo);
 }
