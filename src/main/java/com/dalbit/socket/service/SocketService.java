@@ -1,21 +1,14 @@
 package com.dalbit.socket.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
-import com.dalbit.broadcast.vo.RoomOutVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomMemberInfoVo;
-import com.dalbit.broadcast.vo.request.RoomJoinVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
-import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.member.dao.MypageDao;
-import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.procedure.P_MemberInfoVo;
+import com.dalbit.socket.dao.SocketDao;
+import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
@@ -29,7 +22,6 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,10 +42,10 @@ public class SocketService {
     private String SERVER_SOCKET_GLOBAL_ROOM;
 
     @Autowired
-    RoomDao roomDao;
+    SocketDao socketDao;
 
     @Autowired
-    MypageDao mypageDao;
+    RoomDao roomDao;
 
     @Autowired
     CommonService commonService;
@@ -693,46 +685,28 @@ public class SocketService {
 
 
     public HashMap getUserInfo(String roomNo, String memNo, boolean isLogin){
-        P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
+        P_RoomMemberInfoSelectVo pRoomMemberInfoVo = new P_RoomMemberInfoSelectVo();
         pRoomMemberInfoVo.setMem_no(memNo);
         pRoomMemberInfoVo.setRoom_no(roomNo);
-        pRoomMemberInfoVo.setTarget_mem_no(memNo);
 
         try{
             ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
-            roomDao.callBroadCastRoomMemberInfo(procedureVo);
-            HashMap userInfo = new Gson().fromJson(procedureVo.getExt(), HashMap.class);;
-
-            P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
-            pRoomInfoViewVo.setMemLogin(isLogin ? 1 : 0);
-            pRoomInfoViewVo.setMem_no(memNo);
-            pRoomInfoViewVo.setRoom_no(roomNo);
-            ProcedureVo procedureRoomVo = new ProcedureVo(pRoomInfoViewVo);
-            P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureRoomVo);
-            if(!DalbitUtil.isEmpty(roomInfoViewVo)) {
-                P_RoomMemberInfoVo pRoomMemberInfoDalDVo = new P_RoomMemberInfoVo();
-                pRoomMemberInfoDalDVo.setMem_no(memNo);
-                pRoomMemberInfoDalDVo.setRoom_no(roomNo);
-                pRoomMemberInfoDalDVo.setTarget_mem_no(roomInfoViewVo.getBj_mem_no());
-                ProcedureVo procedureDalDVo = new ProcedureVo(pRoomMemberInfoDalDVo);
-                roomDao.callBroadCastRoomMemberInfo(procedureDalDVo);
-                HashMap dalDInfo = new Gson().fromJson(procedureDalDVo.getExt(), HashMap.class);
-                userInfo.put("enableFan", DalbitUtil.getIntMap(dalDInfo, "enableFan"));
-            }
-
-            return userInfo;
+            socketDao.callBroadcastMemberInfo(procedureVo);
+            return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         }catch(Exception e){}
         return null;
     }
 
     public HashMap getMyInfo(String memNo){
-        P_MemberInfoVo apiData = new P_MemberInfoVo();
+        P_RoomMemberInfoSelectVo apiData = new P_RoomMemberInfoSelectVo();
         apiData.setMem_no(memNo);
-        ProcedureVo procedureVo = new ProcedureVo(apiData);
-        mypageDao.callMemberInfo(procedureVo);
-        if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+
+        try{
+            ProcedureVo procedureVo = new ProcedureVo(apiData);
+            socketDao.callBroadcastMemberInfo(procedureVo);
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        }
+        }catch(Exception e){}
+
         return null;
     }
 }
