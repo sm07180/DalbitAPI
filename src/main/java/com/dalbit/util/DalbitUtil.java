@@ -1215,6 +1215,25 @@ public class DalbitUtil {
         return data;
     }
 
+    public static boolean isCheckSlash(String data){
+
+        data = StringUtils.replace(data, "\\\\n", "\\n");
+        data = StringUtils.replace(data, "\\\\r", "\\r");
+        data = StringUtils.replace(data, "\\\\t", "\\t");
+
+        if(data.indexOf("\\n") >= 0 || (data.indexOf("\n") >= 0)){
+            return true;
+        }
+        if(data.indexOf("\\t") >= 0 || data.indexOf("\t") >= 0){
+            return true;
+        }
+        if(data.indexOf("\\r") >= 0 || data.indexOf("\r") >= 0){
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * 금지어 포함 여부
      * str: 금지어 문자열, param: 파라미터

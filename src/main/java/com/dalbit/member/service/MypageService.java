@@ -48,6 +48,11 @@ public class MypageService {
      */
     public String callProfileEdit(P_ProfileEditVo pProfileEditVo, HttpServletRequest request) throws GlobalException {
 
+        // 부적절한문자열 체크 ( "\r", "\n", "\t")
+        if(DalbitUtil.isCheckSlash(pProfileEditVo.getNickName())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+        }
+
         //금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pProfileEditVo.getNickName())){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
@@ -229,6 +234,24 @@ public class MypageService {
      * 회원 방송방 기본설정 수정하기
      */
     public String callBroadBasicEdit(P_BroadBasicEditVo pBroadBasicEdit){
+
+        String systemBanWord = commonService.banWordSelect();
+
+        // 부적절한문자열 체크 ( "\r", "\n", "\t")
+        if(DalbitUtil.isCheckSlash(pBroadBasicEdit.getTitle())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+        }
+
+        //금지어 체크(제목)
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, pBroadBasicEdit.getTitle())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
+        }
+
+        //금지어 체크(인사말)
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, pBroadBasicEdit.getWelcomMsg())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정인사말금지));
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(pBroadBasicEdit);
         mypageDao.callBroadBasicEdit(procedureVo);
 

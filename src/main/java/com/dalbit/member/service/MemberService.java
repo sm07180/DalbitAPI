@@ -77,6 +77,11 @@ public class MemberService {
      */
     public String callNickNameCheck(String nickNm) {
 
+        // 부적절한문자열 체크 ( "\r", "\n", "\t")
+        if(DalbitUtil.isCheckSlash(nickNm)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+        }
+
         //금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), nickNm)){
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));

@@ -14,6 +14,7 @@ public enum Status {
     파라미터오류("C005", "param.error", "파라미터 오류 시"),
     비즈니스로직오류("C006", "business.error", "비즈니스로직 오류 시"),
     벨리데이션체크("C007", "validation.error", "벨리데이션체크 오류 시"),
+    부적절한문자열("C007", "string.error", "부적합한 기호 및 문자열 포함 시"),
 
     //휴대폰 sms 인증
     인증번호요청("0", "sms.number.request.success", "인증번호 요청 성공 시"),
