@@ -230,9 +230,6 @@ public class SocketService {
                 }
             }
 
-            if(old_state == 0 || old_state == 6){
-                bjAntConnect(roomNo, memNo, authToken, isLogin);
-            }
             vo.setCommand(command);
             vo.setMessage(vo.getAuth() + "");
             vo.setRecvPosition("top1");
@@ -247,7 +244,7 @@ public class SocketService {
 
     @Async("threadTaskExecutor")
     public Map<String, Object> bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin){
-        log.info("Socket Start : bjReconnect {}, {}, {}", roomNo, memNo, isLogin);
+        log.info("Socket Start : bjAntConnect {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
