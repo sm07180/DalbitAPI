@@ -260,7 +260,7 @@ public class MypageController {
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setOrderNo(shortCutEditVo.getOrderNo());
         apiData.setOrder(shortCutEditVo.getOrder());
-        apiData.setText(shortCutEditVo.getText());
+        apiData.setText(shortCutEditVo.getText().substring(0, 49));
         apiData.setOnOff(isOn);
 
         String result = mypageService.callMemberShortCutEdit(apiData);
