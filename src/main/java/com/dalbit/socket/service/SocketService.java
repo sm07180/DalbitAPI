@@ -639,6 +639,7 @@ public class SocketService {
             HashMap data = new HashMap();
             data.put("message", auth == 3 ? "roomOut" : "userOut");
             data.put("authToken", authToken);
+            data.put("memNo", memNo);
             vo.setMessage(data);
 
             log.debug(" @@@ chatEnd @@@");
