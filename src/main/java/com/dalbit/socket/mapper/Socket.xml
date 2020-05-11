@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.socket.dao.SocketDao" >
+
+    <select id = "callBroadcastMemberInfo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_member_info_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+</mapper>
