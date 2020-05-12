@@ -250,6 +250,8 @@ public class ActionService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_없는대상));
         }else if(Status.선물하기_아이템번호없음.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_아이템번호없음));
+        }else if(Status.선물하기_달부족.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_달부족));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_실패));
         }
