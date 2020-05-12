@@ -266,7 +266,7 @@ public class RestService {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", roomNm);
 
-        return callRest(antServer, "/" + antName + "/rest/broadcast/create", new Gson().toJson(map), 1, request);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcast/create", new Gson().toJson(map), 1, request);
     }
 
     /**
@@ -307,7 +307,7 @@ public class RestService {
 
         String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
 
-        return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0, request);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcast/getToken", params, 0, request);
     }
 
     /**
