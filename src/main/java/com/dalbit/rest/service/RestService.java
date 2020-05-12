@@ -314,7 +314,7 @@ public class RestService {
             return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
         }else{
             String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
-            return callRest(antServer, "/" + antName + "/rest/v2/broadcast/getToken", params, 0, request);
+            return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0, request);
         }
     }
 
