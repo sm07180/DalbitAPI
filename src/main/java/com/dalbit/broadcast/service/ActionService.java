@@ -11,6 +11,7 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
+import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -66,12 +67,13 @@ public class ActionService {
             String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
             String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
             String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+            SocketVo vo = socketService.getSocketVo(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{ //좋아요 발송
                 boolean isFirst = true;
                 if(DalbitUtil.profileCheck("real")){
                     isFirst = (DalbitUtil.getIntMap(resultMap, "firstGood") == 1);
                 }
-                socketService.sendLike(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service sendLike Exception {}", e);
             }
@@ -81,7 +83,7 @@ public class ActionService {
                 socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
                 socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
-                socketService.changeCount(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.changeCount(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
@@ -209,6 +211,7 @@ public class ActionService {
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
+            SocketVo vo = socketService.getSocketVo(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_code());
@@ -220,7 +223,7 @@ public class ActionService {
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
-                socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service giftItem Exception {}", e);
             }
@@ -231,7 +234,7 @@ public class ActionService {
                 //TODO - 레벨업 유무 소켓추가 추후 확인
                 //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", returnMap.get("fanRank"));
-                socketService.changeCount(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.changeCount(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
@@ -287,8 +290,9 @@ public class ActionService {
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
 
+            SocketVo vo = socketService.getSocketVo(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service sendBooster Exception {}", e);
             }
@@ -303,7 +307,7 @@ public class ActionService {
                 //TODO - 레벨업 유무 소켓추가 추후 확인
                 //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
-                socketService.changeCount(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.changeCount(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
@@ -341,8 +345,9 @@ public class ActionService {
         String result;
         if(Status.시간연장성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            SocketVo vo = socketService.getSocketVo(pExtendTimeVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.roomChangeTime(pExtendTimeVo.getRoom_no(), pExtendTimeVo.getMem_no(), DalbitUtil.getStringMap(resultMap, "extendEndDate"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.roomChangeTime(pExtendTimeVo.getRoom_no(), pExtendTimeVo.getMem_no(), DalbitUtil.getStringMap(resultMap, "extendEndDate"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장성공));
         }else if(Status.시간연장_회원아님.getMessageCode().equals(procedureVo.getRet())){

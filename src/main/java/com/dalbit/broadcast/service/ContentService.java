@@ -8,6 +8,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.socket.service.SocketService;
+import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -88,7 +89,8 @@ public class ContentService {
         String result;
         if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
             try{
-                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                SocketVo vo = socketService.getSocketVo(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service sendNotice Exception {}", e);
             }
@@ -119,7 +121,8 @@ public class ContentService {
         String result;
         if (procedureVo.getRet().equals(Status.공지삭제하기성공.getMessageCode())) {
             try{
-                socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                SocketVo vo = socketService.getSocketVo(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service sendNotice Exception {}", e);
             }
@@ -169,7 +172,8 @@ public class ContentService {
                 socketMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
                 socketMap.put("writeDt", DalbitUtil.getUTCFormat((String)resultMap.get("writeDate")));
                 socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((String)resultMap.get("writeDate")));
-                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                SocketVo vo = socketService.getSocketVo(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service sendStory Exception {}", e);
             }
