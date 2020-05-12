@@ -67,7 +67,7 @@ public class DeviceVo {
                 if(DalbitUtil.isEmpty(this.appBuild)) {
                     String appBulid = DalbitUtil.getStringMap(headers, "appBuild");
                     // ios 오타로 인한 추가 체크 (심사 올라간 버전이라 수정 불가)
-                    if(os == 2) {
+                    if(os == 2 && DalbitUtil.isEmpty(appBulid)) {
                         appBulid = DalbitUtil.getStringMap(headers, "appBulid");
                     }
                     this.appBuild = appBulid;
