@@ -34,4 +34,6 @@ public interface RoomDao {
     ProcedureVo callBroadCastRoomStateUpate(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callBroadCastRoomChangeCount(ProcedureVo procedureVo);
+
+    void callUpdateExitTry(String roomNo);
 }

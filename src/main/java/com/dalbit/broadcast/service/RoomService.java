@@ -334,22 +334,22 @@ public class RoomService {
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
             SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
-            if(isBj){
-                try{
+            if (isBj) {
+                try {
                     socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 3, DalbitUtil.isLogin(request), vo);
-                }catch(Exception e){
+                } catch (Exception e) {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
-            }else{
-                try{
-                    if(!"0".equals(request.getParameter("isSocket"))){
+            } else {
+                try {
+                    if (!"0".equals(request.getParameter("isSocket"))) {
                         socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request), vo);
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
-                try{
-                    if(resultMap.containsKey("good")){
+                try {
+                    if (resultMap.containsKey("good")) {
                         HashMap socketMap = new HashMap();
                         socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                         socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
@@ -358,24 +358,43 @@ public class RoomService {
                         // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                         socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                     }
-                }catch(Exception e){
+                } catch (Exception e) {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_해당방이없음));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_종료된방송));
-        } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님));
-        } else if (procedureVo.getRet().equals(Status.방송나가기실패.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패));
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방참가실패));
+        }else{
+            HashMap returnMap = new HashMap();
+            returnMap.put("isLevelUp", false);
+            if (isBj) {
+                if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
+                    roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
+                } else if (procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode()) || procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode()) || procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+                    SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                    try {
+                        socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 3, DalbitUtil.isLogin(request), vo);
+                    } catch (Exception e) {
+                        log.info("Socket Service changeCount Exception {}", e);
+                    }
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+                    //result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_해당방이없음));
+                //} else if (procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())) {
+                    //result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_종료된방송));
+                } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+                    roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님));
+                } else if (procedureVo.getRet().equals(Status.방송나가기실패.getMessageCode())) {
+                    roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패));
+                } else {
+                    roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방참가실패));
+                }
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+            }
         }
         return result;
     }
