@@ -257,10 +257,13 @@ public class MypageController {
         String isOn = (shortCutEditVo.getIsOn().toUpperCase().equals("1") || shortCutEditVo.getIsOn().toUpperCase().equals("TRUE")) ? "on" : "off";
 
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
+
+        String text = shortCutEditVo.getText().length() <= 50 ? shortCutEditVo.getText() : shortCutEditVo.getText().substring(0, 49);
+
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setOrderNo(shortCutEditVo.getOrderNo());
         apiData.setOrder(shortCutEditVo.getOrder());
-        apiData.setText(shortCutEditVo.getText().substring(0, 49));
+        apiData.setText(text);
         apiData.setOnOff(isOn);
 
         String result = mypageService.callMemberShortCutEdit(apiData);
