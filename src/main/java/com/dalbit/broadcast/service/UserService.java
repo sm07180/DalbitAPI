@@ -220,6 +220,12 @@ public class UserService {
             }
 
             try{
+                socketService.chatEnd(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request), vo);
+            }catch(Exception e){
+                log.info("Socket Service Kickout => chatEnd Exception {}", e);
+            }
+
+            try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
