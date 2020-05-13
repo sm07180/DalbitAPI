@@ -51,7 +51,7 @@
         /* Login.xml - selectReportData */
         select op_code, op_msg from rd_data.tb_member_report
         where mem_no = #{mem_no}
-            and 1 <![CDATA[<]]> op_code
+            and 2 <![CDATA[<]]> op_code
         order by op_date desc
         limit 1
     </select>
