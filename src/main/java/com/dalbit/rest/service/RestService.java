@@ -121,6 +121,7 @@ public class RestService {
             request_uri += "?" + params;
         }
 
+        log.debug("{} {} {} rest start", server_url, request_uri, params);
         try{
             url = new URL(request_uri);
             con = (HttpURLConnection) url.openConnection();
