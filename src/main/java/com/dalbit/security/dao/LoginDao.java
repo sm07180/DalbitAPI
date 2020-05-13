@@ -10,5 +10,6 @@ public interface LoginDao {
     MemberVo loginUseMemId(MemberVo memberVo);
     MemberVo loginUseMemNo(String userId);
 
+    @Transactional(readOnly = true)
     MemberReportInfoVo selectReportData(String mem_no);
 }
