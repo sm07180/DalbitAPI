@@ -87,30 +87,34 @@ public class MainService {
         if(!DalbitUtil.isEmpty(recommendVoList)){
 
             for (int i=0; i < recommendVoList.size(); i++){
-                MainRecommandOutVo outVo = new MainRecommandOutVo();
-                outVo.setMemNo(recommendVoList.get(i).getMemNo());
-                outVo.setNickNm(recommendVoList.get(i).getNickNm());
-                outVo.setGender(recommendVoList.get(i).getGender());
-                if("banner".equals(outVo.getNickNm())){
-                    ImageVo tmpVo = new ImageVo();
-                    tmpVo.setUrl(recommendVoList.get(i).getProfileUrl());
-                    outVo.setProfImg(tmpVo);
-                    outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
+                if(deviceVo.getOs() == 2 && "banner".equals(recommendVoList.get(i).getNickNm()) && "17".equals(recommendVoList.get(i).getMemNo()) ){
+                    // IOS심사일 때 베타테스트 배너 안나오게
                 }else{
-                    //outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?656x240");
-                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
-                    outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
+                    MainRecommandOutVo outVo = new MainRecommandOutVo();
+                    outVo.setMemNo(recommendVoList.get(i).getMemNo());
+                    outVo.setNickNm(recommendVoList.get(i).getNickNm());
+                    outVo.setGender(recommendVoList.get(i).getGender());
+                    if("banner".equals(outVo.getNickNm())){
+                        ImageVo tmpVo = new ImageVo();
+                        tmpVo.setUrl(recommendVoList.get(i).getProfileUrl());
+                        outVo.setProfImg(tmpVo);
+                        outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
+                    }else{
+                        //outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?656x240");
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                        outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
+                    }
+                    outVo.setRoomType(recommendVoList.get(i).getRoomType());
+                    outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
+                    if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
+                        outVo.setTitle("방송 준비중");
+                    }else{
+                        outVo.setTitle(recommendVoList.get(i).getTitle());
+                    }
+                    outVo.setListeners(recommendVoList.get(i).getListeners());
+                    outVo.setLikes(recommendVoList.get(i).getLikes());
+                    recommend.add(outVo);
                 }
-                outVo.setRoomType(recommendVoList.get(i).getRoomType());
-                outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
-                if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
-                    outVo.setTitle("방송 준비중");
-                }else{
-                    outVo.setTitle(recommendVoList.get(i).getTitle());
-                }
-                outVo.setListeners(recommendVoList.get(i).getListeners());
-                outVo.setLikes(recommendVoList.get(i).getLikes());
-                recommend.add(outVo);
             }
         }
         mainMap.put("recommend", recommend);
