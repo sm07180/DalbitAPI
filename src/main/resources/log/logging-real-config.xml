@@ -32,7 +32,9 @@
 
     <logger name="org.springframework.web" level="WARN" />
     <logger name="org.springframework.security" level="WARN" />
+    <logger name="org.springframework.security.crypto.bcrypt" level="off" />
     <logger name="org.springframework.boot" level="WARN" />
+
     <logger name="jdbc" level="OFF" />
     <logger name="jdbc.sqlonly" level="OFF" />
     <logger name="jdbc.sqltiming" level="OFF" />

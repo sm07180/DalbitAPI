@@ -13,6 +13,7 @@ import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.security.dao.LoginDao;
+import com.dalbit.security.vo.MemberReportInfoVo;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.RedisUtil;
@@ -121,6 +122,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             returnMap.put("blockDay", blockDay);
             returnMap.put("blockEndDt", blockEndDt);
             returnMap.put("blockEndTs", blockEndTs);
+
+            //제재 사유조회
+            MemberReportInfoVo memberReportInfoVo = loginDao.selectReportData(DalbitUtil.getStringMap(loginExt, "mem_no"));
+            returnMap.put("opCode", memberReportInfoVo.getOp_code());
+            returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
 
             throw new CustomUsernameNotFoundException(Status.로그인실패_블럭상태, returnMap);
 
