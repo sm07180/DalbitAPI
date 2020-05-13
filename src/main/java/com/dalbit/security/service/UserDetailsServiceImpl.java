@@ -125,8 +125,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             //제재 사유조회
             MemberReportInfoVo memberReportInfoVo = loginDao.selectReportData(DalbitUtil.getStringMap(loginExt, "mem_no"));
-            returnMap.put("opCode", memberReportInfoVo.getOp_code());
-            returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
+            if(memberReportInfoVo == null){
+                returnMap.put("opCode", "");
+                returnMap.put("opMsg", "");
+            }else{
+                returnMap.put("opCode", memberReportInfoVo.getOp_code());
+                returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
+            }
 
             throw new CustomUsernameNotFoundException(Status.로그인실패_블럭상태, returnMap);
 
