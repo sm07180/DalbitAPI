@@ -25,7 +25,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private String  memId;
     private ImageVo profImg;
     private String  profMsg;
-    private int     level;
+    private int     level = 0;
     private int     fanCnt;
     private int     starCnt;
     private int     isFan;
@@ -60,7 +60,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
-        this.holder = "https://image.dalbitlive.com/holder/gold.png";
+        this.holder = "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + this.level + ".png";
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();

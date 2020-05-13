@@ -98,7 +98,7 @@ public class MypageService {
                     socketMap.put("sex", profileInfoVo.get("gender"));
                     HashMap profImgMap = new Gson().fromJson(new Gson().toJson(profileInfoVo.get("profImg")), HashMap.class);
                     if(DalbitUtil.isEmpty(profImgMap.get("path"))){
-                        socketMap.put("image", "");
+                        socketMap.put("image", "/profile_3/profile_" + profileInfoVo.get("gender") + "_200327.jpg");
                     }else{
                         socketMap.put("image", profImgMap.get("path"));
                     }
