@@ -456,7 +456,6 @@ public class CommonService {
      * 에러 로그 저장
      */
     public String saveErrorLog(P_ErrorLogVo pErrorLogVo){
-        /*
         ProcedureVo procedureVo = new ProcedureVo(pErrorLogVo);
         commonDao.saveErrorLog(procedureVo);
 
@@ -465,8 +464,7 @@ public class CommonService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_성공));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_실패));
-        }*/
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_성공));
+        }
         return result;
     }
 
