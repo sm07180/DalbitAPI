@@ -127,7 +127,7 @@ public class CommonService {
             log.debug(new Gson().toJson(deviceVo));
             if(versionVo.getUpBuildNo() != null && !DalbitUtil.isEmpty(deviceVo.getAppBuild())){
                 try{
-                    resultMap.put("isForce", (versionVo.getUpBuildNo() > Long.parseLong(deviceVo.getAppBuild())));
+                    resultMap.put("isForce", (versionVo.getUpBuildNo() >= Long.parseLong(deviceVo.getAppBuild())));
                 }catch(Exception e){
                     resultMap.put("isForce", false);
                 }
