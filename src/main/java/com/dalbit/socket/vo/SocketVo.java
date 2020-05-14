@@ -104,7 +104,7 @@ public class SocketVo {
         qs.append("&memImg=");
         qs.append(this.memImg);
         qs.append("&message=");
-        qs.append(this.message);
+        qs.append(this.message == null ? "" : this.message);
         qs.append("&fan=");
         qs.append(this.fan);
         qs.append("&auth=");
