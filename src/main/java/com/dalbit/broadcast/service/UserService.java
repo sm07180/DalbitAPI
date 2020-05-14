@@ -213,16 +213,11 @@ public class UserService {
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
             SocketVo vo = socketService.getSocketVo(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+            HashMap bolckedMap = socketService.getMyInfo(pRoomKickoutVo.getBlocked_mem_no());
             try{
-                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
             }catch(Exception e){
                 log.info("Socket Service kickout Exception {}", e);
-            }
-
-            try{
-                socketService.chatEnd(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request), vo);
-            }catch(Exception e){
-                log.info("Socket Service Kickout => chatEnd Exception {}", e);
             }
 
             try{

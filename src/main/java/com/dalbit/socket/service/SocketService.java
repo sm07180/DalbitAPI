@@ -564,8 +564,8 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken, boolean isLogin, SocketVo vo){
-        log.info("Socket Start : kickout {}, {}, {}, {}", roomNo, memNo, kickedMemNo, isLogin);
+    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken, boolean isLogin, SocketVo vo, HashMap bolckedMap){
+        log.info("Socket Start : kickout {}, {}, {}, {}, {}", roomNo, memNo, kickedMemNo, isLogin, authToken);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         kickedMemNo = kickedMemNo == null ? "" : kickedMemNo.trim();
@@ -574,15 +574,15 @@ public class SocketService {
             if(vo == null || vo.getMemNo() == null){
                 return null;
             }
+
             vo.setCommand("reqKickOut");
-            HashMap kickedMemInfo = getMyInfo(kickedMemNo);
-            if(kickedMemInfo != null){
+            if(bolckedMap != null){
                 HashMap socketMap = new HashMap();
                 socketMap.put("sndAuth", vo.getAuth());
                 socketMap.put("sndMemNo", vo.getMemNo());
                 socketMap.put("sndMemNk", vo.getMemNk());
                 socketMap.put("revMemNo", kickedMemNo);
-                socketMap.put("revMemNk", DalbitUtil.getStringMap(kickedMemInfo, "nickName"));
+                socketMap.put("revMemNk", DalbitUtil.getStringMap(bolckedMap, "nickName"));
                 vo.setMessage(socketMap);
                 return sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
@@ -700,7 +700,9 @@ public class SocketService {
             ProcedureVo procedureVo = new ProcedureVo(apiData);
             socketDao.callBroadcastMemberInfo(procedureVo);
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        }catch(Exception e){}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         return null;
     }
