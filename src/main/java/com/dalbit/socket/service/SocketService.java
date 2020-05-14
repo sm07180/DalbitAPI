@@ -271,10 +271,21 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqBjAntDisconnect");
+            vo.setMessage("DJ의 방송상태가 원활하지 않습니다.");
             vo.setRecvDj(0);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
+            return bjAntDisConnect(roomNo, authToken, vo);
         }
         return null;
+    }
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> bjAntDisConnect(String roomNo, String authToken, SocketVo vo){
+        vo.setCommand("chat");
+        vo.setRecvType("system");
+        vo.setRecvPosition("top1");
+        vo.setRecvDj(1);
+        return sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 
     @Async("threadTaskExecutor")
