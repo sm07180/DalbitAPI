@@ -65,7 +65,7 @@ public class ProfileService {
 
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_대상아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_대상아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_실패));
