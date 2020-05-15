@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -31,6 +33,17 @@ public class SocketController {
 
     @PostMapping("sendSystemMessage")
     public String sendMessageSystem(HttpServletRequest request) {
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"))));
+         return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"))));
+    }
+
+    @PostMapping("sendTargetSystemMessage")
+    public String sendTargetMessageSystem(HttpServletRequest request) {
+        String targetRooms = request.getParameter("targetRooms");
+        List<String> listTargetRoom = null;
+        if(!DalbitUtil.isEmpty(targetRooms)){
+            listTargetRoom = Arrays.asList(targetRooms.split("\\|"));
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"), listTargetRoom)));
     }
 }

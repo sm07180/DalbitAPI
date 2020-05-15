@@ -179,6 +179,30 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
+    public String sendMessage(String message, List<String> listTargetRooms) {
+        log.info("Socket Start : sendMessage {}", message);
+        RoomListVo pRoomListVo = new RoomListVo();
+        pRoomListVo.setPage(1);
+        pRoomListVo.setRecords(100);
+        ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
+        List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+        String result = "error";
+        if(DalbitUtil.isEmpty(listTargetRooms)){
+            result = "broadcast is nothing";
+        }else{
+            for(int i = 0; i < roomVoList.size(); i++){
+                if(roomVoList.get(i).getState() != 4){
+                    if(listTargetRooms.contains(roomVoList.get(i).getRoomNo())){
+                        sendMessage(roomVoList.get(i), message);
+                    }
+                }
+            }
+
+        }
+        return result;
+    }
+
+    @Async("threadTaskExecutor")
     public Map<String, Object> sendMessage(P_RoomListVo roomListVo, String message) {
         SocketVo vo = new SocketVo();
         vo.setMemNo(roomListVo.getBj_mem_no());
