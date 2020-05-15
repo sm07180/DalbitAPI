@@ -87,9 +87,9 @@ public class MainService {
         if(!DalbitUtil.isEmpty(recommendVoList)){
 
             for (int i=0; i < recommendVoList.size(); i++){
-                if(deviceVo.getOs() == 2 && "banner".equals(recommendVoList.get(i).getNickNm()) && "17".equals(recommendVoList.get(i).getMemNo()) ){
+                //if(deviceVo.getOs() == 2 && "banner".equals(recommendVoList.get(i).getNickNm()) && "17".equals(recommendVoList.get(i).getMemNo()) ){
                     // IOS심사일 때 베타테스트 배너 안나오게
-                }else{
+                //}else{
                     MainRecommandOutVo outVo = new MainRecommandOutVo();
                     outVo.setMemNo(recommendVoList.get(i).getMemNo());
                     outVo.setNickNm(recommendVoList.get(i).getNickNm());
@@ -114,7 +114,7 @@ public class MainService {
                     outVo.setListeners(recommendVoList.get(i).getListeners());
                     outVo.setLikes(recommendVoList.get(i).getLikes());
                     recommend.add(outVo);
-                }
+                //}
             }
         }
         mainMap.put("recommend", recommend);

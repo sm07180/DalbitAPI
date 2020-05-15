@@ -278,7 +278,9 @@ public class SocketService {
             }
             vo.setCommand("reqBjAntConnect");
             vo.setRecvDj(0);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            vo.setMessage("");
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
+            return bjAntDisConnect(roomNo, authToken, vo);
         }
         return null;
     }
@@ -295,10 +297,21 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqBjAntDisconnect");
+            vo.setMessage("DJ의 방송상태가 원활하지 않습니다.");
             vo.setRecvDj(0);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
+            return bjAntDisConnect(roomNo, authToken, vo);
         }
         return null;
+    }
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> bjAntDisConnect(String roomNo, String authToken, SocketVo vo){
+        vo.setCommand("chat");
+        vo.setRecvType("system");
+        vo.setRecvPosition("top1");
+        vo.setRecvDj(1);
+        return sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 
     @Async("threadTaskExecutor")
@@ -334,7 +347,7 @@ public class SocketService {
             }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
             }else if(state == 0){ // 미디어 오프
-                command = "reqBjAntDisconnect";
+                return bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
             }
             vo.setCommand(command);
             vo.setMessage(vo.getAuth() + "");
@@ -588,8 +601,8 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken, boolean isLogin, SocketVo vo){
-        log.info("Socket Start : kickout {}, {}, {}, {}", roomNo, memNo, kickedMemNo, isLogin);
+    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken, boolean isLogin, SocketVo vo, HashMap bolckedMap){
+        log.info("Socket Start : kickout {}, {}, {}, {}, {}", roomNo, memNo, kickedMemNo, isLogin, authToken);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         kickedMemNo = kickedMemNo == null ? "" : kickedMemNo.trim();
@@ -598,15 +611,15 @@ public class SocketService {
             if(vo == null || vo.getMemNo() == null){
                 return null;
             }
+
             vo.setCommand("reqKickOut");
-            HashMap kickedMemInfo = getMyInfo(kickedMemNo);
-            if(kickedMemInfo != null){
+            if(bolckedMap != null){
                 HashMap socketMap = new HashMap();
                 socketMap.put("sndAuth", vo.getAuth());
                 socketMap.put("sndMemNo", vo.getMemNo());
                 socketMap.put("sndMemNk", vo.getMemNk());
                 socketMap.put("revMemNo", kickedMemNo);
-                socketMap.put("revMemNk", DalbitUtil.getStringMap(kickedMemInfo, "nickName"));
+                socketMap.put("revMemNk", DalbitUtil.getStringMap(bolckedMap, "nickName"));
                 vo.setMessage(socketMap);
                 return sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
@@ -724,7 +737,9 @@ public class SocketService {
             ProcedureVo procedureVo = new ProcedureVo(apiData);
             socketDao.callBroadcastMemberInfo(procedureVo);
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        }catch(Exception e){}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
 
         return null;
     }

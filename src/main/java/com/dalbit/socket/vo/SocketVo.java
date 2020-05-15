@@ -2,6 +2,7 @@ package com.dalbit.socket.vo;
 
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,7 +35,7 @@ import java.util.HashMap;
 @Setter @Getter @ToString
 public class SocketVo {
     private String command;
-    private String message;
+    private String message = "";
     private String memNo;
     private String memNk;
     private String memImg;
@@ -82,12 +83,12 @@ public class SocketVo {
     }
 
     public void setMessage(String message){
-        this.message = message;
+        this.message = message == null ? "" : message.trim();
     }
 
     public void setMessage(Object message){
         if(message != null){
-            this.message = new Gson().toJson(message).replace("\\\\", "\\");
+            this.message = GsonUtil.getGsonBuilderAdm().create().toJson(message).replace("\\\\", "\\");
             //this.message = message;
         }
     }
@@ -103,7 +104,7 @@ public class SocketVo {
         qs.append("&memImg=");
         qs.append(this.memImg);
         qs.append("&message=");
-        qs.append(this.message);
+        qs.append(this.message == null ? "" : this.message);
         qs.append("&fan=");
         qs.append(this.fan);
         qs.append("&auth=");

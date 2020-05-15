@@ -21,14 +21,4 @@ public interface UserDao {
     ProcedureVo callBroadCastRoomManagerDel(ProcedureVo procedureVo);
     ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
-
-    @Transactional(readOnly = true)
-    List<DevRoomVo> selectBjRoom(String memNo);
-    @Transactional(readOnly = true)
-    List<DevRoomVo> selectJoinRoom(String memNo);
-    @Transactional(readOnly = true)
-    List<DevRoomVo> selectDisconnectRoom(String memNo);
-    void updateNormalRoom(String roomNo);
-
-
 }

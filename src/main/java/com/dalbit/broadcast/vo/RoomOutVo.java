@@ -34,12 +34,14 @@ public class RoomOutVo {
     private String bjGender;
     private int bjAge;
     private ImageVo bjProfImg;
+    private int bjLevel;
     private String gstMemNo;
     private String gstMemId;
     private String gstNickNm;
     private String gstGender;
     private int gstAge;
     private ImageVo gstProfImg;
+    private int gstLevel;
     private PagingVo paging;
     private int level;
     private int exp;
@@ -122,5 +124,8 @@ public class RoomOutVo {
         this.expNext = DalbitUtil.getIntMap(resultMap, "expNext");
         this.dalCnt = DalbitUtil.getIntMap(resultMap, "ruby");
         this.byeolCnt = DalbitUtil.getIntMap(resultMap, "gold");
+
+        this.bjLevel = target.getBj_level();
+        this.gstLevel = target.getGuest_level();
     }
 }

@@ -213,8 +213,9 @@ public class UserService {
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
             SocketVo vo = socketService.getSocketVo(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+            HashMap bolckedMap = socketService.getMyInfo(pRoomKickoutVo.getBlocked_mem_no());
             try{
-                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
             }catch(Exception e){
                 log.info("Socket Service kickout Exception {}", e);
             }
@@ -451,24 +452,5 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬해제실패));
         }
         return result;
-    }
-
-
-
-    /* ######################## Native 연동에서만 필요한 부분 ########################## */
-    public List<DevRoomVo> getDevBjRoom(String memNo){
-        return userDao.selectBjRoom(memNo);
-    }
-
-    public List<DevRoomVo> getDevJoinRoom(String memNo){
-        return userDao.selectJoinRoom(memNo);
-    }
-
-    public List<DevRoomVo> selectDisconnectRoom(String memNo){
-        return userDao.selectDisconnectRoom(memNo);
-    }
-
-    public void updateNormalRoom(String roomNo){
-        userDao.updateNormalRoom(roomNo);
     }
 }

@@ -218,18 +218,4 @@ public class MemberController {
         String result = memberService.callMemberWithdrawal(apiData);
         return result;
     }
-
-
-    /**
-     * ID 리스트 가져오기 (임시 테스트용)
-     */
-    @GetMapping("/id")
-    @Profile({"local", "dev"})
-    public List<SampleVo> selectMemid(){
-
-        List<SampleVo> idList = sampleService.selectMemId();
-
-        return idList;
-    }
-
 }

@@ -13,6 +13,7 @@ import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.security.dao.LoginDao;
+import com.dalbit.security.vo.MemberReportInfoVo;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.RedisUtil;
@@ -122,13 +123,36 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             returnMap.put("blockEndDt", blockEndDt);
             returnMap.put("blockEndTs", blockEndTs);
 
+            //제재 사유조회
+            MemberReportInfoVo memberReportInfoVo = loginDao.selectReportData(DalbitUtil.getStringMap(loginExt, "mem_no"));
+            if(memberReportInfoVo == null){
+                returnMap.put("opCode", "");
+                returnMap.put("opMsg", "");
+            }else{
+                returnMap.put("opCode", memberReportInfoVo.getOp_code());
+                returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
+            }
+
             throw new CustomUsernameNotFoundException(Status.로그인실패_블럭상태, returnMap);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_탈퇴.getMessageCode())) {
             throw new CustomUsernameNotFoundException(Status.로그인실패_탈퇴);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_영구정지.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_영구정지);
+            HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
+
+            HashMap returnMap = new HashMap();
+            //제재 사유조회
+            MemberReportInfoVo memberReportInfoVo = loginDao.selectReportData(DalbitUtil.getStringMap(resultMap, "mem_no"));
+            if(memberReportInfoVo == null){
+                returnMap.put("opCode", "");
+                returnMap.put("opMsg", "");
+            }else{
+                returnMap.put("opCode", memberReportInfoVo.getOp_code());
+                returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
+            }
+
+            throw new CustomUsernameNotFoundException(Status.로그인실패_영구정지, returnMap);
 
         }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
             MemberVo paramMemberVo = new MemberVo();
