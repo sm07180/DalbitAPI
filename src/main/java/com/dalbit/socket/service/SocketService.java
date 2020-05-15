@@ -255,8 +255,8 @@ public class SocketService {
             vo.setCommand("reqBjAntConnect");
             vo.setRecvDj(0);
             vo.setMessage("");
-            sendSocketApi(authToken, roomNo, vo.toQueryString());
-            return bjAntDisConnect(roomNo, authToken, vo);
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            //return bjAntDisConnect(roomNo, authToken, vo);
         }
         return null;
     }
