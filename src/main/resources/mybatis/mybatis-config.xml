@@ -59,6 +59,8 @@
 		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />
 
 		<typeAlias type="com.dalbit.store.vo.StoreChargeVo" alias="StoreChargeVo" />
+		<typeAlias type="com.dalbit.store.vo.PayChargeVo" alias="PayChargeVo" />
+
 
 		<typeAlias type="com.dalbit.socket.vo.P_RoomMemberInfoSelectVo" alias="P_RoomMemberInfoSelectVo" />
 	</typeAliases>

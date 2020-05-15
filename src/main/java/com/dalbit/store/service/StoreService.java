@@ -5,6 +5,7 @@ import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_MemberInfoVo;
 import com.dalbit.store.dao.StoreDao;
+import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.store.vo.StoreChargeVo;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
@@ -35,10 +36,14 @@ public class StoreService {
 
     public List<StoreChargeVo> getStoreChargeListByParam(HttpServletRequest request){
         String platform = "110";
+        String itemNo = request.getParameter("itemNo");
         if("2".equals(request.getParameter("os"))){
             platform = "001";
         }
-        return storeDao.selectChargeItem(platform);
+        PayChargeVo payChargeVo = new PayChargeVo();
+        payChargeVo.setItemNo(itemNo);
+        payChargeVo.setPlatform(platform);
+        return storeDao.selectPayChargeItem(payChargeVo);
     }
 
     public int getDalCnt(HttpServletRequest request){
