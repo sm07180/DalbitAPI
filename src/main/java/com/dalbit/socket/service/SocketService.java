@@ -323,7 +323,7 @@ public class SocketService {
             }else if(state == 2){ // 마이크 오프
                 command = "reqMicOff";
             }else if(state == 0){ // 미디어 오프
-                command = "reqBjAntDisconnect";
+                return bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
             }
             vo.setCommand(command);
             vo.setMessage(vo.getAuth() + "");

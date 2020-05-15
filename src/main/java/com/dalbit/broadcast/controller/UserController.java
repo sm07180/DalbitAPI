@@ -293,32 +293,4 @@ public class UserController {
 
         return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
     }
-
-
-    /* ######################## Native 연동에서만 필요한 부분 ########################## */
-    @Profile({"local", "dev"})
-    @GetMapping("devBroad/bj")
-    public String getDevBjRoom(HttpServletRequest request){
-        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevBjRoom(MemberVo.getMyMemNo(request))));
-    }
-
-    @Profile({"local", "dev"})
-    @GetMapping("devBroad/join")
-    public String getDevJoinRoom(HttpServletRequest request){
-        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.getDevJoinRoom(MemberVo.getMyMemNo(request))));
-    }
-
-
-    @Profile({"local", "dev"})
-    @GetMapping("devBroad/disconnect")
-    public String selectDisconnectRoom(HttpServletRequest request){
-        return new Gson().toJson(new JsonOutputVo(Status.조회, userService.selectDisconnectRoom(MemberVo.getMyMemNo(request))));
-    }
-
-    @Profile({"local", "dev"})
-    @PostMapping("devBroad/normal")
-    public String updateNormalRoom(HttpServletRequest request){
-        userService.updateNormalRoom(request.getParameter("roomNo"));
-        return new Gson().toJson(new JsonOutputVo(Status.조회));
-    }
 }

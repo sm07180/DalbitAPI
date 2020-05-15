@@ -38,17 +38,4 @@
         , upd_date
       FROM tb_log_data
     </select>
-
-    <select id="selectMemId" resultType="SampleVo">
-    /* Sample.xml - selectMemId */
-        SELECT
-            a.mem_id
-            , a.mem_nick
-            ,CONCAT(a.mem_id," ","(",a.mem_nick,")") id_info
-            , IFNULL(SUM(b.ruby), 0) ruby
-        FROM tb_member_basic a LEFT OUTER JOIN tb_member_broadcast_item b ON a.mem_no = b.gifted_mem_no
-        WHERE a.mem_slct = 'p'
-        GROUP BY a.mem_id, a.mem_nick;
-    </select>
-
 </mapper>
