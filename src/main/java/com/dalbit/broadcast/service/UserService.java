@@ -66,6 +66,8 @@ public class UserService {
         HashMap roomMemberList = new HashMap();
         if(DalbitUtil.isEmpty(roomMemberVoList)){
             roomMemberList.put("list", new ArrayList<>());
+            roomMemberList.put("totalMemCnt", 0);
+            roomMemberList.put("noMemCnt", 0);
             return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
         }
 
@@ -76,6 +78,10 @@ public class UserService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         roomMemberList.put("list", procedureOutputVo.getOutputBox());
         roomMemberList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
+
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        roomMemberList.put("totalMemCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
+        roomMemberList.put("noMemCnt", DalbitUtil.getIntMap(resultMap, "noMemCnt"));
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
