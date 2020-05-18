@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -267,11 +268,11 @@ public class RestService {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", roomNm);
 
-        if("https://v174.dalbitlive.com:5443".equals(antServer) || "https://devm.dalbitlive.com:5443".equals(antServer)){ // Ant 2.0 테스트 클럽라디오 Ant일경우
+        //if("https://v174.dalbitlive.com:5443".equals(antServer) || "https://devm.dalbitlive.com:5443".equals(antServer)){ // Ant 2.0 테스트 클럽라디오 Ant일경우
             return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/create", new Gson().toJson(map), 1, request);
-        }else{
-            return callRest(antServer, "/" + antName + "/rest/broadcast/create", new Gson().toJson(map), 1, request);
-        }
+        //}else{
+        //   return callRest(antServer, "/" + antName + "/rest/broadcast/create", new Gson().toJson(map), 1, request);
+        //}
     }
 
     /**
@@ -310,13 +311,13 @@ public class RestService {
         cal.add(Calendar.MINUTE, 30);
         long expire = cal.getTime().getTime() / 1000;
 
-        if("https://v174.dalbitlive.com:5443".equals(antServer) || "https://devm.dalbitlive.com:5443".equals(antServer)){ // Ant 2.0 테스트 클럽라디오 Ant일경우
+        //if("https://v174.dalbitlive.com:5443".equals(antServer) || "https://devm.dalbitlive.com:5443".equals(antServer)){ // Ant 2.0 테스트 클럽라디오 Ant일경우
             String params = "expireDate=" + expire + "&type=" + type;
             return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
-        }else{
-            String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
-            return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0, request);
-        }
+        //}else{
+        //    String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
+        //    return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0, request);
+        //}
     }
 
     /**
@@ -337,6 +338,7 @@ public class RestService {
      * @return
      * @throws Exception
      */
+    @Async("threadTaskExecutor")
     public Map<String, Object> deleteAntRoom(String streamId, HttpServletRequest request) throws GlobalException{
         return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
     }

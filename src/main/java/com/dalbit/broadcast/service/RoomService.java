@@ -337,12 +337,8 @@ public class RoomService {
         String result;
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
             HashMap returnMap = new HashMap();
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-            returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
             SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             if (isBj) {
@@ -351,7 +347,14 @@ public class RoomService {
                 } catch (Exception e) {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
+                try{
+                    restService.deleteAntRoom(DalbitUtil.getStringMap(resultMap, "bjStreamId"), request);
+                }catch(Exception e){}
             } else {
+                String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
+                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
+                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+                returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
                 try {
                     if (!"0".equals(request.getParameter("isSocket"))) {
                         socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request), vo);
@@ -1048,6 +1051,7 @@ public class RoomService {
                 HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
                 int auth = DalbitUtil.getIntMap(resultMap, "auth");
                 String bjStreamId = DalbitUtil.getStringMap(resultMap, "bj_streamid");
+                String oldBjStreamId = bjStreamId;
                 String bjPubToken = "";
                 String bjPlayToken = "";
                 String gstStreamId = "";
@@ -1088,6 +1092,10 @@ public class RoomService {
                 returnMap.put("startDt", target.getStartDt());
                 returnMap.put("startTs", target.getStartTs());
                 returnMap.put("auth", auth);
+                returnMap.put("hasNotice", auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
+                returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
+                returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
+                returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")) : true);
 
                 try{
                     if(auth == 3){ // DJ
@@ -1123,10 +1131,6 @@ public class RoomService {
 
                         returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
                         returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
-                        returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultUpdateMap, "controlRole"));
-                        returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isFan")));
-                        returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isGood")) : true);
-                        returnMap.put("hasNotice", DalbitUtil.getIntMap(resultUpdateMap, "auth") == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
                         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
                     /*if(auth == 3) { // DJ
@@ -1161,7 +1165,33 @@ public class RoomService {
                     returnMap.put("gstPubToken", gstPubToken);
                     returnMap.put("gstPlayToken", gstPlayToken);
 
+                    P_RoomLiveRankInfoVo pRoomLiveRankInfoVo = new P_RoomLiveRankInfoVo();
+                    pRoomLiveRankInfoVo.setRoom_no(pRoomStreamVo.getRoom_no());
+                    pRoomLiveRankInfoVo.setMem_no(pRoomStreamVo.getMem_no());
+                    ProcedureVo procedureExceptionVo = new ProcedureVo(pRoomLiveRankInfoVo);
+                    roomDao.callBroadCastRoomChangeCount(procedureExceptionVo);
+
+                    if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureExceptionVo.getRet())) {
+                        HashMap resultCountMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                        String fanRank1 = DalbitUtil.getStringMap(resultCountMap, "fanRank1");
+                        String fanRank2 = DalbitUtil.getStringMap(resultCountMap, "fanRank2");
+                        String fanRank3 = DalbitUtil.getStringMap(resultCountMap, "fanRank3");
+
+                        returnMap.put("likes", DalbitUtil.getIntMap(resultCountMap, "good"));
+                        returnMap.put("rank", DalbitUtil.getIntMap(resultCountMap, "rank"));
+                        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                    }else{
+                        returnMap.put("likes", 0);
+                        returnMap.put("rank", 0);
+                        returnMap.put("fanRank", new ArrayList<>());
+                    }
+
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
+                }
+                if(!oldBjStreamId.equals(bjStreamId)){
+                    try{
+                        restService.deleteAntRoom(oldBjStreamId, request);
+                    }catch (Exception e){}
                 }
             }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
