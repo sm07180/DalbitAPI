@@ -7,6 +7,7 @@ import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.StateVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
@@ -47,6 +48,8 @@ public class RoomService {
     SocketService socketService;
     @Autowired
     ContentService contentService;
+    @Autowired
+    CommonDao commonDao;
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -645,10 +648,13 @@ public class RoomService {
             if(rank > roomCnt){
                 roomCnt = rank;
             }
+            ItemVo item = commonDao.selectItem("U1447");
             returnMap.put("roomCnt", roomCnt);
             returnMap.put("rank", rank);
             returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
             returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+            returnMap.put("boostCode", "U1447");
+            returnMap.put("boostPrice", item.getCost());
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공, returnMap));
         }else if(Status.순위아이템사용_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_번호비정상));
@@ -1055,69 +1061,73 @@ public class RoomService {
                 pRoomStreamTokenVo.setGuest_streamid("");
                 pRoomStreamTokenVo.setGuest_publish_tokenid("");
                 pRoomStreamTokenVo.setGuest_play_tokenid("");
-                if(auth == 3){ // DJ
-                    if("publish".equals(request.getParameter("mode"))){
-                        bjStreamId = (String)restService.antCreate(target.getTitle(), request).get("streamId");
-                    }
-                    bjPubToken = (String)restService.antToken(bjStreamId, "publish", request).get("tokenId");
-                    pRoomStreamTokenVo.setBj_streamid(bjStreamId);
-                    pRoomStreamTokenVo.setBj_publish_tokenid(bjPubToken);
-                    //pRoomStreamTokenVo.setState("0");
+
+                HashMap returnMap = new HashMap();
+                returnMap.put("roomNo", pRoomStreamVo.getRoom_no());
+                returnMap.put("title", target.getTitle());
+                returnMap.put("bgImg", target.getBgImg());
+                returnMap.put("link", target.getLink());
+                returnMap.put("state", target.getState());
+                returnMap.put("bjMemNo", target.getBjMemNo());
+                returnMap.put("bjNickNm", target.getBjNickNm());
+                returnMap.put("bjProfImg", target.getBjProfImg());
+                if("real".equals(DalbitUtil.getActiceProfile())){
+                    returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
                 }else{
-                    bjPlayToken = (String)restService.antToken(bjStreamId, "play", request).get("tokenId");
-                    pRoomStreamTokenVo.setBj_play_tokenid(bjPlayToken);
+                    returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + target.getBjLevel() + ".png");
                 }
+                returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
+                returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
+                returnMap.put("gstProfImg", target.getGstProfImg());
+                returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
+                returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
+                returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
+                returnMap.put("isRecomm", target.getIsRecomm());
+                returnMap.put("isPop", target.getIsPop());
+                returnMap.put("isNew", target.getIsNew());
+                returnMap.put("startDt", target.getStartDt());
+                returnMap.put("startTs", target.getStartTs());
+                returnMap.put("auth", auth);
 
-                procedureVo.setData(pRoomStreamTokenVo);
-                ProcedureVo procedureUpdateVo = new ProcedureVo(pRoomStreamTokenVo);
+                try{
+                    if(auth == 3){ // DJ
+                        if("publish".equals(request.getParameter("mode"))){
+                            bjStreamId = (String)restService.antCreate(target.getTitle(), request).get("streamId");
+                        }
+                        bjPubToken = (String)restService.antToken(bjStreamId, "publish", request).get("tokenId");
+                        pRoomStreamTokenVo.setBj_streamid(bjStreamId);
+                        pRoomStreamTokenVo.setBj_publish_tokenid(bjPubToken);
+                        //pRoomStreamTokenVo.setState("0");
+                    }else{
+                        bjPlayToken = (String)restService.antToken(bjStreamId, "play", request).get("tokenId");
+                        pRoomStreamTokenVo.setBj_play_tokenid(bjPlayToken);
+                    }
 
-                //토큰 업데이트
-                roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
-                if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
-                    HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-                    String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
-                    String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
-                    String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");
-
-                    HashMap returnMap = new HashMap();
-                    returnMap.put("roomNo", pRoomStreamVo.getRoom_no());
                     returnMap.put("bjStreamId", bjStreamId);
                     returnMap.put("bjPubToken", bjPubToken);
                     returnMap.put("bjPlayToken", bjPlayToken);
                     returnMap.put("gstStreamId", gstStreamId);
                     returnMap.put("gstPubToken", gstPubToken);
                     returnMap.put("gstPlayToken", gstPlayToken);
-                    returnMap.put("title", target.getTitle());
-                    returnMap.put("bgImg", target.getBgImg());
-                    returnMap.put("link", target.getLink());
-                    returnMap.put("state", target.getState());
-                    returnMap.put("bjMemNo", target.getBjMemNo());
-                    returnMap.put("bjNickNm", target.getBjNickNm());
-                    returnMap.put("bjProfImg", target.getBjProfImg());
-                    if("real".equals(DalbitUtil.getActiceProfile())){
-                        returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
-                    }else{
-                        returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + target.getBjLevel() + ".png");
-                    }
-                    returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
-                    returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
-                    returnMap.put("gstProfImg", target.getGstProfImg());
-                    returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-                    returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
-                    returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
-                    returnMap.put("auth", DalbitUtil.getIntMap(resultUpdateMap, "auth"));
-                    returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultUpdateMap, "controlRole"));
-                    returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isFan")));
-                    returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isGood")) : true);
-                    returnMap.put("isRecomm", target.getIsRecomm());
-                    returnMap.put("isPop", target.getIsPop());
-                    returnMap.put("isNew", target.getIsNew());
-                    returnMap.put("startDt", target.getStartDt());
-                    returnMap.put("startTs", target.getStartTs());
-                    returnMap.put("hasNotice", DalbitUtil.getIntMap(resultUpdateMap, "auth") == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
-                    returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
-                    returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
-                    returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
+                    procedureVo.setData(pRoomStreamTokenVo);
+                    ProcedureVo procedureUpdateVo = new ProcedureVo(pRoomStreamTokenVo);
+
+                    //토큰 업데이트
+                    roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
+                    if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
+                        HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                        String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
+                        String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
+                        String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");
+
+                        returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
+                        returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
+                        returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultUpdateMap, "controlRole"));
+                        returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isFan")));
+                        returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isGood")) : true);
+                        returnMap.put("hasNotice", DalbitUtil.getIntMap(resultUpdateMap, "auth") == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
+                        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
 
                     /*if(auth == 3) { // DJ
                         try {
@@ -1127,15 +1137,31 @@ public class RoomService {
                         }
                     }*/
 
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
+                    }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
+                    }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
+                    }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+                    }else{
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+                    }
+                }catch(Exception e){
+                    bjPubToken = DalbitUtil.getStringMap(resultMap, "bj_publish_tokenid");
+                    bjPlayToken = DalbitUtil.getStringMap(resultMap, "bj_play_tokenid");
+                    gstStreamId = DalbitUtil.getStringMap(resultMap, "guest_streamid");
+                    gstPubToken = DalbitUtil.getStringMap(resultMap, "guset_publish_tokenid");
+                    gstPlayToken = DalbitUtil.getStringMap(resultMap, "guest_play_tokenid");
+
+                    returnMap.put("bjStreamId", bjStreamId);
+                    returnMap.put("bjPubToken", bjPubToken);
+                    returnMap.put("bjPlayToken", bjPlayToken);
+                    returnMap.put("gstStreamId", gstStreamId);
+                    returnMap.put("gstPubToken", gstPubToken);
+                    returnMap.put("gstPlayToken", gstPlayToken);
+
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
-                }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
-                }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
-                }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
-                }else{
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
                 }
             }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
