@@ -138,7 +138,7 @@ public class CommonService {
                 //resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/달빛-라이브-개인-라디오-방송-라이브-채팅-서비스/id1490208806?l=ko&ls=1");
                 //resultMap.put("storeUrl", "https://apps.apple.com/us/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806?l=ko&ls=1");
             }
-            resultMap.put("isPayment", true);
+            resultMap.put("isPayment", false);
         }
 
         //TODO - 추후 삭제
