@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 
 @Slf4j
 @ControllerAdvice
@@ -106,6 +107,8 @@ public class CommonErrorController {
             commonService.saveErrorLog(apiData);
         }catch (Exception e){}
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, exception.getMessage(), null, request.getMethod() + ""));
+        HashMap map = new HashMap();
+        map.put("message", exception.getMessage());
+        return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, map, null, request.getMethod() + ""));
     }
 }
