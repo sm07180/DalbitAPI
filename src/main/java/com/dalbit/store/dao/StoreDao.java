@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 public interface StoreDao {
     @Transactional(readOnly = true)
     List<StoreChargeVo> selectChargeItem(String value);
-    List<StoreChargeVo> selectPayChargeItem(PayChargeVo payChargeVo);
+    StoreChargeVo selectPayChargeItem(PayChargeVo payChargeVo);
 }

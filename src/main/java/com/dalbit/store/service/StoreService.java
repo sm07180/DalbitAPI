@@ -34,7 +34,7 @@ public class StoreService {
         return storeDao.selectChargeItem(platform);
     }
 
-    public List<StoreChargeVo> getStoreChargeListByParam(HttpServletRequest request){
+    public StoreChargeVo getStoreChargeListByParam(HttpServletRequest request){
         String platform = "110";
         String itemNo = request.getParameter("itemNo");
         if("2".equals(request.getParameter("os"))){
