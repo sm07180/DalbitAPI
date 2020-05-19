@@ -58,6 +58,7 @@ public class SocketService {
         params = StringUtils.defaultIfEmpty(params, "").trim();
 
         String request_uri = "https://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + SERVER_SOCKET_URL + roomNo;
+        log.info("소켓 request_uri: {}", request_uri);
 
         try{
             url = new URL(request_uri);
@@ -686,6 +687,8 @@ public class SocketService {
             vo.setLogin(isLogin ? 1 : 0);
             vo.setCommand("reqMyInfo");
             vo.setMessage(message);
+
+            log.info("Socket vo to Query String: {}",vo.toQueryString());
             return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
         }
         return null;

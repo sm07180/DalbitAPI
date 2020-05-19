@@ -4,6 +4,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.store.service.StoreService;
 import com.dalbit.store.vo.StoreChargeVo;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class StoreController {
 
     @PostMapping("/paycall/store")
     public String getChargeListByParam(HttpServletRequest request){
-        List<StoreChargeVo> list = storeService.getStoreChargeListByParam(request);
-        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, list == null ? new ArrayList<>() : list));
+        StoreChargeVo storeChargeVo = storeService.getStoreChargeListByParam(request);
+        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, DalbitUtil.isEmpty(storeChargeVo) ? null : storeChargeVo));
     }
 }
