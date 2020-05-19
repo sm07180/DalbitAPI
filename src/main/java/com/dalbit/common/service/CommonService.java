@@ -146,6 +146,8 @@ public class CommonService {
             resultMap.put("isForce", true);
         }
 
+        resultMap.put("boost", commonDao.selectBooster());
+
         return resultMap;
     }
 
