@@ -108,6 +108,10 @@ public class GlobalException extends Exception {
 
     public void printErrorLog(Status status, Object data, ArrayList validationMessageDetail, String methodName, boolean isCustomMessage){
         if(status.getMessageCode().equals(Status.벨리데이션체크.getMessageCode())){
+
+            if(methodName.equals("saveErrorLog")){
+               return;
+            }
             log.error("messageCode : {}", status.getMessageCode());
             log.error("messageKey : {}", status.getMessageKey());
             log.error("desc : {}", status.getDesc());
