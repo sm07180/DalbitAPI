@@ -133,6 +133,7 @@ public class RoomService {
             returnMap.put("isRecomm", target.getIsRecomm());
             returnMap.put("isPop", target.getIsPop());
             returnMap.put("isNew", target.getIsNew());
+            returnMap.put("isSpecial", target.getIsSpecial());
             returnMap.put("startDt", target.getStartDt());
             returnMap.put("startTs", target.getStartTs());
             returnMap.put("state", target.getState());
@@ -228,6 +229,7 @@ public class RoomService {
             returnMap.put("isRecomm", target.getIsRecomm());
             returnMap.put("isPop", target.getIsPop());
             returnMap.put("isNew", target.getIsNew());
+            returnMap.put("isSpecial", target.getIsSpecial());
             returnMap.put("startTs", target.getStartTs());
             returnMap.put("startDt", target.getStartDt());
             returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
@@ -919,6 +921,7 @@ public class RoomService {
                     returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultUpdateMap, "isGood")) : true);
                     returnMap.put("isRecomm", target.getIsRecomm());
                     returnMap.put("isPop", target.getIsPop());
+                    returnMap.put("isSpecial", target.getIsSpecial());
                     returnMap.put("isNew", target.getIsNew());
                     returnMap.put("startDt", target.getStartDt());
                     returnMap.put("startTs", target.getStartTs());
@@ -1091,6 +1094,7 @@ public class RoomService {
                 returnMap.put("isRecomm", target.getIsRecomm());
                 returnMap.put("isPop", target.getIsPop());
                 returnMap.put("isNew", target.getIsNew());
+                returnMap.put("isSpecial", target.getIsSpecial());
                 returnMap.put("startDt", target.getStartDt());
                 returnMap.put("startTs", target.getStartTs());
                 returnMap.put("auth", auth);

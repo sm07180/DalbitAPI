@@ -52,6 +52,7 @@ public class RoomOutVo {
     private Boolean isRecomm;
     private Boolean isPop;
     private Boolean isNew;
+    private Boolean isSpecial;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -83,6 +84,7 @@ public class RoomOutVo {
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
+        this.isSpecial = (target.getBadge_special() == 1 ? true : false);
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {
@@ -127,5 +129,6 @@ public class RoomOutVo {
 
         this.bjLevel = target.getBj_level();
         this.gstLevel = target.getGuest_level();
+        this.isSpecial = (target.getBadge_special() == 1 ? true : false);
     }
 }
