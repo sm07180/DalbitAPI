@@ -293,6 +293,12 @@ public class ActionService {
 
             SocketVo vo = socketService.getSocketVo(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
+                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+            }catch(Exception e){
+                log.info("Socket Service sendBooster Exception {}", e);
+            }
+
+            try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", "U1447");
 
@@ -305,11 +311,10 @@ public class ActionService {
                 itemMap.put("isSecret", false);
                 itemMap.put("itemType", "boost");
 
-                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, itemMap);
+                socketService.giftItem(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service sendBooster Exception {}", e);
             }
-
             try{
                 String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
                 String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");

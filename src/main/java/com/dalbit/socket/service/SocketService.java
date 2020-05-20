@@ -445,7 +445,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendBooster(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo, HashMap itemMap){
+    public Map<String, Object> sendBooster(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : sendBooster {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -456,8 +456,8 @@ public class SocketService {
                 return null;
             }
             vo.setCommand("reqBooster");
-            vo.setMessage(itemMap);
-            //vo.setRecvTime(3);
+            //vo.setMessage(itemMap);
+            vo.setRecvTime(3);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
