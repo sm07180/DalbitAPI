@@ -795,6 +795,8 @@ public class RoomService {
         returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
         returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+        returnMap.put("isNew", DalbitUtil.getIntMap(resultMap, "newdj_badge") == 1);
+        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1);
         procedureVo.setData(returnMap);
 
         return procedureVo;

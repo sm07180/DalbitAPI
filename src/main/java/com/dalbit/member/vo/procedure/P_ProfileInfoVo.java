@@ -53,5 +53,6 @@ public class P_ProfileInfoVo {
     private long broadcastingTime;              //총 방송시간(초 단위)
     private long listeningTime;                 //총 청취시간(초 단위)
     private int receivedGoodTotal;              //총 좋아요 받은 수
+    private int badge_specialdj;
 
 }

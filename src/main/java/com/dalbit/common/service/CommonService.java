@@ -103,8 +103,12 @@ public class CommonService {
     public HashMap getItemVersion(HashMap resultMap, HttpServletRequest request){
         String platform = "";
         DeviceVo deviceVo = new DeviceVo(request);
+        int osInt = deviceVo.getOs() + 1;
+        if(osInt == 4){
+            osInt = 1;
+        }
         for(int i = 1; i < 4; i++){
-            if(i == deviceVo.getOs()){
+            if(i == osInt){
                 platform += "1";
             }else{
                 platform += "_";

@@ -39,6 +39,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private Boolean isRecomm;
     private Boolean isPop;
     private Boolean isNew;
+    private Boolean isSpecial;
     private String roomNo;
     private long broadTotTime;
     private long listenTotTime;
@@ -85,6 +86,8 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
         this.isPop = (target.getBadge_popular() == 1) ? true : false;
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.isSpecial = (target.getBadge_specialdj() == 1 ? true : false);
+
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
         this.likeTotCnt = target.getReceivedGoodTotal();

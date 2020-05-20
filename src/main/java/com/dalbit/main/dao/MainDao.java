@@ -18,7 +18,13 @@ public interface MainDao {
     @Transactional(readOnly = true)
     List<P_MainRecommandVo> callMainRecommandList(P_MainRecommandVo pMainRecommandVo);
     @Transactional(readOnly = true)
+    List<P_MainRecommandVo> callMainRecommandList200520(P_MainRecommandVo pMainRecommandVo);
+
+    @Transactional(readOnly = true)
     List<P_MainRecommandVo> callMainPlanList(String memNo);
     @Transactional(readOnly = true)
     List<P_MainStarVo> callMainStarList(String memNo);
+
+    @Transactional(readOnly = true)
+    List<P_BannerVo> selectBanner(P_BannerVo pBannerVo);
 }
