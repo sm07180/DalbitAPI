@@ -223,6 +223,7 @@ public class ActionService {
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
+                itemMap.put("itemType", "items");
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service giftItem Exception {}", e);
@@ -292,7 +293,19 @@ public class ActionService {
 
             SocketVo vo = socketService.getSocketVo(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                HashMap itemMap = new HashMap();
+                itemMap.put("itemNo", "U1447");
+
+                ItemVo item = commonDao.selectItem("U1447");
+                String itemNm = item.getItemNm();
+                String itemThumbs = item.getThumbs();
+                itemMap.put("itemNm", itemNm);
+                itemMap.put("itemCnt", 1);
+                itemMap.put("itemImg", itemThumbs);
+                itemMap.put("isSecret", false);
+                itemMap.put("itemType", "boost");
+
+                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, itemMap);
             }catch(Exception e){
                 log.info("Socket Service sendBooster Exception {}", e);
             }
