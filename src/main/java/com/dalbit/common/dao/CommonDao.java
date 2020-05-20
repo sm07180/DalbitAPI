@@ -1,9 +1,6 @@
 package com.dalbit.common.dao;
 
-import com.dalbit.common.vo.AppVersionVo;
-import com.dalbit.common.vo.BanWordVo;
-import com.dalbit.common.vo.ItemVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
 import com.dalbit.common.vo.request.SmsVo;
 import org.springframework.stereotype.Repository;
@@ -38,7 +35,7 @@ public interface CommonDao {
     List<ItemVo> selectBooster();
 
     @Transactional(readOnly = true)
-    ItemVo selectItem(String item);
+    ItemDetailVo selectItem(String item);
 
     @Transactional(readOnly = true)
     AppVersionVo selectAppVersion(Integer item);

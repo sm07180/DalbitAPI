@@ -216,7 +216,7 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_code());
 
-                ItemVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
+                ItemDetailVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
@@ -302,7 +302,7 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", "U1447");
 
-                ItemVo item = commonDao.selectItem("U1447");
+                ItemDetailVo item = commonDao.selectItem("U1447");
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);

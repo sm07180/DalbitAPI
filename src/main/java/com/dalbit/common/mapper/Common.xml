@@ -164,7 +164,7 @@
         WHERE item_code = 'U1447'
     </select>
 
-    <select id="selectItem" parameterType="String" resultType="ItemVo">
+    <select id="selectItem" parameterType="String" resultType="ItemDetailVo">
         /* Common.xml - selectItem */
         SELECT
                 item_code         AS itemNo
@@ -173,6 +173,7 @@
                 , item_thumbnail    AS thumbs
                 , webp_image        AS webpUrl
                 , jason_image       AS lottieUrl
+                , byeul
         FROM rd_data.tbl_gift_item
         WHERE view_yn = 1
           AND item_code = #{value}
