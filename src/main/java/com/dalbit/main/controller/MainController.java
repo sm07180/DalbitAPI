@@ -102,4 +102,12 @@ public class MainController {
     }
 
 
+    /**
+     * 배너
+     */
+    @GetMapping("/banner")
+    public String banner(HttpServletRequest request) {
+        return mainService.selectBanner(request);
+    }
+
 }

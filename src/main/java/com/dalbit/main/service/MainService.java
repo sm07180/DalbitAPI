@@ -466,4 +466,36 @@ public class MainService {
         }
         return result;
     }
+
+    public String selectBanner(HttpServletRequest request){
+        String position = request.getParameter("position");
+        List<P_BannerVo> bannerList =null;
+
+        if("|0|1|3|4|5|6|7|8|9|".indexOf("|" + position + "|") > -1){
+            String memNo = MemberVo.getMyMemNo(request);
+            DeviceVo deviceVo = new DeviceVo(request);
+
+            String platform = "";
+            int osInt = deviceVo.getOs() + 1;
+            if(osInt == 4){
+                osInt = 1;
+            }
+            for(int i = 1; i < 4; i++){
+                if(i == osInt){
+                    platform += "1";
+                }else{
+                    platform += "_";
+                }
+            }
+
+            P_BannerVo pBannerVo = new P_BannerVo();
+            pBannerVo.setParamPlatform(platform);
+            pBannerVo.setParamMemNo(memNo);
+            pBannerVo.setParamDevice("" + deviceVo.getOs());
+            pBannerVo.setParamPosition("1");
+            bannerList = mainDao.selectBanner(pBannerVo);
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));
+    }
 }
