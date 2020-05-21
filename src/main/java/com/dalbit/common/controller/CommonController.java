@@ -306,9 +306,10 @@ public class CommonController {
         P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
 
-        String result = commonService.getCertificationChk(apiData);
+        //String result = commonService.getCertificationChk(apiData);
 
-        return result;
+        //return result;
+        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
     }
 
 
