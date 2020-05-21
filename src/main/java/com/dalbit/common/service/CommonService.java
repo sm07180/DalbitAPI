@@ -34,6 +34,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.regex.Pattern;
 import com.nimbusds.jose.util.Base64URL;
@@ -150,6 +151,11 @@ public class CommonService {
             resultMap.put("isForce", true);
         }
 
+        if("real".equals(DalbitUtil.getActiceProfile())){
+            resultMap.put("isExtend", false);
+        }else{
+            resultMap.put("isExtend", true);
+        }
         resultMap.put("boost", commonDao.selectBooster());
 
         return resultMap;
@@ -349,6 +355,7 @@ public class CommonService {
         HashMap map = new Gson().fromJson(fanRank, HashMap.class);
         MemberFanVo fanVo = new MemberFanVo();
         fanVo.setRank(memberFanVoList.size()+1);
+        //fanVo.setMemNo(BigDecimal.valueOf(DalbitUtil.getDoubleMap(map, "mem_no")));
         fanVo.setMemNo(DalbitUtil.getStringMap(map, "mem_no"));
         fanVo.setNickNm(DalbitUtil.getStringMap(map, "nickName"));
         fanVo.setGender(DalbitUtil.getStringMap(map, "memSex"));

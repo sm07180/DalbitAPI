@@ -146,5 +146,7 @@
       call sp_member_notification_read(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-
+    <select id="selectMyByeolCnt" parameterType="String" resultType="long">
+        SELECT gold FROM tb_member_wallet WHERE mem_no = #{value}
+    </select>
 </mapper>

@@ -216,13 +216,14 @@ public class ActionService {
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_code());
 
-                ItemVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
+                ItemDetailVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
+                itemMap.put("itemType", "items");
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
             }catch(Exception e){
                 log.info("Socket Service giftItem Exception {}", e);
@@ -297,6 +298,23 @@ public class ActionService {
                 log.info("Socket Service sendBooster Exception {}", e);
             }
 
+            try{
+                HashMap itemMap = new HashMap();
+                itemMap.put("itemNo", "U1447");
+
+                ItemDetailVo item = commonDao.selectItem("U1447");
+                String itemNm = item.getItemNm();
+                String itemThumbs = item.getThumbs();
+                itemMap.put("itemNm", itemNm);
+                itemMap.put("itemCnt", 1);
+                itemMap.put("itemImg", itemThumbs);
+                itemMap.put("isSecret", false);
+                itemMap.put("itemType", "boost");
+
+                socketService.giftItem(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+            }catch(Exception e){
+                log.info("Socket Service sendBooster Exception {}", e);
+            }
             try{
                 String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
                 String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
