@@ -60,4 +60,7 @@ public interface MypageDao {
     List<P_ChangeItemListVo> changeItemSelect(ProcedureVo procedureVo);
     ProcedureVo changeItem(ProcedureVo procedureVo);
     ProcedureVo callReadNotification(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    long selectMyByeolCnt(String mem_no);
 }

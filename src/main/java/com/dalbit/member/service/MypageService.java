@@ -1087,6 +1087,7 @@ public class MypageService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        changeItemList.put("byeolCnt", mypageDao.selectMyByeolCnt(pChangeItemVo.getMem_no()));
         changeItemList.put("list", procedureOutputVo.getOutputBox());
         changeItemList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
