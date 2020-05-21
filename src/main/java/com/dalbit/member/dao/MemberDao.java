@@ -24,4 +24,6 @@ public interface MemberDao {
     TokenCheckVo selectMemState(String mem_no);
     @Transactional(readOnly = true)
     TokenCheckVo selectAnonymousMem(String mem_no);
+    ProcedureVo callExchangeCalc(ProcedureVo procedureVo);
+    ProcedureVo callExchangeApply(ProcedureVo procedureVo);
 }

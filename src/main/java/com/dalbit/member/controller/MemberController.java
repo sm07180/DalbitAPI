@@ -12,9 +12,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.*;
-import com.dalbit.member.vo.request.ChangePwVo;
-import com.dalbit.member.vo.request.NickNmDupleCheckVo;
-import com.dalbit.member.vo.request.SignUpVo;
+import com.dalbit.member.vo.request.*;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.vo.SecurityUserVo;
@@ -216,6 +214,38 @@ public class MemberController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = memberService.callMemberWithdrawal(apiData);
+        return result;
+    }
+
+
+    /**
+     * 회원 환전 계산
+     */
+    @PostMapping("/member/exchange/calc")
+    public String exchangeCalc(@Valid ExchangeVo exchangeVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ExchangeVo apiData = new P_ExchangeVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setByeol(exchangeVo.getByeol());
+
+        String result = memberService.callExchangeCalc(apiData);
+        return result;
+    }
+
+    /**
+     * 회원 환전 신청
+     */
+    @PostMapping("/member/exchange/apply")
+    public String exchangeApply(@Valid ExchangeApplyVo exchangeApplyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ExchangeApplyVo apiData = new P_ExchangeApplyVo(exchangeApplyVo, request);
+
+        String result = memberService.callExchangeApply(apiData, request);
         return result;
     }
 }

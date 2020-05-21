@@ -13,6 +13,7 @@ import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -163,5 +165,112 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_실패));
         }
         return result;
+    }
+
+
+    /**
+     * 회원 환전 계산
+     */
+    public String callExchangeCalc(P_ExchangeVo pExchangeVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pExchangeVo);
+        memberDao.callExchangeCalc(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("basicCash", DalbitUtil.getIntMap(resultMap, "basicCash"));       //환전예상금액
+        returnMap.put("benefitCash", DalbitUtil.getIntMap(resultMap, "benefitCash"));   //스페셜DJ혜택
+        returnMap.put("taxCash", DalbitUtil.getIntMap(resultMap, "taxCash"));           //원천징수세액
+        returnMap.put("feeCash", DalbitUtil.getIntMap(resultMap, "feeCash"));           //이체수수료
+        returnMap.put("realCash", DalbitUtil.getIntMap(resultMap, "realCash"));         //환전실수령액
+        procedureVo.setData(returnMap);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.환전계산성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산성공, procedureVo.getData()));
+        } else if(procedureVo.getRet().equals(Status.환전계산_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산_회원아님));
+        } else if(procedureVo.getRet().equals(Status.환전계산_별체크.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산_별체크));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산실패));
+        }
+        return result;
+
+    }
+
+
+    /**
+     *  회원 환전 신청
+     */
+    public String callExchangeApply(P_ExchangeApplyVo pExchangeApplyVo, HttpServletRequest request) throws GlobalException {
+        String exchangeFile1 = pExchangeApplyVo.getAdd_file1();
+        String exchangeFile2 = pExchangeApplyVo.getAdd_file1();
+        Boolean isDone = false;
+        if(!DalbitUtil.isEmpty(exchangeFile1) && exchangeFile1.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
+            isDone = true;
+            exchangeFile1 = DalbitUtil.replacePath(exchangeFile1);
+        }
+
+        if(!DalbitUtil.isEmpty(exchangeFile2) && exchangeFile2.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
+            isDone = true;
+            exchangeFile2 = DalbitUtil.replacePath(exchangeFile2);
+        }
+
+        pExchangeApplyVo.setAdd_file1(exchangeFile1);
+        pExchangeApplyVo.setAdd_file2(exchangeFile2);
+
+        ProcedureVo procedureVo = new ProcedureVo(pExchangeApplyVo);
+        memberDao.callExchangeApply(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("byeol", DalbitUtil.getIntMap(resultMap, "byeol"));               //환전신청별
+        returnMap.put("realCash", DalbitUtil.getIntMap(resultMap, "realCash"));         //환전실수령액
+        returnMap.put("accountName", DalbitUtil.getStringMap(resultMap, "accountName"));   //예금주
+        returnMap.put("bankCode", DalbitUtil.getStringMap(resultMap, "bankCode"));         //은행
+        returnMap.put("accountNo", DalbitUtil.getStringMap(resultMap, "accountNo"));       //계좌번호
+        procedureVo.setData(returnMap);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.환전신청성공.getMessageCode())) {
+
+            if(isDone){
+                if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file1())){
+                    restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file1()), request);
+                }
+                if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file2())){
+                    restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file2()), request);
+                }
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청성공, procedureVo.getData()));
+        } else if(procedureVo.getRet().equals(Status.환전신청_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_회원아님));
+        } else if(procedureVo.getRet().equals(Status.환전신청_별체크.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_별체크));
+        } else if(procedureVo.getRet().equals(Status.환전신청_예금주오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_예금주오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_은행코드오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_은행코드오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_계좌번호오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_계좌번호오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_주민번호오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_주민번호오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_전화번호오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_전화번호오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_주소1오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_주소1오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_첨부파일1오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일1오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_첨부파일2오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일2오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_동의오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_동의오류));
+        } else if(procedureVo.getRet().equals(Status.환전신청_별부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_별부족));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청실패));
+        }
+        return result;
+
     }
 }

@@ -741,6 +741,40 @@ public enum Status {
     구글로그인_토큰없음("-1", "google.login.blank.token", "토큰없음"),
     구글로그인_토큰인증실패("-2", "google.login.invalid.token", "인증실패"),
     구글로그인_오류("C006", "google.login.error", "오류"),
+
+
+    //////////////////////////
+    //모바일 관리자
+    /////////////////////////
+    방송강제종료_성공("0", "force.exit.success", "강제종료 성공"),
+    방송강제종료_회원아님("-1", "force.exit.no.member", "강제종료 요청 시 잘못된 회원번호"),
+    방송강제종료_존재하지않는방("-2", "force.exit.no.room", "강제종료 시 존재하지 않는 방"),
+    방송강제종료_이미종료된방("-3", "force.exit.already.end", "이미 종료된 방을 강제종료 한 경우"),
+    방송강제종료_방참가자아님("-4", "force.exit.no.listener", "방 참가자가 아닌경우"),
+
+
+    //환전계산
+    환전계산성공("0", "exchange.calc.success", "환전 계산 성공 시"),
+    환전계산_회원아님("-1", "exchange.calc.no.member","요청회원번호 회원 아닐 시"),
+    환전계산_별체크("-2", "exchange.calc.limit.byeol", "최소 별 600 이상 아닐 시"),
+    환전계산실패("C006", "exchange.calc.fail", "환전 계산 실패 시"),
+
+    //환전신청
+    환전신청성공("0", "exchange.apply.success", "환전 신청 성공 시"),
+    환전신청_회원아님("-1", "exchange.apply.no.member", "요청회원번호 회원 아닐 시"),
+    환전신청_별체크("-2", "exchange.apply.limit.byeol", "최소 별 600 이상 아닐 시"),
+    환전신청_예금주오류("-3", "exchange.apply.account.name.error", "예금주 오류 시"),
+    환전신청_은행코드오류("-4", "exchange.apply.bank.code.error", "은행코드 오류 시"),
+    환전신청_계좌번호오류("-5", "exchange.apply.account.no.error", "계좌번호 오류 시"),
+    환전신청_주민번호오류("-6", "exchange.apply.social.no.error", "주민번호 오류 시"),
+    환전신청_전화번호오류("-7", "exchange.apply.phone.no.error", "전화번호 오류 시"),
+    환전신청_주소1오류("-8", "exchange.apply.address1.no.error", "주소1 오류 시"),
+    환전신청_첨부파일1오류("-9", "exchange.apply.addfile1.no.error", "첨부파일1 오류 시"),
+    환전신청_첨부파일2오류("-10", "exchange.apply.addfile2.no.error", "첨부파일2 오류 시"),
+    환전신청_동의오류("-11", "exchange.apply.agree.no.error", "동의 오류 시"),
+    환전신청_별부족("-12", "exchange.apply.byeol.lack ", "별 부족 시"),
+    환전신청실패("C006", "exchange.apply.fail", "환전 신청 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";
