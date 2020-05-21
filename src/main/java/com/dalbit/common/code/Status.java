@@ -741,6 +741,16 @@ public enum Status {
     구글로그인_토큰없음("-1", "google.login.blank.token", "토큰없음"),
     구글로그인_토큰인증실패("-2", "google.login.invalid.token", "인증실패"),
     구글로그인_오류("C006", "google.login.error", "오류"),
+
+
+    //////////////////////////
+    //모바일 관리자
+    /////////////////////////
+    방송강제종료_성공("0", "force.exit.success", "강제종료 성공"),
+    방송강제종료_회원아님("-1", "force.exit.no.member", "강제종료 요청 시 잘못된 회원번호"),
+    방송강제종료_존재하지않는방("-2", "force.exit.no.room", "강제종료 시 존재하지 않는 방"),
+    방송강제종료_이미종료된방("-3", "force.exit.already.end", "이미 종료된 방을 강제종료 한 경우"),
+    방송강제종료_방참가자아님("-4", "force.exit.no.listener", "방 참가자가 아닌경우"),
     ;
 
     final private String RESULT_SUCCESS = "success";
