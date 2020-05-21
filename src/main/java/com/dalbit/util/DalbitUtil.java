@@ -359,7 +359,7 @@ public class DalbitUtil {
 
     public static String getStringMap(HashMap map, String key){
         try{
-            return map.get(key).toString().replace("\"", "");
+            return map.get(key).toString();
         }catch (Exception e){
             log.debug("StringUtil.getStringMap error - key name is [{}]", key);
             return "";

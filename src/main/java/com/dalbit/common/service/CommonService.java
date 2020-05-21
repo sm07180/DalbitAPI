@@ -351,7 +351,6 @@ public class CommonService {
     }
 
     private List setFanVo(List memberFanVoList, String fanRank){
-
         HashMap map = new Gson().fromJson(fanRank, HashMap.class);
         MemberFanVo fanVo = new MemberFanVo();
         fanVo.setRank(memberFanVoList.size()+1);
