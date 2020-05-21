@@ -173,7 +173,7 @@
                 , item_thumbnail    AS thumbs
                 , webp_image        AS webpUrl
                 , jason_image       AS lottieUrl
-                , byeul
+                , byeol
         FROM rd_data.tbl_gift_item
         WHERE view_yn = 1
           AND item_code = #{value}

@@ -660,7 +660,7 @@ public class RoomService {
             returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
             returnMap.put("boostCode", "U1447");
             returnMap.put("boostPrice", item.getCost());
-            returnMap.put("boostByeul", item.getByeul());
+            returnMap.put("boostByeul", item.getByeol());
             returnMap.put("boostLottie", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.json");
             returnMap.put("boostWebp", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.webp");
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공, returnMap));

@@ -5,5 +5,5 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ItemDetailVo extends ItemVo {
-    private int byeul;
+    private int byeol;
 }
