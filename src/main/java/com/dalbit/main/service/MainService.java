@@ -490,7 +490,11 @@ public class MainService {
             pBannerVo.setParamMemNo(memNo);
             pBannerVo.setParamDevice("" + deviceVo.getOs());
             pBannerVo.setParamPosition(position);
-            bannerList = mainDao.selectBanner(pBannerVo);
+            if("real".equals(DalbitUtil.getActiceProfile())){
+                bannerList = mainDao.selectBannerOld(pBannerVo);
+            }else{
+                bannerList = mainDao.selectBanner(pBannerVo);
+            }
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));

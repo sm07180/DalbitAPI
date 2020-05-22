@@ -118,7 +118,6 @@
         LIMIT 0, 10;
     </select>
 
-    <!--
     <select id="selectBanner" parameterType="P_BannerVo" resultType="BannerVo">
         SELECT
             idx AS idx
@@ -158,9 +157,8 @@
             )
             AND platform LIKE #{paramPlatform}
     </select>
-    -->
 
-    <select id="selectBanner" parameterType="P_BannerVo" resultType="BannerVo">
+    <select id="selectBannerOld" parameterType="P_BannerVo" resultType="BannerVo">
         SELECT
             idx AS idx
             , thumb_img_url AS thumbsUrl
