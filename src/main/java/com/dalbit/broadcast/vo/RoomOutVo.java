@@ -67,6 +67,7 @@ public class RoomOutVo {
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
         this.likeCnt = target.getCount_good();
+        this.byeolCnt = target.getCount_good();
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();

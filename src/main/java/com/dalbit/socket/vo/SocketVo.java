@@ -64,7 +64,7 @@ public class SocketVo {
     public SocketVo(String memNo, HashMap memInfo, boolean isLogin){
         if(memInfo != null){
             this.memNo = memNo;
-            this.fan = DalbitUtil.getIntMap(memInfo, "enableFan") == 0 ? 1 : 0;
+            this.fan = auth == 3 ? 0 : (DalbitUtil.getIntMap(memInfo, "enableFan") == 0 ? 1 : 0);
             this.auth = DalbitUtil.getIntMap(memInfo, "auth");
             this.authName = "";
             if(this.auth == 3){
