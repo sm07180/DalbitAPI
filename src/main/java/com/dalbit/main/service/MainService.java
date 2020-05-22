@@ -3,10 +3,7 @@ package com.dalbit.main.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
-import com.dalbit.main.vo.MainDjRankingOutVo;
-import com.dalbit.main.vo.MainFanRankingOutVo;
-import com.dalbit.main.vo.MainMyDjOutVo;
-import com.dalbit.main.vo.MainStarVo;
+import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.member.vo.MemberVo;
@@ -108,7 +105,7 @@ public class MainService {
         pBannerVo.setParamMemNo(memNo);
         pBannerVo.setParamDevice("" + deviceVo.getOs());
         pBannerVo.setParamPosition("1");
-        List<P_BannerVo> bannerList = mainDao.selectBanner(pBannerVo);
+        List<BannerVo> bannerList = mainDao.selectBanner(pBannerVo);
 
         HashMap mainMap = new HashMap();
 
@@ -469,7 +466,7 @@ public class MainService {
 
     public String selectBanner(HttpServletRequest request){
         String position = request.getParameter("position");
-        List<P_BannerVo> bannerList =null;
+        List<BannerVo> bannerList =null;
 
         if("|0|1|3|4|5|6|7|8|9|".indexOf("|" + position + "|") > -1){
             String memNo = MemberVo.getMyMemNo(request);

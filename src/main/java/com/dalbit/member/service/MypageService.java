@@ -1165,4 +1165,27 @@ public class MypageService {
         }
         return result;
     }
+
+    /**
+     *  스페셜 DJ 신청
+     */
+    public String callSpecialDjReq(P_SpecialDjReq pSpecialDjReq, HttpServletRequest request){
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
+        pSpecialDjReq.setMem_no(MemberVo.getMyMemNo(request));
+
+        if(!DalbitUtil.isLogin(request)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
+        }else if(mypageDao.selectExistsSpecialReq(pSpecialDjReq.getMem_no()) > 0){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
+        }else{
+            try{
+                mypageDao.insertSpecialReq(pSpecialDjReq);
+                result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청성공));
+            }catch(Exception e){
+                log.info("스페셜 DJ DB 오류 {}", e.getMessage());
+            }
+        }
+
+        return result;
+    }
 }

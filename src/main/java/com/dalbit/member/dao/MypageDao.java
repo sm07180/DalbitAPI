@@ -63,4 +63,9 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     long selectMyByeolCnt(String mem_no);
+
+    @Transactional(readOnly = true)
+    int selectExistsSpecialReq(String mem_no);
+    void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
+
 }

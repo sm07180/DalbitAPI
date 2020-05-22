@@ -30,6 +30,7 @@
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainRecommandVo" alias="P_MainRecommandVo" />
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainStarVo" alias="P_MainStarVo" />
 		<typeAlias type="com.dalbit.main.vo.procedure.P_BannerVo" alias="P_BannerVo" />
+		<typeAlias type="com.dalbit.main.vo.BannerVo" alias="BannerVo" />
 
 
 		<typeAlias type="com.dalbit.broadcast.vo.procedure.P_RoomListVo" alias="P_RoomListVo" />
@@ -56,6 +57,7 @@
 		<typeAlias type="com.dalbit.member.vo.procedure.P_ChangeItemListVo" alias="P_ChangeItemListVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_StarRankingVo" alias="P_StarRankingVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanListVo" alias="P_FanListVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_SpecialDjReq" alias="P_SpecialDjReq" />
 
 		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
 		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />

@@ -149,4 +149,32 @@
     <select id="selectMyByeolCnt" parameterType="String" resultType="long">
         SELECT gold FROM tb_member_wallet WHERE mem_no = #{value}
     </select>
+
+    <select id="selectExistsSpecialReq" parameterType="String" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM rd_admin.tb_req_special_dj
+        WHERE mem_no = #{value}
+          AND state = 1
+    </select>
+
+    <insert id="insertSpecialReq" parameterType="P_SpecialDjReq">
+        INSERT INTO rd_admin.tb_req_special_dj(
+          mem_no
+          , mem_name
+          , mem_phone
+          , title
+          , contents
+          , reg_date
+          , state
+        ) values (
+          #{mem_no}
+          , #{name}
+          , #{phone}
+          , #{title}
+          , #{contents}
+          , NOW()
+          , 1
+        )
+    </insert>
 </mapper>

@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "35acb735-481c-42a6-ad19-ca8c00a249a6",
+		"_postman_id": "dae165ab-5c83-489d-bfa6-f7db3f2768ed",
 		"name": "달빛라디오 API 정의서_2020.05.21",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -3061,6 +3061,68 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 스페셜DJ신청_200522",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDU3NzAyMzMzOEB0cnVlIiwiaWF0IjoxNTkwMDQwNDE5LCJleHAiOjE1OTI2MzI0MTl9.cg73lke008UCZPmC40y_F5Tm3EoadRqU1G_2d25jE7c",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "name",
+													"value": "이재은",
+													"description": "이름 (최대 20자) 필수",
+													"type": "text"
+												},
+												{
+													"key": "phone",
+													"value": "01027339745",
+													"description": "핸드폰 (최대 20자) 필수",
+													"type": "text"
+												},
+												{
+													"key": "title",
+													"value": "",
+													"description": "제목 (최대20자)",
+													"type": "text"
+												},
+												{
+													"key": "contents",
+													"value": "",
+													"description": "내용 (최대1024자)",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devm-coreano81.dalbitlive.com:4431/mypage/specialDj",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitlive",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"mypage",
+												"specialDj"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -5305,6 +5367,44 @@
 										}
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 배너조회_200522",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDU3NzAyMzMzOEB0cnVlIiwiaWF0IjoxNTkwMDQwNDE5LCJleHAiOjE1OTI2MzI0MTl9.cg73lke008UCZPmC40y_F5Tm3EoadRqU1G_2d25jE7c",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "{\"os\":1, \"deviceId\":\"2200DDD1-77A\", \"deviceToken\":\"45E3156FDE20E7F11AF\", \"appVer\":\"1.0.0.1\", \"appAdId\":\"asd123asdas1\"}",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "https://devm-coreano81.dalbitcast.com:4431/banner?position=1",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitcast",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"banner"
+											],
+											"query": [
+												{
+													"key": "position",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -6624,7 +6724,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "5b5f67e0-70af-442e-b01d-048838e2e9b1",
+				"id": "177c90e1-8550-4fe1-9c41-ea69daf9b157",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -6634,7 +6734,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "7e8217cb-4b22-4846-a7c6-a92eb1b42fc6",
+				"id": "60e592aa-23c8-45e1-aefa-119a38bfa923",
 				"type": "text/javascript",
 				"exec": [
 					""

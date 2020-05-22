@@ -775,6 +775,12 @@ public enum Status {
     환전신청_별부족("-12", "exchange.apply.byeol.lack ", "별 부족 시"),
     환전신청실패("C006", "exchange.apply.fail", "환전 신청 실패 시"),
 
+    //스페셜DJ
+    스페셜DJ_신청성공("0", "special.dj.apply.success", "스페셜DJ 신청 성공 시"),
+    스페셜DJ_회원아님("-1", "special.dj.apply.no.member", "요청회원번호 회원 아닐 시"),
+    스페셜DJ_이미신청("-2", "special.dj.apply.already.member", "이미 신청하였을 경우"),
+    스페셜DJ_신청실패("C006", "special.dj.apply.fail", "스페셜DJ 신청 실패 시"),
+
     ;
 
     final private String RESULT_SUCCESS = "success";
