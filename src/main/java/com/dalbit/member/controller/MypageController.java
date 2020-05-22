@@ -599,4 +599,13 @@ public class MypageController {
 
         return result;
     }
+
+    /**
+     * 스페셜 DJ 신청
+     */
+    @PostMapping("/specialDj")
+    public String specialDjReq(@Valid P_SpecialDjReq pSpecialDjReq, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return mypageService.callSpecialDjReq(pSpecialDjReq, request);
+    }
 }

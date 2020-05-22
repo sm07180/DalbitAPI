@@ -74,6 +74,7 @@ public enum Status {
     회원가입실패_중복가입("-1", "member.join.already", "이미 회원가입된 상태 시"),
     회원가입실패_닉네임중복("-2", "member.join.nick.duplicate", "닉네임 중복 시"),
     회원가입실패_파라메터오류("-3", "param.error", "파라메터 오류 시"),
+    회원가입실패_탈퇴회원("-4", "member.join.kick.out.member", "탈퇴 회원이 재 가입시"),
     회원가입오류("C006", "member.join.error", "회원가입 오류 시"),
 
     //닉네임중복체크
@@ -775,6 +776,12 @@ public enum Status {
     환전신청_동의오류("-11", "exchange.apply.agree.no.error", "동의 오류 시"),
     환전신청_별부족("-12", "exchange.apply.byeol.lack ", "별 부족 시"),
     환전신청실패("C006", "exchange.apply.fail", "환전 신청 실패 시"),
+
+    //스페셜DJ
+    스페셜DJ_신청성공("0", "special.dj.apply.success", "스페셜DJ 신청 성공 시"),
+    스페셜DJ_회원아님("-1", "special.dj.apply.no.member", "요청회원번호 회원 아닐 시"),
+    스페셜DJ_이미신청("-2", "special.dj.apply.already.member", "이미 신청하였을 경우"),
+    스페셜DJ_신청실패("C006", "special.dj.apply.fail", "스페셜DJ 신청 실패 시"),
 
     ;
 
