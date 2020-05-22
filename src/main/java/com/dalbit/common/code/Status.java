@@ -752,6 +752,7 @@ public enum Status {
     방송강제종료_이미종료된방("-3", "force.exit.already.end", "이미 종료된 방을 강제종료 한 경우"),
     방송강제종료_방참가자아님("-4", "force.exit.no.listener", "방 참가자가 아닌경우"),
 
+    관리자메뉴조회_권한없음("-1", "no.auth", "관리자 권한이 없는 경우"),
 
     //환전계산
     환전계산성공("0", "exchange.calc.success", "환전 계산 성공 시"),
