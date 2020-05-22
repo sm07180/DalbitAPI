@@ -118,6 +118,7 @@
         LIMIT 0, 10;
     </select>
 
+    <!--
     <select id="selectBanner" parameterType="P_BannerVo" resultType="BannerVo">
         SELECT
             idx AS idx
@@ -157,7 +158,55 @@
             )
             AND platform LIKE #{paramPlatform}
     </select>
-    
+    -->
+
+    <select id="selectBanner" parameterType="P_BannerVo" resultType="BannerVo">
+        SELECT
+            idx AS idx
+            , thumb_img_url AS thumbsUrl
+            , IF(#{paramDevice} = '3', pc_link_url, mobile_link_url) AS linkUrl
+            , IF(is_pop = 1, 'popup', 'link') AS linkType
+            , title
+            , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
+        FROM rd_admin.tb_admin_banner
+        WHERE is_view = 1
+            AND position = #{paramPosition}
+            AND (
+              view_type = 0
+              OR
+              (
+                (view_type = 1  AND (
+                  sex = 0 OR sex = (
+                        SELECT
+                          (CASE
+                            WHEN mem_sex = 'm' THEN 1
+                            WHEN mem_sex = 'f' THEN 2
+                            ELSE 3
+                          END)
+                        FROM tb_member_basic
+                        WHERE mem_no = #{paramMemNo}
+                    )
+                  )
+                )
+              )
+              OR
+              (view_type = 2 AND #{paramMemNo} LIKE '8%')
+            )
+            AND (
+              term_type = 0
+              OR
+              (term_type = 1 and now() between start_datetime and end_datetime)
+            )
+            AND (
+                  platform = 0
+                  OR
+                  platform = (CASE
+                    WHEN #{paramDevice} = '3' THEN 1
+                    ELSE 2
+                  END)
+                )
+    </select>
+
     <select id="callMainPlanList" parameterType="String" resultType="P_MainRecommandVo">
         SELECT
             T1.mem_no AS memNo
