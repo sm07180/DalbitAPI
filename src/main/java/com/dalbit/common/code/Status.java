@@ -74,6 +74,7 @@ public enum Status {
     회원가입실패_중복가입("-1", "member.join.already", "이미 회원가입된 상태 시"),
     회원가입실패_닉네임중복("-2", "member.join.nick.duplicate", "닉네임 중복 시"),
     회원가입실패_파라메터오류("-3", "param.error", "파라메터 오류 시"),
+    회원가입실패_탈퇴회원("-4", "member.join.kick.out.member", "탈퇴 회원이 재 가입시"),
     회원가입오류("C006", "member.join.error", "회원가입 오류 시"),
 
     //닉네임중복체크

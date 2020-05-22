@@ -160,6 +160,8 @@ public class MemberController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복));
             }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
+            }else if (Status.회원가입실패_탈퇴회원.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_탈퇴회원));
             }else{
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
             }
