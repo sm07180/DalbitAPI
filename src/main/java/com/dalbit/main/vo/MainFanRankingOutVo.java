@@ -18,6 +18,9 @@ public class MainFanRankingOutVo {
     private ImageVo profImg;
     private int level;
     private String grade;
+    private int gift;
+    private int listen;
+    private int fan;
 
     public MainFanRankingOutVo(){}
     public MainFanRankingOutVo(P_MainFanRankingVo target) {
@@ -30,5 +33,8 @@ public class MainFanRankingOutVo {
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setLevel(target.getLevel());
         setGrade(target.getGrade());
+        setGift(target.getGiftCount());
+        setListen(target.getListenCount());
+        setFan(target.getFanCount());
     }
 }

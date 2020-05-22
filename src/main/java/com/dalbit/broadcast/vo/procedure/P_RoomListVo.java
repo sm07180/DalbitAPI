@@ -31,6 +31,7 @@ public class P_RoomListVo{
     private String code_link;               //방공유코드
     private int count_entry;                //참여자수
     private int count_good;                 //좋아요수
+    private int count_gold;                 //선물받은 별수
     private Date start_date;                //방송시작시간
     private String bj_mem_no;               //bj 회원번호
     private String bj_nickName;             //bj 닉네임
