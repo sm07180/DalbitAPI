@@ -1,5 +1,6 @@
 package com.dalbit.admin.dao;
 
+import com.dalbit.admin.vo.AdminMenuVo;
 import com.dalbit.admin.vo.BroadcastExitVo;
 import com.dalbit.admin.vo.BroadcastVo;
 import com.dalbit.admin.vo.SearchVo;
@@ -13,6 +14,9 @@ import java.util.ArrayList;
 
 @Repository
 public interface AdminDao {
+
+    @Transactional(readOnly = true)
+    ArrayList<AdminMenuVo> selectMobileAdminMenuAuth(SearchVo searchVo);
 
     @Transactional(readOnly = true)
     ArrayList<BroadcastVo> selectBroadcastList(SearchVo searchVo);

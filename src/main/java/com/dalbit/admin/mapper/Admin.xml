@@ -2,6 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dalbit.admin.dao.AdminDao" >
 
+    <select id="selectMobileAdminMenuAuth" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.AdminMenuVo">
+        select menu.idx
+            , menu.menu_name
+            , menu.menu_url
+            , menu.depth
+            , menu.order_no
+            , menu.parent_idx
+            , auth.is_read
+            , auth.is_insert
+            , auth.is_delete
+        from rd_admin.tb_admin_test_account test
+            , rd_admin.tb_admin_menu_auth auth
+            , rd_admin.tb_admin_menu menu
+        where test.emp_no = auth.emp_no
+            and auth.menu_idx = menu.idx
+            and mem_no = '11584609037349'
+            and menu.is_use = 1
+            and menu.mobile_yn = 'Y'
+    </select>
+
     <select id="selectBroadcastList" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.BroadcastVo">
         /* Admin.xml - selectBroadcastList */
         select *
@@ -47,4 +67,19 @@
                last_upd_date = now()
          where room_no = #{room_no}
     </update>
+
+    <select id="selectProfileList">
+        select basic.mem_no
+            , session.last_upd_date
+            , session.mem_no
+            , profile.image_profile
+            , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) reportedCnt
+        from rd_data.tb_member_basic basic
+            inner join rd_data.tb_member_profile profile on basic.mem_no = profile.mem_no
+            inner join (select mem_no, max(last_upd_date) last_upd_date
+                        from rd_data.tb_member_session
+                        group by mem_no
+                        order by max(last_upd_date) desc) session on basic.mem_no = session.mem_no
+        where session.mem_no is not null
+    </select>
 </mapper>

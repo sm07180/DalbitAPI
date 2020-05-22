@@ -74,6 +74,7 @@ public enum Status {
     회원가입실패_중복가입("-1", "member.join.already", "이미 회원가입된 상태 시"),
     회원가입실패_닉네임중복("-2", "member.join.nick.duplicate", "닉네임 중복 시"),
     회원가입실패_파라메터오류("-3", "param.error", "파라메터 오류 시"),
+    회원가입실패_탈퇴회원("-4", "member.join.kick.out.member", "탈퇴 회원이 재 가입시"),
     회원가입오류("C006", "member.join.error", "회원가입 오류 시"),
 
     //닉네임중복체크
@@ -752,6 +753,7 @@ public enum Status {
     방송강제종료_이미종료된방("-3", "force.exit.already.end", "이미 종료된 방을 강제종료 한 경우"),
     방송강제종료_방참가자아님("-4", "force.exit.no.listener", "방 참가자가 아닌경우"),
 
+    관리자메뉴조회_권한없음("-1", "no.auth", "관리자 권한이 없는 경우"),
 
     //환전계산
     환전계산성공("0", "exchange.calc.success", "환전 계산 성공 시"),

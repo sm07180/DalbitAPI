@@ -9,4 +9,5 @@ import lombok.ToString;
 @ToString
 public class SearchVo {
     private String reportYn;
+    private String mem_no;
 }
