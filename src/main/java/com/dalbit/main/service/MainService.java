@@ -489,7 +489,7 @@ public class MainService {
             pBannerVo.setParamPlatform(platform);
             pBannerVo.setParamMemNo(memNo);
             pBannerVo.setParamDevice("" + deviceVo.getOs());
-            pBannerVo.setParamPosition("1");
+            pBannerVo.setParamPosition(position);
             bannerList = mainDao.selectBanner(pBannerVo);
         }
 
