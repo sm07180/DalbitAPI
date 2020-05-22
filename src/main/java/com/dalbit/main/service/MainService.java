@@ -491,9 +491,9 @@ public class MainService {
             pBannerVo.setParamDevice("" + deviceVo.getOs());
             pBannerVo.setParamPosition(position);
             if("real".equals(DalbitUtil.getActiceProfile())){
-                bannerList = mainDao.selectBannerOld(pBannerVo);
-            }else{
                 bannerList = mainDao.selectBanner(pBannerVo);
+            }else{
+                bannerList = mainDao.selectBannerOld(pBannerVo);
             }
         }
 
