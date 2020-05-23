@@ -1171,17 +1171,17 @@ public class MypageService {
      *  스페셜 DJ 신청
      */
     public String callSpecialDjReq(P_SpecialDjReq pSpecialDjReq, HttpServletRequest request){
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청실패));
         pSpecialDjReq.setMem_no(MemberVo.getMyMemNo(request));
 
         Date endDate = new Date(120, 4, 29);
         Date today = new Date();
 
-        if(today.getTime() > endDate.getTime()){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_기간아님));
-        }else if(!DalbitUtil.isLogin(request)){
+        if(!DalbitUtil.isLogin(request)) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
-        }else if(mypageDao.selectExistsSpecialReq(pSpecialDjReq.getMem_no()) > 0){
+        }else if(today.getTime() > endDate.getTime()){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_기간아님));
+        }else if(mypageDao.selectExistsSpecialReq(pSpecialDjReq.getMem_no()) > 0 || mypageDao.selectExistsPhoneSpecialReq(pSpecialDjReq.getPhone()) > 0){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
         }else{
             try{

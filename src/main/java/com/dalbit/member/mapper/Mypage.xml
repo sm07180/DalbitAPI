@@ -158,6 +158,14 @@
           AND state = 1
     </select>
 
+    <select id="selectExistsPhoneSpecialReq" parameterType="String" resultType="int">
+        SELECT
+          COUNT(*)
+        FROM rd_admin.tb_req_special_dj
+        WHERE mem_phone = #{value}
+          AND state = 1
+    </select>
+
     <insert id="insertSpecialReq" parameterType="P_SpecialDjReq">
         INSERT INTO rd_admin.tb_req_special_dj(
           mem_no

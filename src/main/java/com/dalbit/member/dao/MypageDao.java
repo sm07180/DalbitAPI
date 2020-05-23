@@ -66,6 +66,8 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     int selectExistsSpecialReq(String mem_no);
+    @Transactional(readOnly = true)
+    int selectExistsPhoneSpecialReq(String mem_no);
     void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
 
 }
