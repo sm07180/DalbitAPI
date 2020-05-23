@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -1173,7 +1174,12 @@ public class MypageService {
         String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
         pSpecialDjReq.setMem_no(MemberVo.getMyMemNo(request));
 
-        if(!DalbitUtil.isLogin(request)){
+        Date endDate = new Date(120, 4, 29);
+        Date today = new Date();
+
+        if(today.getTime() > endDate.getTime()){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_기간아님));
+        }else if(!DalbitUtil.isLogin(request)){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
         }else if(mypageDao.selectExistsSpecialReq(pSpecialDjReq.getMem_no()) > 0){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
