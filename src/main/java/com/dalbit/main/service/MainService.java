@@ -54,13 +54,14 @@ public class MainService {
         //상위 추천 데이터 조회
         P_MainRecommandVo pMainRecommandVo = new P_MainRecommandVo();
         pMainRecommandVo.setParamPlanMemNo(DalbitUtil.getProperty("inforex.plan.memNo"));
-        pMainRecommandVo.setParamDevice(platform);
+        pMainRecommandVo.setParamDevice(deviceVo.getOs() + "");
         pMainRecommandVo.setParamMemNo(memNo);
+        pMainRecommandVo.setParamPlatform(platform);
         List<P_MainRecommandVo> recommendVoList = null;
-        if("real".equals(DalbitUtil.getActiceProfile())) {
-            recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
-        }else{
+        if("local".equals(DalbitUtil.getActiceProfile())) {
             recommendVoList = mainDao.callMainRecommandList200520(pMainRecommandVo);
+        }else{
+            recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
         }
 
         //DJ랭킹 조회

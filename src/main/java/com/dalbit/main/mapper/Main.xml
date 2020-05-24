@@ -60,14 +60,7 @@
                 , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
             FROM rd_admin.tb_admin_banner
             WHERE is_view = 1
-                AND (
-                  platform = 0
-                  OR
-                  platform = (CASE
-                    WHEN #{paramDevice} = '3' THEN 1
-                    ELSE 2
-                  END)
-                )
+                AND platform LIKE #{paramPlatform}
                 AND position = 1
                 AND (
                   view_type = 0
@@ -195,14 +188,7 @@
               OR
               (term_type = 1 and now() between start_datetime and end_datetime)
             )
-            AND (
-                  platform = 0
-                  OR
-                  platform = (CASE
-                    WHEN #{paramDevice} = '3' THEN 1
-                    ELSE 2
-                  END)
-                )
+            AND platform LIKE #{paramPlatform}
     </select>
 
     <select id="callMainPlanList" parameterType="String" resultType="P_MainRecommandVo">

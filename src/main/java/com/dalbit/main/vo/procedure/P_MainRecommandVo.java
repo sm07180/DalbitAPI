@@ -9,6 +9,7 @@ public class P_MainRecommandVo {
     private String paramMemNo;
     private String paramDevice;
     private String paramPlanMemNo;
+    private String paramPlatform;
 
     private String memNo;
     private String nickNm;
