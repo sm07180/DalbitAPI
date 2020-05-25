@@ -120,11 +120,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            if("real".equals(DalbitUtil.getActiceProfile())){
-                returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
-            }else{
-                returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + target.getBjLevel() + ".png");
-            }
+            returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
             returnMap.put("likes", 0);
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", 3);
@@ -210,11 +206,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            if("real".equals(DalbitUtil.getActiceProfile())){
-                returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
-            }else{
-                returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + target.getBjLevel() + ".png");
-            }
+            returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
             returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
             returnMap.put("gstMemId", target.getGstMemId() == null ? "" : target.getGstMemId());
             returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
@@ -778,11 +770,7 @@ public class RoomService {
         returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
         returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
-        if("real".equals(DalbitUtil.getActiceProfile())){
-            returnMap.put("holder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
-        }else{
-            returnMap.put("holder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + DalbitUtil.getIntMap(resultMap, "level") + ".png");
-        }
+        returnMap.put("holder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + DalbitUtil.getIntMap(resultMap, "level") + ".png");
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
@@ -907,11 +895,7 @@ public class RoomService {
                     returnMap.put("bjMemNo", target.getBjMemNo());
                     returnMap.put("bjNickNm", target.getBjNickNm());
                     returnMap.put("bjProfImg", target.getBjProfImg());
-                    if("real".equals(DalbitUtil.getActiceProfile())){
-                        returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
-                    }else{
-                        returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + target.getBjLevel() + ".png");
-                    }
+                    returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
                     returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                     returnMap.put("gstProfImg", target.getGstProfImg());
@@ -1083,11 +1067,7 @@ public class RoomService {
                 returnMap.put("bjMemNo", target.getBjMemNo());
                 returnMap.put("bjNickNm", target.getBjNickNm());
                 returnMap.put("bjProfImg", target.getBjProfImg());
-                if("real".equals(DalbitUtil.getActiceProfile())){
-                    returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_0.png");
-                }else{
-                    returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200513/AAA/ico_frame_" + target.getBjLevel() + ".png");
-                }
+                returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
                 returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                 returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                 returnMap.put("gstProfImg", target.getGstProfImg());

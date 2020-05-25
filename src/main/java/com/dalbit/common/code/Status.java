@@ -781,6 +781,7 @@ public enum Status {
     스페셜DJ_신청성공("0", "special.dj.apply.success", "스페셜DJ 신청 성공 시"),
     스페셜DJ_회원아님("-1", "special.dj.apply.no.member", "요청회원번호 회원 아닐 시"),
     스페셜DJ_이미신청("-2", "special.dj.apply.already.member", "이미 신청하였을 경우"),
+    스페셜DJ_기간아님("-3", "special.dj.apply.passed.period", "기간이 지났을 경우"),
     스페셜DJ_신청실패("C006", "special.dj.apply.fail", "스페셜DJ 신청 실패 시"),
 
     ;

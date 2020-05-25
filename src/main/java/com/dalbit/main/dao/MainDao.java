@@ -28,4 +28,6 @@ public interface MainDao {
 
     @Transactional(readOnly = true)
     List<BannerVo> selectBanner(P_BannerVo pBannerVo);
+    @Transactional(readOnly = true)
+    List<BannerVo> selectBannerOld(P_BannerVo pBannerVo);
 }

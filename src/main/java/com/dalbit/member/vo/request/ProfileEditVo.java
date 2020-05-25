@@ -13,7 +13,7 @@ public class ProfileEditVo {
     @Size(max = 1)
     private String gender;
 
-    @NotBlank @Size(max = 20)
+    @NotBlank @Size(min = 2, max = 20)
     private String nickNm;
 
     @NotBlank @Size(min = 8, max = 8)

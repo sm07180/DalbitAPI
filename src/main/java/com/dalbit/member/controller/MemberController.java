@@ -119,6 +119,12 @@ public class MemberController {
         //log.debug("휴대폰번호{} - 세션 = |{}| / 인풋 = |{}|", memType, request.getSession().getAttribute("phoneNo").toString(), memId);
         String s_phoneNo = (String)request.getSession().getAttribute("phoneNo");
         s_phoneNo = s_phoneNo == null ? "" : s_phoneNo.replaceAll("-", "");
+
+        // 부적절한문자열 체크 ( "\r", "\n", "\t")
+        if(DalbitUtil.isCheckSlash(memId)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+        }
+
         if(!"p".equals(memType) || ("p".equals(memType) && s_phoneNo.equals(memId))){
             ProcedureVo procedureVo = memberService.signup(joinVo, request);
             //휴대폰 인증했던 번호와 일치여부 확인

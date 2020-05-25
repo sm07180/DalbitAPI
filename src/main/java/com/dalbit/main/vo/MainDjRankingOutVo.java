@@ -21,6 +21,9 @@ public class MainDjRankingOutVo {
     private String grade;
     private int likes;
     private int listeners;
+    private int broadcast;
+    private int fan;
+    private int gift;
 
     public MainDjRankingOutVo(){}
     public MainDjRankingOutVo(P_MainDjRankingVo target) {
@@ -35,5 +38,8 @@ public class MainDjRankingOutVo {
         setGrade(target.getGrade());
         setLikes(target.getGoodCount());
         setListeners(target.getListenerCount());
+        setBroadcast(target.getBroadcastCount());
+        setFan(target.getFanCount());
+        setGift(target.getGiftCount());
     }
 }

@@ -26,6 +26,7 @@ public class RoomOutVo {
     private String link;
     private int entryCnt;
     private int likeCnt;
+    private int giftCnt;
     private String startDt;
     private long startTs;
     private String bjMemNo;
@@ -67,6 +68,7 @@ public class RoomOutVo {
         this.link = target.getCode_link();
         this.entryCnt = target.getCount_entry();
         this.likeCnt = target.getCount_good();
+        this.giftCnt = target.getCount_gold();
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.bjMemNo = target.getBj_mem_no();

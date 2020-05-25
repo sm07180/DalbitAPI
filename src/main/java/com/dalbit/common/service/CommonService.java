@@ -157,6 +157,8 @@ public class CommonService {
             resultMap.put("isExtend", true);
         }
         resultMap.put("boost", commonDao.selectBooster());
+        int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100};
+        resultMap.put("itemComboCount", timeCombos);
 
         return resultMap;
     }

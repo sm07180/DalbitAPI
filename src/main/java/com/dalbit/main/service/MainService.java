@@ -35,27 +35,24 @@ public class MainService {
         DeviceVo deviceVo = new DeviceVo(request);
 
         String platform = "";
-        if("real".equals(DalbitUtil.getActiceProfile())){
-            platform = deviceVo.getOs() + "";
-        }else{
-            int osInt = deviceVo.getOs() + 1;
-            if(osInt == 4){
-                osInt = 1;
-            }
-            for(int i = 1; i < 4; i++){
-                if(i == osInt){
-                    platform += "1";
-                }else{
-                    platform += "_";
-                }
+        int osInt = deviceVo.getOs() + 1;
+        if(osInt == 4){
+            osInt = 1;
+        }
+        for(int i = 1; i < 4; i++){
+            if(i == osInt){
+                platform += "1";
+            }else{
+                platform += "_";
             }
         }
 
         //상위 추천 데이터 조회
         P_MainRecommandVo pMainRecommandVo = new P_MainRecommandVo();
         pMainRecommandVo.setParamPlanMemNo(DalbitUtil.getProperty("inforex.plan.memNo"));
-        pMainRecommandVo.setParamDevice(platform);
+        pMainRecommandVo.setParamDevice(deviceVo.getOs() + "");
         pMainRecommandVo.setParamMemNo(memNo);
+        pMainRecommandVo.setParamPlatform(platform);
         List<P_MainRecommandVo> recommendVoList = null;
         if("real".equals(DalbitUtil.getActiceProfile())) {
             recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
@@ -489,7 +486,7 @@ public class MainService {
             pBannerVo.setParamPlatform(platform);
             pBannerVo.setParamMemNo(memNo);
             pBannerVo.setParamDevice("" + deviceVo.getOs());
-            pBannerVo.setParamPosition("1");
+            pBannerVo.setParamPosition(position);
             bannerList = mainDao.selectBanner(pBannerVo);
         }
 

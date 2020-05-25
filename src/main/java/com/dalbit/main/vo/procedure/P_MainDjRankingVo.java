@@ -42,4 +42,7 @@ public class P_MainDjRankingVo {
     private String grade;
     private int goodCount;
     private int listenerCount;
+    private int broadcastCount;
+    private int fanCount;
+    private int giftCount;
 }
