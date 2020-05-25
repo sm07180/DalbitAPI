@@ -35,19 +35,15 @@ public class MainService {
         DeviceVo deviceVo = new DeviceVo(request);
 
         String platform = "";
-        if("real".equals(DalbitUtil.getActiceProfile())){
-            platform = deviceVo.getOs() + "";
-        }else{
-            int osInt = deviceVo.getOs() + 1;
-            if(osInt == 4){
-                osInt = 1;
-            }
-            for(int i = 1; i < 4; i++){
-                if(i == osInt){
-                    platform += "1";
-                }else{
-                    platform += "_";
-                }
+        int osInt = deviceVo.getOs() + 1;
+        if(osInt == 4){
+            osInt = 1;
+        }
+        for(int i = 1; i < 4; i++){
+            if(i == osInt){
+                platform += "1";
+            }else{
+                platform += "_";
             }
         }
 
@@ -58,10 +54,10 @@ public class MainService {
         pMainRecommandVo.setParamMemNo(memNo);
         pMainRecommandVo.setParamPlatform(platform);
         List<P_MainRecommandVo> recommendVoList = null;
-        if("local".equals(DalbitUtil.getActiceProfile())) {
-            recommendVoList = mainDao.callMainRecommandList200520(pMainRecommandVo);
-        }else{
+        if("real".equals(DalbitUtil.getActiceProfile())) {
             recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
+        }else{
+            recommendVoList = mainDao.callMainRecommandList200520(pMainRecommandVo);
         }
 
         //DJ랭킹 조회
@@ -491,11 +487,7 @@ public class MainService {
             pBannerVo.setParamMemNo(memNo);
             pBannerVo.setParamDevice("" + deviceVo.getOs());
             pBannerVo.setParamPosition(position);
-            if("real".equals(DalbitUtil.getActiceProfile())){
-                bannerList = mainDao.selectBannerOld(pBannerVo);
-            }else{
-                bannerList = mainDao.selectBanner(pBannerVo);
-            }
+            bannerList = mainDao.selectBanner(pBannerVo);
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));
