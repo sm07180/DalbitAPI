@@ -2,10 +2,7 @@ package com.dalbit.admin.service;
 
 import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.util.AdminSocketUtil;
-import com.dalbit.admin.vo.AdminMenuVo;
-import com.dalbit.admin.vo.BroadcastExitVo;
-import com.dalbit.admin.vo.BroadcastVo;
-import com.dalbit.admin.vo.SearchVo;
+import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -111,5 +108,10 @@ public class AdminService {
         adminSocketUtil.setSocket(param,"chatEnd","roomOut",jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true));
 
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
+    }
+
+    public String selectProfileList(ProfileVo profileVo) {
+        ArrayList<ProfileVo> profileList = adminDao.selectProfileList(profileVo);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileList));
     }
 }

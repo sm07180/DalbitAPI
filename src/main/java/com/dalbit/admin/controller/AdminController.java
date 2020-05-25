@@ -1,6 +1,7 @@
 package com.dalbit.admin.controller;
 
 import com.dalbit.admin.service.AdminService;
+import com.dalbit.admin.vo.ProfileVo;
 import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.exception.GlobalException;
@@ -33,6 +34,12 @@ public class AdminController {
     @PostMapping("/broadcast/forceExit")
     public String broadcastForceExit(HttpServletRequest request, P_RoomForceExitInputVo pRoomForceExitInputVo){
         String result = adminService.roomForceExit(pRoomForceExitInputVo);
+        return result;
+    }
+
+    @PostMapping("/image/list")
+    public String profileList(HttpServletRequest request, ProfileVo profileVo) {
+        String result = adminService.selectProfileList(profileVo);
         return result;
     }
 

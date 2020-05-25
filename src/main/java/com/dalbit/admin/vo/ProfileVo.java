@@ -7,15 +7,14 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BroadcastVo {
-    private String room_no;
-    private String image_background;
+public class ProfileVo {
+
+    /* ProfileVo output */
     private String mem_no;
+    private String last_upd_date;
+    private String image_profile;
     private String mem_nick;
     private String mem_id;
-    private String subject_name;
-    private String title;
-    private int liveListener;
     private int reportedCnt;
-    private String start_date;
+    private String reportYn;
 }

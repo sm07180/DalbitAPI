@@ -1,9 +1,6 @@
 package com.dalbit.admin.dao;
 
-import com.dalbit.admin.vo.AdminMenuVo;
-import com.dalbit.admin.vo.BroadcastExitVo;
-import com.dalbit.admin.vo.BroadcastVo;
-import com.dalbit.admin.vo.SearchVo;
+import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -26,4 +23,8 @@ public interface AdminDao {
     int updateBroadcastMemberExit(P_RoomForceExitInputVo pRoomForceExitInputVo);
 
     int updateBroadcastExit(BroadcastExitVo broadcastExitVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<ProfileVo> selectProfileList(ProfileVo profileVo);
+
 }
