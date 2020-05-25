@@ -9,6 +9,6 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 public class NickNmDupleCheckVo {
 
-    @NotBlank @Size(max = 20)
+    @NotBlank @Size(min = 2, max = 20)
     private String nickNm;
 }
