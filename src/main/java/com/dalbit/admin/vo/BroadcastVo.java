@@ -18,4 +18,5 @@ public class BroadcastVo {
     private int liveListener;
     private int reportedCnt;
     private String start_date;
+    private int state;
 }

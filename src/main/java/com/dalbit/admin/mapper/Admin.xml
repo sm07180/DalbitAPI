@@ -37,10 +37,11 @@
                 , room.title
                 , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0) liveListener
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = room.mem_no) reportedCnt
+                , room.state
             from rd_data.tb_broadcast_room room
                 , rd_data.tb_member_basic basic
             where room.mem_no = basic.mem_no
-                and room.state <![CDATA[<>]]> 4
+                -- and room.state <![CDATA[<>]]> 4
         ) list
         <if test='reportYn == "Y"'>
         where 0 <![CDATA[<]]> reportedCnt
@@ -79,6 +80,7 @@
                 , profile.image_profile
                 , basic.mem_nick
                 , basic.mem_id
+                , basic.mem_join_date
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
                 from rd_data.tb_member_basic basic
                 inner join rd_data.tb_member_profile profile on basic.mem_no = profile.mem_no
