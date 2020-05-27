@@ -57,6 +57,12 @@ public class RestService {
     @Value("${server.www.url}")
     private String SERVER_WWW_URL;
 
+    @Value("${server.ant.origin.url}")
+    private String ANT_ORIGIN_URL;
+
+    @Value("${server.ant.edge.url}")
+    private String ANT_EDGE_URL;
+
     /**
      * Rest API 호출
      *
@@ -128,7 +134,7 @@ public class RestService {
             con.setRequestMethod(method_str);
             con.setConnectTimeout(5000);
             if(method == 1 && !"".equals(params)){
-                if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
+                if(ANT_ORIGIN_URL.equals(server_url) || ANT_EDGE_URL.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
                     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 }else{
                     con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -201,7 +207,7 @@ public class RestService {
         }catch (Exception e){
             log.info("{} {} error {}", server_url, url_path, e.getMessage());
             //방송 생성 후 publish token 생성시 오류 일때 방송방 삭제
-            if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
+            if((ANT_ORIGIN_URL.equals(server_url) || ANT_EDGE_URL.equals(server_url)) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
                 String stream_id = params.substring(3, params.indexOf("&"));
                 deleteAntRoom(stream_id, request);
 
@@ -270,11 +276,7 @@ public class RestService {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", roomNm);
 
-        //if("https://v174.dalbitlive.com:5443".equals(antServer) || "https://devm.dalbitlive.com:5443".equals(antServer)){ // Ant 2.0 테스트 클럽라디오 Ant일경우
-            return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/create", new Gson().toJson(map), 1, request);
-        //}else{
-        //   return callRest(antServer, "/" + antName + "/rest/broadcast/create", new Gson().toJson(map), 1, request);
-        //}
+        return callRest(ANT_ORIGIN_URL, "/" + antName + "/rest/v2/broadcasts/create", new Gson().toJson(map), 1, request);
     }
 
     /**
@@ -313,13 +315,8 @@ public class RestService {
         cal.add(Calendar.MINUTE, 30);
         long expire = cal.getTime().getTime() / 1000;
 
-        //if("https://v174.dalbitlive.com:5443".equals(antServer) || "https://devm.dalbitlive.com:5443".equals(antServer)){ // Ant 2.0 테스트 클럽라디오 Ant일경우
-            String params = "expireDate=" + expire + "&type=" + type;
-            return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
-        //}else{
-        //    String params = "id=" + streamId + "&expireDate=" + expire + "&type=" + type;
-        //    return callRest(antServer, "/" + antName + "/rest/broadcast/getToken", params, 0, request);
-        //}
+        String params = "expireDate=" + expire + "&type=" + type;
+        return callRest("publish".equals(type) ? ANT_ORIGIN_URL : ANT_EDGE_URL, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
     }
 
     /**
@@ -330,7 +327,7 @@ public class RestService {
      * @throws Exception
      */
     public Map<String, Object> deleteAntToken(String streamId, HttpServletRequest request) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2, request);
+        return callRest(ANT_ORIGIN_URL, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2, request);
     }
 
     /**
@@ -342,7 +339,7 @@ public class RestService {
      */
     @Async("threadTaskExecutor")
     public Map<String, Object> deleteAntRoom(String streamId, HttpServletRequest request) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
+        return callRest(ANT_ORIGIN_URL, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
     }
 
 
