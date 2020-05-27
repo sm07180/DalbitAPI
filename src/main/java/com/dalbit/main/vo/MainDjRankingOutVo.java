@@ -24,6 +24,7 @@ public class MainDjRankingOutVo {
     private int broadcast;
     private int fan;
     private int gift;
+    private int dj;
 
     public MainDjRankingOutVo(){}
     public MainDjRankingOutVo(P_MainDjRankingVo target) {
@@ -41,5 +42,6 @@ public class MainDjRankingOutVo {
         setBroadcast(target.getBroadcastCount());
         setFan(target.getFanCount());
         setGift(target.getGiftCount());
+        setDj(target.getDjCount());
     }
 }

@@ -45,4 +45,5 @@ public class P_MainDjRankingVo {
     private int broadcastCount;
     private int fanCount;
     private int giftCount;
+    private int djCount;
 }
