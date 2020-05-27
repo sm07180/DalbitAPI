@@ -3,9 +3,9 @@ package com.dalbit.rest.service;
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
-import java.lang.reflect.Member;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -127,18 +126,18 @@ public class RestService {
             url = new URL(request_uri);
             con = (HttpURLConnection) url.openConnection();
             con.setRequestMethod(method_str);
-            con.setConnectTimeout(5);
+            con.setConnectTimeout(5000);
             if(method == 1 && !"".equals(params)){
                 if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
                     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 }else{
                     con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 }
-                con.setDoInput(true);
+                //con.setDoInput(true);
                 con.setDoOutput(true);
+                con.setInstanceFollowRedirects(false);
                 con.setUseCaches(false);
                 con.setAllowUserInteraction(true);
-
                 DataOutputStream out = new DataOutputStream(con.getOutputStream());
                 out.write(params.getBytes("UTF-8"));
                 out.flush();
@@ -182,6 +181,9 @@ public class RestService {
      * @throws GlobalException
      */
     private String readStream(InputStream stream, String server_url, String url_path, String params, HttpServletRequest request) throws GlobalException{
+        if(stream == null){
+            return "";
+        }
         try {
             StringBuffer pageContents = new StringBuffer();
             InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
@@ -343,6 +345,7 @@ public class RestService {
         return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
     }
 
+
     /**
      * Ant Media 방/토큰 삭제
      *
@@ -358,23 +361,27 @@ public class RestService {
     }
 
     public Map<String, Object> makeFirebaseDynamicLink(String link, String nickNm, String profImg, String title, HttpServletRequest request) throws GlobalException{
-        HashMap<String, String> androidInfo = new HashMap<>();
+        JSONObject androidInfo = new JSONObject();
         androidInfo.put("androidPackageName", APP_PACKAGE_AOS);
+
         HashMap<String, String> iosInfo = new HashMap<>();
         iosInfo.put("iosBundleId", APP_BUNDLE_IOS);
         HashMap<String, String> socialMetaTagInfo = new HashMap<>();
-        iosInfo.put("socialTitle", nickNm);
-        iosInfo.put("socialDescription", title);
-        iosInfo.put("socialImageLink", profImg);
+        socialMetaTagInfo.put("socialTitle", nickNm);
+        socialMetaTagInfo.put("socialDescription", title);
+        socialMetaTagInfo.put("socialImageLink", profImg);
         HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
         dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);
         dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link);
         dynamicLinkInfo.put("androidInfo", androidInfo);
         dynamicLinkInfo.put("iosInfo", iosInfo);
         dynamicLinkInfo.put("socialMetaTagInfo", socialMetaTagInfo);
+        HashMap<String, Object> suffix = new HashMap<>();
+        suffix.put("option", "UNGUESSABLE");//SHORT
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("dynamicLinkInfo", dynamicLinkInfo);
+        map.put("suffix", suffix);
 
         return callRest(FIREBASE_DYNAMIC_LINK_URL, "/v1/shortLinks?key=" + FIREBASE_APP_KEY, new Gson().toJson(map), 1, request);
     }

@@ -137,6 +137,8 @@ public class RoomService {
             returnMap.put("hasStory", false);
             returnMap.put("isLike", true);
             returnMap.put("useBoost", false);
+            returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url"));
+            returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url"));
 
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
@@ -228,6 +230,8 @@ public class RoomService {
             returnMap.put("hasStory", false);
             returnMap.put("useBoost", existsBoostByRoom(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no()));    //부스터 사용여부
             returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+            returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url"));
+            returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url"));
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
@@ -923,6 +927,8 @@ public class RoomService {
                     returnMap.put("expNext", target.getExpNext());
                     returnMap.put("dalCnt", target.getRubyCnt());
                     returnMap.put("byeolCnt", target.getGoldCnt());*/
+                    returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url"));
+                    returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url"));
                     log.info("returnMap: {}", returnMap);
 
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
@@ -1085,6 +1091,8 @@ public class RoomService {
                 returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
                 returnMap.put("isFan", "1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
                 returnMap.put("isLike", (DalbitUtil.isLogin(request)) ? "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")) : true);
+                returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url"));
+                returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url"));
 
                 try{
                     if(auth == 3){ // DJ

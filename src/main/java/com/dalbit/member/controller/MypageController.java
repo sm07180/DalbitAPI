@@ -54,6 +54,9 @@ public class MypageController {
         apiData.setMemSex(profileEditVo.getGender());
         apiData.setNickName(profileEditVo.getNickNm());
         apiData.setName(profileEditVo.getName());
+        if(apiData.getName().length() > 50){
+            apiData.setName(apiData.getName().substring(0, 49));
+        }
         apiData.setBirthYear(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
         apiData.setBirthMonth(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
         apiData.setBirthDay(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
