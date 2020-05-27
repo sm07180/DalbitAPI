@@ -57,12 +57,6 @@ public class RestService {
     @Value("${server.www.url}")
     private String SERVER_WWW_URL;
 
-    @Value("${server.ant.origin.url}")
-    private String ANT_ORIGIN_URL;
-
-    @Value("${server.ant.edge.url}")
-    private String ANT_EDGE_URL;
-
     /**
      * Rest API 호출
      *
@@ -134,7 +128,7 @@ public class RestService {
             con.setRequestMethod(method_str);
             con.setConnectTimeout(5000);
             if(method == 1 && !"".equals(params)){
-                if(ANT_ORIGIN_URL.equals(server_url) || ANT_EDGE_URL.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
+                if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
                     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 }else{
                     con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -207,7 +201,7 @@ public class RestService {
         }catch (Exception e){
             log.info("{} {} error {}", server_url, url_path, e.getMessage());
             //방송 생성 후 publish token 생성시 오류 일때 방송방 삭제
-            if((ANT_ORIGIN_URL.equals(server_url) || ANT_EDGE_URL.equals(server_url)) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
+            if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
                 String stream_id = params.substring(3, params.indexOf("&"));
                 deleteAntRoom(stream_id, request);
 
@@ -276,7 +270,7 @@ public class RestService {
         HashMap<String, String> map = new HashMap<>();
         map.put("name", roomNm);
 
-        return callRest(ANT_ORIGIN_URL, "/" + antName + "/rest/v2/broadcasts/create", new Gson().toJson(map), 1, request);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/create", new Gson().toJson(map), 1, request);
     }
 
     /**
@@ -316,7 +310,7 @@ public class RestService {
         long expire = cal.getTime().getTime() / 1000;
 
         String params = "expireDate=" + expire + "&type=" + type;
-        return callRest("publish".equals(type) ? ANT_ORIGIN_URL : ANT_EDGE_URL, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
     }
 
     /**
@@ -327,7 +321,7 @@ public class RestService {
      * @throws Exception
      */
     public Map<String, Object> deleteAntToken(String streamId, HttpServletRequest request) throws GlobalException{
-        return callRest(ANT_ORIGIN_URL, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2, request);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2, request);
     }
 
     /**
@@ -339,7 +333,7 @@ public class RestService {
      */
     @Async("threadTaskExecutor")
     public Map<String, Object> deleteAntRoom(String streamId, HttpServletRequest request) throws GlobalException{
-        return callRest(ANT_ORIGIN_URL, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
     }
 
 
