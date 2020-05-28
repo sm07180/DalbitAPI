@@ -41,7 +41,7 @@
             from rd_data.tb_broadcast_room room
                 , rd_data.tb_member_basic basic
             where room.mem_no = basic.mem_no
-                -- and room.state <![CDATA[<>]]> 4
+                and room.state <![CDATA[<>]]> 4
         ) list
         <if test='reportYn == "Y"'>
         where 0 <![CDATA[<]]> reportedCnt

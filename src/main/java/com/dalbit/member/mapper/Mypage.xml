@@ -155,7 +155,9 @@
           COUNT(*)
         FROM rd_admin.tb_req_special_dj
         WHERE mem_no = #{value}
-          AND state = 1
+          -- AND state = 1
+          <!-- 스페셜 DJ는 매달 신청을 받는다. -->
+          AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
     </select>
 
     <select id="selectExistsPhoneSpecialReq" parameterType="String" resultType="int">
