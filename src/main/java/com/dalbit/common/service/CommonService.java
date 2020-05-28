@@ -157,8 +157,16 @@ public class CommonService {
             resultMap.put("isExtend", true);
         }
         resultMap.put("boost", commonDao.selectBooster());
-        int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100};
-        resultMap.put("itemComboCount", timeCombos);
+
+        if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){
+            int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100, 200, 300, 400, 500};
+            resultMap.put("itemComboCount", timeCombos);
+            resultMap.put("itemComboCout", timeCombos);
+        }else{
+            int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100};
+            resultMap.put("itemComboCount", timeCombos);
+            resultMap.put("itemComboCout", timeCombos);
+        }
 
         return resultMap;
     }
