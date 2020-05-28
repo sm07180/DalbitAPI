@@ -128,7 +128,7 @@ public class RestService {
             con.setRequestMethod(method_str);
             con.setConnectTimeout(5000);
             if(method == 1 && !"".equals(params)){
-                if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(params)){
+                if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(server_url)){
                     con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
                 }else{
                     con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -357,18 +357,21 @@ public class RestService {
 
         HashMap<String, String> iosInfo = new HashMap<>();
         iosInfo.put("iosBundleId", APP_BUNDLE_IOS);
+
         HashMap<String, String> socialMetaTagInfo = new HashMap<>();
         socialMetaTagInfo.put("socialTitle", nickNm);
         socialMetaTagInfo.put("socialDescription", title);
         socialMetaTagInfo.put("socialImageLink", profImg);
+
+        HashMap<String, Object> suffix = new HashMap<>();
+        suffix.put("option", "UNGUESSABLE");//SHORT
+
         HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
         dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);
         dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link);
         dynamicLinkInfo.put("androidInfo", androidInfo);
         dynamicLinkInfo.put("iosInfo", iosInfo);
         dynamicLinkInfo.put("socialMetaTagInfo", socialMetaTagInfo);
-        HashMap<String, Object> suffix = new HashMap<>();
-        suffix.put("option", "UNGUESSABLE");//SHORT
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("dynamicLinkInfo", dynamicLinkInfo);
