@@ -8,6 +8,6 @@ import javax.validation.constraints.Min;
 @Getter @Setter
 public class ExchangeVo {
 
-    @Min(600)
+    @Min(570)
     private int byeol;
 }

@@ -758,13 +758,13 @@ public enum Status {
     //환전계산
     환전계산성공("0", "exchange.calc.success", "환전 계산 성공 시"),
     환전계산_회원아님("-1", "exchange.calc.no.member","요청회원번호 회원 아닐 시"),
-    환전계산_별체크("-2", "exchange.calc.limit.byeol", "최소 별 600 이상 아닐 시"),
+    환전계산_별체크("-2", "exchange.calc.limit.byeol", "최소 별 570 이상 아닐 시"),
     환전계산실패("C006", "exchange.calc.fail", "환전 계산 실패 시"),
 
     //환전신청
     환전신청성공("0", "exchange.apply.success", "환전 신청 성공 시"),
     환전신청_회원아님("-1", "exchange.apply.no.member", "요청회원번호 회원 아닐 시"),
-    환전신청_별체크("-2", "exchange.apply.limit.byeol", "최소 별 600 이상 아닐 시"),
+    환전신청_별체크("-2", "exchange.apply.limit.byeol", "최소 별 570 이상 아닐 시"),
     환전신청_예금주오류("-3", "exchange.apply.account.name.error", "예금주 오류 시"),
     환전신청_은행코드오류("-4", "exchange.apply.bank.code.error", "은행코드 오류 시"),
     환전신청_계좌번호오류("-5", "exchange.apply.account.no.error", "계좌번호 오류 시"),

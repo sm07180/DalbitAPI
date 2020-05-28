@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 @Getter @Setter
 public class ExchangeApplyVo {
 
-    @Min(600)
+    @Min(570)
     private int byeol;
     private String accountName; //예금주
     private String bankCode;
