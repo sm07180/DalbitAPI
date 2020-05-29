@@ -1,5 +1,6 @@
 package com.dalbit.admin.vo;
 
+import com.dalbit.common.vo.BaseVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
-public class AdminMenuVo {
+public class AdminMenuVo extends BaseVo {
 
     public List<AdminMenuVo> twoDepth;
 

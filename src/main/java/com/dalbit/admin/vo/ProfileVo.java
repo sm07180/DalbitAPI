@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class ProfileVo {
+public class ProfileVo extends AdminBaseVo{
 
     /* ProfileVo output */
     private String mem_no;
