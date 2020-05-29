@@ -11,7 +11,7 @@ import java.util.Enumeration;
 public class ParamCheckInterceptor extends HandlerInterceptorAdapter {
 
     private final String[] IGNORE_URLS = {
-        "/ctrl/check/service", "/self/auth"
+        "/ctrl/check/service", "/self/auth", "/admin/"
     };
 
     @Override

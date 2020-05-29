@@ -15,6 +15,7 @@ import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -38,15 +39,11 @@ public class AdminService {
     JwtUtil jwtUtil;
     @Autowired
     AdminSocketUtil adminSocketUtil;
+    @Autowired
+    AdminCommonService adminCommonService;
 
-    @Value("${server.ant.url}")
-    private String antServer;
+    private final String menuJsonKey= "adminMenu";
 
-    @Value("${ant.expire.hour}")
-    private int antExpire;
-
-    @Value("${ant.app.name}")
-    private String antName;
 
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
         String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
@@ -67,9 +64,13 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
     }
 
-    public String selectBroadcastList(SearchVo searchVo){
+    public String selectBroadcastList(HttpServletRequest request, SearchVo searchVo){
         ArrayList<BroadcastVo> broadList = adminDao.selectBroadcastList(searchVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadList));
+
+        var map = new HashMap<>();
+        map.put("broadList", broadList);
+        map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
     public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo){
@@ -110,8 +111,12 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
     }
 
-    public String selectProfileList(ProfileVo profileVo) {
+    public String selectProfileList(HttpServletRequest request, ProfileVo profileVo) {
         ArrayList<ProfileVo> profileList = adminDao.selectProfileList(profileVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileList));
+
+        var map = new HashMap<>();
+        map.put("profileList", profileList);
+        map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 }
