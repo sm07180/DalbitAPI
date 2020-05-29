@@ -41,7 +41,7 @@ public class P_JoinVo extends BaseVo {
         setLocation(location);
         setIp(ip);
         setBrowser(browser);
-        if(this.name.length() > 50){
+        if(!DalbitUtil.isEmpty(this.name) && this.name.length() > 50){
             this.name = this.name.substring(0, 49);
         }
     }

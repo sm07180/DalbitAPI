@@ -54,7 +54,7 @@ public class MypageController {
         apiData.setMemSex(profileEditVo.getGender());
         apiData.setNickName(profileEditVo.getNickNm());
         apiData.setName(profileEditVo.getName());
-        if(apiData.getName().length() > 50){
+        if(!DalbitUtil.isEmpty(apiData.getName()) && apiData.getName().length() > 50){
             apiData.setName(apiData.getName().substring(0, 49));
         }
         apiData.setBirthYear(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
