@@ -775,6 +775,7 @@ public enum Status {
     환전신청_첨부파일2오류("-10", "exchange.apply.addfile2.no.error", "첨부파일2 오류 시"),
     환전신청_동의오류("-11", "exchange.apply.agree.no.error", "동의 오류 시"),
     환전신청_별부족("-12", "exchange.apply.byeol.lack ", "별 부족 시"),
+    환전신청_신청제한("-13", "exchange.apply.limit", "환전 신청 횟수 초과 시"),
     환전신청실패("C006", "exchange.apply.fail", "환전 신청 실패 시"),
 
     //스페셜DJ
