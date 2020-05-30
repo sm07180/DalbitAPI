@@ -204,7 +204,7 @@ public class MemberService {
      */
     public String callExchangeApply(P_ExchangeApplyVo pExchangeApplyVo, HttpServletRequest request) throws GlobalException {
         String exchangeFile1 = pExchangeApplyVo.getAdd_file1();
-        String exchangeFile2 = pExchangeApplyVo.getAdd_file1();
+        String exchangeFile2 = pExchangeApplyVo.getAdd_file2();
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(exchangeFile1) && exchangeFile1.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
             isDone = true;
@@ -267,6 +267,8 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_동의오류));
         } else if(procedureVo.getRet().equals(Status.환전신청_별부족.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_별부족));
+        } else if(procedureVo.getRet().equals(Status.환전신청_신청제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_신청제한));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청실패));
         }

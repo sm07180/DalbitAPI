@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SearchVo {
+public class SearchVo extends AdminBaseVo{
     private String reportYn;
     private String mem_no;
 }
