@@ -46,6 +46,7 @@
         <if test='reportYn == "Y"'>
         where 0 <![CDATA[<]]> reportedCnt
         </if>
+        limit #{searchStart}, #{searchEnd}
     </select>
 
     <select id="callBroadcastRoomExit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
@@ -93,6 +94,7 @@
         <if test='reportYn == "Y"'>
             where 0 <![CDATA[<]]> reportedCnt
         </if>
+        limit #{searchStart}, #{searchEnd}
     </select>
 
     <update id="proImageInit" parameterType="com.dalbit.admin.vo.ProImageInitVo">

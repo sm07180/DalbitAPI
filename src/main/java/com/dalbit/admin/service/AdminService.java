@@ -21,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -43,7 +44,7 @@ public class AdminService {
     private final String menuJsonKey = "adminMenu";
 
 
-    public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
+    /*public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
         String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
         if (jwtUtil.validateToken(authToken)) {
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
@@ -60,14 +61,24 @@ public class AdminService {
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-    }
+    }*/
 
     public String selectBroadcastList(HttpServletRequest request, SearchVo searchVo) {
-        ArrayList<BroadcastVo> broadList = adminDao.selectBroadcastList(searchVo);
+        searchVo.setPagingInfo();
+        List<BroadcastVo> broadList = adminDao.selectBroadcastList(searchVo);
+
+        if(searchVo.getPageCount() < broadList.size()){
+            searchVo.setEndPage(false);
+            broadList = broadList.subList(0, searchVo.getPageCount());
+        }else{
+            searchVo.setEndPage(true);
+        }
 
         var map = new HashMap<>();
+        map.put("isEndPage", searchVo.isEndPage());
         map.put("broadList", broadList);
         map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
+
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
@@ -110,11 +121,21 @@ public class AdminService {
     }
 
     public String selectProfileList(HttpServletRequest request, ProfileVo profileVo) {
-        ArrayList<ProfileVo> profileList = adminDao.selectProfileList(profileVo);
+        profileVo.setPagingInfo();
+        List<ProfileVo> profileList = adminDao.selectProfileList(profileVo);
+
+        if(profileVo.getPageCount() < profileList.size()){
+            profileVo.setEndPage(false);
+            profileList = profileList.subList(0, profileVo.getPageCount());
+        }else{
+            profileVo.setEndPage(true);
+        }
 
         var map = new HashMap<>();
+        map.put("isEndPage", profileVo.isEndPage());
         map.put("profileList", profileList);
         map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
+
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
