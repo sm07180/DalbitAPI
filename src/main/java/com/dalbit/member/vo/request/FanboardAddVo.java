@@ -16,7 +16,7 @@ public class FanboardAddVo {
 
     private Integer boardNo;
 
-    @NotBlank
+    @NotBlank @Size(max = 100)
     private String content;
 
 
