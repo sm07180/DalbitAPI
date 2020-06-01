@@ -17,7 +17,7 @@
             , rd_admin.tb_admin_menu menu
         where test.emp_no = auth.emp_no
             and auth.menu_idx = menu.idx
-            and mem_no = '11584609037349'
+            and mem_no = #{mem_no}
             and menu.is_use = 1
             and menu.mobile_yn = 'Y'
     </select>
