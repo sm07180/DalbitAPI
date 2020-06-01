@@ -3,6 +3,7 @@
 <mapper namespace="com.dalbit.admin.dao.AdminDao" >
 
     <select id="selectMobileAdminMenuAuth" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.AdminMenuVo">
+        /* Admin.xml - selectMobileAdminMenuAuth */
         select menu.idx
             , menu.menu_name
             , menu.menu_url
@@ -50,6 +51,7 @@
     </select>
 
     <select id="callBroadcastRoomExit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callBroadcastRoomExit */
         call rd_data.sp_broadcast_room_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
@@ -104,8 +106,8 @@
          where mem_no = #{mem_no}
     </update>
 
-    <insert id="insertHistory" parameterType="com.dalbit.admin.vo.ProImageInitVo">
-        /* Admin.xml - insertHistory */
+    <insert id="insertProfileHistory" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - insertProfileHistory */
         insert into
           rd_data.tb_member_profile_edit_history (mem_no, edit_contents, op_name, last_upd_date, type)
         values
@@ -118,4 +120,12 @@
            set image_background= #{image_background}
          where room_no = #{room_no}
     </update>
+
+    <insert id="insertBroadHistory" parameterType="com.dalbit.admin.vo.BroImageInitVo">
+        /* Admin.xml - insertBroadHistory */
+        insert into
+          rd_data.tb_broadcast_room_edit_history (room_no, edit_contents, op_name, last_upd_date)
+        values
+          (#{room_no}, #{edit_contents}, #{op_name}, current_timestamp())
+    </insert>
 </mapper>

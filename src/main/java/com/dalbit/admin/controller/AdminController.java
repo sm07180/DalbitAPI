@@ -30,30 +30,46 @@ public class AdminController {
         return result;
     }*/
 
+    /**
+     * 이미지관리 > 방송방 배경
+     * 생방송관리
+     */
     @PostMapping("/broadcast/list")
     public String broadcastList(HttpServletRequest request, SearchVo searchVo){
         String result = adminService.selectBroadcastList(request, searchVo);
         return result;
     }
 
+    /**
+     * 생방송관리 > 강제종료
+     */
     @PostMapping("/broadcast/forceExit")
     public String broadcastForceExit(HttpServletRequest request, P_RoomForceExitInputVo pRoomForceExitInputVo){
         String result = adminService.roomForceExit(pRoomForceExitInputVo);
         return result;
     }
 
+    /**
+     * 이미지관리 > 프로필
+     */
     @PostMapping("/image/list")
     public String profileList(HttpServletRequest request, ProfileVo profileVo) {
         String result = adminService.selectProfileList(request, profileVo);
         return result;
     }
 
+    /**
+     * 이미지관리 > 프로필 이미지 초기화
+     */
     @PostMapping("/proImage/init")
     public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) {
         String result = adminService.proImageInit(request, proImageInitVo);
         return result;
     }
 
+    /**
+     * 이미지관리 > 방송방 이미지 초기화
+     */
     @PostMapping("/broImage/init")
     public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) {
         String result = adminService.broImageInit(request, broImageInitVo);

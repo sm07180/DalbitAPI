@@ -63,6 +63,10 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
     }*/
 
+    /**
+     * 이미지관리 > 방송방 배경
+     * / 생방송관리
+     */
     public String selectBroadcastList(HttpServletRequest request, SearchVo searchVo) {
         searchVo.setPagingInfo();
         List<BroadcastVo> broadList = adminDao.selectBroadcastList(searchVo);
@@ -82,6 +86,9 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
+    /**
+     * 생방송관리 > 강제종료
+     */
     public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomForceExitInputVo);
         //방 나가기 처리
@@ -120,6 +127,9 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
     }
 
+    /**
+     * 이미지관리 > 프로필
+     */
     public String selectProfileList(HttpServletRequest request, ProfileVo profileVo) {
         profileVo.setPagingInfo();
         List<ProfileVo> profileList = adminDao.selectProfileList(profileVo);
@@ -139,15 +149,18 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
+    /**
+     * 이미지관리 > 프로필 이미지 초기화
+     */
     public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) {
         proImageInitVo.setOp_name("모바일운영자");
         proImageInitVo.setType(0);
-        proImageInitVo.setEdit_contents("프로필이미지 변경 : >> /profile_1/1/1.jpeg?300x300");
+        proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + proImageInitVo.getReset_image_profile());
 
         // rd_data.tb_member_profile_edit_history에 insert
-        adminDao.insertHistory(proImageInitVo);
+         adminDao.insertProfileHistory(proImageInitVo);
 
-        // rd_data.tb_member_profile에 image_profile update
+        // rd_data.tb_member_profil  e에 image_profile update
         int result = adminDao.proImageInit(proImageInitVo);
         if (result > 0) {
             return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
@@ -156,7 +169,15 @@ public class AdminService {
         }
     }
 
+    /**
+     * 이미지관리 > 방송방 이미지 초기화
+     */
     public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) {
+        broImageInitVo.setOp_name("모바일운영자");
+        broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
+
+        // rd_data.tb_broadcast_room_edit_history에 insert
+        adminDao.insertBroadHistory(broImageInitVo);
 
         // rd_data.tb_broadcast_room에 image_background update
         int result = adminDao.broImageInit(broImageInitVo);

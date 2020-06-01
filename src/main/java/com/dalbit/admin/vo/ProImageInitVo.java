@@ -15,5 +15,6 @@ public class ProImageInitVo extends AdminBaseVo{
     private String last_upd_date;
     private int type;
     private String image_profile;
+    private String reset_image_profile;
 
 }
