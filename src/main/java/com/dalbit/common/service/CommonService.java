@@ -594,4 +594,8 @@ public class CommonService {
         }
         return result;
     }
+
+    public String selectNowBroadcast(HttpServletRequest request) {
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonDao.selectNowBroadcast(MemberVo.getMyMemNo(request))));
+    }
 }

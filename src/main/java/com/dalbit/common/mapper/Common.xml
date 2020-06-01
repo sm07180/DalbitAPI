@@ -221,4 +221,10 @@
         </choose>
     </select>
 
+    <select id="selectNowBroadcast" parameterType="String" resultType="NowBroadcastVo">
+        SELECT
+            @isInforex := IFNULL((SELECT `inner` FROM tb_member_basic WHERE mem_no = #{value}), 0) AS isInforex
+            , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room WHERE state &lt; 4), 0) AS roomCnt
+            , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room a INNER JOIN tb_broadcast_room_member b ON a.room_no = b.room_no AND a.state &lt; 4 AND b.auth &lt; 3 AND b.state = 0), 0) AS listenerCnt
+    </select>
 </mapper>

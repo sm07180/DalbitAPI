@@ -28,8 +28,14 @@ public interface AdminDao {
 
     int proImageInit(ProImageInitVo proImageInitVo);
 
-    int insertHistory(ProImageInitVo proImageInitVo);
+    int insertProfileHistory(ProImageInitVo proImageInitVo);
 
     int broImageInit(BroImageInitVo broImageInitVo);
+
+    int insertBroadHistory(BroImageInitVo broImageInitVo);
+
+    int nickTextInit(NickTextInitVo nickTextInitVo);
+
+    int insertNickHistory(NickTextInitVo nickTextInitVo);
 
 }

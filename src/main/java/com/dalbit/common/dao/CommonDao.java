@@ -46,4 +46,6 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
 
+    @Transactional(readOnly = true)
+    NowBroadcastVo selectNowBroadcast(String memNo);
 }
