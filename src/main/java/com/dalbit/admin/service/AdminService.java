@@ -160,7 +160,7 @@ public class AdminService {
         // rd_data.tb_member_profile_edit_history에 insert
          adminDao.insertProfileHistory(proImageInitVo);
 
-        // rd_data.tb_member_profil  e에 image_profile update
+        // rd_data.tb_member_profile에 image_profile update
         int result = adminDao.proImageInit(proImageInitVo);
         if (result > 0) {
             return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
@@ -185,6 +185,26 @@ public class AdminService {
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_성공));
         } else {
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_실패));
+        }
+    }
+
+    /**
+     * 텍스트관리 > 닉네임 초기화
+     */
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo) {
+        nickTextInitVo.setOp_name("모바일관리자");
+        nickTextInitVo.setType(0);
+        nickTextInitVo.setEdit_contents("닉네임 변경 : " + nickTextInitVo.getMem_nick() + " >> " + nickTextInitVo.getMem_userid());
+
+        // rd_data.tb_member_profile_edit_history에 insert
+        adminDao.insertNickHistory(nickTextInitVo);
+
+        // rd_data.tb_member_basic에 mem_nick update
+        int result = adminDao.nickTextInit(nickTextInitVo);
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_성공));
+        } else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_실패));
         }
     }
 }

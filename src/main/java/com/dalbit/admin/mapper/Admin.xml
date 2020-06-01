@@ -83,6 +83,7 @@
                 , profile.image_profile
                 , basic.mem_nick
                 , basic.mem_id
+                , basic.mem_userid
                 , basic.mem_join_date
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
                 from rd_data.tb_member_basic basic
@@ -127,5 +128,20 @@
           rd_data.tb_broadcast_room_edit_history (room_no, edit_contents, op_name, last_upd_date)
         values
           (#{room_no}, #{edit_contents}, #{op_name}, current_timestamp())
+    </insert>
+
+    <update id="nickTextInit" parameterType="com.dalbit.admin.vo.NickTextInitVo">
+        /* Admin.xml - nickTextInit */
+        update rd_data.tb_member_basic
+          set mem_nick = #{mem_userid}
+        where mem_no = #{mem_no}
+    </update>
+
+    <insert id="insertNickHistory" parameterType="com.dalbit.admin.vo.NickTextInitVo">
+        /* Admin.xml - insertNickHistory */
+        insert into
+          rd_data.tb_member_profile_edit_history (mem_no, edit_contents, op_name, last_upd_date, type)
+        values
+          (#{mem_no}, #{edit_contents}, #{op_name}, current_timestamp(), #{type})
     </insert>
 </mapper>
