@@ -3,10 +3,7 @@ package com.dalbit.member.vo.request;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 
 @Getter @Setter
 public class FanboardEditVo {
@@ -17,7 +14,7 @@ public class FanboardEditVo {
     @NotNull
     private Integer boardIdx;
 
-    @NotBlank
+    @NotBlank @Size(max = 100)
     private String content;
 
 
