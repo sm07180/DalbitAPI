@@ -151,11 +151,8 @@ public class CommonService {
             resultMap.put("isForce", true);
         }
 
-        if("real".equals(DalbitUtil.getActiceProfile())){
-            resultMap.put("isExtend", false);
-        }else{
-            resultMap.put("isExtend", true);
-        }
+        resultMap.put("isExtend", true);
+
         resultMap.put("boost", commonDao.selectBooster());
 
         if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){

@@ -22,5 +22,5 @@ public class MainRecommandOutVo {
     private String bannerUrl;
     private int listeners;
     private int likes;
-
+    public boolean isSpecial;
 }

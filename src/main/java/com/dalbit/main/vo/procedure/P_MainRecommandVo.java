@@ -21,5 +21,5 @@ public class P_MainRecommandVo {
     private int listeners;
     private int likes;
     private String bannerUrl;
-
+    public boolean isSpecial;
 }

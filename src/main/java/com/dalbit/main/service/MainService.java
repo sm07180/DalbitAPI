@@ -53,11 +53,17 @@ public class MainService {
         pMainRecommandVo.setParamDevice(deviceVo.getOs() + "");
         pMainRecommandVo.setParamMemNo(memNo);
         pMainRecommandVo.setParamPlatform(platform);
-        List<P_MainRecommandVo> recommendVoList = null;
-        if("real".equals(DalbitUtil.getActiceProfile())) {
-            recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
-        }else{
-            recommendVoList = mainDao.callMainRecommandList200520(pMainRecommandVo);
+        List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
+        if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 11){
+            List<P_MainRecommandVo> recommendVoLiveList = mainDao.callMainRecommandLiveList(pMainRecommandVo);
+            if(!DalbitUtil.isEmpty(recommendVoLiveList)){
+                for(int i = 0; i < recommendVoLiveList.size(); i++){
+                    recommendVoList.add(recommendVoLiveList.get(i));
+                    if(recommendVoList.size() == 10){
+                        break;
+                    }
+                }
+            }
         }
 
         //DJ랭킹 조회
@@ -109,113 +115,66 @@ public class MainService {
         String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
         List recommend = new ArrayList();
         if(!DalbitUtil.isEmpty(recommendVoList)){
-            if("real".equals(DalbitUtil.getActiceProfile())){
-                for (int i=0; i < recommendVoList.size(); i++){
-                    //if(deviceVo.getOs() == 2 && "banner".equals(recommendVoList.get(i).getNickNm()) && "17".equals(recommendVoList.get(i).getMemNo()) ){
-                    // IOS심사일 때 베타테스트 배너 안나오게
-                    //}else{
-                    MainRecommandOutVo outVo = new MainRecommandOutVo();
-                    outVo.setMemNo(recommendVoList.get(i).getMemNo());
-                    outVo.setNickNm(recommendVoList.get(i).getNickNm());
-                    outVo.setGender(recommendVoList.get(i).getGender());
-                    if("banner".equals(outVo.getNickNm())){
-                        ImageVo tmpVo = new ImageVo();
-                        tmpVo.setUrl(recommendVoList.get(i).getProfileUrl());
-                        outVo.setProfImg(tmpVo);
-                        outVo.setBannerUrl(recommendVoList.get(i).getBannerUrl());
-                    }else{
-                        //outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?656x240");
-                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
-                        outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
-                    }
-                    outVo.setRoomType(recommendVoList.get(i).getRoomType());
-                    outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
-                    if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
-                        outVo.setTitle("방송 준비중");
-                    }else{
-                        outVo.setTitle(recommendVoList.get(i).getTitle());
-                    }
-                    outVo.setListeners(recommendVoList.get(i).getListeners());
-                    outVo.setLikes(recommendVoList.get(i).getLikes());
-                    recommend.add(outVo);
-                    //}
-                }
-            }else{
-                int setBanner = 0;
-                if(!DalbitUtil.isEmpty(bannerList)){
+            int setBanner = 0;
+            if(!DalbitUtil.isEmpty(bannerList)){
+                if(bannerList.size() == 1){
+                    setBanner = recommendVoList.size() / 2;
+                }else{
                     setBanner = recommendVoList.size() / bannerList.size();
                 }
-
-                int bannerIdx = 0;
-                for (int i=0; i < recommendVoList.size(); i++){
-                    MainRecommandOutVo outVo = new MainRecommandOutVo();
-                    outVo.setMemNo(recommendVoList.get(i).getMemNo());
-                    outVo.setNickNm(recommendVoList.get(i).getNickNm());
-                    outVo.setGender(recommendVoList.get(i).getGender());
-                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
-                    outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
-                    outVo.setRoomType(recommendVoList.get(i).getRoomType());
-                    outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
-                    if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
-                        outVo.setTitle("방송 준비중");
-                    }else{
-                        outVo.setTitle(recommendVoList.get(i).getTitle());
-                    }
-                    outVo.setListeners(recommendVoList.get(i).getListeners());
-                    outVo.setLikes(recommendVoList.get(i).getLikes());
-                    recommend.add(outVo);
-
-                    if(setBanner != 0 && (i % setBanner) == 0){
-                        if(bannerIdx < bannerList.size()){
-                            MainRecommandOutVo outVoB = new MainRecommandOutVo();
-                            outVoB.setMemNo(bannerList.get(bannerIdx).getIdx() + "");
-                            outVoB.setNickNm("banner");
-                            outVoB.setGender("");
-                            ImageVo tmpVo = new ImageVo();
-                            tmpVo.setUrl(bannerList.get(bannerIdx).getThumbsUrl());
-                            outVoB.setProfImg(tmpVo);
-                            outVoB.setBannerUrl(bannerList.get(bannerIdx).getBannerUrl());
-                            outVoB.setRoomType(bannerList.get(bannerIdx).getLinkType());
-                            outVoB.setRoomNo(bannerList.get(bannerIdx).getLinkUrl());
-                            if(DalbitUtil.isEmpty(bannerList.get(bannerIdx).getTitle())){
-                                outVoB.setTitle("방송 준비중");
-                            }else{
-                                outVoB.setTitle(bannerList.get(bannerIdx).getTitle());
-                            }
-                            outVoB.setListeners(0);
-                            outVoB.setLikes(0);
-                            recommend.add(outVo);
-                        }
-                        bannerIdx++;
-                    }
-                }
-
-                if(bannerIdx < bannerList.size()){
-                    for (int i=bannerIdx; i < bannerList.size(); i++){
-                        MainRecommandOutVo outVo = new MainRecommandOutVo();
-                        outVo.setMemNo(bannerList.get(i).getIdx() + "");
-                        outVo.setNickNm("banner");
-                        outVo.setGender("");
-                        ImageVo tmpVo = new ImageVo();
-                        tmpVo.setUrl(bannerList.get(i).getThumbsUrl());
-                        outVo.setProfImg(tmpVo);
-                        outVo.setBannerUrl(bannerList.get(i).getBannerUrl());
-                        outVo.setRoomType(bannerList.get(i).getLinkType());
-                        outVo.setRoomNo(bannerList.get(i).getLinkUrl());
-                        if(DalbitUtil.isEmpty(bannerList.get(i).getTitle())){
-                            outVo.setTitle("방송 준비중");
-                        }else{
-                            outVo.setTitle(bannerList.get(i).getTitle());
-                        }
-                        outVo.setListeners(0);
-                        outVo.setLikes(0);
-                        recommend.add(outVo);
-                    }
+                if(setBanner == 0){
+                    setBanner = 1;
                 }
             }
-        }else{
-            if(!"real".equals(DalbitUtil.getActiceProfile()) && !DalbitUtil.isEmpty(bannerList)){
-                for (int i=0; i < bannerList.size(); i++){
+
+            int bannerIdx = 0;
+            for (int i=0; i < recommendVoList.size(); i++){
+                MainRecommandOutVo outVo = new MainRecommandOutVo();
+                outVo.setMemNo(recommendVoList.get(i).getMemNo());
+                outVo.setNickNm(recommendVoList.get(i).getNickNm());
+                outVo.setGender(recommendVoList.get(i).getGender());
+                outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
+                outVo.setRoomType(recommendVoList.get(i).getRoomType());
+                outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
+                if(DalbitUtil.isEmpty(recommendVoList.get(i).getTitle())){
+                    outVo.setTitle("방송 준비중");
+                }else{
+                    outVo.setTitle(recommendVoList.get(i).getTitle());
+                }
+                outVo.setListeners(recommendVoList.get(i).getListeners());
+                outVo.setLikes(recommendVoList.get(i).getLikes());
+                outVo.isSpecial = recommendVoList.get(i).isSpecial();
+                recommend.add(outVo);
+
+                if(setBanner != 0 && ((i + 1) % setBanner) == 0){
+                    if(bannerIdx < bannerList.size()){
+                        MainRecommandOutVo outVoB = new MainRecommandOutVo();
+                        outVoB.setMemNo(bannerList.get(bannerIdx).getIdx() + "");
+                        outVoB.setNickNm("banner");
+                        outVoB.setGender("");
+                        ImageVo tmpVo = new ImageVo();
+                        tmpVo.setUrl(bannerList.get(bannerIdx).getThumbsUrl());
+                        outVoB.setProfImg(tmpVo);
+                        outVoB.setBannerUrl(bannerList.get(bannerIdx).getBannerUrl());
+                        outVoB.setRoomType(bannerList.get(bannerIdx).getLinkType());
+                        outVoB.setRoomNo(bannerList.get(bannerIdx).getLinkUrl());
+                        if(DalbitUtil.isEmpty(bannerList.get(bannerIdx).getTitle())){
+                            outVoB.setTitle("방송 준비중");
+                        }else{
+                            outVoB.setTitle(bannerList.get(bannerIdx).getTitle());
+                        }
+                        outVoB.setListeners(0);
+                        outVoB.setLikes(0);
+                        outVoB.isSpecial = false;
+                        recommend.add(outVoB);
+                    }
+                    bannerIdx++;
+                }
+            }
+
+            if(bannerIdx < bannerList.size()){
+                for (int i=bannerIdx; i < bannerList.size(); i++){
                     MainRecommandOutVo outVo = new MainRecommandOutVo();
                     outVo.setMemNo(bannerList.get(i).getIdx() + "");
                     outVo.setNickNm("banner");
@@ -233,8 +192,31 @@ public class MainService {
                     }
                     outVo.setListeners(0);
                     outVo.setLikes(0);
+                    outVo.isSpecial = false;
                     recommend.add(outVo);
                 }
+            }
+        }else{
+            for (int i=0; i < bannerList.size(); i++){
+                MainRecommandOutVo outVo = new MainRecommandOutVo();
+                outVo.setMemNo(bannerList.get(i).getIdx() + "");
+                outVo.setNickNm("banner");
+                outVo.setGender("");
+                ImageVo tmpVo = new ImageVo();
+                tmpVo.setUrl(bannerList.get(i).getThumbsUrl());
+                outVo.setProfImg(tmpVo);
+                outVo.setBannerUrl(bannerList.get(i).getBannerUrl());
+                outVo.setRoomType(bannerList.get(i).getLinkType());
+                outVo.setRoomNo(bannerList.get(i).getLinkUrl());
+                if(DalbitUtil.isEmpty(bannerList.get(i).getTitle())){
+                    outVo.setTitle("방송 준비중");
+                }else{
+                    outVo.setTitle(bannerList.get(i).getTitle());
+                }
+                outVo.setListeners(0);
+                outVo.setLikes(0);
+                outVo.isSpecial = false;
+                recommend.add(outVo);
             }
         }
         mainMap.put("recommend", recommend);

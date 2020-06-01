@@ -16,84 +16,6 @@
 
     <select id="callMainRecommandList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
         SELECT
-        *
-        FROM (
-            SELECT
-                T1.mem_no AS memNo
-                , (select mem_nick from tb_member_basic where mem_no = T1.mem_no ) AS nickNm
-                , (select mem_sex from tb_member_basic where mem_no = T1.mem_no ) AS gender
-                , (select image_profile from tb_member_profile where mem_no = T1.mem_no ) AS profileUrl
-                , T1.room_no AS roomNo
-                , T1.subject_type AS roomType
-                , T1.title AS title
-                , IFNULL(T1.count_entry, 0) AS listeners
-                , IFNULL(T1.count_good, 0) AS likes
-                , T1.image_background AS bannerUrl
-            FROM (
-                SELECT
-                    a.room_no
-                    , a.mem_no
-                    , a.title
-                    , a.image_background
-                    , a.subject_type
-                    , (count_good + (SELECT IFNULL(SUM(item_point), 0) FROM tb_broadcast_room_used_item WHERE room_no = a.room_no and item_code = 'U1447' AND now() BETWEEN start_date AND end_date)) AS count_good
-                    , count_entry
-                    , (select ifnull(sum(ifnull(gold, 0)), 0) from tb_member_broadcast_item where room_no = a.room_no and item_type = 1) as count_gold
-                FROM tb_broadcast_room a
-                WHERE a.state &lt; 4
-                ORDER BY ((count_good*0.5)+(count_entry*0.3)+(count_gold*0.2)) desc
-                LIMIT 0, 10
-            ) T1
-
-            UNION ALL
-
-            SELECT
-                idx AS memNo
-                , 'banner' AS nickNm
-                , '' AS gender
-                , thumb_img_url AS profileUrl
-                , IF(#{paramDevice} = '3', pc_link_url, mobile_link_url) AS roomNo
-                , IF(is_pop = 1, 'popup', 'link') AS roomType
-                , title AS title
-                , 0 AS listeners
-                , 0 AS likes
-                , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
-            FROM rd_admin.tb_admin_banner
-            WHERE is_view = 1
-                AND platform LIKE #{paramPlatform}
-                AND position = 1
-                AND (
-                  view_type = 0
-                  OR
-                  (
-                    (view_type = 1  AND (
-                      sex = 0 OR sex = (
-                            SELECT
-                              (CASE
-                                WHEN mem_sex = 'm' THEN 1
-                                WHEN mem_sex = 'f' THEN 2
-                                ELSE 3
-                              END)
-                            FROM tb_member_basic
-                            WHERE mem_no = #{paramMemNo}
-                        )
-                      )
-                    )
-                  )
-                  OR
-                  (view_type = 2 AND #{paramMemNo} LIKE '8%')
-                )
-                AND (
-                  term_type = 0
-                  OR
-                  (term_type = 1 and now() between start_datetime and end_datetime)
-                )
-        ) TB
-        ORDER BY RAND(10)
-    </select>
-
-    <select id="callMainRecommandList200520" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
-        SELECT
             C.mem_no AS memNo
             , C.mem_nick AS nickNm
             , C.mem_sex AS gender
@@ -104,10 +26,42 @@
             , IFNULL((SELECT COUNT(*) FROM tb_broadcast_room_member WHERE room_no = B.room_no AND auth &lt; 3 AND state = 0) - 1, 0) AS listeners
             , B.count_good + fn_get_point_used_item(B.room_no, 'U1447') AS likes
             , B.image_background AS bannerUrl
+            , true AS isSpecial
         FROM rd_admin.tb_special_dj AS A INNER JOIN tb_broadcast_room AS B ON A.mem_no = B.mem_no AND B.state &lt; 4
             INNER JOIN tb_member_basic AS C ON A.mem_no = C.mem_no AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON A.mem_no = D.mem_no
-        ORDER BY A.ORDER ASC
+        ORDER BY B.idx desc
+        LIMIT 0, 10;
+    </select>
+
+    <select id="callMainRecommandLiveList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
+        SELECT
+            T1.mem_no AS memNo
+            , (select mem_nick from tb_member_basic where mem_no = T1.mem_no ) AS nickNm
+            , (select mem_sex from tb_member_basic where mem_no = T1.mem_no ) AS gender
+            , (select image_profile from tb_member_profile where mem_no = T1.mem_no ) AS profileUrl
+            , T1.room_no AS roomNo
+            , T1.subject_type AS roomType
+            , T1.title AS title
+            , IFNULL(T1.count_entry, 0) AS listeners
+            , IFNULL(T1.count_good, 0) AS likes
+            , T1.image_background AS bannerUrl
+            , false AS isSpecial
+        FROM (
+            SELECT
+                a.room_no
+                , a.mem_no
+                , a.title
+                , a.image_background
+                , a.subject_type
+                , (count_good + (SELECT IFNULL(SUM(item_point), 0) FROM tb_broadcast_room_used_item WHERE room_no = a.room_no and item_code = 'U1447' AND now() BETWEEN start_date AND end_date)) AS count_good
+                , IFNULL((SELECT COUNT(*) FROM tb_broadcast_room_member WHERE room_no = a.room_no AND auth &lt; 3 AND state = 0) - 1, 0) AS count_entry
+                , (select ifnull(sum(ifnull(gold, 0)), 0) from tb_member_broadcast_item where room_no = a.room_no and item_type = 1) as count_gold
+            FROM tb_broadcast_room a
+            WHERE a.state &lt; 4
+              AND a.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE specialdj_badge = 1)
+            ORDER BY ((count_good*0.5)+(count_entry*0.3)+(count_gold*0.2)) DESC
+        ) T1
         LIMIT 0, 10;
     </select>
 
