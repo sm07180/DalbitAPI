@@ -346,4 +346,9 @@ public class CommonController {
     public String pushAdd(HttpServletRequest request){
         return commonService.connectGoogleNative(request);
     }
+
+    @PostMapping("/inforex/broadCheck")
+    public String broadCheck(HttpServletRequest request){
+        return commonService.selectNowBroadcast(request);
+    }
 }

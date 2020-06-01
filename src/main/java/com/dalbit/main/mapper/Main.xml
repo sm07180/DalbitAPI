@@ -54,13 +54,13 @@
                 , a.title
                 , a.image_background
                 , a.subject_type
-                , (count_good + (SELECT IFNULL(SUM(item_point), 0) FROM tb_broadcast_room_used_item WHERE room_no = a.room_no and item_code = 'U1447' AND now() BETWEEN start_date AND end_date)) AS count_good
-                , IFNULL((SELECT COUNT(*) FROM tb_broadcast_room_member WHERE room_no = a.room_no AND auth &lt; 3 AND state = 0) - 1, 0) AS count_entry
+                , (count_good + fn_get_point_used_item(a.room_no, 'U1447')) AS count_good
+                , IFNULL((SELECT COUNT(*) FROM tb_broadcast_room_member WHERE room_no = a.room_no AND auth &lt; 3 AND state = 0), 0) AS count_entry
                 , (select ifnull(sum(ifnull(gold, 0)), 0) from tb_member_broadcast_item where room_no = a.room_no and item_type = 1) as count_gold
-            FROM tb_broadcast_room a
+            FROM tb_broadcast_room a, tbl_ranking_point b
             WHERE a.state &lt; 4
               AND a.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE specialdj_badge = 1)
-            ORDER BY ((count_good*0.5)+(count_entry*0.3)+(count_gold*0.2)) DESC
+            ORDER BY ((count_good*b.`like`)+(count_entry*b.entry)+(count_gold*b.byeul)) DESC
         ) T1
         LIMIT 0, 10;
     </select>
