@@ -94,4 +94,26 @@
             where 0 <![CDATA[<]]> reportedCnt
         </if>
     </select>
+
+    <update id="proImageInit" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - proImageInit */
+        update rd_data.tb_member_profile
+           set image_profile = #{image_profile}
+         where mem_no = #{mem_no}
+    </update>
+
+    <insert id="insertHistory" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - insertHistory */
+        insert into
+          rd_data.tb_member_profile_edit_history (mem_no, edit_contents, op_name, last_upd_date, type)
+        values
+          (#{mem_no}, #{edit_contents}, #{op_name}, current_timestamp(), #{type})
+    </insert>
+
+    <update id="broImageInit" parameterType="com.dalbit.admin.vo.BroImageInitVo">
+        /* Admin.xml - broImageInit */
+        update rd_data.tb_broadcast_room
+           set image_background= #{image_background}
+         where room_no = #{room_no}
+    </update>
 </mapper>

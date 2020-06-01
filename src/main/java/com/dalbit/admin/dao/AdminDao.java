@@ -1,7 +1,6 @@
 package com.dalbit.admin.dao;
 
 import com.dalbit.admin.vo.*;
-import com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
@@ -26,5 +25,11 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     ArrayList<ProfileVo> selectProfileList(ProfileVo profileVo);
+
+    int proImageInit(ProImageInitVo proImageInitVo);
+
+    int insertHistory(ProImageInitVo proImageInitVo);
+
+    int broImageInit(BroImageInitVo broImageInitVo);
 
 }

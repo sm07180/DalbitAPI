@@ -785,9 +785,18 @@ public enum Status {
     스페셜DJ_기간아님("-3", "special.dj.apply.passed.period", "기간이 지났을 경우"),
     스페셜DJ_신청실패("C006", "special.dj.apply.fail", "스페셜DJ 신청 실패 시"),
 
+    //프로필이미지 초기화
+    프로필이미지초기화_성공("0", "profile.image.init.success", "프로필이미지 초기화 성공 시"),
+    프로필이미지초기화_실패("C006", "profile.image.init.fail", "프로필이미지 초기화 실패 시"),
+
+    //방송방이미지 초기화
+    방송방이미지초기화_성공("0", "room.image.init.success", "방송방이미지 초기화 성공 시"),
+    방송방이미지초기화_실패("C006", "room.image.init.fail", "방송방이미지 초기화 실패 시"),
+
     ;
 
-    final private String RESULT_SUCCESS = "success";
+
+   final private String RESULT_SUCCESS = "success";
     final private String RESULT_FAIL = "fail";
 
     final private String result;
