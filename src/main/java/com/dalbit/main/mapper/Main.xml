@@ -27,10 +27,9 @@
             , B.count_good + fn_get_point_used_item(B.room_no, 'U1447') AS likes
             , B.image_background AS bannerUrl
             , true AS isSpecial
-        FROM rd_admin.tb_special_dj AS A INNER JOIN tb_broadcast_room AS B ON A.mem_no = B.mem_no AND B.state &lt; 4
-            INNER JOIN tb_member_basic AS C ON A.mem_no = C.mem_no AND C.mem_state = 1
-            INNER JOIN tb_member_profile AS D ON A.mem_no = D.mem_no
-        ORDER BY B.idx desc
+        FROM tb_broadcast_room AS B INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
+            INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no AND D.specialdj_badge = 1
+            ORDER BY B.idx desc
         LIMIT 0, 10;
     </select>
 
