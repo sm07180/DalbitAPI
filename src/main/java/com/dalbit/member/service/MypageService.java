@@ -65,8 +65,7 @@ public class MypageService {
             if(!DalbitUtil.isEmpty(pProfileEditVo.getProfImgDel())){
                 isDone = true;
             }
-            profImg = new ImageVo(profImg, pProfileEditVo.getMemSex(), DalbitUtil.getProperty("server.photo.url")).getPath();
-
+            profImg = "";
         }else{
             if(profImg.startsWith(Code.포토_프로필_임시_PREFIX.getCode())){
                 isDone = true;
