@@ -155,6 +155,21 @@ public class CommonService {
 
         resultMap.put("boost", commonDao.selectBooster());
 
+        List<HashMap> itemCategories = new ArrayList<>();
+        HashMap itemCate1 = new HashMap();
+        itemCate1.put("code", "normal");
+        itemCate1.put("value", "일반");
+        HashMap itemCate2 = new HashMap();
+        itemCate2.put("code", "combo");
+        itemCate2.put("value", "콤보");
+        HashMap itemCate3 = new HashMap();
+        itemCate3.put("code", "emotion");
+        itemCate3.put("value", "감정");
+        itemCategories.add(itemCate1);
+        itemCategories.add(itemCate2);
+        itemCategories.add(itemCate3);
+        resultMap.put("itemCategories", itemCategories);
+
         if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){
             int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100, 200, 300, 400, 500};
             resultMap.put("itemComboCount", timeCombos);
