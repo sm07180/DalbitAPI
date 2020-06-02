@@ -114,7 +114,7 @@ public class ActionController {
         apiData.setRoom_no(boosterVo.getRoomNo());
         apiData.setItem_no(boosterVo.getItemNo());
         apiData.setItem_cnt(boosterVo.getItemCnt());
-        apiData.setItem_code("U1447");
+        apiData.setItem_code(DalbitUtil.getProperty("item.code.boost"));
         String result = actionService.callBroadCastRoomBooster(apiData, request);
 
         return result;

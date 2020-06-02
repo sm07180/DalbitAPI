@@ -32,7 +32,7 @@ public interface CommonDao {
     List<ItemVo> selectItemList(P_ItemVo item);
 
     @Transactional(readOnly = true)
-    List<ItemVo> selectBooster();
+    List<ItemVo> selectBooster(String itemCode);
 
     @Transactional(readOnly = true)
     ItemDetailVo selectItem(String item);
@@ -46,4 +46,6 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
 
+    @Transactional(readOnly = true)
+    NowBroadcastVo selectNowBroadcast(String memNo);
 }

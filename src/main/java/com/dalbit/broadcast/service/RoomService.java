@@ -652,12 +652,12 @@ public class RoomService {
             if(rank > roomCnt){
                 roomCnt = rank;
             }
-            ItemDetailVo item = commonDao.selectItem("U1447");
+            ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.boost"));
             returnMap.put("roomCnt", roomCnt);
             returnMap.put("rank", rank);
             returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
             returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-            returnMap.put("boostCode", "U1447");
+            returnMap.put("boostCode", DalbitUtil.getProperty("item.code.boost"));
             returnMap.put("boostPrice", item.getCost());
             returnMap.put("boostByeul", item.getByeol());
             returnMap.put("boostLottie", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.json");

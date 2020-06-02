@@ -1216,10 +1216,14 @@ public class DalbitUtil {
     }
 
     public static boolean isCheckSlash(String data){
+        if(isEmpty(data.trim())){
+            return true;
+        }
 
         data = StringUtils.replace(data, "\\\\n", "\\n");
         data = StringUtils.replace(data, "\\\\r", "\\r");
         data = StringUtils.replace(data, "\\\\t", "\\t");
+        data = StringUtils.replace(data, "\\\\u202E", "\\u202E");
 
         if(data.indexOf("\\n") >= 0 || (data.indexOf("\n") >= 0)){
             return true;
@@ -1228,6 +1232,12 @@ public class DalbitUtil {
             return true;
         }
         if(data.indexOf("\\r") >= 0 || data.indexOf("\r") >= 0){
+            return true;
+        }
+        if(data.indexOf("\\u202E") >= 0 || data.indexOf("\u202E") >= 0){
+
+        }
+        if(data.indexOf("ㅤ") >= 0){
             return true;
         }
 

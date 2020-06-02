@@ -3,6 +3,7 @@
 <mapper namespace="com.dalbit.admin.dao.AdminDao" >
 
     <select id="selectMobileAdminMenuAuth" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.AdminMenuVo">
+        /* Admin.xml - selectMobileAdminMenuAuth */
         select menu.idx
             , menu.menu_name
             , menu.menu_url
@@ -17,7 +18,7 @@
             , rd_admin.tb_admin_menu menu
         where test.emp_no = auth.emp_no
             and auth.menu_idx = menu.idx
-            and mem_no = '11584609037349'
+            and mem_no = #{mem_no}
             and menu.is_use = 1
             and menu.mobile_yn = 'Y'
     </select>
@@ -46,9 +47,11 @@
         <if test='reportYn == "Y"'>
         where 0 <![CDATA[<]]> reportedCnt
         </if>
+        limit #{searchStart}, #{searchEnd}
     </select>
 
     <select id="callBroadcastRoomExit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callBroadcastRoomExit */
         call rd_data.sp_broadcast_room_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
@@ -80,6 +83,7 @@
                 , profile.image_profile
                 , basic.mem_nick
                 , basic.mem_id
+                , basic.mem_userid
                 , basic.mem_join_date
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
                 from rd_data.tb_member_basic basic
@@ -93,5 +97,51 @@
         <if test='reportYn == "Y"'>
             where 0 <![CDATA[<]]> reportedCnt
         </if>
+        limit #{searchStart}, #{searchEnd}
     </select>
+
+    <update id="proImageInit" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - proImageInit */
+        update rd_data.tb_member_profile
+           set image_profile = #{reset_image_profile}
+         where mem_no = #{mem_no}
+    </update>
+
+    <insert id="insertProfileHistory" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - insertProfileHistory */
+        insert into
+          rd_data.tb_member_profile_edit_history (mem_no, edit_contents, op_name, last_upd_date, type)
+        values
+          (#{mem_no}, #{edit_contents}, #{op_name}, current_timestamp(), #{type})
+    </insert>
+
+    <update id="broImageInit" parameterType="com.dalbit.admin.vo.BroImageInitVo">
+        /* Admin.xml - broImageInit */
+        update rd_data.tb_broadcast_room
+           set image_background= #{reset_image_background}
+         where room_no = #{room_no}
+    </update>
+
+    <insert id="insertBroadHistory" parameterType="com.dalbit.admin.vo.BroImageInitVo">
+        /* Admin.xml - insertBroadHistory */
+        insert into
+          rd_data.tb_broadcast_room_edit_history (room_no, edit_contents, op_name, last_upd_date)
+        values
+          (#{room_no}, #{edit_contents}, #{op_name}, current_timestamp())
+    </insert>
+
+    <update id="nickTextInit" parameterType="com.dalbit.admin.vo.NickTextInitVo">
+        /* Admin.xml - nickTextInit */
+        update rd_data.tb_member_basic
+          set mem_nick = #{mem_userid}
+        where mem_no = #{mem_no}
+    </update>
+
+    <update id="broTitleTextInit" parameterType="com.dalbit.admin.vo.BroTitleTextInitVo">
+        /* Admin.xml - broTitleTextInit */
+        update rd_data.tb_broadcast_room
+          set title = #{reset_title}
+        where room_no = #{room_no}
+    </update>
+
 </mapper>

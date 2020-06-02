@@ -566,6 +566,27 @@ public class SocketService {
         return null;
     }
 
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> bjLevelUpToListener(String roomNo, String memNo, Object item, String authToken, boolean isLogin, SocketVo vo){
+        log.info("Socket Start : giftItem {}, {}, {}, {}", roomNo, memNo, item, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && item != null){
+            if(vo == null || vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqBjLevelUpToListener");
+            vo.setMessage(item);
+            vo.setRecvDj(0);
+
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
     /**
      * 게스트 노드 호출
      * @param roomNo 방번호

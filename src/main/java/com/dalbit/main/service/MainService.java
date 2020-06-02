@@ -54,12 +54,12 @@ public class MainService {
         pMainRecommandVo.setParamMemNo(memNo);
         pMainRecommandVo.setParamPlatform(platform);
         List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
-        if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 11){
+        if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 10){
             List<P_MainRecommandVo> recommendVoLiveList = mainDao.callMainRecommandLiveList(pMainRecommandVo);
             if(!DalbitUtil.isEmpty(recommendVoLiveList)){
                 for(int i = 0; i < recommendVoLiveList.size(); i++){
                     recommendVoList.add(recommendVoLiveList.get(i));
-                    if(recommendVoList.size() == 10){
+                    if(recommendVoList.size() > 9){
                         break;
                     }
                 }

@@ -56,7 +56,7 @@
                 item_code         AS itemNo
                 , item_name         AS itemNm
                 , (CASE
-                    WHEN use_area = '1' THEN 'particle'
+                    WHEN use_area = '1' THEN IF(item_slct = 2, 'particle', 'ani')
                     WHEN use_area = '2' THEN 'sticker'
                     ELSE 'ani'
                 END) AS `type`
@@ -100,7 +100,12 @@
                     WHEN use_area = '5' THEN 'topLeft'
                     ELSE 'bottomRight'
                 END) AS location
-                ,play_time         AS duration
+                , play_time         AS duration
+                , (CASE
+                    WHEN use_area = '2' THEN 'combo'
+                    WHEN use_area = '1' THEN 'emotion'
+                    ELSE 'normal'
+                END)AS category
         FROM rd_data.tbl_gift_item
         WHERE view_yn = 1
             AND item_code != 'U1447'
@@ -109,7 +114,7 @@
         ORDER BY use_area, item_price, item_name
     </select>
 
-    <select id="selectBooster" resultType="ItemVo">
+    <select id="selectBooster" parameterType="String" resultType="ItemVo">
         /* Common.xml - selectBooster */
         SELECT
                 item_code         AS itemNo
@@ -161,7 +166,7 @@
                 END) AS location
                 ,play_time         AS duration
         FROM rd_data.tbl_gift_item
-        WHERE item_code = 'U1447'
+        WHERE item_code = #{value}
     </select>
 
     <select id="selectItem" parameterType="String" resultType="ItemDetailVo">
@@ -221,4 +226,10 @@
         </choose>
     </select>
 
+    <select id="selectNowBroadcast" parameterType="String" resultType="NowBroadcastVo">
+        SELECT
+            @isInforex := IFNULL((SELECT `inner` FROM tb_member_basic WHERE mem_no = #{value}), 0) AS isInforex
+            , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room WHERE state &lt; 4), 0) AS roomCnt
+            , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room a INNER JOIN tb_broadcast_room_member b ON a.room_no = b.room_no AND a.state &lt; 4 AND b.auth &lt; 3 AND b.state = 0), 0) AS listenerCnt
+    </select>
 </mapper>
