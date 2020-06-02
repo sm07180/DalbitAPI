@@ -79,8 +79,17 @@ public class AdminController {
      * 텍스트관리 > 닉네임 초기화
      */
     @PostMapping("/nickText/init")
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo) {
-        String result = adminService.nickTextInit(request, nickTextInitVo);
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) {
+        String result = adminService.nickTextInit(request, nickTextInitVo, proImageInitVo);
+        return result;
+    }
+
+    /**
+     * 텍스트관리 > 방송 제목 초기화
+     */
+    @PostMapping("/broTitleText/init")
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) {
+        String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo);
         return result;
     }
 }

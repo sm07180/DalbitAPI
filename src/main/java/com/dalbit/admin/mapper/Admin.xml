@@ -137,11 +137,11 @@
         where mem_no = #{mem_no}
     </update>
 
-    <insert id="insertNickHistory" parameterType="com.dalbit.admin.vo.NickTextInitVo">
-        /* Admin.xml - insertNickHistory */
-        insert into
-          rd_data.tb_member_profile_edit_history (mem_no, edit_contents, op_name, last_upd_date, type)
-        values
-          (#{mem_no}, #{edit_contents}, #{op_name}, current_timestamp(), #{type})
-    </insert>
+    <update id="broTitleTextInit" parameterType="com.dalbit.admin.vo.BroTitleTextInitVo">
+        /* Admin.xml - broTitleTextInit */
+        update rd_data.tb_broadcast_room
+          set title = #{reset_title}
+        where room_no = #{room_no}
+    </update>
+
 </mapper>

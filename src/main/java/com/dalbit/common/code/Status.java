@@ -793,9 +793,13 @@ public enum Status {
     방송방이미지초기화_성공("0", "room.image.init.success", "방송방이미지 초기화 성공 시"),
     방송방이미지초기화_실패("C006", "room.image.init.fail", "방송방이미지 초기화 실패 시"),
 
-    //방송방이미지 초기화
+    //닉네임 초기화
     닉네임초기화_성공("0", "member.nickname.init.success", "닉네임 초기화 성공 시"),
     닉네임초기화_실패("C006", "member.nickname.init.fail", "닉네임 초기화 실패 시"),
+
+    //방송제목 초기화
+    방송제목초기화_성공("0", "broadcast.title.init.success", "방송제목 초기화 성공 시"),
+    방송제목초기화_실패("C006", "broadcast.title.init.fail", "방송제목 초기화 실패 시")
 
     ;
 
