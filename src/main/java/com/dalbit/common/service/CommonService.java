@@ -153,8 +153,8 @@ public class CommonService {
 
         resultMap.put("isExtend", true);
 
-        resultMap.put("boost", commonDao.selectBooster("U1447"));
-        resultMap.put("levelUp", commonDao.selectBooster("U1885"));
+        resultMap.put("boost", commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")));
+        resultMap.put("levelUp", commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp")));
 
         List<HashMap> itemCategories = new ArrayList<>();
         HashMap itemCate1 = new HashMap();

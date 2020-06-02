@@ -172,7 +172,6 @@ public class ActionService {
             }else{
                 returnMap.put("shareLink", dynamicLink);
             }
-            returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
         }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
@@ -242,6 +241,28 @@ public class ActionService {
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
+
+            try{ //DJ 레벨업 일때 소켓 발송
+                if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){
+                    String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
+
+                    HashMap itemMap = new HashMap();
+                    itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
+                    ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.levelUp"));
+                    String itemNm = item.getItemNm();
+                    String itemThumbs = item.getThumbs();
+                    itemMap.put("itemNm", itemNm);
+                    itemMap.put("itemCnt", 1);
+                    itemMap.put("itemImg", itemThumbs);
+                    itemMap.put("isSecret", false);
+                    itemMap.put("itemType", "levelUp");
+                    //socketService.bjLevelUpToListener(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+
+                    //HashMap levelUpMap = new HashMap();
+                }
+            }catch(Exception e){
+
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
         }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_요청회원_번호비정상));
@@ -303,9 +324,9 @@ public class ActionService {
 
             try{
                 HashMap itemMap = new HashMap();
-                itemMap.put("itemNo", "U1447");
+                itemMap.put("itemNo", DalbitUtil.getProperty("item.code.boost"));
 
-                ItemDetailVo item = commonDao.selectItem("U1447");
+                ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.boost"));
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
