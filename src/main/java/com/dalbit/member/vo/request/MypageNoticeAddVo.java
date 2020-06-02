@@ -4,15 +4,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter @Setter
 public class MypageNoticeAddVo {
 
     @NotBlank
     private String memNo;
-    @NotBlank
+    @NotBlank @Size (max = 20)
     private String title;
-    @NotBlank
+    @NotBlank @Size (max = 1024)
     private String contents;
 
     private String isTop;

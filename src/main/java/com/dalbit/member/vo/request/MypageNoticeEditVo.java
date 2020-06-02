@@ -5,15 +5,16 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Getter @Setter
 public class MypageNoticeEditVo {
 
     @NotBlank
     private String memNo;
-    @NotBlank
+    @NotBlank @Size(max = 20)
     private String title;
-    @NotBlank
+    @NotBlank @Size(max = 1024)
     private String contents;
     @NotNull
     private Integer noticeIdx;
