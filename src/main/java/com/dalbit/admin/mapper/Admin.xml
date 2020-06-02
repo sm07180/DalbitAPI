@@ -103,7 +103,7 @@
     <update id="proImageInit" parameterType="com.dalbit.admin.vo.ProImageInitVo">
         /* Admin.xml - proImageInit */
         update rd_data.tb_member_profile
-           set image_profile = #{image_profile}
+           set image_profile = #{reset_image_profile}
          where mem_no = #{mem_no}
     </update>
 
@@ -118,7 +118,7 @@
     <update id="broImageInit" parameterType="com.dalbit.admin.vo.BroImageInitVo">
         /* Admin.xml - broImageInit */
         update rd_data.tb_broadcast_room
-           set image_background= #{image_background}
+           set image_background= #{reset_image_background}
          where room_no = #{room_no}
     </update>
 
