@@ -64,9 +64,9 @@ public class AdminService {
     }*/
 
     /**
-     * - 이미지관리 > 방송방 배경
+     * - 이미지관리 > 방송방 이미지 조회
      * - 생방송관리
-     * - 텍스트관리 > 방송 제목
+     * - 텍스트관리 > 방송 제목 조회
      */
     public String selectBroadcastList(HttpServletRequest request, SearchVo searchVo) {
         searchVo.setPagingInfo();
@@ -129,8 +129,8 @@ public class AdminService {
     }
 
     /**
-     * - 이미지관리 > 프로필
-     * - 텍스트관리 > 닉네임
+     * - 이미지관리 > 프로필 이미지 조회
+     * - 텍스트관리 > 닉네임 조회
      */
     public String selectProfileList(HttpServletRequest request, ProfileVo profileVo) {
         profileVo.setPagingInfo();
@@ -163,7 +163,7 @@ public class AdminService {
          adminDao.insertProfileHistory(proImageInitVo);
 
         // rd_data.tb_member_profile에 image_profile update
-         int result = adminDao.proImageInit(proImageInitVo);
+        int result = adminDao.proImageInit(proImageInitVo);
         if (result > 0) {
             return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
         } else {
@@ -175,7 +175,7 @@ public class AdminService {
      * 이미지관리 > 방송방 이미지 초기화
      */
     public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) {
-        broImageInitVo.setOp_name("모바일운영자");
+        broImageInitVo.setOp_name("모바일관리자");
         broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
         // rd_data.tb_broadcast_room_edit_history에 insert
@@ -222,7 +222,7 @@ public class AdminService {
         // rd_data.tb_broadcast_room_edit_history에 insert
         adminDao.insertBroadHistory(broImageInitVo);
 
-        // rd_data.tb_member_basic에 mem_nick update
+        // rd_data.tb_broadcast_room에 title update
         int result = adminDao.broTitleTextInit(broTitleTextInitVo);
         if(result > 0) {
             return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_성공));

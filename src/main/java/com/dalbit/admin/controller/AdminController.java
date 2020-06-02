@@ -28,9 +28,9 @@ public class AdminController {
     }*/
 
     /**
-     * - 이미지관리 > 방송방 배경
+     * - 이미지관리 > 방송방 이미지 조회
      * - 생방송관리
-     * - 텍스트관리 > 방송 제목
+     * - 텍스트관리 > 방송 제목 조회
      */
     @PostMapping("/broadcast/list")
     public String broadcastList(HttpServletRequest request, SearchVo searchVo){
@@ -48,8 +48,8 @@ public class AdminController {
     }
 
     /**
-     * - 이미지관리 > 프로필
-     * - 텍스트관리 > 닉네임
+     * - 이미지관리 > 프로필 이미지 조회
+     * - 텍스트관리 > 닉네임 조회
      */
     @PostMapping("/image/list")
     public String profileList(HttpServletRequest request, ProfileVo profileVo) {
