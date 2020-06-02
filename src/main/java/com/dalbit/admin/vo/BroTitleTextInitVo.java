@@ -7,11 +7,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class NickTextInitVo extends AdminBaseVo{
+public class BroTitleTextInitVo extends AdminBaseVo{
 
-    private String mem_no;
+    private String room_no;
     private String op_name;
-    private String mem_userid;
+    private String title;
     private String mem_nick;
+    private String reset_title;
 
 }
