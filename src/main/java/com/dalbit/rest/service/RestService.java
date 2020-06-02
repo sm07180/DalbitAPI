@@ -351,7 +351,7 @@ public class RestService {
         return result;
     }
 
-    public Map<String, Object> makeFirebaseDynamicLink(String link, String nickNm, String profImg, String title, HttpServletRequest request) throws GlobalException{
+    public Map<String, Object> makeFirebaseDynamicLink(String room_no, String link, String nickNm, String profImg, String title, HttpServletRequest request) throws GlobalException{
         JSONObject androidInfo = new JSONObject();
         androidInfo.put("androidPackageName", APP_PACKAGE_AOS);
 
@@ -368,7 +368,7 @@ public class RestService {
 
         HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
         dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);
-        dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link);
+        dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link + "?etc={\"pushMsg\" : 1, \"room_no\" : \"" + room_no + "\"}");
         dynamicLinkInfo.put("androidInfo", androidInfo);
         dynamicLinkInfo.put("iosInfo", iosInfo);
         dynamicLinkInfo.put("socialMetaTagInfo", socialMetaTagInfo);
