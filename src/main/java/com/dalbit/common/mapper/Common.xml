@@ -56,7 +56,7 @@
                 item_code         AS itemNo
                 , item_name         AS itemNm
                 , (CASE
-                    WHEN use_area = '1' THEN 'particle'
+                    WHEN use_area = '1' THEN IF(item_slct = 2, 'particle', 'ani')
                     WHEN use_area = '2' THEN 'sticker'
                     ELSE 'ani'
                 END) AS `type`
