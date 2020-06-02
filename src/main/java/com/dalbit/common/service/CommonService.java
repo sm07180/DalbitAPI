@@ -144,7 +144,7 @@ public class CommonService {
                 //resultMap.put("storeUrl", "https://apps.apple.com/us/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806?l=ko&ls=1");
             }
             resultMap.put("isPayment", true);
-        }
+        }//
 
         //TODO - 추후 삭제
         if(DalbitUtil.isEmpty(request.getHeader("custom-header"))){
@@ -153,7 +153,8 @@ public class CommonService {
 
         resultMap.put("isExtend", true);
 
-        resultMap.put("boost", commonDao.selectBooster());
+        resultMap.put("boost", commonDao.selectBooster("U1447"));
+        resultMap.put("levelUp", commonDao.selectBooster("U1885"));
 
         List<HashMap> itemCategories = new ArrayList<>();
         HashMap itemCate1 = new HashMap();

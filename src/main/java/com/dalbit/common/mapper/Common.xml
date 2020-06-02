@@ -114,7 +114,7 @@
         ORDER BY use_area, item_price, item_name
     </select>
 
-    <select id="selectBooster" resultType="ItemVo">
+    <select id="selectBooster" parameterType="String" resultType="ItemVo">
         /* Common.xml - selectBooster */
         SELECT
                 item_code         AS itemNo
@@ -166,7 +166,7 @@
                 END) AS location
                 ,play_time         AS duration
         FROM rd_data.tbl_gift_item
-        WHERE item_code = 'U1447'
+        WHERE item_code = #{value}
     </select>
 
     <select id="selectItem" parameterType="String" resultType="ItemDetailVo">
