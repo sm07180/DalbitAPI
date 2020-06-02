@@ -43,4 +43,5 @@ public class P_MainFanRankingVo {
     private int listenCount;
     private int fanCount;
     private int specialdj_badge;
+    private String roomNo;
 }
