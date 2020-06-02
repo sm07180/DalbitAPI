@@ -168,7 +168,7 @@ public class ActionService {
                 }
             }
             if(DalbitUtil.isEmpty(dynamicLink)){
-                returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink() + "?etc={\"pushMsg\" : 1, \"room_no\" : \"" + pRoomInfoViewVo.getRoom_no() + "\"}");
+                returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink() + "?etc={\"pushMsg\":1,\"room_no\":\"" + pRoomInfoViewVo.getRoom_no() + "\"}");
             }else{
                 returnMap.put("shareLink", dynamicLink);
             }
