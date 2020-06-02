@@ -100,7 +100,12 @@
                     WHEN use_area = '5' THEN 'topLeft'
                     ELSE 'bottomRight'
                 END) AS location
-                ,play_time         AS duration
+                , play_time         AS duration
+                , (CASE
+                    WHEN use_area = '2' THEN 'combo'
+                    WHEN use_area = '1' THEN 'emotion'
+                    ELSE 'normal'
+                END)AS category
         FROM rd_data.tbl_gift_item
         WHERE view_yn = 1
             AND item_code != 'U1447'

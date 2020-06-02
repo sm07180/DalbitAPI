@@ -160,16 +160,18 @@ public class ActionService {
             returnMap.put("roomNo", pRoomInfoViewVo.getRoom_no());
             returnMap.put("title", target.getTitle());
 
-            /*Map<String, Object> firebaseMap = restService.makeFirebaseDynamicLink(target.getLink(), target.getBjNickNm(), target.getBjProfImg().getUrl(), target.getTitle(), request);
+            Map<String, Object> firebaseMap = restService.makeFirebaseDynamicLink(pRoomInfoViewVo.getRoom_no(), target.getLink(), target.getBjNickNm(), target.getBjProfImg().getUrl(), target.getTitle(), request);
             String dynamicLink = "";
             if(!DalbitUtil.isEmpty(firebaseMap) && !DalbitUtil.isEmpty(firebaseMap.get("shortLink"))){
-                dynamicLink = (String)firebaseMap.get("shortLink");
+                if(!"real".equals(DalbitUtil.getActiceProfile())){
+                    dynamicLink = (String)firebaseMap.get("shortLink");
+                }
             }
             if(DalbitUtil.isEmpty(dynamicLink)){
-                returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
+                returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink() + "?etc={\"pushMsg\" : 1, \"room_no\" : \"" + pRoomInfoViewVo.getRoom_no() + "\"}");
             }else{
                 returnMap.put("shareLink", dynamicLink);
-            }*/
+            }
             returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink());
             result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
         }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
