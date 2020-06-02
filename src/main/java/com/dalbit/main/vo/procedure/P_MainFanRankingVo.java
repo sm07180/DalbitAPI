@@ -42,4 +42,5 @@ public class P_MainFanRankingVo {
     private int giftCount;
     private int listenCount;
     private int fanCount;
+    private int specialdj_badge;
 }

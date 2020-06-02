@@ -25,6 +25,8 @@ public class MainDjRankingOutVo {
     private int fan;
     private int gift;
     private int dj;
+    private boolean isSpecial;
+    private String holder;
 
     public MainDjRankingOutVo(){}
     public MainDjRankingOutVo(P_MainDjRankingVo target) {
@@ -43,5 +45,7 @@ public class MainDjRankingOutVo {
         setFan(target.getFanCount());
         setGift(target.getGiftCount());
         setDj(target.getDjCount());
+        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.holder = "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + this.level + ".png";
     }
 }

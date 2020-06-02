@@ -279,6 +279,7 @@ public class MainService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+        mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainFanRankingList.put("list", procedureOutputVo.getOutputBox());
         mainFanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
@@ -314,6 +315,7 @@ public class MainService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+        mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainDjRankingList.put("list", procedureOutputVo.getOutputBox());
         mainDjRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
