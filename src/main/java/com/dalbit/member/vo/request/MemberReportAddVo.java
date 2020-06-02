@@ -13,6 +13,7 @@ public class MemberReportAddVo {
     @NotNull
     private Integer reason;
 
+    @Size (max = 256)
     private String cont;
     private String roomNo;
 }

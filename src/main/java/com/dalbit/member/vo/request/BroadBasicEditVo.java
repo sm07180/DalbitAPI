@@ -12,11 +12,12 @@ public class BroadBasicEditVo {
 
     @NotBlank @Size(min = 2, max = 2)
     private String roomType;
-    @NotBlank
+    @NotBlank @Size(max = 100)
     private String title;
     private String bgImg;
     private String bgImgDel;
     private String bgImgRacy;
+    @Size (max = 200)
     private String welcomMsg;
     private String notice;
     @NotBlank
