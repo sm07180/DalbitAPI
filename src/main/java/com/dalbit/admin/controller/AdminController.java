@@ -62,8 +62,8 @@ public class AdminController {
      * 이미지관리 > 프로필 이미지 초기화
      */
     @PostMapping("/proImage/init")
-    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) {
-        String result = adminService.proImageInit(request, proImageInitVo);
+    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) {
+        String result = adminService.proImageInit(request, proImageInitVo, notiInsertVo);
         return result;
     }
 
@@ -71,8 +71,8 @@ public class AdminController {
      * 이미지관리 > 방송방 이미지 초기화
      */
     @PostMapping("/broImage/init")
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) {
-        String result = adminService.broImageInit(request, broImageInitVo);
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) {
+        String result = adminService.broImageInit(request, broImageInitVo, notiInsertVo);
         return result;
     }
 

@@ -38,4 +38,5 @@ public interface AdminDao {
 
     int broTitleTextInit(BroTitleTextInitVo broTitleTextInitVo);
 
+    int insertNotiHistory(NotiInsertVo notiInsertVo);
 }
