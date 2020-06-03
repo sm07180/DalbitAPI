@@ -120,7 +120,19 @@ public class CommonService {
         pItemVo.setItem_slct(1);
         pItemVo.setPlatform(platform);
 
-        resultMap.put("items", commonDao.selectItemList(pItemVo));
+        List<ItemVo> items = commonDao.selectItemList(pItemVo);
+        HashMap itemIsNew = new HashMap();
+        itemIsNew.put("normal", false);
+        itemIsNew.put("combo", false);
+        itemIsNew.put("emotion", false);
+        if(!DalbitUtil.isEmpty(items)){
+            for(ItemVo item : items){
+                if(item.isNew()){
+                    itemIsNew.put(item.getCategory(), true);
+                }
+            }
+        }
+        resultMap.put("items", items);
 
         pItemVo.setItem_slct(2);
         resultMap.put("particles", commonDao.selectItemList(pItemVo));
@@ -144,7 +156,7 @@ public class CommonService {
                 //resultMap.put("storeUrl", "https://apps.apple.com/us/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806?l=ko&ls=1");
             }
             resultMap.put("isPayment", true);
-        }
+        }//
 
         //TODO - 추후 삭제
         if(DalbitUtil.isEmpty(request.getHeader("custom-header"))){
@@ -153,7 +165,28 @@ public class CommonService {
 
         resultMap.put("isExtend", true);
 
-        resultMap.put("boost", commonDao.selectBooster());
+        resultMap.put("boost", commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")));
+        resultMap.put("levelUp", commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp")));
+
+        List<HashMap> itemCategories = new ArrayList<>();
+        HashMap itemCate1 = new HashMap();
+        itemCate1.put("code", "normal");
+        itemCate1.put("value", "일반");
+        itemCate1.put("isNew", itemIsNew.get("normal"));
+        HashMap itemCate2 = new HashMap();
+        itemCate2.put("code", "combo");
+        itemCate2.put("value", "콤보");
+        itemCate2.put("isNew", itemIsNew.get("combo"));
+        HashMap itemCate3 = new HashMap();
+        itemCate3.put("code", "emotion");
+        itemCate3.put("value", "감정");
+        itemCate3.put("isNew", itemIsNew.get("emotion"));
+
+        itemCategories.add(itemCate1);
+        itemCategories.add(itemCate2);
+        itemCategories.add(itemCate3);
+
+        resultMap.put("itemCategories", itemCategories);
 
         if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){
             int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100, 200, 300, 400, 500};

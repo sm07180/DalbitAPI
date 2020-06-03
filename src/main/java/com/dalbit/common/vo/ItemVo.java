@@ -21,4 +21,7 @@ public class ItemVo {
     private String location;
     private int duration;
     private String iosSelectType = "lottie"; //webp, lottie
+    private String category;
+    private boolean visibility = true;
+    private boolean isNew;
 }

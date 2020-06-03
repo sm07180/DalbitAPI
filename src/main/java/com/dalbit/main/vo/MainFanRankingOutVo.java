@@ -21,6 +21,9 @@ public class MainFanRankingOutVo {
     private int gift;
     private int listen;
     private int fan;
+    private boolean isSpecial;
+    private String holder;
+    private String roomNo;
 
     public MainFanRankingOutVo(){}
     public MainFanRankingOutVo(P_MainFanRankingVo target) {
@@ -36,5 +39,8 @@ public class MainFanRankingOutVo {
         setGift(target.getGiftCount());
         setListen(target.getListenCount());
         setFan(target.getFanCount());
+        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.holder = "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + this.level + ".png";
+        setRoomNo(target.getRoomNo());
     }
 }

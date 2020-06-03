@@ -26,6 +26,8 @@ public class RoomOutVo {
     private String link;
     private int entryCnt;
     private int likeCnt;
+    private int boostCnt;
+    private int rank;
     private int giftCnt;
     private String startDt;
     private long startTs;
@@ -87,6 +89,8 @@ public class RoomOutVo {
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.isSpecial = (target.getBadge_special() == 1 ? true : false);
+        this.boostCnt = target.getCount_boost();
+        this.rank = target.getRank();
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {

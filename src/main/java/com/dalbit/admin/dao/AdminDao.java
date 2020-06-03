@@ -36,6 +36,6 @@ public interface AdminDao {
 
     int nickTextInit(NickTextInitVo nickTextInitVo);
 
-    int insertNickHistory(NickTextInitVo nickTextInitVo);
+    int broTitleTextInit(BroTitleTextInitVo broTitleTextInitVo);
 
 }

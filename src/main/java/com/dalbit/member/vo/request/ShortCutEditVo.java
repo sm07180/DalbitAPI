@@ -14,7 +14,7 @@ public class ShortCutEditVo {
     private Integer orderNo;
     @NotBlank @Size(max = 4)
     private String order;
-    @NotBlank
+    @NotBlank @Size (max = 100)
     private String text;
 
     private String isOn;
