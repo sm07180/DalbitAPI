@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.event.dao.EventDao" >
+
+    <select id="callEventRankingLive" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RankingLiveOutputVo">
+      call sp_event_ranking_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventRankingResult" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RankingResultOutputVo">
+      call sp_event_ranking_result	(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+</mapper>
