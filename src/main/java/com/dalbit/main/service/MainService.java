@@ -282,7 +282,7 @@ public class MainService {
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainFanRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
         mainFanRankingList.put("myListenPoint", DalbitUtil.getIntMap(resultMap, "myListenPoint"));
-        mainFanRankingList.put("myUpDown", DalbitUtil.getIntMap(resultMap, "myUpDown"));
+        mainFanRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
         mainFanRankingList.put("list", procedureOutputVo.getOutputBox());
         mainFanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
@@ -323,7 +323,7 @@ public class MainService {
         mainDjRankingList.put("myBroadPoint", DalbitUtil.getIntMap(resultMap, "myBroadPoint"));
         mainDjRankingList.put("myFanPoint", DalbitUtil.getIntMap(resultMap, "myFanPoint"));
         mainDjRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
-        mainDjRankingList.put("myUpDown", DalbitUtil.getIntMap(resultMap, "myUpDown"));
+        mainDjRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
         mainDjRankingList.put("list", procedureOutputVo.getOutputBox());
         mainDjRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
