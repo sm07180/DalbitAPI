@@ -120,7 +120,19 @@ public class CommonService {
         pItemVo.setItem_slct(1);
         pItemVo.setPlatform(platform);
 
-        resultMap.put("items", commonDao.selectItemList(pItemVo));
+        List<ItemVo> items = commonDao.selectItemList(pItemVo);
+        HashMap itemIsNew = new HashMap();
+        itemIsNew.put("normal", false);
+        itemIsNew.put("combo", false);
+        itemIsNew.put("emotion", false);
+        if(!DalbitUtil.isEmpty(items)){
+            for(ItemVo item : items){
+                if(item.isNew()){
+                    itemIsNew.put(item.getCategory(), true);
+                }
+            }
+        }
+        resultMap.put("items", items);
 
         pItemVo.setItem_slct(2);
         resultMap.put("particles", commonDao.selectItemList(pItemVo));
@@ -160,15 +172,20 @@ public class CommonService {
         HashMap itemCate1 = new HashMap();
         itemCate1.put("code", "normal");
         itemCate1.put("value", "일반");
+        itemCate1.put("isNew", itemIsNew.get("normal"));
         HashMap itemCate2 = new HashMap();
         itemCate2.put("code", "combo");
         itemCate2.put("value", "콤보");
+        itemCate2.put("isNew", itemIsNew.get("combo"));
         HashMap itemCate3 = new HashMap();
         itemCate3.put("code", "emotion");
         itemCate3.put("value", "감정");
+        itemCate3.put("isNew", itemIsNew.get("emotion"));
+
         itemCategories.add(itemCate1);
         itemCategories.add(itemCate2);
         itemCategories.add(itemCate3);
+
         resultMap.put("itemCategories", itemCategories);
 
         if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){

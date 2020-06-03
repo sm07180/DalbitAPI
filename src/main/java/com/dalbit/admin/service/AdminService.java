@@ -8,8 +8,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.member.vo.TokenVo;
-import com.dalbit.util.DalbitUtil;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
@@ -19,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -155,7 +153,7 @@ public class AdminService {
      * 이미지관리 > 프로필 이미지 초기화
      */
     public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) {
-        proImageInitVo.setOp_name("모바일관리자");
+        proImageInitVo.setOp_name("모바일운영자");
         proImageInitVo.setType(0);
         proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + proImageInitVo.getReset_image_profile());
 
@@ -174,8 +172,9 @@ public class AdminService {
     /**
      * 이미지관리 > 방송방 이미지 초기화
      */
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) {
-        broImageInitVo.setOp_name("모바일관리자");
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo){
+
+        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
         // rd_data.tb_broadcast_room_edit_history에 insert
@@ -194,7 +193,7 @@ public class AdminService {
      * 텍스트관리 > 닉네임 초기화
      */
     public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) {
-        proImageInitVo.setOp_name("모바일관리자");
+        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         proImageInitVo.setType(0);
         proImageInitVo.setEdit_contents("닉네임 변경 : " + nickTextInitVo.getMem_nick() + " >> " + nickTextInitVo.getMem_userid());
         proImageInitVo.setMem_no(nickTextInitVo.getMem_no());
@@ -215,7 +214,7 @@ public class AdminService {
      * 텍스트관리 > 방송 제목 초기화
      */
     public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) {
-        broImageInitVo.setOp_name("모바일관리자");
+        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         broImageInitVo.setEdit_contents("제목변경 : " + broTitleTextInitVo.getTitle() + " >> " + broTitleTextInitVo.getMem_nick() + "님의 방송입니다.");
         broImageInitVo.setRoom_no(broTitleTextInitVo.getRoom_no());
 
