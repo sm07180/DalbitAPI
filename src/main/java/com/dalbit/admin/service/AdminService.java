@@ -7,9 +7,7 @@ import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.exception.GlobalException;
-import com.dalbit.member.vo.TokenVo;
-import com.dalbit.util.DalbitUtil;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
@@ -19,7 +17,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -154,13 +151,20 @@ public class AdminService {
     /**
      * 이미지관리 > 프로필 이미지 초기화
      */
-    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) {
-        proImageInitVo.setOp_name("모바일관리자");
+    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) {
+        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         proImageInitVo.setType(0);
         proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + proImageInitVo.getReset_image_profile());
 
         // rd_data.tb_member_profile_edit_history에 insert
-         adminDao.insertProfileHistory(proImageInitVo);
+        adminDao.insertProfileHistory(proImageInitVo);
+
+        //rd_data.tb_member_notification에 insert
+        notiInsertVo.setMem_no(proImageInitVo.getMem_no());
+        notiInsertVo.setSlctType(7);
+        notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
+        notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
+        adminDao.insertNotiHistory(notiInsertVo);
 
         // rd_data.tb_member_profile에 image_profile update
         int result = adminDao.proImageInit(proImageInitVo);
@@ -174,12 +178,19 @@ public class AdminService {
     /**
      * 이미지관리 > 방송방 이미지 초기화
      */
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) {
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) {
         broImageInitVo.setOp_name("모바일관리자");
         broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
         // rd_data.tb_broadcast_room_edit_history에 insert
         adminDao.insertBroadHistory(broImageInitVo);
+
+        //rd_data.tb_member_notification에 insert
+        notiInsertVo.setMem_no(broImageInitVo.getMem_no());
+        notiInsertVo.setSlctType(7);
+        notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
+        notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
+        adminDao.insertNotiHistory(notiInsertVo);
 
         // rd_data.tb_broadcast_room에 image_background update
         int result = adminDao.broImageInit(broImageInitVo);

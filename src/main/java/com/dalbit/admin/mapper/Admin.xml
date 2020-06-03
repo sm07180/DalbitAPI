@@ -144,4 +144,12 @@
         where room_no = #{room_no}
     </update>
 
+    <insert id="insertNotiHistory" parameterType="com.dalbit.admin.vo.NotiInsertVo">
+        /* Admin.xml - insertNotiHistory */
+        insert into
+          rd_data.tb_member_notification( mem_no, type_noti, contents, memo  )
+        values
+          ( #{mem_no}, #{slctType}, #{notiContents}, #{notiMemo})
+
+    </insert>
 </mapper>
