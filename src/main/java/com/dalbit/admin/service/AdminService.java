@@ -214,7 +214,7 @@ public class AdminService {
      * 텍스트관리 > 방송 제목 초기화
      */
     public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) {
-        broImageInitVo.setOp_name("모바일관리자");
+        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         broImageInitVo.setEdit_contents("제목변경 : " + broTitleTextInitVo.getTitle() + " >> " + broTitleTextInitVo.getMem_nick() + "님의 방송입니다.");
         broImageInitVo.setRoom_no(broTitleTextInitVo.getRoom_no());
 
