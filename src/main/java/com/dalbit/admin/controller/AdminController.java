@@ -4,6 +4,7 @@ import com.dalbit.admin.service.AdminCommonService;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
+import com.dalbit.exception.GlobalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +22,11 @@ public class AdminController {
     @Autowired
     AdminCommonService adminCommonService;
 
-    /*@PostMapping("/auth/check")
+    @PostMapping("/auth/check")
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
         String result = adminService.authCheck(request, searchVo);
         return result;
-    }*/
+    }
 
     /**
      * - 이미지관리 > 방송방 이미지 조회

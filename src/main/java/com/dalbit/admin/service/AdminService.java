@@ -7,6 +7,9 @@ import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,24 +45,33 @@ public class AdminService {
     private final String menuJsonKey = "adminMenu";
 
 
-    /*public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
-        String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
-        if (jwtUtil.validateToken(authToken)) {
-            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
-            tokenVo.getMemNo();
+    public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
 
-            searchVo.setMem_no(tokenVo.getMemNo());
-            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
-            if (DalbitUtil.isEmpty(menuList)) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음));
+        var resultMap = new HashMap();
+
+        try{
+            String mem_no = MemberVo.getMyMemNo(request);
+            if(DalbitUtil.isEmpty(mem_no)){
+                resultMap.put("isAdmin", false);
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인오류, resultMap));
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.조회, menuList));
+            searchVo.setMem_no(mem_no);
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            if (DalbitUtil.isEmpty(menuList)) {
+                resultMap.put("isAdmin", false);
+                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음, resultMap));
+            }
 
+            resultMap.put("isAdmin", true);
+            return gsonUtil.toJson(new JsonOutputVo(Status.관리자로그인성공, resultMap));
+
+        }catch (Exception e){
+            resultMap.put("isAdmin", false);
+            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, resultMap));
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-    }*/
+    }
 
     /**
      * - 이미지관리 > 방송방 이미지 조회
@@ -179,7 +192,7 @@ public class AdminService {
      * 이미지관리 > 방송방 이미지 초기화
      */
     public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) {
-        broImageInitVo.setOp_name("모바일관리자");
+        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
         // rd_data.tb_broadcast_room_edit_history에 insert
@@ -205,7 +218,7 @@ public class AdminService {
      * 텍스트관리 > 닉네임 초기화
      */
     public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) {
-        proImageInitVo.setOp_name("모바일관리자");
+        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         proImageInitVo.setType(0);
         proImageInitVo.setEdit_contents("닉네임 변경 : " + nickTextInitVo.getMem_nick() + " >> " + nickTextInitVo.getMem_userid());
         proImageInitVo.setMem_no(nickTextInitVo.getMem_no());
@@ -226,7 +239,7 @@ public class AdminService {
      * 텍스트관리 > 방송 제목 초기화
      */
     public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) {
-        broImageInitVo.setOp_name("모바일관리자");
+        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         broImageInitVo.setEdit_contents("제목변경 : " + broTitleTextInitVo.getTitle() + " >> " + broTitleTextInitVo.getMem_nick() + "님의 방송입니다.");
         broImageInitVo.setRoom_no(broTitleTextInitVo.getRoom_no());
 

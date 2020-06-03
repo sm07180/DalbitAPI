@@ -799,7 +799,18 @@ public enum Status {
 
     //방송제목 초기화
     방송제목초기화_성공("0", "broadcast.title.init.success", "방송제목 초기화 성공 시"),
-    방송제목초기화_실패("C006", "broadcast.title.init.fail", "방송제목 초기화 실패 시")
+    방송제목초기화_실패("C006", "broadcast.title.init.fail", "방송제목 초기화 실패 시"),
+
+
+    //랭킹 이벤트 실시간 순위보기
+    랭킹이벤트실시간순위리스트조회("C001", "event.ranking.live.list.select.success", "랭킹이벤트실시간순위리스트 정보 조회 성공 시"),
+    랭킹이벤트실시간순위리스트없음("0", "event.ranking.live.list.no.success", "랭킹이벤트실시간순위리스트가 없을 시"),
+    랭킹이벤트실시간순위리스트_실패("C006", "event.ranking.live.list.select.fail", "랭킹이벤트실시간순위리스트 정보 조회 실패 시"),
+
+    //랭킹 이벤트 결과보기
+    랭킹이벤트결과조회("C001", "event.ranking.result.list.select.success", "랭킹이벤트결과 정보 조회 성공 시"),
+    랭킹이벤트결과없음("0", "event.ranking.result.list.no.success", "랭킹이벤트결과가 없을 시"),
+    랭킹이벤트결과_실패("C006", "event.ranking.result.list.select.fail", "랭킹이벤트결과 정보 조회 실패 시"),
 
     ;
 

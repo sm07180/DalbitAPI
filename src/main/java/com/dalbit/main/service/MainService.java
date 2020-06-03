@@ -280,6 +280,9 @@ public class MainService {
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
+        mainFanRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
+        mainFanRankingList.put("myListenPoint", DalbitUtil.getIntMap(resultMap, "myListenPoint"));
+        mainFanRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
         mainFanRankingList.put("list", procedureOutputVo.getOutputBox());
         mainFanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
@@ -316,6 +319,11 @@ public class MainService {
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
+        mainDjRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
+        mainDjRankingList.put("myBroadPoint", DalbitUtil.getIntMap(resultMap, "myBroadPoint"));
+        mainDjRankingList.put("myFanPoint", DalbitUtil.getIntMap(resultMap, "myFanPoint"));
+        mainDjRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
+        mainDjRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
         mainDjRankingList.put("list", procedureOutputVo.getOutputBox());
         mainDjRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
