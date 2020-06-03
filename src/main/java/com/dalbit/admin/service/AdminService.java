@@ -9,6 +9,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
@@ -18,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,24 +44,33 @@ public class AdminService {
     private final String menuJsonKey = "adminMenu";
 
 
-    /*public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
-        String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
-        if (jwtUtil.validateToken(authToken)) {
-            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
-            tokenVo.getMemNo();
+    public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
 
-            searchVo.setMem_no(tokenVo.getMemNo());
-            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
-            if (DalbitUtil.isEmpty(menuList)) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음));
+        var resultMap = new HashMap();
+
+        try{
+            String mem_no = MemberVo.getMyMemNo(request);
+            if(DalbitUtil.isEmpty(mem_no)){
+                resultMap.put("isAdmin", false);
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인오류, resultMap));
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.조회, menuList));
+            searchVo.setMem_no(mem_no);
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            if (DalbitUtil.isEmpty(menuList)) {
+                resultMap.put("isAdmin", false);
+                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음, resultMap));
+            }
 
+            resultMap.put("isAdmin", true);
+            return gsonUtil.toJson(new JsonOutputVo(Status.관리자로그인성공, resultMap));
+
+        }catch (Exception e){
+            resultMap.put("isAdmin", false);
+            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, resultMap));
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-    }*/
+    }
 
     /**
      * - 이미지관리 > 방송방 이미지 조회
