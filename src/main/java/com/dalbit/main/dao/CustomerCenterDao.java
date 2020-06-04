@@ -12,11 +12,11 @@ public interface CustomerCenterDao {
 
     @Transactional(readOnly = true)
     List<P_NoticeListVo> callNoticeList(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo callNoticeDetail(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_FaqListVo> callFaqList(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo callFaqDetail(ProcedureVo procedureVo);
     //@Transactional(readOnly = true)
     ProcedureVo callQnaAdd(ProcedureVo procedureVo);
