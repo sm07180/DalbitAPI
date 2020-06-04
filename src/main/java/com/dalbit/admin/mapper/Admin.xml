@@ -150,6 +150,11 @@
           rd_data.tb_member_notification( mem_no, type_noti, contents, memo  )
         values
           ( #{mem_no}, #{slctType}, #{notiContents}, #{notiMemo})
-
     </insert>
+
+    <select id="callServiceCenterReportOperate" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callServiceCenterReportOperate */
+        call rd_admin.sp_admin_service_center_report_operate(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>
