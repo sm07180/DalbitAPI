@@ -25,6 +25,7 @@ public class AdminBaseVo implements Serializable {
     int searchEnd;
 
 
+    String notificationYn;
 
     List<AdminMenuVo> adminMenuList;
 }

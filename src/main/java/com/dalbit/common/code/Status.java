@@ -828,8 +828,6 @@ public enum Status {
 
     //신고처리
     신고처리_성공("0", "declaration.operate.success", "신고처리 성공 시"),
-    신고처리_신고번호없음("-1", "declaration.fail.no.data", "신고번호가 없을 시"),
-    신고처리_이미처리되었음("-2", "declaration.fail.already.operated", "신고처리가 이미 되었을 시"),
     신고처리_에러("C006", "declaration.fail.server.error", "신고처리에서 에러 발생 시"),
 
 

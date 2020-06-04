@@ -152,9 +152,30 @@
           ( #{mem_no}, #{slctType}, #{notiContents}, #{notiMemo})
     </insert>
 
-    <select id="callServiceCenterReportOperate" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
-        /* Admin.xml - callServiceCenterReportOperate */
-        call rd_admin.sp_admin_service_center_report_operate(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <insert id="declarationOperate" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        /* Admin.xml - declarationOperate */
+        insert into
+          rd_data.tb_member_report
+        (mem_no, mem_userid, mem_nick, mem_phone, mem_level, mem_grade, reported_mem_no, reported_userid, reported_nick, reported_phone
+        , reported_level, reported_grade, room_no, reason, etc, status, op_code, op_msg, platform, browser, ip, op_name, op_date, reg_date)
+         value
+         (#{mem_no}, #{mem_userid}, #{mem_nick}, null, 1, null, #{reported_mem_no}, #{reported_userid}, #{reported_nick}, #{reported_phone}
+         , #{reported_level}, #{reported_grade}, null, 1, null, 2, #{opCode}, #{notiMemo}, 'Mobile', #{browser}, #{ip}, #{opName}, now(), now())
+     </insert>
+
+    <select id="getMemberInfo" parameterType="String" resultType="com.dalbit.admin.vo.MemberInfoVo">
+        /* Admin.xml - getMemberInfo */
+        select
+              b.mem_no
+              , b.mem_userid
+              , b.mem_nick
+              , b.mem_phone
+              , l.level
+              , l.grade
+          from rd_data.tb_member_basic b
+            , rd_data.tb_member_level l
+            where b.mem_no = l.mem_no
+              and b.mem_no = #{mem_no}
     </select>
 
 </mapper>
