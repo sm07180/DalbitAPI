@@ -14,7 +14,7 @@
       SELECT
             a.idx AS reply_idx
             ,a.event_idx AS event_idx
-            ,a.mem_no AS mem_no
+            ,a.mem_no AS write_mem_no
             ,a.depth AS depth
             ,a.contents AS contents
             ,a.status AS status
@@ -24,6 +24,7 @@
             ,mb.mem_id AS userId
             ,mb.mem_nick AS nickName
             ,mb.mem_sex AS memSex
+            ,#{mem_no} AS req_mem_no
             ,(SELECT image_profile FROM rd_data.tb_member_profile WHERE mem_no = a.mem_no) AS profileImage
         FROM
             rd_admin.tb_event_reply AS a
@@ -72,5 +73,26 @@
           idx = #{reply_idx}
           AND event_idx = #{event_idx}
     </update>
+
+    <select id="callEventAuthCheck" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo" resultType="integer">
+        SELECT
+          count(*)
+        FROM
+        (
+             SELECT
+                mem_no
+             FROM
+                rd_admin.tb_event_reply AS er
+             WHERE
+                er.event_idx = #{event_idx} AND er.idx = #{reply_idx} AND er.mem_no = #{mem_no}
+             UNION ALL
+             SELECT
+                mem_no
+             FROM
+                rd_data.tb_member_basic AS mb
+             WHERE
+                mb.mem_no = #{mem_no} AND mb.inner = 1
+          ) AS a
+    </select>
 
 </mapper>

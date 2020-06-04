@@ -70,6 +70,7 @@ public class EventController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ReplyListInputVo apiData = new P_ReplyListInputVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setEvent_idx(replyVo.getEventIdx());
 
         String result = eventService.callEventReplyList(apiData);
@@ -87,7 +88,8 @@ public class EventController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ReplyAddInputVo apiData = new P_ReplyAddInputVo();
-        apiData.setMem_no(replyAddVo.getMemNo());
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setContents(replyAddVo.getContent());
         apiData.setDepth(replyAddVo.getDepth());
         apiData.setEvent_idx(replyAddVo.getEventIdx());
@@ -107,6 +109,7 @@ public class EventController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ReplyDeleteInputVo apiData = new P_ReplyDeleteInputVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setReply_idx(replyDeleteVo.getReplyIdx());
         apiData.setEvent_idx(replyDeleteVo.getEventIdx());
 

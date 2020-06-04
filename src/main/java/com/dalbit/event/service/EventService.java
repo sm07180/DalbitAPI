@@ -206,10 +206,6 @@ public class EventService {
             return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트없음, resultMap));
         }
 
-//        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-//        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-//        log.info(" ### 프로시저 호출결과 ###");
-
         String result;
         if(replyVoList.size() > 0) {
             List<ReplyListOutputVo> outList = new ArrayList<>();
@@ -232,6 +228,11 @@ public class EventService {
      */
     public String callEventReplyAdd(P_ReplyAddInputVo pReplyAddInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pReplyAddInputVo);
+
+        if(pReplyAddInputVo.getMemLogin() == 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_회원아님));
+        }
+
         int insertResult = eventDao.callEventReplyAdd(pReplyAddInputVo);
 
         String result;
@@ -249,13 +250,19 @@ public class EventService {
      */
     public String callEventReplyDelete(P_ReplyDeleteInputVo pReplyDeleteInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pReplyDeleteInputVo);
+
+        int checkAuth = eventDao.callEventAuthCheck(pReplyDeleteInputVo);
+        if(checkAuth <= 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제실패_삭제권한없음));
+        }
+
         int insertResult = eventDao.callEventReplyDelete(pReplyDeleteInputVo);
 
         String result;
-        if(Status.이벤트_댓글삭제성공.getMessageCode().equals(insertResult+"")){
+        if(insertResult > 0){
             result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제성공));
-        }else if(Status.이벤트_댓글삭제없음.getMessageCode().equals(insertResult+"")){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제없음));
+        }else if(insertResult == 0){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제정보없음));
         }else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제실패_등록오류));
         }
