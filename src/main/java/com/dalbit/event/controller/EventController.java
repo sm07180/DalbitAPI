@@ -20,6 +20,11 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @GetMapping("/ranking/term")
+    public String event200608Term(){
+        return eventService.event200608Term();
+    }
+
     /**
      * 랭킹 이벤트 실시간 순위보기
      */
