@@ -829,29 +829,36 @@ public class SocketService {
         HashMap resultLevelUpCheckMap = new Gson().fromJson(procedureLevelCheckVo.getExt(), HashMap.class);
         SocketVo djVo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
 
-        String frameColor = "";
+        String[] frameColor = null;
         int newLevel = DalbitUtil.getIntMap(resultLevelUpCheckMap, "newLevel");
         if(newLevel < 11) {
-            frameColor = "#faa118";
+            frameColor = new String[1];
+            frameColor[0] = "#faa118";
         }else if(newLevel < 21){
-            frameColor = "#5dc62a";
+            frameColor = new String[1];
+            frameColor[0] = "#5dc62a";
         }else if(newLevel < 31){
-            frameColor = "#4692e9";
+            frameColor = new String[1];
+            frameColor[0] = "#4692e9";
         }else if(newLevel < 41){
-            frameColor = "#f54640";
+            frameColor = new String[1];
+            frameColor[0] = "#f54640";
         }else if(newLevel < 51){
-            frameColor = "gradation";
+            frameColor = new String[3];
+            frameColor[0] = "#7f18ff";
+            frameColor[1] = "#f52d5b";
+            frameColor[2] = "#ffbf03";
         }
 
         HashMap levelUp = new HashMap();
         levelUp.put("memNo", memNo);
         levelUp.put("nk", djVo.getMemNk());
-        levelUp.put("level", resultLevelUpCheckMap.get("newLevel"));
+        levelUp.put("level", DalbitUtil.getIntMap(resultLevelUpCheckMap, "newLevel"));
         levelUp.put("grade", resultLevelUpCheckMap.get("newGrade"));
         levelUp.put("image", djVo.getMemImg());
         levelUp.put("auth", djVo.getAuth());
-        levelUp.put("dal", resultLevelUpCheckMap.get("rewardDal"));
-        levelUp.put("byul", resultLevelUpCheckMap.get("rewardByeol"));
+        levelUp.put("dal", DalbitUtil.getIntMap(resultLevelUpCheckMap, "rewardDal"));
+        levelUp.put("byul", DalbitUtil.getIntMap(resultLevelUpCheckMap, "rewardByeol"));
         levelUp.put("frameName", resultLevelUpCheckMap.get("newGrade") + " 프레임");
         levelUp.put("frameColor", frameColor);
         levelUp.put("frameImg", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + resultLevelUpCheckMap.get("newLevel") + ".png");
