@@ -8,7 +8,9 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.P_LevelUpCheckVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -43,6 +45,8 @@ public class ActionService {
     RestService restService;
     @Autowired
     CommonDao commonDao;
+    @Autowired
+    ProfileDao profileDao;
 
 
     /**
@@ -89,11 +93,10 @@ public class ActionService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
-            //TODO - 레벨업 유무 소켓추가 추후 확인
-            try{
-                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-            }catch(Exception e){
-                log.info("Socket Service isLevelUp Exception {}", e);
+            if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
+                try{
+                    socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGoodVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData()));
         }else if(Status.좋아요_회원아님.getMessageCode().equals(procedureVo.getRet())){
@@ -242,26 +245,20 @@ public class ActionService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
-            try{ //DJ 레벨업 일때 소켓 발송
-                if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){
+            if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
+                try{
+                    socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
+                try{
                     String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
+                    socketService.sendLevelUp(djMemNo, pRoomGiftVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
+            }
 
-                    HashMap itemMap = new HashMap();
-                    itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
-                    ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.levelUp"));
-                    String itemNm = item.getItemNm();
-                    String itemThumbs = item.getThumbs();
-                    itemMap.put("itemNm", itemNm);
-                    itemMap.put("itemCnt", 1);
-                    itemMap.put("itemImg", itemThumbs);
-                    itemMap.put("isSecret", false);
-                    itemMap.put("itemType", "levelUp");
-                    //socketService.bjLevelUpToListener(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-
-                    //HashMap levelUpMap = new HashMap();
-                }
-            }catch(Exception e){
-
+            if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
+                try{
+                    socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGiftVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
         }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
@@ -353,6 +350,24 @@ public class ActionService {
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
+
+
+            if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
+                try{
+                    socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
+                try{
+                    String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
+                    socketService.sendLevelUp(djMemNo, pRoomBoosterVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
+            }
+
+            if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
+                try{
+                    socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomBoosterVo.getRoom_no(), request, vo);
+                }catch(Exception e){}
+            }
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터성공, returnMap));
 
         }else if(Status.부스터_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){

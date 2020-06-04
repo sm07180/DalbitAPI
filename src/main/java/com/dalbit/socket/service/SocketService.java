@@ -3,10 +3,15 @@ package com.dalbit.socket.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
+import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.ItemDetailVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.ProfileDao;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.P_LevelUpCheckVo;
 import com.dalbit.socket.dao.SocketDao;
 import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketVo;
@@ -19,6 +24,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -49,6 +55,12 @@ public class SocketService {
 
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    CommonDao commonDao;
+
+    @Autowired
+    ProfileDao profileDao;
 
     public Map<String, Object> sendSocketApi(String authToken, String roomNo, String params) {
         HttpURLConnection con = null;
@@ -566,7 +578,6 @@ public class SocketService {
         return null;
     }
 
-
     @Async("threadTaskExecutor")
     public Map<String, Object> bjLevelUpToListener(String roomNo, String memNo, Object item, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : giftItem {}, {}, {}, {}", roomNo, memNo, item, isLogin);
@@ -578,10 +589,31 @@ public class SocketService {
             if(vo == null || vo.getMemNo() == null){
                 return null;
             }
-            vo.setCommand("reqBjLevelUpToListener");
+            //vo.setCommand("reqLevelUpBj");
+            vo.setCommand("reqGiftImg");
             vo.setMessage(item);
             vo.setRecvDj(0);
 
+            return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+        return null;
+    }
+
+
+    @Async("threadTaskExecutor")
+    public Map<String, Object> levelUp(String roomNo, String memNo, Object levelInfo, String authToken, boolean isLogin, SocketVo vo){
+        log.info("Socket Start : levelUp {}, {}, {}, {}", roomNo, memNo, levelInfo, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelInfo != null){
+            if(vo == null || vo.getMemNo() == null){
+                return null;
+            }
+            vo.setCommand("reqLevelUpSelf");
+            vo.setMessage(levelInfo);
+            vo.setRecvMemNo(memNo);
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
@@ -766,6 +798,59 @@ public class SocketService {
         }
 
         return null;
+    }
+
+    public Map<String, Object> sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo){
+        HashMap itemMap = new HashMap();
+        itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
+        ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.levelUp"));
+        String itemNm = item.getItemNm();
+        String itemThumbs = item.getThumbs();
+        itemMap.put("itemNm", itemNm);
+        itemMap.put("itemCnt", 1);
+        itemMap.put("itemImg", itemThumbs);
+        itemMap.put("isSecret", false);
+        itemMap.put("itemType", "levelUp");
+
+        return bjLevelUpToListener(roomNo, new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+    }
+
+    public Map<String, Object> sendLevelUp(String memNo, String roomNo, HttpServletRequest request, SocketVo vo){
+        P_LevelUpCheckVo pLevelUpCheckVo = new P_LevelUpCheckVo();
+        pLevelUpCheckVo.setMem_no(memNo);
+        ProcedureVo procedureLevelCheckVo = new ProcedureVo(pLevelUpCheckVo);
+        profileDao.callMemberLevelUpCheck(procedureLevelCheckVo);
+        HashMap resultLevelUpCheckMap = new Gson().fromJson(procedureLevelCheckVo.getExt(), HashMap.class);
+        SocketVo djVo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
+
+        String frameColor = "";
+        int newLevel = DalbitUtil.getIntMap(resultLevelUpCheckMap, "newLevel");
+        if(newLevel < 11) {
+            frameColor = "#faa118";
+        }else if(newLevel < 21){
+            frameColor = "#5dc62a";
+        }else if(newLevel < 31){
+            frameColor = "#4692e9";
+        }else if(newLevel < 41){
+            frameColor = "#f54640";
+        }else if(newLevel < 51){
+            frameColor = "gradation";
+        }
+
+        HashMap levelUp = new HashMap();
+        levelUp.put("memNo", memNo);
+        levelUp.put("nk", djVo.getMemNk());
+        levelUp.put("level", resultLevelUpCheckMap.get("newLevel"));
+        levelUp.put("grade", resultLevelUpCheckMap.get("newGrade"));
+        levelUp.put("image", djVo.getMemImg());
+        levelUp.put("auth", djVo.getAuth());
+        levelUp.put("dal", resultLevelUpCheckMap.get("rewardDal"));
+        levelUp.put("byul", resultLevelUpCheckMap.get("rewardByeol"));
+        levelUp.put("frameName", resultLevelUpCheckMap.get("newGrade") + " 프레임");
+        levelUp.put("frameColor", frameColor);
+        levelUp.put("frameImg", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + resultLevelUpCheckMap.get("newLevel") + ".png");
+
+        return levelUp(roomNo, memNo, levelUp, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
     }
 }
 
