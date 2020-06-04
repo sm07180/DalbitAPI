@@ -41,6 +41,8 @@ public interface AdminDao {
     int insertNotiHistory(NotiInsertVo notiInsertVo);
 
     // 신고 처리
-    ProcedureVo callServiceCenterReportOperate(ProcedureVo procedureVo);
+    int declarationOperate(DeclarationVo declarationVo);
+
+    MemberInfoVo getMemberInfo(String mem_no);
 
 }
