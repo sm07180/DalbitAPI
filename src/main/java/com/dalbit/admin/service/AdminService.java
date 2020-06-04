@@ -255,4 +255,35 @@ public class AdminService {
         }
     }
 
+    /**
+     * 신고하기
+     */
+    public String callServiceCenterReportOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo) {
+        declarationVo.setOpName(MemberVo.getMyMemNo(request));
+
+        String notiMemo = declarationVo.getNotiMemo().replace("<br>", "\n");
+        declarationVo.setNotiMemo(notiMemo);
+
+        ProcedureVo procedureVo = new ProcedureVo(declarationVo);
+
+        adminDao.callServiceCenterReportOperate(procedureVo);
+
+        String result;
+
+        // 신고처리
+        if(Status.신고처리_성공.getMessageCode().equals(procedureVo.getRet())) {
+            // 0 : 성공
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고처리_성공));
+        } else if(Status.신고처리_신고번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            // -1 : reportIdx 없음
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고처리_신고번호없음));
+        } else if(Status.신고처리_이미처리되었음.getMessageCode().equals(procedureVo.getRet())) {
+            // -2 : 이미 처리됨
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고처리_이미처리되었음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고처리_에러));
+        }
+
+        return result;
+    }
 }

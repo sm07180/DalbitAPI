@@ -93,4 +93,13 @@ public class AdminController {
         String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo);
         return result;
     }
+
+    /**
+     * 신고하기
+     */
+    @PostMapping("/declaration/operate")
+    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo) {
+        String result = adminService.callServiceCenterReportOperate(request, declarationVo, notiInsertVo);
+        return result;
+    }
 }

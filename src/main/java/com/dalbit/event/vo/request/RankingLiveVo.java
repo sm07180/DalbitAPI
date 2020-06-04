@@ -3,6 +3,8 @@ package com.dalbit.event.vo.request;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -10,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class RankingLiveVo {
 
     private String memNo;                  //회원번호
-    @NotNull
+    @NotNull @Min(1) @Max(3)
     private Integer slctType;              //랭킹구분(1: 경험치, 2: 좋아요, 3: 선물 )
 
 }
