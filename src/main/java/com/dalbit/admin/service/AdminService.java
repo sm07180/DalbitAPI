@@ -9,6 +9,8 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
@@ -18,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -42,24 +45,33 @@ public class AdminService {
     private final String menuJsonKey = "adminMenu";
 
 
-    /*public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
-        String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
-        if (jwtUtil.validateToken(authToken)) {
-            TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
-            tokenVo.getMemNo();
+    public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
 
-            searchVo.setMem_no(tokenVo.getMemNo());
-            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
-            if (DalbitUtil.isEmpty(menuList)) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음));
+        var resultMap = new HashMap();
+
+        try{
+            String mem_no = MemberVo.getMyMemNo(request);
+            if(DalbitUtil.isEmpty(mem_no)){
+                resultMap.put("isAdmin", false);
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인오류, resultMap));
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.조회, menuList));
+            searchVo.setMem_no(mem_no);
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            if (DalbitUtil.isEmpty(menuList)) {
+                resultMap.put("isAdmin", false);
+                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음, resultMap));
+            }
 
+            resultMap.put("isAdmin", true);
+            return gsonUtil.toJson(new JsonOutputVo(Status.관리자로그인성공, resultMap));
+
+        }catch (Exception e){
+            resultMap.put("isAdmin", false);
+            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, resultMap));
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-    }*/
+    }
 
     /**
      * - 이미지관리 > 방송방 이미지 조회
@@ -152,13 +164,20 @@ public class AdminService {
     /**
      * 이미지관리 > 프로필 이미지 초기화
      */
-    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) {
-        proImageInitVo.setOp_name("모바일운영자");
+    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) {
+        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         proImageInitVo.setType(0);
         proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + proImageInitVo.getReset_image_profile());
 
         // rd_data.tb_member_profile_edit_history에 insert
-         adminDao.insertProfileHistory(proImageInitVo);
+        adminDao.insertProfileHistory(proImageInitVo);
+
+        //rd_data.tb_member_notification에 insert
+        notiInsertVo.setMem_no(proImageInitVo.getMem_no());
+        notiInsertVo.setSlctType(7);
+        notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
+        notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
+        adminDao.insertNotiHistory(notiInsertVo);
 
         // rd_data.tb_member_profile에 image_profile update
         int result = adminDao.proImageInit(proImageInitVo);
@@ -172,13 +191,19 @@ public class AdminService {
     /**
      * 이미지관리 > 방송방 이미지 초기화
      */
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo){
-
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) {
         broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
         broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
         // rd_data.tb_broadcast_room_edit_history에 insert
         adminDao.insertBroadHistory(broImageInitVo);
+
+        //rd_data.tb_member_notification에 insert
+        notiInsertVo.setMem_no(broImageInitVo.getMem_no());
+        notiInsertVo.setSlctType(7);
+        notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
+        notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
+        adminDao.insertNotiHistory(notiInsertVo);
 
         // rd_data.tb_broadcast_room에 image_background update
         int result = adminDao.broImageInit(broImageInitVo);
