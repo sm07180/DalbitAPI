@@ -1,5 +1,6 @@
 package com.dalbit.event.service;
 
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -141,14 +142,22 @@ public class EventService {
             return gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트없음, resultMap));
         }
 
-        resultMap.put("list", rankingLiveVoList);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            for(int i = 0; i < rankingLiveVoList.size(); i++){
+                if(DalbitUtil.isEmpty(rankingLiveVoList.get(i).getProfileImage())){
+                    rankingLiveVoList.get(i).setProfileImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingLiveVoList.get(i).getMemSex() + "_200327.jpg");
+                }
+                if(pRankingLiveInputVo.getSlct_type() == 1 && DalbitUtil.isEmpty(rankingLiveVoList.get(i).getFanImage())){
+                    rankingLiveVoList.get(i).setFanImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingLiveVoList.get(i).getFanSex() + "_200327.jpg");
+                }
+            }
+            resultMap.put("list", rankingLiveVoList);
+
+            log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+            log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+            log.info(" ### 프로시저 호출결과 ###");
             result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트조회, resultMap));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트_실패));
@@ -173,14 +182,22 @@ public class EventService {
             return gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트결과없음, resultMap));
         }
 
-        resultMap.put("list", rankingResultVoList);
-
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
-        log.info(" ### 프로시저 호출결과 ###");
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            for(int i = 0; i < rankingResultVoList.size(); i++){
+                if(DalbitUtil.isEmpty(rankingResultVoList.get(i).getProfileImage())){
+                    rankingResultVoList.get(i).setProfileImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingResultVoList.get(i).getMemSex() + "_200327.jpg");
+                }
+                if(pRankingResultInputVo.getSlct_type() == 1 && DalbitUtil.isEmpty(rankingResultVoList.get(i).getFanImage())){
+                    rankingResultVoList.get(i).setFanImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingResultVoList.get(i).getFanSex() + "_200327.jpg");
+                }
+            }
+            resultMap.put("list", rankingResultVoList);
+
+            log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+            log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+            log.info(" ### 프로시저 호출결과 ###");
             result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트결과조회, resultMap));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트결과_실패));
