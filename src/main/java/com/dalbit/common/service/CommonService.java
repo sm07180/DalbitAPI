@@ -237,12 +237,12 @@ public class CommonService {
                 dbSelectMemNo = "88888888888888";
                 isLogin = false;
                 tokenVo = null;
-            }else if(tokenCheckVo.getMem_state() < 1 && tokenCheckVo.getMem_state() > 2){
+            }else if(tokenCheckVo.getMem_state() == 1 || tokenCheckVo.getMem_state() == 2){
+                dbSelectMemNo = tokenCheckVo.getMem_no();
+            }else{
                 dbSelectMemNo = tokenCheckVo.getMem_no();
                 isLogin = false;
                 tokenVo = null;
-            }else{
-                dbSelectMemNo = tokenCheckVo.getMem_no();
             }
             /*if(mem_state == null || (mem_state < 1 && mem_state > 2)){
                 isLogin = false;
