@@ -21,4 +21,7 @@ public interface EventDao {
 
     int callEventReplyAdd(P_ReplyAddInputVo pReplyAddInputVo);
     int callEventReplyDelete(P_ReplyDeleteInputVo pReplyDeleteInputVo);
+
+    @Transactional(readOnly = true)
+    int callEventAuthCheck(P_ReplyDeleteInputVo pReplyDeleteInputVo);
 }

@@ -819,11 +819,13 @@ public enum Status {
 
     //이벤트 댓글 달기
     이벤트_댓글달기성공("1", "event.reply.add.success", "이벤트 댓글달기 성공 시"),
+    이벤트_댓글달기실패_회원아님("C006", "event.reply.add.no.member", "회원아님"),
     이벤트_댓글달기실패_등록오류("C006", "event.reply.add.error", "이벤트 댓글 등록 실패"),
 
     //이벤트 댓글 삭제
-    이벤트_댓글삭제성공("1", "event.reply.remove.success", "이벤트 댓글 삭제 성공 시"),
-    이벤트_댓글삭제없음("0", "event.reply.remove.no.data", "이벤트 댓글 삭제 정보가 없을시"),
+    이벤트_댓글삭제성공("C001", "event.reply.remove.success", "이벤트 댓글 삭제 성공 시"),
+    이벤트_댓글삭제실패_삭제권한없음("-1", "event.reply.remove.authorization.not", "삭제 권한이 없음"),
+    이벤트_댓글삭제정보없음("0", "event.reply.remove.no.data", "이벤트 댓글 삭제 정보가 없을시"),
     이벤트_댓글삭제실패_등록오류("C006", "event.reply.remove.error", "이벤트 댓글 삭제 실패"),
 
     ;

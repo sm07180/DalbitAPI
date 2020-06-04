@@ -22,17 +22,19 @@ public class ReplyListOutputVo {
     private int status;			//상태값 ( 1: 정상, 2: 삭제됨)
     private String writeDt;		//작성일자
     private long writeTs;		//작성일자 timestamp
+    private String memNo;		//요청 회원번호
 
 
     public ReplyListOutputVo(P_ReplyListOutputVo target) {
         this.replyIdx = target.getReply_idx();
         this.eventIdx = target.getEvent_idx();
-        this.writerNo = target.getMem_no();
+        this.writerNo = target.getWrite_mem_no();
         this.memId = target.getUserId();
         this.nickNm = target.getNickName();
         this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.content = target.getContents();
         this.status = target.getStatus();
+        this.memNo = target.getReq_mem_no();
         this.writeDt = DalbitUtil.getUTCFormat(target.getWriteDate());
         this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
     }
