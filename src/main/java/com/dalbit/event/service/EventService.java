@@ -4,10 +4,8 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.EventDao;
-import com.dalbit.event.vo.procedure.P_RankingResultInputVo;
-import com.dalbit.event.vo.procedure.P_RankingLiveInputVo;
-import com.dalbit.event.vo.procedure.P_RankingLiveOutputVo;
-import com.dalbit.event.vo.procedure.P_RankingResultOutputVo;
+import com.dalbit.event.vo.ReplyListOutputVo;
+import com.dalbit.event.vo.procedure.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -56,9 +54,9 @@ public class EventService {
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트조회, resultMap));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트_실패));
         }
         return result;
     }
@@ -95,4 +93,78 @@ public class EventService {
         return result;
     }
 
+
+
+    /**
+     * 이벤트 댓글 리스트 조회
+     */
+    @Transactional(readOnly = true)
+    public String callEventReplyList(P_ReplyListInputVo pRankingLiveInputVo){
+        ProcedureVo procedureVo = new ProcedureVo(pRankingLiveInputVo);
+        long st = (new Date()).getTime();
+        List<P_ReplyListOutputVo> replyVoList = eventDao.callEventReplyList(pRankingLiveInputVo);
+        log.debug("select time {} ms", ((new Date()).getTime() - st));
+
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(replyVoList)){
+            resultMap.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트없음, resultMap));
+        }
+
+//        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+//        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+//        log.info(" ### 프로시저 호출결과 ###");
+
+        String result;
+        if(replyVoList.size() > 0) {
+            List<ReplyListOutputVo> outList = new ArrayList<>();
+            for(P_ReplyListOutputVo vo : replyVoList){
+                ReplyListOutputVo outVo = new ReplyListOutputVo(vo);
+                outList.add(outVo);
+            }
+
+            resultMap.put("list", outList);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트조회, resultMap));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트_실패));
+        }
+        return result;
+    }
+
+    /**
+     * 이벤트 댓글 등록
+     */
+    public String callEventReplyAdd(P_ReplyAddInputVo pReplyAddInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pReplyAddInputVo);
+        int insertResult = eventDao.callEventReplyAdd(pReplyAddInputVo);
+
+        String result;
+        if(Status.이벤트_댓글달기성공.getMessageCode().equals(insertResult+"")){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기성공));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_등록오류));
+        }
+
+        return result;
+    }
+
+    /**
+     * 이벤트 댓글 삭제
+     */
+    public String callEventReplyDelete(P_ReplyDeleteInputVo pReplyDeleteInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pReplyDeleteInputVo);
+        int insertResult = eventDao.callEventReplyDelete(pReplyDeleteInputVo);
+
+        String result;
+        if(Status.이벤트_댓글삭제성공.getMessageCode().equals(insertResult+"")){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제성공));
+        }else if(Status.이벤트_댓글삭제없음.getMessageCode().equals(insertResult+"")){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제없음));
+        }else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제실패_등록오류));
+        }
+
+        return result;
+    }
 }

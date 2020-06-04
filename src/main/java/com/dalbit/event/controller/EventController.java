@@ -1,18 +1,14 @@
 package com.dalbit.event.controller;
 
 import com.dalbit.event.service.EventService;
-import com.dalbit.event.vo.procedure.P_RankingLiveInputVo;
-import com.dalbit.event.vo.procedure.P_RankingResultInputVo;
-import com.dalbit.event.vo.request.RankingLiveVo;
-import com.dalbit.event.vo.request.RankingResultVo;
+import com.dalbit.event.vo.procedure.*;
+import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -58,4 +54,60 @@ public class EventController {
 
         return result;
     }
+
+
+    /**
+     * 이벤트 댓글 리스트 조회
+     */
+    @GetMapping("/reply")
+    public String replyList(@Valid ReplyVo replyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ReplyListInputVo apiData = new P_ReplyListInputVo();
+        apiData.setEvent_idx(replyVo.getEventIdx());
+
+        String result = eventService.callEventReplyList(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 이벤트 댓글 등록
+     */
+    @PostMapping("/reply")
+    public String replyAdd(@Valid ReplyAddVo replyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ReplyAddInputVo apiData = new P_ReplyAddInputVo();
+        apiData.setMem_no(replyAddVo.getMemNo());
+        apiData.setContents(replyAddVo.getContent());
+        apiData.setDepth(replyAddVo.getDepth());
+        apiData.setEvent_idx(replyAddVo.getEventIdx());
+
+        String result = eventService.callEventReplyAdd(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 이벤트 댓글 삭제
+     */
+    @DeleteMapping("/reply")
+    public String replyDelete(@Valid ReplyDeleteVo replyDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_ReplyDeleteInputVo apiData = new P_ReplyDeleteInputVo();
+        apiData.setReply_idx(replyDeleteVo.getReplyIdx());
+        apiData.setEvent_idx(replyDeleteVo.getEventIdx());
+
+        String result = eventService.callEventReplyDelete(apiData);
+
+        return result;
+    }
+
 }
