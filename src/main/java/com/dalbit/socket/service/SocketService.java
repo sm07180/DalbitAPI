@@ -801,6 +801,9 @@ public class SocketService {
     }
 
     public Map<String, Object> sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo){
+        if("real".equals(DalbitUtil.getActiceProfile())){
+            return null;
+        }
         HashMap itemMap = new HashMap();
         itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
         ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.levelUp"));
@@ -816,6 +819,9 @@ public class SocketService {
     }
 
     public Map<String, Object> sendLevelUp(String memNo, String roomNo, HttpServletRequest request, SocketVo vo){
+        if("real".equals(DalbitUtil.getActiceProfile())){
+            return null;
+        }
         P_LevelUpCheckVo pLevelUpCheckVo = new P_LevelUpCheckVo();
         pLevelUpCheckVo.setMem_no(memNo);
         ProcedureVo procedureLevelCheckVo = new ProcedureVo(pLevelUpCheckVo);
