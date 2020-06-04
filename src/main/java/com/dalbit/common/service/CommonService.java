@@ -102,6 +102,10 @@ public class CommonService {
     }
 
     public HashMap getItemVersion(HashMap resultMap, HttpServletRequest request){
+        return getItemVersion(resultMap, request, null);
+    }
+
+    public HashMap getItemVersion(HashMap resultMap, HttpServletRequest request, String type){
         String platform = "";
         DeviceVo deviceVo = new DeviceVo(request);
         int osInt = deviceVo.getOs() + 1;
@@ -137,34 +141,6 @@ public class CommonService {
         pItemVo.setItem_slct(2);
         resultMap.put("particles", commonDao.selectItemList(pItemVo));
 
-        if(deviceVo.getOs() == 1 || deviceVo.getOs() == 2){
-            AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
-            resultMap.put("version", versionVo.getVersion());
-            log.debug(new Gson().toJson(versionVo));
-            log.debug(new Gson().toJson(deviceVo));
-            if(versionVo.getUpBuildNo() != null && !DalbitUtil.isEmpty(deviceVo.getAppBuild())){
-                try{
-                    resultMap.put("isForce", (versionVo.getUpBuildNo() >= Long.parseLong(deviceVo.getAppBuild())));
-                }catch(Exception e){
-                    resultMap.put("isForce", false);
-                }
-            }
-
-            if(deviceVo.getOs() == 2){
-                resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/id1490208806?l=ko&ls=1");
-                //resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/달빛-라이브-개인-라디오-방송-라이브-채팅-서비스/id1490208806?l=ko&ls=1");
-                //resultMap.put("storeUrl", "https://apps.apple.com/us/app/%EB%8B%AC%EB%B9%9B-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EA%B0%9C%EC%9D%B8-%EB%9D%BC%EB%94%94%EC%98%A4-%EB%B0%A9%EC%86%A1-%EB%9D%BC%EC%9D%B4%EB%B8%8C-%EC%B1%84%ED%8C%85-%EC%84%9C%EB%B9%84%EC%8A%A4/id1490208806?l=ko&ls=1");
-            }
-            resultMap.put("isPayment", true);
-        }//
-
-        //TODO - 추후 삭제
-        if(DalbitUtil.isEmpty(request.getHeader("custom-header"))){
-            resultMap.put("isForce", true);
-        }
-
-        resultMap.put("isExtend", true);
-
         resultMap.put("boost", commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")));
         resultMap.put("levelUp", commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp")));
 
@@ -188,14 +164,40 @@ public class CommonService {
 
         resultMap.put("itemCategories", itemCategories);
 
-        if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){
-            int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100, 200, 300, 400, 500};
-            resultMap.put("itemComboCount", timeCombos);
-            resultMap.put("itemComboCout", timeCombos);
-        }else{
-            int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100};
-            resultMap.put("itemComboCount", timeCombos);
-            resultMap.put("itemComboCout", timeCombos);
+        if(!"items".equals(type)){
+            if(deviceVo.getOs() == 1 || deviceVo.getOs() == 2){
+                AppVersionVo versionVo = commonDao.selectAppVersion(deviceVo.getOs());
+                resultMap.put("version", versionVo.getVersion());
+                if(versionVo.getUpBuildNo() != null && !DalbitUtil.isEmpty(deviceVo.getAppBuild())){
+                    try{
+                        resultMap.put("isForce", (versionVo.getUpBuildNo() >= Long.parseLong(deviceVo.getAppBuild())));
+                    }catch(Exception e){
+                        resultMap.put("isForce", false);
+                    }
+                }
+
+                if(deviceVo.getOs() == 2){
+                    resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/id1490208806?l=ko&ls=1");
+                }
+                resultMap.put("isPayment", true);
+            }
+
+            //TODO - 추후 삭제
+            if(DalbitUtil.isEmpty(request.getHeader("custom-header"))){
+                resultMap.put("isForce", true);
+            }
+
+            resultMap.put("isExtend", true);
+
+            if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){
+                int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100, 200, 300, 400, 500};
+                resultMap.put("itemComboCount", timeCombos);
+                resultMap.put("itemComboCout", timeCombos);
+            }else{
+                int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100};
+                resultMap.put("itemComboCount", timeCombos);
+                resultMap.put("itemComboCout", timeCombos);
+            }
         }
 
         return resultMap;

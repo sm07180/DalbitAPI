@@ -109,7 +109,7 @@
                 , (CAST(SUBSTR(item_type, 1, 1) AS INT) = 1) AS isNew
         FROM rd_data.tbl_gift_item
         WHERE view_yn = 1
-            AND item_code != 'U1447'
+            AND item_code NOT IN ('U1447', 'U1885')
             AND item_slct = #{item_slct}
             AND platform like #{platform}
         ORDER BY use_area, item_price, item_name
