@@ -99,6 +99,7 @@ public class EventService {
             eventTmp.add(term3);
         }
 
+        int nowRound = 1;
         SimpleDateFormat sdf = new SimpleDateFormat("M/d", Locale.KOREA);
         for(HashMap term : eventTmp){
             String state = "ready";
@@ -107,6 +108,7 @@ public class EventService {
 
             if(srt.getTimeInMillis() <= today.getTimeInMillis() && end.getTimeInMillis() >= today.getTimeInMillis()) {
                 state = "ing";
+                nowRound = DalbitUtil.getIntMap(term, "round");
             }else if(end.getTimeInMillis() < today.getTimeInMillis()){
                 state = "finished";
             }
@@ -123,7 +125,11 @@ public class EventService {
             eventTerm.add(termTmp);
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, eventTerm));
+        HashMap data = new HashMap();
+        data.put("nowRound", nowRound);
+        data.put("terms", eventTerm);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
 
     /**
