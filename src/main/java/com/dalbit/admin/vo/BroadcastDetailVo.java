@@ -23,4 +23,7 @@ public class BroadcastDetailVo {
     private int linkCnt;
     private int goldCnt;
 
+    private String bjPlayToken;
+    private String antUrl;
+
 }

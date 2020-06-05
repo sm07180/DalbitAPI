@@ -13,12 +13,13 @@ import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -43,6 +44,15 @@ public class AdminService {
     AdminCommonService adminCommonService;
 
     private final String menuJsonKey = "adminMenu";
+
+    @Value("${ant.expire.hour}")
+    private int ANT_EXPIRE_HOUR;
+
+    @Value("${server.ant.url}")
+    private String ANT_SERVER_URL;
+
+    @Value("${ant.app.name}")
+    private String ANT_APP_NAME;
 
 
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
@@ -99,14 +109,14 @@ public class AdminService {
 
     public String selectBroadcastDetail(SearchVo searchVo){
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
-        /*if(broadInfo != null && !DalbitUtil.isEmpty(broadInfo.get("bjStreamId"))){
+        if(broadInfo != null && !DalbitUtil.isEmpty(broadInfo.getBjStreamId())){
             Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR, antExpire);
+            cal.add(Calendar.HOUR, ANT_EXPIRE_HOUR);
             long expire = cal.getTime().getTime() / 1000;
             String params = "expireDate=" + expire + "&type=play";
             OkHttpClientUtil httpUtil = new OkHttpClientUtil();
             try{
-                String url = antServer + "/" + antName + "/rest/v2/broadcasts/" + broadInfo.get("bjStreamId") + "/token?" + params;
+                String url = ANT_SERVER_URL + "/" + ANT_APP_NAME + "/rest/v2/broadcasts/" + broadInfo.getBjStreamId() + "/token?" + params;
                 log.info("[Ant] Request URL : {}", url );
                 Response res = httpUtil.sendGet(url);
                 if(res != null){
@@ -114,16 +124,15 @@ public class AdminService {
                     if(!DalbitUtil.isEmpty(strResBody)) {
                         HashMap tokenMap = new Gson().fromJson(strResBody, HashMap.class);
                         if (tokenMap != null && !DalbitUtil.isEmpty(tokenMap.get("tokenId"))) {
-                            broadInfo.put("bjPlayToken", tokenMap.get("tokenId"));
-                            broadInfo.put("antUrl", DalbitUtil.getProperty("server.ant.edge.url"));
-                            request.setAttribute("BroadInfo", gsonUtil.toJson(broadInfo));
+                            broadInfo.setBjPlayToken(DalbitUtil.getStringMap(tokenMap, "tokenId"));
+                            broadInfo.setAntUrl(DalbitUtil.getProperty("server.ant.edge.url"));
                         }
                     }
                 }
             }catch(Exception e){
                 e.printStackTrace();
             }
-        }*/
+        }
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
     }
 
