@@ -98,6 +98,10 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 
+    public String selectBroadcastDetail(){
+        return "";
+    }
+
     /**
      * 생방송관리 > 강제종료
      */

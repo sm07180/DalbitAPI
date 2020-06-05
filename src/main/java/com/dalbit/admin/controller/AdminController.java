@@ -41,6 +41,17 @@ public class AdminController {
     }
 
     /**
+     * - 이미지관리 > 방송방 이미지 조회
+     * - 생방송관리
+     * - 텍스트관리 > 방송 제목 조회
+     */
+    @PostMapping("/broadcast/detail")
+    public String broadcastDetail(HttpServletRequest request, SearchVo searchVo){
+        String result = adminService.selectBroadcastDetail();
+        return result;
+    }
+
+    /**
      * 생방송관리 > 강제종료
      */
     @PostMapping("/broadcast/forceExit")
