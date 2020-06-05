@@ -154,13 +154,57 @@
 
     <insert id="declarationOperate" parameterType="com.dalbit.admin.vo.DeclarationVo">
         /* Admin.xml - declarationOperate */
-        insert into
-          rd_data.tb_member_report
-        (mem_no, mem_userid, mem_nick, mem_phone, mem_level, mem_grade, reported_mem_no, reported_userid, reported_nick, reported_phone
-        , reported_level, reported_grade, room_no, reason, etc, status, op_code, op_msg, platform, browser, ip, op_name, op_date, reg_date)
-         value
-         (#{mem_no}, #{mem_userid}, #{mem_nick}, null, 1, null, #{reported_mem_no}, #{reported_userid}, #{reported_nick}, #{reported_phone}
-         , #{reported_level}, #{reported_grade}, null, 1, null, 2, #{opCode}, #{notiMemo}, 'Mobile', #{browser}, #{ip}, #{opName}, now(), now())
+        insert into rd_data.tb_member_report(
+            mem_no
+            , mem_userid
+            , mem_nick
+            , mem_phone
+            , mem_level
+            , mem_grade
+            , reported_mem_no
+            , reported_userid
+            , reported_nick
+            , reported_phone
+            , reported_level
+            , reported_grade
+            , room_no
+            , reason
+            , etc
+            , status
+            , op_code
+            , op_msg
+            , platform
+            , browser
+            , ip
+            , op_name
+            , op_date
+            , reg_date
+        )value(
+            #{mem_no}
+            , #{mem_userid}
+            , #{mem_nick}
+            , null
+            , 1
+            , null
+            , #{reported_mem_no}
+            , #{reported_userid}
+            , #{reported_nick}
+            , #{reported_phone}
+            , #{reported_level}
+            , #{reported_grade}
+            , null
+            , 1
+            , #{etc, jdbcType=VARCHAR}
+            , 0
+            , #{opCode}
+            , #{notiMemo}
+            , 'Mobile'
+            , #{browser}
+            , #{ip}
+            , #{opName}
+            , now()
+            , now()
+        )
      </insert>
 
     <select id="getMemberInfo" parameterType="String" resultType="com.dalbit.admin.vo.MemberInfoVo">

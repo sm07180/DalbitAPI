@@ -180,6 +180,7 @@ public class AdminService {
             // rd_data.tb_member_profile에 image_profile update
             int result = adminDao.proImageInit(proImageInitVo);
 
+            // rd_data.tb_member_notification에 insert
             if(!DalbitUtil.isEmpty(proImageInitVo.getNotificationYn()) && proImageInitVo.getNotificationYn().equals("Y")){
                 //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(proImageInitVo.getMem_no());
@@ -214,6 +215,7 @@ public class AdminService {
             // rd_data.tb_broadcast_room에 image_background update
             int result = adminDao.broImageInit(broImageInitVo);
 
+            // rd_data.tb_member_notification에 insert
             if(!DalbitUtil.isEmpty(broImageInitVo.getNotificationYn()) && broImageInitVo.getNotificationYn().equals("Y")) {
                 //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(broImageInitVo.getMem_no());
@@ -234,7 +236,7 @@ public class AdminService {
      * 텍스트관리 > 닉네임 초기화
      */
     @Transactional
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
 
         try {
             proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
@@ -249,7 +251,14 @@ public class AdminService {
             int result = adminDao.nickTextInit(nickTextInitVo);
 
             // rd_data.tb_member_notification에 insert
-
+            if(!DalbitUtil.isEmpty(nickTextInitVo.getNotificationYn()) && nickTextInitVo.getNotificationYn().equals("Y")) {
+                //rd_data.tb_member_notification에 insert
+                notiInsertVo.setMem_no(nickTextInitVo.getMem_no());
+                notiInsertVo.setSlctType(7);
+                notiInsertVo.setNotiContents(nickTextInitVo.getReport_title());
+                notiInsertVo.setNotiMemo(nickTextInitVo.getReport_message());
+                adminDao.insertNotiHistory(notiInsertVo);
+            }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_성공));
 
@@ -262,7 +271,7 @@ public class AdminService {
      * 텍스트관리 > 방송 제목 초기화
      */
     @Transactional
-    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
 
         try {
             broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
@@ -276,6 +285,14 @@ public class AdminService {
             int result = adminDao.broTitleTextInit(broTitleTextInitVo);
 
             // rd_data.tb_member_notification에 insert
+            if(!DalbitUtil.isEmpty(broTitleTextInitVo.getNotificationYn()) && broTitleTextInitVo.getNotificationYn().equals("Y")) {
+                //rd_data.tb_member_notification에 insert
+                notiInsertVo.setMem_no(broTitleTextInitVo.getMem_no());
+                notiInsertVo.setSlctType(7);
+                notiInsertVo.setNotiContents(broTitleTextInitVo.getReport_title());
+                notiInsertVo.setNotiMemo(broTitleTextInitVo.getReport_message());
+                adminDao.insertNotiHistory(notiInsertVo);
+            }
 
 
             return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_성공));
@@ -313,8 +330,8 @@ public class AdminService {
 
             int result = adminDao.declarationOperate(declarationVo);
 
+            //rd_data.tb_member_notification에 insert
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
-                //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(reportedInfo.getMem_no());
                 notiInsertVo.setSlctType(7);
                 notiInsertVo.setNotiContents(declarationVo.getNotiContents());

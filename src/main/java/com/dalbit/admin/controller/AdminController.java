@@ -81,8 +81,8 @@ public class AdminController {
      * 텍스트관리 > 닉네임 초기화
      */
     @PostMapping("/nickText/init")
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
-        String result = adminService.nickTextInit(request, nickTextInitVo, proImageInitVo);
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+        String result = adminService.nickTextInit(request, nickTextInitVo, proImageInitVo, notiInsertVo);
         return result;
     }
 
@@ -90,8 +90,8 @@ public class AdminController {
      * 텍스트관리 > 방송 제목 초기화
      */
     @PostMapping("/broTitleText/init")
-    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
-        String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo);
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+        String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo, notiInsertVo);
         return result;
     }
 
