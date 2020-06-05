@@ -6,6 +6,7 @@ import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter @Setter
 public class MainDjRankingOutVo {
@@ -47,7 +48,7 @@ public class MainDjRankingOutVo {
         setGift(target.getGiftCount());
         setDj(target.getDjCount());
         this.isSpecial = target.getSpecialdj_badge() == 1;
-        this.holder = DalbitUtil.getProperty("level.frame").replaceFirst("[level]", this.level + "");
+        this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         setRoomNo(target.getRoomNo());
     }
 }

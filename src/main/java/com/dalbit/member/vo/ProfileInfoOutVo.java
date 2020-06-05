@@ -7,6 +7,7 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
-        this.holder = DalbitUtil.getProperty("level.frame").replaceFirst("[level]", this.level + "");
+        this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();
