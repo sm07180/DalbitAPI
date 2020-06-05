@@ -20,7 +20,7 @@ public class ExchangeApplyVo {
     private String accountNo;
     @NotBlank @Size(max = 13)
     private String socialNo;
-    @NotBlank @Size(max = 11)
+    @NotBlank @Size(max = 15)
     private String phoneNo;
     @NotBlank
     private String address1;
