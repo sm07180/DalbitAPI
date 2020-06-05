@@ -26,4 +26,8 @@ public class BroadcastDetailVo {
     private String bjPlayToken;
     private String antUrl;
 
+    private String mem_no;
+    private String mem_nick;
+
+
 }
