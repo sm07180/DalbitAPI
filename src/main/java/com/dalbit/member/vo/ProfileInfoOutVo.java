@@ -61,7 +61,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.starCnt = target.getStarCount();
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
-        this.holder = "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + this.level + ".png";
+        this.holder = DalbitUtil.getProperty("level.frame").replaceFirst("[level]", this.level + "");
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();

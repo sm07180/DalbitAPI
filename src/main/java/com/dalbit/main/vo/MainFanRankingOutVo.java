@@ -40,7 +40,7 @@ public class MainFanRankingOutVo {
         setListen(target.getListenCount());
         setFan(target.getFanCount());
         this.isSpecial = target.getSpecialdj_badge() == 1;
-        this.holder = "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + this.level + ".png";
+        this.holder = DalbitUtil.getProperty("level.frame").replaceFirst("[level]", this.level + "");
         setRoomNo(target.getRoomNo());
     }
 }
