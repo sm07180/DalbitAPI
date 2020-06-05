@@ -166,9 +166,7 @@ public class ActionService {
             Map<String, Object> firebaseMap = restService.makeFirebaseDynamicLink(pRoomInfoViewVo.getRoom_no(), target.getLink(), target.getBjNickNm(), target.getBjProfImg().getUrl(), target.getTitle(), request);
             String dynamicLink = "";
             if(!DalbitUtil.isEmpty(firebaseMap) && !DalbitUtil.isEmpty(firebaseMap.get("shortLink"))){
-                if(!"real".equals(DalbitUtil.getActiceProfile())){
-                    dynamicLink = (String)firebaseMap.get("shortLink");
-                }
+                dynamicLink = (String)firebaseMap.get("shortLink");
             }
             if(DalbitUtil.isEmpty(dynamicLink)){
                 returnMap.put("shareLink", DalbitUtil.getProperty("server.www.url") + "/l/" + target.getLink() + "?etc={\"push_type\":1,\"room_no\":\"" + pRoomInfoViewVo.getRoom_no() + "\"}");
