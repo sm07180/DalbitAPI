@@ -126,6 +126,7 @@ public class AdminService {
                         if (tokenMap != null && !DalbitUtil.isEmpty(tokenMap.get("tokenId"))) {
                             broadInfo.setBjPlayToken(DalbitUtil.getStringMap(tokenMap, "tokenId"));
                             broadInfo.setAntUrl(DalbitUtil.getProperty("server.ant.edge.url"));
+                            broadInfo.setAntAppName(ANT_APP_NAME);
                         }
                     }
                 }
