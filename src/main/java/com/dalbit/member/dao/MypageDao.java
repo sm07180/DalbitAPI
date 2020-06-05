@@ -1,6 +1,7 @@
 package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.LevelVo;
 import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,4 +71,6 @@ public interface MypageDao {
     int selectExistsPhoneSpecialReq(String mem_no);
     void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
 
+    @Transactional(readOnly = true)
+    List<LevelVo> selectLevel();
 }

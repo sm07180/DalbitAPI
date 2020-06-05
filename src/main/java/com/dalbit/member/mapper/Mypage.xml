@@ -187,4 +187,14 @@
           , 1
         )
     </insert>
+
+    <select id="selectLevel" resultType="LevelVo">
+      SELECT
+        `level`
+        , grade
+        , ruby AS dal
+        , gold AS byeol
+      FROM tbl_level_exp
+      WHERE `level` > 0 ORDER BY `level` ASC
+    </select>
 </mapper>

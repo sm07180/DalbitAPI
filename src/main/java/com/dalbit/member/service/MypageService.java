@@ -16,6 +16,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -1193,5 +1194,57 @@ public class MypageService {
         }
 
         return result;
+    }
+
+    /**
+     * 레벨정보 노출
+     */
+    public String selectLevel() {
+        List<HashMap> list = new ArrayList<>();
+        List<LevelVo> levels = mypageDao.selectLevel();
+
+        if(!DalbitUtil.isEmpty(levels)){
+            String frame = DalbitUtil.getProperty("level.frame");
+            for(int i = 0; i < 5; i++){
+                int srt = (i * 10) + 1;
+                int end = (i + 1) * 10;
+
+                List<LevelVo> levelTmp = new ArrayList<>();
+                String[] frameColor = null;
+                if(srt == 1) {
+                    frameColor = new String[1];
+                    frameColor[0] = "#faa118";
+                }else if(srt == 11){
+                    frameColor = new String[1];
+                    frameColor[0] = "#5dc62a";
+                }else if(srt == 21){
+                    frameColor = new String[1];
+                    frameColor[0] = "#4692e9";
+                }else if(srt == 31){
+                    frameColor = new String[1];
+                    frameColor[0] = "#f54640";
+                }else if(srt == 41){
+                    frameColor = new String[3];
+                    frameColor[0] = "#7f18ff";
+                    frameColor[1] = "#f52d5b";
+                    frameColor[2] = "#ffbf03";
+                }
+                for(LevelVo level : levels){
+                    if(srt <= level.getLevel() && level.getLevel() <= end){
+                        level.setFrame(StringUtils.replace(frame, "[level]", "" + level.getLevel()));
+                        levelTmp.add(level);
+                    }
+                }
+
+                HashMap level = new HashMap();
+                level.put("level", "Lv " + srt + " ~ " + end);
+                level.put("color", frameColor);
+                level.put("levels", levelTmp);
+                list.add(level);
+
+            }
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
     }
 }

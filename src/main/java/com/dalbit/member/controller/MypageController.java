@@ -611,4 +611,13 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return mypageService.callSpecialDjReq(pSpecialDjReq, request);
     }
+
+    /**
+     * 레벨정보 조회
+     */
+    @GetMapping("/level")
+    public String level() throws GlobalException {
+
+        return mypageService.selectLevel();
+    }
 }
