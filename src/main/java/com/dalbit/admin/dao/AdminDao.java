@@ -47,4 +47,6 @@ public interface AdminDao {
 
     MemberInfoVo getMemberInfo(String mem_no);
 
+    ArrayList<LiveChatOutputVo> selectBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo);
+
 }

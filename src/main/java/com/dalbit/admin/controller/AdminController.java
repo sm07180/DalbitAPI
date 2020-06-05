@@ -116,4 +116,13 @@ public class AdminController {
         String result = adminService.declarationOperate(request, declarationVo,notiInsertVo);
         return result;
     }
+
+    /**
+     * 생방송관리 > 채팅 내역 가져오기
+     */
+    @PostMapping("/broadcast/liveChat")
+    public String broadLiveChat(HttpServletRequest request, LiveChatInputVo liveChatInputVo) {
+        String result = adminService.callBroadcastLiveChatInfo(liveChatInputVo);
+        return result;
+    }
 }

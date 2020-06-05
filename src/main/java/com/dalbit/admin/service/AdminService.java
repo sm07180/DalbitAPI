@@ -391,4 +391,24 @@ public class AdminService {
         MemberInfoVo result = adminDao.getMemberInfo(mem_no);
         return result;
     }
+
+    /**
+     * 생방송관리 > 채팅 내역 가져오기
+     */
+    public String callBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo) {
+        String result;
+
+        try{
+            ArrayList<LiveChatOutputVo> liveChatList = adminDao.selectBroadcastLiveChatInfo(liveChatInputVo);
+
+            if(DalbitUtil.isEmpty(liveChatList)) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_성공_데이터없음));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_성공, liveChatList));
+            }
+        }catch (Exception e){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_실패));
+        }
+        return result;
+    }
 }
