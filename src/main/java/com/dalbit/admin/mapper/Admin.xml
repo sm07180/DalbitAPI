@@ -222,4 +222,24 @@
               and b.mem_no = #{mem_no}
     </select>
 
+    <select id="selectBroadcastSimpleInfo" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.BroadcastDetailVo">
+        SELECT
+            a.title
+            , a.start_date AS srtDt
+            , a.expected_end_date AS expectedEndDt
+            , a.os_type AS osType
+            , a.image_background AS roomBgImg
+            , b.bj_streamid AS bjStreamId
+            , c.mem_nick AS nickNm
+            , c.mem_sex AS gender
+            , d.image_profile AS profImg
+            , (select count(*) from rd_data.tb_broadcast_room_member where room_no = a.room_no and state = 0 and auth != 3) AS entryCnt
+            , (a.count_good + rd_data.fn_get_point_used_item(a.room_no, 'U1447')) AS linkCnt
+            , (select ifnull(sum(ifnull(gold, 0)), 0) from rd_data.tb_member_broadcast_item where room_no = a.room_no and item_type = 1) AS goldCnt
+        FROM rd_data.tb_broadcast_room a INNER JOIN rd_data.tb_broadcast_room_member b ON a.room_no = b.room_no AND a.mem_no = b.mem_no AND b.auth = 3
+            INNER JOIN rd_data.tb_member_basic c ON a.mem_no = c.mem_no
+            INNER JOIN rd_data.tb_member_profile d ON c.mem_no = d.mem_no
+        WHERE a.room_no = #{room_no}
+    </select>
+
 </mapper>

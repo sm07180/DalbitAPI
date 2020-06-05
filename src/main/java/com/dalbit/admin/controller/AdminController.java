@@ -47,7 +47,7 @@ public class AdminController {
      */
     @PostMapping("/broadcast/detail")
     public String broadcastDetail(HttpServletRequest request, SearchVo searchVo){
-        String result = adminService.selectBroadcastDetail();
+        String result = adminService.selectBroadcastDetail(searchVo);
         return result;
     }
 
