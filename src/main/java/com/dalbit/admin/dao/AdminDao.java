@@ -17,6 +17,8 @@ public interface AdminDao {
     @Transactional(readOnly = true)
     ArrayList<BroadcastVo> selectBroadcastList(SearchVo searchVo);
 
+    BroadcastDetailVo selectBroadcastSimpleInfo(SearchVo searchVo);
+
     ProcedureVo callBroadcastRoomExit(ProcedureVo procedureVo);
 
     int updateBroadcastMemberExit(P_RoomForceExitInputVo pRoomForceExitInputVo);

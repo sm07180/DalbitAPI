@@ -14,4 +14,6 @@ public class NickTextInitVo extends AdminBaseVo{
     private String mem_userid;
     private String mem_nick;
 
+    private String report_title;
+    private String report_message;
 }

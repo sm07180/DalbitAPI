@@ -41,6 +41,17 @@ public class AdminController {
     }
 
     /**
+     * - 이미지관리 > 방송방 이미지 조회
+     * - 생방송관리
+     * - 텍스트관리 > 방송 제목 조회
+     */
+    @PostMapping("/broadcast/detail")
+    public String broadcastDetail(HttpServletRequest request, SearchVo searchVo){
+        String result = adminService.selectBroadcastDetail(searchVo);
+        return result;
+    }
+
+    /**
      * 생방송관리 > 강제종료
      */
     @PostMapping("/broadcast/forceExit")
@@ -81,8 +92,8 @@ public class AdminController {
      * 텍스트관리 > 닉네임 초기화
      */
     @PostMapping("/nickText/init")
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
-        String result = adminService.nickTextInit(request, nickTextInitVo, proImageInitVo);
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+        String result = adminService.nickTextInit(request, nickTextInitVo, proImageInitVo, notiInsertVo);
         return result;
     }
 
@@ -90,8 +101,8 @@ public class AdminController {
      * 텍스트관리 > 방송 제목 초기화
      */
     @PostMapping("/broTitleText/init")
-    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
-        String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo);
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+        String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo, notiInsertVo);
         return result;
     }
 

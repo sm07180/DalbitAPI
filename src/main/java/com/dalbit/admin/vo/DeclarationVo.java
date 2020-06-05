@@ -24,7 +24,8 @@ public class DeclarationVo extends AdminBaseVo{
     private String reported_grade;
     private int opCode;
     private String notiContents;
-    private String notiMemo;
+    private String notiMemo = "";
     private int blockDay;
+    private String etc;
 
 }
