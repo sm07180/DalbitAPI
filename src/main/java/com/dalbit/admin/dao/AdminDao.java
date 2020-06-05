@@ -39,4 +39,10 @@ public interface AdminDao {
     int broTitleTextInit(BroTitleTextInitVo broTitleTextInitVo);
 
     int insertNotiHistory(NotiInsertVo notiInsertVo);
+
+    // 신고 처리
+    int declarationOperate(DeclarationVo declarationVo);
+
+    MemberInfoVo getMemberInfo(String mem_no);
+
 }

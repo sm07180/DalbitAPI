@@ -58,6 +58,12 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getItemVersion(resultMap, request)));
     }
 
+    @GetMapping("/items")
+    public String getItems(HttpServletRequest request){
+        HashMap resultMap = new HashMap();
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getItemVersion(resultMap, request, "items")));
+    }
+
     @PostMapping("/splash")
     public String updateSplash(){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));

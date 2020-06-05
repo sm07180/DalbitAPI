@@ -5,6 +5,7 @@ import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.util.DalbitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,7 +63,7 @@ public class AdminController {
      * 이미지관리 > 프로필 이미지 초기화
      */
     @PostMapping("/proImage/init")
-    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) {
+    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
         String result = adminService.proImageInit(request, proImageInitVo, notiInsertVo);
         return result;
     }
@@ -71,7 +72,7 @@ public class AdminController {
      * 이미지관리 > 방송방 이미지 초기화
      */
     @PostMapping("/broImage/init")
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) {
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
         String result = adminService.broImageInit(request, broImageInitVo, notiInsertVo);
         return result;
     }
@@ -80,7 +81,7 @@ public class AdminController {
      * 텍스트관리 > 닉네임 초기화
      */
     @PostMapping("/nickText/init")
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) {
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
         String result = adminService.nickTextInit(request, nickTextInitVo, proImageInitVo);
         return result;
     }
@@ -89,8 +90,19 @@ public class AdminController {
      * 텍스트관리 > 방송 제목 초기화
      */
     @PostMapping("/broTitleText/init")
-    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) {
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
         String result = adminService.broTitleTextInit(request, broTitleTextInitVo, broImageInitVo);
+        return result;
+    }
+
+    /**
+     * 신고하기
+     */
+    @PostMapping("/declaration/operate")
+    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo) throws GlobalException {
+        declarationVo.setIp(DalbitUtil.getIp(request));
+        declarationVo.setBrowser(DalbitUtil.getUserAgent(request));
+        String result = adminService.declarationOperate(request, declarationVo,notiInsertVo);
         return result;
     }
 }

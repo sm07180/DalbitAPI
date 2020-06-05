@@ -10,7 +10,6 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.dalbit.util.MessageUtil;
@@ -18,8 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -164,95 +165,174 @@ public class AdminService {
     /**
      * 이미지관리 > 프로필 이미지 초기화
      */
-    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) {
-        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
-        proImageInitVo.setType(0);
-        proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + proImageInitVo.getReset_image_profile());
+    @Transactional
+    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
 
-        // rd_data.tb_member_profile_edit_history에 insert
-        adminDao.insertProfileHistory(proImageInitVo);
+        try{
 
-        //rd_data.tb_member_notification에 insert
-        notiInsertVo.setMem_no(proImageInitVo.getMem_no());
-        notiInsertVo.setSlctType(7);
-        notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
-        notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
-        adminDao.insertNotiHistory(notiInsertVo);
+            proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            proImageInitVo.setType(0);
+            proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + proImageInitVo.getReset_image_profile());
 
-        // rd_data.tb_member_profile에 image_profile update
-        int result = adminDao.proImageInit(proImageInitVo);
-        if (result > 0) {
+            // rd_data.tb_member_profile_edit_history에 insert
+            adminDao.insertProfileHistory(proImageInitVo);
+
+            // rd_data.tb_member_profile에 image_profile update
+            int result = adminDao.proImageInit(proImageInitVo);
+
+            if(!DalbitUtil.isEmpty(proImageInitVo.getNotificationYn()) && proImageInitVo.getNotificationYn().equals("Y")){
+                //rd_data.tb_member_notification에 insert
+                notiInsertVo.setMem_no(proImageInitVo.getMem_no());
+                notiInsertVo.setSlctType(7);
+                notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
+                notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
+                adminDao.insertNotiHistory(notiInsertVo);
+            }
+
             return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
-        } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_실패));
+
+        }catch (Exception e){
+            throw new GlobalException(Status.프로필이미지초기화_실패, "프로필이미지초기화_실패");
         }
+
+
     }
 
     /**
      * 이미지관리 > 방송방 이미지 초기화
      */
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) {
-        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
-        broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
+    @Transactional
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
 
-        // rd_data.tb_broadcast_room_edit_history에 insert
-        adminDao.insertBroadHistory(broImageInitVo);
+        try{
+            broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
-        //rd_data.tb_member_notification에 insert
-        notiInsertVo.setMem_no(broImageInitVo.getMem_no());
-        notiInsertVo.setSlctType(7);
-        notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
-        notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
-        adminDao.insertNotiHistory(notiInsertVo);
+            // rd_data.tb_broadcast_room_edit_history에 insert
+            adminDao.insertBroadHistory(broImageInitVo);
 
-        // rd_data.tb_broadcast_room에 image_background update
-        int result = adminDao.broImageInit(broImageInitVo);
-        if (result > 0) {
+            // rd_data.tb_broadcast_room에 image_background update
+            int result = adminDao.broImageInit(broImageInitVo);
+
+            if(!DalbitUtil.isEmpty(broImageInitVo.getNotificationYn()) && broImageInitVo.getNotificationYn().equals("Y")) {
+                //rd_data.tb_member_notification에 insert
+                notiInsertVo.setMem_no(broImageInitVo.getMem_no());
+                notiInsertVo.setSlctType(7);
+                notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
+                notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
+                adminDao.insertNotiHistory(notiInsertVo);
+            }
+
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_성공));
-        } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_실패));
+
+        }catch (Exception e){
+            throw new GlobalException(Status.방송방이미지초기화_실패, "방송방이미지초기화_실패");
         }
     }
 
     /**
      * 텍스트관리 > 닉네임 초기화
      */
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) {
-        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
-        proImageInitVo.setType(0);
-        proImageInitVo.setEdit_contents("닉네임 변경 : " + nickTextInitVo.getMem_nick() + " >> " + nickTextInitVo.getMem_userid());
-        proImageInitVo.setMem_no(nickTextInitVo.getMem_no());
+    @Transactional
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
 
-        // rd_data.tb_member_profile_edit_history에 insert
-        adminDao.insertProfileHistory(proImageInitVo);
+        try {
+            proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            proImageInitVo.setType(0);
+            proImageInitVo.setEdit_contents("닉네임 변경 : " + nickTextInitVo.getMem_nick() + " >> " + nickTextInitVo.getMem_userid());
+            proImageInitVo.setMem_no(nickTextInitVo.getMem_no());
 
-        // rd_data.tb_member_basic에 mem_nick update
-        int result = adminDao.nickTextInit(nickTextInitVo);
-        if(result > 0) {
+            // rd_data.tb_member_profile_edit_history에 insert
+            adminDao.insertProfileHistory(proImageInitVo);
+
+            // rd_data.tb_member_basic에 mem_nick update
+            int result = adminDao.nickTextInit(nickTextInitVo);
+
+            // rd_data.tb_member_notification에 insert
+
+
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_성공));
-        } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_실패));
+
+        }catch(Exception e) {
+            throw new GlobalException(Status.닉네임초기화_실패, "닉네임초기화_실패");
         }
     }
 
     /**
      * 텍스트관리 > 방송 제목 초기화
      */
-    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) {
-        broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
-        broImageInitVo.setEdit_contents("제목변경 : " + broTitleTextInitVo.getTitle() + " >> " + broTitleTextInitVo.getMem_nick() + "님의 방송입니다.");
-        broImageInitVo.setRoom_no(broTitleTextInitVo.getRoom_no());
+    @Transactional
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
 
-        // rd_data.tb_broadcast_room_edit_history에 insert
-        adminDao.insertBroadHistory(broImageInitVo);
+        try {
+            broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            broImageInitVo.setEdit_contents("제목변경 : " + broTitleTextInitVo.getTitle() + " >> " + broTitleTextInitVo.getMem_nick() + "님의 방송입니다.");
+            broImageInitVo.setRoom_no(broTitleTextInitVo.getRoom_no());
 
-        // rd_data.tb_broadcast_room에 title update
-        int result = adminDao.broTitleTextInit(broTitleTextInitVo);
-        if(result > 0) {
+            // rd_data.tb_broadcast_room_edit_history에 insert
+            adminDao.insertBroadHistory(broImageInitVo);
+
+            // rd_data.tb_broadcast_room에 title update
+            int result = adminDao.broTitleTextInit(broTitleTextInitVo);
+
+            // rd_data.tb_member_notification에 insert
+
+
             return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_성공));
-        } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_실패));
+
+        }catch(Exception e) {
+            throw new GlobalException(Status.방송제목초기화_실패, "방송제목초기화_실패");
         }
     }
 
+    /**
+     * 신고하기
+     */
+    @Transactional
+    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo) throws GlobalException {
+
+        try {
+            declarationVo.setOpName(MemberVo.getMyMemNo(request));
+
+            MemberInfoVo myInfo = getMemberInfo(MemberVo.getMyMemNo(request));
+            log.info(myInfo.getMem_no());
+            MemberInfoVo reportedInfo = getMemberInfo(declarationVo.getReported_mem_no());
+            log.info(reportedInfo.getGrade());
+
+             // 신고자
+             declarationVo.setMem_no(myInfo.getMem_no());
+             declarationVo.setMem_userid(myInfo.getMem_userid());
+             declarationVo.setMem_nick(myInfo.getMem_nick());
+             // 신고 대상자
+             declarationVo.setReported_mem_no(reportedInfo.getMem_no());
+             declarationVo.setReported_userid(reportedInfo.getMem_userid());
+             declarationVo.setReported_nick(reportedInfo.getMem_nick());
+             declarationVo.setReported_phone(reportedInfo.getMem_phone());
+             declarationVo.setReported_level(reportedInfo.getLevel());
+             declarationVo.setReported_grade(reportedInfo.getGrade());
+
+            int result = adminDao.declarationOperate(declarationVo);
+
+            if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
+                //rd_data.tb_member_notification에 insert
+                notiInsertVo.setMem_no(reportedInfo.getMem_no());
+                notiInsertVo.setSlctType(7);
+                notiInsertVo.setNotiContents(declarationVo.getNotiContents());
+                notiInsertVo.setNotiMemo(declarationVo.getNotiMemo());
+                adminDao.insertNotiHistory(notiInsertVo);
+            }
+            return gsonUtil.toJson(new JsonOutputVo(Status.신고처리_성공));
+
+            }catch (Exception e) {
+               throw new GlobalException(Status.신고처리_에러, "신고처리_에러");
+        }
+    }
+
+    /**
+     * 회원 상세 조회
+     */
+    public MemberInfoVo getMemberInfo(String mem_no) {
+        MemberInfoVo result = adminDao.getMemberInfo(mem_no);
+        return result;
+    }
 }

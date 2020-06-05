@@ -812,6 +812,27 @@ public enum Status {
     랭킹이벤트결과없음("0", "event.ranking.result.list.no.success", "랭킹이벤트결과가 없을 시"),
     랭킹이벤트결과_실패("C006", "event.ranking.result.list.select.fail", "랭킹이벤트결과 정보 조회 실패 시"),
 
+    //이벤트 댓글 리스트 조회
+    이벤트댓글리스트조회("C001", "event.reply.result.list.select.success", "이벤트댓글리스트 정보 조회 성공 시"),
+    이벤트댓글리스트없음("0", "event.reply.result.list.no.success", "이벤트댓글리스트가 없을 시"),
+    이벤트댓글리스트_실패("C006", "event.reply.result.list.select.fail", "이벤트댓글리스트 정보 조회 실패 시"),
+
+    //이벤트 댓글 달기
+    이벤트_댓글달기성공("1", "event.reply.add.success", "이벤트 댓글달기 성공 시"),
+    이벤트_댓글달기실패_회원아님("C006", "event.reply.add.no.member", "회원아님"),
+    이벤트_댓글달기실패_등록오류("C006", "event.reply.add.error", "이벤트 댓글 등록 실패"),
+
+    //이벤트 댓글 삭제
+    이벤트_댓글삭제성공("C001", "event.reply.remove.success", "이벤트 댓글 삭제 성공 시"),
+    이벤트_댓글삭제실패_삭제권한없음("-1", "event.reply.remove.authorization.not", "삭제 권한이 없음"),
+    이벤트_댓글삭제정보없음("0", "event.reply.remove.no.data", "이벤트 댓글 삭제 정보가 없을시"),
+    이벤트_댓글삭제실패_등록오류("C006", "event.reply.remove.error", "이벤트 댓글 삭제 실패"),
+
+    //신고처리
+    신고처리_성공("0", "declaration.operate.success", "신고처리 성공 시"),
+    신고처리_에러("C006", "declaration.fail.server.error", "신고처리에서 에러 발생 시"),
+
+
     ;
 
 

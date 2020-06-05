@@ -61,6 +61,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/error/log"
         , "/socket"
         , "/paycall/store"
+        , "/items"
     };
 
     @Override

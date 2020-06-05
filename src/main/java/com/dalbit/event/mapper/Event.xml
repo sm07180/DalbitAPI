@@ -10,4 +10,89 @@
       call sp_event_ranking_result	(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callEventReplyList" parameterType="com.dalbit.event.vo.procedure.P_ReplyListInputVo" resultType="com.dalbit.event.vo.procedure.P_ReplyListOutputVo">
+      SELECT
+            a.idx AS reply_idx
+            ,a.event_idx AS event_idx
+            ,a.mem_no AS write_mem_no
+            ,a.depth AS depth
+            ,a.contents AS contents
+            ,a.status AS status
+            ,a.reg_date AS writeDate
+            ,a.op_name AS op_name
+            ,a.last_upd_date AS updateDate
+            ,mb.mem_id AS userId
+            ,mb.mem_nick AS nickName
+            ,mb.mem_sex AS memSex
+            ,#{mem_no} AS req_mem_no
+            ,(SELECT image_profile FROM rd_data.tb_member_profile WHERE mem_no = a.mem_no) AS profileImage
+        FROM
+            rd_admin.tb_event_reply AS a
+        LEFT JOIN
+            rd_data.tb_member_basic AS mb
+        ON
+            a.mem_no = mb.mem_no
+        WHERE
+            a.event_idx = ${event_idx}
+            AND a.depth = 1
+            AND a.status = 1
+        ORDER BY
+            a.idx asc
+    </select>
+
+    <insert id="callEventReplyAdd" parameterType="com.dalbit.event.vo.procedure.P_ReplyAddInputVo">
+        INSERT INTO rd_admin.tb_event_reply
+        (
+            event_idx
+            ,mem_no
+            ,depth
+            ,contents
+            ,status
+            ,reg_date
+            ,op_name
+            ,last_upd_date
+        )
+        VALUES
+        (
+             #{event_idx}
+             ,#{mem_no}
+             ,#{depth}
+             ,#{contents}
+             ,1
+             ,NOW()
+             ,#{op_name}
+             ,NOW()
+        )
+    </insert>
+
+    <update id="callEventReplyDelete" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo">
+        UPDATE rd_admin.tb_event_reply
+        SET
+          status = 2
+        WHERE
+          idx = #{reply_idx}
+          AND event_idx = #{event_idx}
+    </update>
+
+    <select id="callEventAuthCheck" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo" resultType="integer">
+        SELECT
+          count(*)
+        FROM
+        (
+             SELECT
+                mem_no
+             FROM
+                rd_admin.tb_event_reply AS er
+             WHERE
+                er.event_idx = #{event_idx} AND er.idx = #{reply_idx} AND er.mem_no = #{mem_no}
+             UNION ALL
+             SELECT
+                mem_no
+             FROM
+                rd_data.tb_member_basic AS mb
+             WHERE
+                mb.mem_no = #{mem_no} AND mb.inner = 1
+          ) AS a
+    </select>
+
 </mapper>
