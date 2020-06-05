@@ -15,9 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -267,7 +266,20 @@ public class MainService {
         ProcedureVo procedureVo = new ProcedureVo(pMainFanRankingVo);
         List<P_MainFanRankingVo> mainFanRankingVoList = mainDao.callMainFanRanking(procedureVo);
 
+
         HashMap mainFanRankingList = new HashMap();
+
+        String time = "월요일 업데이트";
+        if(pMainFanRankingVo.getSlct_type() == 0){
+            time = "00:00";
+        }else if(pMainFanRankingVo.getSlct_type() == 1){
+            Calendar today = Calendar.getInstance();
+            today.add(Calendar.DATE, -1);
+            SimpleDateFormat sdf = new SimpleDateFormat("M월 d일", Locale.KOREA);
+            time = sdf.format(today.getTime()) + " 업데이트";
+        }
+        mainFanRankingList.put("time",time);
+
         if(DalbitUtil.isEmpty(mainFanRankingVoList)){
             mainFanRankingList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_내역없음, mainFanRankingList));
@@ -278,6 +290,10 @@ public class MainService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        if(pMainFanRankingVo.getSlct_type() == 0){
+            time = "00:00";
+            mainFanRankingList.put("time",time);
+        }
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainFanRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
@@ -306,6 +322,18 @@ public class MainService {
         List<P_MainDjRankingVo> mainDjRankingVoList = mainDao.callMainDjRanking(procedureVo);
 
         HashMap mainDjRankingList = new HashMap();
+
+        String time = "월요일 업데이트";
+        if(pMainDjRankingVo.getSlct_type() == 0){
+            time = "00:00";
+        }else if(pMainDjRankingVo.getSlct_type() == 1){
+            Calendar today = Calendar.getInstance();
+            today.add(Calendar.DATE, -1);
+            SimpleDateFormat sdf = new SimpleDateFormat("M월 d일", Locale.KOREA);
+            time = sdf.format(today.getTime()) + " 업데이트";
+        }
+        mainDjRankingList.put("time",time);
+
         if(DalbitUtil.isEmpty(mainDjRankingVoList)){
             mainDjRankingList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_내역없음, mainDjRankingList));
@@ -317,6 +345,10 @@ public class MainService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        if(pMainDjRankingVo.getSlct_type() == 0){
+            time = "00:00";
+            mainDjRankingList.put("time",time);
+        }
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainDjRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
