@@ -250,23 +250,26 @@
         from
           (
               select
-                idx as chatIdx
-                , mem_no as mem_no
-                , nickname as nickname
-                , auth as auth
-                , last_upd_date as writeDate
-                , room_no as room_no
-                , msg as msg
+                msg.idx as chatIdx
+               , msg.mem_no as mem_no
+               , msg.nickname as nickname
+               , msg.auth as auth
+               , msg.last_upd_date as writeDate
+               , msg.room_no as room_no
+               , msg.msg as msg
+               , pro.image_profile as image_profile
               from
-                rd_data.tb_broadcast_room_msg
+                rd_data.tb_broadcast_room_msg msg
+                , rd_data.tb_member_profile pro
               where
-                room_no = #{room_no}
-                and `type` = 'chat'
-                and idx > #{chatIdx}
-                order by idx
+                msg.room_no = #{room_no}
+                and msg.mem_no = pro.mem_no
+                and msg.`type` = 'chat'
+                and msg.idx > #{chatIdx}
+                order by msg.idx
                 desc limit 500
           ) as a
-          order by chatIdx asc;
+          order by a.chatIdx asc;
     </select>
 
 </mapper>

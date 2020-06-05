@@ -395,6 +395,7 @@ public class AdminService {
     /**
      * 생방송관리 > 채팅 내역 가져오기
      */
+    @Transactional(readOnly = true)
     public String callBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo) {
         String result;
 
