@@ -39,7 +39,7 @@ public class EventService {
             Calendar realStart = Calendar.getInstance();
             realStart.set(2020, 5,8,0,0,0);
 
-            if(realStart.getTimeInMillis() > today.getTimeInMillis()){
+            if(realStart.getTimeInMillis() <= today.getTimeInMillis()){
                 HashMap term1 = new HashMap();
                 Calendar srt1 = Calendar.getInstance();
                 Calendar end1 = Calendar.getInstance();
