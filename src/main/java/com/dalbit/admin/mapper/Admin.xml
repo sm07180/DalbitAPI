@@ -245,4 +245,28 @@
         WHERE a.room_no = #{room_no}
     </select>
 
+    <select id="selectBroadcastLiveChatInfo" parameterType="com.dalbit.admin.vo.LiveChatInputVo" resultType="com.dalbit.admin.vo.LiveChatOutputVo">
+        select a.*
+        from
+          (
+              select
+                idx as chatIdx
+                , mem_no as mem_no
+                , nickname as nickname
+                , auth as auth
+                , last_upd_date as writeDate
+                , room_no as room_no
+                , msg as msg
+              from
+                rd_data.tb_broadcast_room_msg
+              where
+                room_no = #{room_no}
+                and `type` = 'chat'
+                and idx > #{chatIdx}
+                order by idx
+                desc limit 500
+          ) as a
+          order by chatIdx asc;
+    </select>
+
 </mapper>

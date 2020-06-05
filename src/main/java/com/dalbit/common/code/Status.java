@@ -832,6 +832,10 @@ public enum Status {
     신고처리_성공("0", "declaration.operate.success", "신고처리 성공 시"),
     신고처리_에러("C006", "declaration.fail.server.error", "신고처리에서 에러 발생 시"),
 
+    //생방송관리
+    생방송메시지조회_성공("C001", "live.chat.select.success", "생방송 메시지 조회 성공 시"),
+    생방송메시지조회_성공_데이터없음("C002", "live.chat.no.data.success", "생방송 메시지 조회 성공 시"),
+    생방송메시지조회_실패("C006", "live.chat.select.fail", "생방송 메시지 조회 실패 시"),
 
     ;
 
