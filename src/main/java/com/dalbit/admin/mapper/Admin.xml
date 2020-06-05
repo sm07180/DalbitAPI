@@ -36,7 +36,7 @@
                 , basic.mem_id
                 , (select `code` from rd_data.tbl_code_define where type = 'subject_type' and value = room.subject_type) subject_name
                 , room.title
-                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0) liveListener
+                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth != 3) liveListener
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = room.mem_no) reportedCnt
                 , room.state
             from rd_data.tb_broadcast_room room
