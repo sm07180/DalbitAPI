@@ -35,105 +35,36 @@ public class EventService {
         List<HashMap> eventTmp = new ArrayList<>();
         Calendar today = Calendar.getInstance();
 
-        if("real".equals(DalbitUtil.getActiceProfile())){
-            Calendar realStart = Calendar.getInstance();
-            realStart.set(2020, 5,8,0,0,0);
+        HashMap term1 = new HashMap();
+        Calendar srt1 = Calendar.getInstance();
+        Calendar end1 = Calendar.getInstance();
+        srt1.set(2020, 5,8,0,0,0);
+        end1.set(2020, 5, 14, 23, 59, 59);
+        term1.put("round", 1);
+        term1.put("srtDt", srt1);
+        term1.put("endDt", end1);
 
-            if(realStart.getTimeInMillis() <= today.getTimeInMillis()){
-                HashMap term1 = new HashMap();
-                Calendar srt1 = Calendar.getInstance();
-                Calendar end1 = Calendar.getInstance();
-                srt1.set(2020, 5,8,0,0,0);
-                end1.set(2020, 5, 17, 23, 59, 59);
-                term1.put("round", 1);
-                term1.put("srtDt", srt1);
-                term1.put("endDt", end1);
+        HashMap term2 = new HashMap();
+        Calendar srt2 = Calendar.getInstance();
+        Calendar end2 = Calendar.getInstance();
+        srt2.set(2020, 5,15,0,0,0);
+        end2.set(2020, 5, 21, 23, 59, 59);
+        term2.put("round", 2);
+        term2.put("srtDt", srt2);
+        term2.put("endDt", end2);
 
-                HashMap term2 = new HashMap();
-                Calendar srt2 = Calendar.getInstance();
-                Calendar end2 = Calendar.getInstance();
-                srt2.set(2020, 5,18,0,0,0);
-                end2.set(2020, 5, 27, 23, 59, 59);
-                term2.put("round", 2);
-                term2.put("srtDt", srt2);
-                term2.put("endDt", end2);
+        HashMap term3 = new HashMap();
+        Calendar srt3 = Calendar.getInstance();
+        Calendar end3 = Calendar.getInstance();
+        srt3.set(2020, 5,22,0,0,0);
+        end3.set(2020, 5, 28, 23, 59, 59);
+        term3.put("round", 3);
+        term3.put("srtDt", srt3);
+        term3.put("endDt", end3);
 
-                HashMap term3 = new HashMap();
-                Calendar srt3 = Calendar.getInstance();
-                Calendar end3 = Calendar.getInstance();
-                srt3.set(2020, 5,28,0,0,0);
-                end3.set(2020, 6, 7, 23, 59, 59);
-                term3.put("round", 3);
-                term3.put("srtDt", srt3);
-                term3.put("endDt", end3);
-
-                eventTmp.add(term1);
-                eventTmp.add(term2);
-                eventTmp.add(term3);
-            }else{
-                HashMap term1 = new HashMap();
-                Calendar srt1 = Calendar.getInstance();
-                Calendar end1 = Calendar.getInstance();
-                srt1.set(2020, 5,1,0,0,0);
-                end1.set(2020, 5, 3, 23, 59, 59);
-                term1.put("round", 1);
-                term1.put("srtDt", srt1);
-                term1.put("endDt", end1);
-
-                HashMap term2 = new HashMap();
-                Calendar srt2 = Calendar.getInstance();
-                Calendar end2 = Calendar.getInstance();
-                srt2.set(2020, 5,4,0,0,0);
-                end2.set(2020, 5, 4, 23, 59, 59);
-                term2.put("round", 2);
-                term2.put("srtDt", srt2);
-                term2.put("endDt", end2);
-
-                HashMap term3 = new HashMap();
-                Calendar srt3 = Calendar.getInstance();
-                Calendar end3 = Calendar.getInstance();
-                srt3.set(2020, 5,5,0,0,0);
-                end3.set(2020, 5, 5, 23, 59, 59);
-                term3.put("round", 3);
-                term3.put("srtDt", srt3);
-                term3.put("endDt", end3);
-
-                eventTmp.add(term1);
-                eventTmp.add(term2);
-                eventTmp.add(term3);
-            }
-        }else{
-            HashMap term1 = new HashMap();
-            Calendar srt1 = Calendar.getInstance();
-            Calendar end1 = Calendar.getInstance();
-            srt1.set(2020, 5,3,0,0,0);
-            end1.set(2020, 5, 3, 23, 59, 59);
-            term1.put("round", 1);
-            term1.put("srtDt", srt1);
-            term1.put("endDt", end1);
-
-            HashMap term2 = new HashMap();
-            Calendar srt2 = Calendar.getInstance();
-            Calendar end2 = Calendar.getInstance();
-            srt2.set(2020, 5,4,0,0,0);
-            end2.set(2020, 5, 4, 23, 59, 59);
-            term2.put("round", 2);
-            term2.put("srtDt", srt2);
-            term2.put("endDt", end2);
-
-            HashMap term3 = new HashMap();
-            Calendar srt3 = Calendar.getInstance();
-            Calendar end3 = Calendar.getInstance();
-            srt3.set(2020, 5,5,0,0,0);
-            end3.set(2020, 5, 5, 23, 59, 59);
-            term3.put("round", 3);
-            term3.put("srtDt", srt3);
-            term3.put("endDt", end3);
-
-            eventTmp.add(term1);
-            eventTmp.add(term2);
-            eventTmp.add(term3);
-        }
+        eventTmp.add(term1);
+        eventTmp.add(term2);
+        eventTmp.add(term3);
 
         int nowRound = 1;
         SimpleDateFormat sdf = new SimpleDateFormat("M/d", Locale.KOREA);
