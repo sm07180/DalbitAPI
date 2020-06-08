@@ -277,10 +277,6 @@
     <update id="updateState" parameterType="com.dalbit.admin.vo.UpdateStateVo">
         update rd_data.tb_member_basic
         set mem_state = #{state}
-        <if test='opCode lt 3'>
-            , block_day = 0
-            , block_end_date = now()
-        </if>
         <if test='opCode gt 2 and opCode lt 6'>
             , block_day = #{blockDay}
             , block_end_date = DATE_ADD(now(), interval #{blockDay} day)

@@ -206,7 +206,7 @@ public class AdminService {
      * 이미지관리 > 프로필 이미지 초기화
      */
     @Transactional
-    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+    public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) throws GlobalException {
 
         try{
 
@@ -221,6 +221,7 @@ public class AdminService {
             int result = adminDao.proImageInit(proImageInitVo);
 
             // rd_data.tb_member_notification에 insert
+            NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(proImageInitVo.getNotificationYn()) && proImageInitVo.getNotificationYn().equals("Y")){
                 //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(proImageInitVo.getMem_no());
@@ -243,7 +244,7 @@ public class AdminService {
      * 이미지관리 > 방송방 이미지 초기화
      */
     @Transactional
-    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+    public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) throws GlobalException {
 
         try{
             broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
@@ -256,6 +257,7 @@ public class AdminService {
             int result = adminDao.broImageInit(broImageInitVo);
 
             // rd_data.tb_member_notification에 insert
+            NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(broImageInitVo.getNotificationYn()) && broImageInitVo.getNotificationYn().equals("Y")) {
                 //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(broImageInitVo.getMem_no());
@@ -276,7 +278,7 @@ public class AdminService {
      * 텍스트관리 > 닉네임 초기화
      */
     @Transactional
-    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+    public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
 
         try {
             proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
@@ -291,6 +293,7 @@ public class AdminService {
             int result = adminDao.nickTextInit(nickTextInitVo);
 
             // rd_data.tb_member_notification에 insert
+            NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(nickTextInitVo.getNotificationYn()) && nickTextInitVo.getNotificationYn().equals("Y")) {
                 //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(nickTextInitVo.getMem_no());
@@ -311,7 +314,7 @@ public class AdminService {
      * 텍스트관리 > 방송 제목 초기화
      */
     @Transactional
-    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo, NotiInsertVo notiInsertVo) throws GlobalException {
+    public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
 
         try {
             broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
@@ -325,6 +328,7 @@ public class AdminService {
             int result = adminDao.broTitleTextInit(broTitleTextInitVo);
 
             // rd_data.tb_member_notification에 insert
+            NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(broTitleTextInitVo.getNotificationYn()) && broTitleTextInitVo.getNotificationYn().equals("Y")) {
                 //rd_data.tb_member_notification에 insert
                 notiInsertVo.setMem_no(broTitleTextInitVo.getMem_no());
@@ -346,7 +350,7 @@ public class AdminService {
      * 신고하기
      */
     @Transactional
-    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo, UpdateStateVo updateStateVo) throws GlobalException {
+    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo) throws GlobalException {
 
         try {
             declarationVo.setOpName(MemberVo.getMyMemNo(request));
@@ -371,6 +375,7 @@ public class AdminService {
             adminDao.declarationOperate(declarationVo);
             
             //회원상태 변경
+            UpdateStateVo updateStateVo = new UpdateStateVo();
             updateStateVo.setMem_no(declarationVo.getReported_mem_no());
 //            updateStateVo.setOpName(MemberVo.getMyMemNo(request));
             if(!DalbitUtil.isEmpty(declarationVo.getOpCode())){
@@ -394,6 +399,7 @@ public class AdminService {
             adminDao.updateState(updateStateVo);
 
             //rd_data.tb_member_notification에 insert
+            NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
                 notiInsertVo.setMem_no(reportedInfo.getMem_no());
                 notiInsertVo.setSlctType(7);
