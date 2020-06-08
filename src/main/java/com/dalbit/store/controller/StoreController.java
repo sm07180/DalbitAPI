@@ -31,10 +31,6 @@ public class StoreController {
     @GetMapping("/store/charge")
     public String getChargeList(HttpServletRequest request){
         List<StoreChargeVo> list = storeService.getStoreChargeList(request);
-        DeviceVo deviceVo = new DeviceVo(request);
-        if("local".equals(DalbitUtil.getActiceProfile()) && deviceVo.getOs() == 2){
-            list.addAll(list);
-        }
         HashMap data = new HashMap();
         data.put("dalCnt", storeService.getDalCnt(request));
         data.put("list", list == null ? new ArrayList<>() : list);
