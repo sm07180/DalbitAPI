@@ -355,19 +355,24 @@ public class AdminService {
             MemberInfoVo reportedInfo = getMemberInfo(declarationVo.getReported_mem_no());
             log.info(reportedInfo.getGrade());
 
-             // 신고자
-             declarationVo.setMem_no(myInfo.getMem_no());
-             declarationVo.setMem_userid(myInfo.getMem_userid());
-             declarationVo.setMem_nick(myInfo.getMem_nick());
-             // 신고 대상자
-             declarationVo.setReported_mem_no(reportedInfo.getMem_no());
-             declarationVo.setReported_userid(reportedInfo.getMem_userid());
-             declarationVo.setReported_nick(reportedInfo.getMem_nick());
-             declarationVo.setReported_phone(reportedInfo.getMem_phone());
-             declarationVo.setReported_level(reportedInfo.getLevel());
-             declarationVo.setReported_grade(reportedInfo.getGrade());
+            // 신고자
+            declarationVo.setMem_no(myInfo.getMem_no());
+            declarationVo.setMem_userid(myInfo.getMem_userid());
+            declarationVo.setMem_nick(myInfo.getMem_nick());
+            // 신고 대상자
+            declarationVo.setReported_mem_no(reportedInfo.getMem_no());
+            declarationVo.setReported_userid(reportedInfo.getMem_userid());
+            declarationVo.setReported_nick(reportedInfo.getMem_nick());
+            declarationVo.setReported_phone(reportedInfo.getMem_phone());
+            declarationVo.setReported_level(reportedInfo.getLevel());
+            declarationVo.setReported_grade(reportedInfo.getGrade());
 
-            int result = adminDao.declarationOperate(declarationVo);
+            adminDao.declarationOperate(declarationVo);
+            
+            //회원상태 변경
+            if(!DalbitUtil.isEmpty(declarationVo.getOpCode())){
+
+            }
 
             //rd_data.tb_member_notification에 insert
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
