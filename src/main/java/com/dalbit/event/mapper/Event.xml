@@ -69,6 +69,8 @@
         UPDATE rd_admin.tb_event_reply
         SET
           status = 2
+          ,op_name = #{mem_no}
+          ,last_upd_date = NOW()
         WHERE
           idx = #{reply_idx}
           AND event_idx = #{event_idx}
