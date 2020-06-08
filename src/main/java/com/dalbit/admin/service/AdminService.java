@@ -16,6 +16,7 @@ import lombok.var;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -345,7 +346,7 @@ public class AdminService {
      * 신고하기
      */
     @Transactional
-    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo) throws GlobalException {
+    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo, UpdateStateVo updateStateVo) throws GlobalException {
 
         try {
             declarationVo.setOpName(MemberVo.getMyMemNo(request));
@@ -370,9 +371,27 @@ public class AdminService {
             adminDao.declarationOperate(declarationVo);
             
             //회원상태 변경
+            updateStateVo.setMem_no(declarationVo.getReported_mem_no());
+//            updateStateVo.setOpName(MemberVo.getMyMemNo(request));
             if(!DalbitUtil.isEmpty(declarationVo.getOpCode())){
-
+                int opCode = declarationVo.getOpCode();
+                if(opCode == 2) {
+                    updateStateVo.setState(2);
+                } else if(opCode == 3 || opCode == 4 || opCode == 5) {
+                    updateStateVo.setState(3);
+                    if(opCode == 3) {
+                        updateStateVo.setBlockDay(1);
+                    } else if(opCode == 4) {
+                        updateStateVo.setBlockDay(3);
+                    } else if(opCode == 5) {
+                        updateStateVo.setBlockDay(7);
+                    }
+                } else if(opCode == 6) {
+                    updateStateVo.setState(5);
+                }
             }
+
+            adminDao.updateState(updateStateVo);
 
             //rd_data.tb_member_notification에 insert
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {

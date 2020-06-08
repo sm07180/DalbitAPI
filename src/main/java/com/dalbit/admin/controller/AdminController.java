@@ -110,10 +110,10 @@ public class AdminController {
      * 신고하기
      */
     @PostMapping("/declaration/operate")
-    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo) throws GlobalException {
+    public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo, NotiInsertVo notiInsertVo, UpdateStateVo updateStateVo) throws GlobalException {
         declarationVo.setIp(DalbitUtil.getIp(request));
         declarationVo.setBrowser(DalbitUtil.getUserAgent(request));
-        String result = adminService.declarationOperate(request, declarationVo,notiInsertVo);
+        String result = adminService.declarationOperate(request, declarationVo,notiInsertVo, updateStateVo);
         return result;
     }
 

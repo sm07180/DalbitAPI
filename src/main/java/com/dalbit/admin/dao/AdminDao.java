@@ -49,4 +49,5 @@ public interface AdminDao {
 
     ArrayList<LiveChatOutputVo> selectBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo);
 
+    int updateState(UpdateStateVo updateStateVo);
 }
