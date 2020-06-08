@@ -20,6 +20,7 @@ public class LiveChatOutputVo {
     private String msg;
     private String chatIdx;
     private String room_no;
+    private String image_profile;
 
     /* summry */
     private int chatCnt;
