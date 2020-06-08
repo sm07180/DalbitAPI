@@ -37,7 +37,7 @@
             AND a.depth = 1
             AND a.status = 1
         ORDER BY
-            a.reg_date desc
+            a.idx desc
     </select>
 
     <insert id="callEventReplyAdd" parameterType="com.dalbit.event.vo.procedure.P_ReplyAddInputVo">
