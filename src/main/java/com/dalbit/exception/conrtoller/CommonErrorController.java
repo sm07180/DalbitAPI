@@ -59,7 +59,7 @@ public class CommonErrorController {
                     desc += "GlobalException : \n" + sw.toString();
                 }
                 apiData.setDesc(desc);
-                commonService.saveErrorLog(apiData);
+                commonService.saveErrorLog(apiData, request);
             }
         }catch (Exception e){}
 
@@ -104,7 +104,7 @@ public class CommonErrorController {
                 desc += "Exception : \n" + sw.toString();
             }
             apiData.setDesc(desc);
-            commonService.saveErrorLog(apiData);
+            commonService.saveErrorLog(apiData, request);
         }catch (Exception e){}
 
         HashMap map = new HashMap();

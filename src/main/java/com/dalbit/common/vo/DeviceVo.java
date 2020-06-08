@@ -22,6 +22,9 @@ public class DeviceVo {
     private String adId;
     private String ip;
     private String isHybrid;
+    private String deviceManufacturer;
+    private String deviceModel;
+    private String sdkVersion;
 
     public DeviceVo(HttpServletRequest request){
         this.os = DalbitUtil.convertRequestParamToInteger(request,"os");
@@ -32,6 +35,9 @@ public class DeviceVo {
         this.adId = DalbitUtil.convertRequestParamToString(request,"appAdId");
         this.ip = DalbitUtil.getIp(request);
         this.isHybrid = DalbitUtil.convertRequestParamToString(request, "isHybrid");
+        this.deviceManufacturer = DalbitUtil.convertRequestParamToString(request, "deviceManufacturer");
+        this.deviceModel = DalbitUtil.convertRequestParamToString(request, "deviceModel");
+        this.sdkVersion = DalbitUtil.convertRequestParamToString(request, "deviceSdkVersion");
 
         if(DalbitUtil.isEmpty(this.appVersion)){
             appVersion = DalbitUtil.convertRequestParamToString(request,"appVersion");
@@ -70,6 +76,16 @@ public class DeviceVo {
                         appBulid = DalbitUtil.getStringMap(headers, "appBulid");
                     }
                     this.appBuild = appBulid;
+                }
+
+                if(DalbitUtil.isEmpty(this.deviceManufacturer)) {
+                    this.deviceManufacturer = DalbitUtil.getStringMap(headers, "deviceManufacturer");
+                }
+                if(DalbitUtil.isEmpty(this.deviceModel)) {
+                    this.deviceModel = DalbitUtil.getStringMap(headers, "deviceModel");
+                }
+                if(DalbitUtil.isEmpty(this.sdkVersion)) {
+                    this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
                 }
             }
         }else{
@@ -111,6 +127,16 @@ public class DeviceVo {
                             appBulid = DalbitUtil.getStringMap(headers, "appBulid");
                         }
                         this.appBuild = appBulid;
+                    }
+
+                    if(DalbitUtil.isEmpty(this.deviceManufacturer)) {
+                        this.deviceManufacturer = DalbitUtil.getStringMap(headers, "deviceManufacturer");
+                    }
+                    if(DalbitUtil.isEmpty(this.deviceModel)) {
+                        this.deviceModel = DalbitUtil.getStringMap(headers, "deviceModel");
+                    }
+                    if(DalbitUtil.isEmpty(this.sdkVersion)) {
+                        this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
                     }
                 }
             }
