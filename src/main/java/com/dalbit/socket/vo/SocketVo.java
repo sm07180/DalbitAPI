@@ -68,7 +68,7 @@ public class SocketVo {
             this.fan = this.auth == 3 ? 0 : (DalbitUtil.getIntMap(memInfo, "enableFan") == 0 ? 1 : 0);
             this.authName = "";
             if(this.auth == 3){
-                this.authName = "달D";
+                this.authName = "DJ";
             }else if(this.auth == 2){
                 this.authName = "게스트";
             }else if(this.auth == 1){
