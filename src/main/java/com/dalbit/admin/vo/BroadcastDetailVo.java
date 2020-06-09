@@ -11,8 +11,8 @@ public class BroadcastDetailVo {
 
     private String room_no;
     private String title;
-    private Date srtDt;
-    private Date expectedEndDt;
+    private String srtDt;
+    private String expectedEndDt;
     private String osType;
     private String roomBgImg;
     private String bjStreamId;

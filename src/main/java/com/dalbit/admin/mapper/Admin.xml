@@ -226,8 +226,8 @@
         /* Admin.xml - selectBroadcastSimpleInfo */
         SELECT
             a.title
-            , a.start_date AS srtDt
-            , a.expected_end_date AS expectedEndDt
+            , date_format(a.start_date, '%Y.%m.%d %H:%i:%S') AS srtDt
+            , date_format(a.expected_end_date, '%Y.%m.%d %H:%i:%S') AS expectedEndDt
             , a.os_type AS osType
             , a.image_background AS roomBgImg
             , b.bj_streamid AS bjStreamId
@@ -294,6 +294,7 @@
               , pro.image_profile
               , room.room_no
               , room.state
+              , room.auth
         from rd_data.tb_member_basic bas
             inner join rd_data.tb_member_profile pro on bas.mem_no = pro.mem_no
             inner join rd_data.tb_broadcast_room_member room on bas.mem_no = room.mem_no
