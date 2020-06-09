@@ -125,4 +125,13 @@ public class AdminController {
         String result = adminService.callBroadcastLiveChatInfo(liveChatInputVo);
         return result;
     }
+
+    /**
+     * 생방송관리 > 프로필 상세 창 띄우기
+     */
+    @PostMapping("/broadcast/liveChatProfile")
+    public String broadLiveChatProfile(HttpServletRequest request, LiveChatProfileVo liveChatProfileVo) {
+        String result = adminService.getLiveChatProfile(liveChatProfileVo);
+        return result;
+    }
 }

@@ -275,6 +275,7 @@
     </select>
 
     <update id="updateState" parameterType="com.dalbit.admin.vo.UpdateStateVo">
+        /* Admin.xml - updateState */
         update rd_data.tb_member_basic
         set mem_state = #{state}
         <if test='opCode gt 2 and opCode lt 6'>
@@ -284,5 +285,17 @@
         , last_upd_date = now()
         where mem_no = #{mem_no}
     </update>
+
+    <select id="getLiveChatProfile" parameterType="com.dalbit.admin.vo.LiveChatProfileVo" resultType="com.dalbit.admin.vo.LiveChatProfileVo">
+        /* Admin.xml - getLiveChatProfile */
+        select bas.mem_no
+              , bas.mem_userid
+              , bas.mem_nick
+              , pro.image_profile
+          from rd_data.tb_member_basic bas
+            , rd_data.tb_member_profile pro
+        where bas.mem_no = pro.mem_no
+          and bas.mem_no = #{mem_no}
+    </select>
 
 </mapper>
