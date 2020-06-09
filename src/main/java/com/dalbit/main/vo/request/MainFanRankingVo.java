@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 public class MainFanRankingVo {
 
     @NotNull
-    @Min(1) @Max(3)
+    @Min(0) @Max(3)
     private Integer rankType;
     @Min(1)
     private Integer page;
