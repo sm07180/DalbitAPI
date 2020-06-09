@@ -271,7 +271,9 @@ public class MainService {
 
         String time = "월요일 업데이트";
         if(pMainFanRankingVo.getSlct_type() == 0){
-            time = "00:00";
+            Date today = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:00", Locale.KOREA);
+            time = sdf.format(today);
         }else if(pMainFanRankingVo.getSlct_type() == 1){
             Calendar today = Calendar.getInstance();
             today.add(Calendar.DATE, -1);
@@ -291,8 +293,7 @@ public class MainService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         if(pMainFanRankingVo.getSlct_type() == 0){
-            time = "00:00";
-            mainFanRankingList.put("time",time);
+            mainFanRankingList.put("time",resultMap.get("rankingDate"));
         }
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
@@ -325,7 +326,9 @@ public class MainService {
 
         String time = "월요일 업데이트";
         if(pMainDjRankingVo.getSlct_type() == 0){
-            time = "00:00";
+            Date today = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:00", Locale.KOREA);
+            time = sdf.format(today);
         }else if(pMainDjRankingVo.getSlct_type() == 1){
             Calendar today = Calendar.getInstance();
             today.add(Calendar.DATE, -1);
@@ -346,8 +349,7 @@ public class MainService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         if(pMainDjRankingVo.getSlct_type() == 0){
-            time = "00:00";
-            mainDjRankingList.put("time",time);
+            mainDjRankingList.put("time",resultMap.get("rankingDate"));
         }
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));

@@ -16,7 +16,6 @@ import lombok.var;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -441,5 +440,86 @@ public class AdminService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_실패));
         }
         return result;
+    }
+
+    /**
+     * 생방송관리 > 프로필 상세 창 띄우기
+     */
+    public String getLiveChatProfile(LiveChatProfileVo liveChatProfileVo) {
+        LiveChatProfileVo profile = adminDao.getLiveChatProfile(liveChatProfileVo);
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
+
+        return result;
+    }
+
+    /**
+     * 생방송관리 > 강제퇴장
+     */
+    public String forcedOut(HttpServletRequest request, ForcedOutVo forcedOutVo) {
+
+        forcedOutVo.setOpName(MemberVo.getMyMemNo(request));
+        String sendNoti = "0";
+        if(!DalbitUtil.isEmpty(forcedOutVo.getNotificationYn()) && forcedOutVo.getNotificationYn().equals("Y")){
+            sendNoti = "1";
+            forcedOutVo.setNotiContents(forcedOutVo.getReport_title());
+            forcedOutVo.setNotiMemo(forcedOutVo.getReport_message());
+        }
+        forcedOutVo.setSendNoti(sendNoti);
+        ProcedureVo procedureVo = new ProcedureVo(forcedOutVo);
+        adminDao.callForceLeave(procedureVo);
+
+        //방송정보 조회
+        SearchVo searchVo = new SearchVo();
+        searchVo.setRoom_no(forcedOutVo.getRoom_no());
+        BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
+
+        // 재입장 불가능하도록
+        forcedOutVo.setDj_mem_no(broadInfo.getMem_no());
+        adminDao.insertForceLeave_roomBlock(forcedOutVo);
+        String result = "";
+        if(Status.생방청취자강제퇴장_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_성공));
+
+            //청취자 강제 퇴장
+            HashMap<String,Object> param = new HashMap<>();
+            param.put("roomNo", broadInfo.getRoom_no());
+            param.put("target_memNo", forcedOutVo.getMem_no());
+            param.put("target_nickName", forcedOutVo.getMem_nick());
+            param.put("memNo", broadInfo.getMem_no());
+            param.put("nickName", broadInfo.getNickNm());
+            // option
+            param.put("ctrlRole","ctrlRole");
+            param.put("revMemNo", forcedOutVo.getMem_no());     // 받는 사람
+            param.put("recvType","system");
+            param.put("recvPosition","top1");
+            param.put("recvLevel",2);
+            param.put("recvTime",1);
+
+            // message set
+            Gson gson = new Gson();
+            HashMap<String,Object> tmp = new HashMap();
+            tmp.put("revMemNo", forcedOutVo.getMem_no());     // 받는 사람
+            tmp.put("revMemNk", forcedOutVo.getMem_nick());
+            tmp.put("sndAuth", 4);
+            tmp.put("sndMemNo", broadInfo.getMem_no());            // 보낸 사람
+            tmp.put("sndMemNk", broadInfo.getNickNm());
+            String message =  gson.toJson(tmp);
+
+            adminSocketUtil.setSocket(param,"reqKickOut", message,jwtUtil.generateToken(forcedOutVo.getMem_no(), true));
+
+        }else if(Status.생방청취자강제퇴장_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_회원아님));
+        } else if(Status.생방청취자강제퇴장_방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_방없음));
+        } else if(Status.생방청취자강제퇴장_종료된방.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_종료된방));
+        } else if(Status.생방청취자강제퇴장_청취자아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_청취자아님));
+        } else if(Status.생방청취자강제퇴장_퇴장한회원.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_퇴장한회원));
+        }
+
+        return result;
+
     }
 }
