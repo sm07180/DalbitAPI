@@ -320,6 +320,9 @@ public class CommonService {
                     , locationVo == null ? "" : locationVo.getRegionName()
                     , deviceVo.getIp()
                     , browser
+                    , deviceVo.getDeviceManufacturer()
+                    , deviceVo.getDeviceModel()
+                    , deviceVo.getSdkVersion()
             );
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
@@ -509,7 +512,17 @@ public class CommonService {
     /**
      * 에러 로그 저장
      */
+
     public String saveErrorLog(P_ErrorLogVo pErrorLogVo){
+        return saveErrorLog(pErrorLogVo, null);
+    }
+    public String saveErrorLog(P_ErrorLogVo pErrorLogVo, HttpServletRequest request){
+        if(request != null && request instanceof HttpServletRequest){
+            DeviceVo deviceVo  = new DeviceVo(request);
+            String desc = pErrorLogVo.getDesc();
+            desc = (new Gson().toJson(deviceVo)) + "\n" +desc;
+            pErrorLogVo.setDesc(desc);
+        }
         ProcedureVo procedureVo = new ProcedureVo(pErrorLogVo);
         commonDao.saveErrorLog(procedureVo);
 

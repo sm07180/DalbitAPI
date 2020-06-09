@@ -21,7 +21,7 @@
             ,a.reg_date AS writeDate
             ,a.op_name AS op_name
             ,a.last_upd_date AS updateDate
-            ,mb.mem_id AS userId
+            ,mb.mem_userId AS userId
             ,mb.mem_nick AS nickName
             ,mb.mem_sex AS memSex
             ,#{mem_no} AS req_mem_no
@@ -37,7 +37,7 @@
             AND a.depth = 1
             AND a.status = 1
         ORDER BY
-            a.idx asc
+            a.idx desc
     </select>
 
     <insert id="callEventReplyAdd" parameterType="com.dalbit.event.vo.procedure.P_ReplyAddInputVo">
@@ -69,6 +69,8 @@
         UPDATE rd_admin.tb_event_reply
         SET
           status = 2
+          ,op_name = #{mem_no}
+          ,last_upd_date = NOW()
         WHERE
           idx = #{reply_idx}
           AND event_idx = #{event_idx}
