@@ -293,13 +293,7 @@ public class MainService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         if(pMainFanRankingVo.getSlct_type() == 0){
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:00", Locale.KOREA);
-            time = sdf.format(resultMap.get("rankingDate"));
-            mainFanRankingList.put("time",time);
-        }else if(pMainFanRankingVo.getSlct_type() == 1){
-            SimpleDateFormat sdf = new SimpleDateFormat("M월 d일", Locale.KOREA);
-            time = sdf.format(resultMap.get("rankingDate"));
-            mainFanRankingList.put("time", time + " 업데이트");
+            mainFanRankingList.put("time",resultMap.get("rankingDate"));
         }
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
@@ -355,13 +349,7 @@ public class MainService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         if(pMainDjRankingVo.getSlct_type() == 0){
-            SimpleDateFormat sdf = new SimpleDateFormat("hh:00", Locale.KOREA);
-            time = sdf.format(resultMap.get("rankingDate"));
-            mainDjRankingList.put("time",time);
-        }else if(pMainDjRankingVo.getSlct_type() == 1){
-            SimpleDateFormat sdf = new SimpleDateFormat("M월 d일", Locale.KOREA);
-            time = sdf.format(resultMap.get("rankingDate"));
-            mainDjRankingList.put("time", time + " 업데이트");
+            mainDjRankingList.put("time",resultMap.get("rankingDate"));
         }
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
