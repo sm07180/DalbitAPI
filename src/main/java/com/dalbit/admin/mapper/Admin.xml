@@ -292,10 +292,22 @@
               , bas.mem_userid
               , bas.mem_nick
               , pro.image_profile
-          from rd_data.tb_member_basic bas
-            , rd_data.tb_member_profile pro
-        where bas.mem_no = pro.mem_no
-          and bas.mem_no = #{mem_no}
+              , room.room_no
+              , room.state
+        from rd_data.tb_member_basic bas
+            inner join rd_data.tb_member_profile pro on bas.mem_no = pro.mem_no
+            inner join rd_data.tb_broadcast_room_member room on bas.mem_no = room.mem_no
+        where bas.mem_no = #{mem_no}
+            and room_no = #{room_no}
     </select>
 
+    <select id="callForceLeave" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callForceLeave */
+        call rd_admin.sp_admin_broadcast_room_member_forced_leave(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <insert id="insertForceLeave_roomBlock" parameterType="com.dalbit.admin.vo.ForcedOutVo">
+        /* Admin.xml - insertForceLeave_roomBlock */
+        INSERT INTO rd_data.tb_broadcast_room_block( mem_no, blocked_mem_no, last_upd_date) VALUES ( #{dj_mem_no}, #{mem_no}, NOW() );
+    </insert>
 </mapper>

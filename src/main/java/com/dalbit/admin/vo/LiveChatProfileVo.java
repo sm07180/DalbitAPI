@@ -13,4 +13,6 @@ public class LiveChatProfileVo extends AdminBaseVo{
     private String mem_userid;
     private String mem_nick;
     private String image_profile;
+    private String room_no;
+    private int state;
 }

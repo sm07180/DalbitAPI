@@ -832,10 +832,19 @@ public enum Status {
     신고처리_성공("0", "declaration.operate.success", "신고처리 성공 시"),
     신고처리_에러("C006", "declaration.fail.server.error", "신고처리에서 에러 발생 시"),
 
-    //생방송관리
+    //생방송 메시지 목록 조회
     생방송메시지조회_성공("C001", "live.chat.select.success", "생방송 메시지 조회 성공 시"),
     생방송메시지조회_성공_데이터없음("C002", "live.chat.no.data.success", "생방송 메시지 조회 성공 시"),
     생방송메시지조회_실패("C006", "live.chat.select.fail", "생방송 메시지 조회 실패 시"),
+
+    //생방송 청취자 강제퇴장
+    생방청취자강제퇴장_성공("0", "broadcast.listen.forced.success", "생방송 청취자 강제퇴장 성공 시"),
+    생방청취자강제퇴장_회원아님("-1", "broadcast.listen.forced.no.member", "생방송 청취자 강제퇴장 회원 아닐 시"),
+    생방청취자강제퇴장_방없음("-2", "broadcast.listen.forced.no.room", "생방송 청취자 강제퇴장 방 없을 시"),
+    생방청취자강제퇴장_종료된방("-3", "broadcast.listen.forced.end.room", "생방송 청취자 강제퇴장 종료된 방일 시"),
+    생방청취자강제퇴장_청취자아님("-4", "broadcast.listen.forced.no.listener", "생방송 청취자 강제퇴장 청취자 아닐 시"),
+    생방청취자강제퇴장_퇴장한회원("-5", "broadcast.listen.forced.no.forced", "생방송 청취자 강제퇴장 이미 퇴장한 회원 일 시"),
+
 
     ;
 

@@ -52,4 +52,8 @@ public interface AdminDao {
     int updateState(UpdateStateVo updateStateVo);
 
     LiveChatProfileVo getLiveChatProfile(LiveChatProfileVo liveChatProfileVo);
+
+    ProcedureVo callForceLeave(ProcedureVo procedureVo);
+
+    int insertForceLeave_roomBlock(ForcedOutVo forcedOutVo);
 }

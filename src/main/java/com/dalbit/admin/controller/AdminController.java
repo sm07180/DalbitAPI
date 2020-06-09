@@ -134,4 +134,13 @@ public class AdminController {
         String result = adminService.getLiveChatProfile(liveChatProfileVo);
         return result;
     }
+
+    /**
+     * 생방송관리 > 강제퇴장
+     */
+    @PostMapping("/forcedOut")
+    public String forcedOut(HttpServletRequest request, ForcedOutVo forcedOutVo){
+        String result = adminService.forcedOut(request, forcedOutVo);
+        return result;
+    }
 }
