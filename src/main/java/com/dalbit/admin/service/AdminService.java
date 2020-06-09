@@ -442,4 +442,14 @@ public class AdminService {
         }
         return result;
     }
+
+    /**
+     * 생방송관리 > 프로필 상세 창 띄우기
+     */
+    public String getLiveChatProfile(LiveChatProfileVo liveChatProfileVo) {
+        LiveChatProfileVo profile = adminDao.getLiveChatProfile(liveChatProfileVo);
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
+
+        return result;
+    }
 }
