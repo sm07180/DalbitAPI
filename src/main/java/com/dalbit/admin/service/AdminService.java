@@ -476,11 +476,29 @@ public class AdminService {
             //rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
-                notiInsertVo.setMem_no(reportedInfo.getMem_no());
-                notiInsertVo.setSlctType(7);
-                notiInsertVo.setNotiContents(declarationVo.getNotiContents());
-                notiInsertVo.setNotiMemo(declarationVo.getNotiMemo());
-                adminDao.insertNotiHistory(notiInsertVo);
+                try{
+                    //알림(종) 표시
+                    notiInsertVo.setMem_no(reportedInfo.getMem_no());
+                    notiInsertVo.setSlctType(7);
+                    notiInsertVo.setNotiContents(declarationVo.getNotiContents());
+                    notiInsertVo.setNotiMemo(declarationVo.getNotiMemo());
+                    adminDao.insertNotiHistory(notiInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] 알림 실패 - 신고처리");
+                }
+                //PUSH 발송
+                try{
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                    pPushInsertVo.setMem_nos(declarationVo.getMem_no());
+                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_cont(declarationVo.getNotiContents());
+                    pPushInsertVo.setEtc_contents(declarationVo.getNotiMemo().replaceAll("\n", "<br>"));
+                    pPushInsertVo.setImage_type("101");
+                    pushService.sendPushReqOK(pPushInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] PUSH 발송 실패 - 신고처리");
+                }
             }
             return gsonUtil.toJson(new JsonOutputVo(Status.신고처리_성공));
 
@@ -539,6 +557,19 @@ public class AdminService {
             sendNoti = "1";
             forcedOutVo.setNotiContents(forcedOutVo.getReport_title());
             forcedOutVo.setNotiMemo(forcedOutVo.getReport_message());
+            //PUSH 발송
+            try{
+                P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                pPushInsertVo.setMem_nos(forcedOutVo.getMem_no());
+                pPushInsertVo.setSlct_push("34");
+                pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                pPushInsertVo.setSend_cont(forcedOutVo.getReport_title());
+                pPushInsertVo.setEtc_contents(forcedOutVo.getReport_message().replaceAll("\n", "<br>"));
+                pPushInsertVo.setImage_type("101");
+                pushService.sendPushReqOK(pPushInsertVo);
+            }catch (Exception e){
+                log.error("[모바일어드민] PUSH 발송 실패 - 강제 퇴장");
+            }
         }
         forcedOutVo.setSendNoti(sendNoti);
         ProcedureVo procedureVo = new ProcedureVo(forcedOutVo);
