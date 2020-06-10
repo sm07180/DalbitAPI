@@ -16,5 +16,6 @@ public class ChangePwVo {
     private String memId;
 
     @Password
+    @Size(max = 20)
     private String memPwd;
 }
