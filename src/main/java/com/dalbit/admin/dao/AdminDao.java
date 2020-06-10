@@ -49,7 +49,7 @@ public interface AdminDao {
 
     ArrayList<LiveChatOutputVo> selectBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo);
 
-    int updateState(UpdateStateVo updateStateVo);
+    int updateState(DeclarationVo declarationVo);
 
     LiveChatProfileVo getLiveChatProfile(LiveChatProfileVo liveChatProfileVo);
 

@@ -274,7 +274,7 @@
           order by a.chatIdx asc;
     </select>
 
-    <update id="updateState" parameterType="com.dalbit.admin.vo.UpdateStateVo">
+    <update id="updateState" parameterType="com.dalbit.admin.vo.DeclarationVo">
         /* Admin.xml - updateState */
         update rd_data.tb_member_basic
         set mem_state = #{state}

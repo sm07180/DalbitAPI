@@ -374,28 +374,26 @@ public class AdminService {
             adminDao.declarationOperate(declarationVo);
             
             //회원상태 변경
-            UpdateStateVo updateStateVo = new UpdateStateVo();
-            updateStateVo.setMem_no(declarationVo.getReported_mem_no());
-//            updateStateVo.setOpName(MemberVo.getMyMemNo(request));
             if(!DalbitUtil.isEmpty(declarationVo.getOpCode())){
                 int opCode = declarationVo.getOpCode();
+                declarationVo.setOpCode(opCode);
                 if(opCode == 2) {
-                    updateStateVo.setState(2);
+                    declarationVo.setState(2);
                 } else if(opCode == 3 || opCode == 4 || opCode == 5) {
-                    updateStateVo.setState(3);
+                    declarationVo.setState(3);
                     if(opCode == 3) {
-                        updateStateVo.setBlockDay(1);
+                        declarationVo.setBlockDay(1);
                     } else if(opCode == 4) {
-                        updateStateVo.setBlockDay(3);
+                        declarationVo.setBlockDay(3);
                     } else if(opCode == 5) {
-                        updateStateVo.setBlockDay(7);
+                        declarationVo.setBlockDay(7);
                     }
                 } else if(opCode == 6) {
-                    updateStateVo.setState(5);
+                    declarationVo.setState(5);
                 }
             }
 
-            adminDao.updateState(updateStateVo);
+            adminDao.updateState(declarationVo);
 
             //rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();

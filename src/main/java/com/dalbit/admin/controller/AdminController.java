@@ -107,7 +107,7 @@ public class AdminController {
     }
 
     /**
-     * 신고하기fi
+     * 신고하기
      */
     @PostMapping("/declaration/operate")
     public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo) throws GlobalException {

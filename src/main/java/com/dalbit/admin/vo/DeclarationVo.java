@@ -27,5 +27,6 @@ public class DeclarationVo extends AdminBaseVo{
     private String notiMemo = "";
     private int blockDay;
     private String etc;
-
+    private String last_upd_date;
+    private int state;
 }
