@@ -137,7 +137,7 @@ public class ProfileService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        
+
         fanBoardList.put("list", procedureOutputVo.getOutputBox());
         fanBoardList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
@@ -150,8 +150,10 @@ public class ProfileService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드조회성공, fanBoardList));
         } else if(Status.팬보드_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_요청회원번호_회원아님));
-        } else if(Status.팬보드_스타회원번호_회원아님.getMessageCode().equals((procedureVo.getRet()))){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_스타회원번호_회원아님));
+        } else if(Status.팬보드_스타회원번호_회원아님.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음));
+        }else if(Status.팬보드_댓글없음.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_조회오류));
         }
