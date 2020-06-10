@@ -814,10 +814,12 @@ public class DalbitUtil {
     /**
      * 브라우저 정보 가져오기
      */
-    public static String getUserAgent(HttpServletRequest request){
-        String userAgent  = request.getHeader("User-Agent");
+    public static String getUserAgent(HttpServletRequest request) {
+        String userAgent = request.getHeader("User-Agent");
         String browser;
-        if (userAgent .indexOf("MSIE") > -1 || userAgent .indexOf("Trident") > -1) {
+        if (userAgent .indexOf("AppleWebKit") > -1) { //웹뷰
+            browser = "WebView";
+        }else if (userAgent .indexOf("MSIE") > -1 || userAgent .indexOf("Trident") > -1) {
             browser = "MSIE";
         } else if (userAgent .indexOf("Opera") > -1) {
             browser =  "Opera";
