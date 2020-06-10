@@ -107,7 +107,7 @@ public class AdminController {
     }
 
     /**
-     * 신고하기fi
+     * 신고하기
      */
     @PostMapping("/declaration/operate")
     public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo) throws GlobalException {
@@ -132,6 +132,15 @@ public class AdminController {
     @PostMapping("/broadcast/liveChatProfile")
     public String broadLiveChatProfile(HttpServletRequest request, LiveChatProfileVo liveChatProfileVo) {
         String result = adminService.getLiveChatProfile(liveChatProfileVo);
+        return result;
+    }
+
+    /**
+     * 생방송관리 > 강제퇴장
+     */
+    @PostMapping("/forcedOut")
+    public String forcedOut(HttpServletRequest request, ForcedOutVo forcedOutVo){
+        String result = adminService.forcedOut(request, forcedOutVo);
         return result;
     }
 }

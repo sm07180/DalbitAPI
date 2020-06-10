@@ -27,6 +27,8 @@
             , discount_rate AS discountRate
             , sale_price AS salePrice
             , dal as givenDal
+            , item_price as itemPriceDefault
+            , item_price_ios as itemPriceIos
         FROM rd_data.tbl_charge_item
         WHERE view_yn = 1
           AND item_code = #{itemNo}
