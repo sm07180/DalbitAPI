@@ -5,8 +5,10 @@ import com.dalbit.admin.util.AdminSocketUtil;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.*;
@@ -42,6 +44,9 @@ public class AdminService {
     AdminSocketUtil adminSocketUtil;
     @Autowired
     AdminCommonService adminCommonService;
+
+    @Autowired
+    PushService pushService;
 
     private final String menuJsonKey = "adminMenu";
 
@@ -222,12 +227,33 @@ public class AdminService {
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(proImageInitVo.getNotificationYn()) && proImageInitVo.getNotificationYn().equals("Y")){
-                //rd_data.tb_member_notification에 insert
-                notiInsertVo.setMem_no(proImageInitVo.getMem_no());
-                notiInsertVo.setSlctType(7);
-                notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
-                notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
-                adminDao.insertNotiHistory(notiInsertVo);
+
+                try{
+                    //알림(종) 표시
+                    notiInsertVo.setMem_no(proImageInitVo.getMem_no());
+                    notiInsertVo.setSlctType(7);
+                    notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
+                    notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
+                    adminDao.insertNotiHistory(notiInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] 알림 실패 - 이미지 초기화");
+                }
+
+
+                //PUSH 발송
+                try{
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                    pPushInsertVo.setMem_nos(proImageInitVo.getMem_no());
+                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_cont(proImageInitVo.getReport_title());
+                    pPushInsertVo.setEtc_contents(proImageInitVo.getReport_message().replaceAll("\n", "<br>"));
+                    pPushInsertVo.setImage_type("101");
+
+                    pushService.sendPushReqOK(pPushInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] PUSH 발송 실패 - 이미지 초기화");
+                }
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
@@ -258,12 +284,32 @@ public class AdminService {
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(broImageInitVo.getNotificationYn()) && broImageInitVo.getNotificationYn().equals("Y")) {
-                //rd_data.tb_member_notification에 insert
-                notiInsertVo.setMem_no(broImageInitVo.getMem_no());
-                notiInsertVo.setSlctType(7);
-                notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
-                notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
-                adminDao.insertNotiHistory(notiInsertVo);
+                try {
+                    // 알림(종)표시
+                    notiInsertVo.setMem_no(broImageInitVo.getMem_no());
+                    notiInsertVo.setSlctType(7);
+                    notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
+                    notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
+                    adminDao.insertNotiHistory(notiInsertVo);
+                } catch(Exception e) {
+                    log.error("[모바일어드민] 알림 실패 - 방송방 이미지 초기화");
+                }
+
+                // PUSH 발송
+                try {
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                    pPushInsertVo.setMem_nos(broImageInitVo.getMem_no());
+                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_cont(broImageInitVo.getReport_title());
+                    pPushInsertVo.setEtc_contents(broImageInitVo.getReport_message().replaceAll("\n", "<br>"));
+                    pPushInsertVo.setImage_type("101");
+
+                    pushService.sendPushReqOK(pPushInsertVo);
+
+                } catch(Exception e) {
+                    log.error("[모바일어드민] PUSH 발송 실패 - 방송방 이미지 초기화");
+                }
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_성공));
@@ -294,12 +340,29 @@ public class AdminService {
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(nickTextInitVo.getNotificationYn()) && nickTextInitVo.getNotificationYn().equals("Y")) {
-                //rd_data.tb_member_notification에 insert
-                notiInsertVo.setMem_no(nickTextInitVo.getMem_no());
-                notiInsertVo.setSlctType(7);
-                notiInsertVo.setNotiContents(nickTextInitVo.getReport_title());
-                notiInsertVo.setNotiMemo(nickTextInitVo.getReport_message());
-                adminDao.insertNotiHistory(notiInsertVo);
+                try {
+                    //알림(종) 표시
+                    notiInsertVo.setMem_no(nickTextInitVo.getMem_no());
+                    notiInsertVo.setSlctType(7);
+                    notiInsertVo.setNotiContents(nickTextInitVo.getReport_title());
+                    notiInsertVo.setNotiMemo(nickTextInitVo.getReport_message());
+                    adminDao.insertNotiHistory(notiInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] 알림 실패 - 닉네임 초기화");
+                }
+                //PUSH 발송
+                try{
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                    pPushInsertVo.setMem_nos(nickTextInitVo.getMem_no());
+                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_cont(nickTextInitVo.getReport_title());
+                    pPushInsertVo.setEtc_contents(nickTextInitVo.getReport_message().replaceAll("\n", "<br>"));
+                    pPushInsertVo.setImage_type("101");
+                    pushService.sendPushReqOK(pPushInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] PUSH 발송 실패 - 닉네임 초기화");
+                }
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_성공));
@@ -329,15 +392,30 @@ public class AdminService {
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(broTitleTextInitVo.getNotificationYn()) && broTitleTextInitVo.getNotificationYn().equals("Y")) {
-                //rd_data.tb_member_notification에 insert
-                notiInsertVo.setMem_no(broTitleTextInitVo.getMem_no());
-                notiInsertVo.setSlctType(7);
-                notiInsertVo.setNotiContents(broTitleTextInitVo.getReport_title());
-                notiInsertVo.setNotiMemo(broTitleTextInitVo.getReport_message());
-                adminDao.insertNotiHistory(notiInsertVo);
+                try{
+                    //알림(종) 표시
+                    notiInsertVo.setMem_no(broTitleTextInitVo.getMem_no());
+                    notiInsertVo.setSlctType(7);
+                    notiInsertVo.setNotiContents(broTitleTextInitVo.getReport_title());
+                    notiInsertVo.setNotiMemo(broTitleTextInitVo.getReport_message());
+                    adminDao.insertNotiHistory(notiInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] 알림 실패 - 방송 제목 초기화");
+                }
+                //PUSH 발송
+                try{
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                    pPushInsertVo.setMem_nos(broTitleTextInitVo.getMem_no());
+                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_cont(broTitleTextInitVo.getReport_title());
+                    pPushInsertVo.setEtc_contents(broTitleTextInitVo.getReport_message().replaceAll("\n", "<br>"));
+                    pPushInsertVo.setImage_type("101");
+                    pushService.sendPushReqOK(pPushInsertVo);
+                }catch (Exception e){
+                    log.error("[모바일어드민] PUSH 발송 실패 - 방송 제목 초기화");
+                }
             }
-
-
             return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_성공));
 
         }catch(Exception e) {

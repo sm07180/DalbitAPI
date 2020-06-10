@@ -690,6 +690,10 @@ public enum Status {
     시간연장_남은시간_5분안됨("-5", "broadcast.time.extend.not.remain.5min", "남은시간이 5분 아닐 시"),
     시간연장실패("C006", "broadcast.time.extend.fail", "방송시간 연장 실패 시"),
 
+
+    //푸시 등록
+    푸시등록_성공("0","insert.push.success", "푸시등록 성공 시"),
+    푸시등록_에러("C006", "server.error", "푸시등록 실패 시"),
     //푸시 발송
     푸시성공("0", "push.add.success", "푸시 성공 시"),
     푸시_회원아님("-1", "push.add.member.number.error", "회원 번호 아닐 시"),

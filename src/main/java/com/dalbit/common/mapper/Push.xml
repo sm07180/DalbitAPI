@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.common.dao.PushDao" >
+
+    <insert id="insertContentsPushAdd" parameterType="com.dalbit.common.vo.procedure.P_pushInsertVo">
+          /* Push.xml - insertContentsPushAdd */
+          INSERT INTO rd_admin.tb_admin_push
+          (
+                platform
+                ,status
+                ,send_title
+                ,send_cont
+                ,etc_contents
+                ,send_url
+                ,is_all
+                ,mem_nos
+                ,msg_type
+                ,slct_push
+                ,is_direct
+                ,send_cnt
+                ,send_datetime
+                ,reg_date
+                ,op_name
+                ,link_url
+                ,target_info
+                ,image_type
+          )
+          VALUES
+          (
+                #{platform}
+                ,#{status}
+                ,#{send_title}
+                ,#{send_cont}
+                ,#{etc_contents}
+                ,#{send_url}
+                ,#{is_all}
+                ,#{mem_nos}
+                ,#{msg_type}
+                ,#{slct_push}
+                ,#{is_direct}
+                ,#{send_cnt}
+                <choose>
+                    <when test='is_direct == 1'>
+                        ,STR_TO_DATE(#{send_datetime},'%Y%m%d %H%i%S')
+                    </when>
+                    <otherwise>
+                        ,NOW()
+                    </otherwise>
+                </choose>
+                ,NOW()
+                ,#{opName}
+                ,#{link_url}
+                ,#{target_info}
+                ,#{image_type}
+          )
+    </insert>
+
+    <!-- 푸시 발송  -->
+    <select id="callStmpPushAdd" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        call rd_data.sp_stmp_push_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+</mapper>
