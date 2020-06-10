@@ -423,7 +423,18 @@ public class MypageService {
 
         String result;
         if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공));
+            P_MemberShortCutVo apiData = new P_MemberShortCutVo();
+            apiData.setMem_no(pMemberShortCutEdit.getMem_no());
+            ProcedureVo procedureListVo = new ProcedureVo(apiData);
+            List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureListVo);
+            List<MemberShortCutOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(memberShortCutList)){
+                for (int i=0; i<memberShortCutList.size(); i++){
+                    outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
+                }
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공, outVoList));
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공));
         } else if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_회원아님));
         }else{
