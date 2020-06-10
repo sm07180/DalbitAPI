@@ -244,7 +244,7 @@ public class AdminService {
                 try{
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(proImageInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSlct_push("2");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(proImageInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(proImageInitVo.getReport_message().replaceAll("\n", "<br>"));
@@ -299,7 +299,7 @@ public class AdminService {
                 try {
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(broImageInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSlct_push("2");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(broImageInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(broImageInitVo.getReport_message().replaceAll("\n", "<br>"));
@@ -354,7 +354,7 @@ public class AdminService {
                 try{
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(nickTextInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSlct_push("2");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(nickTextInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(nickTextInitVo.getReport_message().replaceAll("\n", "<br>"));
@@ -406,7 +406,7 @@ public class AdminService {
                 try{
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(broTitleTextInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setSlct_push("2");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(broTitleTextInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(broTitleTextInitVo.getReport_message().replaceAll("\n", "<br>"));
@@ -489,11 +489,11 @@ public class AdminService {
                 //PUSH 발송
                 try{
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
-                    pPushInsertVo.setMem_nos(declarationVo.getMem_no());
-                    pPushInsertVo.setSlct_push("34");
+                    pPushInsertVo.setMem_nos(reportedInfo.getMem_no());
+                    pPushInsertVo.setSlct_push("2");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(declarationVo.getNotiContents());
-                    pPushInsertVo.setEtc_contents(declarationVo.getNotiMemo().replaceAll("\n", "<br>"));
+                     pPushInsertVo.setEtc_contents(declarationVo.getNotiMemo().replaceAll("\n", "<br>"));
                     pPushInsertVo.setImage_type("101");
                     pushService.sendPushReqOK(pPushInsertVo);
                 }catch (Exception e){
@@ -561,7 +561,7 @@ public class AdminService {
             try{
                 P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                 pPushInsertVo.setMem_nos(forcedOutVo.getMem_no());
-                pPushInsertVo.setSlct_push("34");
+                pPushInsertVo.setSlct_push("2");
                 pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                 pPushInsertVo.setSend_cont(forcedOutVo.getReport_title());
                 pPushInsertVo.setEtc_contents(forcedOutVo.getReport_message().replaceAll("\n", "<br>"));
