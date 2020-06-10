@@ -50,7 +50,6 @@
             ,status
             ,reg_date
             ,op_name
-            ,last_upd_date
         )
         VALUES
         (
@@ -61,7 +60,6 @@
              ,1
              ,NOW()
              ,#{op_name}
-             ,NOW()
         )
     </insert>
 
