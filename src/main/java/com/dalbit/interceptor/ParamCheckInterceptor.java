@@ -24,6 +24,7 @@ public class ParamCheckInterceptor extends HandlerInterceptorAdapter {
             }
         }
 
+        //log.debug("---------------------- request.getHeader(\"User-Agent\") : " + request.getHeader("User-Agent"));
         log.info("========================== Start Request uri = " + request.getRequestURI());
         for(Enumeration<String> itertor = (Enumeration<String>)request.getParameterNames(); itertor.hasMoreElements();){
             String key = itertor.nextElement();
