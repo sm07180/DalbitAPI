@@ -4,10 +4,14 @@ import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.util.AdminSocketUtil;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
+import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
+import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.procedure.P_MessageInsertVo;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -15,6 +19,8 @@ import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import okhttp3.FormBody;
+import okhttp3.RequestBody;
 import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -33,6 +40,8 @@ public class AdminService {
 
     @Autowired
     AdminDao adminDao;
+    @Autowired
+    RoomDao roomDao;
 
     @Autowired
     MessageUtil messageUtil;
@@ -58,6 +67,9 @@ public class AdminService {
 
     @Value("${ant.app.name}")
     private String ANT_APP_NAME;
+
+    @Value("${server.api.url}")
+    private String SERVER_API_URL;
 
 
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
@@ -454,7 +466,6 @@ public class AdminService {
             //회원상태 변경
             if(!DalbitUtil.isEmpty(declarationVo.getOpCode())){
                 int opCode = declarationVo.getOpCode();
-                declarationVo.setOpCode(opCode);
                 if(opCode == 2) {
                     declarationVo.setState(2);
                 } else if(opCode == 3 || opCode == 4 || opCode == 5) {
@@ -628,5 +639,87 @@ public class AdminService {
 
         return result;
 
+    }
+
+    /**
+     * 생방송관리 > 시스템메시지 등록
+     */
+    public String insertContentsMessageAdd(HttpServletRequest request, P_MessageInsertVo pMessageInsertVo) throws GlobalException {
+        pMessageInsertVo.setOp_name(MemberVo.getMyMemNo(request));
+        ProcedureVo procedureVo = new ProcedureVo(pMessageInsertVo);
+        String result="";
+
+        try{
+            // 방송중인 방송방 리스트 조회 및 발송 건수 셋팅
+            if(!DalbitUtil.isEmpty(pMessageInsertVo.getSend_all()) && pMessageInsertVo.getSend_all().equals("0")) {       // ALL
+                // 현재 방송방 조회하는
+                RoomListVo pRoomListVo = new RoomListVo();
+                pRoomListVo.setPage(1);
+                pRoomListVo.setRecords(100);
+                ProcedureVo roomListProcedureVo = new ProcedureVo(pRoomListVo);
+                List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(roomListProcedureVo);
+
+                String targetRooms = "";
+                for (P_RoomListVo room : roomVoList) {
+                    targetRooms += room.getRoomNo() + "|";
+                }
+
+                pMessageInsertVo.setSend_cnt(roomVoList.size() + "");
+                pMessageInsertVo.setTarget_rooms(targetRooms.substring(0, targetRooms.length() - 1));
+            }else{      // Target
+                String[] array = pMessageInsertVo.getTarget_rooms().split("\\|");
+                pMessageInsertVo.setSend_cnt(array.length + "");
+            }
+
+            if(pMessageInsertVo.getSend_cnt().equals("0")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_타겟미지정));
+            }
+
+            pMessageInsertVo.setTitle("모바일 관리자 발송");
+            int insertResult = adminDao.insertContentsMessageAdd(pMessageInsertVo);
+
+            if(insertResult > 0){
+                result = sendSplashApi(pMessageInsertVo);
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_에러));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+            throw new GlobalException(Status.방송방메시지발송_에러, "AdminService.insertContentsMessageAdd");
+        }
+
+        return result;
+    }
+
+    public String sendSplashApi(P_MessageInsertVo pMessageInsertVo) throws GlobalException {
+        RequestBody formBody;
+        String uri = "";
+
+        if(DalbitUtil.isEmpty(pMessageInsertVo.getTarget_rooms())){
+            formBody = new FormBody.Builder()
+                    .add("message", pMessageInsertVo.getSend_cont())
+                    .build();
+            uri = "/socket/sendSystemMessage";
+        }else {
+            formBody = new FormBody.Builder()
+                    .add("message", pMessageInsertVo.getSend_cont())
+                    .add("targetRooms", pMessageInsertVo.getTarget_rooms())
+                    .build();
+            uri = "/socket/sendTargetSystemMessage";
+        }
+
+        OkHttpClientUtil okHttpClientUtil = new OkHttpClientUtil();
+
+        try{
+            String url = SERVER_API_URL + uri;
+            Response response = okHttpClientUtil.sendPost(url, formBody);
+            String inforexLoginResult = response.body().string();
+            log.debug(inforexLoginResult);
+
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_성공));
+        }catch (IOException | GlobalException e){
+            throw new GlobalException(Status.방송방메시지발송_에러, "AdminService.sendSplashApi");
+        }
     }
 }
