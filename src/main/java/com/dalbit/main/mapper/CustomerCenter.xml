@@ -11,7 +11,7 @@
     </select>
 
     <select id="callFaqList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FaqListVo">
-        call sp_service_center_faq_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+        call sp_service_center_faq_search(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callFaqDetail" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
