@@ -11,7 +11,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.common.vo.procedure.P_MessageInsertVo;
+import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -644,14 +644,13 @@ public class AdminService {
     /**
      * 생방송관리 > 시스템메시지 등록
      */
-    public String insertContentsMessageAdd(HttpServletRequest request, P_MessageInsertVo pMessageInsertVo) throws GlobalException {
-        pMessageInsertVo.setOp_name(MemberVo.getMyMemNo(request));
-        ProcedureVo procedureVo = new ProcedureVo(pMessageInsertVo);
+    public String insertContentsMessageAdd(HttpServletRequest request, MessageInsertVo messageInsertVo) throws GlobalException {
+        messageInsertVo.setOp_name(MemberVo.getMyMemNo(request));
         String result="";
 
         try{
             // 방송중인 방송방 리스트 조회 및 발송 건수 셋팅
-            if(!DalbitUtil.isEmpty(pMessageInsertVo.getSend_all()) && pMessageInsertVo.getSend_all().equals("0")) {       // ALL
+            if(!DalbitUtil.isEmpty(messageInsertVo.getSend_all()) && messageInsertVo.getSend_all().equals("0")) {       // ALL
                 // 현재 방송방 조회하는
                 RoomListVo pRoomListVo = new RoomListVo();
                 pRoomListVo.setPage(1);
@@ -664,22 +663,22 @@ public class AdminService {
                     targetRooms += room.getRoomNo() + "|";
                 }
 
-                pMessageInsertVo.setSend_cnt(roomVoList.size() + "");
-                pMessageInsertVo.setTarget_rooms(targetRooms.substring(0, targetRooms.length() - 1));
+                messageInsertVo.setSend_cnt(roomVoList.size() + "");
+                messageInsertVo.setTarget_rooms(targetRooms.substring(0, targetRooms.length() - 1));
             }else{      // Target
-                String[] array = pMessageInsertVo.getTarget_rooms().split("\\|");
-                pMessageInsertVo.setSend_cnt(array.length + "");
+                String[] array = messageInsertVo.getTarget_rooms().split("\\|");
+                messageInsertVo.setSend_cnt(array.length + "");
             }
 
-            if(pMessageInsertVo.getSend_cnt().equals("0")){
+            if(messageInsertVo.getSend_cnt().equals("0")){
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_타겟미지정));
             }
 
-            pMessageInsertVo.setTitle("모바일 관리자 발송");
-            int insertResult = adminDao.insertContentsMessageAdd(pMessageInsertVo);
+            messageInsertVo.setTitle("모바일 관리자 발송");
+            int insertResult = adminDao.insertContentsMessageAdd(messageInsertVo);
 
             if(insertResult > 0){
-                result = sendSplashApi(pMessageInsertVo);
+                result = sendSplashApi(messageInsertVo);
             }else{
                 result = gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_에러));
             }
@@ -692,19 +691,19 @@ public class AdminService {
         return result;
     }
 
-    public String sendSplashApi(P_MessageInsertVo pMessageInsertVo) throws GlobalException {
+    public String sendSplashApi(MessageInsertVo messageInsertVo) throws GlobalException {
         RequestBody formBody;
         String uri = "";
 
-        if(DalbitUtil.isEmpty(pMessageInsertVo.getTarget_rooms())){
+        if(DalbitUtil.isEmpty(messageInsertVo.getTarget_rooms())){
             formBody = new FormBody.Builder()
-                    .add("message", pMessageInsertVo.getSend_cont())
+                    .add("message", messageInsertVo.getSend_cont())
                     .build();
             uri = "/socket/sendSystemMessage";
         }else {
             formBody = new FormBody.Builder()
-                    .add("message", pMessageInsertVo.getSend_cont())
-                    .add("targetRooms", pMessageInsertVo.getTarget_rooms())
+                    .add("message", messageInsertVo.getSend_cont())
+                    .add("targetRooms", messageInsertVo.getTarget_rooms())
                     .build();
             uri = "/socket/sendTargetSystemMessage";
         }

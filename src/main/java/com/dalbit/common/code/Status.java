@@ -850,9 +850,9 @@ public enum Status {
     생방청취자강제퇴장_퇴장한회원("-5", "broadcast.listen.forced.no.forced", "생방송 청취자 강제퇴장 이미 퇴장한 회원 일 시"),
 
     //방송방메시지 발송
-    방송방메시지발송_성공("0","insert.success", "방송방메시지발송 성공 시"),
-    방송방메시지발송_에러("C006", "server.error", "방송방메시지발송 실패 시"),
-    방송방메시지발송_타겟미지정("C006", "no.data", "방송방메시지발송 시 타겟 방정보가 없는 경우"),
+    방송방메시지발송_성공("0","system.message.insert.success", "방송방메시지발송 성공 시"),
+    방송방메시지발송_에러("C006", "system.message.fail.server.error", "방송방메시지발송 실패 시"),
+    방송방메시지발송_타겟미지정("C006", "system.message.fail.no.data", "방송방메시지발송 시 타겟 방정보가 없는 경우"),
     ;
 
 
