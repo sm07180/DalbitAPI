@@ -19,14 +19,14 @@ public class P_FaqListVo {
         setPageNo(pageNo);
         setPageCnt(pageCnt);
         setSearchType(faqListVo.getSearchType());
-        setSerchText(faqListVo.getSearchText());
+        setSearchText(faqListVo.getSearchText());
     }
 
     /* Input */
     private Integer slctType;
     private int pageNo;
     private int pageCnt;
-    private String serchText;
+    private String searchText;
     private Integer searchType;
 
     /* Output */
