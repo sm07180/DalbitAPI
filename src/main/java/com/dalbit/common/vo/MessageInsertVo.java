@@ -1,4 +1,4 @@
-package com.dalbit.common.vo.procedure;
+package com.dalbit.common.vo;
 
 import com.dalbit.common.vo.BaseVo;
 import lombok.Getter;
@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class P_MessageInsertVo extends BaseVo {
+public class MessageInsertVo extends BaseVo {
     private String title;                //제목
     private String send_cont;       //메시지 내용
     private String target_rooms;       //발송 방송방번호 ('|' 구분자 사용)

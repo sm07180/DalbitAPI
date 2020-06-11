@@ -3,7 +3,7 @@ package com.dalbit.admin.dao;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.common.vo.procedure.P_MessageInsertVo;
+import com.dalbit.common.vo.MessageInsertVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,5 +58,5 @@ public interface AdminDao {
 
     int insertForceLeave_roomBlock(ForcedOutVo forcedOutVo);
 
-    int insertContentsMessageAdd(P_MessageInsertVo pMessageInsertVo);
+    int insertContentsMessageAdd(MessageInsertVo messageInsertVo);
 }

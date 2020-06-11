@@ -4,7 +4,7 @@ import com.dalbit.admin.service.AdminCommonService;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
-import com.dalbit.common.vo.procedure.P_MessageInsertVo;
+import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -149,8 +149,8 @@ public class AdminController {
      * 생방송관리 > 시스템메시지 등록
      */
     @PostMapping("/message/insert")
-    public String messageInsert(HttpServletRequest request, P_MessageInsertVo pMessageInsertVo) throws GlobalException{
-        String result = adminService.insertContentsMessageAdd(request, pMessageInsertVo);
+    public String messageInsert(HttpServletRequest request, MessageInsertVo messageInsertVo) throws GlobalException{
+         String result = adminService.insertContentsMessageAdd(request, messageInsertVo);
         return result;
     }
 }

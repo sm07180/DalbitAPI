@@ -312,7 +312,7 @@
         INSERT INTO rd_data.tb_broadcast_room_block( mem_no, blocked_mem_no, last_upd_date) VALUES ( #{dj_mem_no}, #{mem_no}, NOW() );
     </insert>
 
-    <insert id="insertContentsMessageAdd" parameterType="com.dalbit.common.vo.procedure.P_MessageInsertVo">
+    <insert id="insertContentsMessageAdd" parameterType="com.dalbit.common.vo.MessageInsertVo">
         /* Admin.xml - insertContentsMessageAdd */
           INSERT INTO rd_admin.tb_admin_message
           (
@@ -329,7 +329,7 @@
                 ,#{send_cont}
                 ,#{target_rooms}
                 ,#{send_cnt}
-                ,#{opName}
+                ,#{op_name}
                 ,NOW()
           )
     </insert>
