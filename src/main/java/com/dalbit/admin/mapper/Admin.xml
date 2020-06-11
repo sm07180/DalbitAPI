@@ -47,6 +47,7 @@
         <if test='reportYn == "Y"'>
         where 0 <![CDATA[<]]> reportedCnt
         </if>
+        order by list.start_date desc
         limit #{searchStart}, #{searchEnd}
     </select>
 
@@ -97,6 +98,7 @@
         <if test='reportYn == "Y"'>
             where 0 <![CDATA[<]]> reportedCnt
         </if>
+        order by list.last_upd_date desc
         limit #{searchStart}, #{searchEnd}
     </select>
 
