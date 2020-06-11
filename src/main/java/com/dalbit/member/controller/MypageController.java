@@ -261,12 +261,12 @@ public class MypageController {
 
         P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
 
-        String text = shortCutEditVo.getText().length() <= 50 ? shortCutEditVo.getText() : shortCutEditVo.getText().substring(0, 49);
+        //String text = shortCutEditVo.getText().length() <= 50 ? shortCutEditVo.getText() : shortCutEditVo.getText().substring(0, 49);
 
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setOrderNo(shortCutEditVo.getOrderNo());
         apiData.setOrder(shortCutEditVo.getOrder());
-        apiData.setText(text);
+        apiData.setText(shortCutEditVo.getText());
         apiData.setOnOff(isOn);
 
         String result = mypageService.callMemberShortCutEdit(apiData);
