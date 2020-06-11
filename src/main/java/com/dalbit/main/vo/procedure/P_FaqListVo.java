@@ -18,12 +18,16 @@ public class P_FaqListVo {
         setSlctType(faqListVo.getFaqType() == 0 ? -1 : faqListVo.getFaqType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
+        setSearchType(faqListVo.getSearchType());
+        setSerchText(faqListVo.getSearchText());
     }
 
     /* Input */
     private Integer slctType;
     private int pageNo;
     private int pageCnt;
+    private String serchText;
+    private Integer searchType;
 
     /* Output */
     private int faqIdx;

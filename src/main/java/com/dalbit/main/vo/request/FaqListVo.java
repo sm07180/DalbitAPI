@@ -17,4 +17,8 @@ public class FaqListVo {
     private Integer page;
     @Min(1)
     private Integer records;
+    @NotNull
+    @Min(0) @Max(2)
+    private Integer searchType;
+    private String searchText;
 }
