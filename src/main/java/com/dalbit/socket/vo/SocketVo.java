@@ -93,6 +93,16 @@ public class SocketVo {
         }
     }
 
+    public void resetData(){
+        recvDj = 1;
+        recvManager = 1;
+        recvListener = 1;
+        recvType = "chat";
+        recvPosition  = "chat";
+        recvLevel = 0;
+        recvTime = 0;
+    }
+
     public String toQueryString(){
         StringBuffer qs = new StringBuffer();
         qs.append("command=");
