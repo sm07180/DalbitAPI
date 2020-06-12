@@ -15,6 +15,7 @@ public enum Status {
     비즈니스로직오류("C006", "business.error", "비즈니스로직 오류 시"),
     벨리데이션체크("C007", "validation.error", "벨리데이션체크 오류 시"),
     부적절한문자열("C007", "string.error", "부적합한 기호 및 문자열 포함 시"),
+    데이터없음("0", "no.data", "데이터가 없을 시"),
 
     //휴대폰 sms 인증
     인증번호요청("0", "sms.number.request.success", "인증번호 요청 성공 시"),
@@ -163,6 +164,7 @@ public enum Status {
     회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.success", "회원 방송방 빠른말 수정 성공 시"),
     회원방송방빠른말수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
     회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
+    회원방송방빠른말수정_텍스트오류("C007", "mypage.member.shorucut.text.error", "회원 방송방 빠른말 수정 텍스트 자리수 "),
 
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.success", "댓글달기 성공 시"),

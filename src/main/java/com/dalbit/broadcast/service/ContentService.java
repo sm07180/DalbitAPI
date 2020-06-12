@@ -91,6 +91,7 @@ public class ContentService {
             try{
                 SocketVo vo = socketService.getSocketVo(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendNotice Exception {}", e);
             }
@@ -123,6 +124,7 @@ public class ContentService {
             try{
                 SocketVo vo = socketService.getSocketVo(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendNotice Exception {}", e);
             }
@@ -174,6 +176,7 @@ public class ContentService {
                 socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((String)resultMap.get("writeDate")));
                 SocketVo vo = socketService.getSocketVo(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendStory Exception {}", e);
             }

@@ -4,6 +4,7 @@ import com.dalbit.admin.service.AdminCommonService;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
+import com.dalbit.admin.vo.procedure.P_StatVo;
 import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
@@ -151,6 +152,23 @@ public class AdminController {
     @PostMapping("/message/insert")
     public String messageInsert(HttpServletRequest request, MessageInsertVo messageInsertVo) throws GlobalException{
          String result = adminService.insertContentsMessageAdd(request, messageInsertVo);
+        return result;
+    }
+
+    /**
+     * 통계 > 방송정보
+     */
+    @PostMapping("/stat/broadInfo")
+    public String statBroad(HttpServletRequest request, P_StatVo pStatVo) {
+        if(DalbitUtil.isEmpty(pStatVo.getStartDate())) {
+            pStatVo.setStartDate(null);
+        }
+
+        if(DalbitUtil.isEmpty(pStatVo.getEndDate())) {
+            pStatVo.setEndDate(null);
+        }
+
+        String result = adminService.callBroadcastTotal(pStatVo);
         return result;
     }
 }

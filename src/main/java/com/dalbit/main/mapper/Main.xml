@@ -23,44 +23,33 @@
             , B.room_no AS roomNo
             , B.subject_type AS roomType
             , B.title AS title
-            , IFNULL((SELECT COUNT(*) FROM tb_broadcast_room_member WHERE room_no = B.room_no AND auth &lt; 3 AND state = 0) - 1, 0) AS listeners
-            , B.count_good + fn_get_point_used_item(B.room_no, 'U1447') AS likes
+            , A.entry AS listeners
+            , (A.good+A.booster) AS likes
             , B.image_background AS bannerUrl
             , true AS isSpecial
-        FROM tb_broadcast_room AS B INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
+        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room B ON A.room_no = B.room_no
+            INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no AND D.specialdj_badge = 1
-            ORDER BY B.idx desc
+        ORDER BY B.idx desc
         LIMIT 0, 10;
     </select>
 
     <select id="callMainRecommandLiveList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
         SELECT
-            T1.mem_no AS memNo
-            , (select mem_nick from tb_member_basic where mem_no = T1.mem_no ) AS nickNm
-            , (select mem_sex from tb_member_basic where mem_no = T1.mem_no ) AS gender
-            , (select image_profile from tb_member_profile where mem_no = T1.mem_no ) AS profileUrl
-            , T1.room_no AS roomNo
-            , T1.subject_type AS roomType
-            , T1.title AS title
-            , IFNULL(T1.count_entry, 0) AS listeners
-            , IFNULL(T1.count_good, 0) AS likes
-            , T1.image_background AS bannerUrl
-            , false AS isSpecial
-        FROM (
-            SELECT
-                a.room_no
-                , a.mem_no
-                , a.title
-                , a.image_background
-                , a.subject_type
-                , (count_good + fn_get_point_used_item(a.room_no, 'U1447')) AS count_good
-                , IFNULL((SELECT COUNT(*) FROM tb_broadcast_room_member WHERE room_no = a.room_no AND auth &lt; 3 AND state = 0), 0) AS count_entry
-                , (select ifnull(sum(ifnull(gold, 0)), 0) from tb_member_broadcast_item where room_no = a.room_no and item_type = 1) as count_gold
-            FROM tb_broadcast_room a, tbl_ranking_point b
-            WHERE a.state &lt; 4
-              AND a.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE specialdj_badge = 1)
-            ORDER BY ((count_good*b.`like`)+(count_entry*b.entry)+(count_gold*b.byeul)) DESC
-        ) T1
+           B.mem_no AS memNo
+           , (select mem_nick from tb_member_basic where mem_no = B.mem_no ) AS nickNm
+           , (select mem_sex from tb_member_basic where mem_no = B.mem_no ) AS gender
+           , (select image_profile from tb_member_profile where mem_no = B.mem_no ) AS profileUrl
+           , B.room_no AS roomNo
+           , B.subject_type AS roomType
+           , B.title AS title
+           , A.entry AS listeners
+           , (A.good+A.booster) AS likes
+           , B.image_background AS bannerUrl
+           , false AS isSpecial
+        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room B ON A.room_no = B.room_no
+        WHERE A.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE specialdj_badge = 1)
+        ORDER BY A.total DESC
         LIMIT 0, 10;
     </select>
 
@@ -165,6 +154,7 @@
 
     <select id="callMainStarList" parameterType="String" resultType="P_MainStarVo">
         SELECT
+            DISTINCT
             T1.mem_no_star AS memNo
             , T2.mem_nick AS nickNm
             , T2.mem_sex AS gender
@@ -173,20 +163,22 @@
             , T4.title AS title
             , T4.subject_type AS roomType
             , T4.code AS roomTypeNm
-        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no and T2.mem_state = 1
+        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no
             INNER JOIN tb_member_profile T3 ON T1.mem_no_star = T3.mem_no
             INNER JOIN (
                 SELECT
-                S1.room_no
-                , S1.mem_no
-                , S1.title
-                , S1.subject_type
-                , S3.code
+                    S1.room_no
+                    , S1.mem_no
+                    , S1.title
+                    , S1.subject_type
+                    , S3.code
+                    , S1.idx
                 FROM tb_broadcast_room S1 INNER JOIN tb_broadcast_room_member S2 ON S1.mem_no = S2.mem_no AND S2.auth = 3 and S2.state = 0
                 INNER JOIN tbl_code_define S3 ON S1.subject_type = S3.value AND S3.type = 'subject_type'
                 WHERE S1.state &lt; 4
             ) T4 ON T1.mem_no_star = T4.mem_no
         WHERE T1.mem_no_fan = #{value}
+        ORDER BY T4.idx desc
         LIMIT 0, 10
     </select>
 
