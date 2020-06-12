@@ -256,6 +256,7 @@ public class ActionService {
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
+                    e.printStackTrace();
                 }
                 try{
                     String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
@@ -263,6 +264,7 @@ public class ActionService {
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
+                    e.printStackTrace();
                 }
             }
 
