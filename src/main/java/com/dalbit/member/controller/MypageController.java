@@ -1,21 +1,26 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -24,6 +29,8 @@ public class MypageController {
 
     @Autowired
     MypageService mypageService;
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 본인 정보 조회
@@ -254,6 +261,15 @@ public class MypageController {
      */
     @PostMapping("/shortcut")
     public String memberShortCutEdit(@Valid ShortCutEditVo shortCutEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        if(bindingResult.hasErrors()){
+            List errorList = bindingResult.getAllErrors();
+            for (int i=0; i<bindingResult.getErrorCount(); i++) {
+                FieldError fieldError = (FieldError) errorList.get(i);
+                if("text".equals(fieldError.getField())){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_텍스트오류));
+                }
+            }
+        }
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 

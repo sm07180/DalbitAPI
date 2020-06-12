@@ -229,6 +229,7 @@ public class UserService {
             HashMap bolckedMap = socketService.getMyInfo(pRoomKickoutVo.getBlocked_mem_no());
             try{
                 socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service kickout Exception {}", e);
             }
@@ -239,6 +240,7 @@ public class UserService {
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
                 socketService.changeCount(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
@@ -318,6 +320,7 @@ public class UserService {
             SocketVo vo = socketService.getSocketVo(pManagerAddVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 socketService.changeManager(pManagerAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeManager Exception {}", e);
             }
@@ -361,6 +364,7 @@ public class UserService {
             SocketVo vo = socketService.getSocketVo(pManagerDelVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 socketService.changeManager(pManagerDelVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeManager Exception {}", e);
             }
@@ -407,6 +411,7 @@ public class UserService {
                 SocketVo vo = socketService.getSocketVo(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
                     socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request), vo);
+                    vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service addFan Exception {}", e);
                 }
@@ -449,6 +454,7 @@ public class UserService {
                 SocketVo vo = socketService.getSocketVo(pBroadFanstarDeleteVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
                     socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request), vo);
+                    vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service addFan Exception {}", e);
                 }
