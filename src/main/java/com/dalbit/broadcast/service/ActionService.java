@@ -269,12 +269,12 @@ public class ActionService {
             }
 
             if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
-                log.error("levelUp : {}", resultMap.toString());
                 try{
                     socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
+                    e.printStackTrace();
                 }
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
