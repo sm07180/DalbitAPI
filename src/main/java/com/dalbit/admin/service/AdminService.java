@@ -3,7 +3,7 @@ package com.dalbit.admin.service;
 import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.util.AdminSocketUtil;
 import com.dalbit.admin.vo.*;
-import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
+import com.dalbit.admin.vo.procedure.*;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
@@ -720,5 +720,31 @@ public class AdminService {
         }catch (IOException | GlobalException e){
             throw new GlobalException(Status.방송방메시지발송_에러, "AdminService.sendSplashApi");
         }
+    }
+
+    /**
+     * 통계 > 방송정보
+     */
+    public String callBroadcastTotal(P_StatVo pStatVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pStatVo);
+        adminDao.callBroadcastTotal(procedureVo);
+
+        P_BroadcastTotalOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_BroadcastTotalOutVo.class);
+
+        var result = new HashMap<String, Object>();
+        result.put("totalInfo", totalInfo);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+    }
+
+    /**
+     * 통계 > 현재 접속자
+     */
+    public String callUserTotal() {
+        ProcedureVo procedureVo = new ProcedureVo();
+        adminDao.callUserTotal(procedureVo);
+        P_UserTotalOutDetailVo detailList = new Gson().fromJson(procedureVo.getExt(), P_UserTotalOutDetailVo.class);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, detailList));
     }
 }

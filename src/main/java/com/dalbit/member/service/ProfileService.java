@@ -151,9 +151,7 @@ public class ProfileService {
         } else if(Status.팬보드_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_요청회원번호_회원아님));
         } else if(Status.팬보드_스타회원번호_회원아님.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음));
-        }else if(Status.팬보드_댓글없음.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_스타회원번호_회원아님));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_조회오류));
         }
