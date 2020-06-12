@@ -160,15 +160,16 @@ public class AdminController {
      */
     @PostMapping("/stat/broadInfo")
     public String statBroad(HttpServletRequest request, P_StatVo pStatVo) {
-        if(DalbitUtil.isEmpty(pStatVo.getStartDate())) {
-            pStatVo.setStartDate(null);
-        }
-
-        if(DalbitUtil.isEmpty(pStatVo.getEndDate())) {
-            pStatVo.setEndDate(null);
-        }
-
         String result = adminService.callBroadcastTotal(pStatVo);
+        return result;
+    }
+
+    /**
+     * 통계 > 현재 접속자
+     */
+    @PostMapping("/stat/userInfo")
+    public String statUser(HttpServletRequest request){
+        String result = adminService.callUserTotal();
         return result;
     }
 }

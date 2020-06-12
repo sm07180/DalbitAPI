@@ -3,12 +3,14 @@ package com.dalbit.admin.dao;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_BroadcastTotalOutDetailVo;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
+import com.dalbit.admin.vo.procedure.P_UserTotalOutDetailVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.MessageInsertVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Repository
 public interface AdminDao {
@@ -63,4 +65,6 @@ public interface AdminDao {
 
     // 통계
     ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
+
+    List<P_UserTotalOutDetailVo> callUserTotal(ProcedureVo procedureVo);
 }

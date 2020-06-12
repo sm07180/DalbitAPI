@@ -726,21 +726,25 @@ public class AdminService {
      * 통계 > 방송정보
      */
     public String callBroadcastTotal(P_StatVo pStatVo) {
-        pStatVo.setSlctType(0);
         ProcedureVo procedureVo = new ProcedureVo(pStatVo);
-        ArrayList<P_BroadcastTotalOutDetailVo> detailList = adminDao.callBroadcastTotal(procedureVo);
+        adminDao.callBroadcastTotal(procedureVo);
 
         P_BroadcastTotalOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_BroadcastTotalOutVo.class);
 
-        if(Integer.parseInt(procedureVo.getRet()) <= 0) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
-        }
-
         var result = new HashMap<String, Object>();
         result.put("totalInfo", totalInfo);
-        result.put("detailList", detailList);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+    }
 
+    /**
+     * 통계 > 현재 접속자
+     */
+    public String callUserTotal() {
+        ProcedureVo procedureVo = new ProcedureVo();
+        adminDao.callUserTotal(procedureVo);
+        P_UserTotalOutDetailVo detailList = new Gson().fromJson(procedureVo.getExt(), P_UserTotalOutDetailVo.class);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, detailList));
     }
 }
