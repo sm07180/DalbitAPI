@@ -248,15 +248,12 @@ public class ActionService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
-            log.error("dj_levelUp : {}", procedureVo.getExt());
             if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
-                log.error("dj_levelUp : {}", resultMap.toString());
                 try{
                     socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
-                    e.printStackTrace();
                 }
                 try{
                     String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
@@ -264,7 +261,6 @@ public class ActionService {
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
-                    e.printStackTrace();
                 }
             }
 
@@ -274,7 +270,6 @@ public class ActionService {
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
-                    e.printStackTrace();
                 }
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
