@@ -1,6 +1,7 @@
 package com.dalbit.admin.dao;
 
 import com.dalbit.admin.vo.*;
+import com.dalbit.admin.vo.procedure.P_BroadcastTotalOutDetailVo;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.MessageInsertVo;
@@ -59,4 +60,7 @@ public interface AdminDao {
     int insertForceLeave_roomBlock(ForcedOutVo forcedOutVo);
 
     int insertContentsMessageAdd(MessageInsertVo messageInsertVo);
+
+    // 통계
+    ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
 }
