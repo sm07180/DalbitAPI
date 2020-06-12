@@ -589,8 +589,8 @@ public class SocketService {
             if(vo == null || vo.getMemNo() == null){
                 return null;
             }
-            vo.setCommand("reqLevelUpBj");
-            //vo.setCommand("reqGiftImg");
+            //vo.setCommand("reqLevelUpBj");
+            vo.setCommand("reqGiftImg");
             vo.setMessage(item);
             vo.setRecvDj(0);
 
