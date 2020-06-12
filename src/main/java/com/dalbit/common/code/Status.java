@@ -163,6 +163,7 @@ public enum Status {
     회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.success", "회원 방송방 빠른말 수정 성공 시"),
     회원방송방빠른말수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
     회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
+    회원방송방빠른말수정_텍스트오류("C007", "mypage.member.shorucut.text.error", "회원 방송방 빠른말 수정 텍스트 자리수 "),
 
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.success", "댓글달기 성공 시"),
