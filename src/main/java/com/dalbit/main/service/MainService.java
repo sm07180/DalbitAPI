@@ -283,6 +283,11 @@ public class MainService {
         mainFanRankingList.put("time",time);
 
         if(DalbitUtil.isEmpty(mainFanRankingVoList)){
+            mainFanRankingList.put("myRank", 0);
+            mainFanRankingList.put("myPoint", 0);
+            mainFanRankingList.put("myGiftPoint", 0);
+            mainFanRankingList.put("myListenPoint", 0);
+            mainFanRankingList.put("myUpDown", "");
             mainFanRankingList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_내역없음, mainFanRankingList));
         }
@@ -338,6 +343,14 @@ public class MainService {
         mainDjRankingList.put("time",time);
 
         if(DalbitUtil.isEmpty(mainDjRankingVoList)){
+            mainDjRankingList.put("myRank", 0);
+            mainDjRankingList.put("myPoint", 0);
+            mainDjRankingList.put("myListenerPoint", 0);
+            mainDjRankingList.put("myBroadPoint", 0);
+            mainDjRankingList.put("myFanPoint", 0);
+            mainDjRankingList.put("myGiftPoint", 0);
+            mainDjRankingList.put("myLikePoint", 0);
+            mainDjRankingList.put("myUpDown", 0);
             mainDjRankingList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_내역없음, mainDjRankingList));
         }

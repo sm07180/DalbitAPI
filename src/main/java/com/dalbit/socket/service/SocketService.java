@@ -71,7 +71,7 @@ public class SocketService {
 
         String request_uri = "https://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + SERVER_SOCKET_URL + roomNo;
         log.info("소켓 request_uri: {}", request_uri);
-        log.error("Socket Start {}, {}, {}", roomNo, params);
+        //log.error("Socket Start {}, {}, {}", roomNo, params);
 
         try{
             url = new URL(request_uri);
@@ -116,7 +116,7 @@ public class SocketService {
             }
         }
 
-        log.error("Socket Result {}, {}, {}", roomNo, params, result);
+        //log.error("Socket Result {}, {}, {}", roomNo, params, result);
         return new Gson().fromJson(result, Map.class);
     }
 
