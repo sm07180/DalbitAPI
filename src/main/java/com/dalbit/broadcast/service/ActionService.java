@@ -252,19 +252,25 @@ public class ActionService {
                 try{
                     socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.error("sendDjLevelUp error : {}", e);
+                }
                 try{
                     String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
                     socketService.sendLevelUp(djMemNo, pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.error("sendDjLevelUp error : {}", e);
+                }
             }
 
             if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
                     socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.error("sendDjLevelUp error : {}", e);
+                }
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
         }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
@@ -365,19 +371,25 @@ public class ActionService {
                 try{
                     socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo);
                     vo.resetData();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.error("sendDjLevelUp error : {}", e);
+                }
                 try{
                     String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
                     socketService.sendLevelUp(djMemNo, pRoomBoosterVo.getRoom_no(), request, vo);
                     vo.resetData();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.error("sendDjLevelUp error : {}", e);
+                }
             }
 
             if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
                     socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomBoosterVo.getRoom_no(), request, vo);
                     vo.resetData();
-                }catch(Exception e){}
+                }catch(Exception e){
+                    log.error("sendDjLevelUp error : {}", e);
+                }
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터성공, returnMap));
