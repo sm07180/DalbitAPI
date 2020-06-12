@@ -248,6 +248,7 @@ public class ActionService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
+            log.error("dj_levelUp : {}", procedureVo.getExt());
             if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
                 log.error("dj_levelUp : {}", resultMap.toString());
                 try{
