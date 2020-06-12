@@ -248,7 +248,7 @@ public class ActionService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
-            if(!"real".equals(DalbitUtil.getActiceProfile()) && DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
+            if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
                 try{
                     socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
@@ -260,7 +260,7 @@ public class ActionService {
                 }catch(Exception e){}
             }
 
-            if(!"real".equals(DalbitUtil.getActiceProfile()) && DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
+            if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
                     socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGiftVo.getRoom_no(), request, vo);
                     vo.resetData();
@@ -361,7 +361,7 @@ public class ActionService {
             }
 
 
-            if(!"real".equals(DalbitUtil.getActiceProfile()) && DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
+            if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
                 try{
                     socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo);
                     vo.resetData();
@@ -373,7 +373,7 @@ public class ActionService {
                 }catch(Exception e){}
             }
 
-            if(!"real".equals(DalbitUtil.getActiceProfile()) && DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
+            if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
                     socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomBoosterVo.getRoom_no(), request, vo);
                     vo.resetData();
