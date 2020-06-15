@@ -794,13 +794,13 @@ public class SocketService {
         memNo = memNo == null ? "" : memNo.trim();
         String authToken = DalbitUtil.getAuthToken(request);
 
-        log.info("Socket Start : levelUp {}, {}, {}, {}, {}, {}", roomNo, memNo, levelUp, authToken, vo, (vo == null ? null : vo.getMemNo()));
+        log.info("Socket Start : levelUp {}, {}, {}, {}, {}, {}", roomNo, memNo, levelUp, authToken, djVo, (djVo == null ? null : djVo.getMemNo()));
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelUp != null){
-            if(vo != null && vo.getMemNo() != null) {
-                vo.setCommand("reqLevelUpSelf");
-                vo.setMessage(levelUp);
-                vo.setRecvMemNo(memNo);
-                sendSocketApi(authToken, roomNo, vo.toQueryString());
+            if(djVo != null && djVo.getMemNo() != null) {
+                djVo.setCommand("reqLevelUpSelf");
+                djVo.setMessage(levelUp);
+                djVo.setRecvMemNo(memNo);
+                sendSocketApi(authToken, roomNo, djVo.toQueryString());
             }
         }
     }
