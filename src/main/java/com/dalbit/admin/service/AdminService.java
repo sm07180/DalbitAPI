@@ -475,27 +475,29 @@ public class AdminService {
             declarationVo.setReported_grade(reportedInfo.getGrade());
 
             adminDao.declarationOperate(declarationVo);
-            
-            //회원상태 변경
-            if(!DalbitUtil.isEmpty(declarationVo.getOpCode())){
-                int opCode = declarationVo.getOpCode();
+
+            //회원상태 변경을 위한 VO 세팅
+            DeclarationVo memberDeclarationVo = new DeclarationVo();
+            memberDeclarationVo.setMem_no(reportedInfo.getMem_no());
+            memberDeclarationVo.setOpCode(declarationVo.getOpCode());
+            if(!DalbitUtil.isEmpty(memberDeclarationVo.getOpCode())){
+                int opCode = memberDeclarationVo.getOpCode();
                 if(opCode == 2) {
-                    declarationVo.setState(2);
+                    memberDeclarationVo.setState(2);
                 } else if(opCode == 3 || opCode == 4 || opCode == 5) {
-                    declarationVo.setState(3);
+                    memberDeclarationVo.setState(3);
                     if(opCode == 3) {
-                        declarationVo.setBlockDay(1);
+                        memberDeclarationVo.setBlockDay(1);
                     } else if(opCode == 4) {
-                        declarationVo.setBlockDay(3);
+                        memberDeclarationVo.setBlockDay(3);
                     } else if(opCode == 5) {
-                        declarationVo.setBlockDay(7);
+                        memberDeclarationVo.setBlockDay(7);
                     }
                 } else if(opCode == 6) {
-                    declarationVo.setState(5);
+                    memberDeclarationVo.setState(5);
                 }
             }
-
-            adminDao.updateState(declarationVo);
+            adminDao.updateState(memberDeclarationVo);
 
             //rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
