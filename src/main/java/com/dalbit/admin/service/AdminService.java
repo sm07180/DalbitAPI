@@ -760,4 +760,20 @@ public class AdminService {
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, detailList));
     }
+
+    /**
+     * 통계 > 결제 현황
+     */
+    public String callPayInfo(P_StatVo pStatVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pStatVo);
+        adminDao.callPayInfo(procedureVo);
+
+        P_PayInfoOutVo info = new Gson().fromJson(procedureVo.getExt(), P_PayInfoOutVo.class);
+        var result = new HashMap<String, Object>();
+
+        result.put("info", info);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+    }
+
 }
