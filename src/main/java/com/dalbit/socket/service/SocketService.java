@@ -548,23 +548,6 @@ public class SocketService {
         }
     }
 
-    @Async("threadTaskExecutor")
-    public void levelUp(String roomNo, String memNo, Object levelInfo, String authToken, boolean isLogin, SocketVo vo){
-        log.info("Socket Start : levelUp {}, {}, {}, {}", roomNo, memNo, levelInfo, isLogin);
-        roomNo = roomNo == null ? "" : roomNo.trim();
-        memNo = memNo == null ? "" : memNo.trim();
-        authToken = authToken == null ? "" : authToken.trim();
-
-        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelInfo != null){
-            if(vo != null && vo.getMemNo() != null) {
-                vo.setCommand("reqLevelUpSelf");
-                vo.setMessage(levelInfo);
-                vo.setRecvMemNo(memNo);
-                sendSocketApi(authToken, roomNo, vo.toQueryString());
-            }
-        }
-    }
-
     /**
      * 게스트 노드 호출
      * @param roomNo 방번호
@@ -748,6 +731,7 @@ public class SocketService {
         String memNo = new MemberVo().getMyMemNo(request);
         String authToken = DalbitUtil.getAuthToken(request);
 
+        log.info("Socket Start : djLlevelUp {}, {}, {}", roomNo, memNo, itemMap);
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && itemMap != null){
             if(vo != null && vo.getMemNo() != null) {
                 //vo.setCommand("reqLevelUpBj");
@@ -755,6 +739,9 @@ public class SocketService {
                 vo.setMessage(itemMap);
                 vo.setRecvDj(0);
 
+                try{
+                    Thread.sleep(5000);
+                }catch(InterruptedException e){}
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
         }
@@ -803,7 +790,19 @@ public class SocketService {
         levelUp.put("frameColor", frameColor);
         levelUp.put("frameImg", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + resultLevelUpCheckMap.get("newLevel") + ".png");
 
-        levelUp(roomNo, memNo, levelUp, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        String authToken = DalbitUtil.getAuthToken(request);
+
+        log.info("Socket Start : levelUp {}, {}, {}", roomNo, memNo, levelUp);
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelUp != null){
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqLevelUpSelf");
+                vo.setMessage(levelUp);
+                vo.setRecvMemNo(memNo);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+            }
+        }
     }
 }
 
