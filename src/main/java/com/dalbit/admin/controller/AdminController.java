@@ -31,6 +31,12 @@ public class AdminController {
         return result;
     }
 
+    @PostMapping("/menu")
+    public String menu(HttpServletRequest request){
+        String result = adminService.selectAdminMenu(request);
+        return result;
+    }
+
     /**
      * - 이미지관리 > 방송방 이미지 조회
      * - 생방송관리

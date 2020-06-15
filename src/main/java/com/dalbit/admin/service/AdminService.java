@@ -100,6 +100,21 @@ public class AdminService {
 
     }
 
+    public String selectAdminMenu(HttpServletRequest request){
+
+        var map = new HashMap<>();
+        var searchVo = new SearchVo();
+        searchVo.setMem_no(MemberVo.getMyMemNo(request));
+
+        List<AdminMenuVo> adminMenuList = adminCommonService.getAdminMenuInSession(request);
+
+        if(DalbitUtil.isEmpty(adminMenuList) || 0 == adminMenuList.size()) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음));
+        }
+        map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+    }
+
     /**
      * - 이미지관리 > 방송방 이미지 조회
      * - 생방송관리
@@ -119,7 +134,6 @@ public class AdminService {
         var map = new HashMap<>();
         map.put("isEndPage", searchVo.isEndPage());
         map.put("broadList", broadList);
-        map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
@@ -213,7 +227,6 @@ public class AdminService {
         var map = new HashMap<>();
         map.put("isEndPage", profileVo.isEndPage());
         map.put("profileList", profileList);
-        map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
