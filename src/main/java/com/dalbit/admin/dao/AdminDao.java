@@ -2,6 +2,7 @@ package com.dalbit.admin.dao;
 
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.P_BroadcastTotalOutDetailVo;
+import com.dalbit.admin.vo.procedure.P_PayInfoOutVo;
 import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
 import com.dalbit.admin.vo.procedure.P_UserTotalOutDetailVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -67,4 +68,7 @@ public interface AdminDao {
     ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
 
     List<P_UserTotalOutDetailVo> callUserTotal(ProcedureVo procedureVo);
+
+    List<P_PayInfoOutVo> callPayInfo(ProcedureVo procedureVo);
+
 }

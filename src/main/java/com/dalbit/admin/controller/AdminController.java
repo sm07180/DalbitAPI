@@ -178,4 +178,13 @@ public class AdminController {
         String result = adminService.callUserTotal();
         return result;
     }
+
+    /**
+     * 통계 > 결제 현황
+     */
+    @PostMapping("/stat/payInfo")
+    public String statPay(HttpServletRequest request, P_StatVo pStatVo) {
+        String result = adminService.callPayInfo(pStatVo);
+        return result;
+    }
 }

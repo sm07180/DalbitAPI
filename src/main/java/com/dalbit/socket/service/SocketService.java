@@ -31,6 +31,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -62,7 +63,7 @@ public class SocketService {
     @Autowired
     ProfileDao profileDao;
 
-    public Map<String, Object> sendSocketApi(String authToken, String roomNo, String params) {
+    public void sendSocketApi(String authToken, String roomNo, String params) {
         HttpURLConnection con = null;
         URL url = null;
         String result = "";
@@ -116,8 +117,8 @@ public class SocketService {
             }
         }
 
-        //log.error("Socket Result {}, {}, {}", roomNo, params, result);
-        return new Gson().fromJson(result, Map.class);
+        log.info("Socket Result {}, {}, {}", roomNo, params, result);
+        //return new Gson().fromJson(result, Map.class);
     }
 
     /**
@@ -147,31 +148,30 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendMessage(String memNo, String roomNo, String message, String authToken, boolean isLogin){
+    public void sendMessage(String memNo, String roomNo, String message, String authToken, boolean isLogin){
         log.info("Socket Start : sendMessage {}, {}, {}, {}", roomNo, memNo, message, isLogin);
         memNo = memNo == null ? "" : memNo.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(message) && !"".equals(authToken)){
             SocketVo vo = getSocketVo(roomNo, memNo, isLogin);
             log.debug("send vo : " + vo.toString());
-            if(vo.getMemNo() == null){
-                return null;
+            if(vo.getMemNo() != null) {
+                vo.setCommand("chat");
+                vo.setMessage(message);
+
+                log.debug("send message : " + vo.toString());
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+                //log.debug("send result : " + result.toString());
+
+                //return result;
             }
-            vo.setCommand("chat");
-            vo.setMessage(message);
-
-            log.debug("send message : " + vo.toString());
-            Map<String, Object> result = sendSocketApi(authToken, roomNo, vo.toQueryString());
-            log.debug("send result : " + result.toString());
-
-            return result;
         }
 
-        return null;
+        //return null;
     }
 
     @Async("threadTaskExecutor")
-    public String sendMessage(String message) {
+    public void sendMessage(String message) {
         log.info("Socket Start : sendMessage {}", message);
         RoomListVo pRoomListVo = new RoomListVo();
         pRoomListVo.setPage(1);
@@ -189,11 +189,11 @@ public class SocketService {
             }
 
         }
-        return result;
+        //return result;
     }
 
     @Async("threadTaskExecutor")
-    public String sendMessage(String message, List<String> listTargetRooms) {
+    public void sendMessage(String message, List<String> listTargetRooms) {
         log.info("Socket Start : sendMessage {}", message);
         RoomListVo pRoomListVo = new RoomListVo();
         pRoomListVo.setPage(1);
@@ -213,11 +213,11 @@ public class SocketService {
             }
 
         }
-        return result;
+        //return result;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendMessage(P_RoomListVo roomListVo, String message) {
+    public void sendMessage(P_RoomListVo roomListVo, String message) {
         SocketVo vo = new SocketVo();
         vo.setMemNo(roomListVo.getBj_mem_no());
         vo.setLogin(1);
@@ -227,16 +227,16 @@ public class SocketService {
         vo.setRecvType("system");
         vo.setAuth(3);
         vo.setAuthName("운영자");
-        return sendSocketApi(roomListVo.getBj_mem_no(), roomListVo.getRoomNo(), vo.toQueryString());
+        sendSocketApi(roomListVo.getBj_mem_no(), roomListVo.getRoomNo(), vo.toQueryString());
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin){
-        return changeRoomState(roomNo, memNo, old_state, state, authToken, isLogin, null);
+    public void changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin){
+        changeRoomState(roomNo, memNo, old_state, state, authToken, isLogin, null);
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin, SocketVo vo){
+    public void changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : changeRoomState {}, {}, {}, {}, {}", roomNo, memNo, old_state, state, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -246,95 +246,87 @@ public class SocketService {
             if(vo == null){
                 vo = getSocketVo(roomNo, memNo, isLogin);
             }
-            if(vo.getMemNo() == null){
-                return null;
-            }
-
-            String command = "reqMicOn";
-            if(state == 0) {
-                //command = "reqMediaOff";
-                return bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
-            }else if(state == 3){ //통화중
-                command = "reqCalling";
-            }else if(state == 2){ // 마이크 오프
-                command = "reqMicOff";
-            }else{
-                if(old_state == 0 || old_state == 6){
-                    return bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
-                    //command = "reqMediaOn";
-                }else if(old_state == 3){
-                    command = "reqEndCall";
+            if(vo.getMemNo() != null){
+                String command = "reqMicOn";
+                if (state == 0) {
+                    //command = "reqMediaOff";
+                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                } else if (state == 3) { //통화중
+                    command = "reqCalling";
+                } else if (state == 2) { // 마이크 오프
+                    command = "reqMicOff";
+                } else {
+                    if (old_state == 0 || old_state == 6) {
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                        //command = "reqMediaOn";
+                    } else if (old_state == 3) {
+                        command = "reqEndCall";
+                    }
                 }
+
+                vo.setCommand(command);
+                vo.setMessage(vo.getAuth() + "");
+                vo.setRecvPosition("top1");
+                vo.setRecvLevel(3);
+                vo.setRecvType("system");
+
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-
-            vo.setCommand(command);
-            vo.setMessage(vo.getAuth() + "");
-            vo.setRecvPosition("top1");
-            vo.setRecvLevel(3);
-            vo.setRecvType("system");
-
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
+    public void bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : bjAntConnect {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqBjAntConnect");
+                vo.setRecvDj(0);
+                vo.setMessage("");
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+                //return bjAntDisConnect(roomNo, authToken, vo);
             }
-            vo.setCommand("reqBjAntConnect");
-            vo.setRecvDj(0);
-            vo.setMessage("");
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
-            //return bjAntDisConnect(roomNo, authToken, vo);
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> bjAntDisConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
+    public void bjAntDisConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : bjAntDisConnect {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqBjAntDisconnect");
+                vo.setMessage("DJ의 방송상태가 원활하지 않습니다.");
+                vo.setRecvDj(0);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+                bjAntDisConnect(roomNo, authToken, vo);
             }
-            vo.setCommand("reqBjAntDisconnect");
-            vo.setMessage("DJ의 방송상태가 원활하지 않습니다.");
-            vo.setRecvDj(0);
-            sendSocketApi(authToken, roomNo, vo.toQueryString());
-            return bjAntDisConnect(roomNo, authToken, vo);
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> bjAntDisConnect(String roomNo, String authToken, SocketVo vo){
+    public void bjAntDisConnect(String roomNo, String authToken, SocketVo vo){
         vo.setCommand("chat");
         vo.setRecvType("system");
         vo.setRecvPosition("top1");
         vo.setRecvDj(1);
-        return sendSocketApi(authToken, roomNo, vo.toQueryString());
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, int state, String authToken, boolean isLogin) {
-        return changeRoomState(roomNo, memNo, state, authToken, isLogin, null, null);
+    public void changeRoomState(String roomNo, String memNo, int state, String authToken, boolean isLogin) {
+        changeRoomState(roomNo, memNo, state, authToken, isLogin, null, null);
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeRoomState(String roomNo, String memNo, int state, String authToken, boolean isLogin, String type, SocketVo vo){
+    public void changeRoomState(String roomNo, String memNo, int state, String authToken, boolean isLogin, String type, SocketVo vo){
         log.info("Socket Start : changeRoomState {}, {}, {}, {}", roomNo, memNo, state, isLogin);
 
         if("join".equals(type)){
@@ -351,88 +343,78 @@ public class SocketService {
             if(vo == null){
                 vo = getSocketVo(roomNo, memNo, isLogin);
             }
-            if(vo.getMemNo() == null){
-                return null;
-            }
+            if(vo.getMemNo() != null) {
+                String command = "reqMicOn";
+                if (state == 3) { //통화중
+                    command = "reqCalling";
+                } else if (state == 2) { // 마이크 오프
+                    command = "reqMicOff";
+                } else if (state == 0) { // 미디어 오프
+                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                }
+                vo.setCommand(command);
+                vo.setMessage(vo.getAuth() + "");
+                vo.setRecvPosition("top1");
+                vo.setRecvLevel(3);
+                vo.setRecvType("system");
+                vo.setRecvMemNo(memNo);
 
-            String command = "reqMicOn";
-            if(state == 3){ //통화중
-                command = "reqCalling";
-            }else if(state == 2){ // 마이크 오프
-                command = "reqMicOff";
-            }else if(state == 0){ // 미디어 오프
-                return bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand(command);
-            vo.setMessage(vo.getAuth() + "");
-            vo.setRecvPosition("top1");
-            vo.setRecvLevel(3);
-            vo.setRecvType("system");
-            vo.setRecvMemNo(memNo);
-
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken, boolean isLogin, SocketVo vo){
+    public void changeManager(String roomNo, String memNo, String menagerMemNo, boolean isManager, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : changeManager {}, {}, {}, {}, {}", roomNo, memNo, menagerMemNo, isManager, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(menagerMemNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqGrant");
+                vo.setMessage(isManager ? "1" : "0");
+                vo.setRecvMemNo(menagerMemNo);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqGrant");
-            vo.setMessage(isManager ? "1" : "0");
-            vo.setRecvMemNo(menagerMemNo);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken, boolean isLogin, SocketVo vo){
+    public void changeRoomInfo(String roomNo, String memNo, HashMap roomInfo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : changeManager {}, {}, {}, {}", roomNo, memNo, roomInfo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqRoomChangeInfo");
+                vo.setMessage(roomInfo);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqRoomChangeInfo");
-            vo.setMessage(roomInfo);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeCount(String roomNo, String memNo, HashMap roomInfo, String authToken, boolean isLogin, SocketVo vo){
+    public void changeCount(String roomNo, String memNo, HashMap roomInfo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : changeCount {}, {}, {}, {}", roomNo, memNo, roomInfo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && roomInfo != null && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqChangeCount");
+                vo.setMessage(roomInfo);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqChangeCount");
-            vo.setMessage(roomInfo);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendLike(String roomNo, String memNo, boolean isFirst, String authToken, boolean isLogin, SocketVo vo){
+    public void sendLike(String roomNo, String memNo, boolean isFirst, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : sendLike {}, {}, {}, {}", roomNo, memNo, isFirst, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -448,96 +430,86 @@ public class SocketService {
                     sendSocketApi(authToken, roomNo, vo1.toQueryString());
                 }
             }
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqGood");
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqGood");
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendBooster(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
+    public void sendBooster(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : sendBooster {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = memNo == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqBooster");
+                //vo.setMessage(itemMap);
+                vo.setRecvTime(3);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqBooster");
-            //vo.setMessage(itemMap);
-            vo.setRecvTime(3);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendNotice(String roomNo, String memNo, String notice, String authToken, boolean isLogin, SocketVo vo){
+    public void sendNotice(String roomNo, String memNo, String notice, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : sendNotice {}, {}, {}, {}", roomNo, memNo, notice, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         notice = notice == null ? "" : notice.trim();
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqNotice");
+                vo.setRecvTime(3);
+                vo.setRecvDj(0);
+                vo.setMessage(notice);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqNotice");
-            vo.setRecvTime(3);
-            vo.setRecvDj(0);
-            vo.setMessage(notice);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> sendStory(String roomNo, String memNo, Object story, String authToken, boolean isLogin, SocketVo vo){
+    public void sendStory(String roomNo, String memNo, Object story, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : sendStory {}, {}, {}, {}", roomNo, memNo, story, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && story != null){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqStory");
+                vo.setRecvTime(3);
+                vo.setRecvListener(0);
+                vo.setRecvManager(0);
+                vo.setMessage(story);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqStory");
-            vo.setRecvTime(3);
-            vo.setRecvListener(0);
-            vo.setRecvManager(0);
-            vo.setMessage(story);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> addFan(String roomNo, String memNo, String recvMemNo, String authToken, String fan, boolean isLogin, SocketVo vo){
+    public void addFan(String roomNo, String memNo, String recvMemNo, String authToken, String fan, boolean isLogin, SocketVo vo){
         log.info("Socket Start : addFan {}, {}, {}, {}, {}", roomNo, memNo, recvMemNo, fan, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqFan");
+                vo.setMessage(fan);
+                vo.setRecvMemNo(recvMemNo);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqFan");
-            vo.setMessage(fan);
-            vo.setRecvMemNo(recvMemNo);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> giftDal(String memNo, String giftedMemNo, int dal, String authToken, boolean isLogin){
+    public void giftDal(String memNo, String giftedMemNo, int dal, String authToken, boolean isLogin){
         log.info("Socket Start : giftDal {}, {}, {}, {}", memNo, giftedMemNo, dal, isLogin);
         memNo = memNo == null ? "" : memNo.trim();
         giftedMemNo = giftedMemNo == null ? "" : giftedMemNo.trim();
@@ -552,72 +524,28 @@ public class SocketService {
                 HashMap socketMap = new HashMap();
                 socketMap.put("itemCnt", dal);
                 vo.setMessage(socketMap);
-                return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+                sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
             }
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> giftItem(String roomNo, String memNo, String giftedMemNo, Object item, String authToken, boolean isLogin, SocketVo vo){
+    public void giftItem(String roomNo, String memNo, String giftedMemNo, Object item, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : giftItem {}, {}, {}, {}, {}", roomNo, memNo, giftedMemNo, item, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && item != null){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null || vo.getMemNo() != null) {
+                vo.setCommand("reqGiftImg");
+                vo.setMessage(item);
+                if (giftedMemNo != null && !"".equals(giftedMemNo.trim())) {
+                    vo.setRecvMemNo(giftedMemNo);
+                }
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqGiftImg");
-            vo.setMessage(item);
-            if(giftedMemNo != null && !"".equals(giftedMemNo.trim())){
-                vo.setRecvMemNo(giftedMemNo);
-            }
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
-    }
-
-    @Async("threadTaskExecutor")
-    public Map<String, Object> bjLevelUpToListener(String roomNo, String memNo, Object item, String authToken, boolean isLogin, SocketVo vo){
-        log.info("Socket Start : giftItem {}, {}, {}, {}", roomNo, memNo, item, isLogin);
-        roomNo = roomNo == null ? "" : roomNo.trim();
-        memNo = memNo == null ? "" : memNo.trim();
-        authToken = authToken == null ? "" : authToken.trim();
-
-        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && item != null){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
-            }
-            //vo.setCommand("reqLevelUpBj");
-            vo.setCommand("reqGiftImg");
-            vo.setMessage(item);
-            vo.setRecvDj(0);
-
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
-        }
-        return null;
-    }
-
-
-    @Async("threadTaskExecutor")
-    public Map<String, Object> levelUp(String roomNo, String memNo, Object levelInfo, String authToken, boolean isLogin, SocketVo vo){
-        log.info("Socket Start : levelUp {}, {}, {}, {}", roomNo, memNo, levelInfo, isLogin);
-        roomNo = roomNo == null ? "" : roomNo.trim();
-        memNo = memNo == null ? "" : memNo.trim();
-        authToken = authToken == null ? "" : authToken.trim();
-
-        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelInfo != null){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
-            }
-            vo.setCommand("reqLevelUpSelf");
-            vo.setMessage(levelInfo);
-            vo.setRecvMemNo(memNo);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
-        }
-        return null;
     }
 
     /**
@@ -630,7 +558,7 @@ public class SocketService {
      * @return
      */
     @Async("threadTaskExecutor")
-    public Map<String, Object> execGuest(String roomNo, String bjMemNo, String gstMemNo, int type, String authToken, boolean isLogin){
+    public void execGuest(String roomNo, String bjMemNo, String gstMemNo, int type, String authToken, boolean isLogin){
         log.info("Socket Start : execGuest {}, {}, {}, {}, {}", roomNo, bjMemNo, gstMemNo, type, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         bjMemNo = bjMemNo == null ? "" : bjMemNo.trim();
@@ -644,94 +572,82 @@ public class SocketService {
                 sendMemno = gstMemNo;
             }
             SocketVo vo = getSocketVo(roomNo, sendMemno, isLogin);
-            if(vo.getMemNo() == null){
-                return null;
+            if(vo.getMemNo() != null) {
+                vo.setRecvMemNo(recvMemNo);
+                vo.setMessage(type + "");
+                vo.setCommand("reqGuest");
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setRecvMemNo(recvMemNo);
-            vo.setMessage(type + "");
-            vo.setCommand("reqGuest");
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> kickout(String roomNo, String memNo, String kickedMemNo, String authToken, boolean isLogin, SocketVo vo, HashMap bolckedMap){
+    public void kickout(String roomNo, String memNo, String kickedMemNo, String authToken, boolean isLogin, SocketVo vo, HashMap bolckedMap){
         log.info("Socket Start : kickout {}, {}, {}, {}, {}", roomNo, memNo, kickedMemNo, isLogin, authToken);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         kickedMemNo = kickedMemNo == null ? "" : kickedMemNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(kickedMemNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
-            }
-
-            vo.setCommand("reqKickOut");
-            if(bolckedMap != null){
-                HashMap socketMap = new HashMap();
-                socketMap.put("sndAuth", vo.getAuth());
-                socketMap.put("sndMemNo", vo.getMemNo());
-                socketMap.put("sndMemNk", vo.getMemNk());
-                socketMap.put("revMemNo", kickedMemNo);
-                socketMap.put("revMemNk", DalbitUtil.getStringMap(bolckedMap, "nickName"));
-                vo.setMessage(socketMap);
-                return sendSocketApi(authToken, roomNo, vo.toQueryString());
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqKickOut");
+                if (bolckedMap != null) {
+                    HashMap socketMap = new HashMap();
+                    socketMap.put("sndAuth", vo.getAuth());
+                    socketMap.put("sndMemNo", vo.getMemNo());
+                    socketMap.put("sndMemNk", vo.getMemNk());
+                    socketMap.put("revMemNo", kickedMemNo);
+                    socketMap.put("revMemNk", DalbitUtil.getStringMap(bolckedMap, "nickName"));
+                    vo.setMessage(socketMap);
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
             }
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> banWord(String roomNo, String memNo, String authToken, boolean isLogin){
+    public void banWord(String roomNo, String memNo, String authToken, boolean isLogin){
         log.info("Socket Start : banWord {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
             SocketVo vo = getSocketVo(roomNo, memNo, isLogin);
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqBanWord");
+                HashMap socketMap = new HashMap();
+                socketMap.put("channel", roomNo);
+                socketMap.put("memNo", vo.getMemNo());
+                vo.setMessage(socketMap);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqBanWord");
-            HashMap socketMap = new HashMap();
-            socketMap.put("channel", roomNo);
-            socketMap.put("memNo", vo.getMemNo());
-            vo.setMessage(socketMap);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> chatEnd(String roomNo, String memNo, String authToken, int auth, boolean isLogin, SocketVo vo) {
+    public void chatEnd(String roomNo, String memNo, String authToken, int auth, boolean isLogin, SocketVo vo) {
         log.info("Socket Start : chatEnd {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
         if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setRecvMemNo(memNo);
+                vo.setCommand("chatEnd");
+
+                HashMap data = new HashMap();
+                data.put("message", auth == 3 ? "roomOut" : "userOut");
+                data.put("authToken", authToken);
+                data.put("memNo", memNo);
+                vo.setMessage(data);
+
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setRecvMemNo(memNo);
-            vo.setCommand("chatEnd");
-
-            HashMap data = new HashMap();
-            data.put("message", auth == 3 ? "roomOut" : "userOut");
-            data.put("authToken", authToken);
-            data.put("memNo", memNo);
-            vo.setMessage(data);
-
-            log.debug(" @@@ chatEnd @@@");
-            log.debug(vo.toQueryString());
-            log.debug(" @@@ chatEnd @@@");
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     @Async("threadTaskExecutor")
-    public Map<String, Object> changeMemberInfo(String memNo, Object message, String authToken, boolean isLogin) {
+    public void changeMemberInfo(String memNo, Object message, String authToken, boolean isLogin) {
         log.info("Socket Start : changeMemberInfo {}, {}, {}", memNo, message, isLogin);
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
@@ -743,26 +659,24 @@ public class SocketService {
             vo.setMessage(message);
 
             log.info("Socket vo to Query String: {}",vo.toQueryString());
-            return sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+            sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
         }
-        return null;
     }
+
     @Async("threadTaskExecutor")
-    public Map<String, Object> roomChangeTime(String roomNo, String memNo, String extendedTime, String authToken, boolean isLogin, SocketVo vo) {
+    public void roomChangeTime(String roomNo, String memNo, String extendedTime, String authToken, boolean isLogin, SocketVo vo) {
         log.info("Socket Start : changeMemberInfo {}, {}, {}, {}, {}", roomNo, memNo, extendedTime, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         extendedTime = extendedTime == null ? "" : extendedTime.trim();
         authToken = authToken == null ? "" : authToken.trim();
         if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(extendedTime) && !"".equals(authToken)){
-            if(vo == null || vo.getMemNo() == null){
-                return null;
+            if(vo != null && vo.getMemNo() != null) {
+                vo.setCommand("reqRoomChangeTime");
+                vo.setMessage(extendedTime);
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
-            vo.setCommand("reqRoomChangeTime");
-            vo.setMessage(extendedTime);
-            return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
-        return null;
     }
 
     public SocketVo getSocketVo(String roomNo, String memNo, boolean isLogin){
@@ -801,7 +715,8 @@ public class SocketService {
         return null;
     }
 
-    public Map<String, Object> sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo){
+    @Async("threadTaskExecutor")
+    public void sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo){
         HashMap itemMap = new HashMap();
         itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
         ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.levelUp"));
@@ -813,10 +728,27 @@ public class SocketService {
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
 
-        return bjLevelUpToListener(roomNo, new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+        String memNo = new MemberVo().getMyMemNo(request);
+        String authToken = DalbitUtil.getAuthToken(request);
+
+        log.info("Socket Start : djLlevelUp {}, {}, {}", roomNo, memNo, itemMap);
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && itemMap != null){
+            if(vo != null && vo.getMemNo() != null) {
+                //vo.setCommand("reqLevelUpBj");
+                vo.setCommand("reqGiftImg");
+                vo.setMessage(itemMap);
+                vo.setRecvDj(0);
+
+                try{
+                    Thread.sleep(5000);
+                }catch(InterruptedException e){}
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+            }
+        }
     }
 
-    public Map<String, Object> sendLevelUp(String memNo, String roomNo, HttpServletRequest request, SocketVo vo){
+    @Async("threadTaskExecutor")
+    public void sendLevelUp(String memNo, String roomNo, HttpServletRequest request, String authToken){
         P_LevelUpCheckVo pLevelUpCheckVo = new P_LevelUpCheckVo();
         pLevelUpCheckVo.setMem_no(memNo);
         ProcedureVo procedureLevelCheckVo = new ProcedureVo(pLevelUpCheckVo);
@@ -856,9 +788,21 @@ public class SocketService {
         levelUp.put("byul", DalbitUtil.getIntMap(resultLevelUpCheckMap, "rewardByeol"));
         levelUp.put("frameName", resultLevelUpCheckMap.get("newGrade") + " 프레임");
         levelUp.put("frameColor", frameColor);
-        levelUp.put("frameImg", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + resultLevelUpCheckMap.get("newLevel") + ".png");
+        levelUp.put("frameImg", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", resultLevelUpCheckMap.get("newLevel") + ""));
 
-        return levelUp(roomNo, memNo, levelUp, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        log.info("Socket Start : levelUp {}, {}, {}, {}, {}, {}", roomNo, memNo, levelUp, authToken, djVo, (djVo == null ? null : djVo.getMemNo()));
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelUp != null){
+            if(djVo != null && djVo.getMemNo() != null) {
+                djVo.setCommand("reqLevelUpSelf");
+                djVo.setMessage(levelUp);
+                djVo.setRecvMemNo(memNo);
+                sendSocketApi(authToken, roomNo, djVo.toQueryString());
+            }
+        }
     }
 }
 
