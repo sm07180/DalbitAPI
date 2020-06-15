@@ -745,12 +745,6 @@ public class SocketService {
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
 
-        try {
-            Thread.sleep(5000);
-        } catch (InterruptedException e) {
-        }
-
-        roomNo = roomNo == null ? "" : roomNo.trim();
         String memNo = new MemberVo().getMyMemNo(request);
         String authToken = DalbitUtil.getAuthToken(request);
 
