@@ -27,23 +27,23 @@ public class SocketController {
     GsonUtil gsonUtil;
 
     @PostMapping("sendMessage")
-    public String sendMessage(HttpServletRequest request) {
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(MemberVo.getMyMemNo(request), request.getParameter("roomNo"), request.getParameter("message"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request))));
+    public void sendMessage(HttpServletRequest request) {
+        //return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(MemberVo.getMyMemNo(request), request.getParameter("roomNo"), request.getParameter("message"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request))));
     }
 
     @PostMapping("sendSystemMessage")
-    public String sendMessageSystem(HttpServletRequest request) {
-         return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"))));
+    public void sendMessageSystem(HttpServletRequest request) {
+         //return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"))));
     }
 
     @PostMapping("sendTargetSystemMessage")
-    public String sendTargetMessageSystem(HttpServletRequest request) {
+    public void sendTargetMessageSystem(HttpServletRequest request) {
         String targetRooms = request.getParameter("targetRooms");
         List<String> listTargetRoom = null;
         if(!DalbitUtil.isEmpty(targetRooms)){
             listTargetRoom = Arrays.asList(targetRooms.split("\\|"));
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"), listTargetRoom)));
+        //return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"), listTargetRoom)));
     }
 }

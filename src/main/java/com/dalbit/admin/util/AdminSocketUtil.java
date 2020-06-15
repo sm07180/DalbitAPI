@@ -58,15 +58,15 @@ public class AdminSocketUtil {
                 message = gsonUtil.toJson(map);
                 SocketVo vo = getSocketVo(param, command, message);
                 System.out.println(vo.toQueryString());
-                return socketService.sendSocketApi(authToken, DalbitUtil.getStringMap(param, "roomNo"), vo.toQueryString());
+                socketService.sendSocketApi(authToken, DalbitUtil.getStringMap(param, "roomNo"), vo.toQueryString());
             }else if(command.equals("reqKickOut")) {
                 SocketVo vo = getSocketVo(param, command, message);
                 System.out.println(vo.toQueryString());
-                return socketService.sendSocketApi(authToken, DalbitUtil.getStringMap(param, "roomNo"), vo.toQueryString());
+                socketService.sendSocketApi(authToken, DalbitUtil.getStringMap(param, "roomNo"), vo.toQueryString());
             }else{
                 SocketVo vo = getSocketVo(param, command, message);
                 System.out.println(vo.toQueryString());
-                return socketService.sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
+                socketService.sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
             }
         }
         return null;
