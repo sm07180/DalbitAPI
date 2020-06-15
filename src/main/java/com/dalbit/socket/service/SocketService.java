@@ -549,26 +549,6 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void bjLevelUpToListener(String roomNo, String memNo, Object item, String authToken, boolean isLogin, SocketVo vo){
-        log.info("Socket Start : giftItem {}, {}, {}, {}", roomNo, memNo, item, isLogin);
-        roomNo = roomNo == null ? "" : roomNo.trim();
-        memNo = memNo == null ? "" : memNo.trim();
-        authToken = authToken == null ? "" : authToken.trim();
-
-        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && item != null){
-            if(vo != null && vo.getMemNo() != null) {
-                //vo.setCommand("reqLevelUpBj");
-                vo.setCommand("reqGiftImg");
-                vo.setMessage(item);
-                vo.setRecvDj(0);
-
-                sendSocketApi(authToken, roomNo, vo.toQueryString());
-            }
-        }
-    }
-
-
-    @Async("threadTaskExecutor")
     public void levelUp(String roomNo, String memNo, Object levelInfo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : levelUp {}, {}, {}, {}", roomNo, memNo, levelInfo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
@@ -770,7 +750,20 @@ public class SocketService {
         } catch (InterruptedException e) {
         }
 
-        bjLevelUpToListener(roomNo, new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        String memNo = new MemberVo().getMyMemNo(request);
+        String authToken = DalbitUtil.getAuthToken(request);
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && itemMap != null){
+            if(vo != null && vo.getMemNo() != null) {
+                //vo.setCommand("reqLevelUpBj");
+                vo.setCommand("reqGiftImg");
+                vo.setMessage(itemMap);
+                vo.setRecvDj(0);
+
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+            }
+        }
     }
 
     @Async("threadTaskExecutor")
