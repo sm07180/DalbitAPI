@@ -562,11 +562,6 @@ public class SocketService {
                 vo.setMessage(item);
                 vo.setRecvDj(0);
 
-                try {
-                    TimeUnit.SECONDS.sleep(5);
-                } catch (InterruptedException e) {
-                }
-
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
         }
@@ -704,6 +699,7 @@ public class SocketService {
             sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
         }
     }
+
     @Async("threadTaskExecutor")
     public void roomChangeTime(String roomNo, String memNo, String extendedTime, String authToken, boolean isLogin, SocketVo vo) {
         log.info("Socket Start : changeMemberInfo {}, {}, {}, {}, {}", roomNo, memNo, extendedTime, isLogin);
@@ -756,6 +752,7 @@ public class SocketService {
         return null;
     }
 
+    @Async("threadTaskExecutor")
     public void sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo){
         HashMap itemMap = new HashMap();
         itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
@@ -768,9 +765,15 @@ public class SocketService {
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
 
+        try {
+            Thread.sleep(5000);
+        } catch (InterruptedException e) {
+        }
+
         bjLevelUpToListener(roomNo, new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
     }
 
+    @Async("threadTaskExecutor")
     public void sendLevelUp(String memNo, String roomNo, HttpServletRequest request, SocketVo vo){
         P_LevelUpCheckVo pLevelUpCheckVo = new P_LevelUpCheckVo();
         pLevelUpCheckVo.setMem_no(memNo);
