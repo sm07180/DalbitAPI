@@ -813,6 +813,10 @@ public class SocketService {
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
 
+        try{
+            Thread.sleep(5000);
+        }catch(InterruptedException e){}
+
         return bjLevelUpToListener(roomNo, new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
     }
 
