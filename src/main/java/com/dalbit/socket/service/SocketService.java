@@ -788,13 +788,13 @@ public class SocketService {
         levelUp.put("byul", DalbitUtil.getIntMap(resultLevelUpCheckMap, "rewardByeol"));
         levelUp.put("frameName", resultLevelUpCheckMap.get("newGrade") + " 프레임");
         levelUp.put("frameColor", frameColor);
-        levelUp.put("frameImg", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + resultLevelUpCheckMap.get("newLevel") + ".png");
+        levelUp.put("frameImg", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", resultLevelUpCheckMap.get("newLevel") + ""));
 
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         String authToken = DalbitUtil.getAuthToken(request);
 
-        log.info("Socket Start : levelUp {}, {}, {}", roomNo, memNo, levelUp);
+        log.info("Socket Start : levelUp {}, {}, {}, {}, {}, {}", roomNo, memNo, levelUp, authToken, vo, (vo == null ? null : vo.getMemNo()));
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelUp != null){
             if(vo != null && vo.getMemNo() != null) {
                 vo.setCommand("reqLevelUpSelf");
