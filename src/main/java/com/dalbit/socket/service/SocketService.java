@@ -748,7 +748,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void sendLevelUp(String memNo, String roomNo, HttpServletRequest request, SocketVo vo){
+    public void sendLevelUp(String memNo, String roomNo, HttpServletRequest request, String authToken){
         P_LevelUpCheckVo pLevelUpCheckVo = new P_LevelUpCheckVo();
         pLevelUpCheckVo.setMem_no(memNo);
         ProcedureVo procedureLevelCheckVo = new ProcedureVo(pLevelUpCheckVo);
@@ -792,7 +792,7 @@ public class SocketService {
 
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
-        String authToken = DalbitUtil.getAuthToken(request);
+        authToken = authToken == null ? "" : authToken.trim();
 
         log.info("Socket Start : levelUp {}, {}, {}, {}, {}, {}", roomNo, memNo, levelUp, authToken, djVo, (djVo == null ? null : djVo.getMemNo()));
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && levelUp != null){
