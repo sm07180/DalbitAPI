@@ -595,6 +595,10 @@ public class SocketService {
             vo.setMessage(item);
             vo.setRecvDj(0);
 
+            try{
+                Thread.sleep(5000);
+            }catch(InterruptedException e){}
+
             return sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
         return null;
@@ -812,10 +816,6 @@ public class SocketService {
         itemMap.put("itemImg", itemThumbs);
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
-
-        try{
-            Thread.sleep(5000);
-        }catch(InterruptedException e){}
 
         return bjLevelUpToListener(roomNo, new MemberVo().getMyMemNo(request), itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
     }
