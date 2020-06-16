@@ -61,6 +61,9 @@
             , IF(is_pop = 1, 'popup', 'link') AS linkType
             , title
             , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
+            , popup_type
+            , is_cookie
+            , contents
         FROM rd_admin.tb_admin_banner
         WHERE is_view = 1
             AND position = #{paramPosition}
