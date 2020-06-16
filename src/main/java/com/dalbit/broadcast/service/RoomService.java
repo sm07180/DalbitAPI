@@ -307,6 +307,8 @@ public class RoomService {
             HashMap data = new HashMap();
             data.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_강퇴시간제한, data));
+        } else if (procedureVo.getRet().equals(Status.방송참여_블랙리스트.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_블랙리스트));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방참가실패));
         }
