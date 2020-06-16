@@ -33,7 +33,7 @@
                 , room.mem_no
                 , room.start_date
                 , basic.mem_nick
-                , basic.mem_id
+                , basic.mem_userid
                 , (select `code` from rd_data.tbl_code_define where type = 'subject_type' and value = room.subject_type) subject_name
                 , room.title
                 , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth != 3) liveListener
@@ -83,7 +83,6 @@
                 , session.mem_no
                 , profile.image_profile
                 , basic.mem_nick
-                , basic.mem_id
                 , basic.mem_userid
                 , basic.mem_join_date
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
@@ -222,6 +221,18 @@
             , rd_data.tb_member_level l
             where b.mem_no = l.mem_no
               and b.mem_no = #{mem_no}
+    </select>
+
+    <select id="getBroadInfo" parameterType="String" resultType="com.dalbit.admin.vo.BroadInfoVo">
+        /* Admin.xml - getBroadInfo */
+        select
+          room_no
+          , subject_type
+          , title
+          , msg_welcom
+          , image_background
+        from rd_data.tb_broadcast_room
+        where room_no = #{room_no}
     </select>
 
     <select id="selectBroadcastSimpleInfo" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.BroadcastDetailVo">

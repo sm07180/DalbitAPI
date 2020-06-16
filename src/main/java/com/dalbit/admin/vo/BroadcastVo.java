@@ -13,6 +13,7 @@ public class BroadcastVo {
     private String mem_no;
     private String mem_nick;
     private String mem_id;
+    private String mem_userid;
     private String subject_name;
     private String title;
     private int liveListener;
