@@ -92,6 +92,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , deviceVo.getIp()
                 , DalbitUtil.getUserAgent(request)
         );
+        pLoginVo.setRoom_no(DalbitUtil.getStringMap(map, "room_no"));
 
         ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
         log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
