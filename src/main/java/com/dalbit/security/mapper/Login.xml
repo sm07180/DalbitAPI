@@ -55,4 +55,14 @@
         order by op_date desc
         limit 1
     </select>
+
+    <select id="selectListeningRoom" parameterType="com.dalbit.security.vo.P_ListeningRoom" resultType="String">
+        SELECT
+          room_no
+        FROM tb_broadcast_room_member
+        WHERE mem_no = #{mem_no}
+          AND state = 0
+          AND device_uuid = #{device_uuid}
+          AND auth &lt; 3
+    </select>
 </mapper>
