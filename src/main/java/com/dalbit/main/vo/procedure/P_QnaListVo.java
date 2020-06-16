@@ -36,6 +36,7 @@ public class P_QnaListVo {
     private Date writeDate;
     private Date opDate;
     private String addFile;
+    private String email;
 
 
 }
