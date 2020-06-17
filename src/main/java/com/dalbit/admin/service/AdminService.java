@@ -52,8 +52,7 @@ public class AdminService {
     JwtUtil jwtUtil;
     @Autowired
     AdminSocketUtil adminSocketUtil;
-//    @Autowired
-//    SocketUtil socketUtil;
+
     @Autowired
     AdminCommonService adminCommonService;
 
@@ -74,8 +73,7 @@ public class AdminService {
     @Value("${server.api.url}")
     private String SERVER_API_URL;
 
-    @Value("/profile_3/profile_n_200327.jpg")
-    private String PROFILE_DEFAULT_IMAGE;
+    private String PROFILE_DEFAULT_IMAGE = "/profile_3/profile_n_200327.jpg";
 
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
 
@@ -252,7 +250,7 @@ public class AdminService {
             adminDao.insertProfileHistory(proImageInitVo);
 
             // rd_data.tb_member_profile에 image_profile update
-            int result = adminDao.proImageInit(proImageInitVo);
+            adminDao.proImageInit(proImageInitVo);
 
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
@@ -286,9 +284,8 @@ public class AdminService {
                     Gson gson = new Gson();
                     HashMap<String,Object> tmp = new HashMap();
 
-                    if(proImageInitVo.getReset_image_profile().equals("")) {
+                    if(proImageInitVo.getReset_image_profile().equals(PROFILE_DEFAULT_IMAGE)) {
                         tmp.put("image", new ImageVo("", defaultGender, DalbitUtil.getProperty("server.photo.url")).getUrl().replace(DalbitUtil.getProperty("server.photo.url"), ""));
-                        proImageInitVo.setImage_profile(new ImageVo("", defaultGender, DalbitUtil.getProperty("server.photo.url")).getUrl().replace(DalbitUtil.getProperty("server.photo.url"), ""));
                     }
                     tmp.put("sex", defaultGender);
                     tmp.put("nk", proImageInitVo.getMem_nick());
@@ -338,7 +335,7 @@ public class AdminService {
             adminDao.insertBroadHistory(broImageInitVo);
 
             // rd_data.tb_broadcast_room에 image_background update
-            int result = adminDao.broImageInit(broImageInitVo);
+            adminDao.broImageInit(broImageInitVo);
 
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
@@ -424,7 +421,7 @@ public class AdminService {
             adminDao.insertProfileHistory(proImageInitVo);
 
             // rd_data.tb_member_basic에 mem_nick update
-            int result = adminDao.nickTextInit(nickTextInitVo);
+            adminDao.nickTextInit(nickTextInitVo);
 
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
@@ -441,6 +438,10 @@ public class AdminService {
                 }
 
                 try{
+
+                    //소켓통신에 필요한 회원정보 조회
+                    MemberInfoVo memberInfo = adminDao.getMemberInfo(nickTextInitVo.getMem_no());
+
                     // option
                     HashMap<String, Object> param = new HashMap<>();
                     param.put("memNo", nickTextInitVo.getMem_no());
@@ -456,7 +457,7 @@ public class AdminService {
                     // message set
                     Gson gson = new Gson();
                     HashMap<String,Object> tmp = new HashMap();
-                    tmp.put("image", proImageInitVo.getImage_profile());
+                    tmp.put("image", memberInfo.getImage_profile());
                     tmp.put("sex", defaultGender);
                     tmp.put("nk", nickTextInitVo.getMem_userid());
                     String message =  gson.toJson(tmp);
@@ -502,7 +503,7 @@ public class AdminService {
             adminDao.insertBroadHistory(broImageInitVo);
 
             // rd_data.tb_broadcast_room에 title update
-            int result = adminDao.broTitleTextInit(broTitleTextInitVo);
+            adminDao.broTitleTextInit(broTitleTextInitVo);
 
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();

@@ -215,11 +215,15 @@
               , b.mem_userid
               , b.mem_nick
               , b.mem_phone
+              , b.mem_state
               , l.level
               , l.grade
+              , p.image_profile
           from rd_data.tb_member_basic b
             , rd_data.tb_member_level l
+            , rd_data.tb_member_profile p
             where b.mem_no = l.mem_no
+              and b.mem_no = p.mem_no
               and b.mem_no = #{mem_no}
     </select>
 
