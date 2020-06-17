@@ -259,50 +259,21 @@ public class AdminService {
 
             // rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
-            if(!DalbitUtil.isEmpty(proImageInitVo.getNotificationYn()) && proImageInitVo.getNotificationYn().equals("Y")){
+            if(!DalbitUtil.isEmpty(proImageInitVo.getNotificationYn()) && proImageInitVo.getNotificationYn().equals("Y")) {
 
-                try{
+                try {
                     //알림(종) 표시
                     notiInsertVo.setMem_no(proImageInitVo.getMem_no());
                     notiInsertVo.setSlctType(7);
                     notiInsertVo.setNotiContents(proImageInitVo.getReport_title());
                     notiInsertVo.setNotiMemo(proImageInitVo.getReport_message());
                     adminDao.insertNotiHistory(notiInsertVo);
-                }catch (Exception e){
-                    log.error("[모바일어드민] 알림 실패 - 이미지 초기화");
-                }
-
-                try{
-                    // option
-                    HashMap<String, Object> param = new HashMap<>();
-                    param.put("memNo", proImageInitVo.getMem_no());
-                    param.put("memNk", "");
-                    param.put("ctrlRole", "ctrlRole");
-                    param.put("recvType", "chat");
-                    param.put("recvPosition", "chat");
-                    param.put("recvLevel", 0);
-                    param.put("recvTime", 0);
-
-                    String defaultGender = "n";
-
-                    // message set
-                    Gson gson = new Gson();
-                    HashMap<String,Object> tmp = new HashMap();
-
-                    if(proImageInitVo.getReset_image_profile().equals(PROFILE_DEFAULT_IMAGE)) {
-                        tmp.put("image", new ImageVo("", defaultGender, DalbitUtil.getProperty("server.photo.url")).getUrl().replace(DalbitUtil.getProperty("server.photo.url"), ""));
-                    }
-                    tmp.put("sex", defaultGender);
-                    tmp.put("nk", proImageInitVo.getMem_nick());
-                    String message =  gson.toJson(tmp);
-
-                    adminSocketUtil.setSocket(param, "reqMyInfo", message, jwtUtil.generateToken(proImageInitVo.getMem_no(), true));
-                }catch (Exception e){
-                    log.error("[모바일어드민] 소켓통신 실패 - 이미지 초기화");
+                } catch (Exception e) {
+                    log.error("[모바일어드민] 알림 실패 - 프로필 이미지 초기화");
                 }
 
                 //PUSH 발송
-                try{
+                try {
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(proImageInitVo.getMem_no());
                     pPushInsertVo.setSlct_push("35");
@@ -312,9 +283,32 @@ public class AdminService {
                     pPushInsertVo.setImage_type("101");
 
                     pushService.sendPushReqOK(pPushInsertVo);
-                }catch (Exception e){
-                    log.error("[모바일어드민] PUSH 발송 실패 - 이미지 초기화");
+                } catch (Exception e) {
+                    log.error("[모바일어드민] PUSH 발송 실패 - 프로필 이미지 초기화");
                 }
+            }
+
+            try{
+                // option
+                HashMap<String, Object> param = new HashMap<>();
+                param.put("memNo", proImageInitVo.getMem_no());
+                param.put("memNk", "");
+                param.put("ctrlRole", "ctrlRole");
+                param.put("recvType", "chat");
+                param.put("recvPosition", "chat");
+                param.put("recvLevel", 0);
+                param.put("recvTime", 0);
+                String defaultGender = "n";
+                // message set
+                Gson gson = new Gson();
+                HashMap<String,Object> tmp = new HashMap();
+                if(proImageInitVo.getReset_image_profile().equals(PROFILE_DEFAULT_IMAGE)) {
+                    tmp.put("image", new ImageVo("", defaultGender, DalbitUtil.getProperty("server.photo.url")).getUrl().replace(DalbitUtil.getProperty("server.photo.url"), "")); }tmp.put("sex", defaultGender);
+                tmp.put("nk", proImageInitVo.getMem_nick());
+                String message =  gson.toJson(tmp);
+                adminSocketUtil.setSocket(param, "reqMyInfo", message, jwtUtil.generateToken(proImageInitVo.getMem_no(), true));
+            }catch (Exception e){
+                log.error("[모바일어드민] 소켓통신 실패 - 프로필 이미지 초기화");
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
@@ -374,32 +368,6 @@ public class AdminService {
             }
 
             try{
-                //option
-                    /*HashMap<String, Object> param = new HashMap<>();
-                    param.put("roomNo", broImageInitVo.getRoom_no());
-                    param.put("memNo", broImageInitVo.getMem_no());
-                    param.put("memNk", "");
-                    param.put("ctrlRole", "ctrlRole");
-                    param.put("recvType","chat");
-                    param.put("recvPosition","chat");
-                    param.put("recvLevel", 0);
-                    param.put("recvTime", 0);
-
-                    BroadInfoVo broadInfo = getBroadInfo(broImageInitVo.getRoom_no());
-
-                    // message set
-                    Gson gson = new Gson();
-                    HashMap<String,Object> tmp = new HashMap();
-                    tmp.put("roomType", broadInfo.getSubject_type());
-                    tmp.put("title", broadInfo.getTitle());
-                    tmp.put("welcomMsg", broadInfo.getMsg_welcom());
-
-                    tmp.put("bgImg", new ImageVo(broImageInitVo.getReset_image_background(), DalbitUtil.getProperty("server.photo.url")));
-                    tmp.put("bgImgRacy", 5);
-                    String message =  gson.toJson(tmp);
-
-                    adminSocketUtil.setSocket(param, "reqRoomChangeInfo", message, jwtUtil.generateToken(broImageInitVo.getMem_no(), true));*/
-
                 BroadInfoVo broadInfo = getBroadInfo(broImageInitVo.getRoom_no());
 
                 HashMap roomInfo = new HashMap();
@@ -414,7 +382,7 @@ public class AdminService {
                 socketService.changeRoomInfo(broImageInitVo.getRoom_no(), broImageInitVo.getMem_no(), roomInfo, jwtUtil.generateToken(broImageInitVo.getMem_no()), true, socketVo);
 
             }catch (Exception e){
-                log.error("[모바일어드민] 소켓통신 실패 - 이미지 초기화");
+                log.error("[모바일어드민] 소켓통신 실패 - 방송방 이미지 초기화");
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_성공));
@@ -554,31 +522,19 @@ public class AdminService {
             }
 
             try{
-                //option
-                HashMap<String, Object> param = new HashMap<>();
-                param.put("roomNo", broTitleTextInitVo.getRoom_no());
-                param.put("memNo", broTitleTextInitVo.getMem_no());
-                param.put("memNk", "");
-                param.put("ctrlRole", "ctrlRole");
-                param.put("recvType","chat");
-                param.put("recvPosition","chat");
-                param.put("recvLevel", 0);
-                param.put("recvTime", 0);
-
                 BroadInfoVo broadInfo = getBroadInfo(broTitleTextInitVo.getRoom_no());
 
                 // message set
-                Gson gson = new Gson();
-                HashMap<String,Object> tmp = new HashMap();
-                tmp.put("roomType", broadInfo.getSubject_type());
-                tmp.put("title", broTitleTextInitVo.getReset_title());
-                tmp.put("welcomMsg", broadInfo.getMsg_welcom());
+                HashMap roomInfo = new HashMap();
+                roomInfo.put("roomType", broadInfo.getSubject_type());
+                roomInfo.put("title", broTitleTextInitVo.getReset_title());
+                roomInfo.put("welcomMsg", broadInfo.getMsg_welcom());
+                roomInfo.put("bgImg", new ImageVo(broadInfo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
+                roomInfo.put("bgImgRacy", DalbitUtil.isEmpty(broadInfo.getGrade_background()) ? 0 : broadInfo.getGrade_background());
 
-                tmp.put("bgImg", new ImageVo(broadInfo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
-                tmp.put("bgImgRacy", 5);
-                String message =  gson.toJson(tmp);
+                SocketVo socketVo = socketService.getSocketVo(broTitleTextInitVo.getRoom_no(), broTitleTextInitVo.getMem_no(), true);
 
-                adminSocketUtil.setSocket(param, "reqRoomChangeInfo", message, jwtUtil.generateToken(broTitleTextInitVo.getMem_no(), true));
+                socketService.changeRoomInfo(broTitleTextInitVo.getRoom_no(), broTitleTextInitVo.getMem_no(), roomInfo, jwtUtil.generateToken(broTitleTextInitVo.getMem_no()), true, socketVo);
             }catch (Exception e){
                 log.error("[모바일어드민] 소켓통신 실패 - 방송 제목 초기화");
             }
