@@ -644,4 +644,18 @@ public class MypageController {
 
         return mypageService.selectLevel();
     }
+
+    /**
+     * 회원 알림 내용 읽음처리
+     */
+    @GetMapping("/newalarm")
+    public String newAlarm(HttpServletRequest request) throws GlobalException{
+
+        P_MemberNotifyVo apiData = new P_MemberNotifyVo();
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+
+        String result = mypageService.callNewAlarm(apiData);
+
+        return result;
+    }
 }

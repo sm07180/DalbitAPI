@@ -62,6 +62,8 @@ public interface MypageDao {
     ProcedureVo changeItem(ProcedureVo procedureVo);
     ProcedureVo callReadNotification(ProcedureVo procedureVo);
 
+    int callReadALLNotification(P_NotificationVo pNotificationVo);
+
     @Transactional(readOnly = true)
     long selectMyByeolCnt(String mem_no);
 
@@ -79,4 +81,7 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     List<LevelVo> selectLevel();
+
+    @Transactional(readOnly = true)
+    int callNewAlarm(P_MemberNotifyVo pMemberNotifyVo);
 }
