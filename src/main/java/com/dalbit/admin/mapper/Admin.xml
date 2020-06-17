@@ -235,6 +235,7 @@
           , title
           , msg_welcom
           , image_background
+          , grade_background
         from rd_data.tb_broadcast_room
         where room_no = #{room_no}
     </select>

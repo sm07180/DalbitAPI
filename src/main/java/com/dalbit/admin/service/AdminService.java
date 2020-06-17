@@ -16,6 +16,8 @@ import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.socket.service.SocketService;
+import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -58,6 +60,9 @@ public class AdminService {
 
     @Autowired
     PushService pushService;
+
+    @Autowired
+    SocketService socketService;
 
     private final String menuJsonKey = "adminMenu";
 
@@ -351,9 +356,26 @@ public class AdminService {
                     log.error("[모바일어드민] 알림 실패 - 방송방 이미지 초기화");
                 }
 
-                try{
-                    //option
-                    HashMap<String, Object> param = new HashMap<>();
+                // PUSH 발송
+                try {
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+                    pPushInsertVo.setMem_nos(broImageInitVo.getMem_no());
+                    pPushInsertVo.setSlct_push("35");
+                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_cont(broImageInitVo.getReport_title());
+                    pPushInsertVo.setEtc_contents(broImageInitVo.getReport_message().replaceAll("\n", "<br>"));
+                    pPushInsertVo.setImage_type("101");
+
+                    pushService.sendPushReqOK(pPushInsertVo);
+
+                } catch(Exception e) {
+                    log.error("[모바일어드민] PUSH 발송 실패 - 방송방 이미지 초기화");
+                }
+            }
+
+            try{
+                //option
+                    /*HashMap<String, Object> param = new HashMap<>();
                     param.put("roomNo", broImageInitVo.getRoom_no());
                     param.put("memNo", broImageInitVo.getMem_no());
                     param.put("memNk", "");
@@ -376,26 +398,23 @@ public class AdminService {
                     tmp.put("bgImgRacy", 5);
                     String message =  gson.toJson(tmp);
 
-                    adminSocketUtil.setSocket(param, "reqRoomChangeInfo", message, jwtUtil.generateToken(broImageInitVo.getMem_no(), true));
-                }catch (Exception e){
-                    log.error("[모바일어드민] 소켓통신 실패 - 이미지 초기화");
-                }
+                    adminSocketUtil.setSocket(param, "reqRoomChangeInfo", message, jwtUtil.generateToken(broImageInitVo.getMem_no(), true));*/
 
-                // PUSH 발송
-                try {
-                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
-                    pPushInsertVo.setMem_nos(broImageInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("35");
-                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
-                    pPushInsertVo.setSend_cont(broImageInitVo.getReport_title());
-                    pPushInsertVo.setEtc_contents(broImageInitVo.getReport_message().replaceAll("\n", "<br>"));
-                    pPushInsertVo.setImage_type("101");
+                BroadInfoVo broadInfo = getBroadInfo(broImageInitVo.getRoom_no());
 
-                    pushService.sendPushReqOK(pPushInsertVo);
+                HashMap roomInfo = new HashMap();
+                roomInfo.put("roomType", broadInfo.getSubject_type());
+                roomInfo.put("title", broadInfo.getTitle());
+                roomInfo.put("welcomMsg", broadInfo.getMsg_welcom());
+                roomInfo.put("bgImg", new ImageVo(broImageInitVo.getReset_image_background(), DalbitUtil.getProperty("server.photo.url")));
+                roomInfo.put("bgImgRacy", DalbitUtil.isEmpty(broadInfo.getGrade_background()) ? 0 : broadInfo.getGrade_background());
 
-                } catch(Exception e) {
-                    log.error("[모바일어드민] PUSH 발송 실패 - 방송방 이미지 초기화");
-                }
+                SocketVo socketVo = socketService.getSocketVo(broImageInitVo.getRoom_no(), broImageInitVo.getMem_no(), true);
+
+                socketService.changeRoomInfo(broImageInitVo.getRoom_no(), broImageInitVo.getMem_no(), roomInfo, jwtUtil.generateToken(broImageInitVo.getMem_no()), true, socketVo);
+
+            }catch (Exception e){
+                log.error("[모바일어드민] 소켓통신 실패 - 이미지 초기화");
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_성공));
@@ -437,35 +456,6 @@ public class AdminService {
                     log.error("[모바일어드민] 알림 실패 - 닉네임 초기화");
                 }
 
-                try{
-
-                    //소켓통신에 필요한 회원정보 조회
-                    MemberInfoVo memberInfo = adminDao.getMemberInfo(nickTextInitVo.getMem_no());
-
-                    // option
-                    HashMap<String, Object> param = new HashMap<>();
-                    param.put("memNo", nickTextInitVo.getMem_no());
-                    param.put("memNk", "");
-                    param.put("ctrlRole", "ctrlRole");
-                    param.put("recvType", "chat");
-                    param.put("recvPosition", "chat");
-                    param.put("recvLevel", 0);
-                    param.put("recvTime", 0);
-
-                    String defaultGender = "n";
-
-                    // message set
-                    Gson gson = new Gson();
-                    HashMap<String,Object> tmp = new HashMap();
-                    tmp.put("image", memberInfo.getImage_profile());
-                    tmp.put("sex", defaultGender);
-                    tmp.put("nk", nickTextInitVo.getMem_userid());
-                    String message =  gson.toJson(tmp);
-                    adminSocketUtil.setSocket(param, "reqMyInfo", message, jwtUtil.generateToken(nickTextInitVo.getMem_no(), true));
-                }catch (Exception e){
-                    log.error("[모바일어드민] 소켓통신 실패 - 닉네임 초기화");
-                }
-
                 //PUSH 발송
                 try{
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
@@ -479,6 +469,35 @@ public class AdminService {
                 }catch (Exception e){
                     log.error("[모바일어드민] PUSH 발송 실패 - 닉네임 초기화");
                 }
+            }
+
+            try{
+
+                //소켓통신에 필요한 회원정보 조회
+                MemberInfoVo memberInfo = adminDao.getMemberInfo(nickTextInitVo.getMem_no());
+
+                // option
+                HashMap<String, Object> param = new HashMap<>();
+                param.put("memNo", nickTextInitVo.getMem_no());
+                param.put("memNk", "");
+                param.put("ctrlRole", "ctrlRole");
+                param.put("recvType", "chat");
+                param.put("recvPosition", "chat");
+                param.put("recvLevel", 0);
+                param.put("recvTime", 0);
+
+                String defaultGender = "n";
+
+                // message set
+                Gson gson = new Gson();
+                HashMap<String,Object> tmp = new HashMap();
+                tmp.put("image", memberInfo.getImage_profile());
+                tmp.put("sex", defaultGender);
+                tmp.put("nk", nickTextInitVo.getMem_userid());
+                String message =  gson.toJson(tmp);
+                adminSocketUtil.setSocket(param, "reqMyInfo", message, jwtUtil.generateToken(nickTextInitVo.getMem_no(), true));
+            }catch (Exception e){
+                log.error("[모바일어드민] 소켓통신 실패 - 닉네임 초기화");
             }
 
             return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_성공));
@@ -519,36 +538,6 @@ public class AdminService {
                     log.error("[모바일어드민] 알림 실패 - 방송 제목 초기화");
                 }
 
-                try{
-                    //option
-                    HashMap<String, Object> param = new HashMap<>();
-                    param.put("roomNo", broTitleTextInitVo.getRoom_no());
-                    param.put("memNo", broTitleTextInitVo.getMem_no());
-                    param.put("memNk", "");
-                    param.put("ctrlRole", "ctrlRole");
-                    param.put("recvType","chat");
-                    param.put("recvPosition","chat");
-                    param.put("recvLevel", 0);
-                    param.put("recvTime", 0);
-
-                    BroadInfoVo broadInfo = getBroadInfo(broTitleTextInitVo.getRoom_no());
-
-                    // message set
-                    Gson gson = new Gson();
-                    HashMap<String,Object> tmp = new HashMap();
-                    tmp.put("roomType", broadInfo.getSubject_type());
-                    tmp.put("title", broTitleTextInitVo.getReset_title());
-                    tmp.put("welcomMsg", broadInfo.getMsg_welcom());
-
-                    tmp.put("bgImg", new ImageVo(broadInfo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
-                    tmp.put("bgImgRacy", 5);
-                    String message =  gson.toJson(tmp);
-
-                    adminSocketUtil.setSocket(param, "reqRoomChangeInfo", message, jwtUtil.generateToken(broTitleTextInitVo.getMem_no(), true));
-                }catch (Exception e){
-                    log.error("[모바일어드민] 소켓통신 실패 - 방송 제목 초기화");
-                }
-
                 //PUSH 발송
                 try{
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
@@ -563,6 +552,37 @@ public class AdminService {
                     log.error("[모바일어드민] PUSH 발송 실패 - 방송 제목 초기화");
                 }
             }
+
+            try{
+                //option
+                HashMap<String, Object> param = new HashMap<>();
+                param.put("roomNo", broTitleTextInitVo.getRoom_no());
+                param.put("memNo", broTitleTextInitVo.getMem_no());
+                param.put("memNk", "");
+                param.put("ctrlRole", "ctrlRole");
+                param.put("recvType","chat");
+                param.put("recvPosition","chat");
+                param.put("recvLevel", 0);
+                param.put("recvTime", 0);
+
+                BroadInfoVo broadInfo = getBroadInfo(broTitleTextInitVo.getRoom_no());
+
+                // message set
+                Gson gson = new Gson();
+                HashMap<String,Object> tmp = new HashMap();
+                tmp.put("roomType", broadInfo.getSubject_type());
+                tmp.put("title", broTitleTextInitVo.getReset_title());
+                tmp.put("welcomMsg", broadInfo.getMsg_welcom());
+
+                tmp.put("bgImg", new ImageVo(broadInfo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
+                tmp.put("bgImgRacy", 5);
+                String message =  gson.toJson(tmp);
+
+                adminSocketUtil.setSocket(param, "reqRoomChangeInfo", message, jwtUtil.generateToken(broTitleTextInitVo.getMem_no(), true));
+            }catch (Exception e){
+                log.error("[모바일어드민] 소켓통신 실패 - 방송 제목 초기화");
+            }
+
             return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_성공));
 
         }catch(Exception e) {
