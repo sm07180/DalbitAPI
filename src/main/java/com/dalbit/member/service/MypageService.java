@@ -494,11 +494,15 @@ public class MypageService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        notificationList.put("newCnt", DalbitUtil.getIntMap(resultMap, "newCnt"));
         notificationList.put("list", procedureOutputVo.getOutputBox());
         notificationList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            // 조회 성공 시 읽음 표시 update
+            mypageDao.callReadALLNotification(pNotificationVo);
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_성공, notificationList));
         } else if (procedureVo.getRet().equals(Status.회원알림내용조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용조회_회원아님));
@@ -1257,5 +1261,17 @@ public class MypageService {
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+    }
+
+    /**
+     * 회원 알림설정 조회하기
+     */
+    public String callNewAlarm(P_MemberNotifyVo pMemberNotifyVo){
+        int newCnt = mypageDao.callNewAlarm(pMemberNotifyVo);
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("newCnt", newCnt);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
     }
 }

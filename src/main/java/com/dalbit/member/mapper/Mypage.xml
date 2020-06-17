@@ -146,6 +146,12 @@
       call sp_member_notification_read(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <update id="callReadALLNotification" parameterType="P_NotificationVo" >
+        UPDATE tb_member_notification
+			SET read_yn = 1
+		WHERE mem_no = #{mem_no}
+    </update>
+
     <select id="selectMyByeolCnt" parameterType="String" resultType="long">
         SELECT gold FROM tb_member_wallet WHERE mem_no = #{value}
     </select>
@@ -196,5 +202,10 @@
         , gold AS byeol
       FROM tbl_level_exp
       WHERE `level` > 0 ORDER BY `level` ASC
+    </select>
+
+
+    <select id="callNewAlarm" parameterType="com.dalbit.member.vo.procedure.P_MemberNotifyVo" resultType="int">
+		SELECT COUNT(*) FROM tb_member_notification WHERE mem_no = #{mem_no} AND read_yn = '0'
     </select>
 </mapper>
