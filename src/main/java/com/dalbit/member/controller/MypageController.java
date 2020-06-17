@@ -620,10 +620,18 @@ public class MypageController {
     }
 
     /**
+     * 스페셜 DJ 신청 가능상태 조회
+     */
+    @PostMapping("/specialDj/status")
+    public String specialDjStatus(HttpServletRequest request) throws GlobalException {
+        return mypageService.callSpecialDjStatus(request);
+    }
+
+    /**
      * 스페셜 DJ 신청
      */
-    @PostMapping("/specialDj")
-    public String specialDjReq(@Valid P_SpecialDjReq pSpecialDjReq, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+    @PostMapping("/specialDj/request")
+    public String specialDjRequest(@Valid P_SpecialDjReq pSpecialDjReq, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return mypageService.callSpecialDjReq(pSpecialDjReq, request);
     }

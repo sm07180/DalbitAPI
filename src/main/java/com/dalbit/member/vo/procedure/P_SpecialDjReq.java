@@ -15,8 +15,11 @@ public class P_SpecialDjReq {
     private String name;
     @NotBlank @Size(min = 1, max = 20)
     private String phone;
-    @Size(max = 200)
+    @Size(max = 2048)
     private String title;
-    @Size(max = 1024)
+    @Size(max = 2048)
     private String contents;
+    @NotBlank @Size(min = 1, max = 50)
+    private String broadcast_time1;
+    private String broadcast_time2;
 }

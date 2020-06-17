@@ -16,6 +16,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -1180,18 +1181,57 @@ public class MypageService {
     }
 
     /**
+     *  스페셜 DJ 신청 가능상태 확인
+     */
+    public String callSpecialDjStatus(HttpServletRequest request){
+        String mem_no = MemberVo.getMyMemNo(request);
+
+        if(!DalbitUtil.isLogin(request)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
+        }
+
+        var resultMap = new HashMap();
+
+        //누적방송시간 체크
+        long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(mem_no);
+        int airtime = broadcastAirtime < 180000 ? 0 : 1;
+
+        //좋아요 갯수 체크
+        int djLikeCnt = mypageDao.selectSpecialDjLikeCnt(mem_no);
+        int like = djLikeCnt < 500 ? 0 : 1;
+
+        //1시간 이상 방송
+        int broadcastCnt = mypageDao.selectSpecialDjBroadcastCnt(mem_no);
+        int broadcast = broadcastCnt < 20 ? 0 : 1;
+
+        //이미 신청여부 확인
+        int alreadyCnt = mypageDao.selectExistsSpecialReq(mem_no);
+        int already = alreadyCnt == 0 ? 0 : 1;
+
+        resultMap.put("airtime", airtime);
+        resultMap.put("like", like);
+        resultMap.put("broadcast", broadcast);
+        resultMap.put("already", already);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
+
+    /**
      *  스페셜 DJ 신청
      */
     public String callSpecialDjReq(P_SpecialDjReq pSpecialDjReq, HttpServletRequest request){
         String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청실패));
         pSpecialDjReq.setMem_no(MemberVo.getMyMemNo(request));
 
-        Date endDate = new Date(120, 4, 29);
-        Date today = new Date();
+        //Date endDate = new Date(120, 4, 29);
+        //Date today = new Date();
+        long nowDateTime = Long.valueOf(DalbitUtil.getUTCFormat(new Date()));
+        long startDateTime = 20200622000000L;
+        long endDateTime = 20200626235959L;
 
         if(!DalbitUtil.isLogin(request)) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
-        }else if(today.getTime() > endDate.getTime()){
+        }else if(nowDateTime < startDateTime || endDateTime < nowDateTime){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_기간아님));
         }else if(mypageDao.selectExistsSpecialReq(pSpecialDjReq.getMem_no()) > 0 || mypageDao.selectExistsPhoneSpecialReq(pSpecialDjReq.getPhone()) > 0){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));

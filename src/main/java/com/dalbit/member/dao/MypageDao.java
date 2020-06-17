@@ -70,6 +70,12 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     int selectExistsPhoneSpecialReq(String mem_no);
     void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
+    @Transactional(readOnly = true)
+    long selectSpecialDjBroadcastTime(String mem_no);
+    @Transactional(readOnly = true)
+    int selectSpecialDjLikeCnt(String mem_no);
+    @Transactional(readOnly = true)
+    int selectSpecialDjBroadcastCnt(String mem_no);
 
     @Transactional(readOnly = true)
     List<LevelVo> selectLevel();

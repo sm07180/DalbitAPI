@@ -166,6 +166,8 @@
         FROM rd_admin.tb_req_special_dj
         WHERE mem_phone = #{value}
           AND state = 1
+          <!-- 스페셜 DJ는 매달 신청을 받는다. -->
+          AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
     </select>
 
     <insert id="insertSpecialReq" parameterType="P_SpecialDjReq">
@@ -175,6 +177,8 @@
           , mem_phone
           , title
           , contents
+          , broadcast_time1
+          , broadcast_time2
           , reg_date
           , state
         ) values (
@@ -183,6 +187,8 @@
           , #{phone}
           , #{title}
           , #{contents}
+          , #{broadcast_time1}
+          , #{broadcast_time2, jdbcType=VARCHAR}
           , NOW()
           , 1
         )
@@ -196,5 +202,27 @@
         , gold AS byeol
       FROM tbl_level_exp
       WHERE `level` > 0 ORDER BY `level` ASC
+    </select>
+
+    <select id="selectSpecialDjBroadcastTime" parameterType="String" resultType="long">
+        /* Mypage.xml - selectSpecialDjBroadcastTime */
+        select sum(airtime) airtime
+        from rd_data.tb_broadcast_room
+        where mem_no = #{mem_no}
+    </select>
+
+    <select id="selectSpecialDjLikeCnt" parameterType="String" resultType="int">
+        /* Mypage.xml - selectSpecialDjLikeCnt */
+        select count(*)
+        from rd_data.tb_broadcast_room_good
+        where dj_mem_no = #{mem_no}
+    </select>
+
+    <select id="selectSpecialDjBroadcastCnt" parameterType="String" resultType="int">
+        /* Mypage.xml - selectSpecialDjBroadcastCnt */
+        select count(*)
+        from rd_data.tb_broadcast_room
+        where mem_no = #{mem_no}
+            and 3600 <![CDATA[<=]]> airtime
     </select>
 </mapper>
