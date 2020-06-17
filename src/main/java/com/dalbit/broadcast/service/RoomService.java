@@ -806,6 +806,12 @@ public class RoomService {
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
         returnMap.put("isNew", DalbitUtil.getIntMap(resultMap, "newdj_badge") == 1);
         returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1);
+        FanBadgeVo fanBadgeVo = new FanBadgeVo();
+        if(DalbitUtil.isEmpty(fanBadgeVo.getText())){
+            returnMap.put("fanBadge", "");
+        }else{
+            returnMap.put("fanBadge", fanBadgeVo);
+        }
         procedureVo.setData(returnMap);
 
         return procedureVo;

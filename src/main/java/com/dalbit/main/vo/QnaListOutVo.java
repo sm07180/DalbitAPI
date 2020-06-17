@@ -20,6 +20,7 @@ public class QnaListOutVo {
     private ImageVo addFile;
     private String opDt;
     private Long opTs;
+    private String email;
 
     public QnaListOutVo() {}
     public QnaListOutVo(P_QnaListVo target) {
@@ -36,5 +37,6 @@ public class QnaListOutVo {
             setOpTs(DalbitUtil.getUTCTimeStamp(target.getOpDate()));
         }
         setAddFile(new ImageVo(target.getAddFile(), DalbitUtil.getProperty("server.photo.url")));
+        setEmail(target.getEmail());
     }
 }

@@ -12,4 +12,7 @@ public class BannerVo {
     private String linkType;
     private String title;
     private String bannerUrl;
+    private int popup_type;
+    private int is_cookie;
+    private String contents;
 }

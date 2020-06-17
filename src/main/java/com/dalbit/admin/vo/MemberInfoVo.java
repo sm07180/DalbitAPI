@@ -12,4 +12,6 @@ public class MemberInfoVo {
     private String mem_phone;
     private int level;
     private String grade;
+    private int state;
+    private String image_profile;
 }
