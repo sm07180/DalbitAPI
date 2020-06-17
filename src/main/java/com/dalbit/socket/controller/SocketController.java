@@ -39,13 +39,14 @@ public class SocketController {
     }
 
     @PostMapping("sendTargetSystemMessage")
-    public void sendTargetMessageSystem(HttpServletRequest request) {
+    public String sendTargetMessageSystem(HttpServletRequest request) {
         String targetRooms = request.getParameter("targetRooms");
         List<String> listTargetRoom = null;
         if(!DalbitUtil.isEmpty(targetRooms)){
             listTargetRoom = Arrays.asList(targetRooms.split("\\|"));
         }
-
+        socketService.sendMessage(request.getParameter("message"), listTargetRoom);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
         //return gsonUtil.toJson(new JsonOutputVo(Status.조회, socketService.sendMessage(request.getParameter("message"), listTargetRoom)));
     }
 }

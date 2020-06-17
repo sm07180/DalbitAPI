@@ -34,9 +34,16 @@ public class P_pushStmpInsertVo extends BaseVo {
         }
 
         try{
-            Date date = new SimpleDateFormat("yyyyMMddHHmm").parse(pPushInsertVo.getSend_datetime());
-            String sendDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(date);
-              this.setSendDate(sendDate);
+            String sendDate = null;
+
+            if(DalbitUtil.isEmpty(pPushInsertVo.getSend_datetime())){
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
+                sendDate = format.format(new Date());
+            }else{
+                Date date = new SimpleDateFormat("yyyyMMddHHmm").parse(pPushInsertVo.getSend_datetime());
+                sendDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S").format(date);
+            }
+            this.setSendDate(sendDate);
         }catch (Exception e){
             e.printStackTrace();
 

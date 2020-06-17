@@ -52,6 +52,8 @@ public interface AdminDao {
 
     MemberInfoVo getMemberInfo(String mem_no);
 
+    BroadInfoVo getBroadInfo(String room_no);
+
     ArrayList<LiveChatOutputVo> selectBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo);
 
     int updateState(DeclarationVo declarationVo);
