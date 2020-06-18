@@ -7,10 +7,12 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.EventDao;
 import com.dalbit.event.vo.ReplyListOutputVo;
 import com.dalbit.event.vo.procedure.*;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -258,5 +260,94 @@ public class EventService {
         }
 
         return result;
+    }
+
+    public String attendanceCheckStatus(HttpServletRequest request){
+
+        if(!DalbitUtil.isLogin(request)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        var paramMap = new HashMap();
+        paramMap.put("mem_no", mem_no);
+
+        ProcedureVo procedureVo = new ProcedureVo(paramMap);
+        ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckLoad(procedureVo);
+
+        if(procedureVo.getRet().equals(Status.출석체크이벤트_상태조회_실패_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_실패_회원아님));
+
+        }else if (procedureVo.getRet().equals(Status.출석체크이벤트_상태조회_성공.getMessageCode())){
+
+            var returnMap = attendanceResultMap(procedureVo, dateList);
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_성공, returnMap));
+
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_실패));
+        }
+    }
+
+    public String attendanceCheckIn(HttpServletRequest request){
+
+        if(!DalbitUtil.isLogin(request)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        var paramMap = new HashMap();
+        paramMap.put("mem_no", mem_no);
+
+        ProcedureVo procedureVo = new ProcedureVo(paramMap);
+        ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckGift(procedureVo);
+
+        if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_회원아님));
+
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_이미받음.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_이미받음));
+
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_필요시간부족.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_필요시간부족));
+
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_보상테이블없음.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_보상테이블없음));
+
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_성공.getMessageCode())){
+
+            var returnMap = attendanceResultMap(procedureVo, dateList);
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_성공, returnMap));
+
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패));
+        }
+    }
+
+    public HashMap attendanceResultMap(ProcedureVo procedureVo, ArrayList<P_AttendanceCheckLoadOutputVo> dateList){
+        int attendanceDays = 0;
+        int totalExp = 0;
+        int dalCnt = 0;
+
+        for (P_AttendanceCheckLoadOutputVo pAttendanceCheckLoadOutputVo : dateList){
+            attendanceDays += pAttendanceCheckLoadOutputVo.getCheck_ok();
+            totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
+            dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
+        }
+
+        var summary = new HashMap();
+        summary.put("attendanceDays", attendanceDays);
+        summary.put("totalExp", totalExp);
+        summary.put("dalCnt", dalCnt);
+
+        var status = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+
+        var returnMap = new HashMap();
+        returnMap.put("status", status);
+
+        returnMap.put("dateList", dateList);
+        returnMap.put("summary", summary);
+
+        return returnMap;
     }
 }

@@ -95,4 +95,12 @@
           ) AS a
     </select>
 
+    <select id="callAttendanceCheckLoad" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_AttendanceCheckLoadOutputVo">
+        call sp_member_attendance_check_load(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callAttendanceCheckGift" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_AttendanceCheckLoadOutputVo">
+        call sp_member_attendance_check_gift(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

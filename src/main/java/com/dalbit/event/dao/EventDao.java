@@ -5,6 +5,8 @@ import com.dalbit.event.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -24,4 +26,9 @@ public interface EventDao {
 
     @Transactional(readOnly = true)
     int callEventAuthCheck(P_ReplyDeleteInputVo pReplyDeleteInputVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<P_AttendanceCheckLoadOutputVo> callAttendanceCheckLoad(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    ArrayList<P_AttendanceCheckLoadOutputVo> callAttendanceCheckGift(ProcedureVo procedureVo);
 }

@@ -16,6 +16,7 @@ public enum Status {
     벨리데이션체크("C007", "validation.error", "벨리데이션체크 오류 시"),
     부적절한문자열("C007", "string.error", "부적합한 기호 및 문자열 포함 시"),
     데이터없음("0", "no.data", "데이터가 없을 시"),
+    로그인필요("-99", "need.login", "로그인 필요 시"),
 
     //휴대폰 sms 인증
     인증번호요청("0", "sms.number.request.success", "인증번호 요청 성공 시"),
@@ -750,6 +751,17 @@ public enum Status {
     구글로그인_토큰없음("-1", "google.login.blank.token", "토큰없음"),
     구글로그인_토큰인증실패("-2", "google.login.invalid.token", "인증실패"),
     구글로그인_오류("C006", "google.login.error", "오류"),
+
+    출석체크이벤트_상태조회_실패_회원아님("-1", "event.attendance.check.fail.no.member", "요청 회원번호가 없음"),
+    출석체크이벤트_상태조회_실패("C006", "business.error", "비즈니스 에러"),
+    출석체크이벤트_상태조회_성공("0", "read.success", "성공"),
+
+    출석체크이벤트_출석_성공("0", "event.attendance.checkIn.success", "성공"),
+    출석체크이벤트_출석_실패_회원아님("-1", "event.attendance.checkIn.fail.no.member", "요청 회원번호 없음"),
+    출석체크이벤트_출석_실패_이미받음("-2", "event.attendance.checkIn.fail.already", "이미 받음"),
+    출석체크이벤트_출석_실패_필요시간부족("-3", "event.attendance.checkIn.fail.short.time", "필요시간부족"),
+    출석체크이벤트_출석_실패_보상테이블없음("-4", "event.attendance.checkIn.fail.table.emapty", "보상테이블없음"),
+    출석체크이벤트_출석_실패("C006", "business.error", "비즈니스 에러"),
 
 
     //////////////////////////
