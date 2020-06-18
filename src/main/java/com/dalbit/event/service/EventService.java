@@ -323,6 +323,59 @@ public class EventService {
         }
     }
 
+    public String attendanceRandomGift(HttpServletRequest request){
+
+        if(!DalbitUtil.isLogin(request)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        var paramMap = new HashMap();
+        paramMap.put("mem_no", mem_no);
+
+        ProcedureVo procedureVo = new ProcedureVo(paramMap);
+        ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckBonus(procedureVo);
+
+        if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_회원아님));
+
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_이미받음.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_이미받음));
+
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_대상아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_대상아님));
+        
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_성공.getMessageCode())){
+
+            int attendanceDays = 0;
+            int totalExp = 0;
+            int dalCnt = 0;
+
+            for (P_AttendanceCheckLoadOutputVo pAttendanceCheckLoadOutputVo : dateList){
+                attendanceDays += pAttendanceCheckLoadOutputVo.getCheck_ok();
+                totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
+                dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
+            }
+
+            var summary = new HashMap();
+            summary.put("attendanceDays", attendanceDays);
+            summary.put("totalExp", totalExp);
+            summary.put("dalCnt", dalCnt);
+
+            var reward = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+            var returnMap = new HashMap();
+            returnMap.put("reward", reward);
+            returnMap.put("dateList", dateList);
+            returnMap.put("summary", summary);
+
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_성공, returnMap));
+
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패));
+        }
+    }
+
     public HashMap attendanceResultMap(ProcedureVo procedureVo, ArrayList<P_AttendanceCheckLoadOutputVo> dateList){
         int attendanceDays = 0;
         int totalExp = 0;
@@ -340,7 +393,6 @@ public class EventService {
         summary.put("dalCnt", dalCnt);
 
         var status = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-
 
         var returnMap = new HashMap();
         returnMap.put("status", status);

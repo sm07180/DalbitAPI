@@ -31,4 +31,5 @@ public interface EventDao {
     ArrayList<P_AttendanceCheckLoadOutputVo> callAttendanceCheckLoad(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ArrayList<P_AttendanceCheckLoadOutputVo> callAttendanceCheckGift(ProcedureVo procedureVo);
+    ArrayList<P_AttendanceCheckLoadOutputVo> callAttendanceCheckBonus(ProcedureVo procedureVo);
 }

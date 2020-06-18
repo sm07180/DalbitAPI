@@ -141,5 +141,16 @@ public class EventController {
         return result;
     }
 
+    /**
+     * 출석체크 이벤트 더 줘 받기
+     */
+    @PostMapping("/attendance/random/gift")
+    public String attendanceRandomGift(HttpServletRequest request) throws GlobalException {
+
+        String result = eventService.attendanceRandomGift(request);
+
+        return result;
+    }
+
 
 }
