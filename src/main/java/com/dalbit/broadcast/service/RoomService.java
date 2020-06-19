@@ -808,7 +808,7 @@ public class RoomService {
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
         returnMap.put("isNew", DalbitUtil.getIntMap(resultMap, "newdj_badge") == 1);
         returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1);
-        FanBadgeVo fanBadgeVo = new FanBadgeVo();
+        FanBadgeVo fanBadgeVo = new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "fanBadgeText"), DalbitUtil.getStringMap(resultMap, "fanBadgeIcon"), DalbitUtil.getStringMap(resultMap, "fanBadgeStartColor"), DalbitUtil.getStringMap(resultMap, "fanBadgeEndColor"));
         if(DalbitUtil.isEmpty(fanBadgeVo.getText())){
             returnMap.put("fanBadge", "");
         }else{

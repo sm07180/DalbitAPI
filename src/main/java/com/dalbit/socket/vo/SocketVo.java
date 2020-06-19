@@ -31,6 +31,10 @@ import java.util.HashMap;
  * recvPosition : 메세지표시영역(top1, top2, top3, chat)
  * recvLevel : 메세지레이어번호(0(채팅),1~4)
  * recvTime : 메세지노출시간(초)
+ * fanBadgeText : 뱃지명
+ * fanBadgeIcon : 뱃지 아이콘 url
+ * fanBadgeStartColor : 뱃지 bg 시작값
+ * fanBadgeEndColor : 뱃지 bg 종료값
  */
 @Setter @Getter @ToString
 public class SocketVo {
@@ -52,6 +56,10 @@ public class SocketVo {
     private String recvPosition  = "chat";
     private int recvLevel = 0;
     private int recvTime = 0;
+    private String fanBadgeText = "";
+    private String fanBadgeIcon = "";
+    private String fanBadgeStartColor = "";
+    private String fanBadgeEndColor = "";
 
     public SocketVo(){};
 
@@ -79,6 +87,10 @@ public class SocketVo {
             this.login = isLogin ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
             this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
+            this.fanBadgeText = DalbitUtil.getStringMap(memInfo, "fanBadgeText");
+            this.fanBadgeIcon = DalbitUtil.getStringMap(memInfo, "fanBadgeIcon");
+            this.fanBadgeStartColor = DalbitUtil.getStringMap(memInfo, "fanBadgeStartColor");
+            this.fanBadgeEndColor = DalbitUtil.getStringMap(memInfo, "fanBadgeEndColor");
         }
     }
 
@@ -141,6 +153,14 @@ public class SocketVo {
         qs.append(this.recvLevel);
         qs.append("&recvTime=");
         qs.append(this.recvTime);
+        qs.append("&fanBadgeText=");
+        qs.append(this.fanBadgeText == null ? "" : this.fanBadgeText);
+        qs.append("&fanBadgeIcon=");
+        qs.append(this.fanBadgeIcon == null ? "" : this.fanBadgeIcon);
+        qs.append("&fanBadgeStartColor=");
+        qs.append(this.fanBadgeStartColor == null ? "" : this.fanBadgeStartColor);
+        qs.append("&fanBadgeEndColor=");
+        qs.append(this.fanBadgeEndColor == null ? "" : this.fanBadgeEndColor);
 
         return qs.toString();
     }
