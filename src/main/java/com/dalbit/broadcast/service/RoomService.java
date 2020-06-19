@@ -311,6 +311,8 @@ public class RoomService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_블랙리스트));
         } else if (procedureVo.getRet().equals(Status.방송참여_다른기기.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_다른기기));
+        } else if (procedureVo.getRet().equals(Status.방송참여_비회원IP중복.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_비회원IP중복));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방참가실패));
         }
