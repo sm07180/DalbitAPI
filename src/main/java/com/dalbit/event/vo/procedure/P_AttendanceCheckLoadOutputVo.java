@@ -22,4 +22,5 @@ public class P_AttendanceCheckLoadOutputVo {
     private int check_ok;
     private int reward_exp;
     private int reward_dal;
+    private int is_today = 0;
 }

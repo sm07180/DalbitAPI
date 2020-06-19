@@ -340,6 +340,9 @@ public class EventService {
         }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_보상테이블없음.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_보상테이블없음));
 
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_동일기기중복불가.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_동일기기중복불가));
+
         }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_성공.getMessageCode())){
 
             var returnMap = attendanceResultMap(procedureVo, dateList);
@@ -432,6 +435,10 @@ public class EventService {
             attendanceDays += pAttendanceCheckLoadOutputVo.getCheck_ok();
             totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
             dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
+
+            if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))){
+                pAttendanceCheckLoadOutputVo.setIs_today(1);
+            }
         }
 
         var summary = new HashMap();
