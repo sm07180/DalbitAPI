@@ -27,7 +27,8 @@
             , (A.good+A.booster) AS likes
             , B.image_background AS bannerUrl
             , true AS isSpecial
-        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room B ON A.room_no = B.room_no
+        FROM tb_broadcast_room_live_list AS A
+            INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no
             INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no AND D.specialdj_badge = 1
         ORDER BY B.idx desc
@@ -148,7 +149,8 @@
             , IFNULL(T3.count_entry, 0) AS listeners
             , IFNULL(T3.count_good, 0) AS likes
             , T2.image_background AS bannerUrl
-        FROM tb_member_basic T1 INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
+        FROM tb_member_basic T1
+            INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
             INNER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state &lt; 4
             INNER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
         WHERE T1.mem_no IN (${value})

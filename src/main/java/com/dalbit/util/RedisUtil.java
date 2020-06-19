@@ -38,6 +38,9 @@ public class RedisUtil {
             MemberVo memberVo = (MemberVo)redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionIdArr[i].toString()).get(SPRING_SESSION_MEMBERINFO_KEY_PREFIX + SPRING_SESSION_MEMBERINFO_KEY);
             if(!DalbitUtil.isEmpty(memberVo)){
                 return memberVo;
+            }else{
+                redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionIdArr[i].toString()).delete(SPRING_SESSION_MEMBERINFO_KEY_PREFIX + SPRING_SESSION_MEMBERINFO_KEY);
+                //redisTemplate.opsForHash().getOperations().boundHashOps(SPRING_REDIS_SESSION_PREFIX + sessionIdArr[i].toString()).get(SPRING_SESSION_MEMBERINFO_KEY_PREFIX + SPRING_SESSION_MEMBERINFO_KEY);
             }
         }
         return null;
