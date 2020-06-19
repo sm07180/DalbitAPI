@@ -50,9 +50,7 @@ public class ProfileInfoOutVo extends BaseVo {
     List fanRank;
     private FanBadgeVo fanBadge;
 
-    public ProfileInfoOutVo(){
-        this.fanBadge = new FanBadgeVo();
-    }
+    public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
         this.memNo = target_mem_no;
         this.nickNm = target.getNickName();
@@ -92,6 +90,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
         this.likeTotCnt = target.getReceivedGoodTotal();
-        this.fanBadge = new FanBadgeVo();
+        this.fanBadge = new FanBadgeVo(target.getFanBadgeText(), target.getFanBadgeIcon(), target.getFanBadgeStartColor(), target.getFanBadgeEndColor());
     }
 }

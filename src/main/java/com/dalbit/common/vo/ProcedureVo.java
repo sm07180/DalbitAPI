@@ -18,7 +18,7 @@ public class ProcedureVo {
 
     public ProcedureVo(Object paramVo){
         //setData(new GsonBuilder().disableHtmlEscaping().create().toJson(paramVo).replace("\\\\", "\\").replace("\n", "\r"));
-        String data = new Gson().toJson(paramVo).replace("\\\\", "\\");
+        String data = DalbitUtil.escapeCharDecode(new Gson().toJson(paramVo));
         setData(DalbitUtil.uniDecode(data));
     }
 

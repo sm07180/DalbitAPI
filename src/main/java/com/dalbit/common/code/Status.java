@@ -242,6 +242,7 @@ public enum Status {
     방송참여_방송중("-8", "broadcast.room.join.already.live.dj", "방송중인 본인방 참가할 시"),
     방송참여_다른기기("-10", "broadcast.room.join.another", "다른기기에서 청취 시"),
     방송참여_블랙리스트("-11", "broadcast.room.join.blacklist", "블랙리스트에 등록되어 있을 시"),
+    방송참여_비회원IP중복("-12", "broadcast.room.join.ano.ip.duplicate", "비회원 IP 동일방 중복 있을 시"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기
