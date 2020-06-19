@@ -212,7 +212,7 @@
 
     <select id="selectSpecialDjBroadcastTime" parameterType="String" resultType="long">
         /* Mypage.xml - selectSpecialDjBroadcastTime */
-        select sum(airtime) airtime
+        select ifnull(sum(airtime), 0) airtime
         from rd_data.tb_broadcast_room
         where mem_no = #{mem_no}
     </select>

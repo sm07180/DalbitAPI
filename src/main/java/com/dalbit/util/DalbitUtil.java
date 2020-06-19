@@ -816,22 +816,24 @@ public class DalbitUtil {
      */
     public static String getUserAgent(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
+        System.out.println("======================================================================" + userAgent);
         String browser;
-        if (userAgent .indexOf("AppleWebKit") > -1) { //웹뷰
-            browser = "WebView";
-        }else if (userAgent .indexOf("MSIE") > -1 || userAgent .indexOf("Trident") > -1) {
+        if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1) {
             browser = "MSIE";
-        } else if (userAgent .indexOf("Opera") > -1) {
+        } else if (userAgent.indexOf("Opera") > -1) {
             browser =  "Opera";
-        } else if (userAgent .indexOf("Firefox") > -1) {
+        } else if (userAgent.indexOf("Firefox") > -1) {
             browser = "Firefox";
-        } else if (userAgent .indexOf("Chrome") > -1) {
+        } else if (userAgent.indexOf("Chrome") > -1) {
             browser = "Chrome";
-        } else if (userAgent .indexOf("Safari") > -1) {
+        } else if (userAgent.indexOf("Safari") > -1) {
             browser = "Safari";
+        }else if (userAgent.indexOf("AppleWebKit") > -1) { //웹뷰
+            browser = "WebView";
         }else {
             browser = "Firefox";
         }
+        System.out.println("======================================================================" + browser);
         return browser;
     }
 
@@ -1227,6 +1229,9 @@ public class DalbitUtil {
         data = StringUtils.replace(data, "\\\\t", "\\t");
         data = StringUtils.replace(data, "\\\\u202E", "\\u202E");
 
+        if("".equals(data.trim())){
+            return true;
+        }
         if(data.indexOf("\\n") >= 0 || (data.indexOf("\n") >= 0)){
             return true;
         }
@@ -1240,6 +1245,9 @@ public class DalbitUtil {
 
         }
         if(data.indexOf("ㅤ") >= 0){
+            return true;
+        }
+        if(data.indexOf("⠀") >= 0){
             return true;
         }
 

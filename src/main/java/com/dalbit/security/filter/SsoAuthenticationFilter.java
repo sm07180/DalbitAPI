@@ -141,46 +141,46 @@ public class SsoAuthenticationFilter implements Filter {
             }
 
             UserDetails userDetails = null;
-            if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
+            /*if(redisUtil.isExistLoginSession(tokenVo.getMemNo())){
                 userDetails = userDetailsService.loadUserBySsoCookieFromRedis(tokenVo.getMemNo());
                 if(!DalbitUtil.isEmpty(userDetails)){
                     log.debug("{}로 REDIS 조회 : {}", tokenVo.getMemNo(), userDetails.toString());
                 }
-            }
+            }*/
 
-            if(DalbitUtil.isEmpty(userDetails)) {
-                if (tokenVo.getMemNo() == null) {
-                    throw new GlobalException(ErrorStatus.토큰검증오류, Thread.currentThread().getStackTrace()[1].getMethodName());
-                } else {
-                    if (tokenVo.isLogin()) {
-                        ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
+            //if(DalbitUtil.isEmpty(userDetails)) {
+            if (tokenVo.getMemNo() == null) {
+                throw new GlobalException(ErrorStatus.토큰검증오류, Thread.currentThread().getStackTrace()[1].getMethodName());
+            } else {
+                if (tokenVo.isLogin()) {
+                    ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
 
-                        MemberVo memberVo = null;
-                        if (profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+                    MemberVo memberVo = null;
+                    if (profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
 
-                            P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                            memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), tokenVo.getMemNo(), null));
-                            SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
-                            securityUserVo.setMemberVo(memberVo);
-
-                            userDetails = securityUserVo;
-                        } else {
-                            new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-                        }
-                    } else {
-                        MemberVo memberVo = new MemberVo();
-                        memberVo.setMemId(tokenVo.getMemNo());
-                        memberVo.setMemNo(tokenVo.getMemNo());
-                        memberVo.setMemPasswd("");
-
-                        SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), tokenVo.getMemNo(), DalbitUtil.getGuestAuthorities());
+                        P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
+                        memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), tokenVo.getMemNo(), null));
+                        SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemId(), DalbitUtil.getAuthorities());
                         securityUserVo.setMemberVo(memberVo);
 
-                        memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
                         userDetails = securityUserVo;
+                    } else {
+                        new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
                     }
+                } else {
+                    MemberVo memberVo = new MemberVo();
+                    memberVo.setMemId(tokenVo.getMemNo());
+                    memberVo.setMemNo(tokenVo.getMemNo());
+                    memberVo.setMemPasswd("");
+
+                    SecurityUserVo securityUserVo = new SecurityUserVo(tokenVo.getMemNo(), tokenVo.getMemNo(), DalbitUtil.getGuestAuthorities());
+                    securityUserVo.setMemberVo(memberVo);
+
+                    memberService.refreshAnonymousSecuritySession(tokenVo.getMemNo());
+                    userDetails = securityUserVo;
                 }
             }
+            //}
 
             loginUtil.saveSecuritySession(request, userDetails);
             //loginUtil.ssoCookieUpdateFromRequestHeader(request, response);

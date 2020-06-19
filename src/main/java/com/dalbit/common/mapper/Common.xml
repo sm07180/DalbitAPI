@@ -112,7 +112,7 @@
             AND item_code NOT IN ('U1447', 'U1885')
             AND item_slct = #{item_slct}
             AND platform like #{platform}
-        ORDER BY use_area, item_price, item_name
+        ORDER BY isNew DESC, item_price ASC, item_name ASC
     </select>
 
     <select id="selectBooster" parameterType="String" resultType="ItemVo">

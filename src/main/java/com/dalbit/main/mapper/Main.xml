@@ -27,7 +27,8 @@
             , (A.good+A.booster) AS likes
             , B.image_background AS bannerUrl
             , true AS isSpecial
-        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room B ON A.room_no = B.room_no
+        FROM tb_broadcast_room_live_list AS A
+            INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
             INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no AND D.specialdj_badge = 1
         ORDER BY B.idx desc
@@ -47,7 +48,7 @@
            , (A.good+A.booster) AS likes
            , B.image_background AS bannerUrl
            , false AS isSpecial
-        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room B ON A.room_no = B.room_no
+        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
         WHERE A.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE specialdj_badge = 1)
         ORDER BY A.total DESC
         LIMIT 0, 10;
@@ -64,6 +65,9 @@
             , popup_type
             , is_cookie
             , contents
+            , is_title_view
+            , is_button_view
+            , IF(is_button_view = 0, '확인', '상세로 이동') AS buttonNm
         FROM rd_admin.tb_admin_banner
         WHERE is_view = 1
             AND position = #{paramPosition}
@@ -148,7 +152,8 @@
             , IFNULL(T3.count_entry, 0) AS listeners
             , IFNULL(T3.count_good, 0) AS likes
             , T2.image_background AS bannerUrl
-        FROM tb_member_basic T1 INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
+        FROM tb_member_basic T1
+            INNER JOIN tb_member_profile T2 ON T1.mem_no = T2.mem_no
             INNER JOIN tb_broadcast_room T3 ON T1.mem_no = T3.mem_no AND T3.state &lt; 4
             INNER JOIN tb_broadcast_room_member T4 ON T3.room_no = T4.room_no AND T3.mem_no = T4.mem_no AND T4.auth = 3 AND T4.state = 0
         WHERE T1.mem_no IN (${value})

@@ -118,4 +118,39 @@ public class EventController {
         return result;
     }
 
+
+    /**
+     * 출석체크 이벤트 상태 체크
+     */
+    @PostMapping("/attendance/check/status")
+    public String attendanceCheckStatus(HttpServletRequest request) throws GlobalException {
+
+        String result = eventService.attendanceCheckStatus(request);
+
+        return result;
+    }
+
+    /**
+     * 출석체크 이벤트 상태 체크
+     */
+    @PostMapping("/attendance/check/in")
+    public String attendanceCheckIn(HttpServletRequest request) throws GlobalException {
+
+        String result = eventService.attendanceCheckIn(request);
+
+        return result;
+    }
+
+    /**
+     * 출석체크 이벤트 더 줘 받기
+     */
+    @PostMapping("/attendance/random/gift")
+    public String attendanceRandomGift(HttpServletRequest request) throws GlobalException {
+
+        String result = eventService.attendanceRandomGift(request);
+
+        return result;
+    }
+
+
 }
