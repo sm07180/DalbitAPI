@@ -436,8 +436,9 @@ public class EventService {
             totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
             dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
 
-            if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))){
-                pAttendanceCheckLoadOutputVo.setIs_today(1);
+            if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))
+                    && pAttendanceCheckLoadOutputVo.getCheck_ok() == 0 ){
+                pAttendanceCheckLoadOutputVo.setCheck_ok(2);
             }
         }
 
