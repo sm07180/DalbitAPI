@@ -16,5 +16,6 @@ public class BannerVo {
     private int is_cookie;
     private String contents;
     private int is_title_view;
+    private int is_button_view;
     private String buttonNm;
 }

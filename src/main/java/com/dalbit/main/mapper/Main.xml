@@ -66,6 +66,7 @@
             , is_cookie
             , contents
             , is_title_view
+            , is_button_view
             , IF(is_button_view = 0, '확인', '상세로 이동') AS buttonNm
         FROM rd_admin.tb_admin_banner
         WHERE is_view = 1
