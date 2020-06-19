@@ -1,14 +1,10 @@
 package com.dalbit.common.vo;
 
-import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.Random;
-
 @Getter @Setter
-public class FanBadgeVo implements Serializable {
+public class FanBadgeVo {
     private String text;
     private String icon;
     private String startColor;
