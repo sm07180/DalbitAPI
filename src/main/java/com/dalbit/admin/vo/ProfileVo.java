@@ -19,4 +19,8 @@ public class ProfileVo extends AdminBaseVo{
     private String mem_userid;
     private int reportedCnt;
     private String reportYn;
+
+    private String room_no;
+    private int state;
+    private int auth;
 }
