@@ -844,6 +844,19 @@ public class AdminService {
     }
 
     /**
+     * 생방송관리 > 청취자 목록
+     */
+    public String selectLiveListener(HttpServletRequest request, ProfileVo profileVo) {
+        profileVo.setPagingInfo();
+        List<ProfileVo> listenerList = adminDao.selectLiveListener(profileVo);
+
+        var map = new HashMap<>();
+        map.put("listenerList", listenerList);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+    }
+
+    /**
      * 통계 > 방송정보
      */
     public String callBroadcastTotal(P_StatVo pStatVo) {

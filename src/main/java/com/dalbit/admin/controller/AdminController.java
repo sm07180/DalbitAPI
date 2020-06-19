@@ -162,6 +162,15 @@ public class AdminController {
     }
 
     /**
+     * 생방송관리 > 청취자 목록
+     */
+    @PostMapping("/broadcast/liveListener")
+    public String liveListener(HttpServletRequest request, ProfileVo profileVo) {
+        String result = adminService.selectLiveListener(request, profileVo);
+        return result;
+    }
+
+    /**
      * 통계 > 방송정보
      */
     @PostMapping("/stat/broadInfo")

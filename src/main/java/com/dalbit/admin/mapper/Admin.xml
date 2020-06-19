@@ -36,7 +36,7 @@
                 , basic.mem_userid
                 , (select `code` from rd_data.tbl_code_define where type = 'subject_type' and value = room.subject_type) subject_name
                 , room.title
-                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth != 3) liveListener
+                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth <![CDATA[!=]]> 3) liveListener
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = room.mem_no) reportedCnt
                 , room.state
             from rd_data.tb_broadcast_room room
@@ -351,6 +351,32 @@
                 ,NOW()
           )
     </insert>
+
+    <select id="selectLiveListener" parameterType="com.dalbit.admin.vo.ProfileVo" resultType="com.dalbit.admin.vo.ProfileVo">
+        /* Admin.xml - selectLiveListener */
+                select a.mem_no as mem_no
+                  , pro.image_profile as image_profile
+                  , bas.mem_userid as mem_userid
+                  , bas.mem_nick as mem_nick
+                  , a.state as state
+                  , a.auth as auth
+                  , a.last_upd_date as last_upd_date
+                from (
+                  select roommem.mem_no
+                        , roommem.state
+                        , roommem.auth
+                        , roommem.last_upd_date
+                  from rd_data.tb_broadcast_room_live_list live
+                    inner join rd_data.tb_broadcast_room_member roommem on live.room_no = roommem.room_no
+                  where live.room_no = #{room_no}
+                  and roommem.auth <![CDATA[!=]]> 3
+                )a
+                , rd_data.tb_member_basic bas
+                , rd_data.tb_member_profile pro
+                where a.mem_no = bas.mem_no
+                  and a.mem_no = pro.mem_no
+                order by a.last_upd_date desc
+    </select>
 
     <select id="callBroadcastTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_BroadcastTotalOutDetailVo">
         /* Admin.xml - callBroadcastTotal */
