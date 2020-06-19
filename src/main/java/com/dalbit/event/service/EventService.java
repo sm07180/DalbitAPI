@@ -302,6 +302,11 @@ public class EventService {
                 summary.put("totalExp", 14);
                 returnMap.put("summary",summary );
 
+                var status = new HashMap();
+                status.put("check_gift", 0);
+                status.put("bonus", 1);
+                returnMap.put("status",status );
+
             }
             return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_성공, returnMap));
 
