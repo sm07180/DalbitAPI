@@ -59,7 +59,7 @@ public enum Status {
     로그인실패_블럭상태("-3", "login.block", "로그인 실패 시 - 블럭상태"),
     로그인실패_탈퇴("-4", "login.kick.out", "로그인 실패 시 - 탈퇴"),
     로그인실패_영구정지("-5", "login.permanent.stop", "로그인 실패 시 - 영구정지"),
-    로그인실패_동일방접속("-6", "login.connected.room", "로그인 실패 시 - 동일방 접속"),
+    로그인실패_청취방존재("-6", "login.connected.room", "로그인 실패 시 - 동일방 접속"),
     로그인오류("C006", "login.error", "로그인 오류 시"),
 
     //로그아웃
@@ -360,6 +360,7 @@ public enum Status {
     강제퇴장_권한없음("-5", "broadcast.kickout.authorization.not", "강제퇴장 권한 없을 시"),
     강제퇴장_대상회원_방소속회원아님("-6", "broadcast.kickout.object.room.join.no", "대상회원이 방에 소속된 회원이 아닐 시"),
     강제퇴장_게스트이상불가("-7", "broadcast.kickout.guest.not", "게스트 이상 강제퇴장 불가 시"),
+    강제퇴장_매니저가매니저("-8", "broadcast.kickout.manager.manager", "매니저가 매니저 강퇴시"),
     강제퇴장_실패("C006", "broadcast.kickout.fail", "강제퇴장 실패 시"),
 
     //유저
