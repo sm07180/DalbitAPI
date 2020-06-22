@@ -182,9 +182,18 @@ public class AdminController {
     /**
      * 통계 > 현재 접속자
      */
-    @PostMapping("/stat/userInfo")
-    public String statUser(HttpServletRequest request){
-        String result = adminService.callUserTotal();
+    @PostMapping("/stat/userInfoCurrent")
+    public String statUserCurrent(HttpServletRequest request){
+        String result = adminService.callUserCurrentTotal();
+        return result;
+    }
+
+    /**
+     * 통계 > 날짜 별 접속 현황
+     */
+    @PostMapping("/stat/userInfoTheDay")
+    public String statUserTheDay(HttpServletRequest request, P_StatVo pStatVo) {
+        String result = adminService.callUserDayTotal(pStatVo);
         return result;
     }
 
