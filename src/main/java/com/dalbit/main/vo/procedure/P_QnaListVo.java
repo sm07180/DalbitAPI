@@ -35,7 +35,12 @@ public class P_QnaListVo {
     private String answer;
     private Date writeDate;
     private Date opDate;
-    private String addFile;
+    private String addFile1;
+    private String addFile2;
+    private String addFile3;
+    private String addFileName1;
+    private String addFileName2;
+    private String addFileName3;
     private String email;
 
 

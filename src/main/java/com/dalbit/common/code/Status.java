@@ -660,12 +660,19 @@ public enum Status {
     //고객센터 1:1문의작성 등록
     고객센터_문의작성_성공("0", "customer.center.qna.add.success", "고객센터 1:1문의하기 작성 성공 시"),
     고객센터_문의작성_요청회원번호_회원아님("-1", "customer.center.qna.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    고객센터_문의작성_재문의불가("-2", "customer.center.qna.re.add.error", "재문의 불가 시"),
     고객센터_문의작성_실패("C006", "customer.center.qna.add.fail", "고객센터 1:1문의하기 작성 실패 시"),
 
     //고객센터 문의내역 조회
     고객센터_문의내역조회_성공("C001", "customer.center.qna.select.success", "고객센터 문의내역 조회 성공 시"),
     고객센터_문의내역_없음("0", "customer.center.qna.no.success", "고객센터 문의내역 없을 시"),
     고객센터_문의내역조회_실패("C006", "customer.center.qna.select.fail", "고객센터 문의내역 조회 실패 시"),
+
+    //고객센터 1:1문의삭제
+    고객센터_문의삭제_성공("0", "customer.center.qna.delete.success", "고객센터 1:1문의하기 삭제 성공 시"),
+    고객센터_문의삭제_요청회원번호_회원아님("-1", "customer.center.qna.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
+    고객센터_문의삭제_문의번호없음("-2", "customer.center.qna.delete.number.error", "문의번호가 없을 시"),
+    고객센터_문의삭제_실패("C006", "customer.center.qna.delete.fail", "고객센터 1:1문의하기 삭제 실패 시"),
 
     //회원탈퇴
     회원탈퇴_성공("0", "member.withdrawal.success", "회원탈퇴 성공 시"),

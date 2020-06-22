@@ -22,4 +22,6 @@ public interface CustomerCenterDao {
     ProcedureVo callQnaAdd(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_QnaListVo> callQnaList(ProcedureVo procedureVo);
+
+    ProcedureVo callQnaDel(ProcedureVo procedureVo);
 }

@@ -47,7 +47,7 @@
         <if test='reportYn == "Y"'>
         where 0 <![CDATA[<]]> reportedCnt
         </if>
-        order by list.start_date desc
+        order by list.state asc, list.start_date desc
         limit #{searchStart}, #{searchEnd}
     </select>
 
@@ -375,7 +375,7 @@
                 , rd_data.tb_member_profile pro
                 where a.mem_no = bas.mem_no
                   and a.mem_no = pro.mem_no
-                order by a.last_upd_date desc
+                order by a.state asc, a.last_upd_date desc
     </select>
 
     <select id="callBroadcastTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_BroadcastTotalOutDetailVo">

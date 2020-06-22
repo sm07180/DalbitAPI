@@ -19,7 +19,15 @@ public class QnaVo {
     @NotBlank
     private String contents;
 
-    private String questionFile;
+    private String questionFile1;
+    private String questionFile2;
+    private String questionFile3;
+    private String questionFileName1;
+    private String questionFileName2;
+    private String questionFileName3;
+
+    private int qnaIdx;
+
     @NotBlank
     private String email;
 }
