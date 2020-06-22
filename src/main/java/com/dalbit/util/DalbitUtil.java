@@ -816,7 +816,6 @@ public class DalbitUtil {
      */
     public static String getUserAgent(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
-        System.out.println("======================================================================" + userAgent);
         String browser;
         if (userAgent.indexOf("MSIE") > -1 || userAgent.indexOf("Trident") > -1) {
             browser = "MSIE";
@@ -833,7 +832,6 @@ public class DalbitUtil {
         }else {
             browser = "Firefox";
         }
-        System.out.println("======================================================================" + browser);
         return browser;
     }
 
