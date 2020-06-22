@@ -24,4 +24,5 @@ public class ItemVo {
     private String category;
     private boolean visibility = true;
     private boolean isNew;
+    private int sortNo;
 }

@@ -154,7 +154,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             }
 
             throw new CustomUsernameNotFoundException(Status.로그인실패_영구정지, returnMap);
-
+        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_동일방접속.getMessageCode())){
+            throw new CustomUsernameNotFoundException(Status.로그인실패_동일방접속);
         }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
             MemberVo paramMemberVo = new MemberVo();
             paramMemberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));
