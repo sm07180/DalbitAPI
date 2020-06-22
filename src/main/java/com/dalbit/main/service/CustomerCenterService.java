@@ -171,25 +171,47 @@ public class CustomerCenterService {
      * 고객센터 1:1 문의작성
      */
     public String callQnaAdd(P_QnaVo pQnaVo, HttpServletRequest request) throws GlobalException {
-        String qnaFile = pQnaVo.getAddFile();
-        Boolean isDone = false;
-        if(!DalbitUtil.isEmpty(qnaFile) && qnaFile.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
-            isDone = true;
-            qnaFile = DalbitUtil.replacePath(qnaFile);
+        String qnaFile1 = pQnaVo.getAddFile1();
+        String qnaFile2 = pQnaVo.getAddFile2();
+        String qnaFile3 = pQnaVo.getAddFile3();
+        Boolean isDone1 = false;
+        Boolean isDone2 = false;
+        Boolean isDone3 = false;
+        if(!DalbitUtil.isEmpty(qnaFile1) && qnaFile1.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
+            isDone1 = true;
+            qnaFile1 = DalbitUtil.replacePath(qnaFile1);
         }
-        pQnaVo.setAddFile(qnaFile);
+        if(!DalbitUtil.isEmpty(qnaFile2) && qnaFile2.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
+            isDone2 = true;
+            qnaFile2 = DalbitUtil.replacePath(qnaFile2);
+        }
+        if(!DalbitUtil.isEmpty(qnaFile3) && qnaFile3.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
+            isDone3 = true;
+            qnaFile3 = DalbitUtil.replacePath(qnaFile3);
+        }
+        pQnaVo.setAddFile1(qnaFile1);
+        pQnaVo.setAddFile2(qnaFile2);
+        pQnaVo.setAddFile3(qnaFile3);
 
         ProcedureVo procedureVo = new ProcedureVo(pQnaVo);
         customerCenterDao.callQnaAdd(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.고객센터_문의작성_성공.getMessageCode())) {
-            if(isDone){
-                restService.imgDone(DalbitUtil.replaceDonePath(qnaFile), request);
+            if(isDone1){
+                restService.imgDone(DalbitUtil.replaceDonePath(qnaFile1), request);
+            }
+            if(isDone2){
+                restService.imgDone(DalbitUtil.replaceDonePath(qnaFile2), request);
+            }
+            if(isDone3){
+                restService.imgDone(DalbitUtil.replaceDonePath(qnaFile3), request);
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_성공));
         } else if (procedureVo.getRet().equals(Status.고객센터_문의작성_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_요청회원번호_회원아님));
+        } else if (procedureVo.getRet().equals(Status.고객센터_문의작성_재문의불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_재문의불가));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_실패));
         }
@@ -229,5 +251,26 @@ public class CustomerCenterService {
         }
         return result;
 
+    }
+
+    /**
+     * 고객센터 1:1 문의내역 삭제
+     */
+    public String callQnaDel(P_QnaDelVo apiData) {
+        ProcedureVo procedureVo = new ProcedureVo(apiData);
+        customerCenterDao.callQnaDel(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.고객센터_문의삭제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의삭제_성공));
+        } else if (procedureVo.getRet().equals(Status.고객센터_문의삭제_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의삭제_요청회원번호_회원아님));
+        } else if (procedureVo.getRet().equals(Status.고객센터_문의삭제_문의번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의삭제_문의번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의삭제_실패));
+        }
+
+        return result;
     }
 }
