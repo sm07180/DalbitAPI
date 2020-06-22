@@ -259,6 +259,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_대상회원_방소속회원아님));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_게스트이상불가.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_게스트이상불가));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_매니저가매니저.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_매니저가매니저));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_실패));
         }

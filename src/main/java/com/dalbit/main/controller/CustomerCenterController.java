@@ -108,4 +108,17 @@ public class CustomerCenterController {
 
         return result;
     }
+
+    /**
+     * 고객센터 나의 1:1문의 삭제
+     */
+    @PostMapping("/center/qna/del")
+    public String callQnaDel(@Valid QnaDelVo qnaDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_QnaDelVo apiData = new P_QnaDelVo(qnaDelVo, request);
+
+        String result = customerCenterService.callQnaDel(apiData);
+
+        return result;
+    }
 }
