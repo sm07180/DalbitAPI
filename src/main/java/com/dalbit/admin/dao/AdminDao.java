@@ -66,6 +66,8 @@ public interface AdminDao {
 
     int insertContentsMessageAdd(MessageInsertVo messageInsertVo);
 
+    ArrayList<ProfileVo> selectLiveListener(ProfileVo profileVo);
+
     // 통계
     ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
 

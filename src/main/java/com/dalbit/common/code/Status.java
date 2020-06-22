@@ -762,6 +762,7 @@ public enum Status {
     출석체크이벤트_출석_실패_이미받음("-2", "event.attendance.checkIn.fail.already", "이미 받음"),
     출석체크이벤트_출석_실패_필요시간부족("-3", "event.attendance.checkIn.fail.short.time", "필요시간부족"),
     출석체크이벤트_출석_실패_보상테이블없음("-4", "event.attendance.checkIn.fail.table.emapty", "보상테이블없음"),
+    출석체크이벤트_출석_실패_동일기기중복불가("-5", "event.attendance.checkIn.fail.device.check", "동일기기 중복불가"),
     출석체크이벤트_출석_실패("C006", "business.error", "비즈니스 에러"),
 
     출석체크이벤트_더줘_성공("0", "event.attendance.checkIn.success", "성공"),
