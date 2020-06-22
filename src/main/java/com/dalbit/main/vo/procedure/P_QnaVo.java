@@ -17,10 +17,16 @@ public class P_QnaVo {
     private int slctType;
     private String title;
     private String contents;
-    private String addFile;
+    private String addFile1;
+    private String addFile2;
+    private String addFile3;
+    private String addFileName1;
+    private String addFileName2;
+    private String addFileName3;
     private String email;
     private String browser;
     private String platform;
+    private int qnaIdx;
 
     public P_QnaVo(){}
     public P_QnaVo(QnaVo qnaVo, HttpServletRequest request){
@@ -28,9 +34,15 @@ public class P_QnaVo {
         setSlctType(qnaVo.getQnaType());
         setTitle(qnaVo.getTitle());
         setContents(qnaVo.getContents());
-        setAddFile(qnaVo.getQuestionFile());
+        setAddFile1(qnaVo.getQuestionFile1());
+        setAddFile2(qnaVo.getQuestionFile2());
+        setAddFile3(qnaVo.getQuestionFile3());
+        setAddFileName1(qnaVo.getQuestionFileName1());
+        setAddFileName2(qnaVo.getQuestionFileName2());
+        setAddFileName3(qnaVo.getQuestionFileName3());
         setEmail(qnaVo.getEmail());
         setBrowser(DalbitUtil.getUserAgent(request));
+        setQnaIdx(qnaVo.getQnaIdx());
 
         String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
         customHeader = java.net.URLDecoder.decode(customHeader);

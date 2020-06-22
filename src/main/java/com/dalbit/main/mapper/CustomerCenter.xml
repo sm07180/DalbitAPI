@@ -26,4 +26,8 @@
         call sp_service_center_qna_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callQnaDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_service_center_qna_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

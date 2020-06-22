@@ -604,12 +604,19 @@ customer.center.faq.detail.select.fail=customer center faq detail select fail.
 # customer center qna add
 customer.center.qna.add.success=customer center qna add success.
 customer.center.qna.add.member.number.error=member number error.
+customer.center.qna.re.add.error=re add error.
 customer.center.qna.add.fail=customer center qna add fail.
 
 # customer center qna select
 customer.center.qna.select.success=customer center qna select success.
 customer.center.qna.no.success=customer center qna no.
 customer.center.qna.select.fail=customer center qna select fail.
+
+# customer center qna delete
+customer.center.delete.add.success=customer center qna delete success.
+customer.center.delete.add.member.number.error=member number error.
+customer.center.qna.delete.number.error=qna number error.
+customer.center.delete.add.fail=customer center qna delete fail.
 
 # member withdrawal
 member.withdrawal.success=member withdrawal success.

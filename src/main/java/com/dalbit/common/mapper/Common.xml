@@ -107,7 +107,8 @@
                     ELSE 'normal'
                 END)AS category
                 , (CAST(SUBSTR(item_type, 1, 1) AS INT) = 1) AS isNew
-        FROM rd_data.tbl_gift_item
+                , @rownum := @rownum + 1 AS sortNo
+        FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
         WHERE view_yn = 1
             AND item_code NOT IN ('U1447', 'U1885')
             AND item_slct = #{item_slct}
@@ -172,6 +173,7 @@
                     ELSE 'normal'
                 END)AS category
                 , (CAST(SUBSTR(item_type, 1, 1) AS INT) = 1) AS isNew
+                , 1 AS sortNo
         FROM rd_data.tbl_gift_item
         WHERE item_code = #{value}
     </select>
