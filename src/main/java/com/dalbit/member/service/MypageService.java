@@ -1231,7 +1231,7 @@ public class MypageService {
         //Date today = new Date();
         long nowDateTime = Long.valueOf(DalbitUtil.getUTCFormat(new Date()));
         long startDateTime = 20200622000000L;
-        long endDateTime = 20200626235959L;
+        long endDateTime = 20200628235959L;
 
         if(!DalbitUtil.isLogin(request)) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
