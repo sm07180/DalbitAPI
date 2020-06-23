@@ -17,6 +17,7 @@ public class P_QnaVo {
     private int slctType;
     private String title;
     private String contents;
+    private String addFile;
     private String addFile1;
     private String addFile2;
     private String addFile3;
@@ -34,6 +35,7 @@ public class P_QnaVo {
         setSlctType(qnaVo.getQnaType());
         setTitle(qnaVo.getTitle());
         setContents(qnaVo.getContents());
+        setAddFile(qnaVo.getQuestionFile());
         setAddFile1(qnaVo.getQuestionFile1());
         setAddFile2(qnaVo.getQuestionFile2());
         setAddFile3(qnaVo.getQuestionFile3());

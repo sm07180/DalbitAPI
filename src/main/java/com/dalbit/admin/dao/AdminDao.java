@@ -1,10 +1,7 @@
 package com.dalbit.admin.dao;
 
 import com.dalbit.admin.vo.*;
-import com.dalbit.admin.vo.procedure.P_BroadcastTotalOutDetailVo;
-import com.dalbit.admin.vo.procedure.P_PayInfoOutVo;
-import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
-import com.dalbit.admin.vo.procedure.P_UserTotalOutDetailVo;
+import com.dalbit.admin.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.MessageInsertVo;
 import org.springframework.stereotype.Repository;
@@ -71,8 +68,12 @@ public interface AdminDao {
     // 통계
     ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
 
-    List<P_UserTotalOutDetailVo> callUserTotal(ProcedureVo procedureVo);
+    List<P_UserTotalOutDetailVo> callUserCurrentTotal(ProcedureVo procedureVo);
 
     List<P_PayInfoOutVo> callPayInfo(ProcedureVo procedureVo);
+
+    List<P_LoginTotalOutDetailVo> callLoginGender(ProcedureVo procedureVo);
+
+    List<P_LoginAgeOutDetailVo> callLoginAge(ProcedureVo procedureVo);
 
 }
