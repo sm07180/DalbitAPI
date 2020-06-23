@@ -171,12 +171,18 @@ public class CustomerCenterService {
      * 고객센터 1:1 문의작성
      */
     public String callQnaAdd(P_QnaVo pQnaVo, HttpServletRequest request) throws GlobalException {
+        String qnaFile = pQnaVo.getAddFile();
         String qnaFile1 = pQnaVo.getAddFile1();
         String qnaFile2 = pQnaVo.getAddFile2();
         String qnaFile3 = pQnaVo.getAddFile3();
+        Boolean isDone = false;
         Boolean isDone1 = false;
         Boolean isDone2 = false;
         Boolean isDone3 = false;
+        if(!DalbitUtil.isEmpty(qnaFile) && qnaFile.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
+            isDone = true;
+            qnaFile = DalbitUtil.replacePath(qnaFile);
+        }
         if(!DalbitUtil.isEmpty(qnaFile1) && qnaFile1.startsWith(Code.포토_일대일_임시_PREFIX.getCode())){
             isDone1 = true;
             qnaFile1 = DalbitUtil.replacePath(qnaFile1);
@@ -189,6 +195,7 @@ public class CustomerCenterService {
             isDone3 = true;
             qnaFile3 = DalbitUtil.replacePath(qnaFile3);
         }
+        pQnaVo.setAddFile(qnaFile);
         pQnaVo.setAddFile1(qnaFile1);
         pQnaVo.setAddFile2(qnaFile2);
         pQnaVo.setAddFile3(qnaFile3);
@@ -198,6 +205,9 @@ public class CustomerCenterService {
 
         String result;
         if(procedureVo.getRet().equals(Status.고객센터_문의작성_성공.getMessageCode())) {
+            if(isDone){
+                restService.imgDone(DalbitUtil.replaceDonePath(qnaFile), request);
+            }
             if(isDone1){
                 restService.imgDone(DalbitUtil.replaceDonePath(qnaFile1), request);
             }
