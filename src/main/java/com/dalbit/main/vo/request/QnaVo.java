@@ -19,6 +19,7 @@ public class QnaVo {
     @NotBlank
     private String contents;
 
+    private String questionFile;
     private String questionFile1;
     private String questionFile2;
     private String questionFile3;
