@@ -183,6 +183,8 @@
           , mem_phone
           , title
           , contents
+          , broadcast_time1
+          , broadcast_time2
           , reg_date
           , state
         ) values (
@@ -191,6 +193,8 @@
           , #{phone}
           , #{title}
           , #{contents}
+          , #{broadcast_time1}
+          , #{broadcast_time2, jdbcType=VARCHAR}
           , NOW()
           , 1
         )
