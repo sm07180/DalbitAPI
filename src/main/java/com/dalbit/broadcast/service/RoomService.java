@@ -266,6 +266,9 @@ public class RoomService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
+            //애드브릭스 전달을 위한 데이터 생성
+            //adbrixService("roomJoin", "1151231231312")
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여성공, procedureVo.getData()));
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_회원아님));

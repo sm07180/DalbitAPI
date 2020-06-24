@@ -14,7 +14,6 @@ import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.sample.service.SampleService;
-import com.dalbit.sample.vo.SampleVo;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -23,17 +22,14 @@ import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Profile;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -157,6 +153,9 @@ public class MemberController {
 
                 loginUtil.saveSecuritySession(request, securityUserVo);
                 //loginUtil.ssoCookieRenerate(response, jwtToken);
+
+                //애드브릭스 데이터 전달을 위한 정보 생성
+                //AdbrixVo("join", memberVo.getGender(), memberVo.getAge(), DalbitUtil.)
 
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
 
