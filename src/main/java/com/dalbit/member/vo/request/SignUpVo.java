@@ -37,4 +37,5 @@ public class SignUpVo {
     private String profImg;
     private String profImgRacy;
     private String email;
+    private String nativeTid;
 }

@@ -60,6 +60,7 @@ public enum Status {
     로그인실패_탈퇴("-4", "login.kick.out", "로그인 실패 시 - 탈퇴"),
     로그인실패_영구정지("-5", "login.permanent.stop", "로그인 실패 시 - 영구정지"),
     로그인실패_청취방존재("-6", "login.connected.room", "로그인 실패 시 - 동일방 접속"),
+    로그인실패_운영자차단("-7", "login.admin.block", "로그인 실패 시 - 운영자가 차단한 deviceUuid or IP 인 경우"),
     로그인오류("C006", "login.error", "로그인 오류 시"),
 
     //로그아웃

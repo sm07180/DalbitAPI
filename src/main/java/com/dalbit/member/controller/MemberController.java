@@ -22,6 +22,7 @@ import com.dalbit.util.JwtUtil;
 import com.dalbit.util.LoginUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -100,6 +101,7 @@ public class MemberController {
         String appAdId = deviceVo.getAdId();
         String ip = deviceVo.getIp();
         String browser = DalbitUtil.getUserAgent(request);
+        String nativeTid = DalbitUtil.isEmpty(signUpVo.getNativeTid()) ? "" : signUpVo.getNativeTid();
 
         LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
@@ -113,6 +115,7 @@ public class MemberController {
                 , locationVo.getRegionName()
                 , ip
                 , browser
+                , nativeTid
         );
 
         String result = "";
@@ -159,9 +162,14 @@ public class MemberController {
                 //loginUtil.ssoCookieRenerate(response, jwtToken);
 
                 //애드브릭스 데이터 전달을 위한 정보 생성
-                String adbrixData = AdbrixService.makeAdbrixData("join",memNo);
+                AdbrixLayoutVo adbrixData = adbrixService.makeAdbrixData("signUp", memNo);
 
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
+                var resultMap = new HashMap();
+                resultMap.put("tokenInfo", new TokenVo(jwtToken, memNo, true));
+                resultMap.put("adbrixData", adbrixData);
+
+                //result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, resultMap));
 
             }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
