@@ -21,6 +21,7 @@
 		<typeAlias type="com.dalbit.common.vo.AppVersionVo" alias="AppVersionVo" />
 		<typeAlias type="com.dalbit.common.vo.BanWordVo" alias="BanWordVo" />
 		<typeAlias type="com.dalbit.common.vo.NowBroadcastVo" alias="NowBroadcastVo" />
+		<typeAlias type="com.dalbit.common.vo.AdbrixVo" alias="AdbrixVo" />
 
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainFanRankingVo" alias="P_MainFanRankingVo" />
 		<typeAlias type="com.dalbit.main.vo.procedure.P_MainDjRankingVo" alias="P_MainDjRankingVo" />
@@ -66,7 +67,6 @@
 
 		<typeAlias type="com.dalbit.store.vo.StoreChargeVo" alias="StoreChargeVo" />
 		<typeAlias type="com.dalbit.store.vo.PayChargeVo" alias="PayChargeVo" />
-
 
 		<typeAlias type="com.dalbit.socket.vo.P_RoomMemberInfoSelectVo" alias="P_RoomMemberInfoSelectVo" />
 	</typeAliases>

@@ -2,6 +2,7 @@ package com.dalbit.member.controller;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.AdbrixService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.CustomUsernameNotFoundException;
@@ -49,6 +50,9 @@ public class MemberController {
     SampleService sampleService;
     @Autowired
     CommonService commonService;
+
+    @Autowired
+    AdbrixService adbrixService;
 
     /**
      * 토큰조회
@@ -155,7 +159,7 @@ public class MemberController {
                 //loginUtil.ssoCookieRenerate(response, jwtToken);
 
                 //애드브릭스 데이터 전달을 위한 정보 생성
-                //AdbrixVo("join", memberVo.getGender(), memberVo.getAge(), DalbitUtil.)
+                String adbrixData = AdbrixService.makeAdbrixData("join",memNo);
 
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
 

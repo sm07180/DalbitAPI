@@ -8,7 +8,7 @@ import lombok.Setter;
 public class AdbrixVo {
 
     public AdbrixVo(){}
-    public AdbrixVo(String eventName, String sex, int age, String connectTime, String connectCnt, String broadcastCreateYn, String broadcastJoinYn, String payYn){
+    public AdbrixVo(String eventName, String sex, String age, String connectTime, String connectCnt, String broadcastCreateYn, String broadcastJoinYn, String payYn, int korAge, int realAge){
         this.eventName = eventName;
         this.sex = sex;
         this.connectTime = connectTime;
@@ -20,10 +20,12 @@ public class AdbrixVo {
 
     private String eventName;
     private String sex;
-    private int age;
+    private String age;
     private String connectTime;
     private String connectCnt;
     private String broadcastCreateYn;
     private String broadcastJoinYn;
     private String payYn;
+    private int korAge;
+    private int realAge;
 }
