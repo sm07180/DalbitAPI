@@ -60,6 +60,14 @@
         where mem_no = #{value}
     </select>
 
+    <select id="selectAdminBlock" parameterType="com.dalbit.common.vo.DeviceVo" resultType="int">
+        select count(block_end_date)
+        from rd_admin.tb_login_block
+        where
+            ( block_type = 1 and block_text = #{deviceUuid} )
+            or ( block_type = 2 and block_text = #{ip} )
+    </select>
+
     <select id="selectAnonymousMem" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
         select
           idx

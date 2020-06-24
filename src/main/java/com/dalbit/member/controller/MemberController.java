@@ -7,6 +7,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
@@ -54,6 +55,8 @@ public class MemberController {
 
     @Autowired
     AdbrixService adbrixService;
+    @Autowired
+    MemberDao memberDao;
 
     /**
      * 토큰조회
@@ -126,6 +129,12 @@ public class MemberController {
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(memId)){
             return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+        }
+
+        //어드민 block 상태 체크
+        int adminBlockCnt = memberDao.selectAdminBlock(deviceVo);
+        if(0 < adminBlockCnt){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
         }
 
         if(!"p".equals(memType) || ("p".equals(memType) && s_phoneNo.equals(memId))){

@@ -229,7 +229,11 @@ public class CommonService {
             }
         }catch(GlobalException e){}
 
-        if (isLogin) { //토큰의 회원번호가 탈퇴 했거나 정상,경고가 아닐 경우 로그아웃처리
+        //어드민 block 상태 체크
+        int adminBlockCnt = memberDao.selectAdminBlock(deviceVo);
+
+        if (isLogin && 0 == adminBlockCnt) {
+            //토큰의 회원번호가 탈퇴 했거나 정상,경고가 아닐 경우 로그아웃처리
             TokenCheckVo tokenCheckVo = memberDao.selectMemState(MemberVo.getMyMemNo(request));
 
             //다른 서버의 memNo가 넘어왔을 시 null이다.

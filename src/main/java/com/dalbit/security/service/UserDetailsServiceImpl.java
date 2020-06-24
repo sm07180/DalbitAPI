@@ -6,6 +6,7 @@ import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
+import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
@@ -38,6 +39,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private LoginDao loginDao;
+
+    @Autowired
+    private MemberDao memberDao;
 
     @Autowired
     private MemberService memberService;
@@ -78,6 +82,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         DeviceVo deviceVo = new DeviceVo(request);
         //LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
+
+        int adminBlockCnt = memberDao.selectAdminBlock(deviceVo);
+        if(0 < adminBlockCnt){
+            throw new CustomUsernameNotFoundException(Status.로그인실패_운영자차단);
+        }
+
 
         P_LoginVo pLoginVo = new P_LoginVo(
                 DalbitUtil.getStringMap(map, "memType")
