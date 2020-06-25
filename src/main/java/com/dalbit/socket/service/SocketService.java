@@ -173,9 +173,10 @@ public class SocketService {
     @Async("threadTaskExecutor")
     public void sendMessage(String message) {
         log.info("Socket Start : sendMessage {}", message);
-        RoomListVo pRoomListVo = new RoomListVo();
-        pRoomListVo.setPage(1);
-        pRoomListVo.setRecords(100);
+        P_RoomListVo pRoomListVo = new P_RoomListVo();
+        pRoomListVo.setMem_no("10000000000000");
+        pRoomListVo.setPageNo(1);
+        pRoomListVo.setPageCnt(100);
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
         String result = "error";
@@ -195,9 +196,10 @@ public class SocketService {
     @Async("threadTaskExecutor")
     public void sendMessage(String message, List<String> listTargetRooms) {
         log.info("Socket Start : sendMessage {}", message);
-        RoomListVo pRoomListVo = new RoomListVo();
-        pRoomListVo.setPage(1);
-        pRoomListVo.setRecords(100);
+        P_RoomListVo pRoomListVo = new P_RoomListVo();
+        pRoomListVo.setMem_no("10000000000000");
+        pRoomListVo.setPageNo(1);
+        pRoomListVo.setPageCnt(100);
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
         String result = "error";
