@@ -23,7 +23,7 @@ public class AdbrixService {
 
         AdbrixLayoutVo adbrixLayoutVo = new AdbrixLayoutVo();
         adbrixLayoutVo.setEventName(eventName);
-        adbrixLayoutVo.setAdbrixVo(adbrixVo);
+        adbrixLayoutVo.setAttr(adbrixVo);
 
         /*if(adbrixVo.getKorAge() < 10){
             adbrixVo.setAge("0~9세");
