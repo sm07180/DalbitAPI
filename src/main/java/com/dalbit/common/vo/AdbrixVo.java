@@ -16,6 +16,6 @@ public class AdbrixVo {
     private String broadcastCreateYn;
     private String broadcastJoinYn;
     private String payYn;
-    private int korAge;
-    private int realAge;
+    //private int korAge;
+    //private int realAge;
 }
