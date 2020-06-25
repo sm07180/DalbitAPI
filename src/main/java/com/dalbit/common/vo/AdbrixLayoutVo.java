@@ -8,5 +8,5 @@ import lombok.Setter;
 public class AdbrixLayoutVo {
 
     private String eventName;
-    private AdbrixVo adbrixVo;
+    private AdbrixVo attr;
 }
