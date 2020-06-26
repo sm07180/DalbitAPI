@@ -650,4 +650,13 @@ public class CommonService {
     public String selectNowBroadcast(HttpServletRequest request) {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonDao.selectNowBroadcast(MemberVo.getMyMemNo(request))));
     }
+
+    /**
+     * 공통코드 조회
+     * @param codeVo
+     * @return
+     */
+    public CodeVo selectCodeDefine(CodeVo codeVo){
+        return commonDao.selectCodeDefine(codeVo);
+    }
 }

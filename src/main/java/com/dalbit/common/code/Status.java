@@ -781,6 +781,8 @@ public enum Status {
     출석체크이벤트_더줘_실패_대상아님("-3", "event.attendance.bonus.no.auth", "대상아님"),
     출석체크이벤트_더줘_실패("C006", "business.error", "비즈니스 에러"),
 
+    설정_방생성_참여불가상태("S001", "system.config.broadcast.block", "tbl_code_defind -> system_config / 방생성_참여_가능여부 가 Y 일경우"),
+
     //////////////////////////
     //모바일 관리자
     /////////////////////////

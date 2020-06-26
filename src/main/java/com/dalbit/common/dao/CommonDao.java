@@ -48,4 +48,7 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     NowBroadcastVo selectNowBroadcast(String memNo);
+
+    @Transactional(readOnly = true)
+    CodeVo selectCodeDefine(CodeVo codeVo);
 }
