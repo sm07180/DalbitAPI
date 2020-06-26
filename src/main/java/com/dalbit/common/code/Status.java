@@ -815,6 +815,10 @@ public enum Status {
     환전신청_신청제한("-13", "exchange.apply.limit", "환전 신청 횟수 초과 시"),
     환전신청실패("C006", "exchange.apply.fail", "환전 신청 실패 시"),
 
+    //환전승인건조회
+    환전승인조회성공("0", "exchange.approval.list.select.success", "환전 승인 건 조회 성공 시"),
+    환전승인조회없음("-1", "exchange.approval.list.select.none", "환전 승인 건 없을 시"),
+
     //스페셜DJ
     스페셜DJ_신청성공("0", "special.dj.apply.success", "스페셜DJ 신청 성공 시"),
     스페셜DJ_회원아님("-1", "special.dj.apply.no.member", "요청회원번호 회원 아닐 시"),

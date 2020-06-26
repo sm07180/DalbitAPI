@@ -3,6 +3,7 @@ package com.dalbit.member.dao;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.ConnectRoomVo;
+import com.dalbit.member.vo.ExchangeSuccessListVo;
 import com.dalbit.member.vo.TokenCheckVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,4 +30,7 @@ public interface MemberDao {
     TokenCheckVo selectAnonymousMem(String mem_no);
     ProcedureVo callExchangeCalc(ProcedureVo procedureVo);
     ProcedureVo callExchangeApply(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ExchangeSuccessListVo exchangeApprovalSelect(String memNo);
 }

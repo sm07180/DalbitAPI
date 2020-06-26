@@ -276,4 +276,15 @@ public class MemberController {
         String result = memberService.callExchangeApply(apiData, request);
         return result;
     }
+
+    /**
+     * 회원 환전 승인 건 조회
+     */
+    @PostMapping("/member/exchange/select")
+    public String exchangeApprovalSelect(HttpServletRequest request) throws GlobalException{
+
+        String result = memberService.exchangeApprovalSelect(MemberVo.getMyMemNo(request));
+        return result;
+    }
+
 }

@@ -259,7 +259,7 @@ public class CommonController {
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode());
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType());
 
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));            //IFrame사용여부
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));                //요정정보(암호화)
@@ -293,6 +293,13 @@ public class CommonController {
             apiData.setOs((selfAuthSaveVo.getPlusInfo().split("_")[1]));
             apiData.setIsHybrid((selfAuthSaveVo.getPlusInfo().split("_")[2]));
             apiData.setPageCode((selfAuthSaveVo.getPlusInfo().split("_")[3]));
+            apiData.setAuthType((selfAuthSaveVo.getPlusInfo().split("_")[4]));
+
+            if(DalbitUtil.getAge(Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(0, 4)), Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(4, 6)), Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(6, 8))) < 19){
+                apiData.setAdultYn("n");
+            } else {
+                apiData.setAdultYn("y");
+            }
 
             //회원본인인증 DB 저장
             result = commonService.callMemberCertification(apiData);

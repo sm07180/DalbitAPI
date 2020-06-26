@@ -21,5 +21,6 @@ public class SelfAuthVo {
     private String plusInfo = "";   //추가DATA정보
 
     private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성)
+    private String authType;        //인증타입(0: 본인, 1:보호자)
 
 }
