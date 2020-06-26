@@ -309,7 +309,7 @@ public class CommonService {
             resultStatus = Status.로그인성공;
         }
 
-        if (!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) {
+        if ((!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) || "Y".equals(deviceVo.getIsFirst())) {
             /*if(locationVo == null){
                 locationVo = DalbitUtil.getLocation(request);
             }*/
@@ -327,6 +327,7 @@ public class CommonService {
                     , deviceVo.getDeviceManufacturer()
                     , deviceVo.getDeviceModel()
                     , deviceVo.getSdkVersion()
+                    , deviceVo.getAppBuild()
             );
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }

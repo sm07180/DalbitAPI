@@ -25,6 +25,7 @@ public class DeviceVo {
     private String deviceManufacturer;
     private String deviceModel;
     private String sdkVersion;
+    private String isFirst;
 
     public DeviceVo(HttpServletRequest request){
         this.os = DalbitUtil.convertRequestParamToInteger(request,"os");
@@ -87,6 +88,9 @@ public class DeviceVo {
                 if(DalbitUtil.isEmpty(this.sdkVersion)) {
                     this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
                 }
+                if(DalbitUtil.isEmpty(this.isFirst)) {
+                    this.isFirst = DalbitUtil.getStringMap(headers, "isFirst");
+                }
             }
         }else{
             // 혹시나해서 쿠키 값으로 도 확인
@@ -137,6 +141,9 @@ public class DeviceVo {
                     }
                     if(DalbitUtil.isEmpty(this.sdkVersion)) {
                         this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
+                    }
+                    if(DalbitUtil.isEmpty(this.isFirst)) {
+                        this.isFirst = DalbitUtil.getStringMap(headers, "isFirst");
                     }
                 }
             }

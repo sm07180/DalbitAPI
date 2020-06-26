@@ -11,7 +11,7 @@ public class P_LoginVo extends BaseVo {
     public P_LoginVo(){}
 
     //회원용
-    public P_LoginVo(String memSlct, String id, String pw, int os, String deviceUuid, String deviceToken, String appVersion, String adId, String location, String ip, String browser){
+    public P_LoginVo(String memSlct, String id, String pw, int os, String deviceUuid, String deviceToken, String appVersion, String adId, String location, String ip, String browser, String appBuild){
         setMemSlct(memSlct);
         setId(id);
         setPw(pw);
@@ -23,6 +23,7 @@ public class P_LoginVo extends BaseVo {
         setLocation(location);
         setIp(ip);
         setBrowser(browser);
+        setBuildVersion(appBuild);
     }
 
     //비회원용
@@ -49,6 +50,7 @@ public class P_LoginVo extends BaseVo {
     private String location;
     private String ip;
     private String browser;
+    private String buildVersion;
 
     private String room_no;
     private int auth;

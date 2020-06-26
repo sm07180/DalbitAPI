@@ -101,6 +101,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 , "" //locationVo.getRegionName()
                 , deviceVo.getIp()
                 , DalbitUtil.getUserAgent(request)
+                , deviceVo.getAppBuild()
         );
         pLoginVo.setRoom_no(DalbitUtil.getStringMap(map, "room_no"));
 
