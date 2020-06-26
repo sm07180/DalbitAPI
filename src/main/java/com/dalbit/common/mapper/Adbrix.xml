@@ -11,12 +11,9 @@
               ,concat(DATE_FORMAT(NOW(),'%Y')-a.mem_birth_year + 1,'') as age
               ,(select DATE_FORMAT(ifnull(last_upd_date, now()), '%Y.%m.%d %H:%i:%S') from rd_data.tb_member_session where mem_no = a.mem_no order by last_upd_date desc limit 1) as connectTime
               ,(select count(*) from rd_data.tb_member_connect_log where mem_no = a.mem_no) as connectCnt
-              , 'N' broadcastCreateYn
-              , 'N' broadcastJoinYn
-              , 'N' payYn
-              -- ,(select if(count(*) > 0,'y','n') from rd_data.tb_broadcast_room where mem_no = a.mem_no and state != 4) as broadcastCreateYn
-              -- ,(select if(count(*) > 0,'y','n') from rd_data.tb_broadcast_room_member where mem_no = a.mem_no and state=0 and auth != 3) as broadcastJoinYn
-              -- ,(select ifnull(pay_yn,'n') from rd_data.tb_payment_succ where mem_no = a.mem_no) as payYn
+              ,(select if(count(*) > 0,'Y','N') from rd_data.tb_broadcast_room where mem_no = a.mem_no and state != 4) as broadcastCreateYn
+              ,(select if(count(*) > 0,'Y','N') from rd_data.tb_broadcast_room_member where mem_no = a.mem_no and state=0 and auth != 3) as broadcastJoinYn
+              ,(select if(count(*) > 0,'Y','N') from rd_data.tb_payment_succ where mem_no = a.mem_no and pay_yn = 'Y') as payYn
           From rd_data.tb_member_basic a
          where a.mem_no=#{memNo}
     </select>
