@@ -9,6 +9,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
+import com.dalbit.member.vo.ExchangeSuccessListVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
@@ -274,5 +275,20 @@ public class MemberService {
         }
         return result;
 
+    }
+
+
+    /**
+     * 회원 환전 승인 건 조회
+     */
+    public String exchangeApprovalSelect(String memNo) {
+        ExchangeSuccessListVo exchangeSuccessListVo = memberDao.exchangeApprovalSelect(memNo);
+        String result;
+        if(!DalbitUtil.isEmpty(exchangeSuccessListVo)) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, exchangeSuccessListVo));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
+        }
+        return result;
     }
 }

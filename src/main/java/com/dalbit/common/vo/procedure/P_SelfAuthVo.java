@@ -20,5 +20,7 @@ public class P_SelfAuthVo {
     private String isHybrid;
     private String returnUrl;
     private String pageCode;
+    private String adultYn;
+    private String authType;
 
 }

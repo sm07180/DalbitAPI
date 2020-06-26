@@ -3,13 +3,19 @@ package com.dalbit.broadcast.controller;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
+import com.dalbit.common.code.Code;
+import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.CodeVo;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +36,8 @@ public class RoomController {
     RoomService roomService;
     @Autowired
     RestService restService;
+    @Autowired
+    GsonUtil gsonUtil;
 
 
     /**
@@ -39,6 +47,14 @@ public class RoomController {
     public String roomCreate(@Valid RoomCreateVo roomCreateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        //방 생성 접속 불가 상태 체크
+        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
+        if(!DalbitUtil.isEmpty(codeVo)){
+            if(codeVo.getValue().equals("Y")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
+            }
+        }
 
         //토큰생성
         String streamId = (String) restService.antCreate(roomCreateVo.getTitle(), request).get("streamId");
@@ -81,6 +97,14 @@ public class RoomController {
     public String roomJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        //방 생성 접속 불가 상태 체크
+        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
+        if(!DalbitUtil.isEmpty(codeVo)){
+            if(codeVo.getValue().equals("Y")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
+            }
+        }
 
         String roomNo = roomJoinVo.getRoomNo();
 

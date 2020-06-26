@@ -241,4 +241,12 @@
             , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room WHERE state &lt; 4), 0) AS roomCnt
             , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room a INNER JOIN tb_broadcast_room_member b ON a.room_no = b.room_no AND a.state &lt; 4 AND b.auth &lt; 3 AND b.state = 0), 0) AS listenerCnt
     </select>
+
+    <select id="selectCodeDefine" parameterType="CodeVo" resultType="CodeVo">
+        /*  */
+        SELECT *
+        FROM rd_data.tbl_code_define
+        where `type` = #{cd}
+            and code = #{cdNm}
+    </select>
 </mapper>

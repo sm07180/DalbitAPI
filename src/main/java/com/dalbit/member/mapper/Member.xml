@@ -85,4 +85,23 @@
     </select>
 
 
+    <select id="exchangeApprovalSelect" parameterType="string" resultType="ExchangeSuccessListVo">
+        select
+            account_name as accountName
+            , account_no as accountNo
+            , bank_code as bankCode
+            , social_no as socialNo
+            , phone_no as phoneNo
+            , address_1 as address1
+            , address_2 as address2
+            , add_file1 as addFile1
+            , add_file2 as addFile2
+            , terms_agree as termsAgree
+        from tb_member_exchange
+        where mem_no = #{memNo}
+          and state = 1
+        order by reg_date desc
+        limit 1
+    </select>
+
 </mapper>

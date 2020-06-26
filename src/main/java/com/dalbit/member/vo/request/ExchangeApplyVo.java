@@ -29,6 +29,7 @@ public class ExchangeApplyVo {
     private String addFile1;
     @NotBlank
     private String addFile2;
+    private String addFile3;
     @Min(1)
     private int termsAgree;
 
