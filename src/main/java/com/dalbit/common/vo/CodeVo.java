@@ -12,6 +12,8 @@ public class CodeVo {
     private int sortNo;
     private int isUse;
 
+    public CodeVo(){}
+
     public CodeVo(String type, String code){
         this.cd = type;
         this.cdNm = code;

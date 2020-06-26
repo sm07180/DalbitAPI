@@ -243,8 +243,12 @@
     </select>
 
     <select id="selectCodeDefine" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
-        /*  */
-        SELECT *
+        /* Common.xml - selectCodeDefine */
+        SELECT `type` as cd
+            , `value` as `value`
+            , code    as cdNm
+            , `order` as sortNo
+            , is_use  as isUse
         FROM rd_data.tbl_code_define
         where `type` = #{cd}
             and code = #{cdNm}
