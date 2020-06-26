@@ -242,7 +242,7 @@
             , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room a INNER JOIN tb_broadcast_room_member b ON a.room_no = b.room_no AND a.state &lt; 4 AND b.auth &lt; 3 AND b.state = 0), 0) AS listenerCnt
     </select>
 
-    <select id="selectCodeDefine" parameterType="CodeVo" resultType="CodeVo">
+    <select id="selectCodeDefine" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
         /*  */
         SELECT *
         FROM rd_data.tbl_code_define
