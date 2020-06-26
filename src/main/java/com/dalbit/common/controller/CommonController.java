@@ -260,7 +260,12 @@ public class CommonController {
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType());
+        if(selfAuthVo.getAuthType().equals("0")){
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType());
+        } else {
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm());
+        }
+
 
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));            //IFrame사용여부
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));                //요정정보(암호화)
@@ -279,8 +284,8 @@ public class CommonController {
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
-
             P_SelfAuthVo apiData = new P_SelfAuthVo();
+
             apiData.setMem_no(selfAuthSaveVo.getPlusInfo().split("_")[0]); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
@@ -291,10 +296,10 @@ public class CommonController {
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
-            apiData.setOs((selfAuthSaveVo.getPlusInfo().split("_")[1]));
-            apiData.setIsHybrid((selfAuthSaveVo.getPlusInfo().split("_")[2]));
-            apiData.setPageCode((selfAuthSaveVo.getPlusInfo().split("_")[3]));
-            apiData.setAuthType((selfAuthSaveVo.getPlusInfo().split("_")[4]));
+            apiData.setOs(selfAuthSaveVo.getPlusInfo().split("_")[1]);
+            apiData.setIsHybrid(selfAuthSaveVo.getPlusInfo().split("_")[2]);
+            apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
+            apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
 
             if(DalbitUtil.getAge(Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(0, 4)), Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(4, 6)), Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(6, 8))) < 19){
                 apiData.setAdultYn("n");
@@ -302,8 +307,16 @@ public class CommonController {
                 apiData.setAdultYn("y");
             }
 
-            //회원본인인증 DB 저장
-            result = commonService.callMemberCertification(apiData);
+            if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
+                //회원본인인증 DB 저장
+                result = commonService.callMemberCertification(apiData);
+            } else {
+                apiData.setParent_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+                apiData.setParents_agreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
+                //회원본인인증 DB 보호자정보 업데이트
+                result = commonService.updateMemberCertification(apiData);
+            }
+
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패, selfAuthSaveVo.getMsg()));
         }
@@ -320,10 +333,10 @@ public class CommonController {
         P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
 
-        //String result = commonService.getCertificationChk(apiData);
+        String result = commonService.getCertificationChk(apiData);
 
-        //return result;
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
+        return result;
+        //return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
     }
 
 

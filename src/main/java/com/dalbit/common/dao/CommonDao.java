@@ -2,6 +2,7 @@ package com.dalbit.common.dao;
 
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.common.vo.request.SmsVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,4 +52,6 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     CodeVo selectCodeDefine(CodeVo codeVo);
+
+    int updateMemberCertification(P_SelfAuthVo pSelfAuthVo);
 }

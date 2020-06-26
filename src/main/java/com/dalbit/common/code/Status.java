@@ -44,6 +44,10 @@ public enum Status {
     본인인증_중복("-2", "member.certification.already", "본인인증 이미 되어있는 회원일 시"),
     본인인증저장실패("C006", "member.certification.save.fail", "본인인증 저장 실패 시"),
 
+    //보호자인증(DB업데이트)
+    보호자인증성공("0", "member.certification.parents.success", "보호자인증 성공 시"),
+    보호자인증실패("C006", "member.certification.parents.fail", "보호자인증 실패 시"),
+
     //본인인증 여부체크
     본인인증여부_확인("1", "member.certification.check.success", "본인인증 했을 시"),
     본인인증여부_안됨("0", "member.certification.check.no", "본인인증 하지 않았을 시"),

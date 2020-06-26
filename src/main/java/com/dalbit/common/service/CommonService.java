@@ -660,4 +660,22 @@ public class CommonService {
     public CodeVo selectCodeDefine(CodeVo codeVo){
         return commonDao.selectCodeDefine(codeVo);
     }
+
+
+    /**
+     * 보호자 인증 업데이트
+     */
+    public String updateMemberCertification(P_SelfAuthVo pSelfAuthVo) {
+        int success = commonDao.updateMemberCertification(pSelfAuthVo);
+
+        String result ="";
+        if(success > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, pSelfAuthVo));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증실패));
+        }
+        return result;
+
+
+    }
 }

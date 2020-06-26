@@ -16,6 +16,10 @@ public class P_SelfAuthVo {
     private String commCompany;
     private String foreignYN;
     private String certCode;
+
+    private String parents_agreeTerm;
+    private String parent_agreeDt;
+
     private String os;
     private String isHybrid;
     private String returnUrl;
