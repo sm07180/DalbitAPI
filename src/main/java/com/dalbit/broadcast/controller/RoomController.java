@@ -49,12 +49,12 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
+        /*var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
         if(!DalbitUtil.isEmpty(codeVo)){
             if(codeVo.getValue().equals("Y")){
                 return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
             }
-        }
+        }*/
 
         //토큰생성
         String streamId = (String) restService.antCreate(roomCreateVo.getTitle(), request).get("streamId");
@@ -99,12 +99,12 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
+        /*var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
         if(!DalbitUtil.isEmpty(codeVo)){
             if(codeVo.getValue().equals("Y")){
                 return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
             }
-        }
+        }*/
 
         String roomNo = roomJoinVo.getRoomNo();
 
