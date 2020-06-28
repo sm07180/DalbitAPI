@@ -1,11 +1,14 @@
 package com.dalbit.event.controller;
 
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,9 @@ public class EventController {
 
     @Autowired
     private EventService eventService;
+
+    @Autowired
+    private GsonUtil gsonUtil;
 
     @GetMapping("/ranking/term")
     public String event200608Term(){
@@ -85,7 +91,9 @@ public class EventController {
     @PostMapping("/reply")
     public String replyAdd(@Valid ReplyAddVo replyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_이벤트종료));
+
+        /*DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ReplyAddInputVo apiData = new P_ReplyAddInputVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
@@ -94,9 +102,9 @@ public class EventController {
         apiData.setDepth(replyAddVo.getDepth());
         apiData.setEvent_idx(replyAddVo.getEventIdx());
 
-        String result = eventService.callEventReplyAdd(apiData);
+        String result = eventService.callEventReplyAdd(apiData);*/
 
-        return result;
+        /*return result;*/
     }
 
 
