@@ -868,6 +868,7 @@ public enum Status {
     이벤트_댓글달기성공("1", "event.reply.add.success", "이벤트 댓글달기 성공 시"),
     이벤트_댓글달기실패_회원아님("C006", "event.reply.add.no.member", "회원아님"),
     이벤트_댓글달기실패_등록오류("C006", "event.reply.add.error", "이벤트 댓글 등록 실패"),
+    이벤트_댓글달기실패_이벤트종료("C006", "event.reply.end", "이벤트 댓글 이벤트 마감"),
 
     //이벤트 댓글 삭제
     이벤트_댓글삭제성공("C001", "event.reply.remove.success", "이벤트 댓글 삭제 성공 시"),
