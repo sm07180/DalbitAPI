@@ -254,22 +254,7 @@
             and code = #{cdNm}
     </select>
 
-
-    <update id="updateMemberCertification" parameterType="P_SelfAuthVo">
-        UPDATE rd_data.tb_member_certification
-        SET parents_agree_yn = 'y'
-            , parents_name = #{name}
-            , parents_phone = #{phoneNum}
-            , parents_sex = #{memSex}
-            , parents_birth_year = #{birthYear}
-            , parents_birth_month = #{birthMonth}
-            , parents_birth_day = #{birthDay}
-            , parents_comm_company = #{commCompany}
-            , parents_foreign_yn = #{foreignYN}
-            , parents_cert_code = #{certCode}
-            , parents_agree_term = #{parents_agreeTerm}
-            , parents_agree_dt = #{parent_agreeDt}
-        WHERE mem_no = #{mem_no}
-
-    </update>
+    <select id="callMemberBadgeSelect" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.FanBadgeVo">
+      call sp_member_badge_select(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
+    </select>
 </mapper>

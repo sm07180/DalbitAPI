@@ -817,6 +817,15 @@ public class RoomService {
         }else{
             returnMap.put("fanBadge", fanBadgeVo);
         }
+        HashMap fanBadgeMap = new HashMap();
+        fanBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
+        fanBadgeMap.put("type", 0);
+        List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
+        if(DalbitUtil.isEmpty(fanBadgeList)){
+            returnMap.put("fanBadgeList", new ArrayList());
+        }else{
+            returnMap.put("fanBadgeList", fanBadgeList);
+        }
         procedureVo.setData(returnMap);
 
         return procedureVo;

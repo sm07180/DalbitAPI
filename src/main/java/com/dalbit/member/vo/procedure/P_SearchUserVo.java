@@ -21,12 +21,14 @@ public class P_SearchUserVo {
         setSearchText(searchUserVo.getSearch());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
+        setSearchType(searchUserVo.getSearchType());
     }
 
     /* Input */
     private String mem_no;
     private Integer slct_type;
     private String searchText;
+    private String searchType;
     private int pageNo;
     private int pageCnt;
 

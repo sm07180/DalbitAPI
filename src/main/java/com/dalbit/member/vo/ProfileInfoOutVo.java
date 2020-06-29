@@ -49,6 +49,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private String holder;
     List fanRank;
     private FanBadgeVo fanBadge;
+    List fanBadgeList;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
