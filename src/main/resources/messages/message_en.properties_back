@@ -326,7 +326,7 @@ broadcast.room.story.add.success=your broadcast story has been successfully regi
 broadcast.room.story.add.no=i'm not a member of the broadcasting station's story registration.
 broadcast.room.story.add.room.no=there is no room to register the story of the broadcasting station.
 broadcast.room.story.add.member.no=i'm not a visitor to the broadcasting station's story registration.
-broadcast.room.story.add.time=you can register every 10 minutes.
+broadcast.room.story.add.time=you can register every 1 minutes.
 broadcast.room.story.add.fail=failed to register the story of the broadcasting station.
 
 # story sel
