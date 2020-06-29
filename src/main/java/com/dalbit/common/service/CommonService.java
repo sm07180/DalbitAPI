@@ -500,9 +500,15 @@ public class CommonService {
         ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
         commonDao.getCertificationChk(procedureVo);
 
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("adultYn", DalbitUtil.getStringMap(resultMap, "adult_yn"));       //성인여부
+        returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
+        procedureVo.setData(returnMap);
+
         String result;
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인, procedureVo.getData()));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_안됨));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_회원아님.getMessageCode())) {
