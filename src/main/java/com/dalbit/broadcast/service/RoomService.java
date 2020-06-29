@@ -142,6 +142,16 @@ public class RoomService {
             returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url") + DalbitUtil.getProperty("server.ant.path.url"));
             returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url") + DalbitUtil.getProperty("server.ant.path.url"));
 
+            HashMap fanBadgeMap = new HashMap();
+            fanBadgeMap.put("mem_no", target.getBjMemNo());
+            fanBadgeMap.put("type", 3);
+            List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
+            if(DalbitUtil.isEmpty(fanBadgeList)){
+                returnMap.put("fanBadgeList", new ArrayList());
+            }else{
+                returnMap.put("fanBadgeList", fanBadgeList);
+            }
+
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
@@ -235,6 +245,16 @@ public class RoomService {
             DeviceVo deviceVo = new DeviceVo(request);
             returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url") + DalbitUtil.getProperty("server.ant.path.url"));
             returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url") + DalbitUtil.getProperty("server.ant.path.url"));
+
+            HashMap fanBadgeMap = new HashMap();
+            fanBadgeMap.put("mem_no", target.getBjMemNo());
+            fanBadgeMap.put("type", 3);
+            List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
+            if(DalbitUtil.isEmpty(fanBadgeList)){
+                returnMap.put("fanBadgeList", new ArrayList());
+            }else{
+                returnMap.put("fanBadgeList", fanBadgeList);
+            }
 
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
@@ -957,6 +977,17 @@ public class RoomService {
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
                     returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
+                    HashMap fanBadgeMap = new HashMap();
+                    fanBadgeMap.put("mem_no", target.getBjMemNo());
+                    fanBadgeMap.put("type", 3);
+                    List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
+                    if(DalbitUtil.isEmpty(fanBadgeList)){
+                        returnMap.put("fanBadgeList", new ArrayList());
+                    }else{
+                        returnMap.put("fanBadgeList", fanBadgeList);
+                    }
+
                     /*returnMap.put("level", target.getLevel());
                     returnMap.put("grade", target.getGrade());
                     returnMap.put("exp", target.getExp());
@@ -1132,6 +1163,16 @@ public class RoomService {
                 DeviceVo deviceVo = new DeviceVo(request);
                 returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url") + DalbitUtil.getProperty("server.ant.path.url"));
                 returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url") + DalbitUtil.getProperty("server.ant.path.url"));
+
+                HashMap fanBadgeMap = new HashMap();
+                fanBadgeMap.put("mem_no", target.getBjMemNo());
+                fanBadgeMap.put("type", 3);
+                List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
+                if(DalbitUtil.isEmpty(fanBadgeList)){
+                    returnMap.put("fanBadgeList", new ArrayList());
+                }else{
+                    returnMap.put("fanBadgeList", fanBadgeList);
+                }
 
                 try{
                     if(auth == 3){ // DJ
