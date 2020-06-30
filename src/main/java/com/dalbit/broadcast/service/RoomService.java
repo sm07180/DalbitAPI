@@ -122,7 +122,6 @@ public class RoomService {
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
             returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
-            returnMap.put("likes", 0);
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", 3);
             returnMap.put("ctrlRole", "1111111111");
@@ -137,7 +136,10 @@ public class RoomService {
             returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
             returnMap.put("hasStory", false);
             returnMap.put("isLike", true);
-            returnMap.put("useBoost", false);
+
+            returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+            returnMap.put("useBoost", DalbitUtil.getIntMap(resultMap, "booster") > 0);
+
             DeviceVo deviceVo = new DeviceVo(request);
             returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url") + DalbitUtil.getProperty("server.ant.path.url"));
             returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url") + DalbitUtil.getProperty("server.ant.path.url"));
