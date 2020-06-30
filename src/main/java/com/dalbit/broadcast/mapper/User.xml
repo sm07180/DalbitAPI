@@ -37,4 +37,25 @@
     <select id="callFanstarDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_fanstar_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="selectGuestStreamInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+          a.guest_streamid
+          , a.guest_publish_tokenid
+          , a.guest_play_tokenid
+          , b.title
+        FROM tb_broadcast_room_member a INNER JOIN tb_broadcast_room b ON a.room_no = b.room_no
+        WHERE a.room_no = #{room_no}
+          AND a.mem_no = #{mem_no}
+          AND a.state = 0
+    </select>
+
+    <update id="updateGuestStreamInfo" parameterType="java.util.HashMap">
+        UPDATE tb_broadcast_room_member SET
+          guest_streamid = #{guest_stream_id}
+          , guest_publish_tokenid = #{guest_publish_token}
+          , guest_play_tokenid = #{guest_play_token}
+        WHERE room_no = #{room_no}
+          AND mem_no = #{mem_no}
+    </update>
 </mapper>
