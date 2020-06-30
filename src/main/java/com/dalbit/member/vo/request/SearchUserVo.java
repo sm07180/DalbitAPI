@@ -16,4 +16,5 @@ public class SearchUserVo {
     private Integer page;
     @Min(1)
     private Integer records;
+    private String searchType;
 }

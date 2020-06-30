@@ -19,9 +19,10 @@ public class SelfAuthVo {
     private String date;            //요청일시
     private String certMet = "M";   //인증방법 ("M": 휴대폰, "C":신용카드, "P":공인인증서)
     private String plusInfo = "";   //추가DATA정보
-
-    private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성)
-    private String authType;        //인증타입(0: 본인, 1:보호자)
     private String agreeTerm;       //동의기간
+
+    private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성, 4:환전)
+    private String authType;        //인증타입(0: 본인, 1:보호자)
+
 
 }

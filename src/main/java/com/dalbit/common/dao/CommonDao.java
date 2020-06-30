@@ -7,6 +7,7 @@ import com.dalbit.common.vo.request.SmsVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,4 +55,6 @@ public interface CommonDao {
     CodeVo selectCodeDefine(CodeVo codeVo);
 
     int updateMemberCertification(P_SelfAuthVo pSelfAuthVo);
+
+    List<FanBadgeVo> callMemberBadgeSelect(HashMap param);
 }

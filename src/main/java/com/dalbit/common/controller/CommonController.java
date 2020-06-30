@@ -281,7 +281,10 @@ public class CommonController {
     @PostMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        log.info("[API] #################### selfAuthChkVo: {}", selfAuthChkVo);
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
+
+        log.info("[API] @@@@@@@@@@@@@@@@@@@@@@@@@@@ selfAuthSaveVo: {}", selfAuthSaveVo);
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
@@ -333,10 +336,10 @@ public class CommonController {
         P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
 
-        //String result = commonService.getCertificationChk(apiData);
+        String result = commonService.getCertificationChk(apiData);
 
-        //return result;
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
+        return result;
+        //return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
     }
 
 

@@ -6,6 +6,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -21,4 +22,8 @@ public interface UserDao {
     ProcedureVo callBroadCastRoomManagerDel(ProcedureVo procedureVo);
     ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    HashMap selectGuestStreamInfo(HashMap params);
+    int updateGuestStreamInfo(HashMap params);
 }

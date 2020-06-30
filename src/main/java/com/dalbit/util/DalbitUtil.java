@@ -1248,6 +1248,12 @@ public class DalbitUtil {
         if(data.indexOf("⠀") >= 0){
             return true;
         }
+        if(data.indexOf("　") >= 0){
+            return true;
+        }
+        if(data.indexOf("\\u00AD") >= 0 || data.indexOf("\u00AD") >= 0){
+            return true;
+        }
 
         return false;
     }
