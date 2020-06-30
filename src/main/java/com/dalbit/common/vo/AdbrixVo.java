@@ -11,11 +11,11 @@ public class AdbrixVo {
 
     private String sex;
     private String age;
-    private String connectTime;
-    private String connectCnt;
-    private String broadcastCreateYn;
-    private String broadcastJoinYn;
-    private String payYn;
+    private String connecttime;
+    private String connectcnt;
+    private String broadcastcreateyn;
+    private String broadcastjoinyn;
+    private String payyn;
     //private int korAge;
     //private int realAge;
 }
