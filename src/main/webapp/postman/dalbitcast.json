@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "dae165ab-5c83-489d-bfa6-f7db3f2768ed",
-		"name": "달빛라디오 API 정의서_2020.05.21",
+		"_postman_id": "313ade4d-cf05-4e33-a8bf-6373a1122a41",
+		"name": "달빛라디오 API 정의서_2020.06.30",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -4927,6 +4927,60 @@
 										"description": "완료시점의 랭킹, 좋아요수, 팬랭킹 소켓으로 브로드"
 									},
 									"response": []
+								},
+								{
+									"name": "[완료] 게스트 앤트 테스트",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "authToken",
+												"value": "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMTU4NDU3NzAyMzMzOEB0cnVlIiwiaWF0IjoxNTkzNDE2NTQzLCJleHAiOjE1OTYwMDg1NDN9.Giv3LO5mhai99T10MKpjNMi2Q-ZtYOcWPRKDCQ7WlMg",
+												"type": "text"
+											},
+											{
+												"key": "custom-header",
+												"value": "%7B%22os%22%3A3%2C%22locale%22%3A%22ko%22%2C%22isHybrid%22%3A%22N%22%2C%22deviceId%22%3A%220979d60c-4661-4bd9-8706-0a71513cab39%22%2C%22language%22%3A%22ko%22%2C%22deviceToken%22%3A%22make_custom_header%22%2C%22appVersion%22%3A%221.0.1%22%2C%22FROM%22%3A%22%40%40%20COOKIE%20%40%40%22%7D",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "urlencoded",
+											"urlencoded": [
+												{
+													"key": "roomNo",
+													"value": "91593475706723",
+													"type": "text"
+												},
+												{
+													"key": "memNo",
+													"value": "11583120791702",
+													"type": "text"
+												},
+												{
+													"key": "mode",
+													"value": "play",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "https://devm-coreano81.dalbitlive.com:4431/broad/guest/test",
+											"protocol": "https",
+											"host": [
+												"devm-coreano81",
+												"dalbitlive",
+												"com"
+											],
+											"port": "4431",
+											"path": [
+												"broad",
+												"guest",
+												"test"
+											]
+										}
+									},
+									"response": []
 								}
 							],
 							"protocolProfileBehavior": {},
@@ -6724,7 +6778,7 @@
 		{
 			"listen": "prerequest",
 			"script": {
-				"id": "177c90e1-8550-4fe1-9c41-ea69daf9b157",
+				"id": "cc32f21b-2d4c-4168-ae4d-8c1bd2d1db17",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -6734,7 +6788,7 @@
 		{
 			"listen": "test",
 			"script": {
-				"id": "60e592aa-23c8-45e1-aefa-119a38bfa923",
+				"id": "5b71f87b-dd6d-49d4-ac3f-2325d66156fb",
 				"type": "text/javascript",
 				"exec": [
 					""
