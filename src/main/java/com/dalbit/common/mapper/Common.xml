@@ -272,6 +272,7 @@
             , parents_cert_code = #{parents_certCode}
             , parents_agree_term = #{parents_agreeTerm}
             , parents_agree_dt = #{parents_agreeDt}
+            , recant_yn = 'n'
         WHERE mem_no = #{mem_no}
     </update>
 </mapper>
