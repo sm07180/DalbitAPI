@@ -117,7 +117,7 @@ public class SocketService {
             }
         }
 
-        log.info("Socket Result {}, {}, {}", roomNo, params, result);
+        log.error("Socket Result {}, {}, {}", roomNo, params, result);
         //return new Gson().fromJson(result, Map.class);
     }
 
@@ -804,6 +804,17 @@ public class SocketService {
                 djVo.setRecvMemNo(memNo);
                 sendSocketApi(authToken, roomNo, djVo.toQueryString());
             }
+        }
+    }
+
+    @Async("threadTaskExecutor")
+    public void chatEndRed(String memNo, String roomNo, HttpServletRequest request, String authToken){
+        SocketVo vo = getSocketVo(roomNo, memNo, true);
+        if(vo != null && vo.getMemNo() != null){
+            vo.setCommand("chatEndRed");
+            vo.setRecvMemNo("!" + memNo);
+            vo.setMessage("다른 기기에서 로그인 되었습니다.");
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
     }
 }
