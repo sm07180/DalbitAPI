@@ -271,7 +271,7 @@
             , parents_foreign_yn = #{parents_foreignYN}
             , parents_cert_code = #{parents_certCode}
             , parents_agree_term = #{parents_agreeTerm}
-            , parents_agree_dt = #{}
+            , parents_agree_dt = #{parents_agreeDt}
         WHERE mem_no = #{mem_no}
     </update>
 </mapper>
