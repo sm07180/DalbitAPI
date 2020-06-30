@@ -18,7 +18,8 @@ public class P_SelfAuthVo {
     private String certCode;
 
     private String parents_agreeTerm;
-    private String parent_agreeDt;
+    private String parents_agreeDt;
+    private String parents_agreeYn;
 
     private String os;
     private String isHybrid;

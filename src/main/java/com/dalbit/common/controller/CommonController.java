@@ -281,10 +281,9 @@ public class CommonController {
     @PostMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        log.info("[API] #################### selfAuthChkVo: {}", selfAuthChkVo);
+        log.info("[API] #### 본인인증 확인 selfAuthChkVo: {}", selfAuthChkVo);
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
 
-        log.info("[API] @@@@@@@@@@@@@@@@@@@@@@@@@@@ selfAuthSaveVo: {}", selfAuthSaveVo);
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
@@ -309,12 +308,18 @@ public class CommonController {
             } else {
                 apiData.setAdultYn("y");
             }
+            
+            //은비주임 무조건 미성년자로 변경 테스트완료 후 제거
+            if(apiData.getMem_no().equals("11583296139594")){
+                apiData.setAdultYn("n");
+            }
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
                 //회원본인인증 DB 저장
+                apiData.setParents_agreeYn("n");
                 result = commonService.callMemberCertification(apiData);
             } else {
-                apiData.setParent_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+                apiData.setParents_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 apiData.setParents_agreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
                 //회원본인인증 DB 보호자정보 업데이트
                 result = commonService.updateMemberCertification(apiData);
