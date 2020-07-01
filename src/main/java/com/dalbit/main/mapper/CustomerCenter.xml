@@ -18,21 +18,21 @@
         call sp_service_center_faq_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <!--<select id="callQnaAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-        call sp_service_center_qna_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>-->
-
     <select id="callQnaAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-        call sp_service_center_qna_add_v25(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+        call sp_service_center_qna_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <!--<select id="callQnaList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_QnaListVo">
-        call sp_service_center_qna_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <!--<select id="callQnaAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_service_center_qna_add_v25(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>-->
 
     <select id="callQnaList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_QnaListVo">
-        call sp_service_center_qna_select_v25(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+        call sp_service_center_qna_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <!--<select id="callQnaList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_QnaListVo">
+        call sp_service_center_qna_select_v25(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>-->
 
     <select id="callQnaDel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_service_center_qna_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
