@@ -278,6 +278,7 @@ public class MemberController {
         return result;
     }
 
+
     /**
      * 회원 환전 승인 건 조회
      */
@@ -285,6 +286,19 @@ public class MemberController {
     public String exchangeApprovalSelect(HttpServletRequest request) throws GlobalException{
 
         String result = memberService.exchangeApprovalSelect(MemberVo.getMyMemNo(request));
+        return result;
+    }
+
+
+    /**
+     * 환전 재신청 (기존정보)
+     */
+    @PostMapping("member/exchage/reapply")
+    public String exchangeReapply(@Valid ExchangeReApplyVo exchangeReApplyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = memberService.exchangeReapply(exchangeReApplyVo, request);
         return result;
     }
 
