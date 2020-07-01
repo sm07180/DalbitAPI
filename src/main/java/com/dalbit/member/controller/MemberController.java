@@ -293,7 +293,7 @@ public class MemberController {
     /**
      * 환전 재신청 (기존정보)
      */
-    @PostMapping("member/exchage/reapply")
+    @PostMapping("member/exchange/reapply")
     public String exchangeReapply(@Valid ExchangeReApplyVo exchangeReApplyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
