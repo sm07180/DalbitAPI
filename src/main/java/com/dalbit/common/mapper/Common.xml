@@ -259,6 +259,7 @@
     </select>
 
     <update id="updateMemberCertification" parameterType="P_SelfAuthVo">
+        /* Common.xml - updateMemberCertification */
         UPDATE rd_data.tb_member_certification
         SET parents_agree_yn = 'y'
             , parents_name = #{name}
@@ -275,4 +276,12 @@
             , recant_yn = 'n'
         WHERE mem_no = #{mem_no}
     </update>
+
+    <update id="updateMemberCertificationFile" parameterType="P_SelfAuthVo">
+        /* Common.xml - updateMemberCertificationFile */
+        UPDATE rd_data.tb_member_certification
+        SET add_file = #{add_file}
+        WHERE mem_no = #{mem_no}
+    </update>
+
 </mapper>

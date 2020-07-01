@@ -28,4 +28,6 @@ public class P_SelfAuthVo {
     private String adultYn;
     private String authType;
 
+    private String add_file;
+
 }

@@ -669,7 +669,7 @@ public class CommonService {
 
 
     /**
-     * 보호자 인증 업데이트
+     * 법정대리인(보호자) 인증 업데이트
      */
     public String updateMemberCertification(P_SelfAuthVo pSelfAuthVo) {
 
@@ -684,5 +684,12 @@ public class CommonService {
         return result;
 
 
+    }
+
+    /**
+     * 법정대리인(보호자) 인증 파일 업데이트
+     */
+    public int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo) {
+        return commonDao.updateMemberCertificationFile(pSelfAuthVo);
     }
 }

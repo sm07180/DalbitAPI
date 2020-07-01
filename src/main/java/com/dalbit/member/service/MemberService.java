@@ -6,10 +6,12 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
 import com.dalbit.member.vo.ExchangeSuccessVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.rest.service.RestService;
@@ -222,11 +224,19 @@ public class MemberService {
         if(!DalbitUtil.isEmpty(exchangeFile3) && exchangeFile3.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
             isDone = true;
             exchangeFile3 = DalbitUtil.replacePath(exchangeFile3);
+
+            //법정대리인 인증정보 파일 업데이트
+            P_SelfAuthVo pSelfAuthVo = new P_SelfAuthVo();
+            pSelfAuthVo.setMem_no(MemberVo.getMyMemNo(request));
+            pSelfAuthVo.setAdd_file(exchangeFile3);
+            int success = commonService.updateMemberCertificationFile(pSelfAuthVo);
+            if(success > 0){
+                log.info("법정대리인(보호자) 서류 업데이트 성공");
+            }
         }
 
         pExchangeApplyVo.setAdd_file1(exchangeFile1);
         pExchangeApplyVo.setAdd_file2(exchangeFile2);
-        pExchangeApplyVo.setAdd_file3(exchangeFile3);
 
         ProcedureVo procedureVo = new ProcedureVo(pExchangeApplyVo);
         memberDao.callExchangeApply(procedureVo);
