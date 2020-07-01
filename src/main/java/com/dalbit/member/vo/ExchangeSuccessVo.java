@@ -5,8 +5,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Getter @Setter @ToString
-public class ExchangeSuccessListVo {
+public class ExchangeSuccessVo {
 
+    private String exchangeIdx;
+    private String memNo;
     private String accountName;
     private String accountNo;
     private String bankCode;
@@ -16,6 +18,7 @@ public class ExchangeSuccessListVo {
     private String address2;
     private String addFile1;
     private String addFile2;
+    private String addFile3;
     private int termsAgree;
 
 }

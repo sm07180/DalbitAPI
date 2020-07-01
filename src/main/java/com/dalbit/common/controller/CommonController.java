@@ -308,17 +308,14 @@ public class CommonController {
             } else {
                 apiData.setAdultYn("y");
             }
-            
-            //은비주임 무조건 미성년자로 변경 테스트완료 후 제거
-            if(apiData.getMem_no().equals("11583296139594")){
-                apiData.setAdultYn("n");
-            }
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
+                log.info("##### 본인인증 DB저장 #####");
                 //회원본인인증 DB 저장
                 apiData.setParents_agreeYn("n");
                 result = commonService.callMemberCertification(apiData);
             } else {
+                log.info("##### 보호자인증 DB업데이트 #####");
                 apiData.setParents_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 apiData.setParents_agreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
                 //회원본인인증 DB 보호자정보 업데이트

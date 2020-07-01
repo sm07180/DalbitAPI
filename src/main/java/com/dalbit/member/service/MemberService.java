@@ -9,8 +9,9 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
-import com.dalbit.member.vo.ExchangeSuccessListVo;
+import com.dalbit.member.vo.ExchangeSuccessVo;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -206,6 +207,7 @@ public class MemberService {
     public String callExchangeApply(P_ExchangeApplyVo pExchangeApplyVo, HttpServletRequest request) throws GlobalException {
         String exchangeFile1 = pExchangeApplyVo.getAdd_file1();
         String exchangeFile2 = pExchangeApplyVo.getAdd_file2();
+        String exchangeFile3 = pExchangeApplyVo.getAdd_file3();
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(exchangeFile1) && exchangeFile1.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
             isDone = true;
@@ -217,8 +219,14 @@ public class MemberService {
             exchangeFile2 = DalbitUtil.replacePath(exchangeFile2);
         }
 
+        if(!DalbitUtil.isEmpty(exchangeFile3) && exchangeFile3.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
+            isDone = true;
+            exchangeFile3 = DalbitUtil.replacePath(exchangeFile3);
+        }
+
         pExchangeApplyVo.setAdd_file1(exchangeFile1);
         pExchangeApplyVo.setAdd_file2(exchangeFile2);
+        pExchangeApplyVo.setAdd_file3(exchangeFile3);
 
         ProcedureVo procedureVo = new ProcedureVo(pExchangeApplyVo);
         memberDao.callExchangeApply(procedureVo);
@@ -241,6 +249,9 @@ public class MemberService {
                 }
                 if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file2())){
                     restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file2()), request);
+                }
+                if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file3())){
+                    restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file3()), request);
                 }
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청성공, procedureVo.getData()));
@@ -282,13 +293,37 @@ public class MemberService {
      * 회원 환전 승인 건 조회
      */
     public String exchangeApprovalSelect(String memNo) {
-        ExchangeSuccessListVo exchangeSuccessListVo = memberDao.exchangeApprovalSelect(memNo);
+        ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeApprovalSelect(memNo);
         String result;
-        if(!DalbitUtil.isEmpty(exchangeSuccessListVo)) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, exchangeSuccessListVo));
+        if(!DalbitUtil.isEmpty(exchangeSuccessVo)) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, exchangeSuccessVo.getExchangeIdx()));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
         }
         return result;
+    }
+
+
+    /**
+     * 환전 재신청
+     */
+    public String exchangeReapply(ExchangeReApplyVo exchangeReApplyVo, HttpServletRequest request) throws GlobalException {
+
+        ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeReApprovalSelect(exchangeReApplyVo);
+        P_ExchangeApplyVo pExchangeApplyVo = new P_ExchangeApplyVo();
+        pExchangeApplyVo.setByeol(exchangeReApplyVo.getByeol());
+        pExchangeApplyVo.setAccount_name(exchangeSuccessVo.getAccountName());
+        pExchangeApplyVo.setAccount_no(exchangeSuccessVo.getAccountNo());
+        pExchangeApplyVo.setBank_code(exchangeSuccessVo.getBankCode());
+        pExchangeApplyVo.setSocial_no(exchangeSuccessVo.getSocialNo());
+        pExchangeApplyVo.setPhone_no(exchangeSuccessVo.getPhoneNo());
+        pExchangeApplyVo.setAddress1(exchangeSuccessVo.getAddress1());
+        pExchangeApplyVo.setAddress2(exchangeSuccessVo.getAddress2());
+        pExchangeApplyVo.setAdd_file1(exchangeSuccessVo.getAddFile1());
+        pExchangeApplyVo.setAdd_file2(exchangeSuccessVo.getAddFile2());
+        pExchangeApplyVo.setAdd_file3(exchangeSuccessVo.getAddFile3());
+        pExchangeApplyVo.setTerms_agree(exchangeSuccessVo.getTermsAgree());
+
+        return callExchangeApply(pExchangeApplyVo, request);
     }
 }
