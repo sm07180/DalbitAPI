@@ -23,7 +23,6 @@ public class P_ExchangeApplyVo {
     private String address2;
     private String add_file1;
     private String add_file2;
-    private String add_file3;
     private int terms_agree;
     private int os;
     private String ip;
@@ -41,7 +40,6 @@ public class P_ExchangeApplyVo {
         setAddress2(exchangeApplyVo.getAddress2());
         setAdd_file1(exchangeApplyVo.getAddFile1());
         setAdd_file2(exchangeApplyVo.getAddFile2());
-        setAdd_file3(exchangeApplyVo.getAddFile3());
         setTerms_agree(exchangeApplyVo.getTermsAgree());
         setOs(new DeviceVo(request).getOs());
         setIp(new DeviceVo(request).getIp());
