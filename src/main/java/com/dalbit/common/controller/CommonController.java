@@ -308,11 +308,6 @@ public class CommonController {
             } else {
                 apiData.setAdultYn("y");
             }
-            
-            //은비주임 무조건 미성년자로 변경 테스트완료 후 제거
-            if(apiData.getMem_no().equals("11583296139594")){
-                apiData.setAdultYn("n");
-            }
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
                 log.info("##### 본인인증 DB저장 #####");
