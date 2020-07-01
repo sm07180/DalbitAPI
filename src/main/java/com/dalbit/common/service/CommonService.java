@@ -672,6 +672,7 @@ public class CommonService {
      * 보호자 인증 업데이트
      */
     public String updateMemberCertification(P_SelfAuthVo pSelfAuthVo) {
+
         int success = commonDao.updateMemberCertification(pSelfAuthVo);
 
         String result ="";

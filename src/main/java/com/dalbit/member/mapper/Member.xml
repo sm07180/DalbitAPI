@@ -96,7 +96,7 @@
     </select>
 
 
-    <select id="exchangeReApprovalSelect" parameterType="string" resultType="ExchangeSuccessVo">
+    <select id="exchangeReApprovalSelect" parameterType="ExchangeReApplyVo" resultType="ExchangeSuccessVo">
         select
             account_name as accountName
             , account_no as accountNo

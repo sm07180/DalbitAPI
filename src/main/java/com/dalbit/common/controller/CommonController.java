@@ -284,7 +284,6 @@ public class CommonController {
         log.info("[API] #### 본인인증 확인 selfAuthChkVo: {}", selfAuthChkVo);
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
 
-        log.info("selfAuthSaveVo: {}", selfAuthSaveVo.toString());
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
@@ -324,7 +323,6 @@ public class CommonController {
                 log.info("##### 보호자인증 DB업데이트 #####");
                 apiData.setParents_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 apiData.setParents_agreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
-                log.info("api Data: {}", apiData.toString());
                 //회원본인인증 DB 보호자정보 업데이트
                 result = commonService.updateMemberCertification(apiData);
             }

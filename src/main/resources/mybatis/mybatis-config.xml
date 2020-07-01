@@ -63,6 +63,7 @@
 		<typeAlias type="com.dalbit.member.vo.procedure.P_SpecialDjReq" alias="P_SpecialDjReq" />
 		<typeAlias type="com.dalbit.member.vo.LevelVo" alias="LevelVo" />
 		<typeAlias type="com.dalbit.member.vo.ExchangeSuccessVo" alias="ExchangeSuccessVo" />
+		<typeAlias type="com.dalbit.member.vo.request.ExchangeReApplyVo" alias="ExchangeReApplyVo" />
 
 		<typeAlias type="com.dalbit.search.vo.procedure.P_MemberSearchVo" alias="P_MemberSearchVo" />
 		<typeAlias type="com.dalbit.search.vo.procedure.P_LiveRoomSearchVo" alias="P_LiveRoomSearchVo" />
