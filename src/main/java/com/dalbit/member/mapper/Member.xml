@@ -98,7 +98,8 @@
 
     <select id="exchangeReApprovalSelect" parameterType="ExchangeReApplyVo" resultType="ExchangeSuccessVo">
         select
-            account_name as accountName
+            mem_no as memNo
+            , account_name as accountName
             , account_no as accountNo
             , bank_code as bankCode
             , social_no as socialNo

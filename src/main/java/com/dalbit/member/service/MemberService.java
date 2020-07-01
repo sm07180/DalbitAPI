@@ -324,6 +324,7 @@ public class MemberService {
 
         ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeReApprovalSelect(exchangeReApplyVo);
         P_ExchangeApplyVo pExchangeApplyVo = new P_ExchangeApplyVo();
+        pExchangeApplyVo.setMem_no(exchangeSuccessVo.getMemNo());
         pExchangeApplyVo.setByeol(exchangeReApplyVo.getByeol());
         pExchangeApplyVo.setAccount_name(exchangeSuccessVo.getAccountName());
         pExchangeApplyVo.setAccount_no(exchangeSuccessVo.getAccountNo());
