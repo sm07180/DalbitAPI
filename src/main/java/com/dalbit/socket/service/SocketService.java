@@ -117,7 +117,11 @@ public class SocketService {
             }
         }
 
-        log.error("Socket Result {}, {}, {}", roomNo, params, result);
+        if(!DalbitUtil.isEmpty(params) && params.indexOf("levelUp") > -1){
+            log.error("Socket Result {}, {}, {}", roomNo, params, result);
+        }else{
+            log.info("Socket Result {}, {}, {}", roomNo, params, result);
+        }
         //return new Gson().fromJson(result, Map.class);
     }
 
@@ -733,7 +737,7 @@ public class SocketService {
         String memNo = new MemberVo().getMyMemNo(request);
         String authToken = DalbitUtil.getAuthToken(request);
 
-        log.info("Socket Start : djLlevelUp {}, {}, {}", roomNo, memNo, itemMap);
+        log.error("Socket Start : djLlevelUp {}, {}, {}, {}", roomNo, memNo, itemMap, vo);
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && itemMap != null){
             if(vo != null && vo.getMemNo() != null) {
                 //vo.setCommand("reqLevelUpBj");
