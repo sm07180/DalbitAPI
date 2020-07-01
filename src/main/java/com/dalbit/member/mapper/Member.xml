@@ -107,7 +107,6 @@
             , address_2 as address2
             , add_file1 as addFile1
             , add_file2 as addFile2
-            , add_file3 as addFile3
             , terms_agree as termsAgree
         from tb_member_exchange
         where idx = #{exchangeIdx}

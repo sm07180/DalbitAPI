@@ -306,7 +306,7 @@ public class MemberService {
         ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeApprovalSelect(memNo);
         HashMap returnMap = new HashMap();
         returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
-        
+
         String result;
         if(!DalbitUtil.isEmpty(exchangeSuccessVo)) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, returnMap));
@@ -334,7 +334,6 @@ public class MemberService {
         pExchangeApplyVo.setAddress2(exchangeSuccessVo.getAddress2());
         pExchangeApplyVo.setAdd_file1(exchangeSuccessVo.getAddFile1());
         pExchangeApplyVo.setAdd_file2(exchangeSuccessVo.getAddFile2());
-        pExchangeApplyVo.setAdd_file3(exchangeSuccessVo.getAddFile3());
         pExchangeApplyVo.setTerms_agree(exchangeSuccessVo.getTermsAgree());
 
         return callExchangeApply(pExchangeApplyVo, request);
