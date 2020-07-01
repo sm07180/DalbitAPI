@@ -304,9 +304,12 @@ public class MemberService {
      */
     public String exchangeApprovalSelect(String memNo) {
         ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeApprovalSelect(memNo);
+        HashMap returnMap = new HashMap();
+        returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
+        
         String result;
         if(!DalbitUtil.isEmpty(exchangeSuccessVo)) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, exchangeSuccessVo.getExchangeIdx()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, returnMap));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
         }
