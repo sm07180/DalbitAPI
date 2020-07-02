@@ -1203,7 +1203,7 @@ public class RoomService {
                     //토큰 업데이트
                     roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
                     if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
-                        HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                        HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
                         String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
                         String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
                         String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");

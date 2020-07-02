@@ -36,4 +36,7 @@ public interface MemberDao {
     ExchangeSuccessVo exchangeApprovalSelect(String memNo);
     @Transactional(readOnly = true)
     ExchangeSuccessVo exchangeReApprovalSelect(ExchangeReApplyVo exchangeReApplyVo);
+
+    @Transactional(readOnly = true)
+    List<String> selectListeningRoom(String memNo);
 }

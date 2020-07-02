@@ -278,7 +278,6 @@ public class MemberController {
         return result;
     }
 
-
     /**
      * 회원 환전 승인 건 조회
      */
@@ -302,4 +301,8 @@ public class MemberController {
         return result;
     }
 
+    @PostMapping("/member/reset/listen")
+    public String changeDevice(HttpServletRequest request) throws GlobalException {
+        return memberService.resetListeningRoom(request);
+    }
 }

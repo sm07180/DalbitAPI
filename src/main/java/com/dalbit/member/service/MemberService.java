@@ -1,8 +1,12 @@
 package com.dalbit.member.service;
 
+import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -15,6 +19,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -47,6 +52,12 @@ public class MemberService {
     RestService restService;
     @Autowired
     CommonService commonService;
+    @Autowired
+    RoomDao roomDao;
+    @Autowired
+    SocketService socketService;
+    @Autowired
+    RoomService roomService;
 
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
@@ -335,8 +346,49 @@ public class MemberService {
         pExchangeApplyVo.setAddress2(exchangeSuccessVo.getAddress2());
         pExchangeApplyVo.setAdd_file1(exchangeSuccessVo.getAddFile1());
         pExchangeApplyVo.setAdd_file2(exchangeSuccessVo.getAddFile2());
+        pExchangeApplyVo.setAdd_file3(exchangeSuccessVo.getAddFile3());
         pExchangeApplyVo.setTerms_agree(exchangeSuccessVo.getTermsAgree());
 
         return callExchangeApply(pExchangeApplyVo, request);
+    }
+
+    public String resetListeningRoom(HttpServletRequest request) throws GlobalException{
+        String memNo = request.getParameter("memNo");
+        //String mode = request.getParameter("mode");
+        if(DalbitUtil.isEmpty(memNo)){
+            memNo = MemberVo.getMyMemNo(request);
+        }
+
+        if(DalbitUtil.isEmpty(memNo)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
+        }else{
+            try{
+                DeviceVo deviceVo = new DeviceVo(request);
+                P_RoomExitVo exitData = new P_RoomExitVo();
+                exitData.setMemLogin(1);
+                exitData.setMem_no(memNo);
+                exitData.setOs(deviceVo.getOs());
+                exitData.setDeviceUuid(deviceVo.getDeviceUuid());
+                exitData.setIp(deviceVo.getIp());
+                exitData.setAppVersion(deviceVo.getAppVersion());
+                exitData.setDeviceToken(deviceVo.getDeviceToken());
+                exitData.setIsHybrid(deviceVo.getIsHybrid());
+                String authToken = DalbitUtil.getAuthToken(request);
+
+                List<String> roomList = memberDao.selectListeningRoom(memNo);
+                for(String room_no : roomList){
+                    exitData.setRoom_no(room_no);
+                    ProcedureVo procedureVo = new ProcedureVo(exitData);
+                    roomDao.callBroadCastRoomExit(procedureVo);
+                    try{
+                        socketService.chatEndRed(memNo, room_no, request, authToken);
+                    }catch(Exception e){}
+                }
+            }catch(Exception g1){
+                return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+            }
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
     }
 }

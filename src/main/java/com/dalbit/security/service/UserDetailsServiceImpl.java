@@ -166,7 +166,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             throw new CustomUsernameNotFoundException(Status.로그인실패_영구정지, returnMap);
         }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_청취방존재.getMessageCode())){
-            throw new CustomUsernameNotFoundException(Status.로그인실패_청취방존재);
+            HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
+
+            throw new CustomUsernameNotFoundException(Status.로그인실패_청취방존재, returnMap);
         }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
             MemberVo paramMemberVo = new MemberVo();
             paramMemberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));

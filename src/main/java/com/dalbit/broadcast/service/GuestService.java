@@ -86,7 +86,10 @@ public class GuestService {
                     }
                 }else{
                     try{
-                        String streamId = (String) restService.antCreate(DalbitUtil.getStringMap(roomGuestInfo, "title") + "'s Geust " + mem_no, request).get("streamId");
+                        String streamId = DalbitUtil.getStringMap(roomGuestInfo, "guest_streamid");
+                        if(DalbitUtil.isEmpty(streamId)){
+                            streamId = (String) restService.antCreate(DalbitUtil.getStringMap(roomGuestInfo, "title") + "'s Geust " + mem_no, request).get("streamId");
+                        }
                         String publishToken = (String) restService.antToken(streamId, "publish", request).get("tokenId");
                         String playToken = (String) restService.antToken(streamId, "play", request).get("tokenId");
                         HashMap updateParam = new HashMap();

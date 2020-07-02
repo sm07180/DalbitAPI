@@ -113,4 +113,12 @@
         where idx = #{exchangeIdx}
     </select>
 
+    <select id="selectListeningRoom" parameterType="String" resultType="String">
+        SELECT
+          room_no
+        FROM tb_broadcast_room_member
+        WHERE mem_no = #{value}
+          AND state = 0
+          AND auth &lt; 3
+    </select>
 </mapper>
