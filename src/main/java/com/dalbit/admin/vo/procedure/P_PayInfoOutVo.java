@@ -76,5 +76,14 @@ public class P_PayInfoOutVo {
     private int cancelAmt;
 
 
+    /* 상품권 추가 */
+    private int gm_cnt; // 문화상품권
+    private int gm_amt;
+    private int hm_cnt; // 해피머니 상품권
+    private int hm_amt;
+    private int gg_cnt; // 스마트문상(게임)
+    private int gg_amt;
+    private int gc_cnt; // 도서문화상품권
+    private int gc_amt;
 
 }
