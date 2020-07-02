@@ -54,6 +54,9 @@ public class GuestService {
                             resultMap.put("guest_stream_id", streamId);
                             resultMap.put("guest_publish_token", publishToken);
                             resultMap.put("guest_play_token", "");
+                            resultMap.put("memNo", mem_no);
+                            resultMap.put("roomNo", room_no);
+                            resultMap.put("mode", mode);
                         }else{
                             status = Status.비즈니스로직오류;
                         }
@@ -75,6 +78,9 @@ public class GuestService {
                                 resultMap.put("guest_stream_id", streamId);
                                 resultMap.put("guest_publish_token", "");
                                 resultMap.put("guest_play_token", playToken);
+                                resultMap.put("memNo", mem_no);
+                                resultMap.put("roomNo", room_no);
+                                resultMap.put("mode", mode);
                             }else{
                                 status = Status.비즈니스로직오류;
                             }
@@ -103,6 +109,9 @@ public class GuestService {
                             resultMap.put("guest_stream_id", streamId);
                             resultMap.put("guest_publish_token", publishToken);
                             resultMap.put("guest_play_token", playToken);
+                            resultMap.put("memNo", mem_no);
+                            resultMap.put("roomNo", room_no);
+                            resultMap.put("mode", mode);
                         }else{
                             status = Status.비즈니스로직오류;
                         }
