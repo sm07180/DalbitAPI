@@ -17,7 +17,7 @@ public interface AdminDao {
     ArrayList<AdminMenuVo> selectMobileAdminMenuAuth(SearchVo searchVo);
 
     @Transactional(readOnly = true)
-    ArrayList<BroadcastVo> selectBroadcastList(SearchVo searchVo);
+    ArrayList<BroadcastVo> selectBroadcastList(BroadcastVo broadcastVo);
 
     BroadcastDetailVo selectBroadcastSimpleInfo(SearchVo searchVo);
 

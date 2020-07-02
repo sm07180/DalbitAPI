@@ -128,19 +128,19 @@ public class AdminService {
      * - 생방송관리
      * - 텍스트관리 > 방송 제목 조회
      */
-    public String selectBroadcastList(HttpServletRequest request, SearchVo searchVo) {
-        searchVo.setPagingInfo();
-        List<BroadcastVo> broadList = adminDao.selectBroadcastList(searchVo);
+    public String selectBroadcastList(HttpServletRequest request, BroadcastVo broadcastVo) {
+        broadcastVo.setPagingInfo();
+        List<BroadcastVo> broadList = adminDao.selectBroadcastList(broadcastVo);
 
-        if(searchVo.getPageCount() < broadList.size()){
-            searchVo.setEndPage(false);
-            broadList = broadList.subList(0, searchVo.getPageCount());
+        if(broadcastVo.getPageCount() < broadList.size()){
+            broadcastVo.setEndPage(false);
+            broadList = broadList.subList(0, broadcastVo.getPageCount());
         }else{
-            searchVo.setEndPage(true);
+            broadcastVo.setEndPage(true);
         }
 
         var map = new HashMap<>();
-        map.put("isEndPage", searchVo.isEndPage());
+        map.put("isEndPage", broadcastVo.isEndPage());
         map.put("broadList", broadList);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));

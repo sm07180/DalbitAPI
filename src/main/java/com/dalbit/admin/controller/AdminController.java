@@ -43,8 +43,8 @@ public class AdminController {
      * - 텍스트관리 > 방송 제목 조회
      */
     @PostMapping("/broadcast/list")
-    public String broadcastList(HttpServletRequest request, SearchVo searchVo){
-        String result = adminService.selectBroadcastList(request, searchVo);
+    public String broadcastList(HttpServletRequest request, BroadcastVo broadcastVo){
+        String result = adminService.selectBroadcastList(request, broadcastVo);
         return result;
     }
 
