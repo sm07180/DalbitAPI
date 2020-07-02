@@ -60,7 +60,7 @@ public class GuestService {
                     }catch(Exception e){
                         status = Status.비즈니스로직오류;
                     }
-                }else{
+                }else if("play".equals(mode)){
                     if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(roomGuestInfo, "guest_streamid"))){
                         try{
                             String streamId = DalbitUtil.getStringMap(roomGuestInfo, "guest_streamid");
@@ -83,6 +83,28 @@ public class GuestService {
                         }
                     }else{
                         status = Status.방송참여_해당방이없음;
+                    }
+                }else{
+                    try{
+                        String streamId = (String) restService.antCreate(DalbitUtil.getStringMap(roomGuestInfo, "title") + "'s Geust " + mem_no, request).get("streamId");
+                        String publishToken = (String) restService.antToken(streamId, "publish", request).get("tokenId");
+                        String playToken = (String) restService.antToken(streamId, "play", request).get("tokenId");
+                        HashMap updateParam = new HashMap();
+                        updateParam.put("mem_no", mem_no);
+                        updateParam.put("room_no", room_no);
+                        updateParam.put("guest_stream_id", streamId);
+                        updateParam.put("guest_publish_token", publishToken);
+                        updateParam.put("guest_play_token", playToken);
+                        if(userDao.updateGuestStreamInfo(updateParam) > 0){
+                            status = Status.조회;
+                            resultMap.put("guest_stream_id", streamId);
+                            resultMap.put("guest_publish_token", publishToken);
+                            resultMap.put("guest_play_token", playToken);
+                        }else{
+                            status = Status.비즈니스로직오류;
+                        }
+                    }catch(Exception e){
+                        status = Status.비즈니스로직오류;
                     }
                 }
             }else{
