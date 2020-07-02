@@ -291,8 +291,15 @@ public class SampleVoTest {
     @Test
     public void 각종테스트(){
 
+        String year = "1989";
+        String month = "09";
+        String day = "27";
+
+        log.info("만 나이: "+ DalbitUtil.getAge(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
+
+
         //String str = "안녕하세요 씨발 씨발";
-        String str = "안녕하세요 bbb 씨발";
+        /*String str = "안녕하세요 bbb 씨발";
 
         //금지어 체크
         log.debug("금지어 여부: {}",DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), str));
@@ -310,7 +317,7 @@ public class SampleVoTest {
             log.debug("사이트 금지어: {}", siteBanWord);
         }
         log.debug(str);
-        log.debug(replaceStr);
+        log.debug(replaceStr);*/
 
 
         //String[] splitStr = str.split(" ");

@@ -500,9 +500,15 @@ public class CommonService {
         ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
         commonDao.getCertificationChk(procedureVo);
 
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("adultYn", DalbitUtil.getStringMap(resultMap, "adult_yn"));       //성인여부
+        returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
+        procedureVo.setData(returnMap);
+
         String result;
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인, procedureVo.getData()));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_안됨));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_회원아님.getMessageCode())) {
@@ -663,9 +669,10 @@ public class CommonService {
 
 
     /**
-     * 보호자 인증 업데이트
+     * 법정대리인(보호자) 인증 업데이트
      */
     public String updateMemberCertification(P_SelfAuthVo pSelfAuthVo) {
+
         int success = commonDao.updateMemberCertification(pSelfAuthVo);
 
         String result ="";
@@ -677,5 +684,12 @@ public class CommonService {
         return result;
 
 
+    }
+
+    /**
+     * 법정대리인(보호자) 인증 파일 업데이트
+     */
+    public int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo) {
+        return commonDao.updateMemberCertificationFile(pSelfAuthVo);
     }
 }

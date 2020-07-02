@@ -1,17 +1,25 @@
 package com.dalbit.member.service;
 
+import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
-import com.dalbit.member.vo.ExchangeSuccessListVo;
+import com.dalbit.member.vo.ExchangeSuccessVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -44,6 +52,12 @@ public class MemberService {
     RestService restService;
     @Autowired
     CommonService commonService;
+    @Autowired
+    RoomDao roomDao;
+    @Autowired
+    SocketService socketService;
+    @Autowired
+    RoomService roomService;
 
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
@@ -206,6 +220,7 @@ public class MemberService {
     public String callExchangeApply(P_ExchangeApplyVo pExchangeApplyVo, HttpServletRequest request) throws GlobalException {
         String exchangeFile1 = pExchangeApplyVo.getAdd_file1();
         String exchangeFile2 = pExchangeApplyVo.getAdd_file2();
+        String exchangeFile3 = pExchangeApplyVo.getAdd_file3();
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(exchangeFile1) && exchangeFile1.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
             isDone = true;
@@ -215,6 +230,20 @@ public class MemberService {
         if(!DalbitUtil.isEmpty(exchangeFile2) && exchangeFile2.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
             isDone = true;
             exchangeFile2 = DalbitUtil.replacePath(exchangeFile2);
+        }
+
+        if(!DalbitUtil.isEmpty(exchangeFile3) && exchangeFile3.startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
+            isDone = true;
+            exchangeFile3 = DalbitUtil.replacePath(exchangeFile3);
+
+            //법정대리인 인증정보 파일 업데이트
+            P_SelfAuthVo pSelfAuthVo = new P_SelfAuthVo();
+            pSelfAuthVo.setMem_no(MemberVo.getMyMemNo(request));
+            pSelfAuthVo.setAdd_file(exchangeFile3);
+            int success = commonService.updateMemberCertificationFile(pSelfAuthVo);
+            if(success > 0){
+                log.info("법정대리인(보호자) 서류 업데이트 성공");
+            }
         }
 
         pExchangeApplyVo.setAdd_file1(exchangeFile1);
@@ -241,6 +270,9 @@ public class MemberService {
                 }
                 if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file2())){
                     restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file2()), request);
+                }
+                if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file3())){
+                    restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file3()), request);
                 }
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청성공, procedureVo.getData()));
@@ -282,13 +314,81 @@ public class MemberService {
      * 회원 환전 승인 건 조회
      */
     public String exchangeApprovalSelect(String memNo) {
-        ExchangeSuccessListVo exchangeSuccessListVo = memberDao.exchangeApprovalSelect(memNo);
+        ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeApprovalSelect(memNo);
+        HashMap returnMap = new HashMap();
+        returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
+
         String result;
-        if(!DalbitUtil.isEmpty(exchangeSuccessListVo)) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, exchangeSuccessListVo));
+        if(!DalbitUtil.isEmpty(exchangeSuccessVo)) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, returnMap));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
         }
         return result;
+    }
+
+
+    /**
+     * 환전 재신청
+     */
+    public String exchangeReapply(ExchangeReApplyVo exchangeReApplyVo, HttpServletRequest request) throws GlobalException {
+
+        ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeReApprovalSelect(exchangeReApplyVo);
+        P_ExchangeApplyVo pExchangeApplyVo = new P_ExchangeApplyVo();
+        pExchangeApplyVo.setMem_no(exchangeSuccessVo.getMemNo());
+        pExchangeApplyVo.setByeol(exchangeReApplyVo.getByeol());
+        pExchangeApplyVo.setAccount_name(exchangeSuccessVo.getAccountName());
+        pExchangeApplyVo.setAccount_no(exchangeSuccessVo.getAccountNo());
+        pExchangeApplyVo.setBank_code(exchangeSuccessVo.getBankCode());
+        pExchangeApplyVo.setSocial_no(exchangeSuccessVo.getSocialNo());
+        pExchangeApplyVo.setPhone_no(exchangeSuccessVo.getPhoneNo());
+        pExchangeApplyVo.setAddress1(exchangeSuccessVo.getAddress1());
+        pExchangeApplyVo.setAddress2(exchangeSuccessVo.getAddress2());
+        pExchangeApplyVo.setAdd_file1(exchangeSuccessVo.getAddFile1());
+        pExchangeApplyVo.setAdd_file2(exchangeSuccessVo.getAddFile2());
+        pExchangeApplyVo.setAdd_file3(exchangeSuccessVo.getAddFile3());
+        pExchangeApplyVo.setTerms_agree(exchangeSuccessVo.getTermsAgree());
+
+        return callExchangeApply(pExchangeApplyVo, request);
+    }
+
+    public String resetListeningRoom(HttpServletRequest request) throws GlobalException{
+        String memNo = request.getParameter("memNo");
+        //String mode = request.getParameter("mode");
+        if(DalbitUtil.isEmpty(memNo)){
+            memNo = MemberVo.getMyMemNo(request);
+        }
+
+        if(DalbitUtil.isEmpty(memNo)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
+        }else{
+            try{
+                DeviceVo deviceVo = new DeviceVo(request);
+                P_RoomExitVo exitData = new P_RoomExitVo();
+                exitData.setMemLogin(1);
+                exitData.setMem_no(memNo);
+                exitData.setOs(deviceVo.getOs());
+                exitData.setDeviceUuid(deviceVo.getDeviceUuid());
+                exitData.setIp(deviceVo.getIp());
+                exitData.setAppVersion(deviceVo.getAppVersion());
+                exitData.setDeviceToken(deviceVo.getDeviceToken());
+                exitData.setIsHybrid(deviceVo.getIsHybrid());
+                String authToken = DalbitUtil.getAuthToken(request);
+
+                List<String> roomList = memberDao.selectListeningRoom(memNo);
+                for(String room_no : roomList){
+                    exitData.setRoom_no(room_no);
+                    ProcedureVo procedureVo = new ProcedureVo(exitData);
+                    roomDao.callBroadCastRoomExit(procedureVo);
+                    try{
+                        socketService.chatEndRed(memNo, room_no, request, authToken);
+                    }catch(Exception e){}
+                }
+            }catch(Exception g1){
+                return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+            }
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
     }
 }

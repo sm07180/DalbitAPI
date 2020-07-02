@@ -281,7 +281,9 @@ public class CommonController {
     @PostMapping("self/auth/res")
     public String responseSelfAuthChk(@Valid SelfAuthChkVo selfAuthChkVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, ParseException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        log.info("[API] #### 본인인증 확인 selfAuthChkVo: {}", selfAuthChkVo);
         SelfAuthSaveVo selfAuthSaveVo = DalbitUtil.getDecAuthInfo(selfAuthChkVo, request);
+
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
@@ -308,10 +310,13 @@ public class CommonController {
             }
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
+                log.info("##### 본인인증 DB저장 #####");
                 //회원본인인증 DB 저장
+                apiData.setParents_agreeYn("n");
                 result = commonService.callMemberCertification(apiData);
             } else {
-                apiData.setParent_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+                log.info("##### 보호자인증 DB업데이트 #####");
+                apiData.setParents_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 apiData.setParents_agreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
                 //회원본인인증 DB 보호자정보 업데이트
                 result = commonService.updateMemberCertification(apiData);
@@ -333,10 +338,10 @@ public class CommonController {
         P_SelfAuthChkVo apiData = new P_SelfAuthChkVo();
         apiData.setMem_no(MemberVo.getMyMemNo(request));
 
-        //String result = commonService.getCertificationChk(apiData);
+        String result = commonService.getCertificationChk(apiData);
 
-        //return result;
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
+        return result;
+        //return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
     }
 
 

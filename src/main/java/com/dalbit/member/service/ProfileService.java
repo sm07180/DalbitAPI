@@ -1,6 +1,7 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
@@ -33,6 +34,8 @@ public class ProfileService {
     CommonService commonService;
     @Autowired
     SocketService socketService;
+    @Autowired
+    CommonDao commonDao;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -57,7 +60,15 @@ public class ProfileService {
 
             List fanRankList = commonService.getFanRankList(profileInfo.getFanRank1(), profileInfo.getFanRank2(), profileInfo.getFanRank3());
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList);
-
+            HashMap fanBadgeMap = new HashMap();
+            fanBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
+            fanBadgeMap.put("type", 0);
+            List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
+            if(DalbitUtil.isEmpty(fanBadgeList)){
+                profileInfoOutVo.setFanBadgeList(new ArrayList());
+            }else{
+                profileInfoOutVo.setFanBadgeList(fanBadgeList);
+            }
             HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(DalbitUtil.getStringMap(myInfo, "birthYear"), DalbitUtil.getStringMap(myInfo, "birthMonth"), DalbitUtil.getStringMap(myInfo, "birthDay")));

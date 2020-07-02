@@ -3,8 +3,9 @@ package com.dalbit.member.dao;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.ConnectRoomVo;
-import com.dalbit.member.vo.ExchangeSuccessListVo;
+import com.dalbit.member.vo.ExchangeSuccessVo;
 import com.dalbit.member.vo.TokenCheckVo;
+import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,5 +33,10 @@ public interface MemberDao {
     ProcedureVo callExchangeApply(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    ExchangeSuccessListVo exchangeApprovalSelect(String memNo);
+    ExchangeSuccessVo exchangeApprovalSelect(String memNo);
+    @Transactional(readOnly = true)
+    ExchangeSuccessVo exchangeReApprovalSelect(ExchangeReApplyVo exchangeReApplyVo);
+
+    @Transactional(readOnly = true)
+    List<String> selectListeningRoom(String memNo);
 }
