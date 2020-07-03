@@ -318,6 +318,8 @@ public class MemberService {
 
         String result;
         if(!DalbitUtil.isEmpty(exchangeSuccessVo)) {
+            
+            //2020.07.03 기존 승인 건 조회 시 정보 추가 (첨부파일 제외)
             HashMap returnMap = new HashMap();
             returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
             returnMap.put("accountName", exchangeSuccessVo.getAccountName());
