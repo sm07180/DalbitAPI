@@ -9,6 +9,10 @@ import lombok.ToString;
 @ToString
 public class ProfileVo extends AdminBaseVo{
 
+    /* input */
+    private String profileSearch;
+    private String reportYn;
+
     /* ProfileVo output */
     private String mem_no;
     private String last_upd_date;
@@ -18,7 +22,6 @@ public class ProfileVo extends AdminBaseVo{
     private String mem_id;
     private String mem_userid;
     private int reportedCnt;
-    private String reportYn;
 
     private String room_no;
     private int state;

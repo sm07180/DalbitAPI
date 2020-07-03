@@ -28,25 +28,36 @@
         select *
         from(
             select
-                room.room_no
-                , room.image_background
-                , room.mem_no
-                , room.start_date
-                , basic.mem_nick
-                , basic.mem_userid
-                , (select `code` from rd_data.tbl_code_define where type = 'subject_type' and value = room.subject_type) subject_name
-                , room.title
-                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth <![CDATA[!=]]> 3) liveListener
-                , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = room.mem_no) reportedCnt
-                , room.state
+                room.room_no as room_no
+                , room.image_background as image_background
+                , room.mem_no as mem_no
+                , room.start_date as start_date
+                , basic.mem_nick as mem_nick
+                , basic.mem_userid as mem_userid
+                , (select `code` from rd_data.tbl_code_define where type = 'subject_type' and value = room.subject_type) as subject_name
+                , room.title as title
+                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth <![CDATA[!=]]> 3) as liveListener
+                , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = room.mem_no) as reportedCnt
+                , room.state as state
             from rd_data.tb_broadcast_room room
                 , rd_data.tb_member_basic basic
             where room.mem_no = basic.mem_no
                 and room.state <![CDATA[<>]]> 4
         ) list
-        <if test='reportYn == "Y"'>
-        where 0 <![CDATA[<]]> reportedCnt
-        </if>
+        <where>
+            <if test='reportYn == "Y"'>
+                 0 <![CDATA[<]]> reportedCnt
+            </if>
+            <if test='broadSearch != null and broadSearch != ""'>
+                and (
+                room_no like concat('%', #{broadSearch}, '%')
+                or title like concat('%', #{broadSearch}, '%')
+                or mem_no like concat('%', #{broadSearch}, '%')
+                or mem_nick like concat('%', #{broadSearch}, '%')
+                or mem_userid like concat('%', #{broadSearch}, '%')
+                )
+            </if>
+        </where>
         order by list.state asc, list.start_date desc
         limit #{searchStart}, #{searchEnd}
     </select>
@@ -79,12 +90,13 @@
         select *
         from (
             select
-                session.last_upd_date
-                , session.mem_no
-                , profile.image_profile
-                , basic.mem_nick
-                , basic.mem_userid
-                , basic.mem_join_date
+                session.last_upd_date as last_upd_date
+                , session.mem_no as mem_no
+                , profile.image_profile as image_profile
+                , basic.mem_nick as mem_nick
+                , basic.mem_userid as mem_userid
+                , basic.mem_join_date as mem_join_date
+                , basic.mem_phone as mem_phone
                 , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
                 from rd_data.tb_member_basic basic
                 inner join rd_data.tb_member_profile profile on basic.mem_no = profile.mem_no
@@ -94,9 +106,19 @@
                                 order by max(last_upd_date) desc) session on basic.mem_no = session.mem_no
                 where session.mem_no is not null
         ) list
-        <if test='reportYn == "Y"'>
-            where 0 <![CDATA[<]]> reportedCnt
-        </if>
+        <where>
+            <if test='reportYn == "Y"'>
+                0 <![CDATA[<]]> reportedCnt
+            </if>
+            <if test='profileSearch != null and profileSearch != ""'>
+              and (
+                mem_userid like concat('%', #{profileSearch}, '%')
+                or mem_nick like concat('%', #{profileSearch}, '%')
+                or mem_no like concat('%', #{profileSearch}, '%')
+                or mem_phone like concat('%', #{profileSearch}, '%')
+                )
+            </if>
+        </where>
         order by list.last_upd_date desc
         limit #{searchStart}, #{searchEnd}
     </select>
