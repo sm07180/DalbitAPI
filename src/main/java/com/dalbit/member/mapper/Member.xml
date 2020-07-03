@@ -88,6 +88,13 @@
     <select id="exchangeApprovalSelect" parameterType="string" resultType="ExchangeSuccessVo">
         select
             idx as exchangeIdx
+            , account_name as accountName
+            , account_no as accountNo
+            , bank_code as bankCode
+            , social_no as socialNo
+            , phone_no as phoneNo
+            , address_1 as address1
+            , address_2 as address2
         from tb_member_exchange
         where mem_no = #{memNo}
           and state = 1

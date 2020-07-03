@@ -315,11 +315,19 @@ public class MemberService {
      */
     public String exchangeApprovalSelect(String memNo) {
         ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeApprovalSelect(memNo);
-        HashMap returnMap = new HashMap();
-        returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
 
         String result;
         if(!DalbitUtil.isEmpty(exchangeSuccessVo)) {
+            HashMap returnMap = new HashMap();
+            returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
+            returnMap.put("accountName", exchangeSuccessVo.getAccountName());
+            returnMap.put("accountNo", exchangeSuccessVo.getAccountNo());
+            returnMap.put("bankCode", exchangeSuccessVo.getPhoneNo());
+            returnMap.put("socialNo", exchangeSuccessVo.getSocialNo().substring(0,6));
+            returnMap.put("phoneNo", exchangeSuccessVo.getPhoneNo());
+            returnMap.put("address1", exchangeSuccessVo.getAddress1());
+            returnMap.put("address2", exchangeSuccessVo.getAddress2());
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, returnMap));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
