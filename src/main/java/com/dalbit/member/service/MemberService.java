@@ -324,7 +324,7 @@ public class MemberService {
             returnMap.put("exchangeIdx", exchangeSuccessVo.getExchangeIdx());
             returnMap.put("accountName", exchangeSuccessVo.getAccountName());
             returnMap.put("accountNo", exchangeSuccessVo.getAccountNo());
-            returnMap.put("bankCode", exchangeSuccessVo.getPhoneNo());
+            returnMap.put("bankCode", exchangeSuccessVo.getBankCode());
             returnMap.put("socialNo", exchangeSuccessVo.getSocialNo().substring(0,6));
             returnMap.put("phoneNo", exchangeSuccessVo.getPhoneNo());
             returnMap.put("address1", exchangeSuccessVo.getAddress1());
