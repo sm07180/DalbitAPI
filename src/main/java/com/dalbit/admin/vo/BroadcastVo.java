@@ -8,6 +8,12 @@ import lombok.ToString;
 @Setter
 @ToString
 public class BroadcastVo extends AdminBaseVo{
+
+    /* input */
+    private String reportYn;
+    private String broadSearch;
+
+    /* output */
     private String room_no;
     private String image_background;
     private String mem_no;
@@ -20,7 +26,4 @@ public class BroadcastVo extends AdminBaseVo{
     private int reportedCnt;
     private String start_date;
     private int state;
-
-    private String reportYn;
-
 }
