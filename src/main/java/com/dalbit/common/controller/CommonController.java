@@ -252,6 +252,9 @@ public class CommonController {
             selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.app.url"));    //앱 전용 결과수신URL
         }else{
             log.error("os: "+os);
+            log.error("Referer: {}", request.getHeader("referer"));
+
+
             if(os != 3 ){
                 selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.app.code"));    //앱 전용 URL코드
                 selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.app.url"));    //앱 전용 결과수신URL
