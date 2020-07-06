@@ -284,6 +284,61 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
+    public void changeRoomState(String roomNo, String memNo, String ant, String call, String mic, String authToken, boolean isLogin, SocketVo vo){
+        log.info("Socket Start : changeRoomState {}, {}, {}, {}, {}, {}", roomNo, memNo, ant, call, mic, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)) {
+            if (vo == null) {
+                vo = getSocketVo(roomNo, memNo, isLogin);
+            }
+            if (vo.getMemNo() != null) {
+                if("0".equals(ant) || "FALSE".equals(ant)) {
+                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                }else{
+                    bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                }
+                if("0".equals(mic) || "FALSE".equals(mic)) {
+                    vo.setCommand("reqMicOff");
+                    vo.setMessage(vo.getAuth() + "");
+                    vo.setRecvPosition("top1");
+                    vo.setRecvLevel(3);
+                    vo.setRecvType("system");
+
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }else{
+                    vo.setCommand("reqMicOn");
+                    vo.setMessage(vo.getAuth() + "");
+                    vo.setRecvPosition("top1");
+                    vo.setRecvLevel(3);
+                    vo.setRecvType("system");
+
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
+                if("0".equals(call) || "FALSE".equals(call)) {
+                    vo.setCommand("reqEndCall");
+                    vo.setMessage(vo.getAuth() + "");
+                    vo.setRecvPosition("top1");
+                    vo.setRecvLevel(3);
+                    vo.setRecvType("system");
+
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }else{
+                    vo.setCommand("reqCalling");
+                    vo.setMessage(vo.getAuth() + "");
+                    vo.setRecvPosition("top1");
+                    vo.setRecvLevel(3);
+                    vo.setRecvType("system");
+
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
+            }
+        }
+    }
+
+    @Async("threadTaskExecutor")
     public void bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : bjAntConnect {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
