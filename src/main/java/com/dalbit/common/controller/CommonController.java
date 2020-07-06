@@ -251,8 +251,13 @@ public class CommonController {
             selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.app.code"));    //앱 전용 URL코드
             selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.app.url"));    //앱 전용 결과수신URL
         }else{
-            selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));        //URL코드
-            selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.url"));        //결과수신URL
+            if(os != 3 ){
+                selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.app.code"));    //앱 전용 URL코드
+                selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.app.url"));    //앱 전용 결과수신URL
+            } else {
+                selfAuthVo.setUrlCode(DalbitUtil.getProperty("self.auth.url.code"));        //URL코드
+                selfAuthOutVo.setTr_url(DalbitUtil.getProperty("self.auth.tr.url"));        //결과수신URL
+            }
         }
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
