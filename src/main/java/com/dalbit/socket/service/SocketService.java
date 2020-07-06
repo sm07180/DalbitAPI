@@ -323,6 +323,7 @@ public class SocketService {
         vo.setRecvType("system");
         vo.setRecvPosition("top1");
         vo.setRecvDj(1);
+        vo.setRecvLevel(4);
         sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 
