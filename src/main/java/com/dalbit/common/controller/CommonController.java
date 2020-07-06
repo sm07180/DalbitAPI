@@ -306,11 +306,6 @@ public class CommonController {
                 apiData.setAdultYn("y");
             }
 
-            //양효진 과장 요청 회원번호 강제로 미성년자 업데이트
-            if(apiData.getMem_no().equals("11587115095572") || apiData.getMem_no().equals("11587108204351")){
-                apiData.setAdultYn("n");
-            }
-
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
                 log.info("##### 본인인증 DB저장 #####");
                 //회원본인인증 DB 저장
