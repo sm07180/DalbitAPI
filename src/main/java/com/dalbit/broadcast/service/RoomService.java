@@ -1072,8 +1072,8 @@ public class RoomService {
             if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
                 SocketVo vo = socketService.getSocketVo(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    //socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), old_state, state, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-                    socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), stateVo.getIsAnt(), stateVo.getIsCall(), stateVo.getIsMic(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), old_state, state, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    //socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), stateVo.getIsAnt(), stateVo.getIsCall(), stateVo.getIsMic(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service changeRoomState Exception {}", e);

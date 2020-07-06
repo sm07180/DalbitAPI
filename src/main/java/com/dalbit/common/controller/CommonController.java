@@ -4,10 +4,7 @@ import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
-import com.dalbit.common.vo.procedure.P_ErrorLogVo;
-import com.dalbit.common.vo.procedure.P_PushVo;
-import com.dalbit.common.vo.procedure.P_SelfAuthChkVo;
-import com.dalbit.common.vo.procedure.P_SelfAuthVo;
+import com.dalbit.common.vo.procedure.*;
 import com.dalbit.common.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
@@ -370,6 +367,21 @@ public class CommonController {
         P_PushVo apiData = new P_PushVo(pushVo, request);
 
         String result = commonService.callPushAdd(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * PUSH Click
+     */
+    @PostMapping("/push/click")
+    public String pushClick(@Valid PushClickVo pushClickVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_PushClickVo apiData = new P_PushClickVo(pushClickVo, request);
+
+        String result = commonService.callPushClickUpdate(apiData);
 
         return result;
     }

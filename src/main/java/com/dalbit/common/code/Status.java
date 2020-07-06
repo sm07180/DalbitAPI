@@ -719,6 +719,10 @@ public enum Status {
     푸시_회원아님("-1", "push.add.member.number.error", "회원 번호 아닐 시"),
     푸시_디바이스토큰없음("-2", "push.add.device.token.no", "디바이스 토큰 없을 시"),
     푸시실패("C006", "push.add.fail", "푸시 실패 시"),
+    // 푸시 클릭
+    푸시클릭성공("0", "push.click.success", "푸시 클릭 성공 시"),
+    푸시클릭_푸시번호없음("-1", "push.click.push.idx.error", "PUSH 번호 미존재 시"),
+    푸시클릭_에러("C006", "server.error", "푸시 클릭 실패 시"),
 
     //메인 나의스타 리스트
     메인_나의스타_조회성공("C001", "main.star.dj.select.success", "나의스타 조회 성공 시"),
