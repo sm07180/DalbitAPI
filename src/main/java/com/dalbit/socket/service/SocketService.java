@@ -257,6 +257,7 @@ public class SocketService {
                 if (state == 0) {
                     //command = "reqMediaOff";
                     bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                    return;
                 } else if (state == 3) { //통화중
                     command = "reqCalling";
                 } else if (state == 2) { // 마이크 오프
@@ -265,6 +266,7 @@ public class SocketService {
                     if (old_state == 0 || old_state == 6) {
                         bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
                         //command = "reqMediaOn";
+                        return;
                     } else if (old_state == 3) {
                         command = "reqEndCall";
                     }
@@ -323,6 +325,7 @@ public class SocketService {
         vo.setRecvType("system");
         vo.setRecvPosition("top1");
         vo.setRecvDj(1);
+        vo.setRecvCommand("reqBjAntDisconnect");
         sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 
