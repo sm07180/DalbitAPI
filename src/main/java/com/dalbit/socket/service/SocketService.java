@@ -323,7 +323,7 @@ public class SocketService {
         vo.setRecvType("system");
         vo.setRecvPosition("top1");
         vo.setRecvDj(1);
-        vo.setRecvLevel(4);
+        vo.setRecvCommand("reqBjAntDisconnect");
         sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 

@@ -49,6 +49,7 @@ public class SocketVo {
     private String ctrlRole;
     private int login;
     private String recvMemNo;
+    private String recvCommand = "";
     private int recvDj = 1;
     private int recvManager = 1;
     private int recvListener = 1;
@@ -139,6 +140,8 @@ public class SocketVo {
         qs.append(this.login);
         qs.append("&recvMemNo=");
         qs.append(this.recvMemNo == null ? "" : this.recvMemNo);
+        qs.append("&recvCommand=");
+        qs.append(this.recvCommand == null ? "" : this.recvCommand);
         qs.append("&recvDj=");
         qs.append(this.recvDj);
         qs.append("&recvManager=");
