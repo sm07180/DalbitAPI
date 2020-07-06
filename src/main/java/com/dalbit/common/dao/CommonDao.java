@@ -59,4 +59,6 @@ public interface CommonDao {
     List<FanBadgeVo> callMemberBadgeSelect(HashMap param);
 
     int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo);
+
+    ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);
 }

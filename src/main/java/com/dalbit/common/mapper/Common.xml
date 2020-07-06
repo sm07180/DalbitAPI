@@ -54,6 +54,10 @@
       call sp_stmp_push_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callPushClickUpdate" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_push_click_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="selectItemList" parameterType="P_ItemVo" resultType="ItemVo">
         /* Common.xml - selectItemList */
         SELECT

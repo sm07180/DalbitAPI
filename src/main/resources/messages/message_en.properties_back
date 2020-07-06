@@ -661,6 +661,11 @@ push.add.member.number.error=member number error.
 push.add.device.token.no=device token no.
 push.add.fail=push add fail.
 
+# push click
+push.click.success=push click success.
+push.click.push.idx.error=push idx error.
+
+
 # change item select
 mypage.change.item.select.success=change item select success.
 mypage.change.item.select.no.success=change item no.

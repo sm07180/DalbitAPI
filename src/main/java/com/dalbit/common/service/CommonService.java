@@ -571,6 +571,27 @@ public class CommonService {
 
     }
 
+    /**
+     * PUSH Click
+     */
+    public String callPushClickUpdate(P_PushClickVo pPushClickVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pPushClickVo);
+        commonDao.callPushClickUpdate(procedureVo);
+
+        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+
+        String result;
+        if(procedureVo.getRet().equals(Status.푸시클릭성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시클릭성공));
+        } else if(procedureVo.getRet().equals(Status.푸시클릭_푸시번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시클릭_푸시번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시클릭_에러));
+        }
+        return result;
+
+    }
 
     /**
      * 사이트 금지어 조회
@@ -692,4 +713,6 @@ public class CommonService {
     public int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo) {
         return commonDao.updateMemberCertificationFile(pSelfAuthVo);
     }
+
+
 }
