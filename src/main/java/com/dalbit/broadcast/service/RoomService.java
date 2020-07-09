@@ -841,7 +841,7 @@ public class RoomService {
         }
         HashMap fanBadgeMap = new HashMap();
         fanBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
-        fanBadgeMap.put("type", 0);
+        fanBadgeMap.put("type", -1);
         List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
         if(DalbitUtil.isEmpty(fanBadgeList)){
             returnMap.put("fanBadgeList", new ArrayList());

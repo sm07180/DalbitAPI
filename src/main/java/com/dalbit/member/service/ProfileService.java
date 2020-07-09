@@ -62,7 +62,7 @@ public class ProfileService {
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList);
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
-            fanBadgeMap.put("type", 0);
+            fanBadgeMap.put("type", -1);
             List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
             if(DalbitUtil.isEmpty(fanBadgeList)){
                 profileInfoOutVo.setFanBadgeList(new ArrayList());
