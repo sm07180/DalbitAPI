@@ -1158,7 +1158,7 @@ public class DalbitUtil {
         StringBuffer strPwd = new StringBuffer();
         int[] strs = new int[1];
         for (int i = 0; i < 1; ++i) {
-            strs[0] = (int) (Math.random() * 6.0D);
+            strs[0] = (int) (Math.random() * 5.0D);
             strPwd.append(strs[0]);
         }
         return strPwd.toString();
