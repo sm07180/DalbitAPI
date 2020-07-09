@@ -35,10 +35,10 @@ public class P_NoticeListVo {
             setPlatform(1);
         }
 
-        if(!DalbitUtil.isEmpty(memberVo.getGender())) {
-            setGender(memberVo.getGender().equals("m") ? 2 : 3);
-        } else {
+        if(DalbitUtil.isEmpty(memberVo) || DalbitUtil.isEmpty(memberVo.getGender())){
             setGender(1);
+        }else if(!DalbitUtil.isEmpty(memberVo.getGender())) {
+            setGender(memberVo.getGender().equals("m") ? 2 : 3);
         }
     }
 

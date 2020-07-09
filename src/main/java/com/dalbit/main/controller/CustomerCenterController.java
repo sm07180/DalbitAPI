@@ -4,9 +4,10 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.CustomerCenterService;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.*;
+import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenCheckVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.RedisUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -25,7 +26,7 @@ public class CustomerCenterController {
     CustomerCenterService customerCenterService;
 
     @Autowired
-    RedisUtil redisUtil;
+    MemberService memberService;
 
 
     /**
@@ -35,7 +36,15 @@ public class CustomerCenterController {
     public String customerCenterNoticeList(@Valid NoticeListVo noticeListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        MemberVo memberVo = redisUtil.getMemberInfo(request);
+        //로그인 체크 && 로그인이면 회원 조회
+        TokenCheckVo tokenCheckVo = DalbitUtil.isLogin(request) ? memberService.selectMemState(new MemberVo().getMyMemNo(request)) : null;
+
+        //회원 조회 시 결과가 없을 수도 있으므로 tokenCheckVo 한번 더 체크
+        MemberVo memberVo = new MemberVo();
+        if(!DalbitUtil.isEmpty(tokenCheckVo)){
+            memberVo.setGender(tokenCheckVo.getMem_sex());
+        }
+
         P_NoticeListVo apiData = new P_NoticeListVo(noticeListVo, request, memberVo);
 
         String result = customerCenterService.callNoticeList(apiData);

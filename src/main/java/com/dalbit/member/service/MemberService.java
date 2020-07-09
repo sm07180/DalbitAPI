@@ -16,6 +16,7 @@ import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.ConnectRoomVo;
 import com.dalbit.member.vo.ExchangeSuccessVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenCheckVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.rest.service.RestService;
@@ -356,7 +357,6 @@ public class MemberService {
         pExchangeApplyVo.setAddress2(exchangeSuccessVo.getAddress2());
         pExchangeApplyVo.setAdd_file1(exchangeSuccessVo.getAddFile1());
         pExchangeApplyVo.setAdd_file2(exchangeSuccessVo.getAddFile2());
-        pExchangeApplyVo.setAdd_file3(exchangeSuccessVo.getAddFile3());
         pExchangeApplyVo.setTerms_agree(exchangeSuccessVo.getTermsAgree());
 
         return callExchangeApply(pExchangeApplyVo, request);
@@ -400,5 +400,9 @@ public class MemberService {
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+    }
+
+    public TokenCheckVo selectMemState(String mem_no){
+        return memberDao.selectMemState(mem_no);
     }
 }
