@@ -266,7 +266,7 @@ public class ActionService {
                     log.error("sendDjLevelUp error : {}", e);
                 }
                 try{
-                    socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo);
+                    socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo, new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
@@ -385,7 +385,7 @@ public class ActionService {
                 }
 
                 try{
-                    socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo);
+                    socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo, new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
