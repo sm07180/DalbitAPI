@@ -2,6 +2,7 @@ package com.dalbit.common.vo;
 
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -20,6 +21,15 @@ public class ProcedureVo {
         //setData(new GsonBuilder().disableHtmlEscaping().create().toJson(paramVo).replace("\\\\", "\\").replace("\n", "\r"));
         String data = DalbitUtil.escapeCharDecode(new Gson().toJson(paramVo));
         setData(DalbitUtil.uniDecode(data));
+    }
+
+    public ProcedureVo(Object paramVo, boolean isHtmlEscape){
+        if(isHtmlEscape){
+            setData(new GsonBuilder().disableHtmlEscaping().create().toJson(paramVo).replace("\\\"", "'"));
+        }else{
+            setData(new Gson().toJson(paramVo));
+        }
+
     }
 
     public ProcedureVo(String nickNm){

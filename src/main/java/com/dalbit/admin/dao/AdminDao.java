@@ -66,14 +66,46 @@ public interface AdminDao {
     ArrayList<ProfileVo> selectLiveListener(ProfileVo profileVo);
 
     // 통계
+    @Transactional(readOnly = true)
     ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_UserTotalOutDetailVo> callUserCurrentTotal(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_PayInfoOutVo> callPayInfo(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_LoginTotalOutDetailVo> callLoginGender(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_LoginAgeOutDetailVo> callLoginAge(ProcedureVo procedureVo);
 
+    // 1:1 문의
+    @Transactional(readOnly = true)
+    ArrayList<P_QuestionListOutputVo> callQuestionList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    P_QuestionDetailOutputVo callServiceCenterQnaDetail(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<FaqVo> selectFaqSubList(FaqVo faqVo);
+
+    @Transactional(readOnly = true)
+    P_QuestionDetailOutputVo selectServiceCenterQnaState(P_QuestionOperateVo pQuestionOperateVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callServiceCenterQnaOperate(ProcedureVo procedureVo);
+
+    int updateServiceCenterQnaUpdate(P_QuestionOperateVo pQuestionOperateVo);
+
+    // 신고 내역
+    @Transactional(readOnly = true)
+    ArrayList<P_DeclarationListOutputVo> callServiceCenterReportList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    P_DeclarationDetailOutputVo callServiceCenterReportDetail(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    LiveChatProfileVo selectUserProfile(LiveChatProfileVo liveChatProfileVo);
 }

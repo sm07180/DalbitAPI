@@ -20,4 +20,9 @@ public class GuestController {
     public String testGuest(HttpServletRequest request){
         return guestService.guestStream(request);
     }
+
+    @PostMapping("")
+    public String guest(HttpServletRequest request){
+        return guestService.guest(request);
+    }
 }

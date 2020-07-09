@@ -21,6 +21,7 @@
             and mem_no = #{mem_no}
             and menu.is_use = 1
             and menu.mobile_yn = 'Y'
+        order by menu.order_no asc
     </select>
 
     <select id="selectBroadcastList" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.BroadcastVo">
@@ -423,5 +424,65 @@
     <select id="callLoginAge" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_LoginAgeOutDetailVo">
         /* Admin.xml - callLoginAge */
         call rd_admin.sp_admin_connect_stat_login_age(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callQuestionList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionListOutputVo">
+        /* Admin.xml - callQuestionList */
+        call rd_admin.sp_admin_service_center_qna_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callServiceCenterQnaDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
+        /* Admin.xml - callServiceCenterQnaDetail */
+        call rd_admin.sp_admin_service_center_qna_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectFaqSubList" parameterType="com.dalbit.admin.vo.FaqVo" resultType="com.dalbit.admin.vo.FaqVo">
+        /* Admin.xml - selectFaqSubList */
+        select *
+          from rd_data.tb_service_center_faq
+          where slct_type = #{slct_type}
+    </select>
+
+    <select id="selectServiceCenterQnaState" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
+        /* Admin.xml - selectServiceCenterQnaState */
+        select state
+          from rd_data.tb_service_center_qna
+          where idx = #{qnaIdx}
+    </select>
+
+    <select id="callServiceCenterQnaOperate" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callServiceCenterQnaOperate */
+        call rd_admin.sp_admin_service_center_qna_operate(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <update id="updateServiceCenterQnaUpdate" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo">
+        /* Admin.xml - updateServiceCenterQnaUpdate */
+        update rd_data.tb_service_center_qna
+        set answer = #{answer}
+            ,op_date=now()
+            ,op_name=#{opName}
+        where idx = #{qnaIdx}
+    </update>
+
+    <select id="callServiceCenterReportList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_DeclarationListOutputVo">
+        /* Admin.xml - callServiceCenterReportList */
+        call rd_admin.sp_admin_service_center_report_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callServiceCenterReportDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_DeclarationDetailOutputVo">
+        /* Admin.xml - callServiceCenterReportDetail */
+        call rd_admin.sp_admin_service_center_report_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectUserProfile" parameterType="com.dalbit.admin.vo.LiveChatProfileVo" resultType="com.dalbit.admin.vo.LiveChatProfileVo">
+        /* Admin.xml - selectUserProfile */
+        select bas.mem_no
+              , bas.mem_userid
+              , bas.mem_nick
+              , pro.image_profile
+          from rd_data.tb_member_basic bas
+            inner join rd_data.tb_member_profile pro
+          where bas.mem_no = pro.mem_no
+          and bas.mem_no = #{mem_no}
     </select>
 </mapper>

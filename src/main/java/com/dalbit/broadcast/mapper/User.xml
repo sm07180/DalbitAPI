@@ -40,10 +40,11 @@
 
     <select id="selectGuestStreamInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
         SELECT
-          a.guest_streamid
-          , a.guest_publish_tokenid
-          , a.guest_play_tokenid
-          , b.title
+            a.guest_streamid
+            , a.guest_publish_tokenid
+            , a.guest_play_tokenid
+            , b.title
+            , a.mem_no
         FROM tb_broadcast_room_member a INNER JOIN tb_broadcast_room b ON a.room_no = b.room_no
         WHERE a.room_no = #{room_no}
           AND a.mem_no = #{mem_no}

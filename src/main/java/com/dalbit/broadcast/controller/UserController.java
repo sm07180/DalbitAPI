@@ -61,7 +61,7 @@ public class UserController {
     /**
      * 게스트 지정하기
      */
-    @PostMapping("/guest")
+    /*@PostMapping("/guest")
     public String roomGuestAdd(@Valid GuestAddVo guestAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -93,13 +93,13 @@ public class UserController {
         String result = userService.callBroadCastRoomGuestAdd(apiData, request);
 
         return result;
-    }
+    }*/
 
 
     /**
      * 게스트 취소하기
      */
-    @DeleteMapping("/guest")
+    /*@DeleteMapping("/guest")
     public String roomGuestDelete(@Valid GuestDelVo guestDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -122,7 +122,7 @@ public class UserController {
         String result = userService.callBroadCastRoomGuestDelete(apiData, request);
 
         return  result;
-    }
+    }*/
 
 
     /**
@@ -231,66 +231,66 @@ public class UserController {
     /**
      * 게스트초대
      */
-    @PostMapping("/{brodNo}/gst/{memNo}/invite")
+    /*@PostMapping("/{brodNo}/gst/{memNo}/invite")
     public String inviteGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
         HashMap data = new HashMap();
 
         return new Gson().toJson(new JsonOutputVo(Status.게스트초대, data));
-    }
+    }*/
 
     /**
      * 게스트초대취소
      */
-    @DeleteMapping("/{brodNo}/gst/{memNo}/invite")
+    /*@DeleteMapping("/{brodNo}/gst/{memNo}/invite")
     public String deleteInviteGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
         HashMap data = new HashMap();
 
         return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
-    }
+    }*/
 
     /**
      * 게스트초대수락
      */
-    @PostMapping("/{brodNo}/gst")
+    /*@PostMapping("/{brodNo}/gst")
     public String joinGuest(@PathVariable String brodNo){
 
         HashMap data = new HashMap();
 
         return new Gson().toJson(new JsonOutputVo(Status.게스트초대수락, data));
-    }
+    }*/
 
     /**
      * 게스트신청
      */
-    @PostMapping("/{brodNo}/gst/{memNo}/apply")
+    /*@PostMapping("/{brodNo}/gst/{memNo}/apply")
     public String applyGuest(@PathVariable String brodNo, @PathVariable String memNo){
 
         HashMap data = new HashMap();
 
         return new Gson().toJson(new JsonOutputVo(Status.게스트신청, data));
-    }
+    }*/
 
     /**
      * 게스트해제
      */
-    @DeleteMapping("/{brodNo}/gst")
+    /*@DeleteMapping("/{brodNo}/gst")
     public String deleteGuest(@PathVariable String brodNo){
 
         HashMap data = new HashMap();
 
         return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
-    }
+    }*/
 
     /**
      * 게스트나가기
      */
-    @DeleteMapping("/{brodNo}/gst/out")
+    /*@DeleteMapping("/{brodNo}/gst/out")
     public String outGuest(@PathVariable String brodNo){
 
         HashMap data = new HashMap();
 
         return new Gson().toJson(new JsonOutputVo(Status.삭제, data));
-    }
+    }*/
 }

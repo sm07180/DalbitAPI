@@ -9,10 +9,7 @@ import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.PushService;
-import com.dalbit.common.vo.ImageVo;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.common.vo.MessageInsertVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -918,4 +915,178 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
     }
 
+    /**
+     * 1:1 문의 목록 조회
+     */
+    public String callQuestionList(P_QuestionListInputVo pQuestionListInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pQuestionListInputVo);
+        List<P_QuestionListOutputVo> questionList = adminDao.callQuestionList(procedureVo);
+
+        var map = new HashMap<>();
+        map.put("pagingInfo", new AdminProcedureBaseVo(procedureVo.getRet()));
+        map.put("questionList", questionList);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의내역조회_성공, map));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의내역조회_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 1:1 문의 목록 상세 조회
+     */
+    public String callServiceCenterQnaDetail(P_QuestionDetailInputVo pQuestionDetailInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pQuestionDetailInputVo);
+        adminDao.callServiceCenterQnaDetail(procedureVo);
+        P_QuestionDetailOutputVo questionDetail = new Gson().fromJson(procedureVo.getExt(), P_QuestionDetailOutputVo.class);
+
+        String result;
+
+        if(Status.고객센터_문의상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의상세조회_성공, questionDetail));
+        } else if(Status.고객센터_문의상세조회_문의번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의상세조회_문의번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의상세조회_에러));
+        }
+
+        return result;
+    }
+
+    /**
+     * 1:1 문의 faq sub list
+     */
+    public List<FaqVo> selectFaqSubList(FaqVo faqVo) {
+        return adminDao.selectFaqSubList(faqVo);
+    }
+
+    /**
+     * 1:1 문의 처리
+     */
+    public String callServiceCenterQnaOperate(P_QuestionOperateVo pQuestionOperateVo) {
+        pQuestionOperateVo.setOpName(MemberVo.getMyMemNo());
+        P_QuestionDetailOutputVo outVo = adminDao.selectServiceCenterQnaState(pQuestionOperateVo);
+        String result = "";
+        pQuestionOperateVo.setOpName(MemberVo.getMyMemNo());
+        if(outVo.getState() == 0){
+            ProcedureVo procedureVo = new ProcedureVo(pQuestionOperateVo,true);
+            adminDao.callServiceCenterQnaOperate(procedureVo);
+
+            if(Status.일대일문의처리_성공.getMessageCode().equals(procedureVo.getRet())) {
+
+                adminDao.callServiceCenterQnaDetail(procedureVo);
+                P_QuestionDetailOutputVo questionDetail = new Gson().fromJson(procedureVo.getExt(), P_QuestionDetailOutputVo.class);
+
+                try{    // PUSH 발송
+                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+
+                    pPushInsertVo.setMem_nos(questionDetail.getMem_no());
+                    pPushInsertVo.setSlct_push("37");
+                    pPushInsertVo.setSend_title("1:1문의 답변이 등록되었어요!");
+                    pPushInsertVo.setSend_cont("등록한 1:1문의에 답변이 등록되었습니다.");
+                    pPushInsertVo.setImage_type("101");
+                    pushService.sendPushReqOK(pPushInsertVo);
+                }catch (Exception e){
+                    log.error("[PUSH 발송 실패 - 일대일문의처리]");
+                }
+
+                try{
+                    //알림(종) 표시
+                    NotiInsertVo notiInsertVo = new NotiInsertVo();
+
+                    notiInsertVo.setMem_no(questionDetail.getMem_no());
+                    notiInsertVo.setSlctType(7);
+                    notiInsertVo.setNotiContents("등록한 1:1문의에 답변이 등록되었습니다.");
+                    notiInsertVo.setNotiMemo("등록한 1:1문의에 답변이 등록되었습니다.");
+                    adminDao.insertNotiHistory(notiInsertVo);
+
+                }catch (Exception e){
+                    log.error("[NOTI 발송 실패 - 일대일문의처리]");
+                }
+
+                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_성공));
+            } else if(Status.일대일문의처리_문의번호없음.getMessageCode().equals((procedureVo.getRet()))) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_문의번호없음));
+            } else if(Status.일대일문의처리_이미처리됐음.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_이미처리됐음));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_에러));
+            }
+        }else{
+            if(outVo.getState() == 1){
+                int updateResult = adminDao.updateServiceCenterQnaUpdate(pQuestionOperateVo);
+                if(updateResult == 1) {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의수정_성공));
+                } else {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_에러));
+                }
+            }else if(outVo.getState() == 2){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_이미_진행중));
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * 신고내역 목록 조회
+     */
+    public String callServiceCenterReportList(P_DeclarationListInputVo pDeclarationListInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pDeclarationListInputVo);
+
+        ArrayList<P_DeclarationListOutputVo> declarationList = adminDao.callServiceCenterReportList(procedureVo);
+
+        var map = new HashMap<>();
+        map.put("pagingInfo", new AdminProcedureBaseVo(procedureVo.getRet()));
+        map.put("declarationList", declarationList);
+
+        String result;
+
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_성공, map));
+        } else if(Status.신고목록조회_데이터없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_데이터없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_에러));
+        }
+
+        return result;
+    }
+
+    /**
+     * 신고내역 상세 조회
+     */
+    public String callServiceCenterReportDetail(P_DeclarationDetailInputVo pDeclarationDetailInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pDeclarationDetailInputVo);
+
+        adminDao.callServiceCenterReportDetail(procedureVo);
+
+        P_DeclarationDetailOutputVo declarationDetail = new Gson().fromJson(procedureVo.getExt(), P_DeclarationDetailOutputVo.class);
+
+        String result;
+
+        if(Status.신고상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고상세조회_성공, declarationDetail));
+        } else if(Status.신고상세조회_공지번호없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고상세조회_공지번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.신고상세조회_에러));
+        }
+
+        return result;
+    }
+
+    /**
+     * 신고내역 > 신고대상자 정보 조회
+     */
+    public String selectUserProfile(LiveChatProfileVo liveChatProfileVo) {
+        LiveChatProfileVo profile = adminDao.selectUserProfile(liveChatProfileVo);
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
+
+        return result;
+    }
 }

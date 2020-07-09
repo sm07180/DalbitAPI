@@ -293,6 +293,19 @@ public class RestService {
      * @throws Exception
      */
     public Map<String, Object> antToken(String streamId, String type, HttpServletRequest request) throws GlobalException{
+        return antToken(streamId, type, request, null);
+    }
+
+    /**
+     * Ant Media 방토큰 가져오기
+     *
+     * @param streamId : 스트리밍아이디
+     * @param type : 타입 (publish/play)
+     * @param roomNo : 타입 컨퍼런스 아이디
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> antToken(String streamId, String type, HttpServletRequest request, String roomNo) throws GlobalException{
         if (streamId == null) {
             Map<String, Object> map = new HashMap<>();
             map.put("tokenId", "");
@@ -300,6 +313,32 @@ public class RestService {
         }
         if(!"play".equals(type)){
             type = "publish";
+        }
+        roomNo = roomNo == null ? "" : roomNo.trim();
+
+        int antE = antExpire;
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.HOUR, antE);
+        //cal.add(Calendar.HOUR, 80);
+        cal.add(Calendar.MINUTE, 30);
+        long expire = cal.getTime().getTime() / 1000;
+
+        String params = "expireDate=" + expire + "&type=" + type;// + ("".equals(roomNo) ? "" : "&roomId=" + roomNo);
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
+    }
+
+    /**
+     * Ant Media 컨퍼런스 룸생성
+     *
+     * @param roomId : 스트리밍아이디
+     * @return
+     * @throws Exception
+     */
+    public Map<String, Object> antConferenceRoom(String roomId, HttpServletRequest request) throws GlobalException{
+        if (roomId == null) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("tokenId", "");
+            return map;
         }
 
         int antE = antExpire;
@@ -309,8 +348,9 @@ public class RestService {
         cal.add(Calendar.MINUTE, 30);
         long expire = cal.getTime().getTime() / 1000;
 
-        String params = "expireDate=" + expire + "&type=" + type;
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
+        //String params = "startDate=0&endDate=" + expire + "&roomId=" + roomId;
+        String params = "{\"roomId\":\"" + roomId + "\", \"startDate\":0, \"endDate\":"+expire+"}";
+        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/conference-rooms", params, 1, request);
     }
 
     /**

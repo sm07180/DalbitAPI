@@ -780,7 +780,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo){
+    public void sendDjLevelUp(String roomNo, HttpServletRequest request, SocketVo vo, String memNo, String authToken){
         HashMap itemMap = new HashMap();
         itemMap.put("itemNo", DalbitUtil.getProperty("item.code.levelUp"));
         ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.levelUp"));
@@ -792,8 +792,8 @@ public class SocketService {
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
 
-        String memNo = new MemberVo().getMyMemNo(request);
-        String authToken = DalbitUtil.getAuthToken(request);
+        //String memNo = new MemberVo().getMyMemNo(request);
+        //String authToken = DalbitUtil.getAuthToken(request);
 
         log.error("Socket Start : djLlevelUp {}, {}, {}, {}", roomNo, memNo, itemMap, vo);
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken) && itemMap != null){
@@ -876,6 +876,37 @@ public class SocketService {
             vo.setCommand("chatEndRed");
             vo.setRecvMemNo("!" + memNo);
             vo.setMessage("다른 기기에서 로그인 되었습니다.");
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+    }
+
+    @Async("threadTaskExecutor")
+    public void sendGuest(String memNo, String roomNo, String mode, HttpServletRequest request, String authToken){
+        sendGuest(memNo, roomNo, null, mode, request, authToken);
+    }
+
+    @Async("threadTaskExecutor")
+    public void sendGuest(String memNo, String roomNo, String djMemNo, String mode, HttpServletRequest request, String authToken){
+        log.info("Socket Start : reqGuest {}, {}, {}, {}, {}", roomNo, memNo, djMemNo, mode, authToken);
+
+        SocketVo vo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
+        if(vo != null && vo.getMemNo() != null){
+            vo.setCommand("reqGuest");
+            HashMap guestMap = new HashMap();
+            guestMap.put("memNo", memNo);
+            guestMap.put("mode", mode);
+            vo.setMessage(guestMap);
+            if("1".equals(mode)) { // 초대
+                vo.setRecvMemNo(memNo);
+            }else if("2".equals(mode)){ // 초대취소
+                vo.setRecvMemNo(memNo);
+            }else if("3".equals(mode)){ // 승락
+            }else if("4".equals(mode)){ // 거절
+                vo.setRecvMemNo(djMemNo);
+            }else if("5".equals(mode)){ // 신청
+                vo.setRecvMemNo(djMemNo);
+            }else if("6".equals(mode)){ // 퇴장
+            }
             sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
     }

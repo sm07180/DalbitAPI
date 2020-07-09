@@ -673,6 +673,11 @@ public enum Status {
     고객센터_문의내역_없음("0", "customer.center.qna.no.success", "고객센터 문의내역 없을 시"),
     고객센터_문의내역조회_실패("C006", "customer.center.qna.select.fail", "고객센터 문의내역 조회 실패 시"),
 
+    //1:1 문의 상세 조회
+    고객센터_문의상세조회_성공("0", "select.success", "1:1문의 상세조회 성공 시"),
+    고객센터_문의상세조회_문의번호없음("-1", "no.data", "1:1문의 상세조회에서 문의 번호가 없을 시"),
+    고객센터_문의상세조회_에러("C006", "server.error", "1:1문의 상세조회에서 에러 발생 시"),
+
     //고객센터 1:1문의삭제
     고객센터_문의삭제_성공("0", "customer.center.qna.delete.success", "고객센터 1:1문의하기 삭제 성공 시"),
     고객센터_문의삭제_요청회원번호_회원아님("-1", "customer.center.qna.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
@@ -901,7 +906,31 @@ public enum Status {
     방송방메시지발송_성공("0","system.message.insert.success", "방송방메시지발송 성공 시"),
     방송방메시지발송_에러("C006", "system.message.fail.server.error", "방송방메시지발송 실패 시"),
     방송방메시지발송_타겟미지정("C006", "system.message.fail.no.data", "방송방메시지발송 시 타겟 방정보가 없는 경우"),
+
+    //1:1문의 처리하기
+    일대일문의처리_성공("0", "customer.center.qna.operate.success", "1:1문의 처리 성공 시"),
+    일대일문의처리_문의번호없음("-1", "customer.center.qna.operate.no.number", "1:1문의 처리에서 문의 번호가 없을 시"),
+    일대일문의처리_이미처리됐음("-2", "customer.center.qna.operate.aleady.operate", "1:1문의 처리에서 이미 처리된 문의일 시"),
+    일대일문의처리_에러("C006", "customer.center.qna.operate.server.error", "1:1문의 처리에서 에러 발생 시"),
+    일대일문의처리_이미_진행중("3", "customer.center.qna.operate.error", "1:1문의 처리에서 에러 발생 (처리 진행중)"),
+
+    //1:1문의 수정하기
+    일대일문의수정_성공("0", "customer.center.qna.update.success", "1:1문의 수정 성공 시"),
+    일대일문의수정_문의번호없음("-1", "customer.center.qna.update.no.number", "1:1문의 수정에서 문의 번호가 없을 시"),
+    일대일문의수정_이미처리됐음("-2", "customer.center.qna.update.aleady.operate", "1:1문의 수정에서 이미 처리된 문의일 시"),
+    일대일문의수정_에러("C006", "customer.center.qna.update.server.error", "1:1문의 수정에서 에러 발생 시"),
+
+    //신고내역 조회
+    신고목록조회_데이터없음("0", "declaration.list.no.data", "신고목록 조회 데이터가 없을 시"),
+    신고목록조회_성공("C001", "declaration.list.select.success", "신고목록 조회 시"),
+    신고목록조회_에러("C006", "declaration.list.server.error", "신고목록 조회에서 에러 발생 시"),
+
+    //신고내역 상세조회
+    신고상세조회_공지번호없음("-1", "declaration.detail.no.data", "신고목록 조회 데이터가 없을 시"),
+    신고상세조회_성공("0", "declaration.detail.select.success", "신고목록 상세조회 시"),
+    신고상세조회_에러("C006", "declaration.detail.server.error", "신고상세 조회에서 에러 발생 시"),
     ;
+
 
 
    final private String RESULT_SUCCESS = "success";

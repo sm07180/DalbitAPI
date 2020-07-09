@@ -3,17 +3,21 @@ package com.dalbit.admin.controller;
 import com.dalbit.admin.service.AdminCommonService;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
-import com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo;
-import com.dalbit.admin.vo.procedure.P_StatVo;
+import com.dalbit.admin.vo.procedure.*;
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin")
@@ -24,6 +28,9 @@ public class AdminController {
 
     @Autowired
     AdminCommonService adminCommonService;
+
+    @Autowired
+    GsonUtil gsonUtil;
 
     @PostMapping("/auth/check")
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
@@ -203,6 +210,76 @@ public class AdminController {
     @PostMapping("/stat/payInfo")
     public String statPay(HttpServletRequest request, P_StatVo pStatVo) {
         String result = adminService.callPayInfo(pStatVo);
+        return result;
+    }
+
+    /**
+     * 1:1 문의 목록 조회
+     */
+    @PostMapping("/question/list")
+    public String questionList(HttpServletRequest request, P_QuestionListInputVo pQuestionListInputVo) {
+        String result = adminService.callQuestionList(pQuestionListInputVo);
+        return result;
+    }
+
+    /**
+     * 1:1 문의 상세 조회
+     */
+    @PostMapping("/question/detail")
+    public String questionDetail(HttpServletRequest request, P_QuestionDetailInputVo pQuestionDetailInputVo) {
+        String result = adminService.callServiceCenterQnaDetail(pQuestionDetailInputVo);
+        return result;
+    }
+
+    /**
+     * 1:1 문의 faq sub list
+     */
+    @PostMapping("/question/fabSubList")
+    public String questionFaqSub(HttpServletRequest request, FaqVo faqVo) {
+
+        faqVo.setSlct_type(99);
+
+        List<FaqVo> faqSubList = adminService.selectFaqSubList(faqVo);
+
+        HashMap map = new HashMap();
+        map.put("faqSubList", faqSubList);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+    }
+
+    /**
+     * 1:1 문의 처리
+     */
+    @PostMapping("/question/operate")
+    public String operate(P_QuestionOperateVo pQuestionOperateVo) {
+        String result = adminService.callServiceCenterQnaOperate(pQuestionOperateVo);
+        return result;
+    }
+
+    /**
+     * 신고내역 목록 조회
+     */
+    @PostMapping("/declaration/list")
+    public String declarationList(HttpServletRequest request, P_DeclarationListInputVo pDeclarationListInputVo) {
+        String result = adminService.callServiceCenterReportList(pDeclarationListInputVo);
+        return result;
+    }
+
+    /**
+     * 신고내역 상세 조회
+     */
+    @PostMapping("/declaration/detail")
+    public String declarationDetail(HttpServletRequest request, P_DeclarationDetailInputVo pDeclarationDetailInputVo) {
+        String result = adminService.callServiceCenterReportDetail(pDeclarationDetailInputVo);
+        return result;
+    }
+
+    /**
+     * 신고내역 > 신고대상자 정보 조회
+     */
+    @PostMapping("/declaration/userProfile")
+    public String declarationUserProfile(HttpServletRequest request, LiveChatProfileVo liveChatProfileVo) {
+        String result = adminService.selectUserProfile(liveChatProfileVo);
         return result;
     }
 }

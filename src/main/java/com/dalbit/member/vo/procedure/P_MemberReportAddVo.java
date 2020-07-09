@@ -22,7 +22,7 @@ public class P_MemberReportAddVo {
     private Integer reason;                                   //신고사유
     private String etc;                                       //기타내용
 
-    private String roomNo;
+    private String room_no;
     private String platform;
     private String browser;
     private String ip;
@@ -33,7 +33,7 @@ public class P_MemberReportAddVo {
         setReported_mem_no(memberReportAddVo.getMemNo());
         setReason(memberReportAddVo.getReason());
         setEtc(memberReportAddVo.getCont());
-        setRoomNo(memberReportAddVo.getRoomNo());
+        setRoom_no(memberReportAddVo.getRoomNo());
         setIp(deviceVo.getIp());
 
         String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
