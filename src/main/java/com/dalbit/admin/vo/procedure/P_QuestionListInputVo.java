@@ -17,5 +17,7 @@ public class P_QuestionListInputVo extends AdminProcedureBaseVo {
     private int slctState;
 
     private String mem_no;
-    
+
+    private int searchType;
+    private String searchText;
 }

@@ -927,7 +927,7 @@ public class AdminService {
         map.put("questionList", questionList);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+        if(-1 < Integer.parseInt(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의내역조회_성공, map));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의내역조회_실패));
@@ -1088,5 +1088,21 @@ public class AdminService {
         String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
 
         return result;
+    }
+
+    /**
+     * 회원 정보수정 내역 보기
+     */
+    public String callMemberEditHistory(P_MemberEditHistInputVo pMemberEditHistInputVo){
+        ProcedureVo procedureVo = new ProcedureVo(pMemberEditHistInputVo);
+        ArrayList<P_MemberEditHistOutputVo> editList = adminDao.callMemberEditHistory(procedureVo);
+        String result;
+        if (Integer.parseInt(procedureVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.조회, editList));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
+        return result;
+
     }
 }

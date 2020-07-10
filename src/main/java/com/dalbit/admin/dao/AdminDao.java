@@ -108,4 +108,7 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     LiveChatProfileVo selectUserProfile(LiveChatProfileVo liveChatProfileVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<P_MemberEditHistOutputVo> callMemberEditHistory(ProcedureVo procedureVo);
 }

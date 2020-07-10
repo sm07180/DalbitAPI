@@ -282,4 +282,15 @@ public class AdminController {
         String result = adminService.selectUserProfile(liveChatProfileVo);
         return result;
     }
+
+    /**
+     * 회원 정보 수정내역
+     */
+    @PostMapping("/declaration/userEditHistory")
+    public String declarationUserEditHistory(HttpServletRequest request, P_MemberEditHistInputVo pMemberEditHistInputVo) {
+        String result = adminService.callMemberEditHistory(pMemberEditHistInputVo);
+        return result;
+    }
+
+
 }

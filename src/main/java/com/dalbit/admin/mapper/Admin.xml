@@ -485,4 +485,9 @@
           where bas.mem_no = pro.mem_no
           and bas.mem_no = #{mem_no}
     </select>
+
+    <select id="callMemberEditHistory" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_MemberEditHistOutputVo">
+        /* Admin.xml - callMemberEditHistory */
+        call rd_admin.sp_admin_member_all_info_edit_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>
