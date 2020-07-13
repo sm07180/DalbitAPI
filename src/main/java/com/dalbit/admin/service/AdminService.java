@@ -244,7 +244,7 @@ public class AdminService {
 
         try{
 
-            proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            proImageInitVo.setOp_name(selectAdminName(MemberVo.getMyMemNo(request)));
             proImageInitVo.setType(0);
             proImageInitVo.setEdit_contents("프로필이미지 변경 : " + proImageInitVo.getImage_profile() + " >> " + PROFILE_DEFAULT_IMAGE);
 
@@ -324,7 +324,7 @@ public class AdminService {
     public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) throws GlobalException {
 
         try{
-            broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            broImageInitVo.setOp_name(selectAdminName(MemberVo.getMyMemNo(request)));
             broImageInitVo.setEdit_contents("방송방 이미지 변경 : " + broImageInitVo.getImage_background() + " >> " + broImageInitVo.getReset_image_background());
 
             // rd_data.tb_broadcast_room_edit_history에 insert
@@ -396,7 +396,7 @@ public class AdminService {
     public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
 
         try {
-            proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            proImageInitVo.setOp_name(selectAdminName(MemberVo.getMyMemNo(request)));
             proImageInitVo.setType(0);
             proImageInitVo.setEdit_contents("닉네임 변경 : " + nickTextInitVo.getMem_nick() + " >> " + nickTextInitVo.getMem_userid());
             proImageInitVo.setMem_no(nickTextInitVo.getMem_no());
@@ -479,7 +479,7 @@ public class AdminService {
     public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
 
         try {
-            broImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+            broImageInitVo.setOp_name(selectAdminName(MemberVo.getMyMemNo(request)));
             broImageInitVo.setEdit_contents("제목변경 : " + broTitleTextInitVo.getTitle() + " >> " + broTitleTextInitVo.getMem_nick() + "님의 방송입니다.");
             broImageInitVo.setRoom_no(broTitleTextInitVo.getRoom_no());
 
@@ -550,7 +550,7 @@ public class AdminService {
     public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo) throws GlobalException {
 
         try {
-            declarationVo.setOpName(MemberVo.getMyMemNo(request));
+            declarationVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
 
             MemberInfoVo myInfo = getMemberInfo(MemberVo.getMyMemNo(request));
             log.info(myInfo.getMem_no());
@@ -680,7 +680,7 @@ public class AdminService {
      */
     public String forcedOut(HttpServletRequest request, ForcedOutVo forcedOutVo) {
 
-        forcedOutVo.setOpName(MemberVo.getMyMemNo(request));
+        forcedOutVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
         String sendNoti = "0";
         if(!DalbitUtil.isEmpty(forcedOutVo.getNotificationYn()) && forcedOutVo.getNotificationYn().equals("Y")){
             sendNoti = "1";
@@ -763,7 +763,7 @@ public class AdminService {
      * 생방송관리 > 시스템메시지 등록
      */
     public String insertContentsMessageAdd(HttpServletRequest request, MessageInsertVo messageInsertVo) throws GlobalException {
-        messageInsertVo.setOp_name(MemberVo.getMyMemNo(request));
+        messageInsertVo.setOp_name(selectAdminName(MemberVo.getMyMemNo(request)));
         String result="";
 
         try{
@@ -968,10 +968,9 @@ public class AdminService {
      * 1:1 문의 처리
      */
     public String callServiceCenterQnaOperate(P_QuestionOperateVo pQuestionOperateVo) {
-        pQuestionOperateVo.setOpName(MemberVo.getMyMemNo());
+        pQuestionOperateVo.setOpName(selectAdminName(MemberVo.getMyMemNo()));
         P_QuestionDetailOutputVo outVo = adminDao.selectServiceCenterQnaState(pQuestionOperateVo);
         String result = "";
-        pQuestionOperateVo.setOpName(MemberVo.getMyMemNo());
         if(outVo.getState() == 0){
             ProcedureVo procedureVo = new ProcedureVo(pQuestionOperateVo,true);
             adminDao.callServiceCenterQnaOperate(procedureVo);
@@ -1104,5 +1103,12 @@ public class AdminService {
         }
         return result;
 
+    }
+
+    /**
+     * 관리자 이름 조회
+     */
+    public String selectAdminName(String mem_no){
+        return adminDao.selectAdminName(mem_no);
     }
 }

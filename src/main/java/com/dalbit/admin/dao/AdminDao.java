@@ -111,4 +111,7 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     ArrayList<P_MemberEditHistOutputVo> callMemberEditHistory(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    String selectAdminName(String mem_no);
 }

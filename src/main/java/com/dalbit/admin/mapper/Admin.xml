@@ -490,4 +490,11 @@
         /* Admin.xml - callMemberEditHistory */
         call rd_admin.sp_admin_member_all_info_edit_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="selectAdminName" parameterType="java.lang.String" resultType="java.lang.String">
+        /* Admin.xml - selectAdminName */
+        select emp_name
+        from rd_admin.tb_admin_test_account
+        where mem_no = #{mem_no}
+    </select>
 </mapper>

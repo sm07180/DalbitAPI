@@ -86,4 +86,10 @@ public class P_PayInfoOutVo {
     private int gc_cnt; // 도서문화상품권
     private int gc_amt;
 
+    /* 결제 수단 추가 */
+    private int tmoney_cnt;
+    private int tmoney_amt;
+    private int cashbee_cnt;
+    private int cashbee_amt;
+
 }
