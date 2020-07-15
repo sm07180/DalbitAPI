@@ -4,6 +4,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.common.vo.request.SmsVo;
+import com.dalbit.member.vo.TokenCheckVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -61,4 +62,6 @@ public interface CommonDao {
     int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo);
 
     ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);
+
+    AdultCheckVo getMembirth(String mem_no);
 }

@@ -13,7 +13,6 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.RedisUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +40,6 @@ public class CommonController {
 
     @Autowired
     MemberService memberService;
-
-    @Autowired
-    RedisUtil redisUtil;
 
     @Autowired
     MypageService mypageService;
@@ -307,12 +303,6 @@ public class CommonController {
             apiData.setIsHybrid(selfAuthSaveVo.getPlusInfo().split("_")[2]);
             apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
             apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
-
-            if(DalbitUtil.getAge(Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(0, 4)), Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(4, 6)), Integer.parseInt(selfAuthSaveVo.getBirthDay().substring(6, 8))) < 19){
-                apiData.setAdultYn("n");
-            } else {
-                apiData.setAdultYn("y");
-            }
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
                 log.info("##### 본인인증 DB저장 #####");

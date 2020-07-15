@@ -3,6 +3,7 @@ package com.dalbit.member.vo.procedure;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.ExchangeApplyVo;
+import com.dalbit.util.AES;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +36,7 @@ public class P_ExchangeApplyVo {
         setAccount_name(exchangeApplyVo.getAccountName());
         setBank_code(exchangeApplyVo.getBankCode());
         setAccount_no(exchangeApplyVo.getAccountNo());
-        setSocial_no(exchangeApplyVo.getSocialNo());
+        setSocial_no(AES.encrypt(exchangeApplyVo.getSocialNo(), DalbitUtil.getProperty("social.secret.key")));
         setPhone_no(exchangeApplyVo.getPhoneNo());
         setAddress1(exchangeApplyVo.getAddress1());
         setAddress2(exchangeApplyVo.getAddress2());

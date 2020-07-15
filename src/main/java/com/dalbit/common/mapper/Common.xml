@@ -282,6 +282,7 @@
             , parents_agree_term = #{parents_agreeTerm}
             , parents_agree_dt = #{parents_agreeDt}
             , recant_yn = 'n'
+            , expire_yn = 'n'
         WHERE mem_no = #{mem_no}
     </update>
 
@@ -292,4 +293,14 @@
         WHERE mem_no = #{mem_no}
     </update>
 
+    <select id="getMembirth" parameterType="String" resultType="com.dalbit.common.vo.AdultCheckVo">
+        SELECT
+            mem_no as memNo
+            , mem_birth_year
+            , LPAD(mem_birth_month, 2, '0') as mem_birth_month
+            , LPAD(mem_birth_day, 2, '0') as mem_birth_day
+        FROM tb_member_certification
+        where mem_no = #{value}
+
+    </select>
 </mapper>

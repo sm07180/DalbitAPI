@@ -502,12 +502,21 @@ public class CommonService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("adultYn", DalbitUtil.getStringMap(resultMap, "adult_yn"));       //성인여부
-        returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
-        procedureVo.setData(returnMap);
 
         String result;
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
+            //생년월일 조회 후 미성년자 여부 체크
+            AdultCheckVo adultCheckVo = commonDao.getMembirth(pSelfAuthVo.getMem_no());
+            String adultYn;
+            if(DalbitUtil.getAge(Integer.parseInt(adultCheckVo.getMem_birth_year()), Integer.parseInt(adultCheckVo.getMem_birth_month()), Integer.parseInt(adultCheckVo.getMem_birth_day())) < 19){
+                adultYn = "n";
+            } else {
+                adultYn = "y";
+            }
+            returnMap.put("adultYn", adultYn);       //성인여부
+            returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
+            procedureVo.setData(returnMap);
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인, procedureVo.getData()));
         } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_안됨));
