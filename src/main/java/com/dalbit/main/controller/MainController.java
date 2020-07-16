@@ -27,7 +27,7 @@ public class MainController {
     MainService mainService;
 
     /**
-     * 메인 TODO- 반환 서비스 추후 정의필요
+     * 메인
      */
     @GetMapping("/main")
     public String main(HttpServletRequest request){
