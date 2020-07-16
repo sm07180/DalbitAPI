@@ -69,7 +69,14 @@ public class CommonErrorController {
             if(globalException.isCustomMessage()){
                 JsonOutputVo jsonOutputVo = new JsonOutputVo();
                 jsonOutputVo.setStatus(Status.벨리데이션체크);
-                String msg = ((String) globalException.getValidationMessageDetail().get(0)).split(",")[0] + "," + ((String) globalException.getValidationMessageDetail().get(0)).split(",")[2];
+                String msg = "";
+
+                try{
+                    msg = ((String) globalException.getValidationMessageDetail().get(0)).split(",")[0] + "," + ((String) globalException.getValidationMessageDetail().get(0)).split(",")[2];
+                }catch(ArrayIndexOutOfBoundsException ae){
+                    msg = (String)globalException.getValidationMessageDetail().get(0);
+                }
+
                 jsonOutputVo.setMessage(msg);
                 jsonOutputVo.setMethodName(globalException.getMethodName());
                 jsonOutputVo.setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());

@@ -8,22 +8,28 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class RoomCreateVo {
 
-    @NotBlank @Size(min = 2, max = 2)
+    @NotBlank(message = "{\"ko_KR\" : \"주제를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"주제를\"}")
+    @Size(message = "{\"ko_KR\" : \"주제를\"}", min = 2, max = 2)
     private String roomType;
 
-    @NotBlank @Size(min = 2, max = 20)
+    @NotBlank(message = "{\"ko_KR\" : \"제목을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"제목을\"}")
+    @Size(message = "{\"ko_KR\" : \"제목을\"}", min = 2, max = 20)
     private String title;
 
     private String bgImg;
 
     private String bgImgRacy;
 
-    @Size(max = 100)
+    @Size(message = "{\"ko_KR\" : \"인사말을\"}", max = 100)
     private String welcomMsg;
 
     private String notice;
 
-    @NotNull @Min(0) @Max(2)
+    @NotNull(message = "{\"ko_KR\" : \"입장제한을\"}")
+    @Min(message = "{\"ko_KR\" : \"입장제한을\"}", value = 0)
+    @Max(message = "{\"ko_KR\" : \"입장제한을\"}", value = 2)
     private Integer entryType;
 
 

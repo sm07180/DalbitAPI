@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class QnaListVo {
 
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회 건수를\"}", value = 1)
     private Integer records;
 }

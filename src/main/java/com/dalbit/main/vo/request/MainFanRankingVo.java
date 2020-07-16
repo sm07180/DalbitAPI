@@ -8,12 +8,13 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class MainFanRankingVo {
 
-    @NotNull
-    @Min(0) @Max(3)
+    @NotNull(message = "{\"ko_KR\" : \"랭킹 구분을\"}")
+    @Min(message = "{\"ko_KR\" : \"랭킹 구분을\"}", value = 0)
+    @Max(message = "{\"ko_KR\" : \"랭킹 구분을\"}", value = 3)
     private Integer rankType;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회 건수를\"}", value = 1)
     private Integer records;
 
 

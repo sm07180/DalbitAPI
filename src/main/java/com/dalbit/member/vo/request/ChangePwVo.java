@@ -5,17 +5,18 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class ChangePwVo {
 
-    @NotBlank
-    @Size(max = 25)
+    @NotBlank(message = "{\"ko_KR\" : \"아이디를 \"}")
+    @NotNull(message = "{\"ko_KR\" : \"아이디를\"}")
+    @Size(message = "{\"ko_KR\" : \"아이디를\"}", max = 25)
     private String memId;
 
     @Password
-    @Size(max = 20)
     private String memPwd;
 }

@@ -9,7 +9,7 @@ import javax.validation.constraints.*;
 @Setter
 public class QnaDelVo {
 
-    @NotNull
+    @NotNull(message = "{\"ko_KR\" : \"문의 번호를\"}")
     private Integer qnaIdx;
 
 }

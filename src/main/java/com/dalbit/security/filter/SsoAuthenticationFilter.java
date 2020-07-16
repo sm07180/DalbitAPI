@@ -42,7 +42,7 @@ public class SsoAuthenticationFilter implements Filter {
     @Autowired MemberService memberService;
     @Autowired Base64Util base64Util;
     @Autowired JwtUtil jwtUtil;
-    @Autowired RedisUtil redisUtil;
+    //@Autowired RedisUtil redisUtil;
     @Autowired LoginUtil loginUtil;
     @Autowired GsonUtil gsonUtil;
 

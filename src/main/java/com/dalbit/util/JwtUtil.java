@@ -52,6 +52,15 @@ public class JwtUtil {
         return generateToken(memNo + JWT_SEPARATOR + isLogin);
     }
 
+    public String generateToken(String memNo, boolean isLogin, long expireTime) {
+        return Jwts.builder()
+                .setId(memNo + JWT_SEPARATOR + isLogin)
+                .setIssuedAt(new Date(System.currentTimeMillis())) // 토큰 발행일자
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime)) // 유효시간 설정 (30일 기준)
+                .signWith(SignatureAlgorithm.HS256, JWT_SECRET_KEY) // 암호화 알고리즘, secret값 세팅
+                .compact();
+    }
+
     /**
      * Jwt Token을 복호화 하여 이름을 얻는다.
      */

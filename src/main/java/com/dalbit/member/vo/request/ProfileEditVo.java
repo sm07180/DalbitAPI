@@ -4,26 +4,32 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class ProfileEditVo {
 
-    @Size(max = 1)
+    @Size(message = "{\"ko_KR\" : \"성별을\"}", max = 1)
     private String gender;
 
-    @NotBlank @Size(min = 2, max = 20)
+    @NotBlank(message = "{\"ko_KR\" : \"닉네임을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"닉네임을\"}")
+    @Size(message = "{\"ko_KR\" : \"닉네임을\"}", min = 2, max = 20)
     private String nickNm;
 
-    @NotBlank @Size(min = 8, max = 8)
+    @NotBlank(message = "{\"ko_KR\" : \"생년월일을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")
+    @Size(message = "{\"ko_KR\" : \"생년월일을\"}", min = 8, max = 8)
     private String birth;
 
     private String name;
     private String profImgRacy;
     private String profImg;
     private String profImgDel;
-    @Size(max = 100)
+
+    @Size(message = "{\"ko_KR\" : \"프로필 메세지를\"}", max = 100)
     private String profMsg;
 
 }

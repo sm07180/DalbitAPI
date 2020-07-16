@@ -57,8 +57,10 @@ public class MypageService {
         }
 
         //금지어 체크
-        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pProfileEditVo.getNickName())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+        if(mypageDao.selectAdminBadge(pProfileEditVo.getMem_no()) != 1){
+            if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), pProfileEditVo.getNickName())){
+                return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+            }
         }
 
         Boolean isDone = false;
@@ -1313,5 +1315,21 @@ public class MypageService {
         returnMap.put("newCnt", newCnt);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+    }
+
+    /**
+     * 메시지 사용 클릭 업데이트
+     */
+    public String msgClickUpdate(P_MsgClickUpdateVo pMsgClickUpdateVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMsgClickUpdateVo);
+        mypageDao.msgClickUpdate(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.메시지클릭업데이트_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지클릭업데이트_성공));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지클릭업데이트_오류));
+        }
+        return result;
     }
 }

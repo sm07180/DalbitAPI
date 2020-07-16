@@ -274,6 +274,7 @@ public class AdminService {
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(proImageInitVo.getMem_no());
                     pPushInsertVo.setSlct_push("35");
+                    pPushInsertVo.setPush_slct("57");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(proImageInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(proImageInitVo.getReport_message().replaceAll("\n", "<br>"));
@@ -334,35 +335,19 @@ public class AdminService {
             adminDao.broImageInit(broImageInitVo);
 
             // rd_data.tb_member_notification에 insert
-            NotiInsertVo notiInsertVo = new NotiInsertVo();
-            if(!DalbitUtil.isEmpty(broImageInitVo.getNotificationYn()) && broImageInitVo.getNotificationYn().equals("Y")) {
-                try {
-                    // 알림(종)표시
-                    notiInsertVo.setMem_no(broImageInitVo.getMem_no());
-                    notiInsertVo.setSlctType(7);
-                    notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
-                    notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
-                    adminDao.insertNotiHistory(notiInsertVo);
-                } catch(Exception e) {
-                    log.error("[모바일어드민] 알림 실패 - 방송방 이미지 초기화");
-                }
-
-                // PUSH 발송
-                try {
-                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
-                    pPushInsertVo.setMem_nos(broImageInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("35");
-                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
-                    pPushInsertVo.setSend_cont(broImageInitVo.getReport_title());
-                    pPushInsertVo.setEtc_contents(broImageInitVo.getReport_message().replaceAll("\n", "<br>"));
-                    pPushInsertVo.setImage_type("101");
-
-                    pushService.sendPushReqOK(pPushInsertVo);
-
-                } catch(Exception e) {
-                    log.error("[모바일어드민] PUSH 발송 실패 - 방송방 이미지 초기화");
-                }
-            }
+//            NotiInsertVo notiInsertVo = new NotiInsertVo();
+//            if(!DalbitUtil.isEmpty(broImageInitVo.getNotificationYn()) && broImageInitVo.getNotificationYn().equals("Y")) {
+//                try {
+//                    // 알림(종)표시
+//                    notiInsertVo.setMem_no(broImageInitVo.getMem_no());
+//                    notiInsertVo.setSlctType(7);
+//                    notiInsertVo.setNotiContents(broImageInitVo.getReport_title());
+//                    notiInsertVo.setNotiMemo(broImageInitVo.getReport_message());
+//                    adminDao.insertNotiHistory(notiInsertVo);
+//                } catch(Exception e) {
+//                    log.error("[모바일어드민] 알림 실패 - 방송방 이미지 초기화");
+//                }
+//            }
 
             try{
                 BroadInfoVo broadInfo = getBroadInfo(broImageInitVo.getRoom_no());
@@ -426,6 +411,7 @@ public class AdminService {
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(nickTextInitVo.getMem_no());
                     pPushInsertVo.setSlct_push("35");
+                    pPushInsertVo.setPush_slct("57");
                     pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
                     pPushInsertVo.setSend_cont(nickTextInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(nickTextInitVo.getReport_message().replaceAll("\n", "<br>"));
@@ -490,33 +476,19 @@ public class AdminService {
             adminDao.broTitleTextInit(broTitleTextInitVo);
 
             // rd_data.tb_member_notification에 insert
-            NotiInsertVo notiInsertVo = new NotiInsertVo();
-            if(!DalbitUtil.isEmpty(broTitleTextInitVo.getNotificationYn()) && broTitleTextInitVo.getNotificationYn().equals("Y")) {
-                try{
-                    //알림(종) 표시
-                    notiInsertVo.setMem_no(broTitleTextInitVo.getMem_no());
-                    notiInsertVo.setSlctType(7);
-                    notiInsertVo.setNotiContents(broTitleTextInitVo.getReport_title());
-                    notiInsertVo.setNotiMemo(broTitleTextInitVo.getReport_message());
-                    adminDao.insertNotiHistory(notiInsertVo);
-                }catch (Exception e){
-                    log.error("[모바일어드민] 알림 실패 - 방송 제목 초기화");
-                }
-
-                //PUSH 발송
-                try{
-                    P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
-                    pPushInsertVo.setMem_nos(broTitleTextInitVo.getMem_no());
-                    pPushInsertVo.setSlct_push("35");
-                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
-                    pPushInsertVo.setSend_cont(broTitleTextInitVo.getReport_title());
-                    pPushInsertVo.setEtc_contents(broTitleTextInitVo.getReport_message().replaceAll("\n", "<br>"));
-                    pPushInsertVo.setImage_type("101");
-                    pushService.sendPushReqOK(pPushInsertVo);
-                }catch (Exception e){
-                    log.error("[모바일어드민] PUSH 발송 실패 - 방송 제목 초기화");
-                }
-            }
+//            NotiInsertVo notiInsertVo = new NotiInsertVo();
+//            if(!DalbitUtil.isEmpty(broTitleTextInitVo.getNotificationYn()) && broTitleTextInitVo.getNotificationYn().equals("Y")) {
+//                try{
+//                    //알림(종) 표시
+//                    notiInsertVo.setMem_no(broTitleTextInitVo.getMem_no());
+//                    notiInsertVo.setSlctType(7);
+//                    notiInsertVo.setNotiContents(broTitleTextInitVo.getReport_title());
+//                    notiInsertVo.setNotiMemo(broTitleTextInitVo.getReport_message());
+//                    adminDao.insertNotiHistory(notiInsertVo);
+//                }catch (Exception e){
+//                    log.error("[모바일어드민] 알림 실패 - 방송 제목 초기화");
+//                }
+//            }
 
             try{
                 BroadInfoVo broadInfo = getBroadInfo(broTitleTextInitVo.getRoom_no());
@@ -985,6 +957,7 @@ public class AdminService {
 
                     pPushInsertVo.setMem_nos(questionDetail.getMem_no());
                     pPushInsertVo.setSlct_push("37");
+                    pPushInsertVo.setPush_slct("60");
                     pPushInsertVo.setSend_title("1:1문의 답변이 등록되었어요!");
                     pPushInsertVo.setSend_cont("등록한 1:1문의에 답변이 등록되었습니다.");
                     pPushInsertVo.setImage_type("101");

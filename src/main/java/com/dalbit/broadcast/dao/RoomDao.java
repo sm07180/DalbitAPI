@@ -1,9 +1,6 @@
 package com.dalbit.broadcast.dao;
 
-import com.dalbit.broadcast.vo.procedure.P_RoomEditOutVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomGiftHistoryVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
-import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
+import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;

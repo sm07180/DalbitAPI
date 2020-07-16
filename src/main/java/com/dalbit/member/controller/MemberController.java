@@ -77,6 +77,11 @@ public class MemberController {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, result.get("tokenVo")));
     }
 
+    @GetMapping("/token/short")
+    public String tokenShort(HttpServletRequest request) throws GlobalException{
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, jwtUtil.getTokenVoFromJwt(jwtUtil.generateToken(MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), 1000 * 60 * 5))));
+    }
+
     /**
      * 회원가입
      */

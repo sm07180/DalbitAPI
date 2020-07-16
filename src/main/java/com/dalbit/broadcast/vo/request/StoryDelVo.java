@@ -9,9 +9,11 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class StoryDelVo {
 
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"방번호를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
     private String roomNo;
-    @NotNull
+
+    @NotNull(message = "{\"ko_KR\" : \"사연번호를\"}")
     private Integer storyIdx;
 
     private Integer page;

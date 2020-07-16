@@ -2,7 +2,6 @@ package com.dalbit.security.service;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.LocationVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
@@ -17,7 +16,6 @@ import com.dalbit.security.dao.LoginDao;
 import com.dalbit.security.vo.MemberReportInfoVo;
 import com.dalbit.security.vo.SecurityUserVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.RedisUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,8 +47,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private ProfileService profileService;
 
-    @Autowired
-    private RedisUtil redisUtil;
+    /*@Autowired
+    private RedisUtil redisUtil;*/
 
     @Autowired
     private HttpServletRequest request;
@@ -206,7 +204,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
     }
 
-    public UserDetails loadUserBySsoCookieFromRedis(String memNo) throws UsernameNotFoundException {
+    /*public UserDetails loadUserBySsoCookieFromRedis(String memNo) throws UsernameNotFoundException {
 
         MemberVo memberVo = redisUtil.getMemberInfoFromRedis(memNo);
 
@@ -218,5 +216,5 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         securityUserVo.setMemberVo(memberVo);
 
         return securityUserVo;
-    }
+    }*/
 }

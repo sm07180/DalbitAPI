@@ -8,6 +8,6 @@ import javax.validation.constraints.Min;
 @Getter @Setter
 public class ExchangeVo {
 
-    @Min(570)
+    @Min(message = "{\"ko_KR\" : \"별을\"}", value = 570)
     private int byeol;
 }

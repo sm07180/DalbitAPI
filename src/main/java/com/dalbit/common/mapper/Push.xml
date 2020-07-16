@@ -4,6 +4,10 @@
 
     <insert id="insertContentsPushAdd" parameterType="com.dalbit.common.vo.procedure.P_pushInsertVo">
           /* Push.xml - insertContentsPushAdd */
+        <selectKey keyProperty="push_idx" resultType="java.lang.String" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
           INSERT INTO rd_admin.tb_admin_push
           (
                 platform

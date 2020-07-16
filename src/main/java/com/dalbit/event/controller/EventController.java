@@ -161,4 +161,21 @@ public class EventController {
     }
 
 
+    /**
+     * 라이징 이벤트 실시간 순위보기
+     */
+    @PostMapping("/rising/live")
+    public String risingLive(HttpServletRequest request, P_RisingLiveInputVo pRisingLiveInputVo) throws GlobalException {
+        String result = eventService.callRisingLive(request, pRisingLiveInputVo);
+        return result;
+    }
+
+    /**
+     * 라이징 이벤트 결과보기
+     */
+    @PostMapping("/rising/result")
+    public String risingResult(HttpServletRequest request, P_RisingResultInputVo pRisingResultInputVo) throws GlobalException {
+        String result = eventService.callRisingResult(request, pRisingResultInputVo);
+        return result;
+    }
 }

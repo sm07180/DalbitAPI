@@ -9,12 +9,12 @@ import javax.validation.constraints.Size;
 @Getter @Setter
 public class RoomListVo {
 
-    @Size(max = 2)
+    @Size(message = "{\"ko_KR\" : \"주제를\"}", max = 2)
     private String roomType;
 
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회 건수를\"}", value = 1)
     private Integer records;
 
     private Integer searchType;

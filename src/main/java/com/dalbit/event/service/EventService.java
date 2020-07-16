@@ -457,4 +457,69 @@ public class EventService {
 
         return returnMap;
     }
+
+    /**
+     * 라이징 이벤트 실시간 순위보기
+     */
+    public String callRisingLive(HttpServletRequest request, P_RisingLiveInputVo pRisingLiveInputVo) {
+        Calendar today = Calendar.getInstance();
+        Calendar srt1 = Calendar.getInstance();
+        Calendar end1 = Calendar.getInstance();
+        srt1.set(2020, 6,16,0,0,0);
+        end1.set(2020, 6, 22, 23, 59, 59);
+        String state="finished";
+
+        if(srt1.getTimeInMillis() <= today.getTimeInMillis() && end1.getTimeInMillis() >= today.getTimeInMillis()) {
+            state = "ing";
+        }
+
+        HashMap map = new HashMap();
+        map.put("state", state);
+
+        String result;
+        if("ing".equals(state)){
+            pRisingLiveInputVo.setMem_no(MemberVo.getMyMemNo(request));
+            ProcedureVo procedureVo = new ProcedureVo(pRisingLiveInputVo);
+            ArrayList<P_RisingEventListOutputVo> risingList = eventDao.callRisingLive(procedureVo);
+
+            P_RisingEventOutputVo risingOutput = new Gson().fromJson(procedureVo.getExt(), P_RisingEventOutputVo.class);
+
+            map.put("risingList", risingList);
+            map.put("risingOutput", risingOutput);
+
+            if(Integer.parseInt(procedureVo.getRet()) > 0) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_조회_성공, map));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음));
+            }
+        }else {
+            map.put("risingList", new ArrayList());
+            map.put("risingOutput", new HashMap());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음, map));
+        }
+        return result;
+    }
+
+    /**
+     * 라이징 이벤트 결과보기
+     */
+    public String callRisingResult(HttpServletRequest request, P_RisingResultInputVo pRisingResultInputVo) {
+        pRisingResultInputVo.setMem_no(MemberVo.getMyMemNo(request));
+        ProcedureVo procedureVo = new ProcedureVo(pRisingResultInputVo);
+        ArrayList<P_RisingEventListOutputVo> risingList = eventDao.callRisingResult(procedureVo);
+
+        P_RisingEventOutputVo risingOutput = new Gson().fromJson(procedureVo.getExt(), P_RisingEventOutputVo.class);
+
+        HashMap map = new HashMap();
+        map.put("risingList", risingList);
+        map.put("risingOutput", risingOutput);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_결과_조회_성공, map));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_결과_데이터없음));
+        }
+        return result;
+    }
 }

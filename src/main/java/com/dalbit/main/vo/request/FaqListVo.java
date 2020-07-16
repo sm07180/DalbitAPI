@@ -10,12 +10,13 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class FaqListVo {
 
-    @NotNull
-    @Min(0) @Max(5)
+    @NotNull(message = "{\"ko_KR\" : \"FAQ구분를\"}")
+    @Min(message = "{\"ko_KR\" : \"FAQ구분를\"}", value = 0)
+    @Max(message = "{\"ko_KR\" : \"FAQ구분를\"}", value = 5)
     private Integer faqType;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회건수를\"}", value = 1)
     private Integer records;
     /*@NotNull
     @Min(0) @Max(2)*/

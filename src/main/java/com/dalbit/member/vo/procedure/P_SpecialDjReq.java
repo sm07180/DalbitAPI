@@ -11,15 +11,21 @@ import javax.validation.constraints.Size;
 public class P_SpecialDjReq {
 
     private String mem_no;
-    @NotBlank @Size(min = 1, max = 20)
+    @NotBlank(message = "{\"ko_KR\" : \"성명을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"성명을\"}")
+    @Size(message = "{\"ko_KR\" : \"성명을\"}", min = 1, max = 20)
     private String name;
-    @NotBlank @Size(min = 1, max = 20)
+    @NotBlank(message = "{\"ko_KR\" : \"휴대폰 번호를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"휴대폰 번호를\"}")
+    @Size(message = "{\"ko_KR\" : \"휴대폰 번호를\"}", min = 1, max = 20)
     private String phone;
-    @Size(max = 2048)
+    @Size(message = "{\"ko_KR\" : \"제목을\"}", max = 2048)
     private String title;
-    @Size(max = 2048)
+    @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 2048)
     private String contents;
-    @NotBlank @Size(min = 1, max = 50)
+    @NotBlank(message = "{\"ko_KR\" : \"주 방송시간을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"주 방송시간을\"}")
+    @Size(message = "{\"ko_KR\" : \"주 방송시간을\"}", min = 1, max = 50)
     private String broadcast_time1;
     private String broadcast_time2;
 }

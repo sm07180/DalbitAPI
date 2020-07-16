@@ -40,6 +40,7 @@ public class MessageSourceConfig implements WebMvcConfigurer {
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+        //messageSource.setBasenames("classpath:messages/message","classpath:messages/validation");
         messageSource.setBasename("classpath:messages/message");
         messageSource.setDefaultEncoding("UTF-8");
         messageSource.setCacheSeconds(10); //reload messages every 10 seconds

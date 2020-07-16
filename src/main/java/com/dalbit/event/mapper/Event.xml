@@ -107,4 +107,11 @@
         call sp_member_attendance_check_bonus(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callRisingLive" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RisingEventListOutputVo">
+      call sp_event_rising_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callRisingResult" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RisingEventListOutputVo">
+      call sp_event_rising_result(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

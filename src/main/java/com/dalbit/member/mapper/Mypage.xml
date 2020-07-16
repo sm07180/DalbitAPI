@@ -235,4 +235,20 @@
         where mem_no = #{mem_no}
             and 3600 <![CDATA[<=]]> airtime
     </select>
+
+    <select id="msgClickUpdate" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_msg_click_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectAdminBadge" parameterType="String" resultType="int">
+        SELECT
+            *
+        FROM (
+            SELECT admin_badge FROM tb_member_profile WHERE mem_no = #{value}
+            UNION ALL
+            SELECT 0
+        ) AS a
+        ORDER BY admin_badge DESC
+        LIMIT 1
+    </select>
 </mapper>

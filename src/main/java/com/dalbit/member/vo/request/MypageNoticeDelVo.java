@@ -9,9 +9,10 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class MypageNoticeDelVo {
 
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"회원번호를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"회원번호를\"}")
     private String memNo;
-    @NotNull
+    @NotNull(message = "{\"ko_KR\" : \"공지번호를\"}")
     private Integer noticeIdx;
 
 }

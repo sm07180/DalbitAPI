@@ -62,4 +62,5 @@
     <update id="callUpdateExitTry" parameterType="String">
         UPDATE tb_broadcast_room SET exit_try_count = exit_try_count + 1 WHERE room_no = #{value}
     </update>
+
 </mapper>

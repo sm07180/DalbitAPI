@@ -50,6 +50,8 @@ public class P_MemberReportAddVo {
             setPlatform("PC");
         } else if(isHybrid.equals("Y")){
             setPlatform("Web-Mobile");
+        } else {
+            setPlatform("PC");
         }
 
         setBrowser(DalbitUtil.getUserAgent(request));

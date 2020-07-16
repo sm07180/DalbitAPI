@@ -22,4 +22,5 @@ public class P_MainRecommandVo {
     private int likes;
     private String bannerUrl;
     public boolean isSpecial;
+    public boolean isAdmin = false;
 }

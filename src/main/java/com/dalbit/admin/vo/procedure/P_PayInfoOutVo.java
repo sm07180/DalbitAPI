@@ -91,5 +91,8 @@ public class P_PayInfoOutVo {
     private int tmoney_amt;
     private int cashbee_cnt;
     private int cashbee_amt;
-
+    private int payco_cnt;
+    private int payco_amt;
+    private int kakaopay_cnt;
+    private int kakaopay_amt;
 }

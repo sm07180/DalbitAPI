@@ -8,8 +8,8 @@ import javax.validation.constraints.Min;
 @Getter @Setter
 public class MypageBlackVo {
 
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회건수를\"}", value = 1)
     private Integer records;
 }

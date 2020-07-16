@@ -5,7 +5,6 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
-import com.dalbit.common.vo.request.ErrorLogVo;
 import com.dalbit.common.vo.request.SelfAuthChkVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;

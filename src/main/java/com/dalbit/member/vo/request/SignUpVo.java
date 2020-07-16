@@ -6,31 +6,42 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 public class SignUpVo {
 
-    @NotBlank @Size(max = 1)
+    @NotBlank(message = "{\"ko_KR\" : \"회원구분를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"회원구분를\"}")
+    @Size(message = "{\"ko_KR\" : \"회원구분를\"}", max = 1)
     private String memType;
 
-    @NotBlank @Size(max = 50)
+    @NotBlank(message = "{\"ko_KR\" : \"아이디를 \"}")
+    @NotNull(message = "{\"ko_KR\" : \"아이디를\"}")
+    @Size(message = "{\"ko_KR\" : \"아이디를\"}", max = 50)
     private String memId;
 
     @Password
     private String memPwd;
 
-    @Size(max = 1)
+    @Size(message = "{\"ko_KR\" : \"성별을\"}", max = 1)
     private String gender;
 
-    @NotBlank @Size(min = 2, max = 20)
+    @NotBlank(message = "{\"ko_KR\" : \"닉네임을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"닉네임을\"}")
+    @Size(message = "{\"ko_KR\" : \"닉네임을\"}", min = 2, max = 20)
     private String nickNm;
 
-    @NotBlank @Size(min = 8, max = 8)
+    @NotBlank(message = "{\"ko_KR\" : \"생년월일을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")
+    @Size(message = "{\"ko_KR\" : \"생년월일을\"}", min = 8, max = 8)
     private String birth;
 
-    @NotBlank @Size(max = 1)
+    @NotBlank(message = "{\"ko_KR\" : \"약관 동의를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"약관 동의를\"}")
+    @Size(message = "{\"ko_KR\" : \"약관 동의를\"}", max = 1)
     private String term1, term2, term3, term4, term5;
 
     private String name;

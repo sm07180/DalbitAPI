@@ -257,7 +257,6 @@ public class RoomService {
             }else{
                 returnMap.put("fanBadgeList", fanBadgeList);
             }
-
             /*returnMap.put("level", target.getLevel());
             returnMap.put("grade", target.getGrade());
             returnMap.put("exp", target.getExp());
@@ -302,6 +301,7 @@ public class RoomService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             String auth = DalbitUtil.getStringMap(resultMap, "auth");
             CodeVo codeVo = commonService.getCodeList("roomRight").stream().filter(code -> code.getCdNm().equals("방장")).findFirst().orElse(null);
+
             if((!DalbitUtil.isEmpty(codeVo) && auth.equals(codeVo.getCd()))){ //방송중 다른방 참가
                 result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여_방송중));
             }else{
@@ -451,7 +451,6 @@ public class RoomService {
         }
         return result;
     }
-
 
     /**
      * 방송방 정보 수정
@@ -955,11 +954,13 @@ public class RoomService {
                     returnMap.put("link", target.getLink());
                     returnMap.put("state", target.getState());
                     returnMap.put("bjMemNo", target.getBjMemNo());
+                    returnMap.put("bjMemId", target.getBjMemId());
                     returnMap.put("bjNickNm", target.getBjNickNm());
                     returnMap.put("bjProfImg", target.getBjProfImg());
                     returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
                     returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
+                    returnMap.put("gstNickId", target.getGstMemId() == null ? "" : target.getGstMemId());
                     returnMap.put("gstProfImg", target.getGstProfImg());
                     returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
                     returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));

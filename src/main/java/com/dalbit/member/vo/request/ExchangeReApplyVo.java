@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 public class ExchangeReApplyVo {
 
     private int exchangeIdx;
-    @Min(570)
+    @Min(message = "{\"ko_KR\" : \"별을\"}", value = 570)
     private int byeol;
 
 }

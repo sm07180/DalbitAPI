@@ -3,20 +3,21 @@ package com.dalbit.main.vo.request;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
 public class QnaVo {
 
-    @Min(1) @Max(99)
+    @Min(message = "{\"ko_KR\" : \"문의 구분을\"}", value = 1)
+    @Max(message = "{\"ko_KR\" : \"문의 구분을\"}", value = 99)
     private int qnaType;
-    @NotBlank @Size(max = 100)
+    @NotBlank(message = "{\"ko_KR\" : \"제목을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"제목을\"}")
+    @Size(message = "{\"ko_KR\" : \"제목을\"}", max = 100)
     private String title;
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
     private String contents;
 
     private String questionFile;
@@ -29,6 +30,7 @@ public class QnaVo {
 
     private int qnaIdx;
 
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"이메일을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"이메일을\"}")
     private String email;
 }

@@ -34,33 +34,6 @@ public class MainController {
         return mainService.getMain(request);
     }
 
-
-    /**
-     * 추천BJ 리스트
-     */
-    @GetMapping("/recommand")
-    public String mainRecommandList(HttpServletRequest request){
-
-        P_MainRecommandVo apiData = new P_MainRecommandVo();
-        String memNo = (DalbitUtil.getProperty("inforex.plan.memNo"));
-
-        String result = mainService.callMainRecommandList(memNo);
-
-        return result;
-    }
-
-
-    /**
-     * 나의 스타 리스트
-     */
-    @GetMapping("/star")
-    public String mainStarList(HttpServletRequest request){
-
-        String result = mainService.callMainStarList(request);
-
-        return result;
-    }
-
     /**
      * 팬 랭킹
      */
@@ -87,20 +60,6 @@ public class MainController {
 
         return result;
     }
-
-
-    /**
-     * 마이 DJ
-     */
-    @GetMapping("/my/dj")
-    public String mainMyDjList(@Valid MainMyDjVo mainMyDjVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MainMyDjVo adiData = new P_MainMyDjVo(mainMyDjVo, request);
-
-        String result = mainService.callMainMyDjList(adiData);
-        return result;
-    }
-
 
     /**
      * 배너

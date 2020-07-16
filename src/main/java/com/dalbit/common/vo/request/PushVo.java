@@ -10,9 +10,11 @@ import javax.validation.constraints.NotNull;
 public class PushVo {
 
     private Integer pushType;
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"제목을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"제목을\"}")
     private String title;
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
     private String contents;
 
     private String pushMoveType;

@@ -170,8 +170,26 @@ public enum Status {
     //회원방송방 빠른말 설정 수정/저장 하기
     회원방송방빠른말수정_성공("0", "mypage.member.shorucut.edit.success", "회원 방송방 빠른말 수정 성공 시"),
     회원방송방빠른말수정_회원아님("-1", "mypage.member.shorucut.edit.no", "요청번호가 회원이 아닐 시"),
+    회원방송방빠른말수정_명령어번호없음("-2", "mypage.member.shorucut.order.number.no", "명렁어 번호가 없을 시"),
+    회원방송방빠른말수정_사용기간만료("-3", "mypage.member.shorucut.edit.use.date.limit", "사용기간 만료 시"),
     회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
     회원방송방빠른말수정_텍스트오류("C007", "mypage.member.shorucut.text.error", "회원 방송방 빠른말 수정 텍스트 자리수 "),
+
+    //회원방송방 빠른말 추가
+    회원방송방빠른말추가_성공("0", "mypage.member.shorucut.add.success", "회원 방송방 빠른말 추가 성공 시"),
+    회원방송방빠른말추가_회원아님("-1", "mypage.member.shorucut.add.no", "요청번호가 회원이 아닐 시"),
+    회원방송방빠른말추가_제한("-2", "mypage.member.shorucut.add.limit", "빠른말 추가 제한(6개) 시"),
+    회원방송방빠른말추가_달부족("-3", "mypage.member.shorucut.add.dal.limit", "달 부족 시"),
+    회원방송방빠른말추가_오류("C006", "mypage.member.shorucut.add.error", "회원 방송방 빠른말 수정 오류 시"),
+
+    //회원방송방 빠른말 연장
+    회원방송방빠른말연장_성공("0", "mypage.member.shorucut.extend.success", "회원 방송방 빠른말 연장 성공 시"),
+    회원방송방빠른말연장_회원아님("-1", "mypage.member.shorucut.extend.no", "요청번호가 회원이 아닐 시"),
+    회원방송방빠른말연장_불가번호("-2", "mypage.member.shorucut.extend.impossible.number", "연장 불가한 번호 시"),
+    회원방송방빠른말연장_번호없음("-3", "mypage.member.shorucut.extend.order.number.no", "명령어 번호가 없을 시"),
+    회원방송방빠른말연장_사용중인번호("-4", "mypage.member.shorucut.extend.use.order.number", "이미 사용중인 명령어 번호일 시"),
+    회원방송방빠른말연장_달부족("-5", "mypage.member.shorucut.extend.dal.limit", "달 부족 시"),
+    회원방송방빠른말연장_오류("C006", "mypage.member.shorucut.extend.error", "회원 방송방 빠른말 연장 오류 시"),
 
     //회원 마이페이지 팬보드 댓글 달기
     팬보드_댓글달기성공("0", "fanboard.add.success", "댓글달기 성공 시"),
@@ -366,6 +384,7 @@ public enum Status {
     강제퇴장_대상회원_방소속회원아님("-6", "broadcast.kickout.object.room.join.no", "대상회원이 방에 소속된 회원이 아닐 시"),
     강제퇴장_게스트이상불가("-7", "broadcast.kickout.guest.not", "게스트 이상 강제퇴장 불가 시"),
     강제퇴장_매니저가매니저("-8", "broadcast.kickout.manager.manager", "매니저가 매니저 강퇴시"),
+    강제퇴장_운영자("-99", "broadcast.kickout.admin", "운영자 강퇴시"),
     강제퇴장_실패("C006", "broadcast.kickout.fail", "강제퇴장 실패 시"),
 
     //유저
@@ -438,6 +457,7 @@ public enum Status {
     매니저지정_대상회원아이디_방소속아님("-6", "broadcast.room.manager.add.member.not.join.id", "대상 회원아이디가 방 소속이 아닐 시"),
     매니저지정_불가("-7", "broadcast.room.manager.add.error", "매니저지정 불가 시(이미 매니저거나 방장 권한)"),
     매니저지정_인원제한("-8", "broadcast.room.manager.add.limit", "매니저 수 제한 시"),
+    매니저지정_관리자("-99", "broadcast.room.manager.add.admin", "운영자 추가시"),
     매니저지정_실패("C006", "broadcast.room.manager.add.fail", "매니저지정 실패 시"),
 
     //방송방 매니저취소
@@ -796,6 +816,12 @@ public enum Status {
 
     설정_방생성_참여불가상태("S001", "system.config.broadcast.block", "tbl_code_defind -> system_config / 방생성_참여_가능여부 가 Y 일경우"),
 
+    라이징이벤트_실시간순위_조회_성공("C001", "event.rising.live.success", "성공"),
+    라이징이벤트_실시간순위_데이터없음("0", "event.rising.live.no.data", "데이터 없음"),
+
+    라이징이벤트_결과_조회_성공("C001", "event.rising.result.success", "성공"),
+    라이징이벤트_결과_데이터없음("0", "event.rising.result.no.data", "데이터 없음"),
+
     //////////////////////////
     //모바일 관리자
     /////////////////////////
@@ -929,7 +955,11 @@ public enum Status {
     신고상세조회_공지번호없음("-1", "declaration.detail.no.data", "신고목록 조회 데이터가 없을 시"),
     신고상세조회_성공("0", "declaration.detail.select.success", "신고목록 상세조회 시"),
     신고상세조회_에러("C006", "declaration.detail.server.error", "신고상세 조회에서 에러 발생 시"),
-    ;
+
+    //메시지 사용 클릭
+    메시지클릭업데이트_성공("0", "mypage.member.msg.click.update.success", "메시지 클릭 업데이트 성공 시"),
+    메시지클릭업데이트_오류("C006", "mypage.member.msg.click.update.error", "메시지 클릭 업데이트 오류 시"),
+   ;
 
 
 

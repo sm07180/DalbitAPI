@@ -11,15 +11,18 @@ import javax.validation.constraints.NotNull;
 @Getter @Setter
 public class MypageReportListenVo {
 
-    @NotNull
-    @Min(0) @Max(4)
+    @NotNull(message = "{\"ko_KR\" : \"구분을\"}")
+    @Min(message = "{\"ko_KR\" : \"구분을\"}", value = 0)
+    @Max(message = "{\"ko_KR\" : \"구분을\"}", value = 4)
     private Integer dateType;
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"시작일을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"시작일을\"}")
     private String startDt;
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"종료일을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"종료일을\"}")
     private String endDt;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회건수를\"}", value = 1)
     private Integer records;
 }

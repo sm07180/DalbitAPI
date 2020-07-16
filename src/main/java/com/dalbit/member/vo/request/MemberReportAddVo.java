@@ -8,12 +8,15 @@ import javax.validation.constraints.*;
 @Setter
 public class MemberReportAddVo {
 
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"신고할 회원을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"신고할 회원을\"}")
     private String memNo;
-    @NotNull
+
+    @NotNull(message = "{\"ko_KR\" : \"신고 사유를\"}")
     private Integer reason;
 
-    @Size (max = 256)
+    @Size (message = "{\"ko_KR\" : \"상세 사유를\"}", max = 256)
     private String cont;
+
     private String roomNo;
 }

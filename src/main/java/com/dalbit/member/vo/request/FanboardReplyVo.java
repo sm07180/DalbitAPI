@@ -8,10 +8,11 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class FanboardReplyVo {
 
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"회원번호를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"회원번호를\"}")
     private String memNo;
 
-    @NotNull
+    @NotNull(message = "{\"ko_KR\" : \"댓글번호를\"}")
     private Integer boardNo;
 
 }

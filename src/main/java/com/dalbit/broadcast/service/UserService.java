@@ -262,6 +262,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_게스트이상불가));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_매니저가매니저.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_매니저가매니저));
+        }else if(procedureVo.getRet().equals(Status.강제퇴장_운영자.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_운영자));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_실패));
         }
@@ -344,6 +346,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_불가));
         } else if (procedureVo.getRet().equals(Status.매니저지정_인원제한.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_인원제한));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_관리자.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_관리자));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_실패));
         }

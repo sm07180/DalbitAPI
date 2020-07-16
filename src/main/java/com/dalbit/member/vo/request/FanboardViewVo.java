@@ -8,11 +8,12 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class FanboardViewVo {
 
-    @NotBlank
+    @NotBlank(message = "{\"ko_KR\" : \"회원번호를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"회원번호를\"}")
     private String memNo;
 
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
-    @Min(1)
+    @Min(message = "{\"ko_KR\" : \"조회 건수를\"}", value = 1)
     private Integer records;
 }

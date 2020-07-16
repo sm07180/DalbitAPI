@@ -84,4 +84,9 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     int callNewAlarm(P_MemberNotifyVo pMemberNotifyVo);
+
+    ProcedureVo msgClickUpdate(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    int selectAdminBadge(String value);
 }
