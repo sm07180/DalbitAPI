@@ -100,6 +100,7 @@
               (term_type = 1 and now() between start_datetime and end_datetime)
             )
             AND platform LIKE #{paramPlatform}
+        ORDER BY idx DESC
     </select>
 
     <select id="callMainStarList" parameterType="String" resultType="P_MainStarVo">

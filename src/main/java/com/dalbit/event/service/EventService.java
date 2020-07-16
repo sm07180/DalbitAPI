@@ -2,6 +2,7 @@ package com.dalbit.event.service;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.EventDao;
@@ -482,12 +483,25 @@ public class EventService {
             ProcedureVo procedureVo = new ProcedureVo(pRisingLiveInputVo);
             ArrayList<P_RisingEventListOutputVo> risingList = eventDao.callRisingLive(procedureVo);
 
-            P_RisingEventOutputVo risingOutput = new Gson().fromJson(procedureVo.getExt(), P_RisingEventOutputVo.class);
-
-            map.put("risingList", risingList);
-            map.put("risingOutput", risingOutput);
-
             if(Integer.parseInt(procedureVo.getRet()) > 0) {
+                P_RisingEventOutputVo risingOutput = new Gson().fromJson(procedureVo.getExt(), P_RisingEventOutputVo.class);
+
+                if(DalbitUtil.isEmpty(risingList)){
+                    risingList = new ArrayList<>();
+                }else{
+                    for(int i = 0; i < risingList.size(); i++){
+                        ImageVo imageVo = new ImageVo(risingList.get(i).getProfileImage(), risingList.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url"));
+                        risingList.get(i).setProfileImage(imageVo.getPath());
+                        if(pRisingLiveInputVo.getSlct_type() == 1){
+                            ImageVo imageFanVo = new ImageVo(risingList.get(i).getFanImage(), risingList.get(i).getFanSex(), DalbitUtil.getProperty("server.photo.url"));
+                            risingList.get(i).setFanImage(imageFanVo.getPath());
+                        }
+                    }
+                }
+
+                map.put("risingList", risingList);
+                map.put("risingOutput", risingOutput);
+
                 result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_조회_성공, map));
             } else {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음));
