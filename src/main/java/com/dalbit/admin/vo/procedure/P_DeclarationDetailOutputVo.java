@@ -39,5 +39,6 @@ public class P_DeclarationDetailOutputVo extends BaseVo {
     private int reported_giftCount;
     private int reported_giftAmount;
     private int chatCount;
+    private String room_no;
 
 }

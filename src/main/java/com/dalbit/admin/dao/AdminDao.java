@@ -104,7 +104,7 @@ public interface AdminDao {
     ArrayList<P_DeclarationListOutputVo> callServiceCenterReportList(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    P_DeclarationDetailOutputVo callServiceCenterReportDetail(ProcedureVo procedureVo);
+    ArrayList<P_DeclarationDetailOutputVo> callServiceCenterReportDetail(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
     LiveChatProfileVo selectUserProfile(LiveChatProfileVo liveChatProfileVo);
