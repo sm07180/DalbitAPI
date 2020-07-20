@@ -21,6 +21,7 @@ import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
+import com.dalbit.util.AES;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -326,7 +327,7 @@ public class MemberService {
             returnMap.put("accountName", exchangeSuccessVo.getAccountName());
             returnMap.put("accountNo", exchangeSuccessVo.getAccountNo());
             returnMap.put("bankCode", exchangeSuccessVo.getBankCode());
-            returnMap.put("socialNo", exchangeSuccessVo.getSocialNo().substring(0,6));
+            returnMap.put("socialNo", AES.decrypt(exchangeSuccessVo.getSocialNo(), DalbitUtil.getProperty("social.secret.key")).substring(0,6));
             returnMap.put("phoneNo", exchangeSuccessVo.getPhoneNo());
             returnMap.put("address1", exchangeSuccessVo.getAddress1());
             returnMap.put("address2", exchangeSuccessVo.getAddress2());
@@ -387,7 +388,7 @@ public class MemberService {
 
                 List<String> roomList = memberDao.selectListeningRoom(memNo);
                 for(String room_no : roomList){
-                    if(deviceVo.getOs() != 3){
+                    if(deviceVo.getOs() == 3){
                         exitData.setRoom_no(room_no);
                         ProcedureVo procedureVo = new ProcedureVo(exitData);
                         roomDao.callBroadCastRoomExit(procedureVo);
