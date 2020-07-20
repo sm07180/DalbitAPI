@@ -164,6 +164,28 @@ public class RoomController {
         return result;
     }
 
+    @DeleteMapping("/exit/force")
+    public String roomExitForce(@Valid RoomExitVo roomExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_RoomExitVo apiData = new P_RoomExitVo();
+        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(roomExitVo.getRoomNo());
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        apiData.setOs(deviceVo.getOs());
+        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
+        apiData.setIp(deviceVo.getIp());
+        apiData.setAppVersion(deviceVo.getAppVersion());
+        apiData.setDeviceToken(deviceVo.getDeviceToken());
+        apiData.setIsHybrid(deviceVo.getIsHybrid());
+
+        String result = roomService.callBroadCastRoomExitForce(apiData, request);
+
+        return result;
+    }
+
     /**
      * 방송 정보수정
      */

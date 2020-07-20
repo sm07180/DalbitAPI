@@ -452,6 +452,17 @@ public class RoomService {
         return result;
     }
 
+    public String callBroadCastRoomExitForce(P_RoomExitVo pRoomExitVo, HttpServletRequest request) {
+        if(pRoomExitVo.getOs() == 3){
+            return callBroadCastRoomExit(pRoomExitVo, request);
+        }else{
+            try{
+                socketService.chatEndRed(MemberVo.getMyMemNo(request), pRoomExitVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
+            }catch(Exception e){}
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+        }
+    }
+
     /**
      * 방송방 정보 수정
      */

@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.env.Environment;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -583,10 +584,76 @@ public class DalbitUtil {
             List errorList = bindingResult.getAllErrors();
 
             ArrayList bindingMessageList = new ArrayList();
+            ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
+            messageSource.setBasename("classpath:messages/validation");
+            messageSource.setDefaultEncoding("UTF-8");
+            messageSource.setUseCodeAsDefaultMessage(true);
+
             for (int i=0; i<bindingResult.getErrorCount(); i++) {
                 FieldError fieldError = (FieldError) errorList.get(i);
+                String message = null;
+                if("Password".equals(fieldError.getCode())) {
+                    message = fieldError.getDefaultMessage();
+                }else {
+                    String fieldName = "";
+                    String field = fieldError.getDefaultMessage();
+                    if (!isEmpty(field)) {
+                        try {
+                            HashMap<String, String> fieldMap = new Gson().fromJson(field, HashMap.class);
+                            if (!isEmpty(fieldMap) && fieldMap.containsKey(LocaleContextHolder.getLocale().toString())) {
+                                fieldName = getStringMap(fieldMap, LocaleContextHolder.getLocale().toString());
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
 
-                bindingMessageList.add("param : " + fieldError.getField()  + ", value : "+ fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage());
+                    if (!isEmpty(fieldName)) {
+                        String validation_message_key = "";
+                        List argList = new ArrayList();
+                        argList.add(fieldName);
+                        if ("NotBlank".equals(fieldError.getCode())) {
+                            validation_message_key="validation.not_blank";
+                        } else if ("NotNull".equals(fieldError.getCode())) {
+                            validation_message_key="validation.not_blank";
+                        } else if ("Min".equals(fieldError.getCode())) {
+                            if(fieldError.getArguments().length == 2){
+                                validation_message_key="validation.min";
+                                argList.add(fieldError.getArguments()[1]);
+                            }
+                        } else if ("Max".equals(fieldError.getCode())) {
+                            if(fieldError.getArguments().length == 2){
+                                validation_message_key="validation.max";
+                                argList.add(fieldError.getArguments()[1]);
+                            }
+                        } else if ("Size".equals(fieldError.getCode())) {
+                            if(fieldError.getArguments().length == 3) {
+                                if((int)fieldError.getArguments()[1] < 2147483647 && (int)fieldError.getArguments()[2] > 0 && (int)fieldError.getArguments()[1] == (int)fieldError.getArguments()[2]){
+                                    validation_message_key="validation.size_same";
+                                    argList.add(fieldError.getArguments()[1]);
+                                }else if((int)fieldError.getArguments()[1] < 2147483647 && (int)fieldError.getArguments()[2] > 0 ){
+                                    validation_message_key="validation.size";
+                                    argList.add(fieldError.getArguments()[2]); //최소값
+                                    argList.add(fieldError.getArguments()[1]); //최대값
+                                }else if((int)fieldError.getArguments()[1] == 2147483647 && (int)fieldError.getArguments()[2] > 0){
+                                    validation_message_key="validation.size_min";
+                                    argList.add(fieldError.getArguments()[2]);
+                                }else if((int)fieldError.getArguments()[1] < 2147483647 && (int)fieldError.getArguments()[2] == 0){
+                                    validation_message_key="validation.size_max";
+                                    argList.add(fieldError.getArguments()[1]);
+                                }
+                            }
+                        }
+                        if (!isEmpty(validation_message_key)) {
+                            message = messageSource.getMessage(validation_message_key, argList.toArray(), LocaleContextHolder.getLocale());
+                        }
+                    }
+
+                    if (isEmpty(message)) {
+                        message = "param : " + fieldError.getField() + ", value : " + fieldError.getRejectedValue() + ", message : " + fieldError.getDefaultMessage();
+                    }
+                }
+                bindingMessageList.add(message);
             }
             validationResultVo.setValidationMessageDetail(bindingMessageList);
             throw new GlobalException(Status.벨리데이션체크, null, validationResultVo.getValidationMessageDetail(), methodName, true);
@@ -1376,5 +1443,15 @@ public class DalbitUtil {
             age--;
 
         return age;
+    }
+
+    /**
+     * KOR 나이 구하기
+     */
+    public static int getKorAge(int birthYear) {
+        Calendar current = Calendar.getInstance();
+        int currentYear  = current.get(Calendar.YEAR);
+        int korAge = currentYear - birthYear + 1;
+        return korAge;
     }
 }

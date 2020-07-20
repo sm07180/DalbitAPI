@@ -701,11 +701,15 @@ public class SocketService {
                 vo.setRecvMemNo(memNo);
                 vo.setCommand("chatEnd");
 
-                HashMap data = new HashMap();
-                data.put("message", auth == 3 ? "roomOut" : "userOut");
-                data.put("authToken", authToken);
-                data.put("memNo", memNo);
-                vo.setMessage(data);
+                if(auth == 3 ){
+                    HashMap data = new HashMap();
+                    data.put("authToken", authToken);
+                    data.put("message", "roomOut");
+                    vo.setMessage(data);
+                    vo.setRecvMemNo("roomOut");
+                }else{
+                    vo.setMessage("userOut");
+                }
 
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
