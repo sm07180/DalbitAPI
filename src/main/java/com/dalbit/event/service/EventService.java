@@ -466,8 +466,29 @@ public class EventService {
         Calendar today = Calendar.getInstance();
         Calendar srt1 = Calendar.getInstance();
         Calendar end1 = Calendar.getInstance();
-        srt1.set(2020, 6,16,0,0,0);
-        end1.set(2020, 6, 22, 23, 59, 59);
+        Calendar dt_2nd = Calendar.getInstance();
+
+        if("real".equals(DalbitUtil.getActiceProfile())){
+            dt_2nd.set(2020, 6, 22, 23, 59, 59);
+        }else{
+            dt_2nd.set(2020, 6, 22, 17, 59, 59);
+        }
+
+        int round = 1;
+        if(dt_2nd.getTimeInMillis() < today.getTimeInMillis()){
+            // 2차 : 23~29일
+            round = 2;
+            if("real".equals(DalbitUtil.getActiceProfile())) {
+                srt1.set(2020, 6,23,0,0,0);
+            }else{
+                srt1.set(2020, 6,22,18,0,0);
+            }
+            end1.set(2020, 6, 29, 23, 59, 59);
+        }else{
+            srt1.set(2020, 6,16,0,0,0);
+            end1.set(2020, 6, 22, 23, 59, 59);
+        }
+
         String state="finished";
 
         if(srt1.getTimeInMillis() <= today.getTimeInMillis() && end1.getTimeInMillis() >= today.getTimeInMillis()) {
@@ -476,6 +497,7 @@ public class EventService {
 
         HashMap map = new HashMap();
         map.put("state", state);
+        map.put("round", round);
 
         String result;
 
@@ -505,7 +527,7 @@ public class EventService {
 
                 result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_조회_성공, map));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음));
+                result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음, map));
             }
         }else {
             map.put("risingList", new ArrayList());
