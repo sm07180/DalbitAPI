@@ -21,6 +21,8 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
+import com.nimbusds.jose.util.Base64URL;
+import com.nimbusds.jwt.SignedJWT;
 import lombok.extern.slf4j.Slf4j;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,11 +36,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Pattern;
-import com.nimbusds.jose.util.Base64URL;
-import com.nimbusds.jwt.SignedJWT;
 
 @Slf4j
 @Service
@@ -508,7 +510,7 @@ public class CommonService {
             //생년월일 조회 후 미성년자 여부 체크
             AdultCheckVo adultCheckVo = commonDao.getMembirth(pSelfAuthVo.getMem_no());
             String adultYn;
-            if(DalbitUtil.getAge(Integer.parseInt(adultCheckVo.getMem_birth_year()), Integer.parseInt(adultCheckVo.getMem_birth_month()), Integer.parseInt(adultCheckVo.getMem_birth_day())) < 19){
+            if(DalbitUtil.getKorAge(Integer.parseInt(adultCheckVo.getMem_birth_year())) < 20){
                 adultYn = "n";
             } else {
                 adultYn = "y";
@@ -723,5 +725,12 @@ public class CommonService {
         return commonDao.updateMemberCertificationFile(pSelfAuthVo);
     }
 
+
+    /**
+     * 사용중인 방송주제 목록 가져오기
+     */
+    public List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo){
+        return commonDao.selectRoomTypeCodeList(codeVo);
+    }
 
 }

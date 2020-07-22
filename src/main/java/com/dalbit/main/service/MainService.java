@@ -390,6 +390,38 @@ public class MainService {
         return result;
     }
 
+
+    /**
+     * Level 랭킹
+     */
+    public String callMainLevelRanking(P_MainLevelRankingVo pMainLevelRankingVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMainLevelRankingVo);
+        List<P_MainLevelRankingVo> mainLevelRankingVoList = mainDao.callMainLevelRanking(procedureVo);
+
+        HashMap mainLevelRankingList = new HashMap();
+
+        if(DalbitUtil.isEmpty(mainLevelRankingVoList)){
+            mainLevelRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.메인_Level랭킹조회_내역없음, mainLevelRankingVoList));
+        }
+
+        List<MainLevelRankingOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<mainLevelRankingVoList.size(); i++){
+            outVoList.add(new MainLevelRankingOutVo(mainLevelRankingVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        mainLevelRankingList.put("list", procedureOutputVo.getOutputBox());
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_Level랭킹조회_성공, mainLevelRankingList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_Level랭킹조회_실패));
+        }
+        return result;
+    }
+
+
     public String selectBanner(HttpServletRequest request){
         String position = request.getParameter("position");
         List<BannerVo> bannerList =null;
@@ -421,4 +453,6 @@ public class MainService {
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));
     }
+
+
 }

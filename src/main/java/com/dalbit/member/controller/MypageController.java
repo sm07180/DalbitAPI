@@ -6,6 +6,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.SpecialDjRegManageVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
@@ -251,7 +252,7 @@ public class MypageController {
         P_MemberShortCutVo apiData = new P_MemberShortCutVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
 
-        String result = mypageService.callMemberShortCut(apiData);
+        String result = mypageService.callMemberShortCut(apiData, "", request);
 
         return result;
     }
@@ -285,7 +286,7 @@ public class MypageController {
         apiData.setText(shortCutEditVo.getText());
         apiData.setOnOff(isOn);
 
-        String result = mypageService.callMemberShortCutEdit(apiData);
+        String result = mypageService.callMemberShortCutEdit(apiData, request);
 
         return result;
     }
@@ -623,8 +624,8 @@ public class MypageController {
      * 스페셜 DJ 신청 가능상태 조회
      */
     @PostMapping("/specialDj/status")
-    public String specialDjStatus(HttpServletRequest request) throws GlobalException {
-        return mypageService.callSpecialDjStatus(request);
+    public String specialDjStatus(HttpServletRequest request, SpecialDjRegManageVo specialDjRegManageVo) throws GlobalException {
+        return mypageService.callSpecialDjStatus(request, specialDjRegManageVo);
     }
 
     /**
@@ -655,6 +656,53 @@ public class MypageController {
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
 
         String result = mypageService.callNewAlarm(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 회원 방송방 빠른말 추가
+     */
+    @PostMapping("/shortcut/add")
+    public String memberShortCutAdd(HttpServletRequest request) throws GlobalException{
+
+        P_MemberShortCutAddVo apiData = new P_MemberShortCutAddVo();
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+
+        String result = mypageService.memberShortCutAdd(apiData, request);
+
+        return result;
+    }
+
+    /**
+     * 회원 방송방 빠른말 연장
+     */
+    @PostMapping("/shortcut/extend")
+    public String memberShortCutExtend(HttpServletRequest request) throws GlobalException{
+
+        P_MemberShortCutExtendVo apiData = new P_MemberShortCutExtendVo();
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+
+        String result = mypageService.memberShortCutExtend(apiData, request);
+
+        return result;
+    }
+
+    /**
+     * 메시지 사용 클릭 업데이트
+     */
+    @PostMapping("/click/update")
+    public String msgClickUpdate(@Valid MsgClickUpdateVo msgClickUpdateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_MsgClickUpdateVo apiData = new P_MsgClickUpdateVo();
+        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMsg_slct(msgClickUpdateVo.getMsgSlct());
+        apiData.setMsg_idx(msgClickUpdateVo.getMsgIdx());
+
+        String result = mypageService.msgClickUpdate(apiData);
 
         return result;
     }

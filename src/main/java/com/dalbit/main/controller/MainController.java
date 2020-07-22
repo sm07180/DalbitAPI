@@ -4,11 +4,9 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.MainService;
 import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
 import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
-import com.dalbit.main.vo.procedure.P_MainMyDjVo;
-import com.dalbit.main.vo.procedure.P_MainRecommandVo;
+import com.dalbit.main.vo.procedure.P_MainLevelRankingVo;
 import com.dalbit.main.vo.request.MainDjRankingVo;
 import com.dalbit.main.vo.request.MainFanRankingVo;
-import com.dalbit.main.vo.request.MainMyDjVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +55,19 @@ public class MainController {
         P_MainDjRankingVo apiData = new P_MainDjRankingVo(mainDjRankingVo, request);
 
         String result = mainService.callMainDjRanking(apiData);
+
+        return result;
+    }
+
+    /**
+     * Level 랭킹
+     */
+    @GetMapping("/rank/level")
+    public String mainLevelRanking(){
+
+        P_MainLevelRankingVo apiData = new P_MainLevelRankingVo();
+
+        String result = mainService.callMainLevelRanking(apiData);
 
         return result;
     }

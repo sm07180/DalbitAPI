@@ -28,4 +28,6 @@ public class P_SpecialDjReq {
     @Size(message = "{\"ko_KR\" : \"주 방송시간을\"}", min = 1, max = 50)
     private String broadcast_time1;
     private String broadcast_time2;
+    private String select_year;
+    private String select_month;
 }

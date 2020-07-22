@@ -478,6 +478,7 @@ public class EventService {
         map.put("state", state);
 
         String result;
+
         if("ing".equals(state)){
             pRisingLiveInputVo.setMem_no(MemberVo.getMyMemNo(request));
             ProcedureVo procedureVo = new ProcedureVo(pRisingLiveInputVo);

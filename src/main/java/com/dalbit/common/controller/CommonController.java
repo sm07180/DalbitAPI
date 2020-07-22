@@ -1,6 +1,7 @@
 package com.dalbit.common.controller;
 
 import com.dalbit.common.annotation.NoLogging;
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
@@ -28,6 +29,8 @@ import javax.validation.Valid;
 import java.text.ParseException;
 import java.util.HashMap;
 
+import static com.dalbit.common.code.Status.조회;
+
 @Slf4j
 @RestController
 public class CommonController {
@@ -48,18 +51,18 @@ public class CommonController {
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
         HashMap resultMap = commonService.getCodeCache("splash", request);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getItemVersion(resultMap, request)));
+        return gsonUtil.toJson(new JsonOutputVo(조회, commonService.getItemVersion(resultMap, request)));
     }
 
     @GetMapping("/items")
     public String getItems(HttpServletRequest request){
         HashMap resultMap = new HashMap();
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.getItemVersion(resultMap, request, "items")));
+        return gsonUtil.toJson(new JsonOutputVo(조회, commonService.getItemVersion(resultMap, request, "items")));
     }
 
     @PostMapping("/splash")
     public String updateSplash(){
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonService.updateCodeCache("splash")));
+        return gsonUtil.toJson(new JsonOutputVo(조회, commonService.updateCodeCache("splash")));
     }
 
     @NoLogging
@@ -305,11 +308,23 @@ public class CommonController {
             apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
+
+                //17세 미만 이용불가
+                if(Integer.parseInt(apiData.getBirthYear()) > 2004){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.본인인증17세미만, apiData));
+                }
+
                 log.info("##### 본인인증 DB저장 #####");
                 //회원본인인증 DB 저장
                 apiData.setParents_agreeYn("n");
                 result = commonService.callMemberCertification(apiData);
             } else {
+
+                //20세 미만 이용불가
+                if(Integer.parseInt(apiData.getBirthYear()) > 2001){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.보호자인증20세미만, apiData));
+                }
+
                 log.info("##### 보호자인증 DB업데이트 #####");
                 apiData.setParents_agreeDt(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
                 apiData.setParents_agreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
@@ -336,7 +351,6 @@ public class CommonController {
         String result = commonService.getCertificationChk(apiData);
 
         return result;
-        //return gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인));
     }
 
 
@@ -392,5 +406,14 @@ public class CommonController {
     @PostMapping("/inforex/broadCheck")
     public String broadCheck(HttpServletRequest request){
         return commonService.selectNowBroadcast(request);
+    }
+
+
+    /**
+     * 방송주제 리스트 가져오기(사용중인 것만 가져옴)
+     */
+    @GetMapping("/room/type")
+    public String selectRoomTypeCodeList(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(조회, commonService.selectRoomTypeCodeList(new CodeVo(Code.방송주제.getCode()))));
     }
 }

@@ -4,7 +4,6 @@ import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.common.vo.request.SmsVo;
-import com.dalbit.member.vo.TokenCheckVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -63,5 +62,9 @@ public interface CommonDao {
 
     ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     AdultCheckVo getMembirth(String mem_no);
+
+    @Transactional(readOnly = true)
+    List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo);
 }

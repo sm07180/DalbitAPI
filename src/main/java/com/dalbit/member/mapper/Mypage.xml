@@ -214,26 +214,99 @@
 		SELECT COUNT(*) FROM tb_member_notification WHERE mem_no = #{mem_no} AND read_yn = '0'
     </select>
 
-    <select id="selectSpecialDjBroadcastTime" parameterType="String" resultType="long">
+    <select id="selectSpecialDjBroadcastTime" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="long">
         /* Mypage.xml - selectSpecialDjBroadcastTime */
         select ifnull(sum(airtime), 0) airtime
         from rd_data.tb_broadcast_room
         where mem_no = #{mem_no}
+            and DATE_FORMAT(concat(#{condition_start_date}, '000000'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
+            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, '235959'), '%Y-%m-%d %H:%i:%s')
     </select>
 
-    <select id="selectSpecialDjLikeCnt" parameterType="String" resultType="int">
+    <select id="selectSpecialDjLikeCnt" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="int">
         /* Mypage.xml - selectSpecialDjLikeCnt */
         select count(*)
         from rd_data.tb_broadcast_room_good
         where dj_mem_no = #{mem_no}
+            and DATE_FORMAT(concat(#{condition_start_date}, '000000'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
+            and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, '235959'), '%Y-%m-%d %H:%i:%s')
     </select>
 
-    <select id="selectSpecialDjBroadcastCnt" parameterType="String" resultType="int">
+    <select id="selectSpecialDjBroadcastCnt" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="int">
         /* Mypage.xml - selectSpecialDjBroadcastCnt */
         select count(*)
         from rd_data.tb_broadcast_room
         where mem_no = #{mem_no}
             and 3600 <![CDATA[<=]]> airtime
+            and DATE_FORMAT(concat(#{condition_start_date}, '000000'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
+            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, '235959'), '%Y-%m-%d %H:%i:%s')
+    </select>
+
+    <select id="selectSpecialDjReqManage" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjRegManageVo">
+        /* Mypage.xml - selectSpecialDjReqManage */
+        select
+            idx
+            , title
+            , select_year
+            , select_month
+            , date_format(req_start_date, '%Y%m%d000000') req_start_date
+            , date_format(req_end_date, '%Y%m%d235959') req_end_date
+            , date_format(condition_start_date, '%Y.%m.%d') condition_start_date
+            , date_format(condition_end_date, '%Y.%m.%d') condition_end_date
+            , condition_code1
+            , condition_data1
+            , condition_code2
+            , condition_data2
+            , condition_code3
+            , condition_data3
+            , pc_image_url
+            , mobile_image_url
+            , is_view
+            , platform
+            , reg_date
+            , op_name
+            , last_upd_date
+            , last_op_name
+        from rd_admin.tb_req_special_dj_manage
+        where select_year = #{select_year}
+            and select_month = #{select_month}
+    </select>
+
+    <select id="selectMemberLevel" parameterType="java.lang.String" resultType="com.dalbit.admin.vo.MemberInfoVo">
+        /* Mypage.xml - selectMemberLevel */
+        select
+            mem_no
+            , `level`
+            , grade
+            , exp
+            , last_upd_date
+        from rd_data.tb_member_level
+        where mem_no = #{mem_no}
+    </select>
+
+    <select id="selectMemberFanCnt" parameterType="java.lang.String" resultType="int">
+        /* Mypage.xml - selectMemberFanCnt */
+        select count(*)
+        from rd_data.tb_member_fanstar
+        where mem_no_star = #{mem_no}
+    </select>
+
+    <select id="selectListenerCnt" parameterType="java.lang.String" resultType="int">
+        /* Mypage.xml - selectMemberLevel */
+        select count(*)
+        from rd_data.tb_member_broadcast_listening
+        where dj_mem_no = #{mem_no}
+            and DATE_FORMAT(concat(#{condition_start_date}, '000000'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
+            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, '235959'), '%Y-%m-%d %H:%i:%s')
+    </select>
+
+    <select id="memberShortCutAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_shortcut_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+    <select id="memberShortCutExtend" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_shortcut_extend(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="msgClickUpdate" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

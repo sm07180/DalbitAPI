@@ -2,7 +2,6 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.broadcast.vo.DevRoomVo;
 import com.dalbit.broadcast.vo.RoomMemberOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;

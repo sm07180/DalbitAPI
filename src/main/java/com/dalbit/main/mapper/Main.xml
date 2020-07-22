@@ -14,6 +14,10 @@
         call sp_broadcast_room_list_mydj(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMainLevelRanking" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MainLevelRankingVo">
+        call sp_ranking_level(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="callMainRecommandList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
         SELECT
             C.mem_no AS memNo

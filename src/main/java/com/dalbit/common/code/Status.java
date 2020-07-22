@@ -37,6 +37,8 @@ public enum Status {
     본인인증확인("0", "self.auth.response.success", "본인인증 확인 성공 시"),
     본인인증검증_비정상접근("-1", "self.auth.response.check.error", "본인인증 비정상적인 접근 시"),
     본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
+    본인인증17세미만("C007", "self.auth.17age.limit", "17세 미만 회원일 시"),
+    보호자인증20세미만("C008", "self.auth.20age.limit", "보호자 20세 미만일 시"),
 
     //본인인증(DB저장)
     본인인증성공("0", "member.certification.success", "본인인증 성공 시"),
@@ -590,6 +592,11 @@ public enum Status {
     메인_DJ랭킹조회_내역없음("0", "main.dj.ranking.no.ranking.success", "랭킹 내역 없을 시"),
     메인_DJ랭킹조회_요청회원_회원아님("-1", "main.dj.ranking.member.number.error", "요청회원번호가 회원 아닐 시"),
     메인_DJ랭킹조회_실패("C006", "main.dj.ranking.select.fail", "DJ 랭킹 조회 실패 시"),
+
+    //메인 Level 랭킹
+    메인_Level랭킹조회_성공("C001", "main.level.ranking.select.success", "Level 랭킹 조회 성공 시"),
+    메인_Level랭킹조회_내역없음("0", "main.level.ranking.no.ranking.success", "랭킹 내역 없을 시"),
+    메인_Level랭킹조회_실패("C006", "main.level.ranking.select.fail", "Level 랭킹 조회 실패 시"),
 
     //마이페이지 방송설정 금지어 조회
     금지어조회_성공("0", "mypage.broadcast.ban.word.select.success", "금지어 조회 성공 시"),

@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter @Setter
-public class ShortCutEditVo {
+public class ShortCutExtendVo {
 
     @NotNull(message = "{\"ko_KR\" : \"빠른말 번호를\"}")
     private Integer orderNo;
@@ -21,5 +21,4 @@ public class ShortCutEditVo {
     @Size (message = "{\"ko_KR\" : \"빠른말을\"}", max = 200)
     private String text;
 
-    private String isOn;
 }

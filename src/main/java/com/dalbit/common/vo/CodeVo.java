@@ -14,6 +14,10 @@ public class CodeVo {
 
     public CodeVo(){}
 
+    public CodeVo(String type){
+        this.cd = type;
+    }
+
     public CodeVo(String type, String code){
         this.cd = type;
         this.cdNm = code;

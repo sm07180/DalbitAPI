@@ -1,7 +1,9 @@
 package com.dalbit.member.dao;
 
+import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.LevelVo;
+import com.dalbit.member.vo.SpecialDjRegManageVo;
 import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,21 +71,42 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     int selectExistsSpecialReq(String mem_no);
+
     @Transactional(readOnly = true)
     int selectExistsPhoneSpecialReq(String mem_no);
+
     void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
+
     @Transactional(readOnly = true)
-    long selectSpecialDjBroadcastTime(String mem_no);
+    long selectSpecialDjBroadcastTime(SpecialDjRegManageVo specialDjRegManageVo);
+
     @Transactional(readOnly = true)
-    int selectSpecialDjLikeCnt(String mem_no);
+    int selectSpecialDjLikeCnt(SpecialDjRegManageVo specialDjRegManageVo);
+
     @Transactional(readOnly = true)
-    int selectSpecialDjBroadcastCnt(String mem_no);
+    int selectSpecialDjBroadcastCnt(SpecialDjRegManageVo specialDjRegManageVo);
+
+    @Transactional(readOnly = true)
+    SpecialDjRegManageVo selectSpecialDjReqManage(SpecialDjRegManageVo specialDjRegManageVo);
+
+    @Transactional(readOnly = true)
+    MemberInfoVo selectMemberLevel(String mem_no);
+
+    @Transactional(readOnly = true)
+    int selectMemberFanCnt(String mem_no);
+
+    @Transactional(readOnly = true)
+    int selectListenerCnt(String mem_no);
 
     @Transactional(readOnly = true)
     List<LevelVo> selectLevel();
 
     @Transactional(readOnly = true)
     int callNewAlarm(P_MemberNotifyVo pMemberNotifyVo);
+
+    ProcedureVo memberShortCutAdd(ProcedureVo procedureVo);
+
+    ProcedureVo memberShortCutExtend(ProcedureVo procedureVo);
 
     ProcedureVo msgClickUpdate(ProcedureVo procedureVo);
 

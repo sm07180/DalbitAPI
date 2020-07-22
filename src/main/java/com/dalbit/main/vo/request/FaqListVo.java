@@ -12,7 +12,7 @@ public class FaqListVo {
 
     @NotNull(message = "{\"ko_KR\" : \"FAQ구분를\"}")
     @Min(message = "{\"ko_KR\" : \"FAQ구분를\"}", value = 0)
-    @Max(message = "{\"ko_KR\" : \"FAQ구분를\"}", value = 5)
+    @Max(message = "{\"ko_KR\" : \"FAQ구분를\"}", value = 99)
     private Integer faqType;
     @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;

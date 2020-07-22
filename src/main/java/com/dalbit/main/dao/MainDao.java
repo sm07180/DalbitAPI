@@ -26,4 +26,7 @@ public interface MainDao {
 
     @Transactional(readOnly = true)
     List<BannerVo> selectBanner(P_BannerVo pBannerVo);
+
+    @Transactional(readOnly = true)
+    List<P_MainLevelRankingVo> callMainLevelRanking(ProcedureVo procedureVo);
 }

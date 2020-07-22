@@ -1,5 +1,6 @@
 package com.dalbit.member.service;
 
+import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
 import com.dalbit.common.code.Code;
@@ -394,24 +395,69 @@ public class MypageService {
     /**
      * 회원 방송방 빠른말 가져오기
      */
-    public String callMemberShortCut(P_MemberShortCutVo pMemberShortCut){
-        ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
-        //mypageDao.callMemberShortCut(procedureVo);
-        List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
-
+    public String callMemberShortCut(P_MemberShortCutVo pMemberShortCut, String code, HttpServletRequest request){
         String result;
-        if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
-            List<MemberShortCutOutVo> outVoList = new ArrayList<>();
-            if(!DalbitUtil.isEmpty(memberShortCutList)){
-                for (int i=0; i<memberShortCutList.size(); i++){
-                    outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        if(deviceVo.getOs() == 3
+            || (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 1 && Integer.parseInt(deviceVo.getAppBuild()) < 21)
+            || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) < 92)
+        ){
+            ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
+            //mypageDao.callMemberShortCut(procedureVo);
+            List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+
+            if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
+                List<MemberShortCutOutVo> outVoList = new ArrayList<>();
+                if(!DalbitUtil.isEmpty(memberShortCutList)){
+                    for (int i=0; i<memberShortCutList.size(); i++){
+                        outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
+                    }
                 }
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_성공, outVoList));
+            } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회오류));
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_성공, outVoList));
-        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회오류));
+            ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
+            List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+
+
+            if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
+                List<MemberShortCutOutVo> outVoList = new ArrayList<>();
+                if(!DalbitUtil.isEmpty(memberShortCutList)){
+                    for (int i=0; i<memberShortCutList.size(); i++){
+                        outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
+                    }
+                }
+                ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+                HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+                HashMap returnMap = new HashMap();
+                returnMap.put("list", outVoList);
+                returnMap.put("itemPrice", DalbitUtil.getIntMap(resultMap,"item_price"));
+                returnMap.put("dal", DalbitUtil.getIntMap(resultMap,"dal"));
+                returnMap.put("maxCnt", 6);
+                returnMap.put("useDay", DalbitUtil.getIntMap(resultMap,"useDay"));
+                returnMap.put("endDt", outVoList.size() > 3 ? (!outVoList.get(3).isOn() ? "" : outVoList.get(3).getEndDt()) : "");
+                returnMap.put("endTs", outVoList.size() > 3 ? (!outVoList.get(3).isOn() ? 0 : outVoList.get(3).getEndTs()) : 0);
+
+                if(code.equals("add")){
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_성공, returnMap));
+                } else if(code.equals("extend")) {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_성공, returnMap));
+                } else if(code.equals("edit")) {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공, returnMap));
+                } else {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_성공, returnMap));
+                }
+
+            } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회오류));
+            }
         }
         return result;
     }
@@ -420,7 +466,7 @@ public class MypageService {
     /**
      * 회원 방송방 빠른말 수정하기
      */
-    public String callMemberShortCutEdit(P_MemberShortCutEditVo pMemberShortCutEdit){
+    public String callMemberShortCutEdit(P_MemberShortCutEditVo pMemberShortCutEdit, HttpServletRequest request){
         ProcedureVo procedureVo = new ProcedureVo(pMemberShortCutEdit);
         mypageDao.callMemberShortCutEdit(procedureVo);
 
@@ -436,10 +482,21 @@ public class MypageService {
                     outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
                 }
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공, outVoList));
-            //result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공));
+            /*ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("list", outVoList);
+            returnMap.put("itemPrice", DalbitUtil.getIntMap(resultMap, "item_price"));
+            returnMap.put("dal", DalbitUtil.getIntMap(resultMap, "dal"));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_성공, returnMap));*/
+
+            result = callMemberShortCut(apiData, "edit", request);
         } else if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_회원아님));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_명령어번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_명령어번호없음));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말수정_사용기간만료.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_사용기간만료));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정오류));
         }
@@ -1189,37 +1246,132 @@ public class MypageService {
     /**
      *  스페셜 DJ 신청 가능상태 확인
      */
-    public String callSpecialDjStatus(HttpServletRequest request){
+    public String callSpecialDjStatus(HttpServletRequest request, SpecialDjRegManageVo specialDjRegManageVo){
         String mem_no = MemberVo.getMyMemNo(request);
 
         if(!DalbitUtil.isLogin(request)) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
+
+            SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
+            var resultMap = new HashMap();
+            resultMap.put("eventInfo", getSpecialDjRegManageVo);
+
+            return gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님, resultMap));
+
+        }else if(DalbitUtil.isEmpty(specialDjRegManageVo.getSelect_year()) || DalbitUtil.isEmpty(specialDjRegManageVo.getSelect_month())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
         }
 
-        var resultMap = new HashMap();
+        //스페셜DJ 조건 확인
+        SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
+        getSpecialDjRegManageVo.setMem_no(mem_no);
 
-        //누적방송시간 체크
-        long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(mem_no);
-        int airtime = broadcastAirtime < 180000 ? 0 : 1;
+        //1번 조건 체크
+        getSpecialDjRegManageVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code1());
+        getSpecialDjRegManageVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data1());
+        HashMap conditionData1 = checkSpecialDjCondition(getSpecialDjRegManageVo);
 
-        //좋아요 갯수 체크
-        int djLikeCnt = mypageDao.selectSpecialDjLikeCnt(mem_no);
-        int like = djLikeCnt < 500 ? 0 : 1;
+        //2번 조건 체크
+        getSpecialDjRegManageVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code2());
+        getSpecialDjRegManageVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data2());
+        HashMap conditionData2 = checkSpecialDjCondition(getSpecialDjRegManageVo);
 
-        //1시간 이상 방송
-        int broadcastCnt = mypageDao.selectSpecialDjBroadcastCnt(mem_no);
-        int broadcast = broadcastCnt < 20 ? 0 : 1;
+        //3번 조건 체크
+        getSpecialDjRegManageVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code3());
+        getSpecialDjRegManageVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data3());
+        HashMap conditionData3 = checkSpecialDjCondition(getSpecialDjRegManageVo);
 
         //이미 신청여부 확인
         int alreadyCnt = mypageDao.selectExistsSpecialReq(mem_no);
         int already = alreadyCnt == 0 ? 0 : 1;
 
-        resultMap.put("airtime", airtime);
-        resultMap.put("like", like);
-        resultMap.put("broadcast", broadcast);
-        resultMap.put("already", already);
+        var specialDjCondition = new SpecialDjConditionVo();
+
+        specialDjCondition.setCondition1(DalbitUtil.getIntMap(conditionData1, "condition"));
+        specialDjCondition.setConditionTitle1(DalbitUtil.getStringMap(conditionData1, "title"));
+        specialDjCondition.setConditionValue1(DalbitUtil.getStringMap(conditionData1, "value"));
+
+        specialDjCondition.setCondition2(DalbitUtil.getIntMap(conditionData2, "condition"));
+        specialDjCondition.setConditionTitle2(DalbitUtil.getStringMap(conditionData2, "title"));
+        specialDjCondition.setConditionValue2(DalbitUtil.getStringMap(conditionData2, "value"));
+
+        specialDjCondition.setCondition3(DalbitUtil.getIntMap(conditionData3, "condition"));
+        specialDjCondition.setConditionTitle3(DalbitUtil.getStringMap(conditionData3, "title"));
+        specialDjCondition.setConditionValue3(DalbitUtil.getStringMap(conditionData3, "value"));
+
+        specialDjCondition.setAlready(already);
+
+        long nowDateTime = Long.valueOf(DalbitUtil.getUTCFormat(new Date()));
+        long reqStartDate = Long.valueOf(getSpecialDjRegManageVo.getReq_start_date());
+        long reqEndDate = Long.valueOf(getSpecialDjRegManageVo.getReq_end_date());
+
+        int timeState = (reqStartDate <= nowDateTime && nowDateTime <= reqEndDate) ? 1 : 0;
+        specialDjCondition.setTimeState(timeState);
+
+        var resultMap = new HashMap();
+        resultMap.put("specialDjCondition", specialDjCondition);
+        resultMap.put("eventInfo", getSpecialDjRegManageVo);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
+
+    public HashMap checkSpecialDjCondition(SpecialDjRegManageVo specialDjReqManageVo){
+
+        int code = specialDjReqManageVo.getCondition_code();
+        int value = specialDjReqManageVo.getCondition_data();
+
+        var resultMap = new HashMap();
+        /**
+         * code 정리
+         * [tbl_code_define : special_dj_condition]
+         * 1 : 누적 방송시간
+         * 2 : 1시간 이상 방송
+         * 3 : 좋아요
+         * 4 : 레벨
+         * 5 : 팬 수
+         * 6 : 누적 청취자 수
+         */
+        if(code == 1){
+            //누적방송시간 체크(기간)
+            long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjReqManageVo);
+            resultMap.put("condition", broadcastAirtime < value ? 0 : 1);
+            resultMap.put("title", "누적방송시간");
+            resultMap.put("value", "최소 " + value + "시간 방송");
+
+        }else if(code == 2){
+            //1시간 이상 방송(기간)
+            int broadcastCnt = mypageDao.selectSpecialDjBroadcastCnt(specialDjReqManageVo);
+            resultMap.put("condition", broadcastCnt < value ? 0 : 1);
+            resultMap.put("title", "1시간 이상 방송");
+            resultMap.put("value", "최소 " + value + "회 이상");
+        }else if(code == 3){
+            //좋아요 갯수 체크(기간)
+            int djLikeCnt = mypageDao.selectSpecialDjLikeCnt(specialDjReqManageVo);
+            resultMap.put("condition", djLikeCnt < value ? 0 : 1);
+            resultMap.put("title", "받은 좋아요");
+            resultMap.put("value", "최소 " + value + "개 이상");
+        }else if(code == 4){
+            //레벨 체크(현재 상태)
+            MemberInfoVo memberInfoVo = mypageDao.selectMemberLevel(specialDjReqManageVo.getMem_no());
+            resultMap.put("condition", memberInfoVo.getLevel() < value ? 0 : 1);
+            resultMap.put("title", "현재 레벨");
+            resultMap.put("value", "최소 " + value + "렙 이상");
+
+        }else if(code == 5){
+            //팬 수 체크(현재 상태)
+            int fanCnt = mypageDao.selectMemberFanCnt(specialDjReqManageVo.getMem_no());
+            resultMap.put("condition", fanCnt < value ? 0 : 1);
+            resultMap.put("title", "현재 팬 수");
+            resultMap.put("value", "최소 " + value + "명 이상");
+
+        }else if(code == 6){
+            //청취자 수
+            int listenCnt = mypageDao.selectListenerCnt(specialDjReqManageVo.getMem_no());
+            resultMap.put("condition", listenCnt < value ? 0 : 1);
+            resultMap.put("title", "누적 청취자 수");
+            resultMap.put("value", "최소 " + value + "명 이상");
+        }
+
+        return resultMap;
     }
 
     /**
@@ -1229,15 +1381,21 @@ public class MypageService {
         String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청실패));
         pSpecialDjReq.setMem_no(MemberVo.getMyMemNo(request));
 
-        //Date endDate = new Date(120, 4, 29);
-        //Date today = new Date();
+        //스페셜DJ 조건 확인
+        var specialDjRegManageVo = new SpecialDjRegManageVo();
+        specialDjRegManageVo.setSelect_year(pSpecialDjReq.getSelect_year());
+        specialDjRegManageVo.setSelect_month(pSpecialDjReq.getSelect_month());
+        SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
+        getSpecialDjRegManageVo.setMem_no(pSpecialDjReq.getMem_no());
+
+        //시간 체크
         long nowDateTime = Long.valueOf(DalbitUtil.getUTCFormat(new Date()));
-        long startDateTime = 20200622000000L;
-        long endDateTime = 20200628235959L;
+        long reqStartDate = Long.valueOf(getSpecialDjRegManageVo.getReq_start_date());
+        long reqEndDate = Long.valueOf(getSpecialDjRegManageVo.getReq_end_date());
 
         if(!DalbitUtil.isLogin(request)) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님));
-        }else if(nowDateTime < startDateTime || endDateTime < nowDateTime){
+        }else if(nowDateTime < reqStartDate || reqEndDate < nowDateTime){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_기간아님));
         }else if(mypageDao.selectExistsSpecialReq(pSpecialDjReq.getMem_no()) > 0 || mypageDao.selectExistsPhoneSpecialReq(pSpecialDjReq.getPhone()) > 0){
             result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_이미신청));
@@ -1316,6 +1474,65 @@ public class MypageService {
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
     }
+
+
+    /**
+     * 회원 방송방 빠른말 추가
+     */
+    public String memberShortCutAdd(P_MemberShortCutAddVo pMemberShortCutAddVo, HttpServletRequest request) {
+
+        ProcedureVo procedureVo = new ProcedureVo(pMemberShortCutAddVo);
+        mypageDao.memberShortCutAdd(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.회원방송방빠른말추가_성공.getMessageCode())) {
+
+            P_MemberShortCutVo apiData = new P_MemberShortCutVo();
+            apiData.setMem_no(new MemberVo().getMyMemNo(request));
+            result = callMemberShortCut(apiData, "add", request);
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말추가_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_회원아님));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말추가_제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_제한));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말추가_달부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_달부족));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_오류));
+        }
+        return result;
+    }
+
+
+    /**
+     * 회원 방송방 빠른말 연장
+     */
+    public String memberShortCutExtend(P_MemberShortCutExtendVo pMemberShortCutRenewVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pMemberShortCutRenewVo);
+        mypageDao.memberShortCutExtend(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_성공.getMessageCode())) {
+
+            P_MemberShortCutVo apiData = new P_MemberShortCutVo();
+            apiData.setMem_no(new MemberVo().getMyMemNo(request));
+            result = callMemberShortCut(apiData, "extend", request);
+
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_회원아님));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_불가번호.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_불가번호));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_번호없음));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_사용중인번호.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_사용중인번호));
+        } else if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_달부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_달부족));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말연장_오류));
+        }
+        return result;
+    }
+
 
     /**
      * 메시지 사용 클릭 업데이트

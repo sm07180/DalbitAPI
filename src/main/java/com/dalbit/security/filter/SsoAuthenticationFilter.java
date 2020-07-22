@@ -62,6 +62,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/socket"
         , "/paycall/store"
         , "/items"
+        , "/api-tester"
     };
 
     @Override
