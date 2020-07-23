@@ -399,25 +399,44 @@ public class MypageService {
         String result;
 
         DeviceVo deviceVo = new DeviceVo(request);
-        if(deviceVo.getOs() == 3
-            || (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 1 && Integer.parseInt(deviceVo.getAppBuild()) < 21)
+        if( (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 1 && Integer.parseInt(deviceVo.getAppBuild()) < 21)
             || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) < 92)
-        ){
+        ) {
             ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
             //mypageDao.callMemberShortCut(procedureVo);
             List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
 
             if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
                 List<MemberShortCutOutVo> outVoList = new ArrayList<>();
-                if(!DalbitUtil.isEmpty(memberShortCutList)){
-                    for (int i=0; i<memberShortCutList.size(); i++){
+                if (!DalbitUtil.isEmpty(memberShortCutList)) {
+                    for (int i = 0; i < memberShortCutList.size(); i++) {
                         outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
                     }
                 }
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_성공, outVoList));
             } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님));
-            }else{
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회오류));
+            }
+        } else if (deviceVo.getOs() == 3) {
+            ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
+            //mypageDao.callMemberShortCut(procedureVo);
+            List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
+
+            if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
+                List<MemberShortCutOutVo> outVoList = new ArrayList<>();
+                if (!DalbitUtil.isEmpty(memberShortCutList)) {
+                    for (int i = 0; i < memberShortCutList.size(); i++) {
+                        outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
+                    }
+                }
+                HashMap returnMap = new HashMap();
+                returnMap.put("list", outVoList);
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_성공, returnMap));
+            } else if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_회원아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회_회원아님));
+            } else {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말조회오류));
             }
         }else{
