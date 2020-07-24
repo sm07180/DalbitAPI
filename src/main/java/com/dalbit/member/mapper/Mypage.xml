@@ -216,7 +216,7 @@
 
     <select id="selectSpecialDjBroadcastTime" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="long">
         /* Mypage.xml - selectSpecialDjBroadcastTime */
-        select TRUNCATE(ifnull(sum(airtime), 0)/60, 0) airtime
+        select TRUNCATE(ifnull(sum(airtime), 0) / 3600, 0) airtime
         from rd_data.tb_broadcast_room
         where mem_no = #{mem_no}
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
