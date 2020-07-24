@@ -220,7 +220,7 @@
         from rd_data.tb_broadcast_room
         where mem_no = #{mem_no}
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
     <select id="selectSpecialDjLikeCnt" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="int">
@@ -229,7 +229,7 @@
         from rd_data.tb_broadcast_room_good
         where dj_mem_no = #{mem_no}
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
-            and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+            and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
     <select id="selectSpecialDjBroadcastCnt" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="int">
@@ -239,7 +239,7 @@
         where mem_no = #{mem_no}
             and 3600 <![CDATA[<=]]> airtime
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
     <select id="selectSpecialDjReqManage" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjRegManageVo">
@@ -297,7 +297,7 @@
         from rd_data.tb_member_broadcast_listening
         where dj_mem_no = #{mem_no}
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_start_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
     <select id="memberShortCutAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
