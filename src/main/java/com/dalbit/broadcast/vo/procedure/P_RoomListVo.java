@@ -59,5 +59,6 @@ public class P_RoomListVo{
     private int badge_popular;                  //인기뱃지
     private int badge_newdj;                    //신입뱃지
     private int badge_special;                  //스페셜뱃지
+    private int os_type;
 
 }

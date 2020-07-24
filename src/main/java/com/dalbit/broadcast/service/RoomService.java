@@ -1084,8 +1084,19 @@ public class RoomService {
             if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
                 SocketVo vo = socketService.getSocketVo(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), old_state, state, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-                    //socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), stateVo.getIsAnt(), stateVo.getIsCall(), stateVo.getIsMic(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    DeviceVo deviceVo = new DeviceVo(request);
+                    /*
+                        채팅방 상단 top1부분 버전분기
+                        예전 마이크,통화,앤트 관련하여 최종 하나만 발송
+                        변경 마이크,통화,앤트 관련하여 각각 발송
+                    */
+                    if(deviceVo.getOs() == 3 || deviceVo.getOs() == 1
+                        || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) < 91) //IOS일경우 빌드번호 91보다 작으면 예전
+                    ){
+                        socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), old_state, state, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, stateVo.getIsAnt());
+                    }else{
+                        socketService.changeRoomState(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), old_state, stateVo.getIsAnt(), stateVo.getIsCall(), stateVo.getIsMic(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    }
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service changeRoomState Exception {}", e);

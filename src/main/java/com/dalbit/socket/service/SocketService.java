@@ -238,15 +238,16 @@ public class SocketService {
 
     @Async("threadTaskExecutor")
     public void changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin){
-        changeRoomState(roomNo, memNo, old_state, state, authToken, isLogin, null);
+        changeRoomState(roomNo, memNo, old_state, state, authToken, isLogin, null, null);
     }
 
     @Async("threadTaskExecutor")
-    public void changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin, SocketVo vo){
+    public void changeRoomState(String roomNo, String memNo, int old_state, int state, String authToken, boolean isLogin, SocketVo vo, String isAnt){
         log.info("Socket Start : changeRoomState {}, {}, {}, {}, {}", roomNo, memNo, old_state, state, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
+        isAnt = isAnt == null ? "" : isAnt.trim().toUpperCase();
 
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
             if(vo == null){
@@ -259,8 +260,14 @@ public class SocketService {
                     bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
                     return;
                 } else if (state == 3) { //통화중
+                    if ((old_state == 0 || old_state == 6) && ("1".equals(isAnt) || "TRUE".equals(isAnt))) {
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                    }
                     command = "reqCalling";
                 } else if (state == 2) { // 마이크 오프
+                    if ((old_state == 0 || old_state == 6) && ("1".equals(isAnt) || "TRUE".equals(isAnt))) {
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                    }
                     command = "reqMicOff";
                 } else {
                     if (old_state == 0 || old_state == 6) {
@@ -284,7 +291,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void changeRoomState(String roomNo, String memNo, String ant, String call, String mic, String authToken, boolean isLogin, SocketVo vo){
+    public void changeRoomState(String roomNo, String memNo, int old_state, String ant, String call, String mic, String authToken, boolean isLogin, SocketVo vo){
         log.info("Socket Start : changeRoomState {}, {}, {}, {}, {}, {}", roomNo, memNo, ant, call, mic, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -295,12 +302,14 @@ public class SocketService {
                 vo = getSocketVo(roomNo, memNo, isLogin);
             }
             if (vo.getMemNo() != null) {
-                if("0".equals(ant) || "FALSE".equals(ant)) {
+                if("0".equals(ant) || "FALSE".equals(ant.toUpperCase())) {
                     bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
                 }else{
-                    bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                    if(old_state == 0 || old_state == 3){
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                    }
                 }
-                if("0".equals(mic) || "FALSE".equals(mic)) {
+                if("0".equals(mic) || "FALSE".equals(mic.toUpperCase())) {
                     vo.setCommand("reqMicOff");
                     vo.setMessage(vo.getAuth() + "");
                     vo.setRecvPosition("top1");
@@ -317,7 +326,7 @@ public class SocketService {
 
                     sendSocketApi(authToken, roomNo, vo.toQueryString());
                 }
-                if("0".equals(call) || "FALSE".equals(call)) {
+                if("0".equals(call) || "FALSE".equals(call.toUpperCase())) {
                     vo.setCommand("reqEndCall");
                     vo.setMessage(vo.getAuth() + "");
                     vo.setRecvPosition("top1");

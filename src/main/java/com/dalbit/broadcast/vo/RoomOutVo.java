@@ -56,6 +56,7 @@ public class RoomOutVo {
     private Boolean isPop;
     private Boolean isNew;
     private Boolean isSpecial;
+    private int os;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -91,6 +92,7 @@ public class RoomOutVo {
         this.isSpecial = (target.getBadge_special() == 1 ? true : false);
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
+        this.os = target.getOs_type();
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {
