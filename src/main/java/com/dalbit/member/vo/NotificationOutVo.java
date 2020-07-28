@@ -14,6 +14,7 @@ public class NotificationOutVo {
     private String contents;
     private String memNo;
     private String roomNo;
+    private String link;
     private String regDt;
     private long regTs;
     private ImageVo profImg;
@@ -24,6 +25,7 @@ public class NotificationOutVo {
         setContents(target.getContents());
         setMemNo(target.getTarget_mem_no());
         setRoomNo(target.getRoom_no());
+        setLink(target.getLink());
         setRegDt(DalbitUtil.getUTCFormat(target.getRegDate()));
         setRegTs(DalbitUtil.getUTCTimeStamp(target.getRegDate()));
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
