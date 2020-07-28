@@ -114,7 +114,7 @@
                     WHEN use_area = '1' THEN 'emotion'
                     ELSE 'normal'
                 END)AS category
-                , (CAST(SUBSTR(item_type, 1, 1) AS INT) = 1) AS isNew
+                , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
                 , @rownum := @rownum + 1 AS sortNo
         FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
         WHERE view_yn = 1
@@ -180,7 +180,7 @@
                     WHEN use_area = '1' THEN 'emotion'
                     ELSE 'normal'
                 END)AS category
-                , (CAST(SUBSTR(item_type, 1, 1) AS INT) = 1) AS isNew
+                , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
                 , 1 AS sortNo
         FROM rd_data.tbl_gift_item
         WHERE item_code = #{value}

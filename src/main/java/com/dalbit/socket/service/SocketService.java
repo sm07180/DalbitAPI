@@ -357,8 +357,9 @@ public class SocketService {
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
             if(vo != null && vo.getMemNo() != null) {
                 vo.setCommand("reqBjAntConnect");
-                vo.setRecvDj(0);
+                //vo.setRecvDj(0);
                 vo.setMessage("");
+                //vo.setMessage("" + new java.util.Date().getTime());
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
                 //return bjAntDisConnect(roomNo, authToken, vo);
             }
@@ -376,6 +377,7 @@ public class SocketService {
             if(vo != null && vo.getMemNo() != null) {
                 vo.setCommand("reqBjAntDisconnect");
                 vo.setMessage("DJ의 방송상태가 원활하지 않습니다.");
+                //vo.setMessage("" + new java.util.Date().getTime());
                 vo.setRecvDj(0);
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
                 bjAntDisConnect(roomNo, authToken, vo);

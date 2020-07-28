@@ -896,8 +896,15 @@ public class DalbitUtil {
             browser =  "Opera";
         } else if (userAgent.indexOf("Firefox") > -1) {
             browser = "Firefox";
+        } else if (userAgent.indexOf("Edg") > -1) {
+            browser = "Edge";
         } else if (userAgent.indexOf("Chrome") > -1) {
-            browser = "Chrome";
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 1){
+                browser = "WebView";
+            }else{
+                browser = "Chrome";
+            }
         } else if (userAgent.indexOf("Safari") > -1) {
             browser = "Safari";
         }else if (userAgent.indexOf("AppleWebKit") > -1) { //웹뷰
