@@ -954,6 +954,9 @@ public class RoomService {
 
                     HashMap returnMap = new HashMap();
                     returnMap.put("roomNo", pRoomStreamVo.getRoom_no());
+                    returnMap.put("roomType", target.getRoomType());
+                    returnMap.put("welcomMsg", target.getWelcomMsg());
+                    returnMap.put("entryType", target.getEntryType());
                     returnMap.put("bjStreamId", bjStreamId);
                     returnMap.put("bjPubToken", bjPubToken);
                     returnMap.put("bjPlayToken", bjPlayToken);
