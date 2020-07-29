@@ -712,18 +712,30 @@ public class SocketService {
                 vo.setRecvMemNo(memNo);
                 vo.setCommand("chatEnd");
 
-                HashMap data = new HashMap();
-                data.put("authToken", authToken);
-                data.put("memNo", memNo);
                 if(auth == 3 ){
+                    HashMap data = new HashMap();
                     data.put("message", "roomOut");
+                    vo.setRecvMemNo("roomOut");
+                    vo.setMessage(data);
                 }else{
+                    HashMap data = new HashMap();
+                    data.put("authToken", authToken);
+                    data.put("memNo", memNo);
                     data.put("message", "userOut");
+                    vo.setRecvMemNo(memNo);
+                    vo.setMessage(data);
                 }
-                vo.setRecvMemNo(memNo);
-                vo.setMessage(data);
 
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
+                if(auth == 3 ){
+                    HashMap data = new HashMap();
+                    data.put("authToken", authToken);
+                    data.put("memNo", memNo);
+                    data.put("message", "roomOut");
+                    vo.setRecvMemNo(memNo);
+                    vo.setMessage(data);
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
             }
         }
     }
