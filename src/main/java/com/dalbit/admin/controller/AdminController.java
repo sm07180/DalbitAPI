@@ -71,7 +71,7 @@ public class AdminController {
      */
     @PostMapping("/broadcast/forceExit")
     public String broadcastForceExit(HttpServletRequest request, P_RoomForceExitInputVo pRoomForceExitInputVo){
-        String result = adminService.roomForceExit(pRoomForceExitInputVo);
+        String result = adminService.roomForceExit(pRoomForceExitInputVo, request);
         return result;
     }
 

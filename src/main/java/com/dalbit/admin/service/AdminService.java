@@ -176,7 +176,7 @@ public class AdminService {
     /**
      * 생방송관리 > 강제종료
      */
-    public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo) {
+    public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomForceExitInputVo);
         //방 나가기 처리
         adminDao.callBroadcastRoomExit(procedureVo);
@@ -196,20 +196,9 @@ public class AdminService {
         //방 종료 처리
         adminDao.updateBroadcastExit(new BroadcastExitVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getStart_date()));
 
-        //소캣 알림
-        HashMap<String, Object> param = new HashMap<>();
-        param.put("roomNo", pRoomForceExitInputVo.getRoom_no());
-        param.put("memNo", pRoomForceExitInputVo.getMem_no());
-
-        //option
-        param.put("ctrlRole", "");
-        param.put("recvMemNo", "roomOut");
-        param.put("recvType", "chat");
-        param.put("recvPosition", "chat");
-        param.put("recvLevel", 0);
-        param.put("recvTime", 0);
-
-        adminSocketUtil.setSocket(param, "chatEnd", "roomOut", jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true));
+        //소캣 종료 처리
+        SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
+        socketService.chatEnd(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true), 3, DalbitUtil.isLogin(request), vo);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
     }
