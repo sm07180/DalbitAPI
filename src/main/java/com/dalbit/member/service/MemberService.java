@@ -346,6 +346,10 @@ public class MemberService {
     public String exchangeReapply(ExchangeReApplyVo exchangeReApplyVo, HttpServletRequest request) throws GlobalException {
 
         ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeReApprovalSelect(exchangeReApplyVo);
+        if(exchangeSuccessVo.getAddFile1().startsWith(Code.포토_환전신청_임시_PREFIX.getCode()) || exchangeSuccessVo.getAddFile2().startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.환전신청_기존신청정보오류));
+        }
+
         P_ExchangeApplyVo pExchangeApplyVo = new P_ExchangeApplyVo();
         pExchangeApplyVo.setMem_no(exchangeSuccessVo.getMemNo());
         pExchangeApplyVo.setByeol(exchangeReApplyVo.getByeol());
