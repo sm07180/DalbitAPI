@@ -11,18 +11,20 @@ public class MemberSearchOutVo {
 
     private String memNo;
     private String nickNm;
-    private String memId;
-    /*private String gender;*/
+    private String gender;
     private ImageVo profImg;
     private String roomNo;
+    private boolean isNew;
+    private boolean isSpecial;
+    private long fanCnt;
 
     public MemberSearchOutVo(P_MemberSearchVo target) {
         setMemNo(target.getMem_no());
         setNickNm(target.getMem_nick());
-        setMemId(target.getMem_id());
-        /*setGender(target.getMem_sex());*/
         setProfImg(new ImageVo(target.getImage_profile(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
-        setRoomNo(target.getRoom_no());
+        isNew = target.getNewdj_badge() == 1;
+        isSpecial = target.getSpecialdj_badge() == 1;
+        setFanCnt(target.getFan_count());
+        setGender(target.getMem_sex());
     }
-
 }

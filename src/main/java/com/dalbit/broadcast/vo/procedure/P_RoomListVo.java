@@ -14,6 +14,7 @@ public class P_RoomListVo{
     private String mem_no;                  //방리스트 요청 회원번호
     private Integer slctType;               //검색구분 -1 or 0: null, 1: 추천(=청취자), 2:인기, 3:신입
     private String subjectType;             //방주제, 리스트 우선순위 설정
+    private String search;                  //검색어
     private String gender;                  //DJ성별
     private String djType;                  //신입구분
     private int pageNo;                     //현재 페이지 번호

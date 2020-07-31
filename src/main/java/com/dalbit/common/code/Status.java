@@ -967,6 +967,81 @@ public enum Status {
     //메시지 사용 클릭
     메시지클릭업데이트_성공("0", "mypage.member.msg.click.update.success", "메시지 클릭 업데이트 성공 시"),
     메시지클릭업데이트_오류("C006", "mypage.member.msg.click.update.error", "메시지 클릭 업데이트 오류 시"),
+
+    //팬 메모 조회
+    팬메모조회_성공("0", "member.fan.memo.select.success", "팬 메모조회 성공 시"),
+    팬메모조회_요청회원_회원아님("-1", "member.fan.memo.select.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    팬메모조회_대상회원_회원아님("-2", "member.fan.memo.select.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    팬메모조회_대상회원_팬아님("-3", "member.fan.memo.select.object.member.number.no.fan", "대상 회원번호가 팬이 아닐 시"),
+    팬메모조회_실패("C006", "member.fan.memo.select.fail", "팬 메모조회 실패 시"),
+
+    //팬 메모 저장
+    팬메모저장_성공("0", "member.fan.memo.save.success", "팬 메모저장 성공 시"),
+    팬메모저장_요청회원_회원아님("-1", "member.fan.memo.save.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    팬메모저장_대상회원_회원아님("-2", "member.fan.memo.save.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    팬메모저장_실패("C006", "member.fan.memo.save.fail", "팬 메모저장 실패 시"),
+
+    //팬 리스트 편집
+    팬리스트편집_성공("0", "member.fan.list.edit.success", "팬 리스트 편집 성공 시"),
+    팬리스트편집_요청회원_회원아님("-1", "member.fan.list.edit.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    팬리스트편집_실패("C006", "member.fan.list.edit.fail", "팬 리스트 편집 실패 시"),
+
+    //스타리스트 조회
+    스타리스트조회_성공("C001", "member.star.list.select.success", "스타리스트 조회 성공 시"),
+    스타리스트조회_없음("0", "member.star.list.no.star.success", "스타 없을 시"),
+    스타리스트조회_요청회원_회원아님("-1", "member.star.list.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    스타리스트조회_대상회원_회원아님("-2", "member.star.list.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    스타리스트조회_실패("C006", "member.star.list.select.fail", "스타리스트 조회 실패 시"),
+
+    //스타 메모 조회
+    스타메모조회_성공("0", "member.star.memo.select.success", "스타 메모조회 성공 시"),
+    스타메모조회_요청회원_회원아님("-1", "member.star.memo.select.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    스타메모조회_대상회원_회원아님("-2", "member.star.memo.select.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    스타메모조회_대상회원_팬아님("-3", "member.star.memo.select.object.member.number.no.star", "대상 회원번호가 스타가 아닐 시"),
+    스타메모조회_실패("C006", "member.star.memo.select.fail", "스타 메모조회 실패 시"),
+
+    //스타 메모 저장
+    스타메모저장_성공("0", "member.star.memo.save.success", "스타 메모저장 성공 시"),
+    스타메모저장_요청회원_회원아님("-1", "member.star.memo.save.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    스타메모저장_대상회원_회원아님("-2", "member.star.memo.save.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    스타메모저장_실패("C006", "member.star.memo.save.fail", "스타 메모저장 실패 시"),
+
+    //랭킹보상팝업 조회
+    랭킹보상팝업조회_성공("0", "main.ranking.reward.select.success", "랭킹 보상 팝업조회 성공 시"),
+    랭킹보상팝업조회_요청회원_회원아님("-1", "main.ranking.reward.select.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    랭킹보상팝업조회_TOP3_아님("-2", "main.ranking.reward.select.not.top3", "TOP3가 아닐 시"),
+    랭킹보상팝업조회_보상테이블_없음("-3", "main.ranking.reward.select.no.reward.table", "보상테이블이 없을 시"),
+    랭킹보상팝업조회_없는구분타입("-4", "main.ranking.reward.select.no.type", "없는 구분타입일 시"),
+    랭킹보상팝업조회_실패("C006", "main.ranking.reward.select.fail", "랭킹 보상 팝업조회 실패 시"),
+
+    //랜덤박스 열기
+    랜덤박스열기_성공("0", "main.ranking.randombox.open.success", "랜덤박스 열기 성공 시"),
+    랜덤박스열기_요청회원_회원아님("-1", "main.ranking.randombox.open.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    랜덤박스열기_TOP3_아님("-2", "main.ranking.randombox.open.not.top3", "TOP3가 아닐 시"),
+    랜덤박스열기_보상대상_회원아님("-3", "main.ranking.randombox.open.reward.member.number.error", "보상대상 회원이 아닐 시"),
+    랜덤박스열기_이미받음("-4", "main.ranking.randombox.open.already.reward", "이미 보상 받았을 시"),
+    랜덤박스열기_없는구분타입("-5", "main.ranking.randombox.open.no.type", "없는 구분타입일 시"),
+    랜덤박스열기_실패("C006", "main.ranking.randombox.open.fail", "랜덤박스 열기 실패 시"),
+
+    //출석완료체크
+    출석완료체크_성공("0", "event.attendance.check.success", "출석완료 체크 성공 시"),
+    출석완료체크_회원아님("-1", "event.attendance.check.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    출석완료체크_실패("C006", "event.attendance.check.fail", "출석완료 체크 실패 시"),
+
+    //휴대폰입력 (출석체크 이벤트)
+    휴대폰입력_성공("0", "event.attendance.phone.input.success", "휴대폰 입력 저장 성공 시"),
+    휴대폰입력_회원아님("-1", "event.attendance.phone.input.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    휴대폰입력_당첨자아님("-2", "event.attendance.phone.input.prize.no.member", "당첨자가 아닐 시"),
+    휴대폰입력_자리수11미만("-3", "event.attendance.phone.input.number.limit.11", "번호 11자리 미만일 시"),
+    휴대폰입력_입력종료시간지남("-4", "event.attendance.phone.input.limit.time", "입력종료시간 지났을 시"),
+    휴대폰입력_이미입력된번호("-5", "event.attendance.phone.input.already", "이미 입력된 번호일 시"),
+    휴대폰입력_실패("C006", "event.attendance.phone.input.fail", "휴대폰 입력 저장 실패 시"),
+
+    //기프티콘 당첨자리스트 조회
+    기프티콘_당첨자리스트조회("C001", "gifticon.win.list.select.success", "기프티콘 당첨자 조회 성공 시"),
+    기프티콘_당첨자리스트없음("0", "gifticon.win.list.select.no", "당첨자 없을 시"),
+    기프티콘_당첨자리스트조회_회원아님("-1", "gifticon.win.list.select.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    기프티콘_당첨자리스트조회_실패("C006", "gifticon.win.list.select.fail", "기프티콘 당첨자 조회 실패 시"),
    ;
 
 

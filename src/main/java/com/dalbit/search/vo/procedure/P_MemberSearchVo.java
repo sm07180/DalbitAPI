@@ -34,5 +34,8 @@ public class P_MemberSearchVo {
     private String mem_sex;
     private String image_profile;
     private String room_no;
+    private int newdj_badge;
+    private int specialdj_badge;
+    private long fan_count;
 
 }

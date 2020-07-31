@@ -24,7 +24,8 @@ public class ProfileController {
 
     @Autowired
     ProfileService profileService;
-
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 정보 조회
@@ -108,6 +109,7 @@ public class ProfileController {
         return result;
     }
 
+
     /**
      * 회원 팬보드 댓글수정
      */
@@ -163,6 +165,7 @@ public class ProfileController {
         return result;
     }
 
+
     /**
      * 회원 레벨업 확인
      */
@@ -176,8 +179,6 @@ public class ProfileController {
         return result;
     }
 
-    @Autowired
-    GsonUtil gsonUtil;
 
     /**
      * 회원 스타 랭킹 조회
@@ -188,6 +189,7 @@ public class ProfileController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileService.selectStarRanking(starRankingVo, request)));
     }
+
 
     /**
      * 회원 팬 전체 리스트
@@ -201,4 +203,103 @@ public class ProfileController {
         String result = profileService.callFanList(apiData);
         return result;
     }
+
+
+    /**
+     * NEW 회원 팬 전체 리스트
+     */
+    @GetMapping("/fan/list/new")
+    public String fanListNew(@Valid FanListNewVo fanListNewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanListNewVo apiData = new P_FanListNewVo(fanListNewVo, request);
+
+        String result = profileService.callFanListNew(apiData, request);
+        return result;
+    }
+
+
+    /**
+     * 회원 팬 메모 조회
+     */
+    @GetMapping("/fan/memo")
+    public String fanMemo(@Valid FanMemoVo fanMemoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanMemoVo apiData = new P_FanMemoVo(fanMemoVo, request);
+
+        String result = profileService.callFanMemo(apiData);
+        return result;
+    }
+
+
+    /**
+     * 회원 팬 메모 저장
+     */
+    @PostMapping("/fan/memo")
+    public String fanMemoSave(@Valid FanMemoSaveVo fanMemoSaveVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanMemoSaveVo apiData = new P_FanMemoSaveVo(fanMemoSaveVo, request);
+
+        String result = profileService.callFanMemoSave(apiData);
+        return result;
+    }
+
+
+    /**
+     * 회원 팬 리스트 편집
+     */
+    @PostMapping("/fan/edit")
+    public String fanEdit(@Valid FanEditVo fanEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanEditVo apiData = new P_FanEditVo(fanEditVo, request);
+
+        String result = profileService.callFanEdit(apiData);
+        return result;
+    }
+
+
+    /**
+     * NEW 스타 리스트
+     */
+    @GetMapping("/star/list/new")
+    public String starListNew(@Valid StarListNewVo starListNewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_StarListNewVo apiData = new P_StarListNewVo(starListNewVo, request);
+
+        String result = profileService.callStarListNew(apiData, request);
+        return result;
+    }
+
+
+    /**
+     * 스타 메모 조회
+     */
+    @GetMapping("/star/memo")
+    public String starMemo(@Valid StarMemoVo starMemoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_StarMemoVo apiData = new P_StarMemoVo(starMemoVo, request);
+
+        String result = profileService.callStarMemo(apiData);
+        return result;
+    }
+
+
+    /**
+     * 스타 메모 저장
+     */
+    @PostMapping("/star/memo")
+    public String starMemoSave(@Valid StarMemoSaveVo starMemoSaveVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_StarMemoSaveVo apiData = new P_StarMemoSaveVo(starMemoSaveVo, request);
+
+        String result = profileService.callStarMemoSave(apiData);
+        return result;
+    }
 }
+

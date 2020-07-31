@@ -234,6 +234,8 @@ public class RoomController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(roomListVo.getRoomType());
         apiData.setSlctType(roomListVo.getSearchType());
+        apiData.setSearch(roomListVo.getSearch());
+
         if(!DalbitUtil.isEmpty(roomListVo.getGender())){
             if(roomListVo.getGender().equals("d")){
                 apiData.setDjType("1");

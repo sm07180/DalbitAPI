@@ -66,12 +66,16 @@ public class MainService {
         }
 
         //DJ랭킹 조회
+        Calendar today = Calendar.getInstance();
         P_MainDjRankingVo pMainDjRankingVo = new P_MainDjRankingVo();
         pMainDjRankingVo.setMemLogin(isLogin);
         pMainDjRankingVo.setMem_no(memNo);
         pMainDjRankingVo.setSlct_type(1);
+        if(today.get(Calendar.HOUR_OF_DAY) > 0){
+            pMainDjRankingVo.setSlct_type(0);
+        }
         pMainDjRankingVo.setPageNo(1);
-        pMainDjRankingVo.setPageCnt(5);
+        pMainDjRankingVo.setPageCnt(10);
         ProcedureVo procedureDjRankVo = new ProcedureVo(pMainDjRankingVo);
         List<P_MainDjRankingVo> mainDjRankingVoList = mainDao.callMainDjRanking(procedureDjRankVo);
         if(DalbitUtil.isEmpty(mainDjRankingVoList)){
@@ -85,8 +89,11 @@ public class MainService {
         pMainFanRankingVo.setMemLogin(isLogin);
         pMainFanRankingVo.setMem_no(memNo);
         pMainFanRankingVo.setSlct_type(1);
+        if(today.get(Calendar.HOUR_OF_DAY) > 0){
+            pMainFanRankingVo.setSlct_type(0);
+        }
         pMainFanRankingVo.setPageNo(1);
-        pMainFanRankingVo.setPageCnt(5);
+        pMainFanRankingVo.setPageCnt(10);
         ProcedureVo procedureFanRankVo = new ProcedureVo(pMainFanRankingVo);
         List<P_MainFanRankingVo> mainFanRankingVoList = mainDao.callMainFanRanking(procedureFanRankVo);
         if(DalbitUtil.isEmpty(mainFanRankingVoList)){

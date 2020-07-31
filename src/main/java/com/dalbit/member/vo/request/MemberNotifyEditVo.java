@@ -1,8 +1,10 @@
 package com.dalbit.member.vo.request;
 
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -31,4 +33,9 @@ public class MemberNotifyEditVo {
 
     @NotNull(message = "{\"ko_KR\" : \"좋아요 알림을\"}")
     private int isLike;
+
+    @NotBlank(message = "{\"ko_KR\" : \"알림음을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"알림음을\"}")
+    private String alimType;    //알림음구분(n:무음,s:소리,v:진동)
+
 }

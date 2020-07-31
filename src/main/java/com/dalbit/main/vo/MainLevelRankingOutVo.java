@@ -22,6 +22,7 @@ public class MainLevelRankingOutVo {
     private String fanMemNo;
     private String fanNickNm;
     private String roomNo;
+    private String holder;
 
     public MainLevelRankingOutVo(){}
     public MainLevelRankingOutVo(P_MainLevelRankingVo target) {
@@ -36,5 +37,6 @@ public class MainLevelRankingOutVo {
         setFanMemNo(target.getFan_mem_no());
         setFanNickNm(target.getNickName());
         setRoomNo(target.getRoomNo());
+        setHolder("https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getLevel() + ".png");
     }
 }

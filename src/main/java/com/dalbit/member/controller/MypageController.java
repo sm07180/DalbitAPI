@@ -227,17 +227,7 @@ public class MypageController {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_MemberNotifyEditVo apiData = new P_MemberNotifyEditVo();
-
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
-        apiData.setAll_ok(memberNotifyEditVo.getIsAll());
-        apiData.setSet_1(memberNotifyEditVo.getIsMyStar());
-        apiData.setSet_2(memberNotifyEditVo.getIsGift());
-        apiData.setSet_3(memberNotifyEditVo.getIsFan());
-        apiData.setSet_4(memberNotifyEditVo.getIsComment());
-        apiData.setSet_5(memberNotifyEditVo.getIsRadio());
-        apiData.setSet_6(memberNotifyEditVo.getIsPush());
-        apiData.setSet_7(memberNotifyEditVo.getIsLike());
+        P_MemberNotifyEditVo apiData = new P_MemberNotifyEditVo(memberNotifyEditVo, request);
 
         String result = mypageService.callMemberNotifyEdit(apiData);
 

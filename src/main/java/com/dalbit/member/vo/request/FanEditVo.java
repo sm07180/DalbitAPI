@@ -8,11 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class FanListVo {
+public class FanEditVo {
 
     @NotBlank(message = "{\"ko_KR\" : \"팬 회원번호를\"}")
     @NotNull(message = "{\"ko_KR\" : \"팬 회원번호를\"}")
-    private String memNo;
-    private int page;
-    private int records;
+    private String fanNoList;
+
 }

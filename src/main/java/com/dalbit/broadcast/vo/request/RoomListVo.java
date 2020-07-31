@@ -21,4 +21,7 @@ public class RoomListVo {
 
     private String gender;
 
+    @Size(message = "{\"ko_KR\" : \"검색어를\"}", max = 50)
+    private String search;  //
+
 }

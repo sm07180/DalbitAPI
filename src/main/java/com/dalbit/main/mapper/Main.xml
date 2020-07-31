@@ -120,7 +120,7 @@
             , T4.code AS roomTypeNm
         FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no
             INNER JOIN tb_member_profile T3 ON T1.mem_no_star = T3.mem_no
-            INNER JOIN (
+            LEFT OUTER JOIN (
                 SELECT
                     S1.room_no
                     , S1.mem_no
@@ -136,7 +136,7 @@
                   AND ((S1.mem_no = ${value} AND S1.hide = 1) OR S1.hide = 0)
             ) T4 ON T1.mem_no_star = T4.mem_no
         WHERE T1.mem_no_fan = #{value}
-        ORDER BY T4.idx desc
+        ORDER BY IFNULL(T4.idx, 0) DESC, T2.mem_nick ASC
         LIMIT 0, 10
     </select>
 

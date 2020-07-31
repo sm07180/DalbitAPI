@@ -359,6 +359,7 @@ public class MypageService {
         returnMap.put("isRadio", DalbitUtil.getIntMap(resultMap, "set_5"));
         returnMap.put("isPush", DalbitUtil.getIntMap(resultMap, "set_6"));
         returnMap.put("isLike", DalbitUtil.getIntMap(resultMap, "set_7"));
+        returnMap.put("alimType", DalbitUtil.getStringMap(resultMap, "alim_slct")); //알림음구분(n:무음,s:소리,v:진동)
         procedureVo.setData(returnMap);
 
         String result;
@@ -400,7 +401,7 @@ public class MypageService {
 
         DeviceVo deviceVo = new DeviceVo(request);
         if( (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 1 && Integer.parseInt(deviceVo.getAppBuild()) < 21)
-            || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) < 92)
+                || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) < 92)
         ) {
             ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
             //mypageDao.callMemberShortCut(procedureVo);
@@ -459,8 +460,8 @@ public class MypageService {
                 returnMap.put("dal", DalbitUtil.getIntMap(resultMap,"dal"));
                 returnMap.put("maxCnt", 6);
                 returnMap.put("useDay", DalbitUtil.getIntMap(resultMap,"useDay"));
-                returnMap.put("endDt", outVoList.size() > 3 ? (!outVoList.get(3).isOn() ? "" : outVoList.get(3).getEndDt()) : "");
-                returnMap.put("endTs", outVoList.size() > 3 ? (!outVoList.get(3).isOn() ? 0 : outVoList.get(3).getEndTs()) : 0);
+                returnMap.put("endDt", outVoList.size() > 3 ? (!outVoList.get(3).isOn() ? "" : (DalbitUtil.isEmpty(outVoList.get(3).getEndDt()) ? "" : outVoList.get(3).getEndDt())) : "");
+                returnMap.put("endTs", outVoList.size() > 3 ? (!outVoList.get(3).isOn() ? 0 : (DalbitUtil.isEmpty(outVoList.get(3).getEndTs()) ? 0 : outVoList.get(3).getEndTs())) : 0);
 
                 if(code.equals("add")){
                     result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_성공, returnMap));

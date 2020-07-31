@@ -62,6 +62,15 @@
 		<typeAlias type="com.dalbit.member.vo.procedure.P_ChangeItemListVo" alias="P_ChangeItemListVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_StarRankingVo" alias="P_StarRankingVo" />
 		<typeAlias type="com.dalbit.member.vo.procedure.P_FanListVo" alias="P_FanListVo" />
+
+		<typeAlias type="com.dalbit.member.vo.procedure.P_FanListNewVo" alias="P_FanListNewVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_FanMemoVo" alias="P_FanMemoVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_FanMemoSaveVo" alias="P_FanMemoSaveVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_StarListNewVo" alias="P_StarListNewVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_StarMemoVo" alias="P_StarMemoVo" />
+		<typeAlias type="com.dalbit.member.vo.procedure.P_StarMemoSaveVo" alias="P_StarMemoSaveVo" />
+
+
 		<typeAlias type="com.dalbit.member.vo.procedure.P_SpecialDjReq" alias="P_SpecialDjReq" />
 		<typeAlias type="com.dalbit.member.vo.LevelVo" alias="LevelVo" />
 		<typeAlias type="com.dalbit.member.vo.ExchangeSuccessVo" alias="ExchangeSuccessVo" />

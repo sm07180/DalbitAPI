@@ -29,4 +29,23 @@ public interface ProfileDao {
 
     @Transactional(readOnly = true)
     List<P_FanListVo> callFanList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_FanListNewVo> callFanListNew(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callFanMemo(ProcedureVo procedureVo);
+
+    ProcedureVo callFanMemoSave(ProcedureVo procedureVo);
+
+    ProcedureVo callFanEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_StarListNewVo> callStarListNew(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callStarMemo(ProcedureVo procedureVo);
+
+    ProcedureVo callStarMemoSave(ProcedureVo procedureVo);
+
 }

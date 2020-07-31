@@ -369,10 +369,10 @@ public class ProfileService {
         ProcedureVo procedureVo = new ProcedureVo(pFanListVo);
         List<P_FanListVo> fanListVoList = profileDao.callFanList(procedureVo);
 
-        HashMap fanRankingList = new HashMap();
+        HashMap fanList = new HashMap();
         if(DalbitUtil.isEmpty(fanListVoList)){
-            fanRankingList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬조회_팬없음, fanRankingList));
+            fanList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬조회_팬없음, fanList));
         }
 
         List<FanListOutVo> outVoList = new ArrayList<>();
@@ -381,12 +381,12 @@ public class ProfileService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        fanRankingList.put("list", procedureOutputVo.getOutputBox());
-        fanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+        fanList.put("list", procedureOutputVo.getOutputBox());
+        fanList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_성공, fanRankingList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_성공, fanList));
         } else if (procedureVo.getRet().equals(Status.팬조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_요청회원_회원아님));
         } else if (procedureVo.getRet().equals(Status.팬조회_대상회원_회원아님.getMessageCode())) {
@@ -396,4 +396,192 @@ public class ProfileService {
         }
         return result;
     }
+
+
+    /**
+     * NEW 회원 팬 전체 리스트
+     */
+    public String callFanListNew(P_FanListNewVo pFanListNewVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanListNewVo);
+        List<P_FanListNewVo> fanListNewVoList = profileDao.callFanListNew(procedureVo);
+
+        HashMap fanList = new HashMap();
+        if(DalbitUtil.isEmpty(fanListNewVoList)){
+            fanList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬조회_팬없음, fanList));
+        }
+
+        List<FanListNewOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<fanListNewVoList.size(); i++){
+            outVoList.add(new FanListNewOutVo(fanListNewVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        fanList.put("list", procedureOutputVo.getOutputBox());
+        fanList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_성공, fanList));
+        } else if (procedureVo.getRet().equals(Status.팬조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_대상회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 회원 팬 메모 조회
+     */
+    public String callFanMemo(P_FanMemoVo pFanMemoVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanMemoVo);
+        profileDao.callFanMemo(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("fanMemo", DalbitUtil.getStringMap(resultMap, "fanMemo"));
+
+        String result;
+        if(Status.팬메모조회_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_성공, returnMap));
+        } else if (procedureVo.getRet().equals(Status.팬메모조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬메모조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_대상회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬메모조회_대상회원_팬아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_대상회원_팬아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 회원 팬 메모 저장
+     */
+    public String callFanMemoSave(P_FanMemoSaveVo pFanMemoSaveVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanMemoSaveVo);
+        profileDao.callFanMemoSave(procedureVo);
+
+        String result;
+        if(Status.팬메모저장_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_성공));
+        } else if (procedureVo.getRet().equals(Status.팬메모저장_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.팬메모저장_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_대상회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 회원 팬 리스트 편집
+     */
+    public String callFanEdit(P_FanEditVo pFanEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanEditVo);
+        profileDao.callFanEdit(procedureVo);
+
+        String result;
+        if(Status.팬리스트편집_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬리스트편집_성공));
+        } else if (procedureVo.getRet().equals(Status.팬리스트편집_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬리스트편집_요청회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬리스트편집_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * NEW 스타 리스트
+     */
+    public String callStarListNew(P_StarListNewVo pStarListNewVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pStarListNewVo);
+        List<P_StarListNewVo> starListNewVoList = profileDao.callStarListNew(procedureVo);
+
+        HashMap starList = new HashMap();
+        if(DalbitUtil.isEmpty(starListNewVoList)){
+            starList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_없음, starList));
+        }
+
+        List<StarListNewOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<starListNewVoList.size(); i++){
+            outVoList.add(new StarListNewOutVo(starListNewVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        starList.put("list", procedureOutputVo.getOutputBox());
+        starList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_성공, starList));
+        } else if (procedureVo.getRet().equals(Status.스타리스트조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.스타리스트조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_대상회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 스타 메모 조회
+     */
+    public String callStarMemo(P_StarMemoVo pStarMemoVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pStarMemoVo);
+        profileDao.callStarMemo(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("starMemo", DalbitUtil.getStringMap(resultMap, "starMemo"));
+
+        String result;
+        if(Status.스타메모조회_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_성공, returnMap));
+        } else if (procedureVo.getRet().equals(Status.스타메모조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.스타메모조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_대상회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.스타메모조회_대상회원_팬아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_대상회원_팬아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 스타 팬 메모 저장
+     */
+    public String callStarMemoSave(P_StarMemoSaveVo pStarMemoSaveVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pStarMemoSaveVo);
+        profileDao.callStarMemoSave(procedureVo);
+
+        String result;
+        if(Status.스타메모저장_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_성공));
+        } else if (procedureVo.getRet().equals(Status.스타메모저장_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(Status.스타메모저장_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_대상회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_실패));
+        }
+        return result;
+    }
+
 }

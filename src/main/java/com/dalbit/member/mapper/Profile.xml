@@ -38,6 +38,35 @@
             call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id = "callFanListNew" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanListNewVo">
+            call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callFanMemo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanMemoVo">
+            call sp_member_fan_memo_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callFanMemoSave" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_fan_memo_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callFanEdit" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_fan_list_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callStarListNew" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_StarListNewVo">
+            call sp_member_star_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callStarMemo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_StarMemoVo">
+            call sp_member_star_memo_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callStarMemoSave" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+            call sp_member_star_memo_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
     <select id="selectStarRanking" parameterType="P_StarRankingVo" resultType="P_StarRankingVo">
         SELECT
             T2.mem_no AS memNo
