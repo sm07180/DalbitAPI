@@ -35,7 +35,7 @@ public class MainLevelRankingOutVo {
         setGrade(target.getGrade());
         setFanCnt(target.getFanCnt());
         setFanMemNo(target.getFan_mem_no());
-        setFanNickNm(target.getNickName());
+        setFanNickNm(target.getFan_nickName());
         setRoomNo(target.getRoomNo());
         setHolder("https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getLevel() + ".png");
     }
