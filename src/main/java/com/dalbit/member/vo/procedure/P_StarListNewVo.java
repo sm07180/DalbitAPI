@@ -41,6 +41,7 @@ public class P_StarListNewVo {
     private String starMemo;
     private int listenTime;
     private int giftedByeol;
+    private int giftDal;
     private Date lastlistenDate;
     private Date regDate;
 

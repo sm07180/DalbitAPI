@@ -29,7 +29,8 @@ public class StarListNewOutVo {
         setIsFan(target.getEnableFan() == 0 ? true : false);
         setStarMemo(target.getStarMemo());
         setListenTime(target.getListenTime());
-        setGiftedByeol(target.getGiftedByeol());
+        //setGiftedByeol(target.getGiftedByeol());
+        setGiftedByeol(target.getGiftDal());
         setLastListenDt(DalbitUtil.isEmpty(target.getLastlistenDate()) ? "" : DalbitUtil.getUTCFormat(target.getLastlistenDate()));
         setLastListenTs(DalbitUtil.isEmpty(target.getLastlistenDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getLastlistenDate()));
         setRegDt(DalbitUtil.isEmpty(target.getRegDate()) ? "" : DalbitUtil.getUTCFormat(target.getRegDate()));
