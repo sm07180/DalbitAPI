@@ -23,4 +23,6 @@ public class ForcedOutVo extends AdminBaseVo{
 
     private String opName;
 
+    private String roomBlock;
+
 }

@@ -10,4 +10,5 @@ public class P_RoomForceExitInputVo {
     private String mem_no;
     private String room_no;
     private String start_date;
+    private String roomExit;
 }

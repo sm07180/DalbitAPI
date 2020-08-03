@@ -179,15 +179,17 @@ public class AdminService {
     public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomForceExitInputVo);
         //방 나가기 처리
-        adminDao.callBroadcastRoomExit(procedureVo);
-        if (Status.방송강제종료_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_회원아님));
+        if(DalbitUtil.isEmpty(pRoomForceExitInputVo.getRoomExit()) || pRoomForceExitInputVo.getRoomExit().equals("Y")) {
+            adminDao.callBroadcastRoomExit(procedureVo);
+            if (Status.방송강제종료_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_회원아님));
 
-        } else if (Status.방송강제종료_존재하지않는방.getMessageCode().equals(procedureVo.getRet())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_존재하지않는방));
+            } else if (Status.방송강제종료_존재하지않는방.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_존재하지않는방));
 
-        } else if (Status.방송강제종료_이미종료된방.getMessageCode().equals(procedureVo.getRet())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_이미종료된방));
+            } else if (Status.방송강제종료_이미종료된방.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_이미종료된방));
+            }
         }
 
         //회원 나가기 처리
@@ -671,8 +673,10 @@ public class AdminService {
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
 
         // 재입장 불가능하도록
-        forcedOutVo.setDj_mem_no(broadInfo.getMem_no());
-        adminDao.insertForceLeave_roomBlock(forcedOutVo);
+        if(DalbitUtil.isEmpty(forcedOutVo.getRoomBlock()) || forcedOutVo.getRoomBlock().equals("Y") ){
+            forcedOutVo.setDj_mem_no(broadInfo.getMem_no());
+            adminDao.insertForceLeave_roomBlock(forcedOutVo);
+        }
         String result = "";
         if(Status.생방청취자강제퇴장_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_성공));

@@ -410,7 +410,11 @@ public class MypageService {
             if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
                 List<MemberShortCutOutVo> outVoList = new ArrayList<>();
                 if (!DalbitUtil.isEmpty(memberShortCutList)) {
-                    for (int i = 0; i < memberShortCutList.size(); i++) {
+                    int len = memberShortCutList.size();
+                    if(deviceVo.getOs() == 1){
+                        len = 3;
+                    }
+                    for (int i = 0; i < len; i++) {
                         outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
                     }
                 }
@@ -444,11 +448,14 @@ public class MypageService {
             ProcedureVo procedureVo = new ProcedureVo(pMemberShortCut);
             List<P_MemberShortCutVo> memberShortCutList = mypageDao.callMemberShortCut(procedureVo);
 
-
             if (procedureVo.getRet().equals(Status.회원방송방빠른말조회_성공.getMessageCode())) {
                 List<MemberShortCutOutVo> outVoList = new ArrayList<>();
                 if(!DalbitUtil.isEmpty(memberShortCutList)){
-                    for (int i=0; i<memberShortCutList.size(); i++){
+                    int len = memberShortCutList.size();
+                    if(deviceVo.getOs() == 1 && (Integer.parseInt(deviceVo.getAppBuild()) == 1 || Integer.parseInt(deviceVo.getAppBuild()) == 21)){
+                        len = 3;
+                    }
+                    for (int i = 0; i < len; i++) {
                         outVoList.add(new MemberShortCutOutVo(memberShortCutList.get(i)));
                     }
                 }
