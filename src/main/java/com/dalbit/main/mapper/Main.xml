@@ -135,8 +135,9 @@
                   AND ${value} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = S1.mem_no)
                   AND ((S1.mem_no = ${value} AND S1.hide = 1) OR S1.hide = 0)
             ) T4 ON T1.mem_no_star = T4.mem_no
+            LEFT OUTER JOIN tb_member_session T5 ON T2.mem_no = T5.mem_no
         WHERE T1.mem_no_fan = #{value}
-        ORDER BY IFNULL(T4.idx, 0) DESC, T2.mem_nick ASC
+        ORDER BY IFNULL(T4.idx, 0) DESC, IFNULL(T5.last_upd_date, T2.mem_join_date) DESC, T2.mem_nick ASC
         LIMIT 0, 10
     </select>
 

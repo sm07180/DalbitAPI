@@ -176,12 +176,21 @@ public class CommonService {
                     }catch(Exception e){
                         resultMap.put("isForce", false);
                     }
+                    try{
+                        resultMap.put("isUpdate", (versionVo.getBuildNo() > Long.parseLong(deviceVo.getAppBuild())));
+                    }catch(Exception e){
+                        resultMap.put("isUpdate", false);
+                    }
                 }
 
                 if(deviceVo.getOs() == 2){
                     resultMap.put("storeUrl", "itms-apps://itunes.apple.com/us/app/id1490208806?l=ko&ls=1");
                 }
                 resultMap.put("isPayment", true);
+            }
+
+            if(deviceVo.getOs() == 1){ // AOS 심사중 여부
+                resultMap.put("isAosCheck", "real".equals(DalbitUtil.getActiceProfile()) ? true : false);
             }
 
             //TODO - 추후 삭제
