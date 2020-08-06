@@ -76,7 +76,7 @@ public interface AdminDao {
     List<P_PayInfoOutVo> callPayInfo(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    List<P_LoginTotalOutDetailVo> callLoginGender(ProcedureVo procedureVo);
+    List<P_LoginTotalOutDetailVo> callLoginTotal(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
     List<P_LoginAgeOutDetailVo> callLoginAge(ProcedureVo procedureVo);

@@ -839,8 +839,8 @@ public class AdminService {
     /**
      * 통계 > 현재 접속자
      */
-    public String callUserCurrentTotal() {
-        ProcedureVo procedureVo = new ProcedureVo();
+    public String callUserCurrentTotal(P_UserCurrentInputVo pUserCurrentInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pUserCurrentInputVo);
         adminDao.callUserCurrentTotal(procedureVo);
         P_UserTotalOutDetailVo detailList = new Gson().fromJson(procedureVo.getExt(), P_UserTotalOutDetailVo.class);
 
@@ -848,22 +848,21 @@ public class AdminService {
     }
 
     /**
-     * 통계 > 날짜 별 접속 현황
+     * 통계 > 로그인 현황
      */
-    public String callUserDayTotal(P_StatVo pStatVo) {
+    public String callLoginInfo(P_LoginTotalInPutVo pLoginTotalInPutVo) {
 
         // 성별을 가져오기 위함
-        ProcedureVo procedureVo = new ProcedureVo(pStatVo);
-        adminDao.callLoginGender(procedureVo);
+        ProcedureVo procedureVo = new ProcedureVo(pLoginTotalInPutVo);
+        List<P_LoginTotalOutDetailVo> genderList = adminDao.callLoginTotal(procedureVo);
         P_LoginTotalOutVo genderInfo = new Gson().fromJson(procedureVo.getExt(), P_LoginTotalOutVo.class);
 
         // 연령대별을 가져오기 위함
-        adminDao.callLoginAge(procedureVo);
-        P_LoginAgeOutVo ageInfo = new Gson().fromJson(procedureVo.getExt(), P_LoginAgeOutVo.class);
+        List<P_LoginAgeOutDetailVo> ageList = adminDao.callLoginAge(procedureVo);
 
         var result = new HashMap<String, Object>();
         result.put("genderInfo", genderInfo);
-        result.put("ageInfo", ageInfo);
+        result.put("ageList", ageList);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
     }

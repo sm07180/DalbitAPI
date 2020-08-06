@@ -190,17 +190,17 @@ public class AdminController {
      * 통계 > 현재 접속자
      */
     @PostMapping("/stat/userInfoCurrent")
-    public String statUserCurrent(HttpServletRequest request){
-        String result = adminService.callUserCurrentTotal();
+    public String statUserCurrent(HttpServletRequest request, P_UserCurrentInputVo pUserCurrentInputVo){
+        String result = adminService.callUserCurrentTotal(pUserCurrentInputVo);
         return result;
     }
 
     /**
-     * 통계 > 날짜 별 접속 현황
+     * 통계 > 로그인 현황
      */
-    @PostMapping("/stat/userInfoTheDay")
-    public String statUserTheDay(HttpServletRequest request, P_StatVo pStatVo) {
-        String result = adminService.callUserDayTotal(pStatVo);
+    @PostMapping("/stat/loginInfo")
+    public String statLoginInfo(HttpServletRequest request, P_LoginTotalInPutVo pLoginTotalInPutVo) {
+        String result = adminService.callLoginInfo(pLoginTotalInPutVo);
         return result;
     }
 
