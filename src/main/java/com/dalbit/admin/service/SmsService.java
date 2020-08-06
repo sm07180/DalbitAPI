@@ -21,7 +21,7 @@ public class SmsService {
      * */
     public int sendSms(SmsVo smsVo)throws GlobalException{
 
-        if(DalbitUtil.isEmpty(smsVo.getSendPhoneNo())){
+        if(DalbitUtil.isEmpty(smsVo.getPhoneNo())){
             return 0;
         }
 
@@ -51,7 +51,7 @@ public class SmsService {
      * */
     public int sendMms(SmsVo smsVo)throws GlobalException{
 
-        if(DalbitUtil.isEmpty(smsVo.getSendPhoneNo())){
+        if(DalbitUtil.isEmpty(smsVo.getPhoneNo())){
             return 0;
         }
 
