@@ -18,6 +18,8 @@ public enum ErrorStatus {
     토큰만료오류("E005", "authToken.expire.error", "JWT 토큰 만료 시 발생한 에러"),
 
     커스텀헤더정보이상("E006", "request.custom.header.error", "request header의 custom_header 정보가 이상할 때"),
+
+    휴대폰번호검증오류("E006", "phoneNo.invalid.error", "휴대전화번호 유효성체크에서 걸린경우"),
     ;
 
     final private String ERROR_RESULT = "fail";

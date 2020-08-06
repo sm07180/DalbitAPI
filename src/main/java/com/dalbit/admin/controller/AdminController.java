@@ -251,7 +251,7 @@ public class AdminController {
      * 1:1 문의 처리
      */
     @PostMapping("/question/operate")
-    public String operate(P_QuestionOperateVo pQuestionOperateVo) {
+    public String operate(P_QuestionOperateVo pQuestionOperateVo) throws GlobalException, InterruptedException {
         String result = adminService.callServiceCenterQnaOperate(pQuestionOperateVo);
         return result;
     }

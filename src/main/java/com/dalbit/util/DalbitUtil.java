@@ -440,7 +440,7 @@ public class DalbitUtil {
         }
 
         sb.append("_");
-        sb.append(DalbitUtil.getActiceProfile());
+        sb.append(DalbitUtil.getActiveProfile());
         return sb.toString();
     }
 
@@ -696,12 +696,12 @@ public class DalbitUtil {
         response.setHeader("Access-Control-Allow-Credentials", "true");
     }
 
-    public static String getActiceProfile(){
+    public static String getActiveProfile(){
         return environment.getActiveProfiles()[0];
     }
 
     public static boolean profileCheck(String serverName){
-        return getActiceProfile().equals(serverName);
+        return getActiveProfile().equals(serverName);
     }
 
     public static String getAuthToken(HttpServletRequest request){

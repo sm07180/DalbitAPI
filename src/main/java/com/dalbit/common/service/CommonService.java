@@ -190,7 +190,7 @@ public class CommonService {
             }
 
             if(deviceVo.getOs() == 1){ // AOS 심사중 여부
-                resultMap.put("isAosCheck", "real".equals(DalbitUtil.getActiceProfile()) ? true : false);
+                resultMap.put("isAosCheck", "real".equals(DalbitUtil.getActiveProfile()) ? true : false);
             }
 
             //TODO - 추후 삭제
@@ -200,7 +200,7 @@ public class CommonService {
 
             resultMap.put("isExtend", true);
 
-            if("local".equals(DalbitUtil.getActiceProfile()) || "dev".equals(DalbitUtil.getActiceProfile())){
+            if("local".equals(DalbitUtil.getActiveProfile()) || "dev".equals(DalbitUtil.getActiveProfile())){
                 int[] timeCombos = {1,2,3,4,5,10,20,30,40,50,60,70,80,90,100, 200, 300, 400, 500};
                 resultMap.put("itemComboCount", timeCombos);
                 resultMap.put("itemComboCout", timeCombos);

@@ -61,6 +61,9 @@ public class AdminService {
     @Autowired
     SocketService socketService;
 
+    @Autowired
+    SmsService smsService;
+
     private final String menuJsonKey = "adminMenu";
 
     @Value("${ant.expire.hour}")
@@ -932,10 +935,14 @@ public class AdminService {
     /**
      * 1:1 문의 처리
      */
-    public String callServiceCenterQnaOperate(P_QuestionOperateVo pQuestionOperateVo) {
+    public String callServiceCenterQnaOperate(P_QuestionOperateVo pQuestionOperateVo) throws InterruptedException, GlobalException {
         pQuestionOperateVo.setOpName(selectAdminName(MemberVo.getMyMemNo()));
         P_QuestionDetailOutputVo outVo = adminDao.selectServiceCenterQnaState(pQuestionOperateVo);
         String result = "";
+        String _answer = pQuestionOperateVo.getAnswer();
+
+        pQuestionOperateVo.setAnswer(pQuestionOperateVo.getAnswer().replaceAll("\\'","\'"));
+        pQuestionOperateVo.setAnswer(pQuestionOperateVo.getAnswer().replaceAll("\n","<br>"));
         if(outVo.getState() == 0){
             ProcedureVo procedureVo = new ProcedureVo(pQuestionOperateVo,true);
             adminDao.callServiceCenterQnaOperate(procedureVo);
@@ -991,6 +998,47 @@ public class AdminService {
                 }
             }else if(outVo.getState() == 2){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_이미_진행중));
+            }
+        }
+
+        if(pQuestionOperateVo.getNoticeType() == 2){      // 메일답변
+
+        }else{          // 문자 or ( 문자 and 메일 )
+            String answer = _answer;
+            String[] array_word = answer.split(""); //배열에 한글자씩 저장하기
+
+            answer = "";
+            int count = 1000;
+            boolean smsSw;
+            for(int i=0;i<array_word.length;i++) {
+                answer = answer + array_word[i];
+                smsSw = false;
+                if(i != 0) {
+                    if (i % count == 0) {
+                        smsSw = true;
+                    } else {
+                        if (array_word.length <= count) {
+                            if ((i + 1) == array_word.length) {
+                                smsSw = true;
+                            }
+                        }
+                    }
+                }
+
+                if(smsSw){
+                    Thread.sleep(1500);
+                    SmsVo smsSendVo = new SmsVo(pQuestionOperateVo.getTitle(), answer, pQuestionOperateVo.getPhone(), "7");
+                    smsSendVo.setSend_name(MemberVo.getMyMemNo());
+                    smsSendVo.setMem_no(pQuestionOperateVo.getMem_no());
+                    smsSendVo.setCinfo("");
+                    int smsResult = smsService.sendMms(smsSendVo);
+                    if(smsResult != 1){
+                        //result = gsonUtil.toJson(new JsonOutputVo(Status.문자발송_실패));
+                        break;
+                    }
+                    answer = "";
+                    count+=1000;
+                }
             }
         }
 

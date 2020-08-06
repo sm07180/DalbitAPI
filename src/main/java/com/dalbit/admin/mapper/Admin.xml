@@ -446,7 +446,7 @@
     <select id="selectServiceCenterQnaState" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
         /* Admin.xml - selectServiceCenterQnaState */
         select state
-          from rd_data.tb_service_center_qna
+          from rd_data.tb_service_center_qna_v25
           where idx = #{qnaIdx}
     </select>
 
@@ -457,7 +457,7 @@
 
     <update id="updateServiceCenterQnaUpdate" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo">
         /* Admin.xml - updateServiceCenterQnaUpdate */
-        update rd_data.tb_service_center_qna
+        update rd_data.tb_service_center_qna_v25
         set answer = #{answer}
             ,op_date=now()
             ,op_name=#{opName}

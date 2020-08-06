@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.admin.dao.SmsDao" >
+
+    <insert id="sendSms" parameterType="com.dalbit.admin.vo.SmsVo" useGeneratedKeys="true" keyProperty="CMID" keyColumn="CMID">
+        <!-- Common.xml - getMenuInfo -->
+        <selectKey keyProperty="CMID" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO rd_data.hp_msg(
+            UMID
+            , MSG_TYPE
+            , SEND_PHONE
+            , DEST_PHONE
+            , SUBJECT
+            , MSG_BODY
+            , VXML_FILE
+            , REQUEST_TIME
+            , SEND_TIME
+            , SEND_NAME
+            , mem_no
+            , CINFO
+        ) values(
+            #{umId}
+            , #{msgType}
+            , #{sendPhoneNo}
+            , #{phoneNo}
+            , #{subject, jdbcType=VARCHAR}
+            , #{msgBody}
+            , #{vxmlFile}
+            <choose>
+                <when test='send_time != null and send_time != ""'>
+                    , #{send_time}
+                    , #{send_time}
+                </when>
+                <otherwise>
+                    , NOW()
+                    , NOW()
+                </otherwise>
+            </choose>
+            , #{send_name}
+            , ifnull(#{mem_no}, '0')
+            , #{cinfo}
+        )
+    </insert>
+
+    <insert id="sendSmsTargetTest" parameterType="com.dalbit.admin.vo.SmsVo">
+        INSERT INTO rd_data.hp_msg(
+            UMID
+            , MSG_TYPE
+            , SEND_PHONE
+            , DEST_PHONE
+            , SUBJECT
+            , MSG_BODY
+            , VXML_FILE
+            , REQUEST_TIME
+            , SEND_TIME
+            , SEND_NAME
+            , mem_no
+            , CINFO
+        )
+        SELECT
+            #{umId}
+            , #{msgType}
+            , #{sendPhoneNo}
+            , mem.mem_phone
+            , #{subject, jdbcType=VARCHAR}
+            , #{msgBody}
+            , #{vxmlFile}
+            <choose>
+                <when test='send_time != null and send_time != ""'>
+                    , #{send_time}
+                    , #{send_time}
+                </when>
+                <otherwise>
+                    , NOW()
+                    , NOW()
+                </otherwise>
+            </choose>
+            , #{send_name}
+            , mem.mem_no
+            , #{cinfo}
+        FROM rd_data.tb_member_basic mem
+            , rd_admin.tb_admin_test_account test
+        WHERE mem.mem_no = test.mem_no
+            AND mem.mem_phone IS NOT NULL
+            AND mem.mem_phone REGEXP '^(01[016789])([0-9]{3,4})([0-9]{4})'
+    </insert>
+
+
+    <insert id="sendSmsTargetMemberAll" parameterType="com.dalbit.admin.vo.SmsVo">
+        INSERT INTO rd_data.hp_msg(
+            UMID
+            , MSG_TYPE
+            , SEND_PHONE
+            , DEST_PHONE
+            , SUBJECT
+            , MSG_BODY
+            , VXML_FILE
+            , REQUEST_TIME
+            , SEND_TIME
+            , SEND_NAME
+            , mem_no
+            , CINFO
+        )
+        SELECT
+            #{umId}
+            , #{msgType}
+            , #{sendPhoneNo}
+            , mem_phone
+            , #{subject, jdbcType=VARCHAR}
+            , #{msgBody}
+            , #{vxmlFile}
+            <choose>
+                <when test='send_time != null and send_time != ""'>
+                    , #{send_time}
+                    , #{send_time}
+                </when>
+                <otherwise>
+                    , NOW()
+                    , NOW()
+                </otherwise>
+            </choose>
+            , #{send_name}
+            , mem_no
+            , #{cinfo}
+        FROM rd_data.tb_member_basic
+        WHERE mem_phone IS NOT NULL
+            AND mem_phone REGEXP '^(01[016789])([0-9]{3,4})([0-9]{4})'
+    </insert>
+
+</mapper>

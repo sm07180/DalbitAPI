@@ -1046,7 +1046,7 @@ public enum Status {
 
     //기프티콘 당첨자리스트 조회
     기프티콘_당첨자리스트조회("C001", "gifticon.win.list.select.success", "기프티콘 당첨자 조회 성공 시"),
-    기프티콘_당첨자리스트없음("0", "gifticon.win.list.select.no", "당첨자 없을 시"),
+    기프티콘_당첨자리스트없음("0", "gifticon.win.list.select.no.success", "당첨자 없을 시"),
     기프티콘_당첨자리스트조회_회원아님("-1", "gifticon.win.list.select.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
     기프티콘_당첨자리스트조회_실패("C006", "gifticon.win.list.select.fail", "기프티콘 당첨자 조회 실패 시"),
 
@@ -1142,6 +1142,9 @@ public enum Status {
     게스트리스트조회_성공("C001", "guest.select.success", "게스트 리스트 조회 성공 시"),
     게스트리스트조회_없음("0", "guest.select.no", "게스트 리스트 없을 시"),
     게스트리스트조회_실패("C006", "guest.select.fail", "게스트 리스트 조회 실패 시"),
+
+    문자발송_성공("0", "sms.send.success", "문자 발송 성공 시"),
+    문자발송_실패("C006", "sms.send.fail", "문자 발송 실패 시"),
    ;
 
 

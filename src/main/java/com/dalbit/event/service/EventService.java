@@ -441,7 +441,7 @@ public class EventService {
         Calendar end1 = Calendar.getInstance();
         Calendar dt_2nd = Calendar.getInstance();
 
-        if("real".equals(DalbitUtil.getActiceProfile())){
+        if("real".equals(DalbitUtil.getActiveProfile())){
             dt_2nd.set(2020, 6, 22, 23, 59, 59);
         }else{
             dt_2nd.set(2020, 6, 22, 17, 59, 59);
@@ -451,7 +451,7 @@ public class EventService {
         if(dt_2nd.getTimeInMillis() < today.getTimeInMillis()){
             // 2차 : 23~29일
             round = 2;
-            if("real".equals(DalbitUtil.getActiceProfile())) {
+            if("real".equals(DalbitUtil.getActiveProfile())) {
                 srt1.set(2020, 6,23,0,0,0);
             }else{
                 srt1.set(2020, 6,22,18,0,0);
