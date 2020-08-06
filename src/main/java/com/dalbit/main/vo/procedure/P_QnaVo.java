@@ -27,6 +27,8 @@ public class P_QnaVo {
     private String email;
     private String browser;
     private String platform;
+    private String nickName;
+    private String phone;
     private int qnaIdx;
 
     public P_QnaVo(){}
@@ -45,6 +47,8 @@ public class P_QnaVo {
         setEmail(qnaVo.getEmail());
         setBrowser(DalbitUtil.getUserAgent(request));
         setQnaIdx(qnaVo.getQnaIdx());
+        setNickName(qnaVo.getNickName());
+        setPhone(qnaVo.getPhone());
 
         String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
         customHeader = java.net.URLDecoder.decode(customHeader);

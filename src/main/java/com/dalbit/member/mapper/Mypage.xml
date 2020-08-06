@@ -324,4 +324,60 @@
         ORDER BY admin_badge DESC
         LIMIT 1
     </select>
-</mapper>
+
+    <select id="callMemberNotificationDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_notification_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectMyPageNew" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+            (CASE
+                WHEN #{myMemNo} = #{targetMemNo} THEN
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{myMemNo} AND STATUS &lt;&gt; 2 AND idx &gt; #{fanBoard} AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+                ELSE
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{targetMemNo} AND STATUS &lt;&gt; 2 AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+            END) AS fanBoard,
+            (CASE
+                WHEN #{myMemNo} = #{targetMemNo} THEN
+                    FALSE
+                ELSE
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_broadcast_notice WHERE mem_no = #{targetMemNo} AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+            END)AS broadNotice,
+            (CASE
+                WHEN #{myMemNo} = #{targetMemNo} THEN
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_wallet_ruby WHERE mem_no = #{myMemNo} AND idx &gt; #{dal} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0)
+                ELSE FALSE
+            END) AS dal,
+            (CASE
+                WHEN #{myMemNo} = #{targetMemNo} THEN
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_wallet_gold WHERE mem_no = #{myMemNo} and idx &gt; #{byeol} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0)
+                ELSE FALSE
+            END) AS byeol,
+            <if test = 'notice == null or notice == ""'>
+                (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+            </if>
+            <if test = 'notice != null and notice != ""'>
+                (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 AND idx NOT IN (${notice}))
+            </if>
+            AS notice,
+            (CASE
+                WHEN #{myMemNo} = #{targetMemNo} THEN
+            <if test = 'qna == null or qna == ""'>
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7)
+            </if>
+            <if test = 'qna != null and qna != ""'>
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7 AND idx NOT IN (CONCAT('', ${qna})))
+            </if>
+                ELSE FALSE
+            END) AS qna
+    </select>
+
+    <select id="selectMyPageFanBoard" parameterType="String" resultType="Long">
+        SELECT MAX(idx) as fanBoard FROM tb_member_fanboard WHERE mem_no = ${value} AND STATUS &lt;&gt; 2
+    </select>
+
+    <select id="selectMyPageWallet" parameterType="String" resultType="java.util.HashMap">
+        SELECT
+            (SELECT MAX(idx) FROM tb_member_wallet_ruby WHERE mem_no = ${value} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0) AS dal,
+            (SELECT MAX(idx) FROM tb_member_wallet_gold WHERE mem_no = ${value} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0) AS byeol
+    </select></mapper>

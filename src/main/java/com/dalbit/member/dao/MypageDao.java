@@ -8,6 +8,7 @@ import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -112,4 +113,12 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     int selectAdminBadge(String value);
-}
+
+    ProcedureVo callMemberNotificationDelete(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    HashMap selectMyPageNew(HashMap params);
+    @Transactional(readOnly = true)
+    Long selectMyPageFanBoard(String mem_no);
+    @Transactional(readOnly = true)
+    HashMap selectMyPageWallet(String mem_no);}

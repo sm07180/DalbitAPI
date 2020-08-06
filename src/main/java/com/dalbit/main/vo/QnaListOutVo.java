@@ -27,6 +27,8 @@ public class QnaListOutVo {
     private String opDt;
     private Long opTs;
     private String email;
+    private String nickName;
+    private String phone;
 
     public QnaListOutVo() {}
     public QnaListOutVo(P_QnaListVo target) {
@@ -50,5 +52,7 @@ public class QnaListOutVo {
         setAddFileName2(target.getAddFileName2());
         setAddFileName3(target.getAddFileName3());
         setEmail(target.getEmail());
+        setNickName(target.getNickName());
+        setPhone(target.getPhone());
     }
 }

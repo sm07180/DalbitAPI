@@ -30,7 +30,11 @@ public class QnaVo {
 
     private int qnaIdx;
 
-    @NotBlank(message = "{\"ko_KR\" : \"이메일을\"}")
-    @NotNull(message = "{\"ko_KR\" : \"이메일을\"}")
+    //@NotBlank(message = "{\"ko_KR\" : \"이메일을\"}")
+    //@NotNull(message = "{\"ko_KR\" : \"이메일을\"}")
     private String email;
+
+    @Size(message = "{\"ko_KR\" : \"이름/닉네임을\"}", max = 50)
+    private String nickName;
+    private String phone;
 }

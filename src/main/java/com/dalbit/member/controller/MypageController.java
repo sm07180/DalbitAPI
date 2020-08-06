@@ -696,4 +696,32 @@ public class MypageController {
 
         return result;
     }
-}
+
+    /**
+     * 회원 알림 내용 삭제
+     */
+    @DeleteMapping("/notification/delete")
+    public String memberNotificationDelete(@Valid NotificationDeleteVo notificationDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_NotificationDeleteVo apiData = new P_NotificationDeleteVo(notificationDeleteVo, request);
+        String result = mypageService.callMemberNotificationDelete(apiData);
+
+        return result;
+    }
+
+    @PostMapping("/new")
+    public String getMyPageNew(HttpServletRequest request){
+        return mypageService.getMyPageNew(request);
+    }
+
+    @GetMapping("/new/fanBoard")
+    public String getMyPageNewFanBoard(HttpServletRequest request){
+        return mypageService.getMyPageNewFanBoard(request);
+    }
+
+    @GetMapping("/new/wallet")
+    public String getMyPageNewWallet(HttpServletRequest request){
+        return mypageService.getMyPageNewWallet(request);
+    }}

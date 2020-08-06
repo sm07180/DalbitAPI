@@ -242,11 +242,12 @@ public class MemberController {
      * 회원탈퇴
      */
     @PostMapping("/member/withdrawal")
-    public String memberWithdrawal(HttpServletRequest request){
+    public String memberWithdrawal(@Valid WithdrawalVo withdrawalVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
-        P_WithdrawalVo apiData = new P_WithdrawalVo();
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        //벨리데이션 체크
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
+        P_WithdrawalVo apiData = new P_WithdrawalVo(withdrawalVo, request);
         String result = memberService.callMemberWithdrawal(apiData);
         return result;
     }

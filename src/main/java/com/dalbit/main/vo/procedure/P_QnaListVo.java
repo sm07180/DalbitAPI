@@ -43,6 +43,8 @@ public class P_QnaListVo {
     private String addFileName2;
     private String addFileName3;
     private String email;
+    private String nickName;
+    private String phone;
 
 
 }

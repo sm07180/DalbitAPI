@@ -1576,4 +1576,46 @@ public class MypageService {
         }
         return result;
     }
+
+    /**
+     * 회원 알림 내용 삭제
+     */
+    public String callMemberNotificationDelete(P_NotificationDeleteVo pNotificationDeleteVo) {
+
+        ProcedureVo procedureVo = new ProcedureVo(pNotificationDeleteVo);
+
+        mypageDao.callMemberNotificationDelete(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.회원알림삭제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림삭제_성공));
+        }else if(procedureVo.getRet().equals(Status.회원알림내용삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용삭제_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원알림내용삭제_실패));
+        }
+
+        return result;
+    }
+
+    public String getMyPageNew(HttpServletRequest request){
+        HashMap params = new HashMap();
+        params.put("myMemNo", MemberVo.getMyMemNo(request));
+        params.put("targetMemNo", request.getParameter("targetMemNo"));
+        params.put("fanBoard", request.getParameter("fanBoard"));
+        params.put("dal", request.getParameter("dal"));
+        params.put("byoel", request.getParameter("byoel"));
+        params.put("notice", request.getParameter("notice"));
+        params.put("qna", request.getParameter("qna"));
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageNew(params)));
+    }
+
+    public String getMyPageNewFanBoard(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageFanBoard(MemberVo.getMyMemNo(request))));
+    }
+
+    public String getMyPageNewWallet(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageWallet(MemberVo.getMyMemNo(request))));
+    }
 }
