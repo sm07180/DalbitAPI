@@ -12,8 +12,6 @@ import java.util.List;
 public interface UserDao {
     @Transactional(readOnly = true)
     List<P_RoomMemberListVo> callBroadCastRoomMemberList(ProcedureVo procedureVo);
-    ProcedureVo callBroadCastRoomGuestAdd(ProcedureVo procedureVo);
-    ProcedureVo callBroadCastRoomGuestDelete(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomKickout(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);

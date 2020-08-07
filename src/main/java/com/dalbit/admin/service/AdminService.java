@@ -560,6 +560,11 @@ public class AdminService {
             }
             adminDao.updateState(memberDeclarationVo);
 
+            //디바이스id, ip 차단
+            if(!DalbitUtil.isEmpty(declarationVo.getBlock_type())) {
+                adminDao.insertBlockHistory(declarationVo);
+            }
+
             //rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {

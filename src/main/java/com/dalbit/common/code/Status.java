@@ -1145,6 +1145,12 @@ public enum Status {
 
     문자발송_성공("0", "sms.send.success", "문자 발송 성공 시"),
     문자발송_실패("C006", "sms.send.fail", "문자 발송 실패 시"),
+
+    //메인 랭킹
+    메인_랭킹조회_성공("C001", "main.ranking.select.success", "랭킹 조회 성공 시"),
+    메인_랭킹조회_내역없음("0", "main.ranking.no.ranking.success", "랭킹 내역 없을 시"),
+    메인_랭킹조회_요청회원_회원아님("-1", "main.ranking.member.number.error", "요청회원번호가 회원 아닐 시"),
+    메인_랭킹조회_실패("C006", "main.ranking.select.fail", "랭킹 조회 실패 시"),
    ;
 
 

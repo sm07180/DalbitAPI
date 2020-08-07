@@ -29,4 +29,11 @@ public interface MainDao {
 
     @Transactional(readOnly = true)
     List<P_MainLevelRankingVo> callMainLevelRanking(ProcedureVo procedureVo);
+
+    ProcedureVo callMainRankReward(ProcedureVo procedureVo);
+
+    ProcedureVo callMainRankRandomBox(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_MainRankingPageVo> callMainRankingPage(ProcedureVo procedureVo);
 }

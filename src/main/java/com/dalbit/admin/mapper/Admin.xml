@@ -497,4 +497,33 @@
         from rd_admin.tb_admin_test_account
         where mem_no = #{mem_no}
     </select>
+
+    <insert id="insertBlockHistory" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        insert into rd_admin.tb_login_block (
+        block_type
+        , block_text
+        , block_day
+        , block_end_date
+        , last_upd_date
+        , op_name
+        , report_idx
+        , memo
+        ) values (
+        #{block_type}
+        , #{block_text}
+        , #{block_day}
+        <choose>
+            <when test="block_day == 99">
+                , '9999-12-31'
+            </when>
+            <otherwise>
+                , DATE_ADD(now(), interval #{block_day} day)
+            </otherwise>
+        </choose>
+        , now()
+        , #{opName}
+        , null
+        , #{adminMemo}
+        )
+    </insert>
 </mapper>

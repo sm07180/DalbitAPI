@@ -6,14 +6,6 @@
       call sp_broadcast_room_member_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callBroadCastRoomGuestAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_guest_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callBroadCastRoomGuestDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
-      call sp_broadcast_room_guest_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <select id="callBroadCastRoomKickout" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_broadcast_room_forced_leave(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
@@ -45,7 +37,12 @@
             , a.guest_play_tokenid
             , b.title
             , a.mem_no
+            , c.mem_sex
+            , d.image_profile
+            , b.mem_no as dj_mem_no
         FROM tb_broadcast_room_member a INNER JOIN tb_broadcast_room b ON a.room_no = b.room_no
+            INNER JOIN tb_member_basic c ON a.mem_no = c.mem_no
+            INNER JOIN tb_member_profile d ON a.mem_no = d.mem_no
         WHERE a.room_no = #{room_no}
           AND a.mem_no = #{mem_no}
           AND a.state = 0

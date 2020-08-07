@@ -29,4 +29,11 @@ public class DeclarationVo extends AdminBaseVo{
     private String etc;
     private String last_upd_date;
     private int state;
+
+    /* 차단 기능을 위해 추가 */
+    private Integer block_type;
+    private String block_text;
+    private int block_day;
+    private String block_end_date;
+    private String adminMemo;
 }

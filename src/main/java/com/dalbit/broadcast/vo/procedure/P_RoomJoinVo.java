@@ -16,6 +16,7 @@ public class P_RoomJoinVo {
     private String bj_streamid;                 //bj 스트림아이디
     private String bj_publish_tokenid;          //bj 토큰아이디
     private String bj_play_tokenid;             //bj play토큰
+    private int shadow;
 
     private int os;
     private String deviceUuid;

@@ -18,6 +18,15 @@
         call sp_ranking_level(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMainRankReward" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_ranking_reward_popup(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMainRankRandomBox" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_ranking_reward_randbox(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
     <select id="callMainRecommandList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
         SELECT
             C.mem_no AS memNo
@@ -139,6 +148,10 @@
         WHERE T1.mem_no_fan = #{value}
         ORDER BY IFNULL(T4.idx, 0) DESC, IFNULL(T5.last_upd_date, T2.mem_join_date) DESC, T2.mem_nick ASC
         LIMIT 0, 10
+    </select>
+
+    <select id="callMainRankingPage" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_MainRankingPageVo">
+        call sp_ranking_page(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
 </mapper>

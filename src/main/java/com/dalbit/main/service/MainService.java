@@ -311,6 +311,7 @@ public class MainService {
         if(pMainFanRankingVo.getSlct_type() == 0){
             mainFanRankingList.put("time",resultMap.get("rankingDate"));
         }
+        mainFanRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainFanRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
@@ -375,6 +376,7 @@ public class MainService {
         if(pMainDjRankingVo.getSlct_type() == 0){
             mainDjRankingList.put("time",resultMap.get("rankingDate"));
         }
+        mainDjRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainDjRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
@@ -462,4 +464,135 @@ public class MainService {
     }
 
 
+    /**
+     * 랭킹 보상 팝업
+     */
+    public String callMainRankReward(P_MainRankRewardVo pMainRankRewardVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMainRankRewardVo);
+        mainDao.callMainRankReward(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap mainRewardPopupVo = new HashMap();
+
+        mainRewardPopupVo.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+        mainRewardPopupVo.put("text", DalbitUtil.getStringMap(resultMap, "text"));
+        mainRewardPopupVo.put("icon", DalbitUtil.getStringMap(resultMap, "icon"));
+        mainRewardPopupVo.put("startColor", DalbitUtil.getStringMap(resultMap, "startColor"));
+        mainRewardPopupVo.put("endColor", DalbitUtil.getStringMap(resultMap, "endColor"));
+        mainRewardPopupVo.put("rewardDal", DalbitUtil.getIntMap(resultMap, "reward_dal"));
+        mainRewardPopupVo.put("rewardExp", DalbitUtil.getIntMap(resultMap, "reward_exp"));
+        mainRewardPopupVo.put("isRandomBox", DalbitUtil.getStringMap(resultMap, "exp_random_box").equals("1") ? true : false);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.랭킹보상팝업조회_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_성공, mainRewardPopupVo));
+        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_요청회원_회원아님));
+        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_TOP3_아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_TOP3_아님));
+        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_보상테이블_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_보상테이블_없음));
+        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_없는구분타입.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_없는구분타입));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_실패));
+        }
+       return result;
+    }
+
+
+    /**
+     * 경험치 랜덤박스 열기
+     */
+    public String callMainRankRandomBox(P_MainRankRewardVo pMainRankRewardVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMainRankRewardVo);
+        mainDao.callMainRankRandomBox(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap randomBoxVo = new HashMap();
+
+        randomBoxVo.put("rewardExp", DalbitUtil.getStringMap(resultMap, "reward_exp"));
+        randomBoxVo.put("isRandomBox", DalbitUtil.getStringMap(resultMap, "exp_random_box").equals("1") ? true : false);
+        randomBoxVo.put("rewardImg", DalbitUtil.getProperty("server.img.url")+"/event/attend/lottie/"+DalbitUtil.getStringMap(resultMap, "reward_exp")+".json");
+
+        String result;
+        if(procedureVo.getRet().equals(Status.랜덤박스열기_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_성공, randomBoxVo));
+        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_요청회원_회원아님));
+        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_TOP3_아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_TOP3_아님));
+        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_보상대상_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_보상대상_회원아님));
+        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_이미받음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_이미받음));
+        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_없는구분타입.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_없는구분타입));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 랭킹조회
+     */
+    public String mainRankingPage(P_MainRankingPageVo pMainRankingPageVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMainRankingPageVo);
+        List<P_MainRankingPageVo> mainRankingPageVoList = mainDao.callMainRankingPage(procedureVo);
+
+        HashMap mainRankingList = new HashMap();
+
+        String time = "월요일 업데이트";
+        if(pMainRankingPageVo.getSlct_type() == 0){
+            Date today = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:00", Locale.KOREA);
+            time = sdf.format(today);
+        }else if(pMainRankingPageVo.getSlct_type() == 1){
+            Calendar today = Calendar.getInstance();
+            today.add(Calendar.DATE, -1);
+            SimpleDateFormat sdf = new SimpleDateFormat("M월 d일", Locale.KOREA);
+            time = sdf.format(today.getTime()) + " 업데이트";
+        }
+        mainRankingList.put("time",time);
+
+        if(DalbitUtil.isEmpty(mainRankingPageVoList)){
+            mainRankingList.put("isReward", 0);
+            mainRankingList.put("myRank", 0);
+            mainRankingList.put("myPoint", 0);
+            mainRankingList.put("myGiftPoint", 0);
+            mainRankingList.put("myListenPoint", 0);
+            mainRankingList.put("myUpDown", "");
+            mainRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_내역없음, mainRankingList));
+        }
+        List<MainRankingPageOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<mainRankingPageVoList.size(); i++){
+            outVoList.add(new MainRankingPageOutVo(mainRankingPageVoList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        mainRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
+        mainRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+        mainRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
+        mainRankingList.put("myLikePoint", DalbitUtil.getIntMap(resultMap, "myLikePoint"));
+        mainRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
+        mainRankingList.put("myBroadPoint", DalbitUtil.getIntMap(resultMap, "myBroadPoint"));
+        mainRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
+        mainRankingList.put("myListenPoint", DalbitUtil.getIntMap(resultMap, "myListenPoint"));
+        mainRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
+        mainRankingList.put("list", procedureOutputVo.getOutputBox());
+        mainRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_성공, mainRankingList));
+        } else if (procedureVo.getRet().equals(Status.메인_랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_요청회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_실패));
+        }
+        return result;
+    }
 }

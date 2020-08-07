@@ -116,6 +116,11 @@ public class RoomController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomNo);
         apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
+        if(roomJoinVo.getShadow() != null && roomJoinVo.getShadow() == 1){
+            apiData.setShadow(1);
+        }else{
+            apiData.setShadow(0);
+        }
         //apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
         if(!DalbitUtil.isEmpty(apiData.getGuest_streamid())){
             apiData.setGuest_play_tokenid((String) restService.antToken(apiData.getGuest_streamid(), "play", request).get("tokenId"));
