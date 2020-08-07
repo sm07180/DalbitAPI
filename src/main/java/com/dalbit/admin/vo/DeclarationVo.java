@@ -36,4 +36,8 @@ public class DeclarationVo extends AdminBaseVo{
     private int block_day;
     private String block_end_date;
     private String adminMemo;
+
+    /* history를 위한 */
+    private String edit_contents;
+    private int edit_type;
 }

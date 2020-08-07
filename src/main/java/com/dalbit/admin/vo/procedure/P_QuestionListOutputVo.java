@@ -25,6 +25,7 @@ public class P_QuestionListOutputVo extends AdminBaseVo {
     private String question_contents;
     private String add_file;
     private String email;
+    private String phone;
     private String answer;
     private int state;
     private String platform;

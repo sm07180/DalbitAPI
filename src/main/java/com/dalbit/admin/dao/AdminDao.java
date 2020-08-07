@@ -115,5 +115,7 @@ public interface AdminDao {
     @Transactional(readOnly = true)
     String selectAdminName(String mem_no);
 
+    int insertBlock(DeclarationVo declarationVo);
+
     int insertBlockHistory(DeclarationVo declarationVo);
 }

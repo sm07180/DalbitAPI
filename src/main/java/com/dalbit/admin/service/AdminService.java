@@ -562,6 +562,13 @@ public class AdminService {
 
             //디바이스id, ip 차단
             if(!DalbitUtil.isEmpty(declarationVo.getBlock_type())) {
+                adminDao.insertBlock(declarationVo);
+                declarationVo.setEdit_type(0);
+                if(declarationVo.getBlock_type() == 1) {
+                    declarationVo.setEdit_contents("deviceUuid 차단 등록 : " + declarationVo.getBlock_text());
+                } else {
+                    declarationVo.setEdit_contents("ip 차단 등록 : " + declarationVo.getBlock_text());
+                }
                 adminDao.insertBlockHistory(declarationVo);
             }
 
