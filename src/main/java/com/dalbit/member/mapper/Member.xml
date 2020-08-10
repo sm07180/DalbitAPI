@@ -64,8 +64,12 @@
         select count(block_end_date)
         from rd_admin.tb_login_block
         where
-            ( block_type = 1 and block_text = #{deviceUuid} )
-            or ( block_type = 2 and block_text = #{ip} )
+            (
+                ( block_type = 1 and block_text = #{deviceUuid} )
+                or ( block_type = 2 and block_text = #{ip} )
+            )
+            and block_text != ''
+            and now() <![CDATA[<]]> block_end_date
     </select>
 
     <select id="selectAnonymousMem" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">

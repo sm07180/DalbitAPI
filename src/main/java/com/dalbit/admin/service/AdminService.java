@@ -561,7 +561,7 @@ public class AdminService {
             adminDao.updateState(memberDeclarationVo);
 
             //디바이스id, ip 차단
-            if(!DalbitUtil.isEmpty(declarationVo.getBlock_type())) {
+            if(!(DalbitUtil.isEmpty(declarationVo.getBlock_type()) && DalbitUtil.isEmpty(declarationVo.getBlock_text()))) {
                 adminDao.insertBlock(declarationVo);
                 declarationVo.setEdit_type(0);
                 if(declarationVo.getBlock_type() == 1) {
