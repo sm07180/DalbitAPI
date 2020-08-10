@@ -31,11 +31,14 @@ public class DeclarationVo extends AdminBaseVo{
     private int state;
 
     /* 차단 기능을 위해 추가 */
-    private Integer block_type;
+    private Integer uuid_block;
+    private Integer ip_block;
     private String block_text;
     private int block_day;
+    private int block_type;
     private String block_end_date;
     private String adminMemo;
+    private String device_uuid;
 
     /* history를 위한 */
     private String edit_contents;

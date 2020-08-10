@@ -134,11 +134,13 @@ public class MemberService {
         memberDao.callChangePassword(procedureVo);
 
         //회원정보수정 로그 쌓기 추가(cs요청)
-        /*var proImageInitVo = new ProImageInitVo();
-        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+        TokenCheckVo tokenCheckVo = memberDao.selectMemState(MemberVo.getMyMemNo(request));
+        var proImageInitVo = new ProImageInitVo();
+        proImageInitVo.setMem_no(tokenCheckVo.getMem_no());
         proImageInitVo.setType(0);
-        proImageInitVo.setEdit_contents("비밀번호 변경 : [" + pChangePasswordVo.getPassword() + "]");
-        adminDao.insertProfileHistory(proImageInitVo);*/
+        proImageInitVo.setEdit_contents("패스워드 변경 : " + pChangePasswordVo.getPassword());
+        proImageInitVo.setOp_name(tokenCheckVo.getMem_userid());
+        adminDao.insertProfileHistory(proImageInitVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {

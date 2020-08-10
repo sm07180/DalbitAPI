@@ -560,19 +560,40 @@ public class AdminService {
             }
             adminDao.updateState(memberDeclarationVo);
 
-            //디바이스id, ip 차단
-            String blockText = DalbitUtil.isEmpty(declarationVo.getBlock_text()) ? "" : declarationVo.getBlock_text();
-            if(!DalbitUtil.isEmpty(declarationVo.getBlock_type()) && !"".equals(blockText)) {
-                adminDao.insertBlock(declarationVo);
-                declarationVo.setEdit_type(0);
-                if(declarationVo.getBlock_type() == 1) {
-                    declarationVo.setEdit_contents("deviceUuid 차단 등록 : " + declarationVo.getBlock_text());
-                } else {
-                    declarationVo.setEdit_contents("ip 차단 등록 : " + declarationVo.getBlock_text());
-                }
-                adminDao.insertBlockHistory(declarationVo);
-            }
 
+            //디바이스id, ip 차단
+
+            if(declarationVo.getUuid_block() == 1 || declarationVo.getIp_block() == 1) {
+                DeclarationVo getRecentInfo = adminDao.selectRecentIdIp(declarationVo);
+                //declarationVo.setBlock_text(adminDao.selectRecentIdIp(declarationVo).getBlock_text());
+
+                if(!DalbitUtil.isEmpty(getRecentInfo)){
+
+                    //uuid 차단 등록
+                    String deviceUuid = DalbitUtil.isEmpty(getRecentInfo.getDevice_uuid()) ? "" : getRecentInfo.getDevice_uuid();
+                    if(!"".equals(deviceUuid) && declarationVo.getUuid_block() == 1){
+                        declarationVo.setBlock_type(1);
+                        declarationVo.setBlock_text(deviceUuid);
+                        adminDao.insertBlock(declarationVo);
+
+                        declarationVo.setEdit_contents("deviceUuid 차단 등록 : " + declarationVo.getBlock_text());
+                        declarationVo.setEdit_type(0);
+                        adminDao.insertBlockHistory(declarationVo);
+                    }
+
+                    //ip 차단 등록
+                    String ip = DalbitUtil.isEmpty(getRecentInfo.getIp()) ? "" : getRecentInfo.getIp();
+                    if(!"".equals(ip) && declarationVo.getIp_block() == 1){
+                        declarationVo.setBlock_type(2);
+                        declarationVo.setBlock_text(ip);
+                        adminDao.insertBlock(declarationVo);
+
+                        declarationVo.setEdit_contents("ip 차단 등록 : " + declarationVo.getBlock_text());
+                        declarationVo.setEdit_type(0);
+                        adminDao.insertBlockHistory(declarationVo);
+                    }
+                }
+            }
             //rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
