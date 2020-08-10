@@ -25,6 +25,7 @@ public class MainController {
     @Autowired
     MainService mainService;
 
+
     /**
      * 메인
      */
@@ -32,6 +33,7 @@ public class MainController {
     public String main(HttpServletRequest request){
         return mainService.getMain(request);
     }
+
 
     /**
      * 팬 랭킹
@@ -60,6 +62,7 @@ public class MainController {
         return result;
     }
 
+
     /**
      * Level 랭킹
      */
@@ -72,6 +75,7 @@ public class MainController {
 
         return result;
     }
+
 
     /**
      * 배너

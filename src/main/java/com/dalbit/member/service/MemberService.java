@@ -1,5 +1,7 @@
 package com.dalbit.member.service;
 
+import com.dalbit.admin.dao.AdminDao;
+import com.dalbit.admin.vo.ProImageInitVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
@@ -26,6 +28,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -60,6 +63,9 @@ public class MemberService {
     SocketService socketService;
     @Autowired
     RoomService roomService;
+
+    @Autowired
+    AdminDao adminDao;
 
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
@@ -123,9 +129,16 @@ public class MemberService {
     /**
      * 비밀번호 변경
      */
-    public String callChangePassword(P_ChangePasswordVo pChangePasswordVo){
+    public String callChangePassword(HttpServletRequest request, P_ChangePasswordVo pChangePasswordVo){
         ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo.getPhoneNo(), pChangePasswordVo.getPassword());
         memberDao.callChangePassword(procedureVo);
+
+        //회원정보수정 로그 쌓기 추가(cs요청)
+        var proImageInitVo = new ProImageInitVo();
+        proImageInitVo.setOp_name(MemberVo.getMyMemNo(request));
+        proImageInitVo.setType(0);
+        proImageInitVo.setEdit_contents("비밀번호 변경 : [" + pChangePasswordVo.getPassword() + "]");
+        adminDao.insertProfileHistory(proImageInitVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {

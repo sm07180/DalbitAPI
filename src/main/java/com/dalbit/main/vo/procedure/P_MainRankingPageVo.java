@@ -30,8 +30,8 @@ public class P_MainRankingPageVo {
     /* Input */
     private int memLogin;
     private String mem_no;
-    private Integer slct_type;
-    private Integer ranking_slct;
+    private int slct_type;
+    private int ranking_slct;
     private int pageNo;
     private int pageCnt;
     private String rankingDate;

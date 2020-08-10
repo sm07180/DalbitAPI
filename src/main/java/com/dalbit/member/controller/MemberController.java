@@ -223,7 +223,7 @@ public class MemberController {
      * 비밀번호 변경
      */
     @PostMapping("/member/pwd")
-    public String pwd(@Valid ChangePwVo changePwVo, BindingResult bindingResult) throws GlobalException{
+    public String pwd(@Valid ChangePwVo changePwVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -232,7 +232,7 @@ public class MemberController {
         pChangePasswordVo.setPhoneNo(changePwVo.getMemId());
         pChangePasswordVo.setPassword(changePwVo.getMemPwd());
 
-        String result = memberService.callChangePassword(pChangePasswordVo);
+        String result = memberService.callChangePassword(request, pChangePasswordVo);
 
         return result;
     }

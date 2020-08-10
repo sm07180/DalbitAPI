@@ -544,7 +544,7 @@ public class MainService {
 
         HashMap mainRankingList = new HashMap();
 
-        String time = "월요일 업데이트";
+        /*String time = "";
         if(pMainRankingPageVo.getSlct_type() == 0){
             Date today = new Date();
             SimpleDateFormat sdf = new SimpleDateFormat("hh:00", Locale.KOREA);
@@ -555,7 +555,7 @@ public class MainService {
             SimpleDateFormat sdf = new SimpleDateFormat("M월 d일", Locale.KOREA);
             time = sdf.format(today.getTime()) + " 업데이트";
         }
-        mainRankingList.put("time",time);
+        mainRankingList.put("time",time);*/
 
         if(DalbitUtil.isEmpty(mainRankingPageVoList)){
             mainRankingList.put("isReward", 0);
@@ -573,6 +573,21 @@ public class MainService {
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        if(pMainRankingPageVo.getSlct_type() == 2){
+            Calendar calendar = Calendar.getInstance();
+            String date = pMainRankingPageVo.getRankingDate();
+            String[] dates = date.split("-");
+            int year = Integer.parseInt(dates[0]);
+            int month = Integer.parseInt(dates[1]);
+            int day = Integer.parseInt(dates[2]);
+            calendar.setFirstDayOfWeek(Calendar.MONDAY);
+            calendar.setMinimalDaysInFirstWeek(7);
+            calendar.set(year, month - 1, day);
+
+            mainRankingList.put("time", date.substring(0,8).replace("-",".")+" "+calendar.get(Calendar.WEEK_OF_MONTH)+"주");
+        } else {
+            mainRankingList.put("time", "");
+        }
         mainRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
         mainRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
