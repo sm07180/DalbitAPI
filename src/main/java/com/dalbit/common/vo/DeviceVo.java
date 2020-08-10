@@ -48,7 +48,7 @@ public class DeviceVo {
         if(customHeader != null && !"".equals(customHeader.trim())){
             customHeader = URLDecoder.decode(customHeader);
             HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
-            if(!DalbitUtil.isEmpty(headers.get("os"))){
+            if(!DalbitUtil.isEmpty(headers) && !DalbitUtil.isEmpty(headers.get("os"))){
                 if(this.os == -1){
                     this.os = (int)DalbitUtil.getDoubleMap(headers, "os");
                 }

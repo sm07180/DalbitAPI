@@ -6,6 +6,7 @@ import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.EventDao;
+import com.dalbit.event.vo.GifiticonWinListOutputVo;
 import com.dalbit.event.vo.ReplyListOutputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.member.vo.MemberVo;
@@ -263,6 +264,9 @@ public class EventService {
         return result;
     }
 
+    /**
+     * 출석체크 상태 체크
+     */
     public String attendanceCheckStatus(HttpServletRequest request){
 
         if(!DalbitUtil.isLogin(request)){
@@ -272,6 +276,29 @@ public class EventService {
         String mem_no = MemberVo.getMyMemNo(request);
         var paramMap = new HashMap();
         paramMap.put("mem_no", mem_no);
+
+        /*String memNos = "|11584609037713|11584609037192|11584609037223|";
+        if(memNos.contains(mem_no)){
+            var dateList = setTestDateList("status");
+
+            var status = new HashMap<>();
+            status.put("check_gift", "1");
+            status.put("bonus", "0");
+            status.put("phone_input", "1");
+            status.put("input_enddate", "2020-08-09 23:59:59");
+
+            var summary = new HashMap<>();
+            summary.put("attendanceDays", 7);
+            summary.put("totalExp", 200);
+            summary.put("dalCnt", 120);
+
+            var resultMap = new HashMap<>();
+            resultMap.put("status", status);
+            resultMap.put("dateList", dateList);
+            resultMap.put("summary", summary);
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_성공, resultMap));
+
+        }*/
 
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckLoad(procedureVo);
@@ -289,6 +316,77 @@ public class EventService {
         }
     }
 
+    public ArrayList setTestDateList(String type){
+        var dateList = new ArrayList<>();
+        var date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-03");
+        date.setThe_day(0);
+        date.setCheck_ok(1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(0);
+        dateList.add(date);
+
+        date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-04");
+        date.setThe_day(1);
+        date.setCheck_ok(1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(0);
+        dateList.add(date);
+
+        date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-05");
+        date.setThe_day(1);
+        date.setCheck_ok(1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(0);
+        dateList.add(date);
+
+        date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-06");
+        date.setThe_day(1);
+        date.setCheck_ok(1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(0);
+        dateList.add(date);
+
+        date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-07");
+        date.setThe_day(1);
+        date.setCheck_ok(1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(0);
+        dateList.add(date);
+
+        date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-08");
+        date.setThe_day(1);
+        date.setCheck_ok(1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(0);
+        dateList.add(date);
+
+        date = new P_AttendanceCheckLoadOutputVo();
+        date.setThe_date("2020-08-09");
+        date.setThe_day(1);
+        date.setCheck_ok(type.equals("status") ? 2 : 1);
+        date.setReward_exp(5);
+        date.setReward_dal(4);
+        date.setIs_today(1);
+        dateList.add(date);
+
+        return dateList;
+    }
+
+    /**
+     * 출석체크
+     */
     public String attendanceCheckIn(HttpServletRequest request){
 
         if(!DalbitUtil.isLogin(request)){
@@ -301,6 +399,37 @@ public class EventService {
 
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckGift(procedureVo);
+        /*String memNos = "|11584609037713|11584609037192|11584609037223|";
+        if(memNos.contains(mem_no)){
+            dateList = setTestDateList("checkIn");
+
+            var status = new HashMap<>();
+            status.put("check_gift", "0");
+            status.put("bonus", "1");
+            status.put("gifticon_check", "1");
+
+            String gifticon_win = "0";
+            if("11584609037713".equals(mem_no)){
+                gifticon_win = "2";
+            }else if("11584609037192".equals(mem_no)){
+                gifticon_win = "1";
+            }
+            status.put("gifticon_win", gifticon_win);
+            status.put("phone_input", "1");
+            status.put("input_enddate", "2020-08-09 23:59:59");
+
+            var summary = new HashMap<>();
+            summary.put("attendanceDays", 7);
+            summary.put("totalExp", 200);
+            summary.put("dalCnt", 120);
+
+            var resultMap = new HashMap<>();
+            resultMap.put("status", status);
+            resultMap.put("dateList", dateList);
+            resultMap.put("summary", summary);
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_성공, resultMap));
+
+        }*/
 
         if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_회원아님.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_회원아님));
@@ -336,18 +465,19 @@ public class EventService {
         String mem_no = MemberVo.getMyMemNo(request);
         var paramMap = new HashMap();
         paramMap.put("mem_no", mem_no);
-        
-        if(mem_no.equals("11583296139594") || mem_no.equals("11584406236831")){
+
+        /*String memNos = "|11584609037713|11584609037192|11584609037223|";
+        if(memNos.contains(mem_no)){
             var summary = new HashMap();
             summary.put("attendanceDays", 7);
             summary.put("totalExp", 200);
             summary.put("dalCnt", 15);
 
             var status = new HashMap();
-            status.put("check_gift", 0);
-            status.put("bonus", 0);
-            status.put("exp", 50);
-            status.put("dal", 200);
+            status.put("check_gift", "0");
+            status.put("bonus", "2");
+            status.put("exp", "50");
+            status.put("dal", "200");
 
             var returnMap = new HashMap();
             returnMap.put("status", status);
@@ -355,7 +485,7 @@ public class EventService {
             returnMap.put("summary", summary);
 
             return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_성공, returnMap));
-        }
+        }*/
 
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckBonus(procedureVo);
@@ -368,7 +498,7 @@ public class EventService {
 
         }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_대상아님.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_대상아님));
-        
+
         }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_성공.getMessageCode())){
 
             int attendanceDays = 0;
@@ -410,9 +540,14 @@ public class EventService {
             totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
             dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
 
-            if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))
-                    && pAttendanceCheckLoadOutputVo.getCheck_ok() == 0 ){
-                pAttendanceCheckLoadOutputVo.setCheck_ok(2);
+            if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))){
+                //if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("2020-08-02"))){
+
+                pAttendanceCheckLoadOutputVo.setIs_today(1);
+
+                if(pAttendanceCheckLoadOutputVo.getCheck_ok() == 0){
+                    pAttendanceCheckLoadOutputVo.setCheck_ok(2);
+                }
             }
         }
 
@@ -425,7 +560,6 @@ public class EventService {
 
         var returnMap = new HashMap();
         returnMap.put("status", status);
-
         returnMap.put("dateList", dateList);
         returnMap.put("summary", summary);
 
@@ -531,5 +665,101 @@ public class EventService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_결과_데이터없음));
         }
         return result;
+    }
+
+
+    /**
+     * 출석완료 체크
+     */
+    public String callAttendanceCheck(HttpServletRequest request, P_AttendanceCheckVo pAttendanceCheckVo) {
+
+        //비로그인은 무조건 체크 false로 리턴
+        if(!DalbitUtil.isLogin(request)){
+            var resultMap = new HashMap();
+            resultMap.put("isCheck", false);
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, resultMap));
+        }
+        ProcedureVo procedureVo = new ProcedureVo(pAttendanceCheckVo);
+        eventDao.callAttendanceCheck(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("isCheck", DalbitUtil.getStringMap(resultMap, "attendance_check").equals("0") ? true : false);
+        procedureVo.setData(returnMap);
+
+        if(procedureVo.getRet().equals(Status.출석완료체크_성공.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.출석완료체크_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_회원아님));
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_실패));
+        }
+
+    }
+
+    /**
+     * 당첨자 휴대폰 입력
+     */
+    public String callPhoneInput(P_PhoneInputVo pPhoneInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pPhoneInputVo);
+        eventDao.callPhoneInput(procedureVo);
+
+        if(procedureVo.getRet().equals(Status.휴대폰입력_성공.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_성공, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(Status.휴대폰입력_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_회원아님));
+        }else if(procedureVo.getRet().equals(Status.휴대폰입력_당첨자아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_당첨자아님));
+        }else if(procedureVo.getRet().equals(Status.휴대폰입력_자리수11미만.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_자리수11미만));
+        }else if(procedureVo.getRet().equals(Status.휴대폰입력_입력종료시간지남.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_입력종료시간지남));
+        }else if(procedureVo.getRet().equals(Status.휴대폰입력_이미입력된번호.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_이미입력된번호));
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_실패));
+        }
+    }
+
+
+    /**
+     * 기프티콘 당첨자 리스트
+     */
+    public String callGifticonWinList(P_GifticonWinListInputVo pGifticonListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pGifticonListVo);
+
+        List<P_GifticonWinListOutputVo> gifticonWinList = eventDao.callGifticonWinList(procedureVo);
+
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(gifticonWinList)){
+            resultMap.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트없음, resultMap));
+        }
+
+        String result;
+        if(gifticonWinList.size() > 0) {
+            List<GifiticonWinListOutputVo> outList = new ArrayList();
+            for(P_GifticonWinListOutputVo vo : gifticonWinList){
+                GifiticonWinListOutputVo outVo = new GifiticonWinListOutputVo(vo);
+                outList.add(outVo);
+            }
+            resultMap.put("list", outList);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트조회, resultMap));
+        }else if(procedureVo.getRet().equals(Status.기프티콘_당첨자리스트조회_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트조회_실패));
+        }
+        return result;
+    }
+
+    /**
+     * 보름달 뜨는 날짜 조회
+     */
+    public String selectLunarDate() {
+        HashMap resultMap = new HashMap();
+        resultMap.put("lunarDt", eventDao.selectLunarDate());
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 }

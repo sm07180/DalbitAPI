@@ -170,12 +170,63 @@ public class EventController {
         return result;
     }
 
+
     /**
      * 라이징 이벤트 결과보기
      */
     @PostMapping("/rising/result")
     public String risingResult(HttpServletRequest request, P_RisingResultInputVo pRisingResultInputVo) throws GlobalException {
         String result = eventService.callRisingResult(request, pRisingResultInputVo);
+        return result;
+    }
+
+
+    /**
+     * 출석완료 체크
+     */
+    @GetMapping("/attendance/check")
+    public String attendanceCheck(HttpServletRequest request){
+        P_AttendanceCheckVo apiData = new P_AttendanceCheckVo(request);
+        String result = eventService.callAttendanceCheck(request, apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 당첨자 휴대폰 입력
+     */
+    @PostMapping("/phone/input")
+    public String phoneInput(@Valid PhoneInputVo phoneInputVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_PhoneInputVo apiData = new P_PhoneInputVo(phoneInputVo, request);
+        String result = eventService.callPhoneInput(apiData);
+
+        return result;
+    }
+
+
+    /**
+     * 기프티콘 당첨자 리스트 조회
+     */
+    @GetMapping("/gifticon/win/list")
+    public String gifticonWinList(HttpServletRequest request){
+        P_GifticonWinListInputVo apiData = new P_GifticonWinListInputVo(request);
+        String result = eventService.callGifticonWinList(apiData);
+
+        return result;
+    }
+
+    /**
+     * 보름달 뜨는 날짜 조회
+     */
+    @GetMapping("/lunar/date")
+    public String getLunarDate(){
+
+        String result = eventService.selectLunarDate();
+
         return result;
     }
 }

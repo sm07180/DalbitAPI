@@ -38,4 +38,14 @@ public interface EventDao {
 
     @Transactional(readOnly = true)
     ArrayList<P_RisingEventListOutputVo> callRisingResult(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callAttendanceCheck(ProcedureVo procedureVo);
+
+    ProcedureVo callPhoneInput(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<P_GifticonWinListOutputVo> callGifticonWinList(ProcedureVo procedureVo);
+
+    String selectLunarDate();
 }

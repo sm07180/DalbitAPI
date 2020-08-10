@@ -114,4 +114,25 @@
     <select id="callRisingResult" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RisingEventListOutputVo">
       call sp_event_rising_result(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callAttendanceCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_member_attendance_check(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callPhoneInput" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_gifticon_phone_input(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callGifticonWinList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_GifticonWinListOutputVo">
+      call sp_gifticon_win_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectLunarDate" resultType="String">
+        SELECT
+            concat(month (date), '월 ', day(date), '일') as lunarDate
+        FROM tbl_lunar_calendar
+        ORDER BY ABS(DATEDIFF(NOW(), DATE))
+        LIMIT 1
+    </select>
+
 </mapper>
