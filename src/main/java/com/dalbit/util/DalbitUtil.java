@@ -1345,17 +1345,43 @@ public class DalbitUtil {
     public static Boolean isStringMatchCheck(String str, String param){
         boolean isMatch = false;
         str = str.replaceAll("\\|\\|", "\\|");
-        str = StringUtils.replace(str, "(", "\\(");
-        str = StringUtils.replace(str, ")", "\\)");
+        str = str.replace("?", "0X01");
+        str = str.replace("+", "0X02");
+        str = str.replace("*", "0X03");
+        str = str.replace(".", "0X04");
+        str = str.replace("^", "0X05");
+        str = str.replace("(", "0X06");
+        str = str.replace(")", "0X07");
+        str = str.replace("[", "0X08");
+        str = str.replace("]", "0X09");
+        str = str.replace("{", "0X10");
+        str = str.replace("}", "0X11");
+        str = str.replace("'", "0X12");
+        str = str.replace("\"", "0X13");
+        str = str.replace("\\\\", "0X14");
 
+        param = param.replaceAll("\\|\\|", "\\|");
+        param = param.replace("?", "0X01");
+        param = param.replace("+", "0X02");
+        param = param.replace("*", "0X03");
+        param = param.replace(".", "0X04");
+        param = param.replace("^", "0X05");
+        param = param.replace("(", "0X06");
+        param = param.replace(")", "0X07");
+        param = param.replace("[", "0X08");
+        param = param.replace("]", "0X09");
+        param = param.replace("{", "0X10");
+        param = param.replace("}", "0X11");
+        param = param.replace("'", "0X12");
+        param = param.replace("\"", "0X13");
+        param = param.replace("\\\\", "0X14");
 
         try {
-            Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
+            Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE); //대소문자 구분안함
             Matcher m = p.matcher(param);
             while (m.find()){
                 return isMatch = true;
             }
-
         } catch (Exception e){
             log.error("금지어 체크 오류 isStringMatchCheck");
 
@@ -1383,13 +1409,40 @@ public class DalbitUtil {
      */
     public static String replaceMaskString(String str, String param){
         str = str.replaceAll("\\|\\|", "\\|");
-        str = StringUtils.replace(str, "(", "\\(");
-        str = StringUtils.replace(str, ")", "\\)");
+        str = str.replaceAll("\\|\\|", "\\|");
+        str = str.replace("?", "0X01");
+        str = str.replace("+", "0X02");
+        str = str.replace("*", "0X03");
+        str = str.replace(".", "0X04");
+        str = str.replace("^", "0X05");
+        str = str.replace("(", "0X06");
+        str = str.replace(")", "0X07");
+        str = str.replace("[", "0X08");
+        str = str.replace("]", "0X09");
+        str = str.replace("{", "0X10");
+        str = str.replace("}", "0X11");
+        str = str.replace("'", "0X12");
+        str = str.replace("\"", "0X13");
+        str = str.replace("\\\\", "0X14");
+
+        param = param.replaceAll("\\|\\|", "\\|");
+        param = param.replace("?", "0X01");
+        param = param.replace("+", "0X02");
+        param = param.replace("*", "0X03");
+        param = param.replace(".", "0X04");
+        param = param.replace("^", "0X05");
+        param = param.replace("(", "0X06");
+        param = param.replace(")", "0X07");
+        param = param.replace("[", "0X08");
+        param = param.replace("]", "0X09");
+        param = param.replace("{", "0X10");
+        param = param.replace("}", "0X11");
+        param = param.replace("'", "0X12");
+        param = param.replace("\"", "0X13");
+        param = param.replace("\\\\", "0X14");
 
         StringBuffer sb = new StringBuffer();
-
         try {
-
             Pattern p = Pattern.compile(str, Pattern.CASE_INSENSITIVE);
             Matcher m = p.matcher(param);
             while (m.find()){
@@ -1415,7 +1468,21 @@ public class DalbitUtil {
             }
 
         }
-        return sb.toString();
+
+        return sb.toString().replaceAll("0X01", "?")
+                            .replaceAll("0X02", "+")
+                            .replaceAll("0X03", "*")
+                            .replaceAll("0X04", ".")
+                            .replaceAll("0X05", "^")
+                            .replaceAll("0X06", "(")
+                            .replaceAll("0X07", ")")
+                            .replaceAll("0X08", "[")
+                            .replaceAll("0X09", "]")
+                            .replaceAll("0X10", "{")
+                            .replaceAll("0X11", "}")
+                            .replaceAll("0X12", "'")
+                            .replaceAll("0X13", "\"")
+                            .replaceAll("0X14", "\\\\");
     }
 
     /**

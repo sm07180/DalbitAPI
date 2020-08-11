@@ -570,10 +570,9 @@ public class AdminService {
                 if(!DalbitUtil.isEmpty(getRecentInfo)){
 
                     //uuid 차단 등록
-                    String deviceUuid = DalbitUtil.isEmpty(getRecentInfo.getDevice_uuid()) ? "" : getRecentInfo.getDevice_uuid();
-                    if(!"".equals(deviceUuid) && declarationVo.getUuid_block() == 1){
+                    if(!"".equals(DalbitUtil.isEmpty(getRecentInfo.getDevice_uuid()) && declarationVo.getUuid_block() == 1)){
                         declarationVo.setBlock_type(1);
-                        declarationVo.setBlock_text(deviceUuid);
+                        declarationVo.setBlock_text(getRecentInfo.getDevice_uuid());
                         adminDao.insertBlock(declarationVo);
 
                         declarationVo.setEdit_contents("deviceUuid 차단 등록 : " + declarationVo.getBlock_text());
@@ -582,10 +581,9 @@ public class AdminService {
                     }
 
                     //ip 차단 등록
-                    String ip = DalbitUtil.isEmpty(getRecentInfo.getIp()) ? "" : getRecentInfo.getIp();
-                    if(!"".equals(ip) && declarationVo.getIp_block() == 1){
+                    if(DalbitUtil.isEmpty(getRecentInfo.getIp()) && declarationVo.getIp_block() == 1){
                         declarationVo.setBlock_type(2);
-                        declarationVo.setBlock_text(ip);
+                        declarationVo.setBlock_text(getRecentInfo.getIp());
                         adminDao.insertBlock(declarationVo);
 
                         declarationVo.setEdit_contents("ip 차단 등록 : " + declarationVo.getBlock_text());
