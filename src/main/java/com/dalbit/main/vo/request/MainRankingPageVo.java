@@ -18,7 +18,7 @@ public class MainRankingPageVo {
 
     @NotNull(message = "{\"ko_KR\" : \"기간 선택을\"}")
     @Min(message = "{\"ko_KR\" : \"기간 선택을\"}", value = 1)
-    @Max(message = "{\"ko_KR\" : \"기간 선택을\"}", value = 3)
+    @Max(message = "{\"ko_KR\" : \"기간 선택을\"}", value = 4)
     private Integer rankType;
 
     @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
