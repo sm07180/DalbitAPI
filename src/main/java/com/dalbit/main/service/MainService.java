@@ -589,6 +589,7 @@ public class MainService {
             mainRankingList.put("time", "");
         }
         mainRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
+        mainRankingList.put("rewardRank", DalbitUtil.getIntMap(resultMap, "rewardRank"));
         mainRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainRankingList.put("myLikePoint", DalbitUtil.getIntMap(resultMap, "myLikePoint"));
