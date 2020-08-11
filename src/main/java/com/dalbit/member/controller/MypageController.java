@@ -698,6 +698,18 @@ public class MypageController {
     }
 
     /**
+     * 회원 방송방 이모티콘 가져오기
+     */
+    @GetMapping("/emoticon")
+    public String memberEmoticon(HttpServletRequest request) throws GlobalException{
+
+        P_EmoticonListVo apiData = new P_EmoticonListVo(request);
+        String result = mypageService.callMemberEmoticon(apiData);
+
+        return result;
+    }
+
+    /**
      * 회원 알림 내용 삭제
      */
     @DeleteMapping("/notification/delete")
@@ -724,4 +736,5 @@ public class MypageController {
     @GetMapping("/new/wallet")
     public String getMyPageNewWallet(HttpServletRequest request){
         return mypageService.getMyPageNewWallet(request);
-    }}
+    }
+}

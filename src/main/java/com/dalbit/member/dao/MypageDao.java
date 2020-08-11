@@ -2,6 +2,8 @@ package com.dalbit.member.dao;
 
 import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.EmoticonCategoryListOutVo;
+import com.dalbit.member.vo.EmoticonCategoryListVo;
 import com.dalbit.member.vo.LevelVo;
 import com.dalbit.member.vo.SpecialDjRegManageVo;
 import com.dalbit.member.vo.procedure.*;
@@ -114,11 +116,17 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     int selectAdminBadge(String value);
 
+    @Transactional(readOnly = true)
+    List<P_EmoticonListVo> callMemberEmoticon(ProcedureVo procedureVo);
+
     ProcedureVo callMemberNotificationDelete(ProcedureVo procedureVo);
+
+    List<EmoticonCategoryListVo> selectEmoticonCategory();
 
     @Transactional(readOnly = true)
     HashMap selectMyPageNew(HashMap params);
     @Transactional(readOnly = true)
     Long selectMyPageFanBoard(String mem_no);
     @Transactional(readOnly = true)
-    HashMap selectMyPageWallet(String mem_no);}
+    HashMap selectMyPageWallet(String mem_no);
+}

@@ -1577,6 +1577,49 @@ public class MypageService {
         return result;
     }
 
+
+    /**
+     * 회원 방송방 이모티콘 가져오기
+     */
+    public String callMemberEmoticon(P_EmoticonListVo pEmoticonVo) {
+
+        ProcedureVo procedureVo = new ProcedureVo(pEmoticonVo);
+        List<P_EmoticonListVo> emoticonListVo = mypageDao.callMemberEmoticon(procedureVo);
+
+        //카테고리 조회
+        List<EmoticonCategoryListVo> categoryListVo = mypageDao.selectEmoticonCategory();
+
+       HashMap emoticonList = new HashMap();
+        if(DalbitUtil.isEmpty(emoticonListVo)){
+            emoticonList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.이모티콘조회_없음, emoticonList));
+        }
+
+        List<EmoticonListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<emoticonListVo.size(); i++){
+            outVoList.add(new EmoticonListOutVo(emoticonListVo.get(i)));
+        }
+
+        List<EmoticonCategoryListOutVo> outCategoryVoList = new ArrayList<>();
+        for (int i=0; i<categoryListVo.size(); i++){
+            outCategoryVoList.add(new EmoticonCategoryListOutVo(categoryListVo.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        emoticonList.put("categoryList", outCategoryVoList);
+        emoticonList.put("list", procedureOutputVo.getOutputBox());
+
+
+        String result;
+        if (Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이모티콘조회_성공, emoticonList));
+        } else if (procedureVo.getRet().equals(Status.이모티콘조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이모티콘조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이모티콘조회_실패));
+        }
+        return result;
+    }
+
     /**
      * 회원 알림 내용 삭제
      */

@@ -325,8 +325,21 @@
         LIMIT 1
     </select>
 
+    <select id="callMemberEmoticon" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_EmoticonListVo">
+        call sp_member_broadcast_emoticon_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="callMemberNotificationDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_notification_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectEmoticonCategory" resultType="com.dalbit.member.vo.EmoticonCategoryListVo">
+         SELECT
+            idx as idx
+            ,category_order as categoryOrderNo
+            ,category_nm as categoryNm
+        FROM rd_admin.tbl_emoticon_category
+        ORDER BY category_order
     </select>
 
     <select id="selectMyPageNew" parameterType="java.util.HashMap" resultType="java.util.HashMap">
@@ -380,4 +393,5 @@
         SELECT
             (SELECT MAX(idx) FROM tb_member_wallet_ruby WHERE mem_no = ${value} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0) AS dal,
             (SELECT MAX(idx) FROM tb_member_wallet_gold WHERE mem_no = ${value} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0) AS byeol
-    </select></mapper>
+    </select>
+</mapper>
