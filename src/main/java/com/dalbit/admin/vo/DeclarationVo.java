@@ -29,6 +29,7 @@ public class DeclarationVo extends AdminBaseVo{
     private String etc;
     private String last_upd_date;
     private int state;
+    private int status;
 
     /* 차단 기능을 위해 추가 */
     private Integer uuid_block;

@@ -534,6 +534,7 @@ public class AdminService {
             declarationVo.setReported_phone(reportedInfo.getMem_phone());
             declarationVo.setReported_level(reportedInfo.getLevel());
             declarationVo.setReported_grade(reportedInfo.getGrade());
+            declarationVo.setStatus(1);
 
             adminDao.declarationOperate(declarationVo);
 
@@ -541,6 +542,8 @@ public class AdminService {
             DeclarationVo memberDeclarationVo = new DeclarationVo();
             memberDeclarationVo.setMem_no(reportedInfo.getMem_no());
             memberDeclarationVo.setOpCode(declarationVo.getOpCode());
+            memberDeclarationVo.setBlock_type(0);
+
             if(!DalbitUtil.isEmpty(memberDeclarationVo.getOpCode())){
                 int opCode = memberDeclarationVo.getOpCode();
                 if(opCode == 2) {
@@ -556,6 +559,9 @@ public class AdminService {
                     }
                 } else if(opCode == 6) {
                     memberDeclarationVo.setState(5);
+                }else if(opCode == 8) {
+                    memberDeclarationVo.setState(5);
+                    memberDeclarationVo.setBlock_type(1);
                 }
             }
             adminDao.updateState(memberDeclarationVo);

@@ -219,7 +219,7 @@
             , null
             , 1
             , #{etc, jdbcType=VARCHAR}
-            , 0
+            , #{status}
             , #{opCode}
             , #{notiMemo}
             , 'Mobile'
@@ -323,6 +323,7 @@
             , block_day = #{blockDay}
             , block_end_date = DATE_ADD(now(), interval #{blockDay} day)
         </if>
+        , block_type = #{block_type}
         , last_upd_date = now()
         where mem_no = #{mem_no}
     </update>
