@@ -39,5 +39,8 @@ public class P_MypageNoticeSelectVo {
     private int topFix;
     private Date writeDate;
 
+    private String nickName;
+    private String memSex;
+    private String profileImage;
 
 }
