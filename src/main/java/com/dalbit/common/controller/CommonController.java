@@ -309,9 +309,9 @@ public class CommonController {
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
 
-                //17세 미만 이용불가
-                if(Integer.parseInt(apiData.getBirthYear()) > 2004){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.본인인증17세미만, apiData));
+                //12세 미만 이용불가
+                if(Integer.parseInt(apiData.getBirthYear()) > 2009){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.본인인증12세미만, apiData));
                 }
 
                 log.info("##### 본인인증 DB저장 #####");

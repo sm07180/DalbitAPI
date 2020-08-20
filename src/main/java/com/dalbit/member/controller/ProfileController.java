@@ -50,19 +50,12 @@ public class ProfileController {
      */
     @PostMapping("/board")
     public String fanboardAdd(@Valid FanboardAddVo fanboardAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_FanboardAddVo pFanboardAddVo = new P_FanboardAddVo();
-        pFanboardAddVo.setStar_mem_no(fanboardAddVo.getMemNo());
-        pFanboardAddVo.setWriter_mem_no(MemberVo.getMyMemNo(request));
-        pFanboardAddVo.setDepth(fanboardAddVo.getDepth());
-        pFanboardAddVo.setBoard_no(fanboardAddVo.getBoardNo());
-        pFanboardAddVo.setContents(fanboardAddVo.getContent());
+        P_FanboardAddVo pFanboardAddVo = new P_FanboardAddVo(fanboardAddVo, request);
 
         String result = profileService.callMemberFanboardAdd(pFanboardAddVo);
-
         return result;
     }
 
@@ -72,21 +65,12 @@ public class ProfileController {
      */
     @GetMapping("/board")
     public String fanboardList(@Valid FanboardViewVo fanboardViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        int pageNo = DalbitUtil.isEmpty(fanboardViewVo.getPage()) ? 1 : fanboardViewVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(fanboardViewVo.getRecords()) ? 10 : fanboardViewVo.getRecords();
-
-        P_FanboardListVo fanboardListVo = new P_FanboardListVo();
-        fanboardListVo.setMem_no(new MemberVo().getMyMemNo(request));
-        fanboardListVo.setStar_mem_no(fanboardViewVo.getMemNo());
-        fanboardListVo.setPageNo(pageNo);
-        fanboardListVo.setPageCnt(pageCnt);
+        P_FanboardListVo fanboardListVo = new P_FanboardListVo(fanboardViewVo, request);
 
         String result = profileService.callMemberFanboardList(fanboardListVo);
-
         return result;
     }
 
@@ -96,14 +80,10 @@ public class ProfileController {
      */
     @DeleteMapping("/board")
     public String fanboardDelete(@Valid FanboardDelVo fanboardDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_FanboardDeleteVo fanboardDeleteVo = new P_FanboardDeleteVo();
-        fanboardDeleteVo.setStar_mem_no(fanboardDelVo.getMemNo());
-        fanboardDeleteVo.setDelete_mem_no(new MemberVo().getMyMemNo(request));
-        fanboardDeleteVo.setBoard_idx(fanboardDelVo.getBoardIdx());
+        P_FanboardDeleteVo fanboardDeleteVo = new P_FanboardDeleteVo(fanboardDelVo, request);
 
         String result = profileService.callMemberFanboardDelete(fanboardDeleteVo);
         return result;
@@ -115,18 +95,12 @@ public class ProfileController {
      */
     @PostMapping("/board/edit")
     public String fanboardEdit(@Valid FanboardEditVo fanboardEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_FanboardEditVo adpiData = new P_FanboardEditVo();
-        adpiData.setStar_mem_no(fanboardEditVo.getMemNo());
-        adpiData.setEdit_mem_no(MemberVo.getMyMemNo(request));
-        adpiData.setBoard_idx(fanboardEditVo.getBoardIdx());
-        adpiData.setContents(fanboardEditVo.getContent());
+        P_FanboardEditVo adpiData = new P_FanboardEditVo(fanboardEditVo, request);
 
         String result = profileService.callMemberFanboardEdit(adpiData);
-
         return result;
     }
 
@@ -136,18 +110,13 @@ public class ProfileController {
      */
     @GetMapping("/board/reply")
     public String fanboardReply(@Valid FanboardReplyVo fanboardReplyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_FanboardReplyVo pFanboardReplyVo = new P_FanboardReplyVo();
-        pFanboardReplyVo.setMem_no(new MemberVo().getMyMemNo(request));
-        pFanboardReplyVo.setStar_mem_no(fanboardReplyVo.getMemNo());
-        pFanboardReplyVo.setBoard_no(fanboardReplyVo.getBoardNo());
+        P_FanboardReplyVo pFanboardReplyVo = new P_FanboardReplyVo(fanboardReplyVo, request);
 
         String result = profileService.callMemberFanboardReply(pFanboardReplyVo);
         return result;
-
     }
 
 
@@ -156,7 +125,6 @@ public class ProfileController {
      */
     @GetMapping("/fan")
     public String fanRanking(@Valid FanRankingVo fanRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_FanRankingVo apiData = new P_FanRankingVo(fanRankingVo, request);
@@ -175,7 +143,6 @@ public class ProfileController {
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
 
         String result = profileService.callMemberLevelUpCheck(apiData);
-
         return result;
     }
 
@@ -185,7 +152,6 @@ public class ProfileController {
      */
     @GetMapping("/star")
     public String starRanking(@Valid StarRankingVo starRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileService.selectStarRanking(starRankingVo, request)));
     }

@@ -13,6 +13,8 @@ public class FanRankingOutVo {
     private String nickNm;
     private ImageVo profImg;
     private Boolean isFan;
+    private int giftDal;
+    private int giftedByeol;
 
     public FanRankingOutVo(){}
     public FanRankingOutVo(P_FanRankingVo target){
@@ -20,5 +22,7 @@ public class FanRankingOutVo {
         setNickNm(target.getNickName());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setIsFan(target.getEnableFan() == 0 ? true : false);
+        setGiftDal(DalbitUtil.isEmpty(target.getGiftDal()) ? 0 : target.getGiftDal());
+        setGiftedByeol(DalbitUtil.isEmpty(target.getGiftedByeol()) ? 0 : target.getGiftedByeol());
     }
 }

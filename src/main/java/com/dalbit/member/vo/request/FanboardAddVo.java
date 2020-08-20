@@ -24,5 +24,10 @@ public class FanboardAddVo {
     @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 100)
     private String content;
 
+    @NotNull(message = "{\"ko_KR\" : \"비밀글 여부를\"}")
+    @Min(value = 0, message = "비밀글 여부를")
+    @Max(value = 1, message = "비밀글 여부를")
+    private Integer viewOn;
+
 
 }

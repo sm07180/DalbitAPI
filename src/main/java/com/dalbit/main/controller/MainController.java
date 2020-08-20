@@ -3,10 +3,7 @@ package com.dalbit.main.controller;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.MainService;
 import com.dalbit.main.vo.procedure.*;
-import com.dalbit.main.vo.request.MainDjRankingVo;
-import com.dalbit.main.vo.request.MainFanRankingVo;
-import com.dalbit.main.vo.request.MainRankRewardVo;
-import com.dalbit.main.vo.request.MainRankingPageVo;
+import com.dalbit.main.vo.request.*;
 import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +64,10 @@ public class MainController {
      * Level 랭킹
      */
     @GetMapping("/rank/level")
-    public String mainLevelRanking(){
+    public String mainLevelRanking(@Valid MainLevelRankingVo mainLevelRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_MainLevelRankingVo apiData = new P_MainLevelRankingVo();
+        P_MainLevelRankingVo apiData = new P_MainLevelRankingVo(mainLevelRankingVo, request);
 
         String result = mainService.callMainLevelRanking(apiData);
 

@@ -24,6 +24,7 @@ public class FanboardVo {
     private String writeDt;
     private long writeTs;
     private String memId;
+    private int viewOn;
 
     public FanboardVo(P_FanboardListVo target) {
         this.boardIdx = target.getBoard_idx();
@@ -37,6 +38,7 @@ public class FanboardVo {
         this.writeDt = DalbitUtil.getUTCFormat(target.getWriteDate());
         this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
         this.memId = target.getUserId();
+        this.viewOn = target.getViewOn();
     }
 
 }

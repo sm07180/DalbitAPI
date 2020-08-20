@@ -1,14 +1,28 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.request.FanboardViewVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter
 @Setter
 public class P_FanboardListVo {
 
+    public P_FanboardListVo(){}
+    public P_FanboardListVo(FanboardViewVo fanboardViewVo, HttpServletRequest request){
+        int pageNo = DalbitUtil.isEmpty(fanboardViewVo.getPage()) ? 1 : fanboardViewVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(fanboardViewVo.getRecords()) ? 10 : fanboardViewVo.getRecords();
+
+        setMem_no(new MemberVo().getMyMemNo(request));
+        setStar_mem_no(fanboardViewVo.getMemNo());
+        setPageNo(pageNo);
+        setPageCnt(pageCnt);
+    }
     /* Input */
     private String mem_no;          // 팬보드 댓글 리스트 요청 회원번호
     private String star_mem_no;     // 팬보드 스타 회원번호
@@ -27,5 +41,6 @@ public class P_FanboardListVo {
     private int status;             // 상태값 1. 정상 2. 비정상
     private Date writeDate;         // 작성일자
     private String userId;          // 회원 아이디
+    private int viewOn;             // 비밀여부 1:공개글, 0:비밀글
 
 }

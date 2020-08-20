@@ -47,6 +47,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private long listenTotTime;
     private int likeTotCnt;
     private String holder;
+    private String holderBg;
+    private String profileBg;
     List fanRank;
     private FanBadgeVo fanBadge;
     List fanBadgeList;
@@ -66,6 +68,10 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isFan = target.getEnableFan();
         this.roomNo = target.getRoom_no();
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
+        int l = (this.level - 1) / 10;
+        if(l > 4){
+            this.holderBg = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + "");
+        }
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();

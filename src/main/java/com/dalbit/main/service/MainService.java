@@ -426,8 +426,11 @@ public class MainService {
         for (int i=0; i<mainLevelRankingVoList.size(); i++){
             outVoList.add(new MainLevelRankingOutVo(mainLevelRankingVoList.get(i)));
         }
+
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         mainLevelRankingList.put("list", procedureOutputVo.getOutputBox());
+        mainLevelRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {

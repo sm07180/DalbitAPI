@@ -1,8 +1,11 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.request.FanboardReplyVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter
@@ -24,5 +27,13 @@ public class P_FanboardReplyVo {
     private int status;             // 상태값 1. 정상 2. 삭제됨
     private Date writeDate;         // 작성일자
     private String userId;          // 회원 아이디
+    private int viewOn;
+
+    public P_FanboardReplyVo(){}
+    public P_FanboardReplyVo(FanboardReplyVo fanboardReplyVo, HttpServletRequest request){
+        setMem_no(new MemberVo().getMyMemNo(request));
+        setStar_mem_no(fanboardReplyVo.getMemNo());
+        setBoard_no(fanboardReplyVo.getBoardNo());
+    }
 
 }

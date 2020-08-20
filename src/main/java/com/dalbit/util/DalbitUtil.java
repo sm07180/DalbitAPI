@@ -375,6 +375,16 @@ public class DalbitUtil {
         }
     }
 
+
+    public static long getLongMap(HashMap map, String key) {
+        try{
+            return (long) Math.floor(getDoubleMap(map, key));
+        }catch (Exception e){
+            log.debug("StringUtil.getIntMap error - key name is [{}]", key);
+            return 0;
+        }
+    }
+
     public static double getDoubleMap(HashMap map, String key){
         try{
             return Double.valueOf(getStringMap(map, key));

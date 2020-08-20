@@ -37,7 +37,7 @@ public enum Status {
     본인인증확인("0", "self.auth.response.success", "본인인증 확인 성공 시"),
     본인인증검증_비정상접근("-1", "self.auth.response.check.error", "본인인증 비정상적인 접근 시"),
     본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
-    본인인증17세미만("C007", "self.auth.17age.limit", "17세 미만 회원일 시"),
+    본인인증12세미만("C007", "self.auth.12age.limit", "12세 미만 회원일 시"),
     보호자인증20세미만("C008", "self.auth.20age.limit", "보호자 20세 미만일 시"),
 
     //본인인증(DB저장)
@@ -1151,6 +1151,13 @@ public enum Status {
     메인_랭킹조회_내역없음("0", "main.ranking.no.ranking.success", "랭킹 내역 없을 시"),
     메인_랭킹조회_요청회원_회원아님("-1", "main.ranking.member.number.error", "요청회원번호가 회원 아닐 시"),
     메인_랭킹조회_실패("C006", "main.ranking.select.fail", "랭킹 조회 실패 시"),
+
+    //방송방 왕회장 & 팬 랭킹 3 조회
+    방송방_팬랭킹조회_성공("C001", "broadcast.fan.ranking.select.success", "팬 랭킹 조회 성공 시"),
+    방송방_팬랭킹조회_팬없음("0", "broadcast.fan.ranking.no.fan.success", "팬 없을 시"),
+    방송방_팬랭킹조회_방번호없음("-1", "broadcast.fan.ranking.room.number.no", "방 번호 없을 시"),
+    방송방_팬랭킹조회_방종료됨("-1", "broadcast.fan.ranking.room.end", "방이 종료되었을 시"),
+    방송방_팬랭킹조회_실패("C006", "broadcast.fan.ranking.select.fail", "팬 랭킹 조회 실패 시"),
    ;
 
 

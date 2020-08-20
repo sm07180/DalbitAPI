@@ -20,6 +20,8 @@ public class P_FanRankingVo {
         setStar_mem_no(fanRankingVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
+        setRank_slct(fanRankingVo.getRankSlct() == 0 ? 1 : fanRankingVo.getRankSlct());
+        setRank_type(fanRankingVo.getRankType() == 0 ? 1 : fanRankingVo.getRankType());
     }
 
 
@@ -28,10 +30,14 @@ public class P_FanRankingVo {
     private String star_mem_no;
     private int pageNo;
     private int pageCnt;
+    private int rank_slct;
+    private int rank_type;
 
     /* Output */
     private String nickName;
     private String memSex;
     private String profileImage;
     private int enableFan;
+    private int giftDal;
+    private int giftedByeol;
 }
