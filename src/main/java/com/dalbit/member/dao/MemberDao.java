@@ -26,6 +26,8 @@ public interface MemberDao {
     @Transactional(readOnly = true)
     TokenCheckVo selectMemState(String mem_no);
     @Transactional(readOnly = true)
+    TokenCheckVo selectMemStateForPhone(String phoneNo);
+    @Transactional(readOnly = true)
     int selectAdminBlock(DeviceVo deviceVo);
     @Transactional(readOnly = true)
     TokenCheckVo selectAnonymousMem(String mem_no);

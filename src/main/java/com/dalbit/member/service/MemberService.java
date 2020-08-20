@@ -133,18 +133,23 @@ public class MemberService {
         ProcedureVo procedureVo = new ProcedureVo(pChangePasswordVo.getPhoneNo(), pChangePasswordVo.getPassword());
         memberDao.callChangePassword(procedureVo);
 
-        //회원정보수정 로그 쌓기 추가(cs요청)
-        TokenCheckVo tokenCheckVo = memberDao.selectMemState(MemberVo.getMyMemNo(request));
-        var proImageInitVo = new ProImageInitVo();
-        proImageInitVo.setMem_no(tokenCheckVo.getMem_no());
-        proImageInitVo.setType(0);
-        proImageInitVo.setEdit_contents("패스워드 변경 : " + pChangePasswordVo.getPassword());
-        proImageInitVo.setOp_name(tokenCheckVo.getMem_userid());
-        adminDao.insertProfileHistory(proImageInitVo);
-
         String result;
         if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경성공));
+
+            try{
+                //회원정보수정 로그 쌓기 추가(cs요청)
+                TokenCheckVo tokenCheckVo = memberDao.selectMemStateForPhone(pChangePasswordVo.getPhoneNo());
+                var proImageInitVo = new ProImageInitVo();
+                proImageInitVo.setMem_no(tokenCheckVo.getMem_no());
+                proImageInitVo.setType(0);
+                proImageInitVo.setEdit_contents("패스워드 변경 : " + pChangePasswordVo.getPassword());
+                proImageInitVo.setOp_name(tokenCheckVo.getMem_userid());
+                adminDao.insertProfileHistory(proImageInitVo);
+            }catch(Exception e){
+                log.error("MemberService - callChangePassword : 회원정보수정 로그 쌓기 오류");
+            }
+
         } else if(procedureVo.getRet().equals(Status.비밀번호변경실패_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경실패_회원아님));
         } else {
