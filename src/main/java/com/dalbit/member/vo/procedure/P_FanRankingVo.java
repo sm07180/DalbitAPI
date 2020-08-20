@@ -20,8 +20,8 @@ public class P_FanRankingVo {
         setStar_mem_no(fanRankingVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
-        setRank_slct(fanRankingVo.getRankSlct() == 0 ? 1 : fanRankingVo.getRankSlct());
-        setRank_type(fanRankingVo.getRankType() == 0 ? 1 : fanRankingVo.getRankType());
+        setRank_slct((DalbitUtil.isEmpty(fanRankingVo.getRankSlct()) || fanRankingVo.getRankSlct() == 0) ? 1 : fanRankingVo.getRankSlct());
+        setRank_type((DalbitUtil.isEmpty(fanRankingVo.getRankType()) || fanRankingVo.getRankType() == 0) ? 1 : fanRankingVo.getRankType());
     }
 
 
