@@ -139,7 +139,15 @@ public class MainService {
                 outVo.setMemNo(recommendVoList.get(i).getMemNo());
                 outVo.setNickNm(recommendVoList.get(i).getNickNm());
                 outVo.setGender(recommendVoList.get(i).getGender());
-                outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                if(recommendVoList.get(i).getBannerUrl().toLowerCase().endsWith(".gif")){
+                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                }else{
+                    if(deviceVo.getOs() == 3 && !"Y".equals(deviceVo.getIsHybrid())){
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                    }else{
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?720x440");
+                    }
+                }
                 outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
                 outVo.setRoomType(recommendVoList.get(i).getRoomType());
                 outVo.setRoomNo(recommendVoList.get(i).getRoomNo());
