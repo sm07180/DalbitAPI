@@ -3,6 +3,7 @@ package com.dalbit.main.vo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
 import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
+import com.dalbit.main.vo.procedure.P_MainRankingPageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,6 +48,21 @@ public class MainDjRankingOutVo {
         setFan(target.getFanCount());
         setGift(target.getGiftCount());
         setDj(target.getDjCount());
+        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
+        setRoomNo(target.getRoomNo());
+    }
+
+    public MainDjRankingOutVo(P_MainRankingPageVo target) {
+        setRank(target.getRank());
+        setUpDown(target.getUp_down());
+        setMemNo(target.getMem_no());
+        setNickNm(target.getNickName());
+        setMemId(target.getMemId());
+        setGender(target.getMemSex());
+        setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        setLevel(target.getLevel());
+        setGrade(target.getGrade());
         this.isSpecial = target.getSpecialdj_badge() == 1;
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         setRoomNo(target.getRoomNo());

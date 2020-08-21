@@ -65,41 +65,44 @@ public class MainService {
             }
         }
 
+        Calendar yesterday = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        String today_str = sdf.format(yesterday.getTime());
+        yesterday.add(Calendar.DATE, -1);
+        String yesterday_str = sdf.format(yesterday.getTime());
+
         //DJ랭킹 조회
-        Calendar today = Calendar.getInstance();
-        P_MainDjRankingVo pMainDjRankingVo = new P_MainDjRankingVo();
-        pMainDjRankingVo.setMemLogin(isLogin);
-        pMainDjRankingVo.setMem_no(memNo);
-        pMainDjRankingVo.setSlct_type(1);
-        //if(today.get(Calendar.HOUR_OF_DAY) > 0){
-        //    pMainDjRankingVo.setSlct_type(0);
-        //}
-        pMainDjRankingVo.setPageNo(1);
-        pMainDjRankingVo.setPageCnt(10);
-        ProcedureVo procedureDjRankVo = new ProcedureVo(pMainDjRankingVo);
-        List<P_MainDjRankingVo> mainDjRankingVoList = mainDao.callMainDjRanking(procedureDjRankVo);
-        if(DalbitUtil.isEmpty(mainDjRankingVoList)){
-            pMainDjRankingVo.setSlct_type(2);
-            procedureDjRankVo = new ProcedureVo(pMainDjRankingVo);
-            mainDjRankingVoList = mainDao.callMainDjRanking(procedureDjRankVo);
+        P_MainRankingPageVo pMainRankingPageVo = new P_MainRankingPageVo();
+        pMainRankingPageVo.setSlct_type(1);
+        pMainRankingPageVo.setRanking_slct(1);
+        pMainRankingPageVo.setPageNo(1);
+        pMainRankingPageVo.setPageCnt(10);
+        pMainRankingPageVo.setMemLogin(0);
+        pMainRankingPageVo.setMem_no(memNo);
+        pMainRankingPageVo.setRankingDate(today_str);
+        ProcedureVo procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
+        List<P_MainRankingPageVo> mainRankingPageVoList = mainDao.callMainRankingPage(procedureRankingVo);
+        if(DalbitUtil.isEmpty(mainRankingPageVoList) || mainRankingPageVoList.size() < 5){
+            pMainRankingPageVo.setRankingDate(yesterday_str);
+            procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
+            mainRankingPageVoList = mainDao.callMainRankingPage(procedureRankingVo);
         }
 
         //팬랭킹조회
-        P_MainFanRankingVo pMainFanRankingVo = new P_MainFanRankingVo();
-        pMainFanRankingVo.setMemLogin(isLogin);
-        pMainFanRankingVo.setMem_no(memNo);
-        pMainFanRankingVo.setSlct_type(1);
-        //if(today.get(Calendar.HOUR_OF_DAY) > 0){
-        //    pMainFanRankingVo.setSlct_type(0);
-        //}
-        pMainFanRankingVo.setPageNo(1);
-        pMainFanRankingVo.setPageCnt(10);
-        ProcedureVo procedureFanRankVo = new ProcedureVo(pMainFanRankingVo);
-        List<P_MainFanRankingVo> mainFanRankingVoList = mainDao.callMainFanRanking(procedureFanRankVo);
-        if(DalbitUtil.isEmpty(mainFanRankingVoList)){
-            pMainFanRankingVo.setSlct_type(2);
-            procedureFanRankVo = new ProcedureVo(pMainFanRankingVo);
-            mainFanRankingVoList = mainDao.callMainFanRanking(procedureFanRankVo);
+        pMainRankingPageVo = new P_MainRankingPageVo();
+        pMainRankingPageVo.setSlct_type(1);
+        pMainRankingPageVo.setRanking_slct(2);
+        pMainRankingPageVo.setPageNo(1);
+        pMainRankingPageVo.setPageCnt(10);
+        pMainRankingPageVo.setMemLogin(0);
+        pMainRankingPageVo.setMem_no(memNo);
+        pMainRankingPageVo.setRankingDate(today_str);
+        procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
+        List<P_MainRankingPageVo> mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
+        if(DalbitUtil.isEmpty(mainFanRankingVoList) || mainFanRankingVoList.size() < 5){
+            pMainRankingPageVo.setRankingDate(yesterday_str);
+            procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
+            mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
         }
 
         //마이스타
@@ -240,9 +243,9 @@ public class MainService {
         mainMap.put("recommend", recommend);
 
         List djRank = new ArrayList();
-        if(!DalbitUtil.isEmpty(mainDjRankingVoList)){
-            for (int i=0; i<mainDjRankingVoList.size(); i++){
-                djRank.add(new MainDjRankingOutVo(mainDjRankingVoList.get(i)));
+        if(!DalbitUtil.isEmpty(mainRankingPageVoList)){
+            for (int i=0; i<mainRankingPageVoList.size(); i++){
+                djRank.add(new MainDjRankingOutVo(mainRankingPageVoList.get(i)));
             }
         }
         mainMap.put("djRank", djRank);
@@ -578,10 +581,12 @@ public class MainService {
             mainRankingList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_내역없음, mainRankingList));
         }
+
         List<MainRankingPageOutVo> outVoList = new ArrayList<>();
         for (int i=0; i<mainRankingPageVoList.size(); i++){
             outVoList.add(new MainRankingPageOutVo(mainRankingPageVoList.get(i)));
         }
+
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         if(pMainRankingPageVo.getSlct_type() == 2){
