@@ -68,8 +68,6 @@ public class MainService {
         Calendar yesterday = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
         String today_str = sdf.format(yesterday.getTime());
-        yesterday.add(Calendar.DATE, -1);
-        String yesterday_str = sdf.format(yesterday.getTime());
 
         //DJ랭킹 조회
         P_MainRankingPageVo pMainRankingPageVo = new P_MainRankingPageVo();
@@ -82,11 +80,6 @@ public class MainService {
         pMainRankingPageVo.setRankingDate(today_str);
         ProcedureVo procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
         List<P_MainRankingPageVo> mainRankingPageVoList = mainDao.callMainRankingPage(procedureRankingVo);
-        if(DalbitUtil.isEmpty(mainRankingPageVoList) || mainRankingPageVoList.size() < 5){
-            pMainRankingPageVo.setRankingDate(yesterday_str);
-            procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
-            mainRankingPageVoList = mainDao.callMainRankingPage(procedureRankingVo);
-        }
 
         //팬랭킹조회
         pMainRankingPageVo = new P_MainRankingPageVo();
@@ -99,11 +92,6 @@ public class MainService {
         pMainRankingPageVo.setRankingDate(today_str);
         procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
         List<P_MainRankingPageVo> mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
-        if(DalbitUtil.isEmpty(mainFanRankingVoList) || mainFanRankingVoList.size() < 5){
-            pMainRankingPageVo.setRankingDate(yesterday_str);
-            procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
-            mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
-        }
 
         //마이스타
         List<P_MainStarVo> starVoList = null;
