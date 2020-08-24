@@ -127,4 +127,18 @@ public class MainController {
         return result;
     }
 
+
+    /**
+     * 좋아요 랭킹
+     */
+    @GetMapping("/rank/good")
+    public String mainGoodRanking(@Valid MainGoodRankingVo mainGoodRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MainGoodRankingVo apiData = new P_MainGoodRankingVo(mainGoodRankingVo, request);
+
+        String result = mainService.mainGoodRanking(apiData);
+
+        return result;
+    }
+
 }

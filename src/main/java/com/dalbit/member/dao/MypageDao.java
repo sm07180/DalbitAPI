@@ -2,10 +2,7 @@ package com.dalbit.member.dao;
 
 import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.member.vo.EmoticonCategoryListOutVo;
-import com.dalbit.member.vo.EmoticonCategoryListVo;
-import com.dalbit.member.vo.LevelVo;
-import com.dalbit.member.vo.SpecialDjRegManageVo;
+import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,16 +78,19 @@ public interface MypageDao {
     void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
 
     @Transactional(readOnly = true)
-    long selectSpecialDjBroadcastTime(SpecialDjRegManageVo specialDjRegManageVo);
+    long selectSpecialDjBroadcastTime(SpecialDjConditionSearchVo specialDjConditionSearchVo);
 
     @Transactional(readOnly = true)
-    int selectSpecialDjLikeCnt(SpecialDjRegManageVo specialDjRegManageVo);
+    int selectSpecialDjLikeCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
 
     @Transactional(readOnly = true)
-    int selectSpecialDjBroadcastCnt(SpecialDjRegManageVo specialDjRegManageVo);
+    int selectSpecialDjBroadcastCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
 
     @Transactional(readOnly = true)
     SpecialDjRegManageVo selectSpecialDjReqManage(SpecialDjRegManageVo specialDjRegManageVo);
+
+    @Transactional(readOnly = true)
+    List<SpecialDjContentVo> selectSpecialDjReqContent(SpecialDjRegManageVo specialDjRegManageVo);
 
     @Transactional(readOnly = true)
     MemberInfoVo selectMemberLevel(String mem_no);

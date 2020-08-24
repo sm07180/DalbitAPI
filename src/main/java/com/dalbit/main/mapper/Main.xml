@@ -154,4 +154,8 @@
         call sp_ranking_page(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMainGoodRanking" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_MainGoodRankingVo">
+        call sp_ranking_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

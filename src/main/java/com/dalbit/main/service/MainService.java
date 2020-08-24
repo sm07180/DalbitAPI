@@ -615,4 +615,38 @@ public class MainService {
         }
         return result;
     }
+
+
+    /**
+     * 좋아요 랭킹
+     */
+    public String mainGoodRanking(P_MainGoodRankingVo p_mainGoodRankingVo) {
+        ProcedureVo procedureVo = new ProcedureVo(p_mainGoodRankingVo);
+        List<P_MainGoodRankingVo> mainGoodRankingVoList = mainDao.callMainGoodRanking(procedureVo);
+
+        HashMap mainGoodRankingList = new HashMap();
+
+        if(DalbitUtil.isEmpty(mainGoodRankingVoList)){
+            mainGoodRankingList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_내역없음, mainGoodRankingVoList));
+        }
+
+        List<MainGoodRankingOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<mainGoodRankingVoList.size(); i++){
+            outVoList.add(new MainGoodRankingOutVo(mainGoodRankingVoList.get(i)));
+        }
+
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        mainGoodRankingList.put("list", procedureOutputVo.getOutputBox());
+        mainGoodRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_성공, mainGoodRankingList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_실패));
+        }
+        return result;
+    }
 }

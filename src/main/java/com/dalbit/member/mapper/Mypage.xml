@@ -214,7 +214,7 @@
 		SELECT COUNT(*) FROM tb_member_notification WHERE mem_no = #{mem_no} AND read_yn = '0'
     </select>
 
-    <select id="selectSpecialDjBroadcastTime" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="long">
+    <select id="selectSpecialDjBroadcastTime" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="long">
         /* Mypage.xml - selectSpecialDjBroadcastTime */
         select TRUNCATE(ifnull(sum(airtime), 0) / 3600, 0) airtime
         from rd_data.tb_broadcast_room
@@ -223,7 +223,7 @@
             and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
-    <select id="selectSpecialDjLikeCnt" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="int">
+    <select id="selectSpecialDjLikeCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         /* Mypage.xml - selectSpecialDjLikeCnt */
         select count(*)
         from rd_data.tb_broadcast_room_good
@@ -232,7 +232,7 @@
             and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
-    <select id="selectSpecialDjBroadcastCnt" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="int">
+    <select id="selectSpecialDjBroadcastCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         /* Mypage.xml - selectSpecialDjBroadcastCnt */
         select count(*)
         from rd_data.tb_broadcast_room
@@ -259,17 +259,29 @@
             , condition_data2
             , condition_code3
             , condition_data3
-            , pc_image_url
-            , mobile_image_url
             , is_view
             , platform
-            , reg_date
-            , op_name
-            , last_upd_date
-            , last_op_name
         from rd_admin.tb_req_special_dj_manage
         where select_year = #{select_year}
             and select_month = #{select_month}
+    </select>
+
+    <select id="selectSpecialDjReqContent" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjContentVo">
+        /* Mypage.xml - selectSpecialDjReqContent */
+        select
+            content_type
+            , image_pc_url
+            , image_mobile_url
+            , button_type
+            , button_name
+            , button_name_color
+            , button_color
+            , button_pc_link
+            , button_mobile_link
+        from rd_admin.tb_req_special_dj_content
+        where select_year = #{select_year}
+            and select_month = #{select_month}
+        order by content_order asc
     </select>
 
     <select id="selectMemberLevel" parameterType="java.lang.String" resultType="com.dalbit.admin.vo.MemberInfoVo">

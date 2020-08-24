@@ -60,7 +60,7 @@ public class MypageController {
 
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setMemSex(profileEditVo.getGender());
-        apiData.setNickName(profileEditVo.getNickNm());
+        apiData.setNickName(profileEditVo.getNickNm().trim());
         apiData.setName(profileEditVo.getName());
         if(!DalbitUtil.isEmpty(apiData.getName()) && apiData.getName().length() > 50){
             apiData.setName(apiData.getName().substring(0, 49));
@@ -613,7 +613,7 @@ public class MypageController {
     /**
      * 스페셜 DJ 신청 가능상태 조회
      */
-    @PostMapping("/specialDj/status")
+    @RequestMapping("/specialDj/status")
     public String specialDjStatus(HttpServletRequest request, SpecialDjRegManageVo specialDjRegManageVo) throws GlobalException {
         return mypageService.callSpecialDjStatus(request, specialDjRegManageVo);
     }

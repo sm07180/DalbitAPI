@@ -36,4 +36,7 @@ public interface MainDao {
 
     @Transactional(readOnly = true)
     List<P_MainRankingPageVo> callMainRankingPage(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_MainGoodRankingVo> callMainGoodRanking(ProcedureVo procedureVo);
 }

@@ -1280,6 +1280,10 @@ public class MypageService {
 
             SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
             var resultMap = new HashMap();
+
+            //컨텐츠 조회
+            List<SpecialDjContentVo> contentList = mypageDao.selectSpecialDjReqContent(specialDjRegManageVo);
+            getSpecialDjRegManageVo.setContentList(contentList);
             resultMap.put("eventInfo", getSpecialDjRegManageVo);
 
             return gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_회원아님, resultMap));
@@ -1290,22 +1294,26 @@ public class MypageService {
 
         //스페셜DJ 조건 확인
         SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
-        getSpecialDjRegManageVo.setMem_no(mem_no);
+
+        SpecialDjConditionSearchVo specialDjConditionSearchVo = new SpecialDjConditionSearchVo();
+        specialDjConditionSearchVo.setMem_no(mem_no);
+        specialDjConditionSearchVo.setCondition_start_date(getSpecialDjRegManageVo.getCondition_start_date());
+        specialDjConditionSearchVo.setCondition_end_date(getSpecialDjRegManageVo.getCondition_end_date());
 
         //1번 조건 체크
-        getSpecialDjRegManageVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code1());
-        getSpecialDjRegManageVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data1());
-        HashMap conditionData1 = checkSpecialDjCondition(getSpecialDjRegManageVo);
+        specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code1());
+        specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data1());
+        HashMap conditionData1 = checkSpecialDjCondition(specialDjConditionSearchVo);
 
         //2번 조건 체크
-        getSpecialDjRegManageVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code2());
-        getSpecialDjRegManageVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data2());
-        HashMap conditionData2 = checkSpecialDjCondition(getSpecialDjRegManageVo);
+        specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code2());
+        specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data2());
+        HashMap conditionData2 = checkSpecialDjCondition(specialDjConditionSearchVo);
 
         //3번 조건 체크
-        getSpecialDjRegManageVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code3());
-        getSpecialDjRegManageVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data3());
-        HashMap conditionData3 = checkSpecialDjCondition(getSpecialDjRegManageVo);
+        specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getCondition_code3());
+        specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getCondition_data3());
+        HashMap conditionData3 = checkSpecialDjCondition(specialDjConditionSearchVo);
 
         //이미 신청여부 확인
         int alreadyCnt = mypageDao.selectExistsSpecialReq(mem_no);
@@ -1336,15 +1344,19 @@ public class MypageService {
 
         var resultMap = new HashMap();
         resultMap.put("specialDjCondition", specialDjCondition);
+
+        //컨텐츠 조회
+        List<SpecialDjContentVo> contentList = mypageDao.selectSpecialDjReqContent(specialDjRegManageVo);
+        getSpecialDjRegManageVo.setContentList(contentList);
         resultMap.put("eventInfo", getSpecialDjRegManageVo);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 
-    public HashMap checkSpecialDjCondition(SpecialDjRegManageVo specialDjReqManageVo){
+    public HashMap checkSpecialDjCondition(SpecialDjConditionSearchVo specialDjConditionSearchVo){
 
-        int code = specialDjReqManageVo.getCondition_code();
-        int value = specialDjReqManageVo.getCondition_data();
+        int code = specialDjConditionSearchVo.getCondition_code();
+        int value = specialDjConditionSearchVo.getCondition_data();
 
         var resultMap = new HashMap();
         /**
@@ -1359,40 +1371,40 @@ public class MypageService {
          */
         if(code == 1){
             //누적방송시간 체크(기간)
-            long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjReqManageVo);
+            long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjConditionSearchVo);
             resultMap.put("condition", broadcastAirtime < value ? 0 : 1);
             resultMap.put("title", "누적방송시간");
             resultMap.put("value", "최소 " + value + "시간 방송");
 
         }else if(code == 2){
             //1시간 이상 방송(기간)
-            int broadcastCnt = mypageDao.selectSpecialDjBroadcastCnt(specialDjReqManageVo);
+            int broadcastCnt = mypageDao.selectSpecialDjBroadcastCnt(specialDjConditionSearchVo);
             resultMap.put("condition", broadcastCnt < value ? 0 : 1);
             resultMap.put("title", "1시간 이상 방송");
             resultMap.put("value", "최소 " + value + "회 이상");
         }else if(code == 3){
             //좋아요 갯수 체크(기간)
-            int djLikeCnt = mypageDao.selectSpecialDjLikeCnt(specialDjReqManageVo);
+            int djLikeCnt = mypageDao.selectSpecialDjLikeCnt(specialDjConditionSearchVo);
             resultMap.put("condition", djLikeCnt < value ? 0 : 1);
             resultMap.put("title", "받은 좋아요");
             resultMap.put("value", "최소 " + value + "개 이상");
         }else if(code == 4){
             //레벨 체크(현재 상태)
-            MemberInfoVo memberInfoVo = mypageDao.selectMemberLevel(specialDjReqManageVo.getMem_no());
+            MemberInfoVo memberInfoVo = mypageDao.selectMemberLevel(specialDjConditionSearchVo.getMem_no());
             resultMap.put("condition", memberInfoVo.getLevel() < value ? 0 : 1);
             resultMap.put("title", "현재 레벨");
             resultMap.put("value", "최소 " + value + "렙 이상");
 
         }else if(code == 5){
             //팬 수 체크(현재 상태)
-            int fanCnt = mypageDao.selectMemberFanCnt(specialDjReqManageVo.getMem_no());
+            int fanCnt = mypageDao.selectMemberFanCnt(specialDjConditionSearchVo.getMem_no());
             resultMap.put("condition", fanCnt < value ? 0 : 1);
             resultMap.put("title", "현재 팬 수");
             resultMap.put("value", "최소 " + value + "명 이상");
 
         }else if(code == 6){
             //청취자 수
-            int listenCnt = mypageDao.selectListenerCnt(specialDjReqManageVo.getMem_no());
+            int listenCnt = mypageDao.selectListenerCnt(specialDjConditionSearchVo.getMem_no());
             resultMap.put("condition", listenCnt < value ? 0 : 1);
             resultMap.put("title", "누적 청취자 수");
             resultMap.put("value", "최소 " + value + "명 이상");
@@ -1413,7 +1425,7 @@ public class MypageService {
         specialDjRegManageVo.setSelect_year(pSpecialDjReq.getSelect_year());
         specialDjRegManageVo.setSelect_month(pSpecialDjReq.getSelect_month());
         SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
-        getSpecialDjRegManageVo.setMem_no(pSpecialDjReq.getMem_no());
+        //getSpecialDjRegManageVo.setMem_no(pSpecialDjReq.getMem_no());
 
         //시간 체크
         long nowDateTime = Long.valueOf(DalbitUtil.getUTCFormat(new Date()));

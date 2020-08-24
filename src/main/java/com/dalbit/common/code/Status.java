@@ -877,7 +877,7 @@ public enum Status {
 
     //스페셜DJ
     스페셜DJ_신청성공("0", "special.dj.apply.success", "스페셜DJ 신청 성공 시"),
-    스페셜DJ_회원아님("-1", "special.dj.apply.no.member", "요청회원번호 회원 아닐 시"),
+    스페셜DJ_회원아님("-1", "special.dj.apply.no.member.success", "요청회원번호 회원 아닐 시"),
     스페셜DJ_이미신청("-2", "special.dj.apply.already.member", "이미 신청하였을 경우"),
     스페셜DJ_기간아님("-3", "special.dj.apply.passed.period", "기간이 지났을 경우"),
     스페셜DJ_신청실패("C006", "special.dj.apply.fail", "스페셜DJ 신청 실패 시"),
@@ -1143,6 +1143,7 @@ public enum Status {
     게스트리스트조회_없음("0", "guest.select.no", "게스트 리스트 없을 시"),
     게스트리스트조회_실패("C006", "guest.select.fail", "게스트 리스트 조회 실패 시"),
 
+    //문자발송
     문자발송_성공("0", "sms.send.success", "문자 발송 성공 시"),
     문자발송_실패("C006", "sms.send.fail", "문자 발송 실패 시"),
 
@@ -1158,7 +1159,12 @@ public enum Status {
     방송방_팬랭킹조회_방번호없음("-1", "broadcast.fan.ranking.room.number.no", "방 번호 없을 시"),
     방송방_팬랭킹조회_방종료됨("-1", "broadcast.fan.ranking.room.end", "방이 종료되었을 시"),
     방송방_팬랭킹조회_실패("C006", "broadcast.fan.ranking.select.fail", "팬 랭킹 조회 실패 시"),
-   ;
+
+    //메인 좋아요 랭킹
+    메인_좋아요랭킹조회_성공("C001", "main.good.ranking.select.success", "좋아요 랭킹 조회 성공 시"),
+    메인_좋아요랭킹조회_내역없음("0", "main.good.ranking.no.ranking.success", "좋아요 내역 없을 시"),
+    메인_좋아요랭킹조회_실패("C006", "main.good.ranking.select.fail", "좋아요 랭킹 조회 실패 시"),
+    ;
 
 
 
