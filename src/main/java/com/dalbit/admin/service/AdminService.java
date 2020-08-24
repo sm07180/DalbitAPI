@@ -78,6 +78,13 @@ public class AdminService {
     @Value("${server.api.url}")
     private String SERVER_API_URL;
 
+    @Value("${wowza.wss.url}")
+    private String WOWZA_WSS_URL;
+    @Value("${wowza.real.server}")
+    private String[] WOWZA_REAL_SERVER;
+    @Value("${wowza.prefix}")
+    private String WOWZA_PREFIX;
+
     private String PROFILE_DEFAULT_IMAGE = "/profile_3/profile_n_200327.jpg";
 
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {

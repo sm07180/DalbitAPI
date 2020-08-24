@@ -27,6 +27,10 @@ public class BroadcastDetailVo {
     private String antUrl;
     private String antAppName;
 
+    private String wsUrl;
+    private String applicationName;
+    private String streamName;
+
     private String mem_no;
     private String mem_nick;
 
