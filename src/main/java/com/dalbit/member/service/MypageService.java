@@ -1404,7 +1404,7 @@ public class MypageService {
 
         }else if(code == 6){
             //청취자 수
-            int listenCnt = mypageDao.selectListenerCnt(specialDjConditionSearchVo.getMem_no());
+            int listenCnt = mypageDao.selectListenerCnt(specialDjConditionSearchVo);
             resultMap.put("condition", listenCnt < value ? 0 : 1);
             resultMap.put("title", "누적 청취자 수");
             resultMap.put("value", "최소 " + value + "명 이상");

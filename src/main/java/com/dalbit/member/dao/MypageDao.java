@@ -99,7 +99,7 @@ public interface MypageDao {
     int selectMemberFanCnt(String mem_no);
 
     @Transactional(readOnly = true)
-    int selectListenerCnt(String mem_no);
+    int selectListenerCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
 
     @Transactional(readOnly = true)
     List<LevelVo> selectLevel();

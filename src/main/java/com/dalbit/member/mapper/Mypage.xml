@@ -303,7 +303,7 @@
         where mem_no_star = #{mem_no}
     </select>
 
-    <select id="selectListenerCnt" parameterType="java.lang.String" resultType="int">
+    <select id="selectListenerCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         /* Mypage.xml - selectMemberLevel */
         select count(*)
         from rd_data.tb_member_broadcast_listening
