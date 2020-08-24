@@ -183,6 +183,19 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
     }
 
+    public String selectBroadcastDetailWowza(SearchVo searchVo){
+        BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
+        if(broadInfo != null){
+            log.info("[WOWZA] Request URL : {}", WOWZA_WSS_URL );
+            broadInfo.setWsUrl(WOWZA_WSS_URL);
+            broadInfo.setApplicationName("edge");
+            broadInfo.setStreamName(WOWZA_PREFIX + searchVo.getRoom_no() + "_opus");
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
+    }
+
+
     /**
      * 생방송관리 > 강제종료
      */
