@@ -101,6 +101,7 @@ public enum Status {
     프로필편집성공("0", "member.edit.profile.success", "프로필 편집 성공 시"),
     프로필편집실패_회원아님("-1", "member.edit.profile.fail.notUser", "프로필 편집 실패 - 회원이 아닌경우"),
     프로필편집실패_닉네임중복("-2", "member.edit.profile.fail.duplicateNickName", "프로필 편집 실패 - 닉네임이 중복된 경우"),
+    프로필편집실패_닉네임짦음("-3", "member.edit.profile.fail.shorNickname", "프로필 편집 실패 - 공백을 제거한 닉네임이 2자보다 짧은경우"),
     프로필편집오류("C006", "member.edit.profile.error", "프로필 편집 오류 시"),
 
     //회원팬등록
