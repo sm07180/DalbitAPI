@@ -26,4 +26,6 @@ public class P_RoomCreateVo {
     private String deviceUuid;              //디바이스 고유아이디
     private String deviceToken;             //디바이스 토큰
     private String appVersion;              //앱 버전
+
+    private int isWowza;                    // 와우자 여부
 }

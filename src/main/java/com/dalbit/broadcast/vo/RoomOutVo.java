@@ -57,6 +57,7 @@ public class RoomOutVo {
     private Boolean isNew;
     private Boolean isSpecial;
     private int os;
+    private int isWowza;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -93,6 +94,7 @@ public class RoomOutVo {
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
         this.os = target.getOs_type();
+        this.isWowza = target.getIs_wowza();
     }
 
     public RoomOutVo(P_RoomInfoViewVo target) {

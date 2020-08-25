@@ -1,5 +1,6 @@
 package com.dalbit.search.controller;
 
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.search.service.SearchService;
 import com.dalbit.search.vo.procedure.P_LiveRoomSearchVo;
@@ -48,6 +49,8 @@ public class SearchController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_LiveRoomSearchVo apiData = new P_LiveRoomSearchVo(searchVo, request);
+        DeviceVo deviceVo = new DeviceVo(request);
+        apiData.setIsWowza(DalbitUtil.isWowza(deviceVo));
 
         String result = searchService.callLiveRoomSearch(apiData);
 

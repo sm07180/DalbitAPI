@@ -674,6 +674,7 @@ public class RoomService {
             }else{*/
                 returnMap.put("roomNo", DalbitUtil.getStringMap(resultMap, "roomNo"));
                 returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
+                returnMap.put("isWowza", DalbitUtil.getIntMap(resultMap, "isWowza"));
                 result = (DalbitUtil.getIntMap(resultMap, "state") == 5) ? gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_비정상, returnMap)) : gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송중, returnMap));
             //}
         }else if(Status.방송진행여부체크_요청회원아님.getMessageCode().equals(procedureVo.getRet())) {

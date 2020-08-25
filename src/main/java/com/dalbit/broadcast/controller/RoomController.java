@@ -83,6 +83,7 @@ public class RoomController {
         apiData.setBj_streamid(streamId);
         apiData.setBj_publish_tokenid(publishToken);
         apiData.setBj_play_tokenid(playToken);
+        apiData.setIsWowza(0);
 
         String result = roomService.callBroadCastRoomCreate(apiData, request);
 
@@ -234,6 +235,7 @@ public class RoomController {
         int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
 
+        DeviceVo deviceVo = new DeviceVo(request);
         P_RoomListVo apiData = new P_RoomListVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo(request));
@@ -250,6 +252,7 @@ public class RoomController {
         }
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
+        apiData.setIsWowza(DalbitUtil.isWowza(deviceVo));
 
         String result = roomService.callBroadCastRoomList(apiData);
 

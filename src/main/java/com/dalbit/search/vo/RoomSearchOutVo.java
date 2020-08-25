@@ -21,6 +21,7 @@ public class RoomSearchOutVo {
     private String memId;
     /*private String gender;*/
     private ImageVo profImg;
+    private int isWowza;
 
     public RoomSearchOutVo(P_LiveRoomSearchVo target) {
         setRoomNo(target.getRoom_no());
@@ -35,6 +36,6 @@ public class RoomSearchOutVo {
         setMemId(target.getMem_id());
         /*setGender(target.getMem_sex());*/
         setProfImg(new ImageVo(target.getImage_profile(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
-
+        setIsWowza(target.getIs_wowza());
     }
 }

@@ -45,6 +45,7 @@ public class MainService {
                 platform += "_";
             }
         }
+        int isWowza = DalbitUtil.isWowza(deviceVo);
 
         //상위 추천 데이터 조회
         P_MainRecommandVo pMainRecommandVo = new P_MainRecommandVo();
@@ -52,6 +53,7 @@ public class MainService {
         pMainRecommandVo.setParamDevice(deviceVo.getOs() + "");
         pMainRecommandVo.setParamMemNo(memNo);
         pMainRecommandVo.setParamPlatform(platform);
+        pMainRecommandVo.setParamIsWowza(isWowza);
         List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
         if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 10){
             List<P_MainRecommandVo> recommendVoLiveList = mainDao.callMainRecommandLiveList(pMainRecommandVo);
@@ -151,6 +153,7 @@ public class MainService {
                 outVo.setLikes(recommendVoList.get(i).getLikes());
                 outVo.isSpecial = recommendVoList.get(i).isSpecial();
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
+                outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
                 recommend.add(outVo);
 
                 if(setBanner != 0 && ((i + 1) % setBanner) == 0){

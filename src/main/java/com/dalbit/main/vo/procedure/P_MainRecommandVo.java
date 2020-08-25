@@ -10,6 +10,7 @@ public class P_MainRecommandVo {
     private String paramDevice;
     private String paramPlanMemNo;
     private String paramPlatform;
+    private int paramIsWowza;
 
     private String memNo;
     private String nickNm;
@@ -23,4 +24,5 @@ public class P_MainRecommandVo {
     private String bannerUrl;
     public boolean isSpecial;
     public boolean isAdmin = false;
+    public int isWowza;
 }

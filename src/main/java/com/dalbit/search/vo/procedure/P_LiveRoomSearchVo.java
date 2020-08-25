@@ -27,6 +27,7 @@ public class P_LiveRoomSearchVo {
     private String searchText;
     private int pageNo;
     private int pageCnt;
+    private int isWowza;
 
     /* Output */
     private String room_no;
@@ -40,5 +41,5 @@ public class P_LiveRoomSearchVo {
     private String mem_id;
     private String mem_sex;
     private String image_profile;
-
+    private int is_wowza;
 }

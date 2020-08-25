@@ -24,4 +24,5 @@ public class MainRecommandOutVo {
     private int likes;
     public boolean isSpecial;
     public boolean isAdmin = false;
+    private int isWowza = 0;
 }

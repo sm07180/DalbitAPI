@@ -19,6 +19,7 @@ public class P_RoomListVo{
     private String djType;                  //신입구분
     private int pageNo;                     //현재 페이지 번호
     private int pageCnt;                    //페이지당 리스트 개수
+    private int isWowza;                   // 와우자 여
 
     /* Output */
     private String roomNo;                  //방번호
@@ -47,14 +48,16 @@ public class P_RoomListVo{
     private String guest_memSex;            //게스트성별
     private int guest_birthYear;            //게스트생년
     private int guest_age;                  //게스트 나이대
-    private Object guest_profileImage;      //게스트프로필이미지
+    private Object guest_profileImage;      //게스트프로필이미지부
+
 
     private String bj_streamid;            //bj 스트림아이디
-    private String bj_publish_tokenid;     //bj 토큰아이디
+    private String bj_publish_tokenid;     //bj 토큰아이디부
     private String bj_play_tokenid;        //bj play토큰
     private String guest_streamid;         //guest 스트림아이디
     private String guest_publish_tokenid;  //guest 토큰아이디
     private String guest_play_tokenid;     //guest play토큰
+    private int is_wowza;                   // 와우자여
 
     private int badge_recomm;                   //추천뱃지
     private int badge_popular;                  //인기뱃지
