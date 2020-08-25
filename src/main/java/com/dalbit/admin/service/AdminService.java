@@ -67,6 +67,9 @@ public class AdminService {
     @Autowired
     SmsService smsService;
 
+    @Autowired
+    EmailService emailService;
+
     private final String menuJsonKey = "adminMenu";
 
     @Value("${ant.expire.hour}")
