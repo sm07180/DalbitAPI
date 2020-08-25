@@ -16,6 +16,7 @@ public class GifiticonWinListOutputVo {
     /* Output */
     private int gifticonType;
     private String winDt;
+    private int isNew;
     private long winTs;
     private String memNo;
     private String nickNm;
@@ -27,6 +28,7 @@ public class GifiticonWinListOutputVo {
     public GifiticonWinListOutputVo(P_GifticonWinListOutputVo target) {
         setGifticonType(target.getGifticon_type());
         setWinDt(DalbitUtil.isEmpty(target.getWin_date()) ? "" : DalbitUtil.getUTCFormat(target.getWin_date()));
+        setIsNew(target.getNew_yn());
         setWinTs(DalbitUtil.isEmpty(target.getWin_date()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getWin_date()));
         setMemNo(target.getMem_no());
         setNickNm(target.getNickName());
