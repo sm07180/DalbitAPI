@@ -446,7 +446,8 @@
 
     <select id="selectServiceCenterQnaState" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
         /* Admin.xml - selectServiceCenterQnaState */
-        select state
+        select *
+            , (select code from rd_data.tbl_code_define where type = 'question_type' and value = slct_type) slct_type_name
           from rd_data.tb_service_center_qna_v25
           where idx = #{qnaIdx}
     </select>

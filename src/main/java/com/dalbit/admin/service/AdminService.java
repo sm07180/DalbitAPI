@@ -8,6 +8,7 @@ import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.EmailService;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
@@ -28,11 +29,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -1058,9 +1061,56 @@ public class AdminService {
             }
         }
 
-        if(pQuestionOperateVo.getNoticeType() == 2){      // 메일답변
+        if(!DalbitUtil.isEmpty(outVo.getEmail())){      // 메일답변
+            String sHtml = "";
+            StringBuffer mailContent = new StringBuffer();
+            BufferedReader in = null;
+            try{
+                URL url = new URL("http://image.dalbitlive.com/resource/mailForm/mailing.txt");
+                URLConnection urlconn = url.openConnection();
+                in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 
-        }else{          // 문자 or ( 문자 and 메일 )
+                while((sHtml = in.readLine()) != null){
+                    mailContent.append("\n");
+                    mailContent.append(sHtml);
+                }
+
+                String msgCont;
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+                String today = dateFormat.format(new Date());
+
+                msgCont = mailContent.toString().replaceAll("@@qnaTime@@", today);
+                msgCont = msgCont.replaceAll("@@qnaType@@", outVo.getSlct_type_name());
+                msgCont = msgCont.replaceAll("@@qnaTitle@@", outVo.getQuestion_title());
+                msgCont = msgCont.replaceAll("@@qnaContent@@", outVo.getQuestion_contents());
+
+                String fileNames = "";
+                fileNames += DalbitUtil.isEmpty(outVo.getFile_name1()) ? "" : outVo.getFile_name1();
+                if(!(DalbitUtil.isEmpty(fileNames) && DalbitUtil.isEmpty(outVo.getFile_name2()))){
+                    fileNames += ", " + outVo.getFile_name2();
+                }else if(!DalbitUtil.isEmpty(outVo.getFile_name2())){
+                    fileNames += outVo.getFile_name2();
+                }
+
+                if(!(DalbitUtil.isEmpty(fileNames) && DalbitUtil.isEmpty(outVo.getFile_name3()))){
+                    fileNames += ", " + outVo.getFile_name3();
+                }else if(!DalbitUtil.isEmpty(outVo.getFile_name3())){
+                    fileNames += outVo.getFile_name3();
+                }
+
+                msgCont = msgCont.replaceAll("@@fileName@@", fileNames);
+                msgCont = msgCont.replaceAll("@@answer@@", _answer);
+
+                EmailVo emailVo = new EmailVo("[달빛라이브] 1:1문의에 대한 답변을 보내드립니다.", outVo.getEmail(), msgCont);
+
+                emailService.sendEmail(emailVo);
+            }
+            catch(Exception e){
+                e.printStackTrace();
+            }
+        }
+
+        if(!DalbitUtil.isEmpty(outVo.getPhone())){          // 문자 or ( 문자 and 메일 )
             String answer = _answer;
             String[] array_word = answer.split(""); //배열에 한글자씩 저장하기
 
@@ -1084,7 +1134,7 @@ public class AdminService {
 
                 if(smsSw){
                     Thread.sleep(1500);
-                    SmsVo smsSendVo = new SmsVo(pQuestionOperateVo.getTitle(), answer, pQuestionOperateVo.getPhone(), "7");
+                    SmsVo smsSendVo = new SmsVo("[달빛라이브]"+outVo.getQuestion_title(), answer, outVo.getPhone(), "7");
                     smsSendVo.setSend_name(MemberVo.getMyMemNo());
                     smsSendVo.setMem_no(pQuestionOperateVo.getMem_no());
                     smsSendVo.setCinfo("");

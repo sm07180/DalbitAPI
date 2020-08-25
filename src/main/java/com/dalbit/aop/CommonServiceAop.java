@@ -47,4 +47,34 @@ public class CommonServiceAop {
 
         return result;
     }
+
+    /**
+     * 이메일 발송 전 후 처리
+     * @param proceedingJoinPoint
+     * @return
+     * @throws Throwable
+     */
+    @Around("execution(* com.dalbit.common.service.EmailService.sendEmail(..))")
+    public Object emailServiceLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+
+        String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
+
+        log.debug("[service] - start : " + proceedName);
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+
+        //email service가 email database를 바라 보도록 설정한다.
+        request.setAttribute("datasource", "email");
+
+        Object result = proceedingJoinPoint.proceed();
+
+        //service 실행 후 제거
+        request.removeAttribute("datasource");
+
+        stopWatch.stop();
+
+        log.info("[" + proceedName + "] - 실행시간 : " + stopWatch.getTotalTimeMillis() + " (ms)");
+
+        return result;
+    }
 }

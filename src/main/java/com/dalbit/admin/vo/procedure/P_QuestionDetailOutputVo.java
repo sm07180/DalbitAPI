@@ -9,6 +9,7 @@ import lombok.Setter;
 public class P_QuestionDetailOutputVo extends BaseVo {
     private int qnaIdx;
     private int slct_type;
+    private String slct_type_name;
     private String platform;
     private String browser;
     private String ip;

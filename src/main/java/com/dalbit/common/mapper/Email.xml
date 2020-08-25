@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.common.dao.EmailDao" >
+
+    <insert id="sendEmail" parameterType="com.dalbit.common.vo.EmailVo">
+        CALL c_dalbit.sp_dalbit_mail_send(
+            #{title}
+            , #{rcvMemId}
+            , #{rcvMail}
+            , #{sendMail}
+            , #{msgCont}
+            , #{sendType}
+        )
+    </insert>
+</mapper>
