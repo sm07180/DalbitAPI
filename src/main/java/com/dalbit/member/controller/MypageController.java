@@ -55,6 +55,10 @@ public class MypageController {
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        String trimNickname = profileEditVo.getNickNm().trim().replace(" ","");
+        if(trimNickname.length() < 2){
+            return gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임짦음));
+        }
 
         P_ProfileEditVo apiData = new P_ProfileEditVo();
 
