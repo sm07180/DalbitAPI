@@ -60,7 +60,7 @@ public class MypageController {
 
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
         apiData.setMemSex(profileEditVo.getGender());
-        apiData.setNickName(profileEditVo.getNickNm().trim());
+        apiData.setNickName(profileEditVo.getNickNm().trim().replace(" "," "));
         apiData.setName(profileEditVo.getName());
         if(!DalbitUtil.isEmpty(apiData.getName()) && apiData.getName().length() > 50){
             apiData.setName(apiData.getName().substring(0, 49));
