@@ -1089,13 +1089,13 @@ public class AdminService {
 
                 String fileNames = "";
                 fileNames += DalbitUtil.isEmpty(outVo.getFile_name1()) ? "" : outVo.getFile_name1();
-                if(!(DalbitUtil.isEmpty(fileNames) && DalbitUtil.isEmpty(outVo.getFile_name2()))){
+                if((!DalbitUtil.isEmpty(fileNames) && !DalbitUtil.isEmpty(outVo.getFile_name2()))){
                     fileNames += ", " + outVo.getFile_name2();
                 }else if(!DalbitUtil.isEmpty(outVo.getFile_name2())){
                     fileNames += outVo.getFile_name2();
                 }
 
-                if(!(DalbitUtil.isEmpty(fileNames) && DalbitUtil.isEmpty(outVo.getFile_name3()))){
+                if((!DalbitUtil.isEmpty(fileNames) && !DalbitUtil.isEmpty(outVo.getFile_name3()))){
                     fileNames += ", " + outVo.getFile_name3();
                 }else if(!DalbitUtil.isEmpty(outVo.getFile_name3())){
                     fileNames += outVo.getFile_name3();
