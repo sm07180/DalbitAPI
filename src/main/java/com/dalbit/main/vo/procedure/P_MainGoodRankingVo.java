@@ -40,4 +40,5 @@ public class P_MainGoodRankingVo {
     private int fan_goodCnt;
     private String fan_mem_no;
     private String fan_nickName;
+    private String updown;
 }

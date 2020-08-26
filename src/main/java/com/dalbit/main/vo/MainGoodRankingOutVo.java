@@ -21,7 +21,7 @@ public class MainGoodRankingOutVo {
     private String fanMemNo;
     private String fanNickNm;
     private String holder;
-
+    private String upDown;
 
     public MainGoodRankingOutVo(){}
     public MainGoodRankingOutVo(P_MainGoodRankingVo target) {
@@ -37,5 +37,6 @@ public class MainGoodRankingOutVo {
         setFanMemNo(target.getFan_mem_no());
         setFanNickNm(target.getFan_nickName());
         setHolder("https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getLevel() + ".png");
+        setUpDown(target.getUpdown());
     }
 }
