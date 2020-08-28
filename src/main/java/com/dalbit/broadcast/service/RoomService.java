@@ -383,9 +383,6 @@ public class RoomService {
                 } catch (Exception e) {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
-                try{
-                    restService.deleteAntRoom(DalbitUtil.getStringMap(resultMap, "bjStreamId"), request);
-                }catch(Exception e){}
             } else {
                 String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
                 String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
