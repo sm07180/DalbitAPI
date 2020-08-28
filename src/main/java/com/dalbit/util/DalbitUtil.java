@@ -1540,13 +1540,13 @@ public class DalbitUtil {
     }
 
     public static int isWowza(DeviceVo deviceVo){
-        try {
+        /*try {
             if ( ((deviceVo.getOs() == 1 && (Integer.parseInt(deviceVo.getAppBuild()) >= 25)))
                     || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) >= 107)
                 || (deviceVo.getOs() == 3  && !"real".equals(getActiveProfile()))) {
                 return 1;
             }
-        }catch(Exception e){}
-        return 0;
+        }catch(Exception e){}*/
+        return 1;
     }
 }
