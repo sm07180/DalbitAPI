@@ -1,5 +1,8 @@
 package com.dalbit.event.service;
 
+import com.dalbit.admin.dao.AdminDao;
+import com.dalbit.admin.vo.AdminMenuVo;
+import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.EventCode;
 import com.dalbit.common.code.Status;
@@ -30,6 +33,9 @@ public class EventService {
 
     @Autowired
     EventDao eventDao;
+    @Autowired
+    AdminDao adminDao;
+
     @Autowired
     GsonUtil gsonUtil;
     @Autowired
@@ -782,9 +788,18 @@ public class EventService {
         });
         int totCnt = eventDao.selectPhotoCnt(photoEventInputVo);
 
+        int isAdmin = 0;
+        if(DalbitUtil.isLogin(request)){
+            SearchVo searchVo = new SearchVo();
+            searchVo.setMem_no(mem_no);
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            isAdmin = DalbitUtil.isEmpty(menuList) ? 0 : 1;
+        }
+
         HashMap map = new HashMap();
         map.put("list", list);
         map.put("totCnt", totCnt);
+        map.put("isAdmin", isAdmin);
         String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
         return result;
     }
