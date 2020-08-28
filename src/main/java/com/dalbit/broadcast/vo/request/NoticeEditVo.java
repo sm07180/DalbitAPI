@@ -14,6 +14,6 @@ public class NoticeEditVo {
     @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
     private String roomNo;
 
-    @Size(message = "{\"ko_KR\" : \"공지사항을\"}", max = 200)
+    @Size(message = "{\"ko_KR\" : \"공지사항을\"}", max = 500)
     private String notice;
 }
