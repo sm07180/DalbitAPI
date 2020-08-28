@@ -30,9 +30,6 @@ public class SampleRestController {
     GsonUtil gsonUtil;
 
     @Autowired
-    RedisUtil redisUtil;
-
-    @Autowired
     JwtUtil jwtUtil;
 
     @PostMapping("tokenCheck")
@@ -59,7 +56,7 @@ public class SampleRestController {
             tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
         }
 
-        MemberVo memberVo = redisUtil.getMemberInfoFromRedis(tokenVo.getMemNo());
+        MemberVo memberVo = null;
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, memberVo));
     }
 
@@ -81,7 +78,7 @@ public class SampleRestController {
     @GetMapping("checkMe")
     public String checkMe(HttpServletRequest request)throws GlobalException{
 
-        MemberVo memberVo = redisUtil.getMemberInfo(request);
+        MemberVo memberVo = null;
 
         String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
         if(jwtUtil.validateToken(authToken)){
