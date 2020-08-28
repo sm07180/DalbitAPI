@@ -11,6 +11,7 @@
     </select>
 
     <select id="callEventReplyList" parameterType="com.dalbit.event.vo.procedure.P_ReplyListInputVo" resultType="com.dalbit.event.vo.procedure.P_ReplyListOutputVo">
+      /* Event.xml - callEventReplyList */
       SELECT
             a.idx AS reply_idx
             ,a.event_idx AS event_idx
@@ -41,6 +42,7 @@
     </select>
 
     <insert id="callEventReplyAdd" parameterType="com.dalbit.event.vo.procedure.P_ReplyAddInputVo">
+        /* Event.xml - callEventReplyAdd */
         INSERT INTO rd_admin.tb_event_reply
         (
             event_idx
@@ -64,6 +66,7 @@
     </insert>
 
     <update id="callEventReplyDelete" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo">
+        /* Event.xml - callEventReplyDelete */
         UPDATE rd_admin.tb_event_reply
         SET
           status = 2
@@ -75,6 +78,7 @@
     </update>
 
     <select id="callEventAuthCheck" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo" resultType="integer">
+        /* Event.xml - callEventAuthCheck */
         SELECT
           count(*)
         FROM
@@ -128,11 +132,160 @@
     </select>
 
     <select id="selectLunarDate" resultType="String">
+        /* Event.xml - selectLunarDate */
         SELECT
             concat(month (date), '월 ', day(date), '일') as lunarDate
         FROM tbl_lunar_calendar
+        where now() <![CDATA[<]]> date
         ORDER BY ABS(DATEDIFF(NOW(), DATE))
         LIMIT 1
+    </select>
+
+    <select id="selectPhotoList" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="com.dalbit.event.vo.PhotoEventOutputVo">
+        /* Event.xml - selectPhotoList */
+        select photo.idx
+            , photo.event_idx
+            , photo.mem_no
+            , photo.image_url
+            , photo.contents
+            , date_format(photo.reg_date, '%Y.%m.%d %H:%i') reg_date
+            , level.level
+            , profile.image_profile
+            , ifnull(basic.mem_nick, withdrawal.mem_nick) mem_nick
+        from rd_admin.tb_event_photo photo
+            inner join rd_data.tb_member_level level on photo.mem_no = level.mem_no
+            inner join rd_data.tb_member_profile profile on photo.mem_no = profile.mem_no
+            left join rd_data.tb_member_basic basic on photo.mem_no = basic.mem_no
+            left join rd_data.tb_member_withdrawal_bak withdrawal on photo.mem_no = withdrawal.mem_no
+        where photo.del_yn = 0
+            and photo.event_idx = #{event_idx}
+        <if test='slct_type == 1' >
+            and photo.mem_no = #{mem_no}
+        </if>
+        order by photo.reg_date desc
+
+        <if test='slct_type != 1' >
+            limit #{page}, #{records}
+        </if>
+    </select>
+
+    <select id="selectPhotoCnt" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        /* Event.xml - selectPhotoCnt */
+        select count(*)
+        from rd_admin.tb_event_photo
+        where del_yn = 0
+            and event_idx = #{event_idx}
+        <if test='slct_type == 1' >
+            and mem_no = #{mem_no}
+        </if>
+    </select>
+
+    <insert id="insertEventMember" parameterType="com.dalbit.event.vo.EventMemberVo">
+        /* Event.xml - insertEventMember */
+        <selectKey keyProperty="event_member_idx" resultType="int" order="AFTER">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into rd_admin.tb_event_member(
+            event_idx
+            , mem_no
+            , platform
+            , enter_date
+            , reg_date
+            , op_name
+        )values(
+            #{event_idx}
+            , #{mem_no}
+            , #{platform}
+            , now()
+            , now()
+            , #{mem_no}
+        )
+    </insert>
+
+    <update id="deleteEventMemberPhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
+        /* Event.xml - deleteEventMember */
+        update rd_admin.tb_event_member
+        set
+            del_yn = #{del_yn}
+            , last_op_name = #{mem_no}
+            , last_upd_date = now()
+        where idx = (select event_member_idx from rd_admin.tb_event_photo where idx = #{idx})
+    </update>
+
+    <insert id="insertPhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
+        /* Event.xml - insertPhoto */
+        insert into rd_admin.tb_event_photo(
+            event_idx
+            , event_member_idx
+            , mem_no
+            , image_url
+            , contents
+            , reg_date
+        )values(
+            #{event_idx}
+            , #{event_member_idx}
+            , #{mem_no}
+            , #{image_url}
+            , #{contents}
+            , now()
+        )
+    </insert>
+
+    <update id="updatePhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
+        /* Event.xml - updatePhoto */
+        update rd_admin.tb_event_photo
+        set
+            image_url = #{image_url}
+            , contents = #{contents}
+            , op_name = #{mem_no}
+            , last_upd_date = now()
+        where idx = #{idx}
+    </update>
+
+    <update id="deletePhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
+        /* Event.xml - updatePhoto */
+        update rd_admin.tb_event_photo
+        set
+            del_yn = #{del_yn}
+            , op_name = #{mem_no}
+            , last_upd_date = now()
+        where idx = #{idx}
+    </update>
+
+    <select id="selectPhotoPcAirTime" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        select ifnull(sum(airtime), 0) airtime
+        from rd_data.tb_broadcast_room
+        where os_type = 3
+            and (select start_datetime from rd_admin.tb_event_basic where idx = #{event_idx}) <![CDATA[<=]]> start_date
+            and start_date <![CDATA[<=]]> (select end_datetime from rd_admin.tb_event_basic where idx = #{event_idx})
+            and mem_no = #{mem_no}
+    </select>
+
+    <select id="selectEventBasic" parameterType="int" resultType="com.dalbit.event.vo.EventBasicVo">
+        select
+            idx
+            , event_title
+            , start_datetime
+            , end_datetime
+            , view_start_datetime
+            , view_end_datetime
+            , platform
+            , event_slct
+            , is_pop
+            , is_view
+            , is_reply
+            , pc_img_url
+            , pc_link_url
+            , mobile_img_url
+            , mobile_link_url
+            , thumb_img_url
+            , `desc`
+            , reg_date
+            , op_name
+            , last_upd_date
+            , last_op_name
+        from rd_admin.tb_event_basic
+        where idx = #{idx}
     </select>
 
 </mapper>

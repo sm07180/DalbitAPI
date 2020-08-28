@@ -3,18 +3,21 @@ package com.dalbit.event.controller;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.PhotoEventInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.lang.reflect.Member;
 
 @RestController
 @RequestMapping("/event")
@@ -212,9 +215,9 @@ public class EventController {
      * 기프티콘 당첨자 리스트 조회
      */
     @GetMapping("/gifticon/win/list")
-    public String gifticonWinList(HttpServletRequest request){
-        P_GifticonWinListInputVo apiData = new P_GifticonWinListInputVo(request);
-        String result = eventService.callGifticonWinList(apiData);
+    public String gifticonWinList(HttpServletRequest request, P_GifticonWinListInputVo pGifticonWinListInputVo){
+        pGifticonWinListInputVo.setMem_no(MemberVo.getMyMemNo(request));
+        String result = eventService.callGifticonWinList(pGifticonWinListInputVo);
 
         return result;
     }
@@ -229,4 +232,64 @@ public class EventController {
 
         return result;
     }
+
+    /**
+     * 인증샷 이벤트 참여자 목록 조회
+     */
+    @PostMapping("/photo/list")
+    public String selectPhotoList(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        String result = eventService.selectPhotoList(request, photoEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 인증샷 이벤트 참여
+     */
+    @PostMapping("/photo/insert")
+    public String insertPhoto(HttpServletRequest request, @Valid PhotoEventInputVo photoEventInputVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = eventService.insertPhoto(request, photoEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 인증샷 이벤트 내용 수정
+     */
+    @PostMapping("/photo/update")
+    public String updatePhoto(HttpServletRequest request, @Valid PhotoEventInputVo photoEventInputVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = eventService.updatePhoto(request, photoEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 인증샷 이벤트 내용 수정
+     */
+    @PostMapping("/photo/delete")
+    public String deletePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        String result = eventService.deletePhoto(request, photoEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 인증샷 이벤트 참여여부
+     */
+    @GetMapping("/photo/status")
+    public String statusPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        String result = eventService.statusPhoto(request, photoEventInputVo);
+
+        return result;
+    }
+
 }

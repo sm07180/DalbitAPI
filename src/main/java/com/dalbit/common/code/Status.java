@@ -837,6 +837,9 @@ public enum Status {
     라이징이벤트_결과_조회_성공("C001", "event.rising.result.success", "성공"),
     라이징이벤트_결과_데이터없음("0", "event.rising.result.no.data", "데이터 없음"),
 
+    이벤트_참여날짜아님("-1", "event.join.invalid.date", "이벤트 기간이 아닌경우"),
+    이벤트_이미참여("-2", "event.join.already", "이미 이벤트에 참여한 경우"),
+
     //////////////////////////
     //모바일 관리자
     /////////////////////////

@@ -1,13 +1,14 @@
 package com.dalbit.event.service;
 
 import com.dalbit.common.code.Code;
+import com.dalbit.common.code.EventCode;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.EventDao;
-import com.dalbit.event.vo.GifiticonWinListOutputVo;
-import com.dalbit.event.vo.ReplyListOutputVo;
+import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -762,4 +763,139 @@ public class EventService {
         resultMap.put("lunarDt", eventDao.selectLunarDate());
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
+
+    public String selectPhotoList(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        photoEventInputVo.setMem_no(mem_no);
+        photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
+
+        if(photoEventInputVo.getPage() <= 1){
+            photoEventInputVo.setPage(0);
+        }else{
+            photoEventInputVo.setPage((photoEventInputVo.getPage() - 1) * photoEventInputVo.getRecords());
+        }
+
+        List<PhotoEventOutputVo> list = eventDao.selectPhotoList(photoEventInputVo);
+        list.stream().parallel().forEach(item -> {
+            item.setProfImg(new ImageVo(item.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
+        });
+        int totCnt = eventDao.selectPhotoCnt(photoEventInputVo);
+
+        HashMap map = new HashMap();
+        map.put("list", list);
+        map.put("totCnt", totCnt);
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return result;
+    }
+
+    public String insertPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
+        if(eventCheck == 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+        }
+
+        if(!EventCode.인증샷.isMulti()){
+            var checkDuplJoin = new PhotoEventInputVo();
+            checkDuplJoin.setEvent_idx(EventCode.인증샷.getEventIdx());
+            checkDuplJoin.setSlct_type(1);
+            checkDuplJoin.setMem_no(MemberVo.getMyMemNo(request));
+            int totCnt = eventDao.selectPhotoCnt(checkDuplJoin);
+            if(0 < totCnt){
+                return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_이미참여));
+            }
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        photoEventInputVo.setMem_no(mem_no);
+
+        var deviceVo = new DeviceVo(request);
+
+        var eventMemberVo = new EventMemberVo();
+        eventMemberVo.setMem_no(mem_no);
+        eventMemberVo.setEvent_idx(EventCode.인증샷.getEventIdx());
+        eventMemberVo.setPlatform(deviceVo.getOs());
+        eventDao.insertEventMember(eventMemberVo);
+
+        photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
+        photoEventInputVo.setEvent_member_idx(eventMemberVo.getEvent_member_idx());
+        eventDao.insertPhoto(photoEventInputVo);
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.생성));
+        return result;
+    }
+
+    public String updatePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
+        if(eventCheck == 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        photoEventInputVo.setMem_no(mem_no);
+
+        eventDao.updatePhoto(photoEventInputVo);
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.수정));
+        return result;
+    }
+
+    public String deletePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
+        if(eventCheck == 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        photoEventInputVo.setMem_no(mem_no);
+        photoEventInputVo.setDel_yn(1);
+
+        eventDao.deleteEventMemberPhoto(photoEventInputVo);
+        eventDao.deletePhoto(photoEventInputVo);
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.삭제));
+        return result;
+    }
+
+    public String statusPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
+        photoEventInputVo.setMem_no(mem_no);
+        photoEventInputVo.setSlct_type(1);
+
+        List<PhotoEventOutputVo> list = eventDao.selectPhotoList(photoEventInputVo);
+        int status = list.size() == 0 ? 1 : 0;
+
+        photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
+        int pcStatus = eventDao.selectPhotoPcAirTime(photoEventInputVo);
+        int pcCheck = pcStatus < 600 ? 0 : 1;
+
+        int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
+
+        var map = new HashMap();
+        map.put("eventCheck", eventCheck);
+        map.put("status", status);
+        map.put("pcCheck", pcCheck);
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return result;
+    }
+
+    public EventBasicVo getEventInfo(int idx){
+        EventBasicVo eventBasicVo = eventDao.selectEventBasic(idx);
+        return eventBasicVo;
+    }
+
+    public int eventDateCheck(int idx){
+        EventBasicVo eventBasicVo = eventDao.selectEventBasic(idx);
+        long startDatetime = eventBasicVo.getStart_datetime().getTime();
+        long endDatetime = eventBasicVo.getEnd_datetime().getTime();
+        long currentDatetime = new Date().getTime();
+        return currentDatetime < startDatetime || endDatetime < currentDatetime ? 0 : 1;
+    }
+
 }

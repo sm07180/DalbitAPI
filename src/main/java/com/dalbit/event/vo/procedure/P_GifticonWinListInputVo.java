@@ -10,11 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 @Setter
 public class P_GifticonWinListInputVo {
 
-    public P_GifticonWinListInputVo(){}
-
-    public P_GifticonWinListInputVo(HttpServletRequest request){
-        setMem_no(MemberVo.getMyMemNo(request));
-    }
-
     private String mem_no;
+    private int slct_type;
 }
