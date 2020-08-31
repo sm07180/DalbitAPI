@@ -24,6 +24,9 @@ public class RoomInfoVo {
     private boolean useBoost;
     private long likes;
     private long rank;
+    private String roomType;
+    private String welcomMsg;
+    private int entryType;
     /* DJ정보 */
     private String bjMemNo;
     private String bjNickNm;
@@ -71,6 +74,9 @@ public class RoomInfoVo {
         this.startTs = target.getStartTs();
         this.hasNotice = this.auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice());
         this.likes = target.getLikeCnt();
+        this.roomType = target.getRoomType();
+        this.welcomMsg = target.getWelcomMsg();
+        this.entryType = target.getEntryType();
 
         this.auth = memberInfoVo.getAuth();
         this.hasStory = memberInfoVo.isHashStory();
