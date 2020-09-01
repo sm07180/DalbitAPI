@@ -136,7 +136,7 @@
         SELECT
             concat(month (date), '월 ', day(date), '일') as lunarDate
         FROM tbl_lunar_calendar
-        where now() <![CDATA[<]]> date
+        where now() <![CDATA[<=]]> date
         ORDER BY ABS(DATEDIFF(NOW(), DATE))
         LIMIT 1
     </select>
