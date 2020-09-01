@@ -303,7 +303,7 @@
         where mem_no = #{value}
     </select>
 
-    <select id="selectRoomTypeCodeList" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
+    <select id="selectTypeCodeList" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
         SELECT
             `type`    as cd
             , `value` as `value`

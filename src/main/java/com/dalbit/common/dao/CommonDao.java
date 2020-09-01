@@ -67,4 +67,7 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo);
+
+    @Transactional(readOnly = true)
+    List<CodeVo> selectTypeCodeList(CodeVo codeVo);
 }

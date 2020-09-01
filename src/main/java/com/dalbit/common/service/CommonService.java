@@ -210,6 +210,14 @@ public class CommonService {
                 resultMap.put("itemComboCout", timeCombos);
             }
         }
+        int[] giftComboCount = {1,2,3,4,5,6,7,8,9,10};
+        resultMap.put("giftComboCount", giftComboCount);
+
+        if(deviceVo.getOs() != 2) {
+            int[] giftDal = {20, 50, 100, 500, 1000, 2000, 3000, 4000, 5000};
+            resultMap.put("giftDal", giftDal);
+            resultMap.put("giftDalDirect", true);
+        }
 
         return resultMap;
     }
@@ -526,6 +534,7 @@ public class CommonService {
             }
             returnMap.put("adultYn", adultYn);       //성인여부
             returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
+            returnMap.put("phoneNo", DalbitUtil.getStringMap(resultMap, "mem_phone"));   //휴대폰번호
             procedureVo.setData(returnMap);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인, procedureVo.getData()));
@@ -739,7 +748,14 @@ public class CommonService {
      * 사용중인 방송주제 목록 가져오기
      */
     public List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo){
-        return commonDao.selectRoomTypeCodeList(codeVo);
+        return commonDao.selectTypeCodeList(codeVo);
+    }
+
+    /**
+     * 사용중인 방송주제 목록 가져오기
+     */
+    public List<CodeVo> selectClipTypeCodeList(CodeVo codeVo){
+        return commonDao.selectTypeCodeList(codeVo);
     }
 
 }
