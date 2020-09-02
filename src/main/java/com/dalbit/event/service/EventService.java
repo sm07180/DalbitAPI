@@ -13,6 +13,10 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.EventDao;
 import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.procedure.*;
+import com.dalbit.event.vo.request.Apply004Vo;
+import com.dalbit.event.vo.request.ApplyVo;
+import com.dalbit.event.vo.request.CheckVo;
+import com.dalbit.event.vo.request.EventGoodVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -24,6 +28,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -788,18 +793,10 @@ public class EventService {
         });
         int totCnt = eventDao.selectPhotoCnt(photoEventInputVo);
 
-        int isAdmin = 0;
-        if(DalbitUtil.isLogin(request)){
-            SearchVo searchVo = new SearchVo();
-            searchVo.setMem_no(mem_no);
-            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
-            isAdmin = DalbitUtil.isEmpty(menuList) ? 0 : 1;
-        }
-
         HashMap map = new HashMap();
         map.put("list", list);
         map.put("totCnt", totCnt);
-        map.put("isAdmin", isAdmin);
+        map.put("isAdmin", isAdmin(request));
         String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
         return result;
     }
@@ -859,7 +856,7 @@ public class EventService {
 
     public String deletePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
 
-        int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
+        int eventCheck = eventDateCheck(photoEventInputVo.getEvent_idx());
         if(eventCheck == 0){
             return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
         }
@@ -913,4 +910,261 @@ public class EventService {
         return currentDatetime < startDatetime || endDatetime < currentDatetime ? 0 : 1;
     }
 
+    public String selectKnowhowList(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+
+        int eventIdx = EventCode.노하우.getEventIdx();
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        knowhowEventInputVo.setMem_no(mem_no);
+        knowhowEventInputVo.setEvent_idx(eventIdx);
+
+        if(knowhowEventInputVo.getPage() <= 1){
+            knowhowEventInputVo.setPage(0);
+        }else{
+            knowhowEventInputVo.setPage((knowhowEventInputVo.getPage() - 1) * knowhowEventInputVo.getRecords());
+        }
+
+        List<KnowhowEventOutputVo> list = eventDao.selectKnowhowList(knowhowEventInputVo);
+        list.stream().parallel().forEach(item -> {
+            item.setProfImg(new ImageVo(item.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
+        });
+        int totCnt = eventDao.selectKnowhowCnt(knowhowEventInputVo);
+
+        HashMap map = new HashMap();
+        map.put("list", list);
+        map.put("totCnt", totCnt);
+        map.put("isAdmin", isAdmin(request));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return result;
+    }
+
+    /**
+     * 노하우 이벤트 등록
+     */
+    public String insertKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+
+        Status status = null;
+        if(DalbitUtil.isLogin(request)){
+            ProcedureVo procedureVo = new ProcedureVo(new P_Apply003Vo(new ApplyVo(EventCode.노하우.getEventIdx()), knowhowEventInputVo, request));
+            eventDao.callEventApply003(procedureVo);
+            if(Status.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+                status = Status.이벤트_참여;
+            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                status = Status.이벤트_체크_이미참여;
+            }else if(Status.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+                status = Status.이벤트_체크_자격안됨;
+            }else if(Status.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+                status = Status.이벤트_없음_종료;
+            }else if(Status.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+                status = Status.이벤트_에러;
+            }
+        }else{
+            status = Status.이벤트_비회원;
+        }
+        String result = gsonUtil.toJson(new JsonOutputVo(status));
+        return result;
+    }
+
+    public String updateKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+
+        int event_idx = EventCode.노하우.getEventIdx();
+
+        knowhowEventInputVo.setEvent_idx(event_idx);
+        int eventCheck = eventDateCheck(event_idx);
+        if(eventCheck == 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+        }
+
+        String mem_no = MemberVo.getMyMemNo(request);
+        knowhowEventInputVo.setMem_no(mem_no);
+
+        ArrayList<String> list = new ArrayList();
+        if(!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url())){
+            list.add(knowhowEventInputVo.getImage_url());
+            knowhowEventInputVo.setImage_url("");
+        }
+
+        if(!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url2())){
+            list.add(knowhowEventInputVo.getImage_url2());
+            knowhowEventInputVo.setImage_url2("");
+        }
+
+        if(!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url3())){
+            list.add(knowhowEventInputVo.getImage_url3());
+            knowhowEventInputVo.setImage_url3("");
+        }
+
+        for(int i=0 ; i<list.size(); i++){
+            if(i == 0){
+                knowhowEventInputVo.setImage_url(list.get(i));
+            }else if(i == 1){
+                knowhowEventInputVo.setImage_url2(list.get(i));
+            }else if(i == 2){
+                knowhowEventInputVo.setImage_url3(list.get(i));
+            }
+        }
+
+        int updateResult = eventDao.updateKnowhow(knowhowEventInputVo);
+        String result = null;
+        if(updateResult == 0){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.수정));
+        }
+
+        return result;
+    }
+
+    public String detailKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+
+        int event_idx = EventCode.노하우.getEventIdx();
+
+        knowhowEventInputVo.setEvent_idx(EventCode.노하우.getEventIdx());
+        knowhowEventInputVo.setMem_no(MemberVo.getMyMemNo(request));
+        var resultMap = new HashMap();
+
+        KnowhowEventOutputVo detail = eventDao.selectKnowhowDetail(knowhowEventInputVo);
+        if(DalbitUtil.isEmpty(detail)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
+
+        if(knowhowEventInputVo.getIs_detail() == 1){
+            eventDao.updatePhotoViewCnt(event_idx);
+        }
+
+        detail.setProfImg(new ImageVo(detail.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
+
+        resultMap.put("isAdmin", isAdmin(request));
+        resultMap.put("detail", detail);
+
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+        return result;
+    }
+
+    public String eventGood(HttpServletRequest request, EventGoodVo eventGoodVo){
+
+        eventGoodVo.setMem_no(MemberVo.getMyMemNo(request));
+        ProcedureVo procedureVo = new ProcedureVo(eventGoodVo);
+        eventDao.callEventGood(procedureVo);
+
+        var procedureResult = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+        var resultMap = new HashMap();
+        resultMap.put("good_cnt", DalbitUtil.getIntMap(procedureResult, "good_cnt"));
+
+        if(Status.노하우_이벤트_좋아요.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_좋아요, resultMap));
+        }else if(Status.노하우_이벤트_좋아요취소.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_좋아요취소, resultMap));
+        }else if(Status.노하우_이벤트_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_회원아님));
+        }else if(Status.노하우_이벤트_이벤트없음.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_이벤트없음));
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+        }
+    }
+
+    public int isAdmin(HttpServletRequest request){
+        int isAdmin = 0;
+        if(DalbitUtil.isLogin(request)){
+            SearchVo searchVo = new SearchVo();
+            searchVo.setMem_no(MemberVo.getMyMemNo(request));
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            isAdmin = DalbitUtil.isEmpty(menuList) ? 0 : 1;
+        }
+        return isAdmin;
+    }
+
+    public HashMap eventCheck(CheckVo checkVo, HttpServletRequest request){
+        HashMap resultMap = new HashMap();
+
+        if(DalbitUtil.isLogin(request)){
+            ProcedureVo procedureVo = new ProcedureVo(new P_CheckVo(checkVo, request));
+            eventDao.callEventApplyCheck(procedureVo);
+            if(Status.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_참여);
+            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_이미참여);
+            }else if(Status.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_자격안됨);
+            }
+        }else{
+            resultMap.put("status", Status.이벤트_비회원);
+        }
+
+        return resultMap;
+    }
+
+    public HashMap eventCheck004(CheckVo checkVo, HttpServletRequest request){
+        HashMap resultMap = new HashMap();
+
+        if(DalbitUtil.isLogin(request)){
+            checkVo.setEventIdx(4);
+            ProcedureVo procedureVo = new ProcedureVo(new P_CheckVo(checkVo, request));
+            eventDao.callEventApplyCheck004(procedureVo);
+            if(Status.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_참여);
+            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_이미참여);
+            }else if(Status.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
+                HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                HashMap data = new HashMap();
+                data.put("airHour", returnMap.get("airhour"));
+                resultMap.put("status", Status.이벤트_체크_자격안됨04);
+                resultMap.put("data", data);
+            }
+        }else{
+            resultMap.put("status", Status.이벤트_비회원);
+        }
+
+        return resultMap;
+    }
+
+    public HashMap eventApply(ApplyVo applyVo, HttpServletRequest request){
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isLogin(request)){
+            ProcedureVo procedureVo = new ProcedureVo(new P_ApplyVo(applyVo, request));
+            eventDao.callEventApplySP(procedureVo);
+            if(Status.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_참여);
+            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_이미참여);
+            }else if(Status.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_자격안됨);
+            }else if(Status.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_없음_종료);
+            }else if(Status.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_에러);
+            }
+        }else{
+            resultMap.put("status", Status.이벤트_비회원);
+        }
+        return resultMap;
+    }
+
+    public HashMap eventApply004(Apply004Vo applyVo, HttpServletRequest request){
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isLogin(request)){
+            applyVo.setEventIdx(4);
+            ProcedureVo procedureVo = new ProcedureVo(new P_ApplyVo(applyVo, request));
+            eventDao.callEventApply004(procedureVo);
+            if(Status.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_참여);
+            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_이미참여);
+            }else if(Status.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_체크_자격안됨04);
+            }else if(Status.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_없음_종료);
+            }else if(Status.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_에러);
+            }else if(Status.이벤트_비회원.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", Status.이벤트_비회원);
+            }
+        }else{
+            resultMap.put("status", Status.이벤트_비회원);
+        }
+        return resultMap;
+    }
 }

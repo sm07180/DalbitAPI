@@ -1,10 +1,7 @@
 package com.dalbit.event.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.event.vo.EventBasicVo;
-import com.dalbit.event.vo.EventMemberVo;
-import com.dalbit.event.vo.PhotoEventInputVo;
-import com.dalbit.event.vo.PhotoEventOutputVo;
+import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,6 +59,8 @@ public interface EventDao {
 
     int insertEventMember(EventMemberVo eventMemberVo);
 
+    int callEventApply(ProcedureVo procedureVo);
+
     int insertPhoto(PhotoEventInputVo photoEventInputVo);
 
     int updatePhoto(PhotoEventInputVo photoEventInputVo);
@@ -70,9 +69,34 @@ public interface EventDao {
 
     int deletePhoto(PhotoEventInputVo photoEventInputVo);
 
+    @Transactional(readOnly = true)
     int selectPhotoPcAirTime(PhotoEventInputVo photoEventInputVo);
 
+    @Transactional(readOnly = true)
     EventBasicVo selectEventBasic(int idx);
 
+    @Transactional(readOnly = true)
+    List<KnowhowEventOutputVo> selectKnowhowList(KnowhowEventInputVo knowhowEventInputVo);
 
+    @Transactional(readOnly = true)
+    int selectKnowhowCnt(KnowhowEventInputVo knowhowEventInputVo);
+
+    @Transactional(readOnly = true)
+    KnowhowEventOutputVo selectKnowhowDetail(KnowhowEventInputVo knowhowEventInputVo);
+
+    int updatePhotoViewCnt(int event_idx);
+
+    int insertKnowhow(KnowhowEventInputVo knowhowEventInputVo);
+
+    int updateKnowhow(KnowhowEventInputVo knowhowEventInputVo);
+
+    ProcedureVo callEventGood(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    ProcedureVo callEventApplyCheck(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    ProcedureVo callEventApplyCheck004(ProcedureVo procedureVo);
+    ProcedureVo callEventApplySP(ProcedureVo procedureVo);
+    ProcedureVo callEventApply003(ProcedureVo procedureVo);
+    ProcedureVo callEventDetail003(ProcedureVo procedureVo);
+    ProcedureVo callEventApply004(ProcedureVo procedureVo);
 }

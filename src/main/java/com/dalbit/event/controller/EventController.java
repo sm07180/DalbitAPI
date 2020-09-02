@@ -1,8 +1,10 @@
 package com.dalbit.event.controller;
 
+import com.dalbit.common.code.EventCode;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.KnowhowEventInputVo;
 import com.dalbit.event.vo.PhotoEventInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.lang.reflect.Member;
+import java.util.HashMap;
 
 @RestController
 @RequestMapping("/event")
@@ -276,6 +279,7 @@ public class EventController {
     @PostMapping("/photo/delete")
     public String deletePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
 
+        photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
         String result = eventService.deletePhoto(request, photoEventInputVo);
 
         return result;
@@ -292,4 +296,123 @@ public class EventController {
         return result;
     }
 
+    /**
+     * 노하우 이벤트 목록
+     */
+    @PostMapping("/knowhow/list")
+    public String selectKnowhowList(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+
+        String result = eventService.selectKnowhowList(request, knowhowEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 노하우 이벤트 등록
+     */
+    @PostMapping("/knowhow/insert")
+    public String insertKnowhow(HttpServletRequest request, @Valid KnowhowEventInputVo knowhowEventInputVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = eventService.insertKnowhow(request, knowhowEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 노하우 이벤트 수정
+     */
+    @PostMapping("/knowhow/update")
+    public String updateKnowhow(HttpServletRequest request, @Valid KnowhowEventInputVo knowhowEventInputVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = eventService.updateKnowhow(request, knowhowEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 노하우 이벤트 조회
+     */
+    @PostMapping("/knowhow/detail")
+    public String detailKnowhow(HttpServletRequest request, @Valid KnowhowEventInputVo knowhowEventInputVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = eventService.detailKnowhow(request, knowhowEventInputVo);
+
+        return result;
+    }
+
+    @PostMapping("/knowhow/delete")
+    public String deleteKnowhow(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+
+        photoEventInputVo.setEvent_idx(EventCode.노하우.getEventIdx());
+        String result = eventService.deletePhoto(request, photoEventInputVo);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 좋아요
+     */
+    @PostMapping("/good")
+    public String eventGood(HttpServletRequest request, @Valid EventGoodVo eventGoodVo, BindingResult bindingResult)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result = eventService.eventGood(request, eventGoodVo);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 체크
+     */
+    @GetMapping("/apply")
+    public String eventApplyCheck(HttpServletRequest request, @Valid CheckVo checkVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        HashMap result = eventService.eventCheck(checkVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+    /**
+     * 이벤트 체크 방송 지원
+     */
+    @GetMapping("/004/apply")
+    public String eventApplyCheck004(HttpServletRequest request, @Valid CheckVo checkVo, BindingResult bindingResult) throws GlobalException{
+        //DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        checkVo.setEventIdx(4);
+        HashMap result = eventService.eventCheck004(checkVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+    /**
+     * 이벤트 참여
+     */
+    @PostMapping("/apply")
+    public String eventApply(HttpServletRequest request, @Valid ApplyVo applyVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        HashMap result = eventService.eventApply(applyVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+    /**
+     * 이벤트 참여
+     */
+    @PostMapping("/004/apply")
+    public String eventApply004(HttpServletRequest request, @Valid Apply004Vo applyVo, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        HashMap result = eventService.eventApply004(applyVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
 }

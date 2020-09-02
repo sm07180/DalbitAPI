@@ -750,7 +750,6 @@ public enum Status {
     시간연장_남은시간_5분안됨("-5", "broadcast.time.extend.not.remain.5min", "남은시간이 5분 아닐 시"),
     시간연장실패("C006", "broadcast.time.extend.fail", "방송시간 연장 실패 시"),
 
-
     //푸시 등록
     푸시등록_성공("0","insert.push.success", "푸시등록 성공 시"),
     푸시등록_에러("C006", "server.error", "푸시등록 실패 시"),
@@ -803,7 +802,6 @@ public enum Status {
     알림읽음_성공("0", "member.notification.read.success", "알림 읽음 성공 시"),
     알림읽음_회원아님("-1", "member.notification.read.member.number.error", "요청회원번호 회원 아닐 시"),
     알림읽음_실패("C006", "member.notification.read.fail", "알림 읽음 실패 시"),
-
 
     //구글 로그인
     구글로그인_성공("0", "google.login.success", "성공"),
@@ -1168,6 +1166,21 @@ public enum Status {
     메인_좋아요랭킹조회_성공("C001", "main.good.ranking.select.success", "좋아요 랭킹 조회 성공 시"),
     메인_좋아요랭킹조회_내역없음("0", "main.good.ranking.no.ranking.success", "좋아요 내역 없을 시"),
     메인_좋아요랭킹조회_실패("C006", "main.good.ranking.select.fail", "좋아요 랭킹 조회 실패 시"),
+
+    //이벤트 체크/참여
+    이벤트_체크_참여("0", "event.enable.success", "참여 가능"),
+    이벤트_참여("0", "event.apply.success", "참여 완료"),
+    이벤트_체크_이미참여("1", "event.already.apply", "이미 참여"),
+    이벤트_체크_자격안됨("2", "event.lacking.auth", "자격조건 안됨"),
+    이벤트_체크_자격안됨04("2", "event.lacking.auth.04", "자격조건 안됨"),
+    이벤트_없음_종료("-7", "event.not.found", "이벤트 없거나 종료"),
+    이벤트_비회원("-8", "event.not.member", "미회원"),
+    이벤트_에러("-9", "event.error", "오류"),
+
+    노하우_이벤트_회원아님("-1", "event.not.member", "미회원"),
+    노하우_이벤트_이벤트없음("-2", "event.not.found", "존재하지 않는 이벤트"),
+    노하우_이벤트_좋아요("0", "event.good.success", "이벤트 좋아요 성공"),
+    노하우_이벤트_좋아요취소("1", "event.good.cancel.success", "이벤트 좋아요 취소 성공"),
     ;
 
 
