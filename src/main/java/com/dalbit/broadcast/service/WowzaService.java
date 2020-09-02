@@ -222,8 +222,6 @@ public class WowzaService {
         } else {
             result.put("status", Status.방생성실패);
         }
-        roomDao.callBroadCastRoomCreate(procedureVo);
-
         return result;
     }
 
