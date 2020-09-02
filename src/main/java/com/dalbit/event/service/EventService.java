@@ -1023,13 +1023,13 @@ public class EventService {
         knowhowEventInputVo.setMem_no(MemberVo.getMyMemNo(request));
         var resultMap = new HashMap();
 
+        if(knowhowEventInputVo.getIs_detail() == 1){
+            eventDao.updatePhotoViewCnt(knowhowEventInputVo.getIdx());
+        }
+
         KnowhowEventOutputVo detail = eventDao.selectKnowhowDetail(knowhowEventInputVo);
         if(DalbitUtil.isEmpty(detail)){
             return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
-        }
-
-        if(knowhowEventInputVo.getIs_detail() == 1){
-            eventDao.updatePhotoViewCnt(event_idx);
         }
 
         detail.setProfImg(new ImageVo(detail.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
