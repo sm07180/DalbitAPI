@@ -73,7 +73,6 @@ public class RoomInfoVo {
         this.startDt = target.getStartDt();
         this.startTs = target.getStartTs();
         this.hasNotice = this.auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice());
-        this.likes = target.getLikeCnt();
         this.roomType = target.getRoomType();
         this.welcomMsg = target.getWelcomMsg();
         this.entryType = target.getEntryType();
@@ -91,6 +90,7 @@ public class RoomInfoVo {
         this.kingNickNm = memberInfoVo.getKingNickNm();
         this.kingProfImg = memberInfoVo.getKingProfImg();
         this.rank = memberInfoVo.getRank();
+        this.likes = memberInfoVo.getLikes();
         if(DalbitUtil.isEmpty(this.kingProfImg)){
             this.kingProfImg = new ImageVo();
         }
