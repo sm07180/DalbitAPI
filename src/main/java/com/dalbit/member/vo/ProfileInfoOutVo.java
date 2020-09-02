@@ -30,7 +30,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private int     level = 0;
     private int     fanCnt;
     private int     starCnt;
-    private int     isFan;
+    private Boolean isFan;
     private int     exp;
     private int     expBegin;
     private int     expNext;
@@ -65,7 +65,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.level = target.getLevel();
         this.fanCnt = target.getFanCount();
         this.starCnt = target.getStarCount();
-        this.isFan = target.getEnableFan();
+        this.isFan = (target.getEnableFan() == 0 ? true : false);
         this.roomNo = target.getRoom_no();
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         int l = (this.level - 1) / 10;
