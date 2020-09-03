@@ -70,7 +70,7 @@
             INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no
         ORDER BY D.admin_badge DESC, D.specialdj_badge DESC, A.total DESC, B.idx DESC
-        LIMIT 5;
+        LIMIT 7;
     </select>
 
     <select id="callMainRecommandLiveList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
