@@ -319,7 +319,7 @@ public class WowzaService {
                     //토큰 업데이트
                     roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
                     if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
-                        HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                        HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
                         RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
                         RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
 
