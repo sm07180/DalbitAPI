@@ -821,6 +821,9 @@ public class SocketService {
         itemMap.put("itemImg", itemThumbs);
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
+        itemMap.put("authName", "");
+        itemMap.put("auth", 0);
+        itemMap.put("nickNm", "");
 
         //String memNo = new MemberVo().getMyMemNo(request);
         //String authToken = DalbitUtil.getAuthToken(request);
@@ -850,26 +853,8 @@ public class SocketService {
         HashMap resultLevelUpCheckMap = new Gson().fromJson(procedureLevelCheckVo.getExt(), HashMap.class);
         SocketVo djVo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
 
-        String[] frameColor = null;
-        int newLevel = DalbitUtil.getIntMap(resultLevelUpCheckMap, "newLevel");
-        if(newLevel < 11) {
-            frameColor = new String[1];
-            frameColor[0] = "#faa118";
-        }else if(newLevel < 21){
-            frameColor = new String[1];
-            frameColor[0] = "#5dc62a";
-        }else if(newLevel < 31){
-            frameColor = new String[1];
-            frameColor[0] = "#4692e9";
-        }else if(newLevel < 41){
-            frameColor = new String[1];
-            frameColor[0] = "#f54640";
-        }else if(newLevel < 51){
-            frameColor = new String[3];
-            frameColor[0] = "#7f18ff";
-            frameColor[1] = "#f52d5b";
-            frameColor[2] = "#ffbf03";
-        }
+        int newLevel = (DalbitUtil.getIntMap(resultLevelUpCheckMap, "newLevel") - 1) / 10;
+        String[] frameColor = DalbitUtil.getProperty("level.color.0" + newLevel).split(",");
 
         HashMap levelUp = new HashMap();
         levelUp.put("memNo", memNo);

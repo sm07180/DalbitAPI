@@ -68,12 +68,13 @@ public class WowzaService {
             String guestNo = "";
             boolean isGuest = false;
             if(streamName.indexOf("_") > -1){
-                roomNo = StringUtils.split(streamName, "_")[0];
+                roomNo = StringUtils.split(streamName, "_")[0].toLowerCase().substring(WOWZA_PREFIX.toLowerCase().length());
                 guestNo = StringUtils.split(streamName, "_")[1];
                 isGuest = true;
             }
 
             RoomOutVo target = getRoomInfo(roomNo);
+            boolean roomCheck = false;
             if(target != null && target.getState() != 4) {
                 if(isGuest == false){
                     int old_state = target.getState();
@@ -99,18 +100,21 @@ public class WowzaService {
                     }catch(Exception e){
                         log.info("Socket Service changeRoomState Exception {}", e);
                     }
+                    roomCheck = true;
                     result.put("status", Status.방송방상태변경_성공);
                 } else {
                     //TODO: 게스트 활동 확인
                 }
 
                 //생성된 방송 WEBRTC EDGE 생성 호출
-                for(String server : WOWZA_REALSERVER) {
-                    try {
-                        sendFirstEdge(server, streamName);
-                    } catch (Exception e) {
-                        if("local".equals(DalbitUtil.getActiveProfile())){
-                            e.printStackTrace();
+                if(roomCheck){
+                    for(String server : WOWZA_REALSERVER) {
+                        try {
+                            sendFirstEdge(server, streamName);
+                        } catch (Exception e) {
+                            if("local".equals(DalbitUtil.getActiveProfile())){
+                                e.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -201,8 +205,11 @@ public class WowzaService {
             memberInfoVo.setLikes(DalbitUtil.getIntMap(resultMap, "good"));
             memberInfoVo.setRemainTime(DalbitUtil.getLongMap(resultMap, "remainTime"));
             memberInfoVo.setUseBoost(DalbitUtil.getIntMap(resultMap, "booster") > 0);
-            memberInfoVo.setFanRank(new ArrayList());
-
+            HashMap fanRankMap = commonService.getKingFanRankList(roomNo);
+            memberInfoVo.setFanRank((List)fanRankMap.get("list"));
+            try{
+                memberInfoVo.setKingMember((String)fanRankMap.get("kingMemNo"), (String)fanRankMap.get("kingNickNm"), (ImageVo) fanRankMap.get("kingProfImg"));
+            }catch(Exception e) {}
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", target.getBjMemNo());
             fanBadgeMap.put("type", 3);
@@ -406,27 +413,27 @@ public class WowzaService {
         return null;
     }
 
+    public RoomInfoVo getRoomInfo(RoomOutVo target, HttpServletRequest request){
+        return getRoomInfo(target, null, request);
+    }
     public RoomInfoVo getRoomInfo(RoomOutVo target, HashMap resultMap, HttpServletRequest request){
         RoomMemberInfoVo memberInfoVo = new RoomMemberInfoVo();
-        memberInfoVo.setRemainTime(DalbitUtil.getLongMap(resultMap, "remainTime"));
-        memberInfoVo.setLikes(DalbitUtil.getIntMap(resultMap, "good"));
-        memberInfoVo.setRank(DalbitUtil.getIntMap(resultMap, "rank"));
-        memberInfoVo.setAuth(DalbitUtil.getIntMap(resultMap, "auth"));
-        memberInfoVo.setCtrlRole(DalbitUtil.getStringMap(resultMap, "controlRole"));
-        memberInfoVo.isFan("1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
-        memberInfoVo.isLike(DalbitUtil.isLogin(request) ? "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")) : true);
+        if(!DalbitUtil.isEmpty(resultMap)){
+            memberInfoVo.setRemainTime(DalbitUtil.getLongMap(resultMap, "remainTime"));
+            memberInfoVo.setLikes(DalbitUtil.getIntMap(resultMap, "good"));
+            memberInfoVo.setRank(DalbitUtil.getIntMap(resultMap, "rank"));
+            memberInfoVo.setAuth(DalbitUtil.getIntMap(resultMap, "auth"));
+            memberInfoVo.setCtrlRole(DalbitUtil.getStringMap(resultMap, "controlRole"));
+            memberInfoVo.isFan("1".equals(DalbitUtil.getStringMap(resultMap, "isFan")));
+            memberInfoVo.isLike(DalbitUtil.isLogin(request) ? "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")) : true);
+        }
         memberInfoVo.setHashStory(false);
         memberInfoVo.setUseBoost(roomService.existsBoostByRoom(target.getRoomNo(), MemberVo.getMyMemNo(request)));
-        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
-        memberInfoVo.setFanRank(commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
-
-        /*HashMap fanRankMap = commonService.getKingFanRankList(target.getRoomNo());
+        HashMap fanRankMap = commonService.getKingFanRankList(target.getRoomNo());
         memberInfoVo.setFanRank((List)fanRankMap.get("list"));
         try{
             memberInfoVo.setKingMember((String)fanRankMap.get("kingMemNo"), (String)fanRankMap.get("kingNickNm"), (ImageVo) fanRankMap.get("kingProfImg"));
-        }catch(Exception e) {}*/
+        }catch(Exception e) {}
         HashMap fanBadgeMap = new HashMap();
         fanBadgeMap.put("mem_no", target.getBjMemNo());
         fanBadgeMap.put("type", 3);

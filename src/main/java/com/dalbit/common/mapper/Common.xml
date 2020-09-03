@@ -316,4 +316,8 @@
         ORDER BY sortNo asc
     </select>
 
+    <select id="callBroadCastRoomRank3" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_KingFanRankListVo">
+        call sp_broadcast_room_rank3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

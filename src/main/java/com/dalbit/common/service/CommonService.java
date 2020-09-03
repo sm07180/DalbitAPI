@@ -214,7 +214,7 @@ public class CommonService {
         resultMap.put("giftComboCount", giftComboCount);
 
         if(deviceVo.getOs() != 2) {
-            int[] giftDal = {20, 50, 100, 500, 1000, 2000, 3000, 4000, 5000};
+            int[] giftDal = {20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000};
             resultMap.put("giftDal", giftDal);
             resultMap.put("giftDalDirect", true);
         }
@@ -377,6 +377,7 @@ public class CommonService {
         result.put("roomState", setData(data, "broadcast_state"));
         result.put("roomRight", setData(data, "broadcast_auth"));
         result.put("declarReason", setData(data, "report_reason"));
+        result.put("clipType", setData(data, "clip_type"));
 
         return result;
     }
@@ -417,6 +418,58 @@ public class CommonService {
         }
 
         return memberFanVoList;
+    }
+
+    /**
+     * 방송방 황제 & 팬랭킹 1,2,3위 가져오기
+     */
+    public HashMap getKingFanRankList(String roomNo) {
+
+        P_KingFanRankListVo apiData = new P_KingFanRankListVo(roomNo);
+        ProcedureVo procedureVo = new ProcedureVo(apiData);
+        List<P_KingFanRankListVo> kingFanRankListVo = commonDao.callBroadCastRoomRank3(procedureVo);
+
+        List<P_KingFanRankListOutVo> outVoList = new ArrayList<>();
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+
+        String result;
+        HashMap fanRankList = new HashMap();
+        fanRankList.put("list", new ArrayList<>());
+        fanRankList.put("kingMemNo", "");
+        fanRankList.put("kingNickNm", "");
+        fanRankList.put("kingGender", "");
+        fanRankList.put("kingAge", 0);
+        fanRankList.put("kingProfImg", "");
+
+        if (Integer.parseInt(procedureOutputVo.getRet()) == 0 || DalbitUtil.isEmpty(kingFanRankListVo)) {
+            return fanRankList;
+        }
+
+        if (Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            for (int i = 0; i < kingFanRankListVo.size(); i++) {
+                outVoList.add(new P_KingFanRankListOutVo(kingFanRankListVo.get(i), i+1));
+            }
+
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            fanRankList.put("list", outVoList);
+            fanRankList.put("kingMemNo", DalbitUtil.getStringMap(resultMap, "king_mem_no"));
+            fanRankList.put("kingNickNm", DalbitUtil.getStringMap(resultMap, "king_nickName"));
+            fanRankList.put("kingGender", DalbitUtil.getStringMap(resultMap, "king_memSex"));
+            fanRankList.put("kingAge", DalbitUtil.getIntMap(resultMap, "m_king_age"));
+            fanRankList.put("kingProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "m_king_profileImage"), DalbitUtil.getStringMap(resultMap, "king_memSex"), DalbitUtil.getProperty("server.photo.url")));
+            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_성공.getMessageCode());
+
+        } else if (Status.방송방_팬랭킹조회_팬없음.getMessageCode().equals(procedureOutputVo.getRet())) {
+            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_성공.getMessageCode());
+        } else if (Status.방송방_팬랭킹조회_방번호없음.getMessageCode().equals(procedureOutputVo.getRet())) {
+            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_방번호없음.getMessageCode());
+        } else if (Status.방송방_팬랭킹조회_방종료됨.getMessageCode().equals(procedureOutputVo.getRet())) {
+            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_방종료됨.getMessageCode());
+        } else {
+            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_실패.getMessageCode());
+        }
+
+        return fanRankList;
     }
 
     private List setFanVo(List memberFanVoList, String fanRank){

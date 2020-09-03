@@ -117,15 +117,19 @@ public class UserService {
         userDao.callBroadCastRoomKickout(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+        HashMap fanRankMap = commonService.getKingFanRankList(pRoomKickoutVo.getRoom_no());
+        returnMap.put("fanRank", fanRankMap.get("list"));
+        returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+        returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+        returnMap.put("kingGender", fanRankMap.get("kingGender"));
+        returnMap.put("kingAge", fanRankMap.get("kingAge"));
+        returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
 
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){

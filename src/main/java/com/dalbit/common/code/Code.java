@@ -29,6 +29,7 @@ public enum Code {
     프로필이미지_파일명_PREFIX("profile_", "배경이미지 파일명"),
     일대일문의이미지_파일명_PREFIX("qna_", "1:1문의 파일명"),
     환전신청_파일명_PREFIX("exchange_", "환전신청 파일명"),
+    클립배경이미지_파일명_PREFIX("clipbg_", "클립 배경이미지 파일명"),
 
     포토_이미지_경로("_0/", "실제 파일이 올라갈 경로 -done 이후 경로"),
     포토_이미지_임시경로("_1/", "이미지가 올라가는 임시 경로"),
@@ -43,6 +44,18 @@ public enum Code {
 
     //방송주제
     방송주제("subject_type", "방송 주제 목록"),
+
+    //클립주제
+    클립주제("clip_type", "클립 주제 목록"),
+
+
+    //클립 배경 이미지 PREFIX
+    클립_배경_PREFIX("/clip-bg_0", "포토서버 클립 이미지 실제 경로(done) prefix"),
+    클립_배경_임시_PREFIX("/clip-bg_1", "포토서버 클립 이미지 임시 경로 prefix "),
+    클립_배경_썸네일_PREFIX("/clip-bg_2", "포토서버 클립 이미지 썸네일 prefix"),
+    클립_배경_디폴트_PREFIX("/clip-bg_3", "포토서버 클립 이미지 배경 디폴트 prefix"),
+
+
    ;
 
     final private String code;

@@ -2,6 +2,7 @@ package com.dalbit.common.dao;
 
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
+import com.dalbit.common.vo.procedure.P_KingFanRankListVo;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.common.vo.request.SmsVo;
 import org.springframework.stereotype.Repository;
@@ -67,6 +68,9 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo);
+
+    @Transactional(readOnly = true)
+    List<P_KingFanRankListVo> callBroadCastRoomRank3(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
     List<CodeVo> selectTypeCodeList(CodeVo codeVo);

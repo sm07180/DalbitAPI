@@ -1255,6 +1255,19 @@ public class DalbitUtil {
     }
 
     /**
+     * 클립 배경이미지 번호 랜덤 추출
+     */
+    public static String randomClipBgValue() {
+        StringBuffer strPwd = new StringBuffer();
+        int[] strs = new int[1];
+        for (int i = 0; i < 1; ++i) {
+            strs[0] = (int) (Math.random() * 2.0D);
+            strPwd.append(strs[0]);
+        }
+        return strPwd.toString();
+    }
+
+    /**
      *  유니코드 인코딩
      */
     public static String encode(String s){

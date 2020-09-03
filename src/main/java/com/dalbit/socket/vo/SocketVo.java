@@ -61,6 +61,7 @@ public class SocketVo {
     private String fanBadgeIcon = "";
     private String fanBadgeStartColor = "";
     private String fanBadgeEndColor = "";
+    private String notMemNo = "";
 
     public SocketVo(){};
 

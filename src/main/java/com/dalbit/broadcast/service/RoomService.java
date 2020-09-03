@@ -190,9 +190,6 @@ public class RoomService {
         if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             int remainTime = DalbitUtil.getIntMap(resultMap, "remainTime");
-            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
 
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
@@ -243,7 +240,15 @@ public class RoomService {
             returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
             returnMap.put("hasStory", false);
             returnMap.put("useBoost", existsBoostByRoom(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no()));    //부스터 사용여부
-            returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+            //returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+            HashMap fanRankMap = commonService.getKingFanRankList(pRoomJoinVo.getRoom_no());
+            returnMap.put("fanRank", fanRankMap.get("list"));
+            returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+            returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+            returnMap.put("kingGender", fanRankMap.get("kingGender"));
+            returnMap.put("kingAge", fanRankMap.get("kingAge"));
+            returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
             DeviceVo deviceVo = new DeviceVo(request);
             returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url") + DalbitUtil.getProperty("server.ant.path.url"));
             returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url") + DalbitUtil.getProperty("server.ant.path.url"));
@@ -384,10 +389,14 @@ public class RoomService {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
             } else {
-                String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
-                returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                HashMap fanRankMap = commonService.getKingFanRankList(pRoomExitVo.getRoom_no());
+                returnMap.put("fanRank", fanRankMap.get("list"));
+                returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
                 try {
                     if (!"0".equals(request.getParameter("isSocket"))) {
                         socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request), vo);
@@ -736,15 +745,20 @@ public class RoomService {
         if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
             try{
                 HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-                String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
 
                 SocketVo vo = socketService.getSocketVo(pRoomLiveRankInfoVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-                socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
+                HashMap fanRankMap = commonService.getKingFanRankList(pRoomLiveRankInfoVo.getRoom_no());
+                socketMap.put("fanRank", fanRankMap.get("list"));
+                socketMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                socketMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                socketMap.put("kingGender", fanRankMap.get("kingGender"));
+                socketMap.put("kingAge", fanRankMap.get("kingAge"));
+                socketMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
                 socketService.changeCount(pRoomLiveRankInfoVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -813,6 +827,7 @@ public class RoomService {
         String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
         String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
         String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
+
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info(" ### 프로시저 호출결과 ###");
@@ -844,6 +859,7 @@ public class RoomService {
         returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
         returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
         returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
+
         returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
         returnMap.put("isNew", DalbitUtil.getIntMap(resultMap, "newdj_badge") == 1);
         returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1);
@@ -938,9 +954,6 @@ public class RoomService {
 
             if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                 HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-                String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
-                String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
-                String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");
 
                 log.info("프로시저 응답 코드: {}", procedureVo.getRet());
                 log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
@@ -997,7 +1010,13 @@ public class RoomService {
                     returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
-                    returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                    HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
+                    returnMap.put("fanRank", fanRankMap.get("list"));
+                    returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                    returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                    returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                    returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                    returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
 
                     HashMap fanBadgeMap = new HashMap();
                     fanBadgeMap.put("mem_no", target.getBjMemNo());
@@ -1235,13 +1254,17 @@ public class RoomService {
                     roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
                     if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                         HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
-                        String fanRank1 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank1");
-                        String fanRank2 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank2");
-                        String fanRank3 = DalbitUtil.getStringMap(resultUpdateMap, "fanRank3");
 
                         returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
                         returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
-                        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
+                        HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
+                        returnMap.put("fanRank", fanRankMap.get("list"));
+                        returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                        returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                        returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                        returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                        returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
 
                     /*if(auth == 3) { // DJ
                         try {
@@ -1283,13 +1306,16 @@ public class RoomService {
 
                     if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureExceptionVo.getRet())) {
                         HashMap resultCountMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-                        String fanRank1 = DalbitUtil.getStringMap(resultCountMap, "fanRank1");
-                        String fanRank2 = DalbitUtil.getStringMap(resultCountMap, "fanRank2");
-                        String fanRank3 = DalbitUtil.getStringMap(resultCountMap, "fanRank3");
 
                         returnMap.put("likes", DalbitUtil.getIntMap(resultCountMap, "good"));
                         returnMap.put("rank", DalbitUtil.getIntMap(resultCountMap, "rank"));
-                        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                        HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
+                        returnMap.put("fanRank", fanRankMap.get("list"));
+                        returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                        returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                        returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                        returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                        returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
                     }else{
                         returnMap.put("likes", 0);
                         returnMap.put("rank", 0);

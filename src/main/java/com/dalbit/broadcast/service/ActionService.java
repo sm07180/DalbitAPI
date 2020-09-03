@@ -72,9 +72,6 @@ public class ActionService {
 
         String result;
         if(Status.좋아요.getMessageCode().equals(procedureVo.getRet())) {
-            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
             SocketVo vo = socketService.getSocketVo(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{ //좋아요 발송
                 boolean isFirst = true;
@@ -88,10 +85,19 @@ public class ActionService {
             }
 
             try{ //좋아요수, 랭킹, 팬랭킹 발송
+                HashMap fanRankMap = commonService.getKingFanRankList(pRoomGoodVo.getRoom_no());
+                returnMap.put("fanRank", fanRankMap.get("list"));
+                returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(returnMap, "likes"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
-                socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                socketMap.put("fanRank", fanRankMap.get("list"));
+
                 socketService.changeCount(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -200,9 +206,6 @@ public class ActionService {
         String result;
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", resultMap);
             log.info(" ### 프로시저 호출결과 ###");
@@ -218,12 +221,20 @@ public class ActionService {
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-            returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
+            HashMap fanRankMap = commonService.getKingFanRankList(pRoomGiftVo.getRoom_no());
+            returnMap.put("fanRank", fanRankMap.get("list"));
+            returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+            returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+            returnMap.put("kingGender", fanRankMap.get("kingGender"));
+            returnMap.put("kingAge", fanRankMap.get("kingAge"));
+            returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
 
             SocketVo vo = socketService.getSocketVo(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", pRoomGiftVo.getItem_code());
+                SocketVo vo1 = socketService.getSocketVo(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getGifted_mem_no(), DalbitUtil.isLogin(request));
 
                 ItemDetailVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
                 String itemNm = item.getItemNm();
@@ -233,6 +244,9 @@ public class ActionService {
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
                 itemMap.put("itemType", "items");
+                itemMap.put("authName", vo1.getAuthName());
+                itemMap.put("auth", vo1.getAuth());
+                itemMap.put("nickNm", vo1.getMemNk());
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -347,6 +361,9 @@ public class ActionService {
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", false);
                 itemMap.put("itemType", "boost");
+                itemMap.put("authName", "");
+                itemMap.put("auth", 0);
+                itemMap.put("nickNm", "");
 
                 socketService.giftItem(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
@@ -354,15 +371,20 @@ public class ActionService {
                 log.info("Socket Service sendBooster Exception {}", e);
             }
             try{
-                String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
                 //TODO - 레벨업 유무 소켓추가 추후 확인
                 //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
-                socketMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+                HashMap fanRankMap = commonService.getKingFanRankList(pRoomBoosterVo.getRoom_no());
+                returnMap.put("fanRank", fanRankMap.get("list"));
+                returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
+                socketMap.put("fanRank", fanRankMap.get("list"));
                 socketService.changeCount(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){

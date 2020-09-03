@@ -930,9 +930,13 @@ public class EventService {
         });
         int totCnt = eventDao.selectKnowhowCnt(knowhowEventInputVo);
 
+        knowhowEventInputVo.setSlct_type(1);
+        int myCnt = eventDao.selectKnowhowCnt(knowhowEventInputVo);
+
         HashMap map = new HashMap();
         map.put("list", list);
         map.put("totCnt", totCnt);
+        map.put("myCnt", myCnt);
         map.put("isAdmin", isAdmin(request));
         String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
         return result;

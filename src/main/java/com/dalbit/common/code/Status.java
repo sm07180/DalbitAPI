@@ -797,6 +797,7 @@ public enum Status {
     방송방생성인사말금지("C005", "broadcast.create.welcome.msg.ban.word", "방송방 생성 인사말 금지어 포함 시"),
     방송방수정제목금지("C005", "broadcast.edit.title.ban.word", "방송방 수정 제목 금지어 포함 시"),
     방송방수정인사말금지("C005", "broadcast.edit.welcome.msg.ban.word", "방송방 수정 인사말 금지어 포함 시"),
+    클립등록제목금지("C005", "clip.add.title.ban.word", "클립 생성 제목 금지어 포함 시"),
 
     //알림 읽음처리
     알림읽음_성공("0", "member.notification.read.success", "알림 읽음 성공 시"),
@@ -1167,6 +1168,153 @@ public enum Status {
     메인_좋아요랭킹조회_내역없음("0", "main.good.ranking.no.ranking.success", "좋아요 내역 없을 시"),
     메인_좋아요랭킹조회_실패("C006", "main.good.ranking.select.fail", "좋아요 랭킹 조회 실패 시"),
 
+    //클립 등록
+    클립등록_성공("0", "clip.add.success", "클립 등록 성공 시"),
+    클립등록_회원아님("-1", "clip.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립등록_실패("C006", "clip.add.fail", "클립 등록 실패 시"),
+
+    //클립 리스트 조회
+    클립리스트_조회_성공("C001", "clip.list.select.success", "클립 리스트 조회 성공 시"),
+    클립리스트_조회_없음("0", "clip.list.select.no.success", "클립 리스트 없음"),
+    클립리스트_조회_실패("C006", "clip.list.select.fail", "클립 리스트 조회 실패 시"),
+
+    //클립 플레이
+    클립플레이_성공("0", "clip.play.success", "클립 플레이 성공 시"),
+    클립플레이_회원아님("-1", "clip.play.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립플레이_클립번호없음("-2", "clip.play.number.error", "클립 번호가 없을 시"),
+    클립플레이_팬아님("-3", "clip.play.no.fan", "팬이 아닐 시"),
+    클립플레이_20세미만("-4", "clip.play.limit.20age", "20세 미만일 시"),
+    클립플레이_실패("C006", "clip.play.fail", "클립 플레이 실패 시"),
+
+    //클립 재생목록 조회
+    클립_재생목록_조회_성공("C001", "clip.play.list.select.success", "클립 플레이리스트 조회 성공 시"),
+    클립_재생목록_조회_없음("0", "clip.play.list.select.no.success", "클립 플레이리스트 없음"),
+    클립_재생목록_조회_실패("C006", "clip.play.list.select.fail", "클립 플레이리스트 조회 실패 시"),
+
+    //클립 선물하기
+    클립_선물하기_성공("0", "clip.gift.success", "선물하기 성공 시"),
+    클립_선물하기_요청회원_회원아님("-1", "clip.gift.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_선물하기_대상회원_회원아님("-2", "clip.gift.object.member.number.error", "대상회원번호가 회원 아닐 시"),
+    클립_선물하기_클립번호없음("-3", "clip.gift.no.clip.number", "클립 번호가 없을 시"),
+    클립_선물하기_클립번호_대상회원번호_불일치("-4", "clip.gift.clip.number.object.member.number.unmatch", "클립 번호와 대상회원번호 불일치 시"),
+    클립_선물하기_본인불가("-5", "clip.gift.impossible.me", "선물하기 본인불가 시"),
+    클립_선물하기_아이템코드없음("-6", "clip.gift.no.item.code", "아이템코드 없을 시"),
+    클립_선물하기_달부족("-7", "clip.gift.dal.limit", "달 부족 시"),
+    클립_선물하기_실패("C006", "clip.gift.fail", "클립 선물하기 실패 시"),
+
+    //클립 좋아요
+    클립_좋아요_성공("0", "clip.good.success", "좋아요 성공 시"),
+    클립_좋아요_해제_성공("0", "clip.good.cancel.success", "좋아요 해제 시"),
+    클립_좋아요_요청회원_회원아님("-1", "clip.good.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_좋아요_클립번호없음("-2", "clip.good.no.clip.number", "클립 번호가 없을 시"),
+    클립_좋아요_변화없음("-4", "clip.good.no.change", "좋아요 변화없을 시"),
+    클립_좋아요_실패("C006", "clip.good.fail", "좋아요 실패 시"),
+
+    //클립 선물랭킹 TOP3
+    클립_선물랭킹_TOP3_조회_성공("C001", "clip.gift.rank.top3.select.success", "클립 선물랭킹 TOP3 조회 시"),
+    클립_선물랭킹_TOP3_조회_없음("0", "clip.gift.rank.top3.select.no.success", "클립 선물랭킹 TOP3 없음"),
+    클립_선물랭킹_TOP3_조회_실패("C006", "clip.gift.rank.top3.select.fail", "클립 선물랭킹 TOP3 조회 실패 시"),
+
+    //클립 선물랭킹
+    클립_선물랭킹_조회_성공("C001", "clip.gift.rank.select.success", "클립 선물랭킹 조회 성공 시"),
+    클립_선물랭킹_조회_없음("0", "clip.gift.rank.select.no.success", "클립 선물랭킹 없음"),
+    클립_선물랭킹_조회_실패("C006", "clip.gift.rank.select.fail", "클립 선물랭킹 조회 실패 시"),
+
+    //클립 받은선물 내역
+    클립_받은선물내역_조회_성공("C001", "clip.received.gift.list.select.success", "클립 받은선물내역 조회 성공 시"),
+    클립_받은선물내역_조회_없음("0", "clip.received.gift.list.select.no.success", "클립 받은선물내역 없을 시"),
+    클립_받은선물내역_조회_요청회원_회원아님("-1", "clip.received.gift.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_받은선물내역_조회_클립없음("-2", "clip.received.gift.list.select.no.clip", "클립가 없을 시"),
+    클립_받은선물내역_조회_요청회원번호_클립회원번호아님("-3", "clip.gift.list.select.member.number.clip.member.number.unmatch", "요청회원번호가 클립 회원번호가 아닐 시"),
+    클립_받은선물내역_조회_실패("C006", "clip.received.gift.list.select.fail", "클립 받은선물내역 조회 실패 시"),
+
+    //클립 수정
+    클립수정_성공("0", "clip.edit.success", "클립 수정 성공 시"),
+    클립수정_회원아님("-1", "clip.edit.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립수정_클립없음("-2", "clip.edit.no.clip", "클립 없을 시"),
+    클립수정_회원번호_클립회원번호아님("-3", "clip.edit.member.number.clip.member.number.unmatch", "요청회원번호가 클립 회원번호가 아닐 시"),
+    클립수정_실패("C006", "clip.edit.fail", "클립 등록 실패 시"),
+
+    //클립 삭제
+    클립삭제_성공("0", "clip.delete.success", "클립 삭제 성공 시"),
+    클립삭제_회원아님("-1", "clip.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립삭제_클립없음("-2", "clip.delete.no.clip", "클립 없을 시"),
+    클립삭제_회원번호_클립회원번호아님("-3", "clip.delete.member.number.clip.member.number.unmatch", "요청회원번호가 클립 회원번호가 아닐 시"),
+    클립삭제_실패("C006", "clip.delete.fail", "클립 삭제 실패 시"),
+
+    //클립 댓글목록 조회
+    클립_댓글목록_조회_성공("C001", "clip.reply.list.select.success", "클립 댓글목록 조회 성공 시"),
+    클립_댓글목록_조회_없음("0", "clip.reply.list.select.no.success", "클립 댓글목록 없을 시"),
+    클립_댓글목록_조회_회원아님("-1", "clip.reply.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_댓글목록_조회_클립없음("-2", "clip.reply.list.select.no.clip", "클립 없을 시"),
+    클립_댓글목록_조회_실패("C006", "clip.reply.list.select.fail", "클립 댓글목록 조회 실패 시"),
+
+    //클립 댓글등록
+    클립_댓글등록_성공("0", "clip.reply.add.success", "클립 댓글등록 성공 시"),
+    클립_댓글등록_회원아님("-1", "clip.reply.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_댓글등록_클립없음("-2", "clip.reply.add.no.clip", "클립 없을 시"),
+    클립_댓글등록_실패("C006", "clip.reply.add.fail", "클립 댓글등록 실패 시"),
+
+    //클립 댓글수정
+    클립_댓글수정_성공("0", "clip.reply.edit.success", "클립 댓글수정 성공 시"),
+    클립_댓글수정_회원아님("-1", "clip.reply.edit.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_댓글수정_클립없음("-2", "clip.reply.edit.no.clip", "클립 없을 시"),
+    클립_댓글수정_댓글번호없음("-3", "clip.reply.edit.no.reply.idx", "댓글번호 없을 시"),
+    클립_댓글수정_작성자아님("-4", "clip.reply.edit.not.writer", "댓글 작성자가 아닐 시"),
+    클립_댓글수정_실패("C006", "clip.reply.edit.fail", "클립 댓글수정 실패 시"),
+
+    //클립 댓글삭제
+    클립_댓글삭제_성공("0", "clip.reply.delete.success", "클립 댓글삭제 성공 시"),
+    클립_댓글삭제_회원아님("-1", "clip.reply.delete.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_댓글삭제_클립없음("-2", "clip.reply.delete.no.clip", "클립 없을 시"),
+    클립_댓글삭제_댓글번호없음("-3", "clip.reply.delete.no.reply.idx", "댓글번호 없을 시"),
+    클립_댓글삭제_작성자아님("-4", "clip.reply.delete.not.writer", "댓글 작성자가 아닐 시"),
+    클립_댓글삭제_실패("C006", "clip.reply.delete.fail", "클립 댓글삭제 실패 시"),
+
+    //클립 업로드 목록 조회
+    클립_업로드목록_조회_성공("C001", "clip.upload.list.select.success", "클립 업로드 목록 조회 성공 시"),
+    클립_업로드목록_조회_없음("0", "clip.upload.list.select.no.success", "클립 업로드 목록 없을 시"),
+    클립_업로드목록_조회_회원아님("-1", "clip.upload.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_업로드목록_조회_스타회원아님("-2", "clip.upload.list.select.star.member.number.error", "스타회원번호가 회원 아닐 시"),
+    클립_업로드목록_조회_실패("C006", "clip.upload.list.select.fail", "클립 업로드 목록 조회 실패 시"),
+
+    //클립 청취내역 조회
+    클립_청취내역_조회_성공("C001", "clip.listen.list.select.success", "클립 청취내역 목록 조회 성공 시"),
+    클립_청취내역_조회_없음("0", "clip.listen.list.select.no.success", "클립 청취내역 목록 없을 시"),
+    클립_청취내역_조회_회원아님("-1", "clip.listen.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_청취내역_조회_스타회원아님("-2", "clip.listen.list.select.star.member.number.error", "스타회원번호가 회원 아닐 시"),
+    클립_청취내역_조회_실패("C006", "clip.listen.list.select.fail", "클립 청취내역 목록 조회 실패 시"),
+
+    //클립 재생목록 편집
+    클립_재생목록편집_성공("0", "clip.play.list.edit.success", "클립 재생목록 편집 성공 시"),
+    클립_재생목록편집_회원아님("-1", "clip.play.list.edit.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_재생목록편집_실패("C006", "clip.play.list.edit.fail", "클립 재생목록 편집 실패 시"),
+
+    //클립 메인 인기리스트 조회
+    클립_메인_인기리스트_조회_성공("C001", "clip.main.pop.list.select.success", "클립 메인 인기목록 조회 성공 시"),
+    클립_메인_인기리스트_조회_없음("0", "clip.main.pop.list.select.no.success", "클립 메인 인기목록 없을 시"),
+    클립_메인_인기리스트_조회_회원아님("-1", "clip.main.pop.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_메인_인기리스트_조회_실패("C006", "clip.main.pop.list.select.fail", "클립 메인 인기목록 조회 실패 시"),
+
+    //클립 메인 최신리스트 조회
+    클립_메인_최신리스트_조회_성공("C001", "clip.main.latest.list.select.success", "클립 메인 최신목록 조회 성공 시"),
+    클립_메인_최신리스트_조회_없음("0", "clip.main.latest.list.select.no.success", "클립 메인 최신목록 없을 시"),
+    클립_메인_최신리스트_조회_회원아님("-1", "clip.main.latest.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_메인_최신리스트_조회_실패("C006", "clip.main.latest.list.select.fail", "클립 메인 최신목록 조회 실패 시"),
+
+    //클립 메인 주제별TOP3 조회
+    클립_메인_주제별TOP3_조회_성공("C001", "clip.main.subject.top3.list.select.success", "클립 메인 주제별 TOP3 조회 성공 시"),
+    클립_메인_주제별TOP3_조회_없음("0", "clip.main.subject.top3.list.select.no.success", "클립 메인 주제별 TOP3 없을 시"),
+    클립_메인_주제별TOP3_조회_회원아님("-1", "clip.main.subject.top3.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립_메인_주제별TOP3_조회_실패("C006", "clip.main.subject.top3.list.select.fail", "클립 메인 주제별 TOP3 조회 실패 시"),
+
+    //클립 신고하기
+    클립신고_성공("0", "clip.declar.success", "클립 신고 성공 시"),
+    클립신고_요청회원번호_정상아님("-1", "clip.declar.member.number.error", "요청 회원번호 정상 아닐 시"),
+    클립신고_신고회원번호_정상아님("-2", "clip.declar.clip.member.number.error", "클립 회원번호 정상 아닐 시"),
+    클립신고_이미_신고상태("-3", "clip.declar.already", "이미 신고 상태 시"),
+    클립신고_실패("C006", "clip.declar.fail", "클립 신고 신청 실패 시"),
+
     //이벤트 체크/참여
     이벤트_체크_참여("0", "event.enable.success", "참여 가능"),
     이벤트_참여("0", "event.apply.success", "참여 완료"),
@@ -1181,6 +1329,71 @@ public enum Status {
     노하우_이벤트_이벤트없음("-2", "event.not.found", "존재하지 않는 이벤트"),
     노하우_이벤트_좋아요("0", "event.good.success", "이벤트 좋아요 성공"),
     노하우_이벤트_좋아요취소("1", "event.good.cancel.success", "이벤트 좋아요 취소 성공"),
+
+    //마이페이지 방송설정 제목추가
+    방송설정_제목추가_성공("0", "mypage.broadcast.title.add.success", "방송제목 추가 성공 시"),
+    방송설정_제목추가_회원아님("-1", "mypage.broadcast.title.add.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_제목추가_제한("-2", "mypage.broadcast.title.add.limit3", "방송제목 추가 제한 시"),
+    방송설정_제목추가_실패("C006", "mypage.broadcast.title.add.fail", "방송제목 추가 실패 시"),
+
+    //마이페이지 방송설정 제목수정
+    방송설정_제목수정_성공("0", "mypage.broadcast.title.edit.success", "방송제목 수정 성공 시"),
+    방송설정_제목수정_회원아님("-1", "mypage.broadcast.title.edit.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_제목수정_번호없음("-2", "mypage.broadcast.title.edit.no.order.number", "방송제목 수정 번호없을 시"),
+    방송설정_제목수정_오류("C006", "mypage.broadcast.title.edit.fail", "방송제목 수정 실패 시"),
+
+    //마이페이지 방송설정 제목조회
+    방송설정_제목조회_성공("C001", "mypage.broadcast.title.select.success", "방송제목 조회 성공 시"),
+    방송설정_제목조회_없음("0", "mypage.broadcast.title.select.no.success", "방송제목 조회 없을 시"),
+    방송설정_제목조회_회원아님("-1", "mypage.broadcast.title.select.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_제목조회_실패("C006", "mypage.broadcast.title.select.fail", "방송제목 수정 실패 시"),
+
+    //마이페이지 방송설정 제목삭제
+    방송설정_제목삭제_성공("0", "mypage.broadcast.title.delete.success", "방송제목 삭제 성공 시"),
+    방송설정_제목삭제_회원아님("-1", "mypage.broadcast.title.delete.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_제목삭제_번호없음("-2", "mypage.broadcast.title.delete.no.order.number", "방송제목 삭제 번호없을 시"),
+    방송설정_제목삭제_실패("C006", "mypage.broadcast.title.delete.fail", "방송제목 삭제 실패 시"),
+
+    //마이페이지 방송설정 인사말추가
+    방송설정_인사말추가_성공("0", "mypage.broadcast.welcome.msg.add.success", "인사말 추가 성공 시"),
+    방송설정_인사말추가_회원아님("-1", "mypage.broadcast.welcome.msg.add.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_인사말추가_제한("-2", "mypage.broadcast.welcome.msg.add.limit3", "인사말 추가 제한 시"),
+    방송설정_인사말추가_실패("C006", "mypage.broadcast.welcome.msg.add.fail", "인사말 추가 실패 시"),
+
+    //마이페이지 방송설정 인사말수정
+    방송설정_인사말수정_성공("0", "mypage.broadcast.welcome.msg.edit.success", "인사말 수정 성공 시"),
+    방송설정_인사말수정_회원아님("-1", "mypage.broadcast.welcome.msg.edit.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_인사말수정_번호없음("-2", "mypage.broadcast.welcome.msg.edit.no.order.number", "인사말 수정 번호없을 시"),
+    방송설정_인사말수정_오류("C006", "mypage.broadcast.welcome.msg.edit.fail", "인사말 수정 실패 시"),
+
+    //마이페이지 방송설정 인사말조회
+    방송설정_인사말조회_성공("C001", "mypage.broadcast.welcome.msg.select.success", "인사말 조회 성공 시"),
+    방송설정_인사말조회_없음("0", "mypage.broadcast.welcome.msg.select.no.success", "인사말 조회 없을 시"),
+    방송설정_인사말조회_회원아님("-1", "mypage.broadcast.welcome.msg.select.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_인사말조회_실패("C006", "mypage.broadcast.welcome.msg.select.fail", "인사말 수정 실패 시"),
+
+    //마이페이지 방송설정 인사말삭제
+    방송설정_인사말삭제_성공("0", "mypage.broadcast.welcome.msg.delete.success", "인사말 삭제 성공 시"),
+    방송설정_인사말삭제_회원아님("-1", "mypage.broadcast.welcome.msg.delete.member.number.error", "요청 회원번호 정상 아닐 시"),
+    방송설정_인사말삭제_번호없음("-2", "mypage.broadcast.welcome.msg.delete.no.order.number", "인사말 삭제 번호없을 시"),
+    방송설정_인사말삭제_실패("C006", "mypage.broadcast.welcome.msg.delete.fail", "인사말 삭제 실패 시"),
+
+    //개인좋아요랭킹
+    개인좋아요랭킹_성공("C001", "member.good.list.select.success", "스타리스트 조회 성공 시"),
+    개인좋아요랭킹_없음("0", "member.good.list.no.star.success", "스타 없을 시"),
+    개인좋아요랭킹_요청회원_회원아님("-1", "member.good.list.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    개인좋아요랭킹_대상회원_회원아님("-2", "member.good.list.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
+    개인좋아요랭킹_실패("C006", "member.good.list.select.fail", "스타리스트 조회 실패 시"),
+
+    //마이페이지 방송설정 조회하기
+    방송설정조회_성공("0", "mypage.broadcast.setting.select.success", "방송 설정조회 성공 시"),
+    방송설정조회_회원아님("-1", "mypage.broadcast.setting.member.number.error", "방송설정 회원아닐 시"),
+    방송설정조회_실패("C006", "mypage.broadcast.setting.fail", "방송설정 오류 시"),
+
+    //마이페이지 방송설정
+    방송설정수정_성공("0", "mypage.broadcast.setting.edit.success", "방송설정 수정 성공 시"),
+    방송설정수정_회원아님("-1", "mypage.broadcast.setting.edit.member.number.error", "방송설정 수정 회원아닐 시"),
+    방송설정수정_실패("C006", "mypage.broadcast.setting.edit.error", "방송설정 수정 실패 시"),
     ;
 
 
