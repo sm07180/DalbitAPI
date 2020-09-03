@@ -309,25 +309,9 @@ public class WowzaService {
                 String deviceUuid = DalbitUtil.getStringMap(resultMap, "deviceUuid");
                 deviceUuid = deviceUuid == null ? "" : deviceUuid.trim();
                 if(deviceUuid.equals(pRoomJoinVo.getDeviceUuid())){ //동일기기 참가일때 /reToken과 동일로직
-                    P_RoomStreamTokenVo pRoomStreamTokenVo = new P_RoomStreamTokenVo();
-                    pRoomStreamTokenVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-                    pRoomStreamTokenVo.setMem_no(MemberVo.getMyMemNo(request));
-                    pRoomStreamTokenVo.setRoom_no(pRoomJoinVo.getRoom_no());
-                    procedureVo.setData(pRoomStreamTokenVo);
-                    ProcedureVo procedureUpdateVo = new ProcedureVo(pRoomStreamTokenVo);
-
-                    //토큰 업데이트
-                    roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
-                    if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
-                        HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
-                        RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
-                        RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
-
-                        result.put("status", Status.방송참여성공);
-                        result.put("data", roomInfoVo);
-                    }else{
-                        result.put("status", Status.방송참여_이미참가);
-                    }
+                    RoomTokenVo roomTokenVo = new RoomTokenVo();
+                    roomTokenVo.setRoomNo(roomJoinVo.getRoomNo());
+                    result = getBroadcast(roomTokenVo, request);
                 }else{
                     result.put("status", Status.방송참여_이미참가);
                 }
