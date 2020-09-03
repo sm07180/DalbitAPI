@@ -55,12 +55,12 @@ public class MainService {
         pMainRecommandVo.setParamPlatform(platform);
         pMainRecommandVo.setParamIsWowza(isWowza);
         List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
-        if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 10){
+        if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 5){
             List<P_MainRecommandVo> recommendVoLiveList = mainDao.callMainRecommandLiveList(pMainRecommandVo);
             if(!DalbitUtil.isEmpty(recommendVoLiveList)){
                 for(int i = 0; i < recommendVoLiveList.size(); i++){
                     recommendVoList.add(recommendVoLiveList.get(i));
-                    if(recommendVoList.size() > 9){
+                    if(recommendVoList.size() > 4){
                         break;
                     }
                 }

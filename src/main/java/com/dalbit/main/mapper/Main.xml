@@ -47,7 +47,7 @@
             INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no AND (D.specialdj_badge = 1 OR D.admin_badge = 1)
         ORDER BY D.admin_badge DESC, B.idx DESC
-        LIMIT 0, 10;
+        LIMIT 5;
     </select>
 
     <select id="callMainRecommandLiveList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
@@ -68,7 +68,7 @@
         FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.is_wowza = ${paramIsWowza} AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
         WHERE A.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE (specialdj_badge = 1 OR admin_badge = 1))
         ORDER BY A.total DESC
-        LIMIT 0, 10;
+        LIMIT 5;
     </select>
 
     <select id="selectBanner" parameterType="P_BannerVo" resultType="BannerVo">
