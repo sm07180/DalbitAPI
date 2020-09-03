@@ -54,4 +54,5 @@ public class P_MainRankingPageVo {
     private int fanPoint;
     private int listenPoint;
     private String roomNo;
+    private int starCnt;
 }

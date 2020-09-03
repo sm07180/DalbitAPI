@@ -29,6 +29,7 @@ public class MainRankingPageOutVo {
     private int listenPoint;
     private String holder;
     private String roomNo;
+    private int starCnt = 0;
 
     public MainRankingPageOutVo(){}
     public MainRankingPageOutVo(P_MainRankingPageVo target) {
@@ -52,5 +53,6 @@ public class MainRankingPageOutVo {
         setListenPoint(target.getListenPoint());
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         setRoomNo(target.getRoomNo());
+        setStarCnt(target.getStarCnt());
     }
 }
