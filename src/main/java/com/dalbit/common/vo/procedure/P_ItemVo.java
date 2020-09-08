@@ -7,4 +7,7 @@ import lombok.Setter;
 public class P_ItemVo {
     private int item_slct;
     private String platform;
+    private String booster;
+    private String levelUp;
+    private String direct;
 }

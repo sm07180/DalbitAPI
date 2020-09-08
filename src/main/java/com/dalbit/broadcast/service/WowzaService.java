@@ -460,17 +460,4 @@ public class WowzaService {
         client.sendMessage(sendMessage);
         log.debug("WOWZA SEND MESSAGE : " + sendMessage);
     }
-
-    public void testSendEdge(HttpServletRequest request) throws Exception{
-        String streamName = request.getParameter("streamName");
-        if(!DalbitUtil.isEmpty(streamName)){
-            for(String server : WOWZA_REALSERVER){
-                try{
-                    sendFirstEdge(server, streamName);
-                }catch(Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
 }

@@ -129,4 +129,7 @@ public interface MypageDao {
     Long selectMyPageFanBoard(String mem_no);
     @Transactional(readOnly = true)
     HashMap selectMyPageWallet(String mem_no);
+
+    @Transactional(readOnly = true)
+    HashMap callMemberBoardCount(HashMap params);
 }

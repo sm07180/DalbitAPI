@@ -419,4 +419,34 @@ public class RestService {
 
         return callRest(FIREBASE_DYNAMIC_LINK_URL, "/v1/shortLinks?key=" + FIREBASE_APP_KEY, new Gson().toJson(map), 1, request);
     }
+
+
+    public Map<String, Object> makeClipFirebaseDynamicLink(String cast_no, String nickNm, String backImg, String title, HttpServletRequest request) throws GlobalException{
+        JSONObject androidInfo = new JSONObject();
+        androidInfo.put("androidPackageName", APP_PACKAGE_AOS);
+
+        HashMap<String, String> iosInfo = new HashMap<>();
+        iosInfo.put("iosBundleId", APP_BUNDLE_IOS);
+
+        HashMap<String, String> socialMetaTagInfo = new HashMap<>();
+        socialMetaTagInfo.put("socialTitle", nickNm);
+        socialMetaTagInfo.put("socialDescription", title);
+        socialMetaTagInfo.put("socialImageLink", backImg);
+
+        HashMap<String, Object> suffix = new HashMap<>();
+        suffix.put("option", "UNGUESSABLE");//SHORT
+
+        HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
+        dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);
+        dynamicLinkInfo.put("link", SERVER_WWW_URL + "/clip/" + cast_no + "?etc={\"push_type\":45,\"room_no\":\"" + cast_no + "\"}");
+        dynamicLinkInfo.put("androidInfo", androidInfo);
+        dynamicLinkInfo.put("iosInfo", iosInfo);
+        dynamicLinkInfo.put("socialMetaTagInfo", socialMetaTagInfo);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("dynamicLinkInfo", dynamicLinkInfo);
+        map.put("suffix", suffix);
+
+        return callRest(FIREBASE_DYNAMIC_LINK_URL, "/v1/shortLinks?key=" + FIREBASE_APP_KEY, new Gson().toJson(map), 1, request);
+    }
 }

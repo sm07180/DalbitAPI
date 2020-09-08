@@ -22,6 +22,7 @@ public class RoomMemberOutVo{
     private long joinTs;
     private boolean isFan;
     private int byeolCnt;
+    private boolean isNewListener;
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();
@@ -36,5 +37,6 @@ public class RoomMemberOutVo{
         this.joinTs = DalbitUtil.getUTCTimeStamp(target.getJoin_date());
         this.isFan = target.getEnableFan() == 0 ? true : false;
         this.byeolCnt = target.getGift_gold();
+        this.isNewListener = this.auth == 0 ? (target.getNewBadge() == 1 ? true : false) : false;
     }
 }

@@ -824,7 +824,7 @@ public class SocketService {
         itemMap.put("authName", "");
         itemMap.put("auth", 0);
         itemMap.put("nickNm", "");
-
+        itemMap.put("dalCnt", 0);
         //String memNo = new MemberVo().getMyMemNo(request);
         //String authToken = DalbitUtil.getAuthToken(request);
 

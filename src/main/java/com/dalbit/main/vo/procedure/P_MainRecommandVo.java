@@ -24,5 +24,6 @@ public class P_MainRecommandVo {
     private String bannerUrl;
     public boolean isSpecial;
     public boolean isAdmin = false;
+    public boolean isNew = false;
     public int isWowza;
 }

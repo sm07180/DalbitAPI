@@ -58,12 +58,4 @@ public class WowzaController {
         HashMap result = wowzaService.getBroadcast(roomTokenVo, request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
-
-    @GetMapping("/wss")
-    @Profile("local")
-    public void testWebSocket(HttpServletRequest request) throws Exception{
-        wowzaService.testSendEdge(request);
-    }
-    //@PostMapping("/state/{mode}")
-    //public String doUpdateMicState(@Valid StateChangeVo, BindingResult bindingResult, HttpServletRequest request)
 }

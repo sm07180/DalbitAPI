@@ -38,6 +38,7 @@
             , b.title
             , a.mem_no
             , c.mem_sex
+            , c.mem_nick
             , d.image_profile
             , b.mem_no as dj_mem_no
         FROM tb_broadcast_room_member a INNER JOIN tb_broadcast_room b ON a.room_no = b.room_no

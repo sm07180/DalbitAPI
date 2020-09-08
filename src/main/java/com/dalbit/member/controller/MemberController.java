@@ -30,6 +30,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
@@ -129,8 +130,19 @@ public class MemberController {
 
         String result = "";
         //log.debug("휴대폰번호{} - 세션 = |{}| / 인풋 = |{}|", memType, request.getSession().getAttribute("phoneNo").toString(), memId);
-        String s_phoneNo = (String)request.getSession().getAttribute("phoneNo");
-        s_phoneNo = s_phoneNo == null ? "" : s_phoneNo.replaceAll("-", "");
+        //String s_phoneNo = (String)request.getSession().getAttribute("phoneNo");
+
+        //서버호출번호가 간혹 변경되므로 휴대폰 번호 쿠키로 대체...
+        String s_phoneNo="";
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if(cookie.getName().equals("phoneNo")){
+                    s_phoneNo = cookie.getValue();
+                    s_phoneNo = s_phoneNo == null ? "" : s_phoneNo.replaceAll("-", "");
+                }
+            }
+        }
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(memId)){

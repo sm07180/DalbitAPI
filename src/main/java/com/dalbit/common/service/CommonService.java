@@ -125,6 +125,9 @@ public class CommonService {
         P_ItemVo pItemVo = new P_ItemVo();
         pItemVo.setItem_slct(1);
         pItemVo.setPlatform(platform);
+        pItemVo.setBooster(DalbitUtil.getProperty("item.code.boost"));
+        pItemVo.setLevelUp(DalbitUtil.getProperty("item.code.levelUp"));
+        pItemVo.setDirect(DalbitUtil.getProperty("item.code.direct"));
 
         List<ItemVo> items = commonDao.selectItemList(pItemVo);
         HashMap itemIsNew = new HashMap();
@@ -214,10 +217,16 @@ public class CommonService {
         resultMap.put("giftComboCount", giftComboCount);
 
         if(deviceVo.getOs() != 2) {
-            int[] giftDal = {20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000};
+            //int[] giftDal = {20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000};
+            int[] giftDal = {50, 100, 500, 1000, 2000, 3000, 5000, 10000};
             resultMap.put("giftDal", giftDal);
             resultMap.put("giftDalDirect", true);
+            resultMap.put("giftDalMin", 10);
+            int[] giftDalByRoom = {50, 100, 500, 1000, 2000, 3000, 5000, 10000};
+            resultMap.put("giftDalByRoom", giftDalByRoom);
+            resultMap.put("giftDalByRoomDirect", true);
         }
+        resultMap.put("itemRepeat", true);
 
         return resultMap;
     }

@@ -685,6 +685,7 @@ public class MypageService {
         List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
 
         HashMap mypageNoticeList = new HashMap();
+        mypageNoticeList.put("count", getMemberBoardCount(pMypagNoticeSelectVo));
         if(DalbitUtil.isEmpty(mypageNoticeListVo)){
             mypageNoticeList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, mypageNoticeList));
@@ -1672,5 +1673,27 @@ public class MypageService {
 
     public String getMyPageNewWallet(HttpServletRequest request){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageWallet(MemberVo.getMyMemNo(request))));
+    }
+
+    public HashMap getMemberBoardCount(Object target){
+        HashMap params = new HashMap();
+        if(target instanceof P_MypageNoticeSelectVo){
+            params.put("target_mem_no", ((P_MypageNoticeSelectVo) target).getTarget_mem_no());
+            params.put("mem_no", ((P_MypageNoticeSelectVo) target).getMem_no());
+        }else if(target instanceof P_FanboardListVo){
+            params.put("target_mem_no", ((P_FanboardListVo) target).getStar_mem_no());
+            params.put("mem_no", ((P_FanboardListVo) target).getMem_no());
+        /*}else if(target instanceof P_ClipUploadListVo){
+            params.put("target_mem_no", ((P_ClipUploadListVo) target).getStar_mem_no());
+            params.put("mem_no", ((P_ClipUploadListVo) target).getMem_no());*/
+        }
+        HashMap result = new HashMap();
+        result.put("notice", 0);
+        result.put("fanboard", 0);
+        result.put("clip", 0);
+        if(!params.isEmpty()){
+            result = mypageDao.callMemberBoardCount(params);
+        }
+        return result;
     }
 }

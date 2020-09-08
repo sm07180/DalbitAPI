@@ -53,6 +53,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private FanBadgeVo fanBadge;
     List fanBadgeList;
 
+    private boolean isNewListener = false;
+
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
         this.memNo = target_mem_no;
@@ -92,8 +94,8 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
         this.isPop = (target.getBadge_popular() == 1) ? true : false;
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.isNewListener = (target.getBadge_new() == 1 ? true : false);
         this.isSpecial = (target.getBadge_specialdj() == 1 ? true : false);
-
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
         this.likeTotCnt = target.getReceivedGoodTotal();

@@ -35,6 +35,8 @@ public class ProfileService {
     SocketService socketService;
     @Autowired
     CommonDao commonDao;
+    @Autowired
+    MypageService mypageService;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -126,6 +128,7 @@ public class ProfileService {
         List<P_FanboardListVo> fanboardVoList = profileDao.callMemberFanboardList(procedureVo);
 
         HashMap fanBoardList = new HashMap();
+        fanBoardList.put("count", mypageService.getMemberBoardCount(pFanboardListVo));
         if(DalbitUtil.isEmpty(fanboardVoList)){
             fanBoardList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));

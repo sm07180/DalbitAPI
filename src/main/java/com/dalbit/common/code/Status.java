@@ -1315,6 +1315,11 @@ public enum Status {
     클립신고_이미_신고상태("-3", "clip.declar.already", "이미 신고 상태 시"),
     클립신고_실패("C006", "clip.declar.fail", "클립 신고 신청 실패 시"),
 
+    //클립 공유하기 주소
+    클립공유_성공("0", "clip.share.success", "클립 공유 성공 시"),
+    클립공유_데이터없음("-1", "clip.share.data.no.error", "클립 조회없을 때"),
+    클립공유_동적링크실패("-2", "clip.share.link.error", "클립 동적링크 생성 실패"),
+
     //이벤트 체크/참여
     이벤트_체크_참여("0", "event.enable.success", "참여 가능"),
     이벤트_참여("0", "event.apply.success", "참여 완료"),
@@ -1394,6 +1399,8 @@ public enum Status {
     방송설정수정_성공("0", "mypage.broadcast.setting.edit.success", "방송설정 수정 성공 시"),
     방송설정수정_회원아님("-1", "mypage.broadcast.setting.edit.member.number.error", "방송설정 수정 회원아닐 시"),
     방송설정수정_실패("C006", "mypage.broadcast.setting.edit.error", "방송설정 수정 실패 시"),
+
+    클립재생시간_5분초과("C005", "clip.exceed.play.time.limit.5min", "클립 재생시간 초과 시"),
     ;
 
 

@@ -26,4 +26,5 @@ public class P_RoomMemberListVo {
     private Date join_date;
     private int enableFan;
     private int gift_gold;
+    private int newBadge;
 }

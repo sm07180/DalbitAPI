@@ -406,4 +406,8 @@
             (SELECT MAX(idx) FROM tb_member_wallet_ruby WHERE mem_no = ${value} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0) AS dal,
             (SELECT MAX(idx) FROM tb_member_wallet_gold WHERE mem_no = ${value} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0) AS byeol
     </select>
+
+    <select id="callMemberBoardCount" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        call sp_member_board_count(#{target_mem_no, mode=IN, jdbcType=VARCHAR}, #{mem_no, mode=IN, jdbcType=VARCHAR})
+    </select>
 </mapper>

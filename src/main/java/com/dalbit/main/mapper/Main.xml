@@ -64,6 +64,7 @@
             , B.image_background AS bannerUrl
             , D.specialdj_badge = 1 AS isSpecial
             , D.admin_badge = 1 AS isAdmin
+            , D.newdj_badge = 1 AS isNew
             , B.is_wowza AS isWowza
         FROM tb_broadcast_room_live_list AS A
             INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.is_wowza = ${paramIsWowza} AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
@@ -87,8 +88,10 @@
            , B.image_background AS bannerUrl
            , false AS isSpecial
            , false AS isAdmin
+           , D.newdj_badge = 1 AS isNew
            , B.is_wowza AS isWowza
         FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.is_wowza = ${paramIsWowza} AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
+            INNER JOIN tb_member_profile AS D ON A.mem_no = D.mem_no
         WHERE A.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE (specialdj_badge = 1 OR admin_badge = 1))
         ORDER BY A.total DESC
         LIMIT 5;

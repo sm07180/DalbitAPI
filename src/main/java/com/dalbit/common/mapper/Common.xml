@@ -64,9 +64,9 @@
                 item_code         AS itemNo
                 , item_name         AS itemNm
                 , (CASE
-                    WHEN use_area = '1' THEN IF(item_slct = 2, 'particle', 'ani')
+                    WHEN use_area = '1' THEN IF(item_slct = 2, 'particle', IF(item_code = #{direct}, 'direct', 'ani'))
                     WHEN use_area = '2' THEN 'sticker'
-                    ELSE 'ani'
+                    ELSE IF(item_code = #{direct}, 'direct', 'ani')
                 END) AS `type`
                 , item_price        AS cost
                 , item_thumbnail    AS thumbs
@@ -118,10 +118,13 @@
                 , @rownum := @rownum + 1 AS sortNo
         FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
         WHERE view_yn = 1
-            AND item_code NOT IN ('U1447', 'U1885')
+            AND item_code NOT IN (#{booster}, #{levelUp})
             AND item_slct = #{item_slct}
             AND platform like #{platform}
-        ORDER BY isNew DESC, item_price ASC, item_name ASC
+        ORDER BY (CASE
+            WHEN item_code = #{direct} THEN 0
+            ELSE 1
+        END) DESC, isNew DESC, item_price ASC, item_name ASC
     </select>
 
     <select id="selectBooster" parameterType="String" resultType="ItemVo">

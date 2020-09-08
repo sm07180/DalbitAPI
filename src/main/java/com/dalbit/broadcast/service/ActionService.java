@@ -243,10 +243,11 @@ public class ActionService {
                 itemMap.put("itemCnt", pRoomGiftVo.getItem_cnt());
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
-                itemMap.put("itemType", "items");
+                itemMap.put("itemType", pRoomGiftVo.getItem_code().equals(DalbitUtil.getProperty("item.code.direct")) ? "direct" : "items");
                 itemMap.put("authName", vo1.getAuthName());
                 itemMap.put("auth", vo1.getAuth());
                 itemMap.put("nickNm", vo1.getMemNk());
+                itemMap.put("dalCnt", item.getByeol() * pRoomGiftVo.getItem_cnt());
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -352,6 +353,7 @@ public class ActionService {
             try{
                 HashMap itemMap = new HashMap();
                 itemMap.put("itemNo", DalbitUtil.getProperty("item.code.boost"));
+                SocketVo vo1 = socketService.getSocketVo(pRoomBoosterVo.getRoom_no(), DalbitUtil.getStringMap(resultMap, "dj_mem_no"), DalbitUtil.isLogin(request));
 
                 ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.boost"));
                 String itemNm = item.getItemNm();
@@ -361,9 +363,10 @@ public class ActionService {
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", false);
                 itemMap.put("itemType", "boost");
-                itemMap.put("authName", "");
-                itemMap.put("auth", 0);
-                itemMap.put("nickNm", "");
+                itemMap.put("authName", vo1.getAuthName());
+                itemMap.put("auth", vo1.getAuth());
+                itemMap.put("nickNm", vo1.getMemNk());
+                itemMap.put("dalCnt", item.getByeol());
 
                 socketService.giftItem(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -89,7 +90,7 @@ public class CommonController {
      * 휴대폰 인증요청
      */
     @PostMapping("/sms")
-    public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+    public String requestSms(@Valid SmsVo smsVo, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -159,6 +160,10 @@ public class CommonController {
         // 위의 예외처리에 걸리지 않은 경우 인증요청
         if(isRequestSms){
             commonService.requestSms(smsVo);
+            Cookie cookie = new Cookie("phoneNo", smsVo.getPhoneNo());
+            cookie.setPath("/");
+            cookie.setMaxAge(300);
+            response.addCookie(cookie);
 
             HttpSession session = request.getSession();
             long reqTime = System.currentTimeMillis();
