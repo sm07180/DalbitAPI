@@ -67,7 +67,7 @@ public class ClipService {
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
             int random = Integer.parseInt(DalbitUtil.randomClipBgValue());
-            bgImg = Code.클립_배경_디폴트_PREFIX.getCode()+"/"+Code.클립배경이미지_파일명_PREFIX.getCode()+"200821_"+random+".jpg";
+            bgImg = Code.클립_배경_디폴트_PREFIX.getCode()+"/"+Code.클립배경이미지_파일명_PREFIX.getCode()+"200909_"+random+".jpg";
         }else{
             if(bgImg.startsWith(Code.클립_배경_임시_PREFIX.getCode())){
                 isDone = true;
@@ -591,7 +591,7 @@ public class ClipService {
         List<P_ClipUploadListVo> clipUploadListVo = clipDao.callClipUploadList(procedureVo);
 
         HashMap clipUploadList = new HashMap();
-        clipUploadList.put("count", mypageService.getMemberBoardCount(pClipUploadListVo));
+        //clipUploadList.put("count", mypageService.getMemberBoardCount(pClipUploadListVo));
         if(DalbitUtil.isEmpty(clipUploadListVo)){
             clipUploadList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_업로드목록_조회_없음, clipUploadList));
@@ -691,9 +691,9 @@ public class ClipService {
         int size = clipMainPopListVo.size() / 3;
         int cnt;
         if(size == 1){
-            cnt = 2;
+            cnt = 3;
         }else if(size == 2){
-            cnt = 5;
+            cnt = 6;
         }else {
             cnt = clipMainPopListVo.size();
         }
