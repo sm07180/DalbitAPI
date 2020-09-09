@@ -680,13 +680,26 @@ public class ClipService {
         ProcedureVo procedureVo = new ProcedureVo(pClipMainPopListVo);
         List<P_ClipMainPopListVo> clipMainPopListVo = clipDao.callClipMainPopList(procedureVo);
 
+
         HashMap clipMainPopList = new HashMap();
         if(DalbitUtil.isEmpty(clipMainPopListVo)){
             clipMainPopList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_인기리스트_조회_없음, clipMainPopList));
         }
+
+        //리스트 3배수 추가
+        int size = clipMainPopListVo.size() / 3;
+        int cnt;
+        if(size == 1){
+            cnt = 2;
+        }else if(size == 2){
+            cnt = 5;
+        }else {
+            cnt = clipMainPopListVo.size();
+        }
+
         List<ClipMainPopListOutVo> outVoList = new ArrayList<>();
-        for (int i=0; i<clipMainPopListVo.size(); i++){
+        for (int i=0; i<cnt; i++){
             outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
