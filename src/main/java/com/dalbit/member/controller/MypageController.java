@@ -742,4 +742,13 @@ public class MypageController {
     public String getMyPageNewWallet(HttpServletRequest request){
         return mypageService.getMyPageNewWallet(request);
     }
+
+    @GetMapping("/good/list")
+    public String memberGoodList(@Valid GoodListVo goodListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        HashMap resultMap = mypageService.getMemberGoodList(goodListVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), resultMap.get("data")));
+    }
 }

@@ -131,5 +131,8 @@ public interface MypageDao {
     HashMap selectMyPageWallet(String mem_no);
 
     @Transactional(readOnly = true)
+    List<P_GoodListVo> callMemberGoodList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
     HashMap callMemberBoardCount(HashMap params);
 }

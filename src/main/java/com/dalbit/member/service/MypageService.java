@@ -3,6 +3,7 @@ package com.dalbit.member.service;
 import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
+import com.dalbit.clip.vo.procedure.P_ClipUploadListVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
@@ -11,6 +12,7 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.GoodListVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
@@ -685,7 +687,7 @@ public class MypageService {
         List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
 
         HashMap mypageNoticeList = new HashMap();
-        mypageNoticeList.put("count", getMemberBoardCount(pMypagNoticeSelectVo));
+        //mypageNoticeList.put("count", getMemberBoardCount(pMypagNoticeSelectVo));
         if(DalbitUtil.isEmpty(mypageNoticeListVo)){
             mypageNoticeList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, mypageNoticeList));
@@ -1673,6 +1675,39 @@ public class MypageService {
 
     public String getMyPageNewWallet(HttpServletRequest request){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageWallet(MemberVo.getMyMemNo(request))));
+    }
+
+    public HashMap getMemberGoodList(GoodListVo goodListVo, HttpServletRequest request) {
+        HashMap resultMap = new HashMap();
+        P_GoodListVo pGoodListVo = new P_GoodListVo(goodListVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pGoodListVo);
+        List<P_GoodListVo> goodList = mypageDao.callMemberGoodList(procedureVo);
+        if(procedureVo.getRet().equals(Status.개인좋아요랭킹_요청회원_회원아님.getMessageCode())) {
+            resultMap.put("status", Status.개인좋아요랭킹_요청회원_회원아님);
+        }else if(procedureVo.getRet().equals(Status.개인좋아요랭킹_대상회원_회원아님.getMessageCode())) {
+            resultMap.put("status", Status.개인좋아요랭킹_대상회원_회원아님);
+        }else if(procedureVo.getRet().equals(Status.개인좋아요랭킹_실패.getMessageCode())) {
+            resultMap.put("status", Status.개인좋아요랭킹_실패);
+        }else if(procedureVo.getRet().equals(Status.개인좋아요랭킹_없음.getMessageCode()) || DalbitUtil.isEmpty(goodList)) {
+            resultMap.put("status", Status.개인좋아요랭킹_없음);
+            HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap data = new HashMap();
+            data.put("list", new ArrayList());
+            data.put("paging", new PagingVo(DalbitUtil.getIntMap(returnMap, "totalCnt"), DalbitUtil.getIntMap(returnMap, "pageNo"), DalbitUtil.getIntMap(returnMap, "pageCnt")));
+            resultMap.put("data", data);
+        }else{
+            resultMap.put("status", Status.개인좋아요랭킹_성공);
+            HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap data = new HashMap();
+            List<GoodListOutVo> list = new ArrayList<>();
+            for(P_GoodListVo p_goodListVo : goodList){
+                list.add(new GoodListOutVo(p_goodListVo));
+            }
+            data.put("list", list);
+            data.put("paging", new PagingVo(DalbitUtil.getIntMap(returnMap, "totalCnt"), DalbitUtil.getIntMap(returnMap, "pageNo"), DalbitUtil.getIntMap(returnMap, "pageCnt")));
+            resultMap.put("data", data);
+        }
+        return resultMap;
     }
 
     public HashMap getMemberBoardCount(Object target){

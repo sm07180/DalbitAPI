@@ -1562,4 +1562,29 @@ public class DalbitUtil {
         }catch(Exception e){}*/
         return 1;
     }
+
+    public static boolean versionCompare(String str1, String str2) {
+        try ( Scanner s1 = new Scanner(str1);
+              Scanner s2 = new Scanner(str2);) {
+            s1.useDelimiter("\\.");
+            s2.useDelimiter("\\.");
+
+            while (s1.hasNextInt() && s2.hasNextInt()) {
+                int v1 = s1.nextInt();
+                int v2 = s2.nextInt();
+                if (v1 < v2) {
+                    return false;
+                } else if (v1 > v2) {
+                    return true;
+                }
+            }
+
+            if (s1.hasNextInt() && s1.nextInt() != 0)
+                return true; //str1 has an additional lower-level version number
+            if (s2.hasNextInt() && s2.nextInt() != 0)
+                return false; //str2 has an additional lower-level version
+
+            return false;
+        }
+    }
 }

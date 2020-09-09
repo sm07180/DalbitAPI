@@ -58,5 +58,7 @@ public class P_ProfileInfoVo {
     private String fanBadgeIcon;
     private String fanBadgeStartColor;
     private String fanBadgeEndColor;
+    private String cupidMemNo;
+    private String cupidNickNm;
     private int badge_new;                      // 신입청취자 뱃지
 }
