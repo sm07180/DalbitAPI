@@ -2,10 +2,7 @@ package com.dalbit.main.service;
 
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.PagingVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.dao.CustomerCenterDao;
 import com.dalbit.main.vo.FaqListOutVo;
@@ -24,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 
 @Slf4j
 @Service
@@ -282,5 +280,29 @@ public class CustomerCenterService {
         }
 
         return result;
+    }
+
+    public HashMap checkAppVersion(HttpServletRequest request){
+        HashMap data = new HashMap();
+        data.put("lastVersion", "");
+        data.put("nowVersion", "");
+        data.put("storeUrl", "");
+        data.put("isUpdate", false);
+        DeviceVo deviceVo = new DeviceVo(request);
+        if(deviceVo.getOs() != 3){
+            HashMap ver = customerCenterDao.selectAppVersion();
+            if(ver != null && !ver.isEmpty() && ver.containsKey("iosVersion") && ver.containsKey("aosVersion")){
+                String lastVersion = (String)ver.get("iosVersion");
+                data.put("storeUrl", "https://apps.apple.com/kr/app/id1490208806");
+                if(deviceVo.getOs() == 1){
+                    lastVersion = (String)ver.get("aosVersion");
+                    data.put("storeUrl", "https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject");
+                }
+                data.put("lastVersion", lastVersion);
+                data.put("nowVersion", deviceVo.getAppVersion());
+                data.put("isUpdate", DalbitUtil.versionCompare(lastVersion, deviceVo.getAppVersion()));
+            }
+        }
+        return data;
     }
 }

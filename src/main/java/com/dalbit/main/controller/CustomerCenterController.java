@@ -1,5 +1,7 @@
 package com.dalbit.main.controller;
 
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.CustomerCenterService;
 import com.dalbit.main.vo.procedure.*;
@@ -8,6 +10,7 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenCheckVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -28,6 +31,8 @@ public class CustomerCenterController {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 고객센터 공지사항 목록 조회
@@ -129,5 +134,13 @@ public class CustomerCenterController {
         String result = customerCenterService.callQnaDel(apiData);
 
         return result;
+    }
+
+    /**
+     * 버전확인
+     */
+    @GetMapping("/center/version")
+    public String checkVersion(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, customerCenterService.checkAppVersion(request)));
     }
 }

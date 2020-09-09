@@ -42,4 +42,10 @@
         call sp_service_center_qna_delete_v25(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="selectAppVersion" resultType="java.util.HashMap">
+        SELECT
+            iosVersion, aosVersion
+        FROM tbl_ranking_point
+        LIMIT 1;
+    </select>
 </mapper>

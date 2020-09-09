@@ -5,6 +5,7 @@ import com.dalbit.main.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -24,4 +25,7 @@ public interface CustomerCenterDao {
     List<P_QnaListVo> callQnaList(ProcedureVo procedureVo);
 
     ProcedureVo callQnaDel(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    HashMap selectAppVersion();
 }
