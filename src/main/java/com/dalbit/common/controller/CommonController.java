@@ -421,4 +421,12 @@ public class CommonController {
     public String selectRoomTypeCodeList(HttpServletRequest request){
         return gsonUtil.toJson(new JsonOutputVo(조회, commonService.selectRoomTypeCodeList(new CodeVo(Code.방송주제.getCode()))));
     }
+
+    /**
+     * 클립 리스트 가져오기(사용중인 것만 가져옴)
+     */
+    @GetMapping("/clip/type")
+    public String selectClipTypeCodeList(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(조회, commonService.selectClipTypeCodeList(new CodeVo(Code.클립주제.getCode()))));
+    }
 }

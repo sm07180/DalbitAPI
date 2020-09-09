@@ -406,11 +406,15 @@ public class EventService {
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
+        DeviceVo deviceVo = new DeviceVo(request);
         var paramMap = new HashMap();
         paramMap.put("mem_no", mem_no);
+        paramMap.put("os", deviceVo.getOs());
+        paramMap.put("deviceUuid", deviceVo.getDeviceUuid());
 
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckGift(procedureVo);
+
         /*String memNos = "|11584609037713|11584609037192|11584609037223|";
         if(memNos.contains(mem_no)){
             dateList = setTestDateList("checkIn");
@@ -569,6 +573,12 @@ public class EventService {
         summary.put("dalCnt", dalCnt);
 
         var status = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+        //기프트콘 날짜 체크
+        var lunarVo = eventDao.selectLunarDate();
+        String today = DalbitUtil.convertDateFormat(new Date(), "yyyyMMdd");
+        long checkCnt = dateList.stream().filter(checkVo -> checkVo.getCheck_ok() == 1).count();
+        status.put("gifticon_day", (today.equals(lunarVo.getDate()) || checkCnt == 7) ? "1" : "0");
 
         var returnMap = new HashMap();
         returnMap.put("status", status);
@@ -771,7 +781,8 @@ public class EventService {
      */
     public String selectLunarDate() {
         HashMap resultMap = new HashMap();
-        resultMap.put("lunarDt", eventDao.selectLunarDate());
+        var lunarVo = eventDao.selectLunarDate();
+        resultMap.put("lunarDt", lunarVo.getLunarDate());
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 

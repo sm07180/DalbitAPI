@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.clip.dao.ClipDao" >
+
+    <select id="callClipAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_create(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipListVo">
+      call sp_cast_room_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipPlay" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_play(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipPlayList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipPlayListVo">
+      call sp_cast_member_playlist(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipGift" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_gift(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipGood" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipGiftRankTop3List" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipGiftRankTop3Vo">
+      call sp_cast_room_rank3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipGiftRankList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipGiftRankListVo">
+      call sp_cast_room_gift_ranking(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipGiftList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipGiftListVo">
+      call sp_cast_room_received_gift_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipReplyList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipReplyListVo">
+      call sp_cast_room_board_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipReplyAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_board_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipReplyEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_board_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipReplyDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_room_board_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipUploadList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipUploadListVo">
+      call sp_member_cast_upload(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipListenList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipListenListVo">
+      call sp_member_cast_play_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipPlayListEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_cast_member_playlist_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipMainPopList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipMainPopListVo">
+      call sp_cast_main_pop_cast(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipMainLatestList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipMainLatestListVo">
+      call sp_cast_main_last_cast(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipMainSubjectTop3List" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipMainSubjectTop3ListVo">
+      call sp_cast_main_subject_top3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipDeclar" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_report_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipShare" statementType="CALLABLE" parameterType="String" resultType="java.util.HashMap">
+        call sp_cast_room_share(#{data, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+</mapper>

@@ -49,7 +49,7 @@ public interface EventDao {
     ArrayList<P_GifticonWinListOutputVo> callGifticonWinList(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    String selectLunarDate();
+    LunarVo selectLunarDate();
 
     @Transactional(readOnly = true)
     List<PhotoEventOutputVo> selectPhotoList(PhotoEventInputVo photoEventInputVo);

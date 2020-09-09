@@ -131,10 +131,11 @@
       call sp_gifticon_win_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectLunarDate" resultType="String">
+    <select id="selectLunarDate" resultType="com.dalbit.event.vo.LunarVo">
         /* Event.xml - selectLunarDate */
         SELECT
             concat(month (date), '월 ', day(date), '일') as lunarDate
+            , date_format(date, '%Y%m%d') date
         FROM tbl_lunar_calendar
         where date_format(now(), '%y%m%d') <![CDATA[<=]]> date
         ORDER BY ABS(DATEDIFF(NOW(), DATE))

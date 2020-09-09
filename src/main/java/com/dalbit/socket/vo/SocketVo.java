@@ -62,6 +62,8 @@ public class SocketVo {
     private String fanBadgeStartColor = "";
     private String fanBadgeEndColor = "";
     private String notMemNo = "";
+    private int newDj = 0;
+    private int newListener = 0;
 
     public SocketVo(){};
 
@@ -93,6 +95,8 @@ public class SocketVo {
             this.fanBadgeIcon = DalbitUtil.getStringMap(memInfo, "fanBadgeIcon");
             this.fanBadgeStartColor = DalbitUtil.getStringMap(memInfo, "fanBadgeStartColor");
             this.fanBadgeEndColor = DalbitUtil.getStringMap(memInfo, "fanBadgeEndColor");
+            this.newDj = DalbitUtil.getIntMap(memInfo, "newDj");
+            this.newListener = DalbitUtil.getIntMap(memInfo, "newListener");
         }
     }
 
