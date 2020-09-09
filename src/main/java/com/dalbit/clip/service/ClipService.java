@@ -423,6 +423,8 @@ public class ClipService {
             clipGiftList.put("list", new ArrayList<>());
             clipGiftList.put("giftCnt", 0);
             clipGiftList.put("byeolCnt", 0);
+            clipGiftList.put("totalCnt", 0);
+            clipGiftList.put("paging", new PagingVo(0, pClipGiftListVo.getPageNo(), pClipGiftListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_받은선물내역_조회_없음, clipGiftList));
         }
         List<ClipGiftListOutVo> outVoList = new ArrayList<>();
