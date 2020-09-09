@@ -37,7 +37,7 @@ update.success=수정 완료했습니다.
 create.success=생성 완료했습니다.
 delete.success=삭제 완료했습니다.
 no.data=데이터가 없습니다.
-
+validation.error=벨리데이션 체크 오류입니다.
 string.error=사용이 금지된 특수문자가 포함되어 있습니다.\\n다시 작성해 주세요.
 
 # phone sms
@@ -787,7 +787,7 @@ broadcast.create.title.ban.word=방송제목에 금지어가 포함되어 방송
 broadcast.create.welcome.msg.ban.word=방송인사말에 금지어가 포함되어 방송 개설이 불가능합니다.
 broadcast.edit.title.ban.word=방송제목에 금지어가 포함되어 방송정보 수정이 불가능합니다.
 broadcast.edit.welcome.msg.ban.word=방송인사말에 금지어가 포함되어 방송정보 수정이 불가능합니다.
-clip.add.title.ban.word=클립 제목에 금지어가 포함되어 클립 등록이 불가능합니다.
+clip.add.title.ban.word=클립 제목에 금지어가 포함되어 있습니다. \\n제목을 확인해주세요.
 
 # notification read
 member.notification.read.success=알림 확인하였습니다.
@@ -1147,151 +1147,156 @@ main.good.ranking.no.ranking.success=랭킹 내역 없습니다.
 main.good.ranking.select.fail=좋아요 랭킹 조회를 실패했습니다.\\n잠시 후 다시 시도해주세요.
 
 # clip add
-clip.add.success=클립 등록 성공하였습니다.
+clip.add.success=클립이 등록되었습니다.
 clip.add.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.add.fail=에러가 발생하였습니다.
+clip.add.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip list select
-clip.list.select.success=클립 리스트 조회 성공하였습니다.
-clip.list.select.no.success=클립 리스트 없습니다.
-clip.list.select.fail=에러가 발생하였습니다.
+clip.list.select.success=클립 목록이 조회되었습니다.
+clip.list.select.no.success=조회된 클립 목록이 없습니다.
+clip.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip play
-clip.play.success=클립 플레이 성공하였습니다.
+clip.play.success=클립을 재생하였습니다.
 clip.play.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.play.number.error=클립번호가 없습니다.
-clip.play.no.fan=팬이 아닙니다.
-clip.play.limit.20age=20세 이상이 아닙니다.
-clip.play.fail=에러가 발생하였습니다.
+clip.play.number.error=클립 정보를 조회 할 수 없습니다.
+clip.play.no.fan=팬에게만 공개된 클립입니다.
+clip.play.limit.20age=20세 이상부터 청취 가능한 클립입니다.
+clip.play.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip play list select
-clip.play.list.select.success=클립 재생목록 조회 성공하였습니다.
-clip.play.list.select.no.success=클립 재생목록이 없습니다.
-clip.play.list.select.fail=에러가 발생하였습니다.
+clip.play.list.select.success=재생목록이 조회되었습니다.
+clip.play.list.select.no.success=재생목록이 없습니다.
+clip.play.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip gift
-clip.gift.success=선물하기 성공하였습니다.
+clip.gift.success=해당 클립에 선물이 전달되었습니다.
 clip.gift.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.gift.object.member.number.error=대상 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.gift.no.clip.number=클립번호가 없습니다.
-clip.gift.clip.number.object.member.number.unmatch=클립번호와 대상회원번호가 불일치합니다.
-clip.gift.impossible.me=선물하기 본인 불가합니다.
-clip.gift.no.item.code=아이템코드 없습니다.
-clip.gift.dal.limit=달이 부족합니다.
-clip.gift.fail=에러가 발생하였습니다.
+clip.gift.object.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+clip.gift.no.clip.number=클립 정보를 조회할 수 없습니다.
+clip.gift.clip.number.object.member.number.unmatch=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+clip.gift.impossible.me=본인의 클립에 선물 할 수 없습니다.
+clip.gift.no.item.code=오류가 발생되었습니다.\\n다시 시도해주세요.
+clip.gift.dal.limit=보유하신 달 개수가 부족합니다.
+clip.gift.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip good
-clip.good.success=좋아요 성공하였습니다.
-clip.good.cancel.success=좋아요 해제 성공하였습니다.
+clip.good.success=좋아요를 누르셨습니다.
+clip.good.cancel.success=좋아요가 해제되었습니다.
 clip.good.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.good.no.clip.number=클립번호가 없습니다.
-clip.good.no.change=좋아요 변화없습니다.
-clip.good.fail=에러가 발생하였습니다.
+clip.good.no.clip.number=클립 정보를 조회할 수 없습니다.
+clip.good.no.change=오류가 발생되었습니다.\\n다시 시도해주세요.
+clip.good.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip gift rank top3
-clip.gift.rank.top3.select.success=클립 선물랭킹 TOP3 조회 성공하였습니다.
-clip.gift.rank.top3.select.no.success=클립 선물랭킹 TOP3 없습니다.
-clip.gift.rank.top3.select.fail=에러가 발생하였습니다.
+clip.gift.rank.top3.select.success=클립 선물 랭킹이 조회되었습니다.
+clip.gift.rank.top3.select.no.success=받은 선물이 없습니다.
+clip.gift.rank.top3.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip gift ranking
 clip.gift.rank.select.success=클립 선물랭킹 조회 성공하였습니다.
-clip.gift.rank.select.no.success=클립 선물랭킹 업습니다.
-clip.gift.rank.select.fail=에러가 발생하였습니다.
+clip.gift.rank.select.no.success=받은 선물이 없습니다.
+clip.gift.rank.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip receive gift list select
-clip.received.gift.list.select.success=클립 받은선물내역 조회 성공하였습니다.
-clip.received.gift.list.select.no.success=클립 받은선물내역 없습니다.
+clip.received.gift.list.select.success=받은 선물 내역이 조회되었습니다.
+clip.received.gift.list.select.no.success=받은 선물이 없습니다.
 clip.received.gift.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.received.gift.list.select.no.clip=클립이 없습니다.
-clip.received.gift.list.select.member.number.clip.member.number.unmatch=요청회원번호가 클립 회원번호가 아닙니다.
-clip.received.gift.list.select.fail=에러가 발생하였습니다.
+clip.received.gift.list.select.no.clip=클립이 존재하지 않습니다.
+clip.received.gift.list.select.member.number.clip.member.number.unmatch=본인이 등록한 클립이 아닙니다.
+clip.received.gift.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip edit
-clip.edit.success=클립 수정 성공하였습니다.
+clip.edit.success=클립이 수정되었습니다.
 clip.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.edit.no.clip=클립이 없습니다.
-clip.edit.member.number.clip.member.number.unmatch=요청회원번호가 클립 회원번호가 아닙니다.
-clip.edit.fail=에러가 발생하였습니다.
+clip.edit.no.clip=클립이 존재하지 않습니다.
+clip.edit.member.number.clip.member.number.unmatch=본인이 등록한 클립이 아닙니다.
+clip.edit.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip delete
-clip.delete.success=클립 삭제 성공하였습니다.
+clip.delete.success=클립이 삭제되었습니다.
 clip.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.delete.no.clip=클립이 없습니다.
-clip.delete.member.number.clip.member.number.unmatch=요청회원번호가 클립 회원번호가 아닙니다.
-clip.delete.fail=에러가 발생하였습니다.
+clip.delete.no.clip=클립이 존재하지 않습니다.
+clip.delete.member.number.clip.member.number.unmatch=본인이 등록한 클립이 아닙니다.
+clip.delete.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip reply list select
-clip.reply.list.select.success=클립 댓글목록 조회 성공하였습니다.
-clip.reply.list.select.no.success=클립 댓글목록이 없습니다.
+clip.reply.list.select.success=댓글이 조회되었습니다.
+clip.reply.list.select.no.success=등록된 댓글이 없습니다.
 clip.reply.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.reply.list.select.no.clip=클립이 없습니다.
-clip.reply.list.select.fail=에러가 발생하였습니다.
+clip.reply.list.select.no.clip=클립이 존재하지 않습니다.
+clip.reply.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip reply add
-clip.reply.add.success=클립 댓글등록 성공하였습니다.
+clip.reply.add.success=댓글이 등록되었습니다.
 clip.reply.add.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.reply.add.no.clip=클립이 없습니다.
-clip.reply.add.fail=에러가 발생하였습니다.
+clip.reply.add.no.clip=클립이 존재하지 않습니다.
+clip.reply.add.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip reply edit
-clip.reply.edit.success=클립 댓글수정 성공하였습니다.
+clip.reply.edit.success=댓글이 수정되었습니다.
 clip.reply.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.reply.edit.no.clip=클립이 없습니다.
-clip.reply.edit.no.reply.idx=댓글번호가 없습니다.
+clip.reply.edit.no.clip=클립이 존재하지 않습니다.
+clip.reply.edit.no.reply.idx=댓글이 존재하지 않습니다.
 clip.reply.edit.not.writer=댓글 작성자가 아닙니다.
-clip.reply.edit.fail=에러가 발생하였습니다.
+clip.reply.edit.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip reply delete
-clip.reply.delete.success=클립 댓글삭제 성공하였습니다.
+clip.reply.delete.success=댓글이 삭제되었습니다.
 clip.reply.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.reply.delete.no.clip=클립이 없습니다.
-clip.reply.delete.no.reply.idx=댓글번호가 없습니다.
+clip.reply.delete.no.clip=클립이 존재하지 않습니다.
+clip.reply.delete.no.reply.idx=댓글이 존재하지 않습니다.
 clip.reply.delete.not.writer=댓글 작성자가 아닙니다.
-clip.reply.delete.fail=에러가 발생하였습니다.
+clip.reply.delete.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip upload list select
-clip.upload.list.select.success=클립 업로드 목록 조회 성공하였습니다.
-clip.upload.list.select.no.success=클립 업로드 목록이 없습니다.
+clip.upload.list.select.success=등록한 클립 목록이 조회되었습니다.
+clip.upload.list.select.no.success=등록된 클립이 없습니다.
 clip.upload.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.upload.list.select.star.member.number.error=스타 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.upload.list.select.fail=에러가 발생하였습니다.
+clip.upload.list.select.star.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+clip.upload.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip listen list select
-clip.listen.list.select.success=클립 청취내역 목록 조회 성공하였습니다.
-clip.listen.list.select.no.success=클립 업로드 목록이 없습니다.
+clip.listen.list.select.success=청취내역이 조회되었습니다.
+clip.listen.list.select.no.success=청취내역이 없습니다.
 clip.listen.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.listen.list.select.star.member.number.error=스타 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.listen.list.select.fail=에러가 발생하였습니다.
+clip.listen.list.select.star.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+clip.listen.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip play list edit
-clip.play.list.edit.success=클립 재생목록 편집 성공하였습니다.
+clip.play.list.edit.success=재생목록이 수정되었습니다.
 clip.play.list.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.play.list.edit.fail=에러가 발생하였습니다.
+clip.play.list.edit.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip main popular list
-clip.main.pop.list.select.success=클립 메인 인기목록 조회 성공하였습니다.
-clip.main.pop.list.select.no.success=클립 메인 인기목록이 없습니다.
+clip.main.pop.list.select.success=인기 클립이 조회되었습니다.
+clip.main.pop.list.select.no.success=등록된 인기 클립이 없습니다.
 clip.main.pop.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.main.pop.list.select.fail=에러가 발생하였습니다.
+clip.main.pop.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
-# clip main popular list
-clip.main.latest.list.select.success=클립 메인 최신목록 조회 성공하였습니다.
-clip.main.latest.list.select.no.success=클립 메인 최신목록이 없습니다.
+# clip main latest list
+clip.main.latest.list.select.success=최신 클립이 조회되었습니다.
+clip.main.latest.list.select.no.success=등록된 클립이 없습니다.
 clip.main.latest.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.main.latest.list.select.fail=에러가 발생하였습니다.
+clip.main.latest.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip main subject top3 list
-clip.main.subject.top3.list.select.success=클립 메인 주제별 TOP3 조회 성공하였습니다.
-clip.main.subject.top3.list.select.no.success=클립 메인 주제별 TOP3 없습니다.
+clip.main.subject.top3.list.select.success=주제별 인기 클립이 조회되었습니다.
+clip.main.subject.top3.list.select.no.success=등록된 주제별 인기 클립이 없습니다.
 clip.main.subject.top3.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.main.subject.top3.list.select.fail=에러가 발생하였습니다.
+clip.main.subject.top3.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip declar
-clip.declar.success=클립 신고 성공하였습니다.
+clip.declar.success=클립이 신고되었습니다.
 clip.declar.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.declar.clip.member.number.error=클립 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.declar.already=이미 신고하였습니다.
-clip.declar.fail=에러가 발생하였습니다.
+clip.declar.clip.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+clip.declar.already=이미 신고한 클립입니다.
+clip.declar.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
+
+# clip share
+clip.share.success=링크가 복사되었습니다.
+clip.share.data.no.error=클립정보를 조회 할 수 없습니다.
+clip.share.link.error=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 #이벤트참여
 event.enable.success=이벤트 참여 가능합니다.
@@ -1302,6 +1307,13 @@ event.lacking.auth.04=방송진행 10시간 이상 되어야 합니다.
 event.not.found=이벤트가 종료 되었거나 삭제되었습니다.
 event.not.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 event.error=에러가 발생하였습니다.
+
+# star list select
+member.good.list.select.success=좋아요 랭킹 조회 성공하였습니다.
+member.good.list.no.star.success=좋아요 랭킹이 없습니다.
+member.good.list.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+member.good.list.object.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+member.good.list.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast title add
 mypage.broadcast.title.add.success=방송제목 추가 성공하였습니다.
@@ -1354,3 +1366,16 @@ mypage.broadcast.welcome.msg.delete.success=인사말 삭제 성공하였습니�
 mypage.broadcast.welcome.msg.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.delete.no.order.number=인사말 삭제 번호없습니다.
 mypage.broadcast.welcome.msg.delete.fail=에러가 발생하였습니다.
+
+# mypage broadcast setting select
+mypage.broadcast.setting.select.success=방송 설정조회 성공하였습니다.
+mypage.broadcast.setting.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+mypage.broadcast.setting.fail=에러가 발생하였습니다.
+
+# mypage broadcast setting edit
+mypage.broadcast.setting.edit.success=방송설정 수정 성공하였습니다.
+mypage.broadcast.setting.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+mypage.broadcast.setting.edit.error=에러가 발생하였습니다.
+
+# clip play time limit
+clip.exceed.play.time.limit.5min=파일 재생시간이 5분을 초과하였습니다.\\n최대 5분 재생시간의 파일까지 첨부 가능합니다.
