@@ -67,7 +67,7 @@ public class ClipService {
         Boolean isDone = false;
         if(DalbitUtil.isEmpty(bgImg)){
             int random = Integer.parseInt(DalbitUtil.randomClipBgValue());
-            bgImg = Code.클립_배경_디폴트_PREFIX.getCode()+"/"+Code.클립배경이미지_파일명_PREFIX.getCode()+"200909_"+random+".jpg";
+            bgImg = Code.클립_배경_디폴트_PREFIX.getCode()+"/"+Code.클립배경이미지_파일명_PREFIX.getCode()+"200910_"+random+".jpg";
         }else{
             if(bgImg.startsWith(Code.클립_배경_임시_PREFIX.getCode())){
                 isDone = true;
