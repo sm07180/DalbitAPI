@@ -824,6 +824,7 @@ public class SocketService {
         itemMap.put("authName", "");
         itemMap.put("auth", 0);
         itemMap.put("nickNm", "");
+        itemMap.put("memNo", "");
         itemMap.put("dalCnt", 0);
         //String memNo = new MemberVo().getMyMemNo(request);
         //String authToken = DalbitUtil.getAuthToken(request);
@@ -854,7 +855,7 @@ public class SocketService {
         SocketVo djVo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
 
         int newLevel = (DalbitUtil.getIntMap(resultLevelUpCheckMap, "newLevel") - 1) / 10;
-        String[] frameColor = DalbitUtil.getProperty("level.color.0" + newLevel).split(",");
+        String[] frameColor = DalbitUtil.getProperty("level.color." + newLevel).split(",");
 
         HashMap levelUp = new HashMap();
         levelUp.put("memNo", memNo);
