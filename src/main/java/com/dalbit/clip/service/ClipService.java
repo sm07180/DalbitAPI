@@ -217,6 +217,10 @@ public class ClipService {
             returnMap.put("entryType", DalbitUtil.getIntMap(resultMap, "entryType"));
             returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
             returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+            returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
+            returnMap.put("commentOpen", true);
+            returnMap.put("playlistOpen", true);
+
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
             P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
@@ -293,6 +297,10 @@ public class ClipService {
             returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
             returnMap.put("giftCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
+            ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
+            clipGiftRankTop3Vo.setClipNo(pClipGiftVo.getCast_no());
+            P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
+            returnMap.put("list", clipGiftRankTop3PlayCall(pClipGiftRankTop3Vo).get("list"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_선물하기_성공, returnMap));
         }else if(Status.클립_선물하기_요청회원_회원아님.getMessageCode().equals(procedureVo.getRet())){
