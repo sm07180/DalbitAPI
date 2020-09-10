@@ -73,6 +73,7 @@ public class ProfileService {
             HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(DalbitUtil.getStringMap(myInfo, "birthYear"), DalbitUtil.getStringMap(myInfo, "birthMonth"), DalbitUtil.getStringMap(myInfo, "birthDay")));
+            profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));
 
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
@@ -128,7 +129,7 @@ public class ProfileService {
         List<P_FanboardListVo> fanboardVoList = profileDao.callMemberFanboardList(procedureVo);
 
         HashMap fanBoardList = new HashMap();
-        fanBoardList.put("count", mypageService.getMemberBoardCount(pFanboardListVo));
+        //fanBoardList.put("count", mypageService.getMemberBoardCount(pFanboardListVo));
         if(DalbitUtil.isEmpty(fanboardVoList)){
             fanBoardList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
