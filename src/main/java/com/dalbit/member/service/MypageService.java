@@ -1718,9 +1718,12 @@ public class MypageService {
         }else if(target instanceof P_FanboardListVo){
             params.put("target_mem_no", ((P_FanboardListVo) target).getStar_mem_no());
             params.put("mem_no", ((P_FanboardListVo) target).getMem_no());
-        /*}else if(target instanceof P_ClipUploadListVo){
+        }else if(target instanceof P_ClipUploadListVo){
             params.put("target_mem_no", ((P_ClipUploadListVo) target).getStar_mem_no());
-            params.put("mem_no", ((P_ClipUploadListVo) target).getMem_no());*/
+            params.put("mem_no", ((P_ClipUploadListVo) target).getMem_no());
+        }else if(target instanceof P_ProfileInfoVo){
+            params.put("target_mem_no", ((P_ProfileInfoVo) target).getTarget_mem_no());
+            params.put("mem_no", ((P_ProfileInfoVo) target).getMem_no());
         }
         HashMap result = new HashMap();
         result.put("notice", 0);
