@@ -762,6 +762,9 @@ public class ClipService {
     public String clipMainSubjectTop3List(HttpServletRequest request) {
 
         List<CodeVo> codeVoList = commonService.selectClipTypeCodeList(new CodeVo(Code.클립주제.getCode()));
+        if(DalbitUtil.isEmpty(codeVoList)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_실패));
+        }
         String result = "";
         HashMap clipMainSubjectTop3List = new HashMap();
         ClipMainSubjectTop3Vo clipMainSubjectTop3Vo = new ClipMainSubjectTop3Vo();
@@ -771,26 +774,23 @@ public class ClipService {
             ProcedureVo procedureVo = new ProcedureVo(apiData);
             List<P_ClipMainSubjectTop3ListVo> clipMainSubjectTop3ListVo = clipDao.callClipMainSubjectTop3List(procedureVo);
 
-            if(DalbitUtil.isEmpty(clipMainSubjectTop3ListVo)){
-                clipMainSubjectTop3List.put("list", new ArrayList<>());
-                return gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_없음, clipMainSubjectTop3List));
-            }
-            List<ClipMainSubjectTop3ListOutVo> outVoList = new ArrayList<>();
-            for (int j=0; j<clipMainSubjectTop3ListVo.size(); j++){
-                outVoList.add(new ClipMainSubjectTop3ListOutVo(clipMainSubjectTop3ListVo.get(j)));
-            }
-            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-            clipMainSubjectTop3List.put(codeVoList.get(i).getValue(), procedureOutputVo.getOutputBox());
-            //clipMainSubjectTop3List.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
-            if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_성공, clipMainSubjectTop3List));
-            }else if(Status.클립_메인_인기리스트_조회_회원아님.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_회원아님));
-            }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_실패));
+            if(Status.클립_메인_인기리스트_조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_회원아님, clipMainSubjectTop3List));
+            }else if(Integer.parseInt(procedureVo.getRet()) > 0 && !DalbitUtil.isEmpty(clipMainSubjectTop3ListVo) && clipMainSubjectTop3ListVo.size() == 3){
+                List<ClipMainSubjectTop3ListOutVo> outVoList = new ArrayList<>();
+                for (int j=0; j<clipMainSubjectTop3ListVo.size(); j++){
+                    outVoList.add(new ClipMainSubjectTop3ListOutVo(clipMainSubjectTop3ListVo.get(j)));
+                }
+                clipMainSubjectTop3List.put(codeVoList.get(i).getValue(), outVoList);
             }
         }
+
+        if(clipMainSubjectTop3List.isEmpty()){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_없음, clipMainSubjectTop3List));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_주제별TOP3_조회_성공, clipMainSubjectTop3List));
+        }
+
         return result;
     }
 
