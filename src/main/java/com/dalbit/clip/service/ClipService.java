@@ -226,7 +226,7 @@ public class ClipService {
             P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
             returnMap.put("list", clipGiftRankTop3PlayCall(pClipGiftRankTop3Vo).get("list"));
 
-            if("edit".equals(state)){
+            if("edit".equals(state)) {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.클립수정_성공, returnMap));
             } else {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.클립플레이_성공, returnMap));
@@ -490,7 +490,7 @@ public class ClipService {
     /**
      * 클립 댓글 리스트
      */
-    public String clipReplyList(P_ClipReplyListVo pClipPlayListVo) {
+    public String clipReplyList(P_ClipReplyListVo pClipPlayListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipPlayListVo);
         List<P_ClipReplyListVo> clipReplyListVo = clipDao.callClipReplyList(procedureVo);
 
@@ -507,6 +507,9 @@ public class ClipService {
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         clipReplyList.put("list", procedureOutputVo.getOutputBox());
         clipReplyList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        P_ClipPlayVo pClipPlayVo = new P_ClipPlayVo(pClipPlayListVo, request);
+        clipReplyList.put("clipPlayInfo", clipPlayInfo(pClipPlayVo));
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
@@ -873,5 +876,44 @@ public class ClipService {
             result.put("status", Status.클립공유_데이터없음);
         }
         return result;
+    }
+
+    /**
+     * 클립 플레이 정보
+     */
+    public HashMap clipPlayInfo(P_ClipPlayVo pClipPlayVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pClipPlayVo);
+        clipDao.callClipPlay(procedureVo);
+
+        HashMap returnMap = new HashMap();
+        if(Status.클립플레이_성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            returnMap.put("clipNo", DalbitUtil.getStringMap(resultMap, "cast_no"));
+            returnMap.put("clipMemNo", DalbitUtil.getStringMap(resultMap, "cast_mem_no"));
+            returnMap.put("subjectType", DalbitUtil.getStringMap(resultMap, "subject_type"));
+            returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));
+            returnMap.put("bgImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("fileName", DalbitUtil.getStringMap(resultMap, "file_name"));
+            returnMap.put("file", new ClipFileVo(DalbitUtil.getStringMap(resultMap, "file_path"), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("filePlay", DalbitUtil.getStringMap(resultMap, "file_play"));
+            returnMap.put("codeLink", DalbitUtil.getStringMap(resultMap, "code_link"));
+            returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "mem_nick"));
+            returnMap.put("isGood", DalbitUtil.getIntMap(resultMap, "good") == 1 ? true : false);
+            returnMap.put("playCnt", DalbitUtil.getIntMap(resultMap, "playCnt"));
+            returnMap.put("goodCnt", DalbitUtil.getIntMap(resultMap, "goodCnt"));
+            returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
+            returnMap.put("entryType", DalbitUtil.getIntMap(resultMap, "entryType"));
+            returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
+            returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+            returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
+            returnMap.put("commentOpen", true);
+            returnMap.put("playlistOpen", true);
+
+            ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
+            clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
+            P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
+            returnMap.put("list", clipGiftRankTop3PlayCall(pClipGiftRankTop3Vo).get("list"));
+        }
+        return returnMap;
     }
 }

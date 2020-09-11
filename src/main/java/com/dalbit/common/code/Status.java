@@ -16,6 +16,7 @@ public enum Status {
     벨리데이션체크("C007", "validation.error", "벨리데이션체크 오류 시"),
     부적절한문자열("C007", "string.error", "부적합한 기호 및 문자열 포함 시"),
     데이터없음("0", "no.data", "데이터가 없을 시"),
+    로그인필요_성공("-98", "need.login.success", "로그인 필요 시"),
     로그인필요("-99", "need.login", "로그인 필요 시"),
 
     //휴대폰 sms 인증

@@ -39,4 +39,8 @@ public class ClipAddVo {
     @NotBlank(message = "{\"ko_KR\" : \"파일재생 시간을\"}")
     @NotNull(message = "{\"ko_KR\" : \"파일재생 시간을\"}")
     private String filePlayTime;    //파일재생시간
+
+    @NotBlank(message = "{\"ko_KR\" : \"파일용량을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"파일용량을\"}")
+    private String fileSize;
 }

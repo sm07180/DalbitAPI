@@ -20,6 +20,7 @@ public class P_ClipAddVo {
     private String fileName;        //파일명
     private String filePath;        //클립 파일
     private String filePlayTime;    //재생시간
+    private String fileSize;        //파일용량
     private int os;                 //os (1: aos, 2: ios, 3: pc)
 
 
@@ -34,6 +35,7 @@ public class P_ClipAddVo {
         setFileName(clipAddVo.getFileName());
         setFilePath(clipAddVo.getFilePath());
         setFilePlayTime(clipAddVo.getFilePlayTime());
+        setFileSize(clipAddVo.getFileSize().split("\\.")[0]);
         setOs(new DeviceVo(request).getOs());
     }
     

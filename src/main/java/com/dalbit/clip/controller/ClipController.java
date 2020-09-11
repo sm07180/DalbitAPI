@@ -189,7 +189,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipReplyListVo apiData = new P_ClipReplyListVo(clipReplyListVo, request);
-        String result = clipService.clipReplyList(apiData);
+        String result = clipService.clipReplyList(apiData, request);
         return result;
     }
 

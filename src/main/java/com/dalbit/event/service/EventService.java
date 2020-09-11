@@ -277,12 +277,72 @@ public class EventService {
     }
 
     /**
+     * 출석체크 비회원접근 시 dummy data 생성
+     */
+    public HashMap AnonymousUserDummyData(){
+        List dateList = new ArrayList();
+
+        Calendar cal = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        if(dayOfWeek == 1){
+            dayOfWeek += 7;
+        }
+        dayOfWeek--;
+        cal2.add(Calendar.DATE, dayOfWeek * -1);
+        for(int i=0; i<dayOfWeek; i++){
+            cal2.add(Calendar.DATE, 1);
+            String year = cal2.get(Calendar.YEAR) + "";
+
+            int calMonth = cal2.get(Calendar.MONTH)+1;
+            String month = calMonth < 10 ? "0" + calMonth : ""+calMonth;
+
+            int calDate = cal2.get(Calendar.DATE);
+            String date = calDate < 10 ? "0" + calDate : ""+calDate;
+
+            String dummyDate = year + "-" + month + "-" + date;
+
+            int is_today = DalbitUtil.getDate("yyyy-MM-dd").equals(dummyDate) ? 1 : 0;
+
+            var map = new HashMap();
+            map.put("the_date", dummyDate);
+            map.put("the_day", i);
+            map.put("check_ok", is_today == 1 ? 2 : 0);
+            map.put("reward_exp", 0);
+            map.put("reward_dal", 0);
+            map.put("is_today", is_today);
+
+            dateList.add(map);
+        }
+
+        var summary = new HashMap();
+        summary.put("dalCnt", 0);
+        summary.put("attendanceDays", 0);
+        summary.put("totalExp", 0);
+
+        var status = new HashMap();
+        status.put("check_gift", "1");
+        status.put("gifticon_day", "0");
+        status.put("bonus", "0");
+        status.put("phone_input", "0");
+        status.put("exp", "0");
+        status.put("dal", "0");
+
+        var resultMap = new HashMap();
+        resultMap.put("dateList", dateList);
+        resultMap.put("summary", summary);
+        resultMap.put("status", status);
+
+        return resultMap;
+    }
+
+    /**
      * 출석체크 상태 체크
      */
     public String attendanceCheckStatus(HttpServletRequest request){
 
         if(!DalbitUtil.isLogin(request)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요_성공, AnonymousUserDummyData()));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
