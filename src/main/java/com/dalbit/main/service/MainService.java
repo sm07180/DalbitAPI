@@ -6,6 +6,7 @@ import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
+import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -650,6 +651,28 @@ public class MainService {
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_실패));
         }
+        return result;
+    }
+
+    /**
+     * 스페셜DJ 히스토리
+     */
+    public HashMap getSpecialDjHistory(SpecialHistoryVo specialHistoryVo, HttpServletRequest request){
+        HashMap result = new HashMap();
+        P_SpecialHistoryVo pSpecialHistoryVo = new P_SpecialHistoryVo(specialHistoryVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
+        List<P_SpecialHistoryVo> list = mainDao.callSpecialDjHistory(procedureVo);
+        result.put("status", Status.조회);
+        List<SpecialDjHistoryOutVo> outList = new ArrayList<>();
+        if(!DalbitUtil.isEmpty(list)){
+            for(P_SpecialHistoryVo dj : list){
+                outList.add(new SpecialDjHistoryOutVo(dj));
+            }
+        }
+        HashMap data = new HashMap();
+        data.put("info", new Gson().fromJson(procedureVo.getExt(), HashMap.class));
+        data.put("list", outList);
+        result.put("data", data);
         return result;
     }
 }

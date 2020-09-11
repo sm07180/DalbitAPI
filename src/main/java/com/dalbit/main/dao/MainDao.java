@@ -39,4 +39,7 @@ public interface MainDao {
 
     @Transactional(readOnly = true)
     List<P_MainGoodRankingVo> callMainGoodRanking(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_SpecialHistoryVo> callSpecialDjHistory(ProcedureVo procedureVo);
 }

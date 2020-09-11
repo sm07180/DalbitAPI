@@ -186,4 +186,7 @@
         call sp_ranking_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callSpecialDjHistory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_SpecialHistoryVo">
+        call sp_specialDj_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

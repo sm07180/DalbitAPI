@@ -1,10 +1,13 @@
 package com.dalbit.main.controller;
 
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.MainService;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.*;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -21,7 +25,8 @@ public class MainController {
 
     @Autowired
     MainService mainService;
-
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 메인
@@ -141,4 +146,14 @@ public class MainController {
         return result;
     }
 
+    /**
+     * 스페셜 dj 이력
+     */
+    @GetMapping("/specialDj/history")
+    public String specialDjHistory(@Valid SpecialHistoryVo SpecialHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        HashMap result = mainService.getSpecialDjHistory(SpecialHistoryVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
 }

@@ -694,7 +694,15 @@ public class MypageController {
 
         P_MsgClickUpdateVo apiData = new P_MsgClickUpdateVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
-        apiData.setMsg_slct(msgClickUpdateVo.getMsgSlct());
+
+        int msgSlct;
+        if("quick".equals(msgClickUpdateVo.getMsgSlct()) || "1".equals(msgClickUpdateVo.getMsgSlct())){
+            msgSlct = 1;
+        } else {
+            msgSlct = 2;
+        }
+
+        apiData.setMsg_slct(msgSlct);
         apiData.setMsg_idx(msgClickUpdateVo.getMsgIdx());
 
         String result = mypageService.msgClickUpdate(apiData);
