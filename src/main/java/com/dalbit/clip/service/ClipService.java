@@ -490,7 +490,7 @@ public class ClipService {
     /**
      * 클립 댓글 리스트
      */
-    public String clipReplyList(P_ClipReplyListVo pClipPlayListVo, HttpServletRequest request) {
+    public String clipReplyList(P_ClipReplyListVo pClipPlayListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pClipPlayListVo);
         List<P_ClipReplyListVo> clipReplyListVo = clipDao.callClipReplyList(procedureVo);
 
@@ -507,9 +507,6 @@ public class ClipService {
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         clipReplyList.put("list", procedureOutputVo.getOutputBox());
         clipReplyList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
-
-        P_ClipPlayVo pClipPlayVo = new P_ClipPlayVo(pClipPlayListVo, request);
-        clipReplyList.put("clipPlayInfo", clipPlayInfo(pClipPlayVo));
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
@@ -528,13 +525,16 @@ public class ClipService {
     /**
      * 클립 댓글 등록
      */
-    public String clipReplyAdd(P_ClipReplyAddVo pClipReplyAddVo) {
+    public String clipReplyAdd(P_ClipReplyAddVo pClipReplyAddVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipReplyAddVo);
         clipDao.callClipReplyAdd(procedureVo);
 
         String result="";
         if(Status.클립_댓글등록_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_성공));
+            HashMap clipReplyList = new HashMap();
+            P_ClipPlayVo pClipPlayVo = new P_ClipPlayVo(pClipReplyAddVo, request);
+            clipReplyList.put("clipPlayInfo", clipPlayInfo(pClipPlayVo));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_성공, clipReplyList));
         }else if(Status.클립_댓글등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_회원아님));
         }else if(Status.클립_댓글등록_클립없음.getMessageCode().equals(procedureVo.getRet())){
@@ -549,13 +549,16 @@ public class ClipService {
     /**
      * 클립 댓글 수정
      */
-    public String clipReplyEdit(P_ClipReplyEditVo pClipReplyEditVo) {
+    public String clipReplyEdit(P_ClipReplyEditVo pClipReplyEditVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipReplyEditVo);
         clipDao.callClipReplyEdit(procedureVo);
 
         String result="";
         if(Status.클립_댓글수정_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글수정_성공));
+            HashMap clipReplyList = new HashMap();
+            P_ClipPlayVo pClipPlayVo = new P_ClipPlayVo(pClipReplyEditVo, request);
+            clipReplyList.put("clipPlayInfo", clipPlayInfo(pClipPlayVo));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글수정_성공, clipReplyList));
         }else if(Status.클립_댓글수정_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글수정_회원아님));
         }else if(Status.클립_댓글수정_클립없음.getMessageCode().equals(procedureVo.getRet())){
@@ -574,13 +577,16 @@ public class ClipService {
     /**
      * 클립 댓글 삭제
      */
-    public String clipReplyDelete(P_ClipReplyDeleteVo pClipReplyDeleteVo) {
+    public String clipReplyDelete(P_ClipReplyDeleteVo pClipReplyDeleteVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipReplyDeleteVo);
         clipDao.callClipReplyDelete(procedureVo);
 
         String result="";
         if(Status.클립_댓글삭제_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글삭제_성공));
+            HashMap clipReplyList = new HashMap();
+            P_ClipPlayVo pClipPlayVo = new P_ClipPlayVo(pClipReplyDeleteVo, request);
+            clipReplyList.put("clipPlayInfo", clipPlayInfo(pClipPlayVo));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글삭제_성공, clipReplyList));
         }else if(Status.클립_댓글삭제_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글삭제_회원아님));
         }else if(Status.클립_댓글삭제_클립없음.getMessageCode().equals(procedureVo.getRet())){

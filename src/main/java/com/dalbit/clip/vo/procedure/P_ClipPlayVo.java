@@ -1,6 +1,5 @@
 package com.dalbit.clip.vo.procedure;
 
-import com.dalbit.clip.vo.request.ClipPlayListVo;
 import com.dalbit.clip.vo.request.ClipPlayVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -23,10 +22,22 @@ public class P_ClipPlayVo {
         setCast_no(clipPlayVo.getClipNo());
     }
 
-    public P_ClipPlayVo(P_ClipReplyListVo pClipReplyListVo, HttpServletRequest request){
+    public P_ClipPlayVo(P_ClipReplyAddVo pClipReplyListVo, HttpServletRequest request){
         setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         setMem_no(MemberVo.getMyMemNo(request));
         setCast_no(pClipReplyListVo.getCast_no());
     }
-    
+
+    public P_ClipPlayVo(P_ClipReplyEditVo pClipReplyEditVo, HttpServletRequest request){
+        setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        setMem_no(MemberVo.getMyMemNo(request));
+        setCast_no(pClipReplyEditVo.getCast_no());
+    }
+
+    public P_ClipPlayVo(P_ClipReplyDeleteVo clipReplyDeleteVo, HttpServletRequest request){
+        setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        setMem_no(MemberVo.getMyMemNo(request));
+        setCast_no(clipReplyDeleteVo.getCast_no());
+    }
+
 }

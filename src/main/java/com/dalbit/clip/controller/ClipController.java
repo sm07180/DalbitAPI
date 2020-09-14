@@ -189,7 +189,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipReplyListVo apiData = new P_ClipReplyListVo(clipReplyListVo, request);
-        String result = clipService.clipReplyList(apiData, request);
+        String result = clipService.clipReplyList(apiData);
         return result;
     }
 
@@ -202,7 +202,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipReplyAddVo apiData = new P_ClipReplyAddVo(clipReplyAddVo, request);
-        String result = clipService.clipReplyAdd(apiData);
+        String result = clipService.clipReplyAdd(apiData, request);
         return result;
     }
 
@@ -215,7 +215,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipReplyEditVo apiData = new P_ClipReplyEditVo(clipReplyEditVo, request);
-        String result = clipService.clipReplyEdit(apiData);
+        String result = clipService.clipReplyEdit(apiData, request);
         return result;
     }
 
@@ -228,7 +228,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipReplyDeleteVo apiData = new P_ClipReplyDeleteVo(clipReplyDeleteVo, request);
-        String result = clipService.clipReplyDelete(apiData);
+        String result = clipService.clipReplyDelete(apiData, request);
         return result;
     }
 

@@ -35,7 +35,7 @@ public class P_ClipAddVo {
         setFileName(clipAddVo.getFileName());
         setFilePath(clipAddVo.getFilePath());
         setFilePlayTime(clipAddVo.getFilePlayTime());
-        setFileSize(clipAddVo.getFileSize().split("\\.")[0]);
+        setFileSize(clipAddVo.getFileSize().toUpperCase().replace("KB","").split("\\.")[0]+"KB");
         setOs(new DeviceVo(request).getOs());
     }
     
