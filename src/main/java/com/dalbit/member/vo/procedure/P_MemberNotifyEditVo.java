@@ -2,6 +2,7 @@ package com.dalbit.member.vo.procedure;
 
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MemberNotifyEditVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,7 +34,7 @@ public class P_MemberNotifyEditVo {
         setSet_5(memberNotifyEditVo.getIsRadio());
         setSet_6(memberNotifyEditVo.getIsPush());
         setSet_7(memberNotifyEditVo.getIsLike());
-        setAlim_slct(memberNotifyEditVo.getAlimType());
+        setAlim_slct(DalbitUtil.isEmpty(memberNotifyEditVo.getAlimType()) ? "v" : ("-1".equals(memberNotifyEditVo.getAlimType()) ? "v" : memberNotifyEditVo.getAlimType()));
     }
 
 }
