@@ -168,6 +168,8 @@ public class ClipService {
         HashMap clipList = new HashMap();
         if(DalbitUtil.isEmpty(clipListVo)){
             clipList.put("list", new ArrayList<>());
+            clipList.put("totalCnt", 0);
+            clipList.put("paging", new PagingVo(0, pClipListVo.getPageNo(), pClipListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립리스트_조회_없음, clipList));
         }
         List<ClipListOutVo> outVoList = new ArrayList<>();
@@ -256,6 +258,8 @@ public class ClipService {
         HashMap clipPlayList = new HashMap();
         if(DalbitUtil.isEmpty(clipPlayListVo)){
             clipPlayList.put("list", new ArrayList<>());
+            clipPlayList.put("totalCnt", 0);
+            clipPlayList.put("paging", new PagingVo(0, pClipPlayListVo.getPageNo(), pClipPlayListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_재생목록_조회_없음, clipPlayList));
         }
         List<ClipPlayListOutVo> outVoList = new ArrayList<>();
@@ -396,6 +400,8 @@ public class ClipService {
             clipGiftRankList.put("list", new ArrayList<>());
             clipGiftRankList.put("giftCnt", 0);
             clipGiftRankList.put("byeolCnt", 0);
+            clipGiftRankList.put("totalCnt", 0);
+            clipGiftRankList.put("paging", new PagingVo(0, pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_선물랭킹_조회_없음, clipGiftRankList));
         }
         List<ClipGiftRankListOutVo> outVoList = new ArrayList<>();
@@ -497,6 +503,8 @@ public class ClipService {
         HashMap clipReplyList = new HashMap();
         if(DalbitUtil.isEmpty(clipReplyListVo)){
             clipReplyList.put("list", new ArrayList<>());
+            clipReplyList.put("totalCnt", 0);
+            clipReplyList.put("paging", new PagingVo(0, pClipPlayListVo.getPageNo(), pClipPlayListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글목록_조회_없음, clipReplyList));
         }
         List<ClipReplyListOutVo> outVoList = new ArrayList<>();
@@ -613,6 +621,8 @@ public class ClipService {
         //clipUploadList.put("count", mypageService.getMemberBoardCount(pClipUploadListVo));
         if(DalbitUtil.isEmpty(clipUploadListVo)){
             clipUploadList.put("list", new ArrayList<>());
+            clipUploadList.put("totalCnt", 0);
+            clipUploadList.put("paging", new PagingVo(0, pClipUploadListVo.getPageNo(), pClipUploadListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_업로드목록_조회_없음, clipUploadList));
         }
         List<ClipUploadListOutVo> outVoList = new ArrayList<>();
@@ -648,6 +658,8 @@ public class ClipService {
         HashMap clipListenList = new HashMap();
         if(DalbitUtil.isEmpty(clipListenListVo)){
             clipListenList.put("list", new ArrayList<>());
+            clipListenList.put("totalCnt", 0);
+            clipListenList.put("paging", new PagingVo(0, pClipListenListVo.getPageNo(), pClipListenListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_청취내역_조회_없음, clipListenList));
         }
         List<ClipListenListOutVo> outVoList = new ArrayList<>();
