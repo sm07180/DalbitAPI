@@ -221,7 +221,7 @@ public class ClipService {
             returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
             returnMap.put("commentOpen", true);
-            returnMap.put("playlistOpen", true);
+            returnMap.put("playlistOpen", false);
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
@@ -925,7 +925,7 @@ public class ClipService {
             returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
             returnMap.put("commentOpen", true);
-            returnMap.put("playlistOpen", true);
+            returnMap.put("playlistOpen", false);
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
