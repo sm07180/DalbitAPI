@@ -34,6 +34,6 @@ public class P_SpecialHistoryVo {
     private int special_cnt;
     private int good_cnt;
     private int listener_cnt;
-    private int minute_brodcast;
+    private int minute_broadcast;
     private String room_no;
 }

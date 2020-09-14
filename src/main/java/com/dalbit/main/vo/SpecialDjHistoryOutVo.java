@@ -40,7 +40,7 @@ public class SpecialDjHistoryOutVo {
         this.specialCnt = pSpecialHistoryVo.getSpecial_cnt();
         this.goodCnt = pSpecialHistoryVo.getGood_cnt();
         this.listenerCnt = pSpecialHistoryVo.getListener_cnt();
-        this.broadMin = pSpecialHistoryVo.getMinute_brodcast();
+        this.broadMin = pSpecialHistoryVo.getMinute_broadcast();
         this.roomNo = pSpecialHistoryVo.getRoom_no();
     }
 }
