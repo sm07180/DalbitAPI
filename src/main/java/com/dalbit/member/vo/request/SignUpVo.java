@@ -26,8 +26,8 @@ public class SignUpVo {
     @Password
     private String memPwd;
 
-    @Size(message = "{\"ko_KR\" : \"성별을\"}", max = 1)
-    private String gender;
+    /*@Size(message = "{\"ko_KR\" : \"성별을\"}", max = 1)*/
+    private String gender = "n";
 
     @NotBlank(message = "{\"ko_KR\" : \"닉네임을\"}")
     @NotNull(message = "{\"ko_KR\" : \"닉네임을\"}")
@@ -35,9 +35,9 @@ public class SignUpVo {
     private String nickNm;
 
     /*@NotBlank(message = "{\"ko_KR\" : \"생년월일을\"}")
-    @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")*/
-    @Size(message = "{\"ko_KR\" : \"생년월일을\"}", min = 8, max = 8)
-    private String birth;
+    @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")
+    @Size(message = "{\"ko_KR\" : \"생년월일을\"}", min = 8, max = 8)*/
+    private String birth = "";
 
     @NotBlank(message = "{\"ko_KR\" : \"약관 동의를\"}")
     @NotNull(message = "{\"ko_KR\" : \"약관 동의를\"}")

@@ -13,15 +13,20 @@ import java.time.format.DateTimeFormatter;
 @Setter
 public class P_JoinVo extends BaseVo {
 
-    public P_JoinVo(){}
+    public P_JoinVo() {
+    }
 
     public P_JoinVo(SignUpVo signUpVo
-        , int os , String deviceUuid , String deviceToken , String appVersion , String adId, String location, String ip, String browser, String nativeTid){
+            , int os, String deviceUuid, String deviceToken, String appVersion, String adId, String location, String ip, String browser, String nativeTid) {
 
         setMemSlct(signUpVo.getMemType());
         setId(signUpVo.getMemId());
         setPw(signUpVo.getMemPwd());
-        setMemSex(signUpVo.getGender());
+        if(DalbitUtil.isEmpty(signUpVo.getGender())){
+            setMemSex("n");
+        }else{
+            setMemSex(signUpVo.getGender());
+        }
         setNickName(signUpVo.getNickNm());
         setBirth(signUpVo.getBirth());
         setTerms1(signUpVo.getTerm1());
@@ -41,7 +46,7 @@ public class P_JoinVo extends BaseVo {
         setLocation(location);
         setIp(ip);
         setBrowser(browser);
-        if(!DalbitUtil.isEmpty(this.name) && this.name.length() > 50){
+        if (!DalbitUtil.isEmpty(this.name) && this.name.length() > 50) {
             this.name = this.name.substring(0, 49);
         }
         setNativeTid(nativeTid);
@@ -76,17 +81,23 @@ public class P_JoinVo extends BaseVo {
     private String nativeTid;
 
 
-    public void setBirth(String birth){
+    public void setBirth(String birth) {
 
-        if(!DalbitUtil.isEmpty(birth))
+        if (!DalbitUtil.isEmpty(birth)) {
             try {
                 this.birth = birth;
                 this.birthYear = LocalDate.parse(birth, DateTimeFormatter.BASIC_ISO_DATE).getYear();
                 this.birthMonth = LocalDate.parse(birth, DateTimeFormatter.BASIC_ISO_DATE).getMonthValue();
                 this.birthDay = LocalDate.parse(birth, DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth();
-            } catch (Exception e){
+            } catch (Exception e) {
                 this.birth = "";
             }
+        } else {
+            this.birth = LocalDate.now().minusYears(24).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            this.birthYear = LocalDate.parse(this.birth, DateTimeFormatter.BASIC_ISO_DATE).getYear();
+            this.birthMonth = LocalDate.parse(this.birth, DateTimeFormatter.BASIC_ISO_DATE).getMonthValue();
+            this.birthDay = LocalDate.parse(this.birth, DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth();
         }
     }
+}
 
