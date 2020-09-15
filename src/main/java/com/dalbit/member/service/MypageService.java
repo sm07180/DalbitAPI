@@ -361,6 +361,9 @@ public class MypageService {
         returnMap.put("isRadio", DalbitUtil.getIntMap(resultMap, "set_5"));
         returnMap.put("isPush", DalbitUtil.getIntMap(resultMap, "set_6"));
         returnMap.put("isLike", DalbitUtil.getIntMap(resultMap, "set_7"));
+        returnMap.put("isReply", DalbitUtil.getIntMap(resultMap, "set_8"));
+        returnMap.put("isStarClip", DalbitUtil.getIntMap(resultMap, "set_9"));
+        returnMap.put("isMyClip", DalbitUtil.getIntMap(resultMap, "set_10"));
         returnMap.put("alimType", DalbitUtil.getStringMap(resultMap, "alim_slct")); //알림음구분(n:무음,s:소리,v:진동)
         procedureVo.setData(returnMap);
 
