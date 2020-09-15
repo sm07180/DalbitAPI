@@ -902,6 +902,13 @@ public enum Status {
     방송제목초기화_성공("0", "broadcast.title.init.success", "방송제목 초기화 성공 시"),
     방송제목초기화_실패("C006", "broadcast.title.init.fail", "방송제목 초기화 실패 시"),
 
+    //클립수정
+    클립수정_클립번호없음("-1", "clip.play.number.error", "클립번호 없음"),
+    클립수정_수정변화없음("-2", "clip.no.change", "수정할 내용이 없음"),
+    클립수정_잘못된구분값("-3", "clip.no.match.editSlct", "editSlct 값이 잘못됨"),
+    클립수정_이미삭제("-4", "clip.already.delete", "이미 삭제됨"),
+    클립수정_이미확인("-5", "clip.already.confirm", "이미 확인됨"),
+    클립수정_닉네임중복("-6", "member.join.nick.duplicate", "닉네임중복됨"),
 
     //랭킹 이벤트 실시간 순위보기
     랭킹이벤트실시간순위리스트조회("C001", "event.ranking.live.list.select.success", "랭킹이벤트실시간순위리스트 정보 조회 성공 시"),
@@ -1402,6 +1409,16 @@ public enum Status {
     방송설정수정_실패("C006", "mypage.broadcast.setting.edit.error", "방송설정 수정 실패 시"),
 
     클립재생시간_5분초과("C005", "clip.exceed.play.time.limit.5min", "클립 재생시간 초과 시"),
+
+    //방송방 채팅 얼리기
+    얼리기_성공("0", "broadcast.room.freeze.success", "얼리기 성공 시"),
+    얼리기_회원아님("-1", "broadcast.room.freeze.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    얼리기_방번호없음("-2", "broadcast.room.freeze.no.room.number", "방 번호 없을 시"),
+    얼리기_종료된방("-3", "broadcast.room.freeze.end.room", "종료된 방일 시"),
+    얼리기_요청회원_방에없음("-4", "broadcast.room.freeze.member.not.in.room", "요청회원 방에 없을 시"),
+    얼리기_불가상태("-5", "broadcast.room.freeze.impossible", "얼리기 불가 상태"),
+    얼리기_실패("C006", "broadcast.room.freeze.fail", "얼리기 실패 시")
+
     ;
 
 

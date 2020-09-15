@@ -143,7 +143,7 @@ public class ClipService {
             pClipPlayVo.setCast_no(pClipEditVo.getCast_no());
             pClipPlayVo.setMem_no(pClipEditVo.getMem_no());
             pClipPlayVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-            result = clipPlay(pClipPlayVo, "edit");
+            result = clipPlay(pClipPlayVo, "edit", request);
 
         }else if(Status.클립수정_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립수정_회원아님));
@@ -194,7 +194,7 @@ public class ClipService {
     /**
      * 클립 플레이
      */
-    public String clipPlay(P_ClipPlayVo pClipPlayVo, String state) {
+    public String clipPlay(P_ClipPlayVo pClipPlayVo, String state, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipPlayVo);
         clipDao.callClipPlay(procedureVo);
 
@@ -218,7 +218,7 @@ public class ClipService {
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
             returnMap.put("entryType", DalbitUtil.getIntMap(resultMap, "entryType"));
             returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
-            returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+            returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
             returnMap.put("commentOpen", true);
             returnMap.put("playlistOpen", false);

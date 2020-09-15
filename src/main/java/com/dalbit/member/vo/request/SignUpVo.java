@@ -34,8 +34,8 @@ public class SignUpVo {
     @Size(message = "{\"ko_KR\" : \"닉네임을\"}", min = 2, max = 20)
     private String nickNm;
 
-    @NotBlank(message = "{\"ko_KR\" : \"생년월일을\"}")
-    @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")
+    /*@NotBlank(message = "{\"ko_KR\" : \"생년월일을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")*/
     @Size(message = "{\"ko_KR\" : \"생년월일을\"}", min = 8, max = 8)
     private String birth;
 

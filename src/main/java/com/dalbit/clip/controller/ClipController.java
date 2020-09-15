@@ -97,7 +97,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ClipPlayVo apiData = new P_ClipPlayVo(clipPlayVo, request);
-        String result = clipService.clipPlay(apiData, "play");
+        String result = clipService.clipPlay(apiData, "play", request);
         return result;
     }
 
