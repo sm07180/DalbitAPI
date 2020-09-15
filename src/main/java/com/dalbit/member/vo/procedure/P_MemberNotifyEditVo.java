@@ -17,10 +17,13 @@ public class P_MemberNotifyEditVo {
     private int set_1;          //마이 스타 알림
     private int set_2;          //선물 받은 달 알림
     private int set_3;          //팬 알림
-    private int set_4;          //댓글 알림
+    private int set_4;          //팬보드 신규글 알림
     private int set_5;          //달빛 라이브 알림
     private int set_6;          //push 알림
     private int set_7;          //좋아요 알림
+    private int set_8;          //팬보드 댓글 알림
+    private int set_9;          //마이스타 클립 등록 알림
+    private int set_10;         //내 클립 알림
     private String alim_slct;   //알림타입
 
     public P_MemberNotifyEditVo() { }
@@ -34,6 +37,9 @@ public class P_MemberNotifyEditVo {
         setSet_5(memberNotifyEditVo.getIsRadio());
         setSet_6(memberNotifyEditVo.getIsPush());
         setSet_7(memberNotifyEditVo.getIsLike());
+        setSet_8(memberNotifyEditVo.getIsReply());
+        setSet_9(memberNotifyEditVo.getIsStarClip());
+        setSet_10(memberNotifyEditVo.getIsMyClip());
         setAlim_slct(DalbitUtil.isEmpty(memberNotifyEditVo.getAlimType()) ? "v" : ("-1".equals(memberNotifyEditVo.getAlimType()) ? "v" : memberNotifyEditVo.getAlimType()));
     }
 
