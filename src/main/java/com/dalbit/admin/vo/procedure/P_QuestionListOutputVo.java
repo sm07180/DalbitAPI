@@ -41,9 +41,6 @@ public class P_QuestionListOutputVo extends AdminBaseVo {
     private int totalQnaCnt;
     private int totalOpCnt;
 
-    private int totalCnt;
-    private int pageNo;
-    private int pageCnt;
     private int totalQna;
     private int type1Cnt;
     private int type2Cnt;

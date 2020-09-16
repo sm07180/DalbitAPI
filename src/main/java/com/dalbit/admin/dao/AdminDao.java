@@ -4,10 +4,12 @@ import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.MessageInsertVo;
+import com.dalbit.member.vo.MemberVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 @Repository
@@ -120,4 +122,44 @@ public interface AdminDao {
     int insertBlock(DeclarationVo declarationVo);
 
     int insertBlockHistory(DeclarationVo declarationVo);
+
+    @Transactional(readOnly = true)
+    List<HashMap> selectVersion();
+
+    @Transactional(readOnly = true)
+    HashMap selectLast();
+
+    @Transactional(readOnly = true)
+    List<HashMap> selectApp(String version);
+
+    int insertApp(HashMap params);
+
+    int deleteApp(HashMap params);
+
+    @Transactional(readOnly = true)
+    ArrayList<ClipHistoryVo> callClipHistoryList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ClipDetailVo callClipDetail(ProcedureVo procedureVo);
+
+    ClipAdminEditVo callClipEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<ClipHistoryReplyVo> selectReplyList(ClipHistoryReplyVo clipHistoryReplyVo);
+
+    int deleteReply(ClipHistoryReplyVo clipHistoryReplyVo);
+
+    @Transactional(readOnly = true)
+    HashMap selectMemberRoomListen(String memNo);
+
+    @Transactional(readOnly = true)
+    HashMap selectMemberRoom(String memNo);
+
+    @Transactional(readOnly = true)
+    ArrayList<MemberBroadcastOutputVo> selectBroadCastList(MemberBroadcastOutputVo memberBroadcastOutputVo);
+
+    ProcedureVo callMemAdminMemoAdd(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    P_BroadcastDetailOutputVo callBroadcastInfo(ProcedureVo procedureVo);
 }

@@ -24,6 +24,9 @@ public class AdminBaseVo implements Serializable {
     int searchStart;
     int searchEnd;
 
+    int pageNo;
+    int pageCnt;
+    int totalCnt;
 
     String notificationYn;
 

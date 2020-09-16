@@ -70,9 +70,9 @@ public class ProfileService {
             }else{
                 profileInfoOutVo.setFanBadgeList(fanBadgeList);
             }
-            HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
+            //HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));
-            profileInfoOutVo.setBirth(DalbitUtil.getBirth(DalbitUtil.getStringMap(myInfo, "birthYear"), DalbitUtil.getStringMap(myInfo, "birthMonth"), DalbitUtil.getStringMap(myInfo, "birthDay")));
+            profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));
 
@@ -263,6 +263,8 @@ public class ProfileService {
         HashMap fanRankingList = new HashMap();
         if(DalbitUtil.isEmpty(fanRankingVoList)){
             fanRankingList.put("list", new ArrayList<>());
+            fanRankingList.put("totalCnt", 0);
+            fanRankingList.put("paging", new PagingVo(0, pFanRankingVo.getPageNo(), pFanRankingVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
         }
 

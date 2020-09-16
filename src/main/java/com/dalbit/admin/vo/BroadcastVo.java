@@ -11,7 +11,7 @@ public class BroadcastVo extends AdminBaseVo{
 
     /* input */
     private String reportYn;
-    private String broadSearch;
+    private String searchText;
 
     /* output */
     private String room_no;

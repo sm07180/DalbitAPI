@@ -49,13 +49,13 @@
             <if test='reportYn == "Y"'>
                  0 <![CDATA[<]]> reportedCnt
             </if>
-            <if test='broadSearch != null and broadSearch != ""'>
+            <if test='searchText != null and searchText != ""'>
                 and (
-                room_no like concat('%', #{broadSearch}, '%')
-                or title like concat('%', #{broadSearch}, '%')
-                or mem_no like concat('%', #{broadSearch}, '%')
-                or mem_nick like concat('%', #{broadSearch}, '%')
-                or mem_userid like concat('%', #{broadSearch}, '%')
+                room_no like concat('%', #{searchText}, '%')
+                or title like concat('%', #{searchText}, '%')
+                or mem_no like concat('%', #{searchText}, '%')
+                or mem_nick like concat('%', #{searchText}, '%')
+                or mem_userid like concat('%', #{searchText}, '%')
                 )
             </if>
         </where>
@@ -111,12 +111,12 @@
             <if test='reportYn == "Y"'>
                 0 <![CDATA[<]]> reportedCnt
             </if>
-            <if test='profileSearch != null and profileSearch != ""'>
+            <if test='searchText != null and searchText != ""'>
               and (
-                mem_userid like concat('%', #{profileSearch}, '%')
-                or mem_nick like concat('%', #{profileSearch}, '%')
-                or mem_no like concat('%', #{profileSearch}, '%')
-                or mem_phone like concat('%', #{profileSearch}, '%')
+                mem_userid like concat('%', #{searchText}, '%')
+                or mem_nick like concat('%', #{searchText}, '%')
+                or mem_no like concat('%', #{searchText}, '%')
+                or mem_phone like concat('%', #{searchText}, '%')
                 )
             </if>
         </where>
@@ -560,4 +560,213 @@
         )
     </insert>
 
+    <select id="selectClipList">
+        /* Admin.xml - selectClipList */
+        SELECT
+            clip.idx AS clipIdx
+            , clip.cast_no AS castNo
+            , clip.subject_type AS subjectType
+            , code.code AS subjectName
+            , clip.title AS title
+            , clip.type_entry AS typeEntry
+            , clip.image_background AS imageBackground
+            , clip.file_name AS fileName
+            , clip.file_path AS filePath
+            , clip.file_play AS filePlay
+            , clip.mem_no AS memNo
+            , clipInfo.mem_sex AS memSex
+            , clipInfo.mem_birth_year AS memBirthYear
+            , clipInfo.mem_nick AS memNick
+            , clip.type_open AS typeOpen
+            , clip.state AS state
+            , clip.hide AS hide
+            , clip.code_link AS codeLink
+            , clip.count_play AS countPlay
+            , clip.count_good AS countGood
+            , clip.count_gift AS countGift
+            , clip.count_byeol AS countByeol
+            , clip.start_date AS startDate
+            , clip.end_date AS endDate
+            , clip.badge_newdj AS badgeNewdj
+            , clip.os_type AS osType
+            , clip.last_upd_date AS lastUpdDate
+            , (SELECT COUNT(*) FROM rd_data.tb_cast_room WHERE mem_no = clip.mem_no) AS memInsertCnt
+            , clipInfo.`inner` AS 'inner'
+            , (SELECT COUNT(*) FROM rd_data.tb_cast_room_board WHERE cast_no = clip.cast_no) AS replyCnt
+        FROM rd_data.tb_cast_room clip
+        LEFT JOIN
+            rd_data.tb_member_basic clipInfo
+        ON
+            clipInfo.mem_no = clip.mem_no
+    </select>
+
+    <select id="selectVersion" resultType="java.util.HashMap">
+        /* Admin.xml - selectVersion */
+        SELECT
+            verName
+            , COUNT(*) AS cnt
+        FROM rd_admin.tb_ios_test_app
+        WHERE delYn = 0
+        GROUP BY verName
+        ORDER BY verName DESC
+    </select>
+
+    <select id="selectLast" resultType="java.util.HashMap">
+        /* Admin.xml - selectLast */
+        SELECT
+            verName
+            , appBuild
+            , dirName
+        FROM rd_admin.tb_ios_test_app
+        WHERE delYn = 0
+            AND idx = (SELECT idx FROM rd_admin.tb_ios_test_app WHERE delYn = 0 ORDER BY appBuild DESC LIMIT 1)
+    </select>
+
+    <select id="selectApp" parameterType="String" resultType="java.util.HashMap">
+        /* Admin.xml - selectApp */
+        SELECT
+            *
+        FROM rd_admin.tb_ios_test_app
+        WHERE delYn = 0
+            AND verName = #{value}
+        ORDER BY verName DESC, appBuild DESC
+    </select>
+
+    <insert id="insertApp" parameterType="java.util.HashMap">
+        /* Admin.xml - insertApp */
+        INSERT INTO rd_admin.tb_ios_test_app (
+            verName
+            , appBuild
+            , dirName
+            , description
+            , regDate
+            , opName
+        ) VALUES (
+            #{verName}
+            , #{appBuild}
+            , #{dirName}
+            , #{description}
+            , NOW()
+            , #{opName}
+        )
+    </insert>
+
+    <update id="deleteApp" parameterType="java.util.HashMap">
+        /* Admin.xml - deleteApp */
+        UPDATE rd_admin.tb_ios_test_app SET
+            delYn = 1
+            , delDate = NOW()
+            , delName = #{opName}
+        WHERE idx = #{idx}
+    </update>
+
+    <select id="callClipHistoryList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipHistoryVo">
+        call rd_admin.sp_admin_clip_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipDetailVo">
+        call rd_admin.sp_admin_clip_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipEdit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipAdminEditVo">
+        call rd_admin.sp_admin_clip_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectReplyList" parameterType="com.dalbit.admin.vo.ClipHistoryReplyVo" resultType="com.dalbit.admin.vo.ClipHistoryReplyVo">
+        /* Admin.xml - selectReplyList */
+        SELECT
+            borad.idx	AS replyIdx
+            , borad.cast_no	AS castNo
+            , borad.cast_mem_no	AS castMemNo
+            , borad.writer_mem_no	AS writerMemNo
+            , borad.contents	AS contents
+            , borad.status	AS status
+            , borad.write_date	AS writeDate
+            , borad.last_upd_date	AS lastUpdDate
+            , basic.mem_nick AS memNick
+            , basic.mem_sex AS memSex
+            , basic.mem_birth_year AS memBirthYear
+            , profile.image_profile AS profileImage
+        FROM
+            rd_data.tb_cast_room_board borad
+            LEFT JOIN rd_data.tb_member_basic basic ON basic.mem_no = borad.writer_mem_no
+            LEFT JOIN rd_data.tb_member_profile profile ON profile.mem_no = borad.writer_mem_no
+        WHERE
+            cast_no = #{castNo}
+        ORDER BY
+            write_date DESC
+    </select>
+
+    <update id="deleteReply" parameterType="com.dalbit.admin.vo.ClipHistoryReplyVo">
+        /* Admin.xml - deleteReply */
+        update rd_data.tb_cast_room_board
+        set status = #{status}
+            , last_upd_date = now()
+        where idx = #{replyIdx}
+    </update>
+
+    <select id="selectMemberRoomListen" parameterType="String" resultType="java.util.HashMap">
+        /* Admin.xml - selectMemberRoomListen */
+        select a.room_no as listen_room_no
+               ,b.title as listen_title
+          from rd_data.tb_broadcast_room_member a
+          inner join rd_data.tb_broadcast_room b on a.room_no = b.room_no
+         where a.mem_no=#{mem_no}
+           and a.state=0
+           and a.auth != 3
+           and b.state != 4
+         order by a.last_upd_date desc
+         limit 1;
+    </select>
+
+    <select id="selectMemberRoom" parameterType="String" resultType="java.util.HashMap">
+        /* Admin.xml - selectMemberRoom */
+        select room_no
+              ,title
+        from rd_data.tb_broadcast_room
+        where state != 4 and mem_no =#{mem_no}
+    </select>
+
+    <select id="selectBroadCastList" parameterType="com.dalbit.admin.vo.MemberBroadcastOutputVo" resultType="com.dalbit.admin.vo.MemberBroadcastOutputVo">
+        /* Admin.xml - selectBroadCastList */
+        SELECT a.room_no
+            ,a.mem_no
+            ,a.subject_type
+            ,title
+            ,image_background
+            ,start_date
+            ,msg_welcom
+        FROM rd_data.tb_broadcast_room a
+        LEFT JOIN rd_data.tb_member_basic b ON a.mem_no = b.mem_no
+        where a.mem_no = #{mem_no}
+        <if test='room_no != "" and room_no != null'>
+            and a.room_no = #{room_no}
+        </if>
+        and start_date > DATE_SUB(now(), INTERVAL 7 DAY)
+        order by start_date desc
+        limit 5;
+    </select>
+
+    <select id="callMemAdminMemoAdd" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        call rd_admin.sp_admin_op_memo_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastInfo" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo">
+        call rd_admin.sp_admin_broadcast_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectListenList" parameterType="String" resultType="com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo">
+        /* Admin.xml - selectListenList */
+        select a.room_no
+              ,a.mem_no
+              ,ifnull(b.mem_nick,(select aa.mem_nick From rd_data.tb_member_withdrawal_bak aa where aa.mem_no = a.mem_no)) as mem_nick
+              ,c.mem_no as dj_mem_no
+              ,ifnull(d.mem_nick,(select aa.mem_nick From rd_data.tb_member_withdrawal_bak aa where aa.mem_no = c.mem_no)) as dj_nickname
+          from rd_data.tb_broadcast_room_member a left join rd_data.tb_member_basic b on a.mem_no = b.mem_no
+               left join rd_data.tb_broadcast_room c on a.room_no = c.room_no left join rd_data.tb_member_basic d on c.mem_no = d.mem_no
+         where a.mem_no= #{mem_no}
+           and a.auth != 3
+           and a.join_date > DATE_SUB(now(), INTERVAL 1 DAY)
+           limit 30
+    </select>
 </mapper>

@@ -410,6 +410,10 @@ public class DalbitUtil {
 
     public static boolean isLogin(HttpServletRequest request){
         String memNo = new MemberVo().getMyMemNo(request);
+        return isLogin(memNo);
+    }
+
+    public static boolean isLogin(String memNo){
         return !(DalbitUtil.isEmpty(memNo) || "anonymousUser".equals(memNo) || memNo.startsWith("8"));
     }
 

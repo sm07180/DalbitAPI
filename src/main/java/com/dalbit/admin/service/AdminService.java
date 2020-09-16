@@ -28,6 +28,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -600,7 +601,7 @@ public class AdminService {
                 //declarationVo.setBlock_text(adminDao.selectRecentIdIp(declarationVo).getBlock_text());
 
                 if(!DalbitUtil.isEmpty(getRecentInfo)){
-
+                    
                     //uuid 차단 등록
                     if(!"".equals(DalbitUtil.isEmpty(getRecentInfo.getDevice_uuid()) && declarationVo.getUuid_block() == 1)){
                         declarationVo.setBlock_type(1);
@@ -975,6 +976,22 @@ public class AdminService {
         adminDao.callServiceCenterQnaDetail(procedureVo);
         P_QuestionDetailOutputVo questionDetail = new Gson().fromJson(procedureVo.getExt(), P_QuestionDetailOutputVo.class);
 
+
+        //selectMemberRoomListen
+        if(DalbitUtil.isLogin(questionDetail.getMem_no())){
+            HashMap listenResult = adminDao.selectMemberRoomListen(questionDetail.getMem_no());
+            String listen_room_no = DalbitUtil.getStringMap(listenResult, "listen_room_no");
+            String listen_title = DalbitUtil.getStringMap(listenResult, "listen_title");
+            questionDetail.setListen_room_no(listen_room_no);
+            questionDetail.setListen_title(listen_title);
+
+            HashMap broadcastResult = adminDao.selectMemberRoom(questionDetail.getMem_no());
+            String broad_room_no = DalbitUtil.getStringMap(broadcastResult, "room_no");
+            String broad_title = DalbitUtil.getStringMap(broadcastResult, "title");
+            questionDetail.setBroad_room_no(broad_room_no);
+            questionDetail.setBroad_title(broad_title);
+        }
+
         String result;
 
         if(Status.고객센터_문의상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
@@ -1234,5 +1251,192 @@ public class AdminService {
      */
     public String selectAdminName(String mem_no){
         return adminDao.selectAdminName(mem_no);
+    }
+
+    public HashMap getVersion(){
+        HashMap result = new HashMap();
+        HashMap data = new HashMap();
+        data.put("last", adminDao.selectLast());
+        data.put("list", adminDao.selectVersion());
+        result.put("status", Status.조회);
+        result.put("data", data);
+        return result;
+    }
+
+    public HashMap getApp(HttpServletRequest request){
+        HashMap result = new HashMap();
+        HashMap data = new HashMap();
+        data.put("list", adminDao.selectApp(request.getParameter("ver")));
+        result.put("status", Status.조회);
+        result.put("data", data);
+        return result;
+    }
+
+    public Status doInsert(HttpServletRequest request){
+        Status result = Status.비즈니스로직오류;
+        HashMap params = new HashMap();
+        params.put("opName", MemberVo.getMyMemNo());
+        params.put("verName", request.getParameter("verName"));
+        params.put("appBuild", request.getParameter("appBuild"));
+        params.put("dirName", request.getParameter("dirName"));
+        params.put("description", request.getParameter("description"));
+        if(1 == adminDao.insertApp(params)){
+            result = Status.생성;
+        }
+        return result;
+    }
+
+    public Status doDelete(HttpServletRequest request){
+        Status result = Status.비즈니스로직오류;
+        HashMap params = new HashMap();
+        params.put("opName", MemberVo.getMyMemNo());
+        params.put("idx", request.getParameter("idx"));
+        if(1 == adminDao.deleteApp(params)){
+            result = Status.삭제;
+        }
+        return result;
+    }
+
+    /**
+     * 클립 리스트 조회
+     */
+    public String callClipHistoryList(ClipHistoryVo clipHistoryVo) {
+        ProcedureVo procedureVo = new ProcedureVo(clipHistoryVo);
+        List<ClipHistoryVo> clipList = adminDao.callClipHistoryList(procedureVo);
+        AdminBaseVo totalInfo = new Gson().fromJson(procedureVo.getExt(), AdminBaseVo.class);
+
+
+        if(totalInfo.getPageNo() * totalInfo.getPageCnt() < totalInfo.getTotalCnt()){
+            clipHistoryVo.setEndPage(false);
+        }else{
+            clipHistoryVo.setEndPage(true);
+        }
+
+        var map = new HashMap<>();
+        map.put("isEndPage", clipHistoryVo.isEndPage());
+        map.put("clipList", clipList);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+    }
+
+    /**
+     * 클립 상세 조회
+     */
+    public String callClipDetail(ClipDetailVo clipDetailVo) {
+        ProcedureVo procedureVo = new ProcedureVo(clipDetailVo);
+        adminDao.callClipDetail(procedureVo);
+
+        ClipDetailVo clipDetail = new Gson().fromJson(procedureVo.getExt(), ClipDetailVo.class);
+
+        var map = new HashMap<>();
+        map.put("clipDetail", clipDetail);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+    }
+
+    /**
+     * 클립 수정
+     */
+    public String callClipEdit(ClipAdminEditVo clipAdminEditVo) {
+        clipAdminEditVo.setOpName(selectAdminName(MemberVo.getMyMemNo()));
+        ProcedureVo procedureVo = new ProcedureVo(clipAdminEditVo);
+        adminDao.callClipEdit(procedureVo);
+
+        Status status;
+        if (procedureVo.getRet().equals(Status.클립수정_성공.getMessageCode())) {
+            status = Status.클립수정_성공;
+
+        } else if(procedureVo.getRet().equals(Status.클립수정_클립번호없음.getMessageCode())){
+            status = Status.클립수정_클립번호없음;
+
+        }else if(procedureVo.getRet().equals(Status.클립수정_수정변화없음.getMessageCode())){
+            status = Status.클립수정_수정변화없음;
+
+        }else if(procedureVo.getRet().equals(Status.클립수정_잘못된구분값.getMessageCode())){
+            status = Status.클립수정_잘못된구분값;
+
+        }else if(procedureVo.getRet().equals(Status.클립수정_이미삭제.getMessageCode())){
+            status = Status.클립수정_이미삭제;
+
+        }else if(procedureVo.getRet().equals(Status.클립수정_이미확인.getMessageCode())){
+            status = Status.클립수정_이미확인;
+
+        }else if(procedureVo.getRet().equals(Status.클립수정_닉네임중복.getMessageCode())){
+            status = Status.클립수정_닉네임중복;
+
+        }else{
+            status = Status.비즈니스로직오류;
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(status));
+    }
+
+    /**
+     * 클립 댓글 리스트 조회
+     */
+    public String selectReplyList(ClipHistoryReplyVo clipHistoryReplyVo) {
+        ArrayList<ClipHistoryReplyVo> list = adminDao.selectReplyList(clipHistoryReplyVo);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+    }
+
+    /**
+     * 클립 댓글 리스트 삭제
+     */
+    public String deleteReply(ClipHistoryReplyVo clipHistoryReplyVo) {
+        clipHistoryReplyVo.setStatus("2");
+        adminDao.deleteReply(clipHistoryReplyVo);
+        return gsonUtil.toJson(new JsonOutputVo(Status.삭제));
+    }
+
+    /**
+     * 방송 강제종료
+     */
+    public String forcedEnd(MemberBroadcastOutputVo memberBroadcastOutputVo, HttpServletRequest request) {
+        ArrayList<MemberBroadcastOutputVo> list = adminDao.selectBroadCastList(memberBroadcastOutputVo);
+
+        P_MemberAdminMemoAddVo pMemberAdminMemoAddVo = new P_MemberAdminMemoAddVo();
+        pMemberAdminMemoAddVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
+        pMemberAdminMemoAddVo.setMem_no(memberBroadcastOutputVo.getMem_no());
+        pMemberAdminMemoAddVo.setMemo("운영자에 의한 회원 방송 강제 종료 시도");
+        ProcedureVo procedureVo = new ProcedureVo(pMemberAdminMemoAddVo);
+        adminDao.callMemAdminMemoAdd(procedureVo);
+
+        if(!DalbitUtil.isEmpty(memberBroadcastOutputVo.getRoom_no())) {
+            pMemberAdminMemoAddVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
+            pMemberAdminMemoAddVo.setMem_no(memberBroadcastOutputVo.getRoom_no());
+            pMemberAdminMemoAddVo.setMemo("운영자에 의한 회원 방송 강제 종료 시도");
+            procedureVo = new ProcedureVo(pMemberAdminMemoAddVo);
+            adminDao.callMemAdminMemoAdd(procedureVo);
+        }
+
+        String room_no;
+        String forceExitResult ="";
+        String result = "";
+        for (int i=0; i<list.size();i++) {
+            room_no = list.get(i).getRoom_no();
+            // 방송 시작시간
+            P_MemberBroadcastInputVo pMemberBroadcastInputVo = new P_MemberBroadcastInputVo();
+            pMemberBroadcastInputVo.setRoom_no(room_no);
+            ProcedureVo procedureVo2 = new ProcedureVo(pMemberBroadcastInputVo);
+            adminDao.callBroadcastInfo(procedureVo2);
+
+            P_BroadcastDetailOutputVo broadcastDetail = new Gson().fromJson(procedureVo2.getExt(), P_BroadcastDetailOutputVo.class);
+
+            // 방송 강제종료 api 호출
+            P_RoomForceExitInputVo p_roomForceExitInputVo = new P_RoomForceExitInputVo();
+            p_roomForceExitInputVo.setMem_no(memberBroadcastOutputVo.getMem_no());
+            p_roomForceExitInputVo.setRoom_no(room_no);
+            p_roomForceExitInputVo.setStart_date(broadcastDetail.getStartDate());
+            p_roomForceExitInputVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
+            p_roomForceExitInputVo.setRoomExit("Y");
+            result = roomForceExit(p_roomForceExitInputVo, request);
+            log.info(forceExitResult);
+            if(forceExitResult.equals("error") || forceExitResult.equals("noAuth")){
+                break;
+            }
+        }
+
+        return result;
     }
 }

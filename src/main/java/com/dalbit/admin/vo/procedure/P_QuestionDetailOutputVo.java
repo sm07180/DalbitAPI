@@ -35,4 +35,10 @@ public class P_QuestionDetailOutputVo extends BaseVo {
     private String phone;
 
     private String answer;
+
+    private String listen_room_no;
+    private String listen_title;
+
+    private String broad_room_no;
+    private String broad_title;
 }

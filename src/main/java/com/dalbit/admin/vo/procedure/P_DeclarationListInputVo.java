@@ -9,6 +9,8 @@ import lombok.Setter;
 public class P_DeclarationListInputVo extends AdminProcedureBaseVo {
     private int pageNo;
     private String strPlatform;
+    private String searchType;
+    private String searchText;
 
     private int slctType;
 }

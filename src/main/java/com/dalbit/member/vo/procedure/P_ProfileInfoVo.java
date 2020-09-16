@@ -61,4 +61,7 @@ public class P_ProfileInfoVo {
     private String cupidMemNo;
     private String cupidNickNm;
     private int badge_new;                      // 신입청취자 뱃지
+    private String birthYear;           //생 년
+    private String birthMonth;          //생 월
+    private String birthDay;            //생 일
 }

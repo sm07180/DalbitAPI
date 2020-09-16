@@ -11,9 +11,7 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
@@ -305,5 +303,75 @@ public class AdminController {
         return result;
     }
 
+    @PostMapping("/ios/version")
+    public String version(){
+        HashMap result = adminService.getVersion();
+        return gsonUtil.toJson(new JsonOutputVo((Status) result.get("status"), result.get("data")));
+    }
 
+    @PostMapping("/ios/app")
+    public String app(HttpServletRequest request){
+        HashMap result = adminService.getApp(request);
+        return gsonUtil.toJson(new JsonOutputVo((Status) result.get("status"), result.get("data")));
+    }
+
+    @PostMapping("/ios/insert")
+    public String insert(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(adminService.doInsert(request)));
+    }
+
+    @PostMapping("/ios/delete")
+    public String delete(HttpServletRequest request){
+        return gsonUtil.toJson(new JsonOutputVo(adminService.doDelete(request)));
+    }
+
+    /**
+     * 클립 내역 조회
+     */
+    @PostMapping("/clip/list")
+    public String clipList(ClipHistoryVo clipHistoryVo) {
+        return adminService.callClipHistoryList(clipHistoryVo);
+    }
+
+    /**
+     * 클립 내역 조회
+     */
+    @PostMapping("/clip/detail")
+    public String clipDetail(ClipDetailVo clipDetailVo) {
+        return adminService.callClipDetail(clipDetailVo);
+    }
+
+    /**
+     * 클립 내역 조회
+     */
+    @PostMapping("/clip/edit")
+    public String clipEdit(ClipAdminEditVo clipAdminEditVo) {
+        return adminService.callClipEdit(clipAdminEditVo);
+    }
+
+    /**
+     * 클립 내역 조회
+     */
+    @PostMapping("/clip/reply/list")
+    public String clipReplyList(ClipHistoryReplyVo clipHistoryReplyVo) {
+        return adminService.selectReplyList(clipHistoryReplyVo);
+    }
+
+    /**
+     * 클립 내역 삭제
+     */
+    @PostMapping("/clip/reply/delete")
+    public String clipReplyDelete(ClipHistoryReplyVo clipHistoryReplyVo) {
+        return adminService.deleteReply(clipHistoryReplyVo);
+    }
+
+
+    /**
+     * 관리자 방송방 종료처리
+     */
+    @PostMapping("/broadcast/forceExit/multi")
+    public String broadcastForceExitMulti(HttpServletRequest request, MemberBroadcastOutputVo memberBroadcastOutputVo){
+        String result = adminService.forcedEnd(memberBroadcastOutputVo, request);
+        return result;
+    }
 }
