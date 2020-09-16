@@ -233,7 +233,14 @@ public class WowzaService {
     }
 
     public HashMap doJoinBroadcast(RoomJoinVo roomJoinVo, HttpServletRequest request) throws GlobalException{
+
         HashMap result = new HashMap();
+        //비회원 참여 불가
+        if(!DalbitUtil.isLogin(request)){
+            result.put("status", Status.로그인필요);
+            return result;
+        }
+
         //방 생성 접속 불가 상태 체크
         var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
         if(!DalbitUtil.isEmpty(codeVo)){
