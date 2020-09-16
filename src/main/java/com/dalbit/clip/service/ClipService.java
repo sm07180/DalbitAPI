@@ -195,9 +195,14 @@ public class ClipService {
      * 클립 플레이
      */
     public String clipPlay(P_ClipPlayVo pClipPlayVo, String state, HttpServletRequest request) {
+
+        //비회원 플레이 불가
+        if(!DalbitUtil.isLogin(request)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(pClipPlayVo);
         clipDao.callClipPlay(procedureVo);
-
         String result="";
         if(Status.클립플레이_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
