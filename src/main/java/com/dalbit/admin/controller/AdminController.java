@@ -364,14 +364,4 @@ public class AdminController {
     public String clipReplyDelete(ClipHistoryReplyVo clipHistoryReplyVo) {
         return adminService.deleteReply(clipHistoryReplyVo);
     }
-
-
-    /**
-     * 관리자 방송방 종료처리
-     */
-    @PostMapping("/broadcast/forceExit/multi")
-    public String broadcastForceExitMulti(HttpServletRequest request, MemberBroadcastOutputVo memberBroadcastOutputVo){
-        String result = adminService.forcedEnd(memberBroadcastOutputVo, request);
-        return result;
-    }
 }

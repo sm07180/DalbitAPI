@@ -202,12 +202,12 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
     }
 
-
     /**
      * 생방송관리 > 강제종료
      */
     public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomForceExitInputVo);
+
         //방 나가기 처리
         if(DalbitUtil.isEmpty(pRoomForceExitInputVo.getRoomExit()) || pRoomForceExitInputVo.getRoomExit().equals("Y")) {
             adminDao.callBroadcastRoomExit(procedureVo);
@@ -222,11 +222,35 @@ public class AdminService {
             }
         }
 
+        P_MemberAdminMemoAddVo pMemberAdminMemoAddVo = new P_MemberAdminMemoAddVo();
+        pMemberAdminMemoAddVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
+        pMemberAdminMemoAddVo.setMem_no(pRoomForceExitInputVo.getMem_no());
+        pMemberAdminMemoAddVo.setMemo("운영자에 의한 회원 방송 강제 종료 시도");
+        ProcedureVo adminMemoProcedure = new ProcedureVo(pMemberAdminMemoAddVo);
+        adminDao.callMemAdminMemoAdd(adminMemoProcedure);
+
+        if(!DalbitUtil.isEmpty(pRoomForceExitInputVo.getRoom_no())) {
+            pMemberAdminMemoAddVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
+            pMemberAdminMemoAddVo.setMem_no(pRoomForceExitInputVo.getRoom_no());
+            pMemberAdminMemoAddVo.setMemo("운영자에 의한 회원 방송 강제 종료 시도");
+            adminMemoProcedure = new ProcedureVo(pMemberAdminMemoAddVo);
+            adminDao.callMemAdminMemoAdd(adminMemoProcedure);
+        }
+
         //회원 나가기 처리
         adminDao.updateBroadcastMemberExit(pRoomForceExitInputVo);
 
+
+        //시작시간 가져오기
+        P_MemberBroadcastInputVo pMemberBroadcastInputVo = new P_MemberBroadcastInputVo();
+        pMemberBroadcastInputVo.setRoom_no(pRoomForceExitInputVo.getRoom_no());
+        ProcedureVo broadcastInfo = new ProcedureVo(pMemberBroadcastInputVo);
+        adminDao.callBroadcastInfo(broadcastInfo);
+
+        P_BroadcastDetailOutputVo broadcastDetail = new Gson().fromJson(broadcastInfo.getExt(), P_BroadcastDetailOutputVo.class);
+
         //방 종료 처리
-        adminDao.updateBroadcastExit(new BroadcastExitVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getStart_date()));
+        adminDao.updateBroadcastExit(new BroadcastExitVo(pRoomForceExitInputVo.getRoom_no(), broadcastDetail.getStartDate()));
 
         //소캣 종료 처리
         SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
@@ -1387,56 +1411,5 @@ public class AdminService {
         clipHistoryReplyVo.setStatus("2");
         adminDao.deleteReply(clipHistoryReplyVo);
         return gsonUtil.toJson(new JsonOutputVo(Status.삭제));
-    }
-
-    /**
-     * 방송 강제종료
-     */
-    public String forcedEnd(MemberBroadcastOutputVo memberBroadcastOutputVo, HttpServletRequest request) {
-        ArrayList<MemberBroadcastOutputVo> list = adminDao.selectBroadCastList(memberBroadcastOutputVo);
-
-        P_MemberAdminMemoAddVo pMemberAdminMemoAddVo = new P_MemberAdminMemoAddVo();
-        pMemberAdminMemoAddVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
-        pMemberAdminMemoAddVo.setMem_no(memberBroadcastOutputVo.getMem_no());
-        pMemberAdminMemoAddVo.setMemo("운영자에 의한 회원 방송 강제 종료 시도");
-        ProcedureVo procedureVo = new ProcedureVo(pMemberAdminMemoAddVo);
-        adminDao.callMemAdminMemoAdd(procedureVo);
-
-        if(!DalbitUtil.isEmpty(memberBroadcastOutputVo.getRoom_no())) {
-            pMemberAdminMemoAddVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
-            pMemberAdminMemoAddVo.setMem_no(memberBroadcastOutputVo.getRoom_no());
-            pMemberAdminMemoAddVo.setMemo("운영자에 의한 회원 방송 강제 종료 시도");
-            procedureVo = new ProcedureVo(pMemberAdminMemoAddVo);
-            adminDao.callMemAdminMemoAdd(procedureVo);
-        }
-
-        String room_no;
-        String forceExitResult ="";
-        String result = "";
-        for (int i=0; i<list.size();i++) {
-            room_no = list.get(i).getRoom_no();
-            // 방송 시작시간
-            P_MemberBroadcastInputVo pMemberBroadcastInputVo = new P_MemberBroadcastInputVo();
-            pMemberBroadcastInputVo.setRoom_no(room_no);
-            ProcedureVo procedureVo2 = new ProcedureVo(pMemberBroadcastInputVo);
-            adminDao.callBroadcastInfo(procedureVo2);
-
-            P_BroadcastDetailOutputVo broadcastDetail = new Gson().fromJson(procedureVo2.getExt(), P_BroadcastDetailOutputVo.class);
-
-            // 방송 강제종료 api 호출
-            P_RoomForceExitInputVo p_roomForceExitInputVo = new P_RoomForceExitInputVo();
-            p_roomForceExitInputVo.setMem_no(memberBroadcastOutputVo.getMem_no());
-            p_roomForceExitInputVo.setRoom_no(room_no);
-            p_roomForceExitInputVo.setStart_date(broadcastDetail.getStartDate());
-            p_roomForceExitInputVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
-            p_roomForceExitInputVo.setRoomExit("Y");
-            result = roomForceExit(p_roomForceExitInputVo, request);
-            log.info(forceExitResult);
-            if(forceExitResult.equals("error") || forceExitResult.equals("noAuth")){
-                break;
-            }
-        }
-
-        return result;
     }
 }

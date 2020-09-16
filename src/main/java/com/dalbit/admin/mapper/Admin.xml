@@ -755,18 +755,4 @@
         call rd_admin.sp_admin_broadcast_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectListenList" parameterType="String" resultType="com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo">
-        /* Admin.xml - selectListenList */
-        select a.room_no
-              ,a.mem_no
-              ,ifnull(b.mem_nick,(select aa.mem_nick From rd_data.tb_member_withdrawal_bak aa where aa.mem_no = a.mem_no)) as mem_nick
-              ,c.mem_no as dj_mem_no
-              ,ifnull(d.mem_nick,(select aa.mem_nick From rd_data.tb_member_withdrawal_bak aa where aa.mem_no = c.mem_no)) as dj_nickname
-          from rd_data.tb_broadcast_room_member a left join rd_data.tb_member_basic b on a.mem_no = b.mem_no
-               left join rd_data.tb_broadcast_room c on a.room_no = c.room_no left join rd_data.tb_member_basic d on c.mem_no = d.mem_no
-         where a.mem_no= #{mem_no}
-           and a.auth != 3
-           and a.join_date > DATE_SUB(now(), INTERVAL 1 DAY)
-           limit 30
-    </select>
 </mapper>
