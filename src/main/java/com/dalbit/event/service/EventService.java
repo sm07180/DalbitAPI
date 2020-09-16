@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -759,6 +758,7 @@ public class EventService {
         if(!DalbitUtil.isLogin(request)){
             var resultMap = new HashMap();
             resultMap.put("isCheck", true);
+            resultMap.put("attendanceCheck", 0);
             return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, resultMap));
         }
         ProcedureVo procedureVo = new ProcedureVo(pAttendanceCheckVo);
