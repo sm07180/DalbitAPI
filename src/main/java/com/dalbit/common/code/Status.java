@@ -1343,7 +1343,54 @@ public enum Status {
     노하우_이벤트_좋아요("0", "event.good.success", "이벤트 좋아요 성공"),
     노하우_이벤트_좋아요취소("1", "event.good.cancel.success", "이벤트 좋아요 취소 성공"),
 
-    //마이페이지 방송설정 제목추가
+    //이벤트 관리 페이지
+    이벤트_리스트조회_성공("C001", "event.page.list.success", "이벤트 리스트 조회 성공 시"),
+    이벤트_리스트조회_데이터없음("0", "event.page.no.data", "이벤트 리스트 조회 시 데이터가 없을 때"),
+    이벤트_리스트조회_실패("-9", "business.error", "이벤트 리스트 조회 실패 시"),
+
+    이벤트_당첨자명단조회_성공("C001", "event.page.win.list.success", "이벤트 당첨자 명단 조회 성공 시"),
+    이벤트_당첨자명단조회_이벤트번호없음("-1", "event.page.no.eventIdx", "이벤트 당첨자 명단 조회 시 이벤트 번호가 없을 때"),
+    이벤트_당첨자명단조회_결과없음("-2", "event.page.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_당첨자명단조회_실패("-9", "business.error", "이벤트 당첨자 명단 조회 실패 시"),
+
+    이벤트_당첨여부조회_성공("C001", "event.page.win.result.success", "이벤트 당첨 여부 조회 성공 시"),
+    이벤트_당첨여부조회_당첨자아님("0", "event.page.not.winner", "이벤트 당첨 여부 조회 시 당첨자가 아닐 때"),
+    이벤트_당첨여부조회_회원아님("-1", "event.page.not.member", "이벤트 당첨 여부 조회 시 회원 번호가 없을 때"),
+    이벤트_당첨여부조회_이벤트번호없음("-2", "event.page.no.eventIdx", "이벤트 당첨 여부 조회 시 이벤트 번호가 없을 때"),
+    이벤트_당첨여부조회_결과없음("-3", "event.page.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_당첨여부조회_실패("-9", "business.error", "이벤트 당첨 여부 조회 실패 시"),
+
+    이벤트_경품수령방법입력_경품받기_성공("1", "event.prize.receive.choice.prize.success", "이벤트 경품 배송수령 입력 성공 시"),
+    이벤트_경품수령방법입력_달로받기_성공("2", "event.prize.receive.choice.dal.success", "이벤트 경품 달로 받기 입력 성공 시"),
+    이벤트_경품수령방법입력_회원아님("-1", "event.prize.not.member", "이벤트 경품 수령 방법 입력 시 회원 번호가 없을 때"),
+    이벤트_경품수령방법입력_이벤트번호없음("-2", "event.prize.no.eventIdx", "이벤트 경품 수령 방법 입력 시 이벤트 번호가 없을 때"),
+    이벤트_경품수령방법입력_결과없음("-3", "event.prize.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_경품수령방법입력_당첨자아님("-4", "event.prize.not.winner", "이벤트 경품 수령 방법 입력 시 당첨자가 아닐 때"),
+    이벤트_경품수령방법입력_이미경품선택함_입력불가능("-5", "event.prize.receive.choice.already.choice", "배송 정보 입력 후 새로 배송 정보를 입력하려할 시(달로 받기 선택은 가능)"),
+    이벤트_경품수령방법입력_수령방법_오류("-6", "event.prize.receive.choice.receiveWay.error", "이벤트 경품 수령 방법이 (1,2)가 아닐 시"),
+    이벤트_경품수령방법입력_입금확인후_수정불가능("-7", "event.prize.receive.choice.already.deposit", "경품 입금 확인 후 수령 방법 수정 불가능할 때"),
+    이벤트_경품수령방법입력_실패("-9", "business.error", "이벤트 경품 수령 방법 입력 실패 시"),
+
+    이벤트_당첨자등록정보조회_성공("0", "event.winner.add.info.select.success", "이벤트 당첨자 등록정보 조회 성공 시"),
+    이벤트_당첨자등록정보조회_회원아님("-1", "event.winner.not.member", "이벤트 당첨자 등록정보 조회 시 회원 번호가 없을 때"),
+    이벤트_당첨자등록정보조회_이벤트번호없음("-2", "event.winner.no.eventIdx", "이벤트 당첨자 등록정보 조회 시 이벤트 번호가 없을 때"),
+    이벤트_당첨자등록정보조회_결과없음("-3", "event.winner.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_당첨자등록정보조회_당첨자아님("-4", "event.winner.not.winner", "이벤트 당첨자 등록정보 조회 시 당첨자가 아닐 때"),
+    이벤트_당첨자등록정보조회_경품번호없음("-5", "event.page.no.prizeIdx", "이벤트 당첨자 등록정보 조회 시 경품 번호가 없을 때"),
+    이벤트_당첨자등록정보조회_실패("-9", "business.error", "이벤트 당첨자 등록정보 조회 실패 시"),
+
+    이벤트_당첨자등록정보수정_등록성공("0", "event.winner.add.info.insert.success", "이벤트 당첨자 등록정보 최초 등록 성공 시"),
+    이벤트_당첨자등록정보수정_성공("1", "event.winner.add.info.edit.success", "이벤트 당첨자 등록정보 수정 성공 시"),
+    이벤트_당첨자등록정보수정_회원아님("-1", "event.winner.not.member", "이벤트 당첨자 등록정보 수정 시 회원 번호가 없을 때"),
+    이벤트_당첨자등록정보수정_이벤트번호없음("-2", "event.winner.no.eventIdx", "이벤트 당첨자 등록정보 수정 시 이벤트 번호가 없을 때"),
+    이벤트_당첨자등록정보수정_결과없음("-3", "event.winner.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_당첨자등록정보수정_당첨자아님("-4", "event.winner.not.winner", "이벤트 당첨자 등록정보 수정 시 당첨자가 아닐 때"),
+    이벤트_당첨자등록정보수정_입금확인후_수정불가능("-5", "event.winner.add.info.edit.already.deposit", "경품 입금 확인 후 수령 방법 수정 불가능할 때"),
+    이벤트_당첨자등록정보수정_경품번호없음("-6", "event.page.no.prizeIdx", "이벤트 당첨자 등록정보 수정 시 경품 번호가 없을 때"),
+    이벤트_당첨자등록정보수정_실패("-9", "business.error", "이벤트 당첨자 등록정보 조회 실패 시"),
+
+
+   //마이페이지 방송설정 제목추가
     방송설정_제목추가_성공("0", "mypage.broadcast.title.add.success", "방송제목 추가 성공 시"),
     방송설정_제목추가_회원아님("-1", "mypage.broadcast.title.add.member.number.error", "요청 회원번호 정상 아닐 시"),
     방송설정_제목추가_제한("-2", "mypage.broadcast.title.add.limit3", "방송제목 추가 제한 시"),

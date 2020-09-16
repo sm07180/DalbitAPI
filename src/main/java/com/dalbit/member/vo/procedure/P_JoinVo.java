@@ -93,7 +93,7 @@ public class P_JoinVo extends BaseVo {
                 this.birth = "";
             }
         } else {
-            this.birth = LocalDate.now().minusYears(24).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+            this.birth = LocalDate.now().minusYears(18).format(DateTimeFormatter.ofPattern("yyyyMMdd"));
             this.birthYear = LocalDate.parse(this.birth, DateTimeFormatter.BASIC_ISO_DATE).getYear();
             this.birthMonth = LocalDate.parse(this.birth, DateTimeFormatter.BASIC_ISO_DATE).getMonthValue();
             this.birthDay = LocalDate.parse(this.birth, DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth();

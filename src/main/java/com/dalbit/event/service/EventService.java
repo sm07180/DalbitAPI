@@ -758,7 +758,7 @@ public class EventService {
         //비로그인은 무조건 체크 false로 리턴
         if(!DalbitUtil.isLogin(request)){
             var resultMap = new HashMap();
-            resultMap.put("isCheck", false);
+            resultMap.put("isCheck", true);
             return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, resultMap));
         }
         ProcedureVo procedureVo = new ProcedureVo(pAttendanceCheckVo);
@@ -766,11 +766,11 @@ public class EventService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("isCheck", DalbitUtil.getStringMap(resultMap, "attendance_check").equals("0") ? true : false);
-        procedureVo.setData(returnMap);
+        returnMap.put("isCheck", DalbitUtil.getStringMap(resultMap, "attendance_check").equals("2") ? false : true);
+        returnMap.put("attendanceCheck", DalbitUtil.getIntMap(resultMap, "attendance_check"));
 
         if(procedureVo.getRet().equals(Status.출석완료체크_성공.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, procedureVo.getData()));
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.출석완료체크_회원아님.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_회원아님));
         }else{
@@ -1241,5 +1241,26 @@ public class EventService {
             resultMap.put("status", Status.이벤트_비회원);
         }
         return resultMap;
+    }
+
+    /**
+     * 출석완료 체크 방송방 생성, 참여 시
+     */
+    public HashMap callAttendanceCheckMap(int isLogin, P_AttendanceCheckVo pAttendanceCheckVo) {
+
+        HashMap returnMap = new HashMap();
+        //비로그인은 무조건 체크 true 리턴
+        if (isLogin == 0) {
+            returnMap.put("isCheck", true);
+            return returnMap;
+        }
+        ProcedureVo procedureVo = new ProcedureVo(pAttendanceCheckVo);
+        eventDao.callAttendanceCheck(procedureVo);
+
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        returnMap.put("isCheck", DalbitUtil.getStringMap(resultMap, "attendance_check").equals("2") ? false : true);
+
+        return returnMap;
+
     }
 }
