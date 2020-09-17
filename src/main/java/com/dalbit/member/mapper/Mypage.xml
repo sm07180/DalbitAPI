@@ -237,7 +237,7 @@
         select count(*)
         from rd_data.tb_broadcast_room
         where mem_no = #{mem_no}
-            and 3600 <![CDATA[<=]]> airtime
+            and 5400 <![CDATA[<=]]> airtime
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
             and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
@@ -358,9 +358,9 @@
         SELECT
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{myMemNo} AND STATUS &lt;&gt; 2 AND idx &gt; #{fanBoard} AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{myMemNo} AND STATUS &lt;&gt; 2 AND idx &gt; #{fanBoard} AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
                 ELSE
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{targetMemNo} AND STATUS &lt;&gt; 2 AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{targetMemNo} AND STATUS &lt;&gt; 2 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
             END) AS fanBoard,
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
