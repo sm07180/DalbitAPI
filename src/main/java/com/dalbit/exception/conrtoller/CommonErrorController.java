@@ -32,12 +32,25 @@ public class CommonErrorController {
     @Autowired
     CommonService commonService;
 
+    /**
+     * 에러로그 예외처리
+     * false : 로그 적재 안함
+     * true : 로그 적재
+     */
+    public boolean isSaveLog(GlobalException globalException, HttpServletResponse response, HttpServletRequest request){
+        if(globalException.getStatus() == Status.벨리데이션체크) return false;
+        if(request.getRequestURL().toString().endsWith("/error/log")) return false;
+        if(globalException.getClass().getSimpleName().toLowerCase().equals("clientabortexception")) return false; //ClientAbortException
+
+        return true;
+    }
+
     @ExceptionHandler(GlobalException.class)
     public String exceptionHandle(GlobalException globalException, HttpServletResponse response, HttpServletRequest request){
         DalbitUtil.setHeader(request, response);
 
         try {
-            if(globalException.getStatus() != Status.벨리데이션체크 || !request.getRequestURL().toString().endsWith("/error/log")) {
+            if(isSaveLog(globalException, response, request)) {
                 DeviceVo deviceVo = new DeviceVo(request);
                 P_ErrorLogVo apiData = new P_ErrorLogVo();
                 apiData.setOs("API");
