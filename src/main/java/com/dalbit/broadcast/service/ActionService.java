@@ -171,7 +171,7 @@ public class ActionService {
 
 
     public String callBroadCastRoomShareLink(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request) throws GlobalException{
-        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        ProcedureOutputVo procedureOutputVo = roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
         String result = "";
         if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
             RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();

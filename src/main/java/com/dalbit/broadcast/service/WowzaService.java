@@ -14,6 +14,8 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
@@ -51,6 +53,8 @@ public class WowzaService {
     CommonDao commonDao;
     @Autowired
     RoomService roomService;
+    @Autowired
+    EventService eventService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -218,8 +222,14 @@ public class WowzaService {
                 memberInfoVo.setFanBadgeList(fanBadgeList);
             }
 
+            //출석체크 완료 여부 조회
+            P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
+            attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
+            int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+            HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
+
             result.put("status", Status.방송생성);
-            result.put("data", new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX));
+            result.put("data", new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, attendanceCheckMap));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result.put("status", Status.방송생성_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
@@ -398,7 +408,11 @@ public class WowzaService {
         P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
         if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())){
             roomInfoViewVo.setExt(procedureInfoViewVo.getExt());
-            ProcedureOutputVo procedureRoomInfoOutputVo = new ProcedureOutputVo(procedureInfoViewVo, new RoomOutVo(roomInfoViewVo));
+            //출석체크 완료 여부 조회
+            P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo();
+            attendanceCheckVo.setMem_no(memNo);
+            HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
+            ProcedureOutputVo procedureRoomInfoOutputVo = new ProcedureOutputVo(procedureInfoViewVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap));
             return (RoomOutVo) procedureRoomInfoOutputVo.getOutputBox();
         }
         return null;
@@ -433,7 +447,13 @@ public class WowzaService {
             memberInfoVo.setFanBadgeList(fanBadgeList);
         }
 
-        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX);
+        //출석체크 완료 여부 조회
+        P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
+        attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
+        int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+        HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
+
+        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, attendanceCheckMap);
     }
 
     @Async("threadTaskExecutor")

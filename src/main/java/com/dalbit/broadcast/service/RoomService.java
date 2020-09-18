@@ -10,6 +10,8 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
@@ -51,6 +53,8 @@ public class RoomService {
     ContentService contentService;
     @Autowired
     CommonDao commonDao;
+    @Autowired
+    EventService eventService;
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -106,7 +110,7 @@ public class RoomService {
             pRoomInfoViewVo.setRoom_no(roomNo);
 
             //방송방 정보 조회
-            ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+            ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
             log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
             RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
 
@@ -200,7 +204,7 @@ public class RoomService {
             pRoomInfoViewVo.setRoom_no(pRoomJoinVo.getRoom_no());
 
             //방송방 정보 조회
-            ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+            ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
             log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
             RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
 
@@ -602,7 +606,7 @@ public class RoomService {
      */
     public String callBroadCastRoomInfoView(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request) throws GlobalException{
 
-        ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
 
         String result = "";
         if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
@@ -627,7 +631,7 @@ public class RoomService {
     /**
      * 방송 정보조회(방송방 생성,참여 후)
      */
-    public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo){
+    public ProcedureOutputVo callBroadCastRoomInfoViewReturnVo(P_RoomInfoViewVo pRoomInfoViewVo, HttpServletRequest request){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
         P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureVo);
 
@@ -636,7 +640,13 @@ public class RoomService {
             return new ProcedureOutputVo(procedureVo);
         }else{
             roomInfoViewVo.setExt(procedureVo.getExt());
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo));
+
+            //출석체크 완료 여부 조회
+            P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
+            attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
+            int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+            HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap));
         }
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
@@ -964,7 +974,7 @@ public class RoomService {
                 pRoomInfoViewVo.setRoom_no(pRoomStreamTokenVo.getRoom_no());
 
                 //방송방 정보 조회
-                ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+                ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
                 if(Status.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
                     log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
                     RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
@@ -1037,6 +1047,14 @@ public class RoomService {
                     DeviceVo deviceVo = new DeviceVo(request);
                     returnMap.put("antOrigin", DalbitUtil.getProperty("server.ant.origin.url") + DalbitUtil.getProperty("server.ant.path.url"));
                     returnMap.put("antEdge", DalbitUtil.getProperty("server.ant.edge.url") + DalbitUtil.getProperty("server.ant.path.url"));
+
+                    //출석체크 완료 여부 조회
+                    P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
+                    attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
+                    int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+                    HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
+                    returnMap.put("isCheck", attendanceCheckMap.get("isCheck"));
+
                     log.info("returnMap: {}", returnMap);
 
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
@@ -1077,7 +1095,7 @@ public class RoomService {
         pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         pRoomInfoViewVo.setMem_no(MemberVo.getMyMemNo(request));
         pRoomInfoViewVo.setRoom_no(stateVo.getRoomNo());
-        ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
 
         String result="";
         if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
@@ -1159,7 +1177,7 @@ public class RoomService {
         pRoomInfoViewVo.setMemLogin(pRoomStreamVo.getMemLogin());
         pRoomInfoViewVo.setMem_no(pRoomStreamVo.getMem_no());
         pRoomInfoViewVo.setRoom_no(pRoomStreamVo.getRoom_no());
-        ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo);
+        ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
 
         if(Status.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
             ProcedureVo procedureVo = new ProcedureVo(pRoomStreamVo);
