@@ -27,6 +27,7 @@ public class ClipListOutVo {
     private String gender;              //성별
     private int birthYear;              //생년
     private ImageVo profImg;            //프로필이미지
+    private int replyCnt;               //클립 댓글 수
 
     public ClipListOutVo(P_ClipListVo target){
         setClipNo(target.getCast_no());
@@ -47,5 +48,6 @@ public class ClipListOutVo {
         setGender(target.getMemSex());
         setBirthYear(target.getBirthYear());
         setProfImg(new ImageVo(target.getProfileImage(), getGender(), DalbitUtil.getProperty("server.photo.url")));
+        setReplyCnt(target.getReplyCnt());
     }
 }

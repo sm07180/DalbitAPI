@@ -38,4 +38,5 @@ public class P_ClipListenListVo {
     private int goodCnt;                //좋아요 수
     private int giftCnt;                //받은별 수
     private String nickName;            //닉네임
+    private int replyCnt;               //댓글 수
 }

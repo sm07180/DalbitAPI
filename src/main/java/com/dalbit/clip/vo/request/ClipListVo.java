@@ -12,7 +12,7 @@ public class ClipListVo {
 
     @NotNull(message = "{\"ko_KR\" : \"검색구분을\"}")
     @Min(message = "{\"ko_KR\" : \"검색구분을\"}", value = 0)
-    @Max(message = "{\"ko_KR\" : \"검색구분을\"}", value = 3)
+    @Max(message = "{\"ko_KR\" : \"검색구분을\"}", value = 4)
     private Integer slctType;
 
     @NotNull(message = "{\"ko_KR\" : \"신입구분을\"}")

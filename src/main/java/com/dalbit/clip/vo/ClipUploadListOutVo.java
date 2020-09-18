@@ -19,6 +19,7 @@ public class ClipUploadListOutVo {
     private int byeolCnt;               //받은별 수
     private String memNo;               //클립 등록 회원번호
     private String nickName;            //닉네임
+    private int replyCnt;               //댓글 수
 
     public ClipUploadListOutVo(P_ClipUploadListVo target){
         setClipNo(target.getCast_no());
@@ -30,5 +31,6 @@ public class ClipUploadListOutVo {
         setByeolCnt(target.getGiftCnt());
         setMemNo(target.getMem_no());
         setNickName(target.getNickName());
+        setReplyCnt(target.getReplyCnt());
     }
 }

@@ -54,6 +54,7 @@ public class P_ClipListVo {
     private String memSex;              //성별
     private int birthYear;              //생년
     private String profileImage;        //프로필이미지
+    private int replyCnt;               //댓글 수
 
 
 }
