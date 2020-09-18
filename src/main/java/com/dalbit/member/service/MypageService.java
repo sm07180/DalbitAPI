@@ -1862,11 +1862,12 @@ public class MypageService {
             walletListMap.put("list", walletList);
 
             int size = walletList.size();
-            Object[] newArray = new Object[size+1];
+            Object[] newArray = new Object[size];
             for (int i=0; i < size; i++){
                 int orderNo = (int) ((HashMap) walletList.get(i)).get("order");
-                newArray[orderNo] = walletList.get(i);
+                newArray[orderNo-1] = walletList.get(i);
             }
+
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_성공, newArray));
         }else if(procedureVo.getRet().equals(Status.내지갑팝업조회_회원아님.getMessageCode())) {
