@@ -1749,46 +1749,57 @@ public class MypageService {
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            List walletList = new ArrayList();
+            ArrayList walletList = new ArrayList();
             ArrayList key = new ArrayList(resultMap.keySet());
 
             String text = "";
             int walletCode = 0;
+            int order=0;
             if(pWalletPopupListVo.getSlctType() == 0){ //별
                 for (int i=0; i < key.size(); i++){
                     if("exchangeUse".equals(key.get(i))){
                         text = "환전 사용";
                         walletCode = 1;
+                        order = 1;
                     }else if("changeUse".equals(key.get(i))){
                         text = "별＞달 교환 사용";
                         walletCode = 2;
+                        order = 2;
                     }else if("itemGet".equals(key.get(i))){
-                        text = "아이템 선물 획득";
+                        text = "라이브 아이템 선물 획득";
                         walletCode = 3;
-                    }else if("secret_itemGet".equals(key.get(i))){
-                        text = "아이템 몰래 선물 획득";
-                        walletCode = 4;
+                        order = 3;
                     }else if("clipGet".equals(key.get(i))){
                         text = "클립 아이템 선물 획득";
                         walletCode = 5;
+                        order = 4;
+                    }else if("secret_itemGet".equals(key.get(i))){
+                        text = "아이템 몰래 선물 획득";
+                        walletCode = 4;
+                        order = 5;
                     }else if("levelupGet".equals(key.get(i))){
                         text = "레벨업 보상 획득";
                         walletCode = 6;
+                        order = 6;
                     }else if("eventGet".equals(key.get(i))){
                         text = "이벤트 보상 획득";
                         walletCode = 7;
+                        order = 7;
                     }else if("opGet".equals(key.get(i))){
                         text = "운영자 지급 획득";
                         walletCode = 8;
+                        order = 8;
                     }else if("exchangeGet".equals(key.get(i))){
                         text = "환전 취소 복구";
                         walletCode = 9;
+                        order = 9;
                     }
                     HashMap returnMap = new HashMap();
                     returnMap.put("walletCode", walletCode);
                     returnMap.put("type", key.get(i).toString().toUpperCase().endsWith("USE") ? "use" : "get");
                     returnMap.put("text", text);
                     returnMap.put("cnt", DalbitUtil.getIntMap(resultMap, (String) key.get(i)));
+                    returnMap.put("order", order);
                     walletList.add(returnMap);
                 }
             } else { // 달
@@ -1796,49 +1807,68 @@ public class MypageService {
                     if("itemUse".equals(key.get(i))){
                         text = "아이템 선물 사용";
                         walletCode = 1;
+                        order = 1;
                     }else if("secret_itemUse".equals(key.get(i))){
                         text = "아이템 몰래 선물 사용";
                         walletCode = 2;
-                    }else if("giftUse".equals(key.get(i))){
-                        text = "달 직접 선물 사용";
-                        walletCode = 3;
+                        order = 2;
                     }else if("clipUse".equals(key.get(i))){
                         text = "클립 아이템 선물 사용";
                         walletCode = 4;
+                        order = 3;
+                    }else if("giftUse".equals(key.get(i))){
+                        text = "달 직접 선물 사용";
+                        walletCode = 3;
+                        order = 4;
                     }else if("buyGet".equals(key.get(i))){
                         text = "달 구매 획득";
                         walletCode = 5;
-                    }else if("UseGet".equals(key.get(i))){
-                        text = "달 직접 선물 획득";
-                        walletCode = 6;
-                    }else if("rankingGet".equals(key.get(i))){
-                        text = "랭킹 보상 획득";
-                        walletCode = 7;
-                    }else if("levelupGet".equals(key.get(i))){
-                        text = "레벨 업 보상 획득";
-                        walletCode = 8;
+                        order = 5;
                     }else if("changeGet".equals(key.get(i))){
                         text = "별＞달 교환 획득";
                         walletCode = 9;
+                        order = 6;
+                    }else if("UseGet".equals(key.get(i))){
+                        text = "달 직접 선물 획득";
+                        walletCode = 6;
+                        order = 7;
+                    }else if("rankingGet".equals(key.get(i))){
+                        text = "랭킹 보상 획득";
+                        walletCode = 7;
+                        order = 8;
+                    }else if("levelupGet".equals(key.get(i))){
+                        text = "레벨 업 보상 획득";
+                        walletCode = 8;
+                        order = 9;
                     }else if("eventGet".equals(key.get(i))){
                         text = "이벤트 보상 획득";
                         walletCode = 10;
+                        order = 10;
                     }else if("opGet".equals(key.get(i))){
                         text = "운영자 지급 획득";
                         walletCode = 11;
+                        order = 11;
                     }
                     HashMap returnMap = new HashMap();
                     returnMap.put("walletCode", walletCode);
                     returnMap.put("type", key.get(i).toString().toUpperCase().endsWith("USE") ? "use" : "get");
                     returnMap.put("text", text);
                     returnMap.put("cnt", DalbitUtil.getIntMap(resultMap, (String) key.get(i)));
+                    returnMap.put("order", order);
                     walletList.add(returnMap);
                 }
             }
             HashMap walletListMap = new HashMap();
             walletListMap.put("list", walletList);
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_성공, walletListMap));
+            int size = walletList.size();
+            Object[] newArray = new Object[size+1];
+            for (int i=0; i < size; i++){
+                int orderNo = (int) ((HashMap) walletList.get(i)).get("order");
+                newArray[orderNo] = walletList.get(i);
+            }
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_성공, newArray));
         }else if(procedureVo.getRet().equals(Status.내지갑팝업조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_회원아님));
         }else{
