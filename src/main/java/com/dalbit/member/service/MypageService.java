@@ -1872,9 +1872,10 @@ public class MypageService {
             for (int i=0; i < size; i++){
                 newArray2[i] = newArray[i +1];
             }
+            HashMap list = new HashMap();
+            list.put("list", newArray2);
 
-
-            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_성공, newArray2));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_성공, list));
         }else if(procedureVo.getRet().equals(Status.내지갑팝업조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_회원아님));
         }else{
