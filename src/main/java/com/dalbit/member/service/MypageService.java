@@ -1754,7 +1754,7 @@ public class MypageService {
 
             String text = "";
             int walletCode = 0;
-            int order=0;
+            int order=1;
             if(pWalletPopupListVo.getSlctType() == 0){ //별
                 for (int i=0; i < key.size(); i++){
                     if("exchangeUse".equals(key.get(i))){
@@ -1868,8 +1868,8 @@ public class MypageService {
                 int orderNo = (int) ((HashMap) walletList.get(i)).get("order");
                 newArray[orderNo] =  walletList.get(i);
             }
-            Object[] newArray2 = new Object[size-1];
-            for (int i=0; i < size-1; i++){
+            Object[] newArray2 = new Object[size];
+            for (int i=0; i < size; i++){
                 newArray2[i] = newArray[i +1];
             }
 
