@@ -135,4 +135,10 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     HashMap callMemberBoardCount(HashMap params);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callWalletPopupListView(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_WalletListVo> callWalletList(ProcedureVo procedureVo);
 }

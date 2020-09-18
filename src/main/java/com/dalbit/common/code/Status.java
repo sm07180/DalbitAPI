@@ -1362,29 +1362,29 @@ public enum Status {
 
     이벤트_경품수령방법입력_경품받기_성공("1", "event.prize.receive.choice.prize.success", "이벤트 경품 배송수령 입력 성공 시"),
     이벤트_경품수령방법입력_달로받기_성공("2", "event.prize.receive.choice.dal.success", "이벤트 경품 달로 받기 입력 성공 시"),
-    이벤트_경품수령방법입력_회원아님("-1", "event.prize.not.member", "이벤트 경품 수령 방법 입력 시 회원 번호가 없을 때"),
-    이벤트_경품수령방법입력_이벤트번호없음("-2", "event.prize.no.eventIdx", "이벤트 경품 수령 방법 입력 시 이벤트 번호가 없을 때"),
-    이벤트_경품수령방법입력_결과없음("-3", "event.prize.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
-    이벤트_경품수령방법입력_당첨자아님("-4", "event.prize.not.winner", "이벤트 경품 수령 방법 입력 시 당첨자가 아닐 때"),
+    이벤트_경품수령방법입력_회원아님("-1", "event.page.not.member", "이벤트 경품 수령 방법 입력 시 회원 번호가 없을 때"),
+    이벤트_경품수령방법입력_이벤트번호없음("-2", "event.page.no.eventIdx", "이벤트 경품 수령 방법 입력 시 이벤트 번호가 없을 때"),
+    이벤트_경품수령방법입력_결과없음("-3", "event.page.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_경품수령방법입력_당첨자아님("-4", "event.page.not.winner", "이벤트 경품 수령 방법 입력 시 당첨자가 아닐 때"),
     이벤트_경품수령방법입력_이미경품선택함_입력불가능("-5", "event.prize.receive.choice.already.choice", "배송 정보 입력 후 새로 배송 정보를 입력하려할 시(달로 받기 선택은 가능)"),
     이벤트_경품수령방법입력_수령방법_오류("-6", "event.prize.receive.choice.receiveWay.error", "이벤트 경품 수령 방법이 (1,2)가 아닐 시"),
     이벤트_경품수령방법입력_입금확인후_수정불가능("-7", "event.prize.receive.choice.already.deposit", "경품 입금 확인 후 수령 방법 수정 불가능할 때"),
     이벤트_경품수령방법입력_실패("-9", "business.error", "이벤트 경품 수령 방법 입력 실패 시"),
 
     이벤트_당첨자등록정보조회_성공("0", "event.winner.add.info.select.success", "이벤트 당첨자 등록정보 조회 성공 시"),
-    이벤트_당첨자등록정보조회_회원아님("-1", "event.winner.not.member", "이벤트 당첨자 등록정보 조회 시 회원 번호가 없을 때"),
-    이벤트_당첨자등록정보조회_이벤트번호없음("-2", "event.winner.no.eventIdx", "이벤트 당첨자 등록정보 조회 시 이벤트 번호가 없을 때"),
-    이벤트_당첨자등록정보조회_결과없음("-3", "event.winner.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
-    이벤트_당첨자등록정보조회_당첨자아님("-4", "event.winner.not.winner", "이벤트 당첨자 등록정보 조회 시 당첨자가 아닐 때"),
+    이벤트_당첨자등록정보조회_회원아님("-1", "event.page.not.member", "이벤트 당첨자 등록정보 조회 시 회원 번호가 없을 때"),
+    이벤트_당첨자등록정보조회_이벤트번호없음("-2", "event.page.no.eventIdx", "이벤트 당첨자 등록정보 조회 시 이벤트 번호가 없을 때"),
+    이벤트_당첨자등록정보조회_결과없음("-3", "event.page.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_당첨자등록정보조회_당첨자아님("-4", "event.page.not.winner", "이벤트 당첨자 등록정보 조회 시 당첨자가 아닐 때"),
     이벤트_당첨자등록정보조회_경품번호없음("-5", "event.page.no.prizeIdx", "이벤트 당첨자 등록정보 조회 시 경품 번호가 없을 때"),
     이벤트_당첨자등록정보조회_실패("-9", "business.error", "이벤트 당첨자 등록정보 조회 실패 시"),
 
     이벤트_당첨자등록정보수정_등록성공("0", "event.winner.add.info.insert.success", "이벤트 당첨자 등록정보 최초 등록 성공 시"),
     이벤트_당첨자등록정보수정_성공("1", "event.winner.add.info.edit.success", "이벤트 당첨자 등록정보 수정 성공 시"),
-    이벤트_당첨자등록정보수정_회원아님("-1", "event.winner.not.member", "이벤트 당첨자 등록정보 수정 시 회원 번호가 없을 때"),
-    이벤트_당첨자등록정보수정_이벤트번호없음("-2", "event.winner.no.eventIdx", "이벤트 당첨자 등록정보 수정 시 이벤트 번호가 없을 때"),
-    이벤트_당첨자등록정보수정_결과없음("-3", "event.winner.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
-    이벤트_당첨자등록정보수정_당첨자아님("-4", "event.winner.not.winner", "이벤트 당첨자 등록정보 수정 시 당첨자가 아닐 때"),
+    이벤트_당첨자등록정보수정_회원아님("-1", "event.page.not.member", "이벤트 당첨자 등록정보 수정 시 회원 번호가 없을 때"),
+    이벤트_당첨자등록정보수정_이벤트번호없음("-2", "event.page.no.eventIdx", "이벤트 당첨자 등록정보 수정 시 이벤트 번호가 없을 때"),
+    이벤트_당첨자등록정보수정_결과없음("-3", "event.page.not.complete", "이벤트 당첨자 선정이 완료가 안됐을 시"),
+    이벤트_당첨자등록정보수정_당첨자아님("-4", "event.page.not.winner", "이벤트 당첨자 등록정보 수정 시 당첨자가 아닐 때"),
     이벤트_당첨자등록정보수정_입금확인후_수정불가능("-5", "event.winner.add.info.edit.already.deposit", "경품 입금 확인 후 수령 방법 수정 불가능할 때"),
     이벤트_당첨자등록정보수정_경품번호없음("-6", "event.page.no.prizeIdx", "이벤트 당첨자 등록정보 수정 시 경품 번호가 없을 때"),
     이벤트_당첨자등록정보수정_실패("-9", "business.error", "이벤트 당첨자 등록정보 조회 실패 시"),
@@ -1458,13 +1458,37 @@ public enum Status {
     클립재생시간_5분초과("C005", "clip.exceed.play.time.limit.5min", "클립 재생시간 초과 시"),
 
     //방송방 채팅 얼리기
-    얼리기_성공("0", "broadcast.room.freeze.success", "얼리기 성공 시"),
+    얼리기_성공("0", "broadcast.room.freeze.true.success", "얼리기 성공 시"),
+    얼리기_해제("0", "broadcast.room.freeze.false.success", "얼리기 해제 시"),
     얼리기_회원아님("-1", "broadcast.room.freeze.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
     얼리기_방번호없음("-2", "broadcast.room.freeze.no.room.number", "방 번호 없을 시"),
     얼리기_종료된방("-3", "broadcast.room.freeze.end.room", "종료된 방일 시"),
     얼리기_요청회원_방에없음("-4", "broadcast.room.freeze.member.not.in.room", "요청회원 방에 없을 시"),
     얼리기_불가상태("-5", "broadcast.room.freeze.impossible", "얼리기 불가 상태"),
-    얼리기_실패("C006", "broadcast.room.freeze.fail", "얼리기 실패 시")
+    얼리기_실패("C006", "broadcast.room.freeze.fail", "얼리기 실패 시"),
+
+    //내지갑 필터 팝업 조회
+    내지갑팝업조회_성공("1", "mypage.wallet.history.popup.select.success", "내지갑 내역 조회 성공 시"),
+    내지갑팝업조회_회원아님("-1", "mypage.wallet.history.popup.select.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
+    내지갑팝업조회_실패("C006", "mypage.wallet.history.popup.select.fail", "내지갑 내역 조회 실패 시"),
+
+    //방송방 사연 조회
+    방송방사연_조회_성공("C001", "mypage.broad.story.list.select.success", "방송방 사연 조회 성공 시"),
+    방송방사연_조회_없음("0", "mypage.broad.story.list.select.no.success", "방송방 사연 없을 시"),
+    방송방사연_조회_회원아님("-1", "mypage.broad.story.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    방송방사연_조회_실패("C006", "mypage.broad.story.list.select.fail", "방송방 사연 조회 실패 시"),
+
+    //내지갑 내역 조회
+    내지갑_내역조회_성공("C001", "mypage.wallet.list.select.success", "내지갑 내역 조회 성공 시"),
+    내지갑_내역조회_없음("0", "mypage.wallet.list.select.no", "내지갑 내역 없을 시"),
+    내지갑_내역조회_회원아님("-1", "mypage.wallet.list.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    내지갑_내역조회_실패("C006", "mypage.wallet.list.select.fail", "내지갑 내역조회 실패 시"),
+
+    //방송종료 요약
+    방송종료요약_성공("0", "broad.summary.success", "조회 성공"),
+    방송종료요약_회원아님("-1", "broad.summary.no.member", "회원정보 찾을 수 없음"),
+    방송종료요약_방없음("-2", "broad.summary.no.room", "방정보가 없거나 종료가 아닐때(종료여부는 DJ만)"),
+    방송종료요약_실패("C006", "broad.summary.fail", "조회 실패"),
 
     ;
 

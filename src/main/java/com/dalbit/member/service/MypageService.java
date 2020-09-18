@@ -3,6 +3,7 @@ package com.dalbit.member.service;
 import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
+import com.dalbit.broadcast.vo.procedure.P_WalletPopupListVo;
 import com.dalbit.clip.vo.procedure.P_ClipUploadListVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -1734,6 +1735,154 @@ public class MypageService {
         result.put("clip", 0);
         if(!params.isEmpty()){
             result = mypageDao.callMemberBoardCount(params);
+        }
+        return result;
+    }
+
+    /**
+     * 내지갑 달&별 팝업 리스트 & 건수
+     */
+    public String callWalletPopupListView(P_WalletPopupListVo pWalletPopupListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pWalletPopupListVo);
+        mypageDao.callWalletPopupListView(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            List walletList = new ArrayList();
+            ArrayList key = new ArrayList(resultMap.keySet());
+
+            String text = "";
+            int walletCode = 0;
+            if(pWalletPopupListVo.getSlctType() == 0){ //별
+                for (int i=0; i < key.size(); i++){
+                    if("exchangeUse".equals(key.get(i))){
+                        text = "환전 사용";
+                        walletCode = 1;
+                    }else if("changeUse".equals(key.get(i))){
+                        text = "별＞달 교환 사용";
+                        walletCode = 2;
+                    }else if("itemGet".equals(key.get(i))){
+                        text = "아이템 선물 획득";
+                        walletCode = 3;
+                    }else if("secret_itemGet".equals(key.get(i))){
+                        text = "아이템 몰래 선물 획득";
+                        walletCode = 4;
+                    }else if("clipGet".equals(key.get(i))){
+                        text = "클립 아이템 선물 획득";
+                        walletCode = 5;
+                    }else if("levelupGet".equals(key.get(i))){
+                        text = "레벨업 보상 획득";
+                        walletCode = 6;
+                    }else if("eventGet".equals(key.get(i))){
+                        text = "이벤트 보상 획득";
+                        walletCode = 7;
+                    }else if("opGet".equals(key.get(i))){
+                        text = "운영자 지급 획득";
+                        walletCode = 8;
+                    }else if("exchangeGet".equals(key.get(i))){
+                        text = "환전 취소 복구";
+                        walletCode = 9;
+                    }
+                    HashMap returnMap = new HashMap();
+                    returnMap.put("walletCode", walletCode);
+                    returnMap.put("type", key.get(i).toString().toUpperCase().endsWith("USE") ? "use" : "get");
+                    returnMap.put("text", text);
+                    returnMap.put("cnt", DalbitUtil.getIntMap(resultMap, (String) key.get(i)));
+                    walletList.add(returnMap);
+                }
+            } else { // 달
+                for (int i=0; i < key.size(); i++){
+                    if("itemUse".equals(key.get(i))){
+                        text = "아이템 선물 사용";
+                        walletCode = 1;
+                    }else if("secret_itemUse".equals(key.get(i))){
+                        text = "아이템 몰래 선물 사용";
+                        walletCode = 2;
+                    }else if("giftUse".equals(key.get(i))){
+                        text = "달 직접 선물 사용";
+                        walletCode = 3;
+                    }else if("clipUse".equals(key.get(i))){
+                        text = "클립 아이템 선물 사용";
+                        walletCode = 4;
+                    }else if("buyGet".equals(key.get(i))){
+                        text = "달 구매 획득";
+                        walletCode = 5;
+                    }else if("UseGet".equals(key.get(i))){
+                        text = "달 직접 선물 획득";
+                        walletCode = 6;
+                    }else if("rankingGet".equals(key.get(i))){
+                        text = "랭킹 보상 획득";
+                        walletCode = 7;
+                    }else if("levelupGet".equals(key.get(i))){
+                        text = "레벨 업 보상 획득";
+                        walletCode = 8;
+                    }else if("changeGet".equals(key.get(i))){
+                        text = "별＞달 교환 획득";
+                        walletCode = 9;
+                    }else if("eventGet".equals(key.get(i))){
+                        text = "이벤트 보상 획득";
+                        walletCode = 10;
+                    }else if("opGet".equals(key.get(i))){
+                        text = "운영자 지급 획득";
+                        walletCode = 11;
+                    }
+                    HashMap returnMap = new HashMap();
+                    returnMap.put("walletCode", walletCode);
+                    returnMap.put("type", key.get(i).toString().toUpperCase().endsWith("USE") ? "use" : "get");
+                    returnMap.put("text", text);
+                    returnMap.put("cnt", DalbitUtil.getIntMap(resultMap, (String) key.get(i)));
+                    walletList.add(returnMap);
+                }
+            }
+            HashMap walletListMap = new HashMap();
+            walletListMap.put("list", walletList);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_성공, walletListMap));
+        }else if(procedureVo.getRet().equals(Status.내지갑팝업조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑팝업조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 내 지갑 달 or 별 내역 보기
+     */
+    public String callWalletList(P_WalletListVo pWalletListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pWalletListVo);
+        List<P_WalletListVo> walletListVo = mypageDao.callWalletList(procedureVo);
+
+        String result;
+        HashMap walletList = new HashMap();
+        if(DalbitUtil.isEmpty(walletListVo)){
+            walletList.put("list", new ArrayList<>());
+            walletList.put("totalCnt", 0);
+            walletList.put("paging", new PagingVo(0, pWalletListVo.getPageNo(), pWalletListVo.getPageCnt()));
+            return gsonUtil.toJson(new JsonOutputVo(Status.내지갑_내역조회_없음));
+        }
+
+        List<WalletListOutVo> outVoList = new ArrayList<>();
+        if(!DalbitUtil.isEmpty(walletListVo)){
+            for (int i = 0; i < walletListVo.size(); i++) {
+                outVoList.add(new WalletListOutVo(walletListVo.get(i)));
+            }
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        walletList.put("list", procedureOutputVo.getOutputBox());
+        walletList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+        walletList.put("byeolTotCnt", DalbitUtil.getIntMap(resultMap, "byeol"));
+        walletList.put("dalTotCnt", DalbitUtil.getIntMap(resultMap, "dal"));
+
+        if (Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑_내역조회_성공, walletList));
+        } else if (procedureVo.getRet().equals(Status.내지갑_내역조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑_내역조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내지갑_내역조회_실패));
         }
         return result;
     }

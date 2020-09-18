@@ -414,4 +414,14 @@
     <select id="callMemberBoardCount" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
         call sp_member_board_count(#{target_mem_no, mode=IN, jdbcType=VARCHAR}, #{mem_no, mode=IN, jdbcType=VARCHAR})
     </select>
+
+    <select id="callWalletPopupListView" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_wallet_dal_byeol(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callWalletList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_WalletListVo">
+        call sp_member_wallet_dal_byeol_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
 </mapper>

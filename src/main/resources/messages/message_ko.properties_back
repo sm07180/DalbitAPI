@@ -16,6 +16,7 @@ request.custom.header.error=통신 오류가 발생했습니다.\\n고객센터�
 # Status.enum
 # common
 need.login=로그인이 필요합니다.
+need.login.success=로그인이 필요합니다.
 login.success=로그인하였습니다.
 admin.login.success=관리자로 로그인하였습니다.
 login.fail=아이디와 비밀번호를 확인하고\\n다시 로그인해 주세요.
@@ -884,6 +885,12 @@ member.nickname.init.fail=해당 회원의 닉네임 초기화에 실패하였�
 broadcast.title.init.success=해당 방송 제목을 초기화하였습니다.
 broadcast.title.init.fail=해당 방송 제목 초기화에 실패하였습니다.
 
+# clip edit
+clip.no.change=수정할 내용이 없습니다.
+clip.no.match.editSlct=수정 구분값이 잘못되었습니다.
+clip.already.delete=이미 삭제된 클립입니다.
+clip.already.confirm=이미 확인한 클립입니다.
+
 # event ranking live list
 event.ranking.live.list.select.success=랭킹 이벤트 실시간 순위 리스트 정보를 조회하였습니다.
 event.ranking.live.list.no.success=랭킹 이벤트 실시간 순위 리스트가 없습니다.
@@ -1308,6 +1315,33 @@ event.not.found=이벤트가 종료 되었거나 삭제되었습니다.
 event.not.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 event.error=에러가 발생하였습니다.
 
+#이벤트관리 페이지
+event.page.list.success=이벤트 목록을 조회하였습니다.
+event.page.no.data=등록된 이벤트가 없습니다.
+
+event.page.win.list.success=이벤트 당첨자 목록을 조회하였습니다.
+
+event.page.win.result.success=이벤트 당첨 결과를 조회하였습니다.
+
+event.prize.receive.choice.prize.success=경품 수령(경품 받기)에 성공하였습니다.
+event.prize.receive.choice.dal.success=경품 수령(달로 받기)에 성공하였습니다.
+event.prize.receive.choice.already.choice=이미 경품을 선택하였습니다.
+event.prize.receive.choice.receiveWay.error=이벤트 경품 수령 방법을 잘못 입력하였습니다.
+event.prize.receive.choice.already.deposit=경품 입금 확인이 되었기 때문에 수정이 불가능합니다.
+
+event.winner.add.info.select.success=이벤트 당첨자 등록정보 조회에 성공하였습니다.
+
+event.winner.add.info.insert.success=이벤트 당첨자 정보 등록에 성공하였습니다.
+event.winner.add.info.edit.success=이벤트 당첨자 정보 수정에 성공하였습니다.
+event.winner.add.info.edit.already.deposit=경품 입금 확인이 되었기 때문에 수정이 불가능합니다.
+
+event.page.no.eventIdx=해당 이벤트 번호가 존재하지 않습니다.
+event.page.no.prizeIdx=해당 경품 번호가 존재하지 않습니다.
+event.page.not.complete=이벤트 당첨자 선정이 완료되지 않았습니다.
+event.page.not.winner=해당 이벤트의 당첨자가 아닙니다.
+event.page.not.member=회원번호가 존재하지 않습니다.
+
+
 # star list select
 member.good.list.select.success=좋아요 랭킹 조회 성공하였습니다.
 member.good.list.no.star.success=좋아요 랭킹이 없습니다.
@@ -1379,3 +1413,12 @@ mypage.broadcast.setting.edit.error=에러가 발생하였습니다.
 
 # clip play time limit
 clip.exceed.play.time.limit.5min=파일 재생시간이 5분을 초과하였습니다.\\n최대 5분 재생시간의 파일까지 첨부 가능합니다.
+
+# broadcast room chat freeze
+broadcast.room.freeze.success=얼리기 성공하였습니다.
+broadcast.room.freeze.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+broadcast.room.freeze.no.room.number=방송 정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+broadcast.room.freeze.end.room=종료된 방송입니다.
+broadcast.room.freeze.member.not.in.room=방에 참여중이지 않습니다.
+broadcast.room.freeze.impossible=얼리기 불가 상태입니다.
+broadcast.room.freeze.fail=얼리기 실패하였습니다.

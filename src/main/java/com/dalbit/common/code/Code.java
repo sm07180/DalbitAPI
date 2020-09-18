@@ -55,6 +55,10 @@ public enum Code {
     클립_배경_썸네일_PREFIX("/clip_2", "포토서버 클립 이미지 썸네일 prefix"),
     클립_배경_디폴트_PREFIX("/clip_3", "포토서버 클립 이미지 배경 디폴트 prefix"),
 
+    //경품수령 제출 이미지 PREFIX
+    포토_경품수령신청_임시_PREFIX("/eventWinner_1", "포토서버 경품 수령 신청 이미지 임시 경로 prefix"),
+    포토_경품수령신청_PREFIX("/eventWinner_0", "포토서버 경품 수령 신청 이미지 실제 경로 prefix"),
+
 
    ;
 

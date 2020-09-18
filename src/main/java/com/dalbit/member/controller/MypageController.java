@@ -1,5 +1,7 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.broadcast.vo.procedure.P_WalletPopupListVo;
+import com.dalbit.broadcast.vo.request.WalletPopupListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -758,5 +760,30 @@ public class MypageController {
         HashMap resultMap = mypageService.getMemberGoodList(goodListVo, request);
 
         return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), resultMap.get("data")));
+    }
+
+    /**
+     * 내지갑 달 or 별 팝업 리스트 & 건수
+     */
+    @GetMapping("/wallet/pop")
+    public String walletPopupList(@Valid WalletPopupListVo walletPopupListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_WalletPopupListVo apiData = new P_WalletPopupListVo(walletPopupListVo, request);
+
+        String result = mypageService.callWalletPopupListView(apiData);
+        return result;
+    }
+
+
+    /**
+     * 내 지갑 달 or 별 내역 보기
+     */
+    @GetMapping("/wallet/list")
+    public String walletList(@Valid WalletListVo walletListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_WalletListVo apiData = new P_WalletListVo(walletListVo, request);
+
+        String result = mypageService.callWalletList(apiData);
+        return result;
     }
 }
