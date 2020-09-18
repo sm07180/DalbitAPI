@@ -50,7 +50,6 @@ public class P_RoomListVo{
     private int guest_age;                  //게스트 나이대
     private Object guest_profileImage;      //게스트프로필이미지부
 
-
     private String bj_streamid;            //bj 스트림아이디
     private String bj_publish_tokenid;     //bj 토큰아이디부
     private String bj_play_tokenid;        //bj play토큰

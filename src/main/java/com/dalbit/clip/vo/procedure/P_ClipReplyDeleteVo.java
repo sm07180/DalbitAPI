@@ -1,7 +1,6 @@
 package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipReplyDeleteVo;
-import com.dalbit.clip.vo.request.ClipReplyEditVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;

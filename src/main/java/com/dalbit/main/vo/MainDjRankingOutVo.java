@@ -2,7 +2,6 @@ package com.dalbit.main.vo;
 
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.main.vo.procedure.P_MainDjRankingVo;
-import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
 import com.dalbit.main.vo.procedure.P_MainRankingPageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;

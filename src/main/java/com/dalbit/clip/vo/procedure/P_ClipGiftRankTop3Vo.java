@@ -4,8 +4,6 @@ import com.dalbit.clip.vo.request.ClipGiftRankTop3Vo;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Getter @Setter
 public class P_ClipGiftRankTop3Vo {
 

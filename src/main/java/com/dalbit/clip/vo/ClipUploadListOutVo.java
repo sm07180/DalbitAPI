@@ -1,6 +1,5 @@
 package com.dalbit.clip.vo;
 
-import com.dalbit.clip.vo.procedure.P_ClipPlayListVo;
 import com.dalbit.clip.vo.procedure.P_ClipUploadListVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;

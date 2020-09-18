@@ -1,7 +1,6 @@
 package com.dalbit.clip.vo;
 
 import com.dalbit.clip.vo.procedure.P_ClipMainLatestListVo;
-import com.dalbit.clip.vo.procedure.P_ClipMainPopListVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;

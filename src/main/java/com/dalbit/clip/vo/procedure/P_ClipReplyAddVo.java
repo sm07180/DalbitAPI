@@ -1,8 +1,6 @@
 package com.dalbit.clip.vo.procedure;
 
-import com.dalbit.clip.vo.request.ClipAddVo;
 import com.dalbit.clip.vo.request.ClipReplyAddVo;
-import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;

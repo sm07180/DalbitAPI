@@ -1,14 +1,11 @@
 package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipPlayListEditVo;
-import com.dalbit.clip.vo.request.ClipPlayListVo;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
 
 @Getter @Setter
 public class P_ClipPlayListEditVo {

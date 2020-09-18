@@ -244,7 +244,7 @@ public class RoomService {
             returnMap.put("hasNotice", !DalbitUtil.isEmpty(target.getNotice()));
             returnMap.put("hasStory", false);
             returnMap.put("useBoost", existsBoostByRoom(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no()));    //부스터 사용여부
-            //returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+
             HashMap fanRankMap = commonService.getKingFanRankList(pRoomJoinVo.getRoom_no());
             returnMap.put("fanRank", fanRankMap.get("list"));
             returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
@@ -369,6 +369,7 @@ public class RoomService {
             if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
                 isBj = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "auth") == 3;
             }
+
         }
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
@@ -393,6 +394,7 @@ public class RoomService {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
             } else {
+
                 HashMap fanRankMap = commonService.getKingFanRankList(pRoomExitVo.getRoom_no());
                 returnMap.put("fanRank", fanRankMap.get("list"));
                 returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
@@ -1020,6 +1022,7 @@ public class RoomService {
                     returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
+
                     HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
                     returnMap.put("fanRank", fanRankMap.get("list"));
                     returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));

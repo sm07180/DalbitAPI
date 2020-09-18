@@ -68,8 +68,10 @@ public class UserService {
             ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
             roomMemberList.put("totalMemCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
-            roomMemberList.put("noMemCnt", DalbitUtil.getIntMap(resultMap, "noMemCnt"));
+            //roomMemberList.put("noMemCnt", DalbitUtil.getIntMap(resultMap, "noMemCnt"));
+            roomMemberList.put("noMemCnt", 0);
             roomMemberList.put("list", new ArrayList<>());
+            roomMemberList.put("paging", new PagingVo(0, pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
             if(Status.방송참여자리스트_참여자아님.getMessageCode().equals(procedureVo.getRet())) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_참여자아님));
             } else {

@@ -3,12 +3,10 @@ package com.dalbit.socket.vo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 

@@ -1243,6 +1243,7 @@ public class EventService {
         return resultMap;
     }
 
+
     /**
      * 출석완료 체크 방송방 생성, 참여 시
      */

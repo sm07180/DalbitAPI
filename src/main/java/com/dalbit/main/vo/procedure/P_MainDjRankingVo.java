@@ -1,7 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
 import com.dalbit.main.vo.request.MainDjRankingVo;
-import com.dalbit.main.vo.request.MainFanRankingVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
