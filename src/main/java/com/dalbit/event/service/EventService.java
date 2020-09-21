@@ -639,6 +639,15 @@ public class EventService {
         long checkCnt = dateList.stream().filter(checkVo -> checkVo.getCheck_ok() == 1).count();
         status.put("gifticon_day", (today.equals(lunarVo.getDate()) || checkCnt == 7) ? "1" : "0");
 
+        //월~토 중 1일 이상 출석 실패 한 자가 일요일에 출석할 시
+        if(!DalbitUtil.isEmpty(status.get("the_day")) && status.get("the_day").equals("6")){
+            if(status.get("bonus").equals("0")){
+                status.put("sunday_all_day", "0");
+            }else{
+                status.put("sunday_all_day", "1");
+            }
+        }
+
         var returnMap = new HashMap();
         returnMap.put("status", status);
         returnMap.put("dateList", dateList);
