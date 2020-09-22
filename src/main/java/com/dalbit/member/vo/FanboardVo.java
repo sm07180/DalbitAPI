@@ -12,25 +12,26 @@ import lombok.ToString;
 @ToString
 public class FanboardVo {
 
-    private int boardIdx;
-    private int boardNo;
-    private String writerNo;
-    private String nickNm;
-
+    private int replyIdx;
+    private int parentGroupIdx;
+    private String writerMemNo;
+    private String nickName;
+    private String memId;
+    private String gender;
     private ImageVo profImg;
     private String contents;
     private int replyCnt;
     private int status;
+    private int viewOn;
     private String writeDt;
     private long writeTs;
-    private String memId;
-    private int viewOn;
+
 
     public FanboardVo(P_FanboardListVo target) {
-        this.boardIdx = target.getBoard_idx();
-        this.boardNo = target.getBoard_no();
-        this.writerNo = target.getWriter_mem_no();
-        this.nickNm = target.getNickName();
+        this.replyIdx = target.getBoard_idx();
+        this.parentGroupIdx = target.getBoard_no();
+        this.writerMemNo = target.getWriter_mem_no();
+        this.nickName = target.getNickName();
         this.profImg = new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.contents = target.getContents();
         this.replyCnt = target.getReplyCnt();
