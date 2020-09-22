@@ -17,12 +17,12 @@ public class FanboardAddVo {
     @Max(value = 2, message = "댓글 구분을")
     private Integer depth;
 
-    private Integer boardNo;
+    private Integer parentGroupIdx;
 
     @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
     @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
     @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 100)
-    private String content;
+    private String contents;
 
     @NotNull(message = "{\"ko_KR\" : \"비밀글 여부를\"}")
     @Min(value = 0, message = "비밀글 여부를")

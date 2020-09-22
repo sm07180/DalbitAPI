@@ -21,6 +21,6 @@ public class P_FanboardDeleteVo {
     public P_FanboardDeleteVo(FanboardDelVo fanboardDelVo, HttpServletRequest request){
         setStar_mem_no(fanboardDelVo.getMemNo());
         setDelete_mem_no(new MemberVo().getMyMemNo(request));
-        setBoard_idx(fanboardDelVo.getBoardIdx());
+        setBoard_idx(fanboardDelVo.getReplyIdx());
     }
 }

@@ -13,6 +13,6 @@ public class FanboardReplyVo {
     private String memNo;
 
     @NotNull(message = "{\"ko_KR\" : \"댓글번호를\"}")
-    private Integer boardNo;
+    private Integer replyIdx;
 
 }

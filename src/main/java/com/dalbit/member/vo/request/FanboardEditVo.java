@@ -13,10 +13,10 @@ public class FanboardEditVo {
     private String memNo;
 
     @NotNull(message = "{\"ko_KR\" : \"댓글번호를\"}")
-    private Integer boardIdx;
+    private Integer replyIdx;
 
     @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
     @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
     @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 100)
-    private String content;
+    private String contents;
 }

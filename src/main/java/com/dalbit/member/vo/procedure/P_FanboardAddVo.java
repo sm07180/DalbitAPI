@@ -24,8 +24,8 @@ public class P_FanboardAddVo {
         setStar_mem_no(fanboardAddVo.getMemNo());
         setWriter_mem_no(MemberVo.getMyMemNo(request));
         setDepth(fanboardAddVo.getDepth());
-        setBoard_no(fanboardAddVo.getBoardNo());
-        setContents(fanboardAddVo.getContent());
+        setBoard_no(fanboardAddVo.getParentGroupIdx());
+        setContents(fanboardAddVo.getContents());
         setViewOn(fanboardAddVo.getViewOn());
     }
 

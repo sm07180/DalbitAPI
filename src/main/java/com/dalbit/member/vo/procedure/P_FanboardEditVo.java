@@ -21,7 +21,7 @@ public class P_FanboardEditVo {
     public P_FanboardEditVo(FanboardEditVo fanboardEditVo, HttpServletRequest request){
         setStar_mem_no(fanboardEditVo.getMemNo());
         setEdit_mem_no(MemberVo.getMyMemNo(request));
-        setBoard_idx(fanboardEditVo.getBoardIdx());
-        setContents(fanboardEditVo.getContent());
+        setBoard_idx(fanboardEditVo.getReplyIdx());
+        setContents(fanboardEditVo.getContents());
     }
 }

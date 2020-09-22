@@ -135,7 +135,7 @@ public class ProfileService {
             return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
         }
 
-        List<FanboardVo> outVoList = new ArrayList<>();
+        List<BoardVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
         banWordVo.setMemNo(pFanboardListVo.getStar_mem_no());
         String systemBanWord = commonService.banWordSelect();
@@ -147,7 +147,7 @@ public class ProfileService {
             }else if(!DalbitUtil.isEmpty(systemBanWord)){
                 fanboardVoList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, fanboardVoList.get(i).getContents()));
             }
-            outVoList.add(new FanboardVo(fanboardVoList.get(i)));
+            outVoList.add(new BoardVo(fanboardVoList.get(i)));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
@@ -217,7 +217,7 @@ public class ProfileService {
             return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, fanboardReplyList));
         }
 
-        List<FanboardReplyOutVo> outVoList = new ArrayList<>();
+        List<BoardVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
         banWordVo.setMemNo(pFanboardReplyVo.getStar_mem_no());
         String systemBanWord = commonService.banWordSelect();
@@ -229,7 +229,7 @@ public class ProfileService {
             }else if(!DalbitUtil.isEmpty(systemBanWord)){
                 fanboardVoReplyList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, fanboardVoReplyList.get(i).getContents()));
             }
-            outVoList.add(new FanboardReplyOutVo(fanboardVoReplyList.get(i)));
+            outVoList.add(new BoardVo(fanboardVoReplyList.get(i)));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         fanboardReplyList.put("list", procedureOutputVo.getOutputBox());

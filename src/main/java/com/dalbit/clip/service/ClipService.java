@@ -512,9 +512,9 @@ public class ClipService {
             clipReplyList.put("paging", new PagingVo(0, pClipPlayListVo.getPageNo(), pClipPlayListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글목록_조회_없음, clipReplyList));
         }
-        List<ClipReplyListOutVo> outVoList = new ArrayList<>();
+        List<BoardVo> outVoList = new ArrayList<>();
         for (int i=0; i<clipReplyListVo.size(); i++){
-            outVoList.add(new ClipReplyListOutVo(clipReplyListVo.get(i)));
+            outVoList.add(new BoardVo(clipReplyListVo.get(i)));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
