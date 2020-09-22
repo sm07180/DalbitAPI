@@ -40,5 +40,6 @@ public class P_RoomGiftHistoryVo {
     private int gold;
     private int secret;
     private Date giftDate;
+    private int liveFanRank;
 
 }

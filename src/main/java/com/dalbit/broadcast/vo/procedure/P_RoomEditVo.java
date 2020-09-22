@@ -20,4 +20,7 @@ public class P_RoomEditVo {
     private String deviceToken;             //디바이스 토큰
     private String appVersion;              //앱 버전
 
+    private String djListenerIn;
+    private String djListenerOut;
+
 }

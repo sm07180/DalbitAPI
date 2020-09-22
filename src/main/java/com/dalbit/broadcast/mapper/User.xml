@@ -46,7 +46,7 @@
             INNER JOIN tb_member_profile d ON a.mem_no = d.mem_no
         WHERE a.room_no = #{room_no}
           AND a.mem_no = #{mem_no}
-          AND a.state = 0
+          ORDER BY a.idx DESC limit 1;
     </select>
 
     <update id="updateGuestStreamInfo" parameterType="java.util.HashMap">

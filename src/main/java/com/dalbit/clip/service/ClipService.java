@@ -225,8 +225,20 @@ public class ClipService {
             returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
             returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
-            returnMap.put("commentOpen", true);
+
             returnMap.put("playlistOpen", false);
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 3
+                || (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 31)
+                || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) > 145)){
+                returnMap.put("replyOpen", true);
+                returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
+                returnMap.put("goodCntOpen", true);
+                returnMap.put("byeolCntOpen", true);
+                returnMap.put("replyCntOpen", true);
+            }else{
+                returnMap.put("commentOpen", true);
+            }
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
@@ -931,6 +943,11 @@ public class ClipService {
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
             returnMap.put("commentOpen", true);
             returnMap.put("playlistOpen", false);
+            returnMap.put("replyOpen", true);
+            returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
+            returnMap.put("goodCntOpen", true);
+            returnMap.put("byeolCntOpen", true);
+            returnMap.put("replyCntOpen", true);
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());

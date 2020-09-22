@@ -72,10 +72,6 @@ public class ActionService {
 
         String result;
         if(Status.좋아요.getMessageCode().equals(procedureVo.getRet())) {
-            /*String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");*/
-
             SocketVo vo = socketService.getSocketVo(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{ //좋아요 발송
                 boolean isFirst = true;
@@ -210,9 +206,6 @@ public class ActionService {
         String result;
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            /*String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-            String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-            String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");*/
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", resultMap);
             log.info(" ### 프로시저 호출결과 ###");
@@ -383,14 +376,10 @@ public class ActionService {
                 log.info("Socket Service sendBooster Exception {}", e);
             }
             try{
-                /*String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-                String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-                String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");*/
                 HashMap socketMap = new HashMap();
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
-                //TODO - 레벨업 유무 소켓추가 추후 확인
-                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+
                 HashMap fanRankMap = commonService.getKingFanRankList(pRoomBoosterVo.getRoom_no());
                 returnMap.put("fanRank", fanRankMap.get("list"));
                 returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));

@@ -407,8 +407,48 @@
             (SELECT MAX(idx) FROM tb_member_wallet_gold WHERE mem_no = ${value} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0) AS byeol
     </select>
 
+    <select id="callBroadcastTitleAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_title_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastTitleEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_title_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastTitleSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_BroadcastOptionListVo">
+        call sp_member_broadcast_title_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastTitleDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_title_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastWelcomeMsgAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_welcome_msg_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastWelcomeMsgEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_welcome_msg_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastWelcomeMsgSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_BroadcastOptionListVo">
+        call sp_member_broadcast_welcome_msg_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastWelcomeMsgDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_welcome_msg_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="callMemberGoodList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_GoodListVo">
         call sp_member_good_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastSettingSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_setting_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastSettingEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_setting_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callMemberBoardCount" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">

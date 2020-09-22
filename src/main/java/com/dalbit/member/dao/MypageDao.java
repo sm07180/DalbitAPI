@@ -155,8 +155,31 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     HashMap selectMyPageWallet(String mem_no);
 
+    ProcedureVo callBroadcastTitleAdd(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastTitleEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_BroadcastOptionListVo> callBroadcastTitleSelect(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastTitleDelete(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastWelcomeMsgAdd(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastWelcomeMsgEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_BroadcastOptionListVo> callBroadcastWelcomeMsgSelect(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastWelcomeMsgDelete(ProcedureVo procedureVo);
+
     @Transactional(readOnly = true)
     List<P_GoodListVo> callMemberGoodList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callBroadcastSettingSelect(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadcastSettingEdit(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
     HashMap callMemberBoardCount(HashMap params);

@@ -29,4 +29,7 @@ public class RoomEditVo {
     @Size(message = "{\"ko_KR\" : \"인사말을\"}", max = 100)
     private String welcomMsg;
 
+    private String djListenerIn = "1";
+    private String djListenerOut = "1";
+
 }

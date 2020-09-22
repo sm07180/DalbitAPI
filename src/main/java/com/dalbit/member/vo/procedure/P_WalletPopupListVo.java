@@ -1,6 +1,6 @@
-package com.dalbit.broadcast.vo.procedure;
+package com.dalbit.member.vo.procedure;
 
-import com.dalbit.broadcast.vo.request.WalletPopupListVo;
+import com.dalbit.member.vo.request.WalletPopupListVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;

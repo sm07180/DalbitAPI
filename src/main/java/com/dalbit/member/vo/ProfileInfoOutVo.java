@@ -100,11 +100,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
 
         this.isNewListener = (target.getBadge_new() == 1 ? true : false);
-        if("local".equals(DalbitUtil.getActiveProfile())){
-            this.isSpecial = (Integer.parseInt(DalbitUtil.randomValue("number",1)) % 2) == 1 ? true : false;
-        }else {
-            this.isSpecial = (target.getBadge_specialdj() == 1 ? true : false);
-        }
+        this.isSpecial = (target.getBadge_specialdj() == 1 ? true : false);
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
         this.likeTotCnt = target.getReceivedGoodTotal();

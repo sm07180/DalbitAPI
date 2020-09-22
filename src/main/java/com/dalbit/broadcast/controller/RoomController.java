@@ -218,6 +218,9 @@ public class RoomController {
         apiData.setDeviceToken(deviceVo.getDeviceToken());
         apiData.setAppVersion(deviceVo.getAppVersion());
 
+        apiData.setDjListenerIn(roomEditVo.getDjListenerIn());
+        apiData.setDjListenerOut(roomEditVo.getDjListenerOut());
+
         String result = roomService.callBroadCastRoomEdit(apiData, request);
 
         return result;

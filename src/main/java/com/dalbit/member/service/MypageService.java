@@ -3,7 +3,7 @@ package com.dalbit.member.service;
 import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
-import com.dalbit.broadcast.vo.procedure.P_WalletPopupListVo;
+import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
 import com.dalbit.clip.vo.procedure.P_ClipUploadListVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -1370,7 +1370,7 @@ public class MypageService {
          * code 정리
          * [tbl_code_define : special_dj_condition]
          * 1 : 누적 방송시간
-         * 2 : 1시간 이상 방송
+         * 2 : 90분 이상 방송
          * 3 : 좋아요
          * 4 : 레벨
          * 5 : 팬 수
@@ -1384,10 +1384,10 @@ public class MypageService {
             resultMap.put("value", "최소 " + value + "시간 방송");
 
         }else if(code == 2){
-            //1시간 이상 방송(기간)
+            //90분 이상 방송(기간)
             int broadcastCnt = mypageDao.selectSpecialDjBroadcastCnt(specialDjConditionSearchVo);
             resultMap.put("condition", broadcastCnt < value ? 0 : 1);
-            resultMap.put("title", "1시간 이상 방송");
+            resultMap.put("title", "90분 이상 방송");
             resultMap.put("value", "최소 " + value + "회 이상");
         }else if(code == 3){
             //좋아요 갯수 체크(기간)
@@ -1681,6 +1681,256 @@ public class MypageService {
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageWallet(MemberVo.getMyMemNo(request))));
     }
 
+
+    /**
+     *  방송설정 제목 추가
+     */
+    public String callBroadcastTitleAdd(P_BroadcastTitleAddVo pBroadcastTitleAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastTitleAddVo);
+        mypageDao.callBroadcastTitleAdd(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.방송설정_제목추가_성공.getMessageCode())) {
+
+            P_BroadcastOptionListVo pBroadcastTitleListVo = new P_BroadcastOptionListVo();
+            pBroadcastTitleListVo.setMem_no(pBroadcastTitleAddVo.getMem_no());
+            result = callBroadcastTitleSelect(pBroadcastTitleListVo, "titleAdd");
+
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목추가_성공));
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목추가_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목추가_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목추가_제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목추가_제한));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목추가_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 제목 수정
+     */
+    public String callBroadcastTitleEdit(P_BroadcastTitleEditVo pBroadcastTitleEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastTitleEditVo);
+        mypageDao.callBroadcastTitleEdit(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.방송설정_제목수정_성공.getMessageCode())) {
+
+            P_BroadcastOptionListVo pBroadcastTitleListVo = new P_BroadcastOptionListVo();
+            pBroadcastTitleListVo.setMem_no(pBroadcastTitleEditVo.getMem_no());
+            result = callBroadcastTitleSelect(pBroadcastTitleListVo, "titleEdit");
+
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목수정_성공));
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목수정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목수정_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목수정_번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목수정_번호없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목수정_오류));
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 제목 조회
+     */
+    public String callBroadcastTitleSelect(P_BroadcastOptionListVo pBroadcastTitleListVo, String returnCode) {
+
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastTitleListVo);
+        List<P_BroadcastOptionListVo> broadcastTitleListVoList = mypageDao.callBroadcastTitleSelect(procedureVo);
+
+        String result;
+        HashMap broadcastTitleList = new HashMap();
+        if(DalbitUtil.isEmpty(broadcastTitleListVoList)){
+            broadcastTitleList.put("list", new ArrayList<>());
+            if("roomCreate".equals(returnCode)){
+                return Status.방송설정_제목조회_없음.getMessageCode();
+            }
+            if(returnCode.equals("titleDelete")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목삭제_성공, broadcastTitleList));
+            }
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목조회_없음, broadcastTitleList));
+        }
+
+        List<BroadcastOptionListOutVo> outVoList = new ArrayList<>();
+        if(!DalbitUtil.isEmpty(broadcastTitleListVoList)){
+            for (int i = 0; i < broadcastTitleListVoList.size(); i++) {
+                outVoList.add(new BroadcastOptionListOutVo(broadcastTitleListVoList.get(i)));
+            }
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        broadcastTitleList.put("list", procedureOutputVo.getOutputBox());
+
+        if (Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            if(returnCode.equals("titleAdd")){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목추가_성공, broadcastTitleList));
+            }else if(returnCode.equals("titleEdit")){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목수정_성공, broadcastTitleList));
+            }else if(returnCode.equals("titleDelete")){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목삭제_성공, broadcastTitleList));
+            }else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목조회_성공, broadcastTitleList));
+            }
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 제목 삭제
+     */
+    public String callBroadcastTitleDelete(P_BroadcastTitleDeleteVo pBroadcastTitleDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastTitleDeleteVo);
+        mypageDao.callBroadcastTitleDelete(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.방송설정_제목삭제_성공.getMessageCode())) {
+            P_BroadcastOptionListVo pBroadcastTitleListVo = new P_BroadcastOptionListVo();
+            pBroadcastTitleListVo.setMem_no(pBroadcastTitleDeleteVo.getMem_no());
+            result = callBroadcastTitleSelect(pBroadcastTitleListVo, "titleDelete");
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목삭제_성공));
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목삭제_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송설정_제목삭제_번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목삭제_번호없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_제목삭제_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 인사말 추가
+     */
+    public String callBroadcastWelcomeMsgAdd(P_BroadcastWelcomeMsgAddVo pBroadcastWelcomeMsgAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastWelcomeMsgAddVo);
+        mypageDao.callBroadcastWelcomeMsgAdd(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.방송설정_인사말추가_성공.getMessageCode())) {
+            P_BroadcastWelcomeMsgListVo pBroadcastWelcomeMsgListVo = new P_BroadcastWelcomeMsgListVo();
+            pBroadcastWelcomeMsgListVo.setMem_no(pBroadcastWelcomeMsgAddVo.getMem_no());
+            result = callBroadcastWelcomeMsgSelect(pBroadcastWelcomeMsgListVo,"msgAdd");
+
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말추가_성공));
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말추가_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말추가_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말추가_제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말추가_제한));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말추가_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 인사말 수정
+     */
+    public String callBroadcastWelcomeMsgEdit(P_BroadcastWelcomeMsgEditVo pBroadcastWelcomeMsgEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastWelcomeMsgEditVo);
+        mypageDao.callBroadcastWelcomeMsgEdit(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.방송설정_인사말수정_성공.getMessageCode())) {
+
+            P_BroadcastWelcomeMsgListVo pBroadcastWelcomeMsgListVo = new P_BroadcastWelcomeMsgListVo();
+            pBroadcastWelcomeMsgListVo.setMem_no(pBroadcastWelcomeMsgEditVo.getMem_no());
+            result = callBroadcastWelcomeMsgSelect(pBroadcastWelcomeMsgListVo,"msgEdit");
+
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말수정_성공));
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말수정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말수정_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말수정_번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말수정_번호없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말수정_오류));
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송설정 인사말 조회
+     */
+    public String callBroadcastWelcomeMsgSelect(P_BroadcastWelcomeMsgListVo pBroadcastWelcomeMsgListVo, String returnCode) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastWelcomeMsgListVo);
+        List<P_BroadcastOptionListVo> broadcastWelcomeMsgListVoList = mypageDao.callBroadcastWelcomeMsgSelect(procedureVo);
+
+        String result;
+        HashMap broadcastWelcomeMsgList = new HashMap();
+        if(DalbitUtil.isEmpty(broadcastWelcomeMsgListVoList)){
+            broadcastWelcomeMsgList.put("list", new ArrayList<>());
+            if("roomCreate".equals(returnCode)){
+                return Status.방송설정_인사말조회_없음.getMessageCode();
+            }
+
+            if(returnCode.equals("msgDelete")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말삭제_성공, broadcastWelcomeMsgList));
+            }
+
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말조회_없음, broadcastWelcomeMsgList));
+        }
+
+        List<BroadcastOptionListOutVo> outVoList = new ArrayList<>();
+        if(!DalbitUtil.isEmpty(broadcastWelcomeMsgListVoList)){
+            for (int i = 0; i < broadcastWelcomeMsgListVoList.size(); i++) {
+                outVoList.add(new BroadcastOptionListOutVo(broadcastWelcomeMsgListVoList.get(i)));
+            }
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        broadcastWelcomeMsgList.put("list", procedureOutputVo.getOutputBox());
+
+        if (Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            if(returnCode.equals("msgAdd")){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말추가_성공, broadcastWelcomeMsgList));
+            }else if(returnCode.equals("msgEdit")){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말수정_성공, broadcastWelcomeMsgList));
+            }else if(returnCode.equals("msgDelete")){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말삭제_성공, broadcastWelcomeMsgList));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말조회_성공, broadcastWelcomeMsgList));
+            }
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 인사말 삭제
+     */
+    public String callBroadcastWelcomeMsgDelete(P_BroadcastWelcomeMsgDeleteVo pBroadcastWelcomeMsgDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastWelcomeMsgDeleteVo);
+        mypageDao.callBroadcastWelcomeMsgDelete(procedureVo);
+
+        String result;
+        if (procedureVo.getRet().equals(Status.방송설정_인사말삭제_성공.getMessageCode())) {
+            P_BroadcastWelcomeMsgListVo pBroadcastWelcomeMsgListVo = new P_BroadcastWelcomeMsgListVo();
+            pBroadcastWelcomeMsgListVo.setMem_no(pBroadcastWelcomeMsgDeleteVo.getMem_no());
+            result = callBroadcastWelcomeMsgSelect(pBroadcastWelcomeMsgListVo,"msgDelete");
+            //result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말삭제_성공));
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말삭제_회원아님));
+        } else if (procedureVo.getRet().equals(Status.방송설정_인사말삭제_번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말삭제_번호없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정_인사말삭제_실패));
+        }
+        return result;
+    }
+
     public HashMap getMemberGoodList(GoodListVo goodListVo, HttpServletRequest request) {
         HashMap resultMap = new HashMap();
         P_GoodListVo pGoodListVo = new P_GoodListVo(goodListVo, request);
@@ -1712,6 +1962,95 @@ public class MypageService {
             resultMap.put("data", data);
         }
         return resultMap;
+    }
+
+
+    /**
+     * 방송설정 조회하기(선물 시 자동 팬 추가 및 입/퇴장 메시지 설정)
+     */
+    public String callBroadcastSettingSelect(P_BroadcastSettingVo pBroadcastSettingVo) {
+
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastSettingVo);
+        mypageDao.callBroadcastSettingSelect(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.방송설정조회_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
+            returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1 ? true : false);
+            returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
+            returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
+            returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
+        }else if(procedureVo.getRet().equals(Status.방송설정조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송설정 수정하기(입퇴장 메시지)
+     */
+    public String callBroadcastSettingEdit(P_BroadcastSettingEditVo pBroadcastSettingEditVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastSettingEditVo);
+        mypageDao.callBroadcastSettingEdit(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.방송설정수정_성공.getMessageCode())) {
+            P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo();
+            pBroadcastSettingVo.setMem_no(pBroadcastSettingEditVo.getMem_no());
+            ProcedureVo settingVo = new ProcedureVo(pBroadcastSettingVo);
+            mypageDao.callBroadcastSettingSelect(settingVo);
+
+            HashMap resultMap = new Gson().fromJson(settingVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
+            returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1 ? true : false);
+            returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
+            returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
+            returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+
+            try{
+                HashMap socketMap = new HashMap();
+                socketMap.put("dj_listener_in", DalbitUtil.getIntMap(resultMap, "djListenerIn"));
+                socketMap.put("dj_listener_out", DalbitUtil.getIntMap(resultMap, "djListenerOut"));
+                socketMap.put("dj_fan_in", DalbitUtil.getIntMap(resultMap, "djListenerIn"));
+                socketMap.put("dj_fan_out", DalbitUtil.getIntMap(resultMap, "djListenerOut"));
+                socketMap.put("listener_in", DalbitUtil.getIntMap(resultMap, "listenerIn"));
+                socketMap.put("listener_out", DalbitUtil.getIntMap(resultMap, "listenerOut"));
+                HashMap inOutMap = new HashMap();
+                inOutMap.put("inOut", socketMap);
+                socketService.changeMemberInfo(pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            }catch (Exception e){}
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정수정_성공, returnMap));
+        }else if(procedureVo.getRet().equals(Status.방송설정수정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정수정_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정수정_실패));
+        }
+        return result;
+    }
+
+
+    public HashMap callBroadcastSettingSelectRoomCreate(P_BroadcastSettingVo pBroadcastSettingVo) {
+
+        ProcedureVo procedureVo = new ProcedureVo(pBroadcastSettingVo);
+        mypageDao.callBroadcastSettingSelect(procedureVo);
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        HashMap returnMap = new HashMap();
+        returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
+        returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1 ? true : false);
+        returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
+        returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
+        returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+
+        return returnMap;
     }
 
     public HashMap getMemberBoardCount(Object target){

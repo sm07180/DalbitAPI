@@ -20,7 +20,7 @@ public class RoomGiftHistoryOutVo {
     private Boolean isSecret;
     private long giftTs;
     private String giftDt;
-
+    private int liveFanRank;
 
     public RoomGiftHistoryOutVo(P_RoomGiftHistoryVo target) {
         this.memNo = target.getMem_no();
@@ -33,6 +33,7 @@ public class RoomGiftHistoryOutVo {
         this.isSecret = (target.getSecret() == 1) ? true : false;
         this.giftTs = DalbitUtil.getUTCTimeStamp(target.getGiftDate());
         this.giftDt = DalbitUtil.getUTCFormat(target.getGiftDate());
+        this.liveFanRank = target.getLiveFanRank();
     }
 
 }

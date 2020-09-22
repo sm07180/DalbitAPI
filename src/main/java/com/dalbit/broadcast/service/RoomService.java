@@ -1,9 +1,10 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
-import com.dalbit.broadcast.vo.RoomGiftHistoryOutVo;
-import com.dalbit.broadcast.vo.RoomOutVo;
+import com.dalbit.broadcast.dao.UserDao;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.RoomExitVo;
 import com.dalbit.broadcast.vo.request.StateVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -13,7 +14,13 @@ import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MemberService;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.P_BroadcastSettingEditVo;
+import com.dalbit.member.vo.procedure.P_BroadcastSettingVo;
+import com.dalbit.member.vo.procedure.P_FanRankVo;
+import com.dalbit.member.vo.request.BroadcastSettingEditVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -52,9 +59,15 @@ public class RoomService {
     @Autowired
     ContentService contentService;
     @Autowired
-    CommonDao commonDao;
+    MypageService mypageService;
     @Autowired
     EventService eventService;
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    UserDao userDao;
+    @Autowired
+    CommonDao commonDao;
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -506,6 +519,13 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomEditVo);
         P_RoomEditOutVo pRoomEditOutVo = roomDao.callBroadCastRoomEdit(procedureVo);
 
+        //방송설정 입퇴장메시지 세팅 수정
+        BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
+        broadcastSettingEditVo.setDjListenerIn(pRoomEditVo.getDjListenerIn());
+        broadcastSettingEditVo.setDjListenerOut(pRoomEditVo.getDjListenerOut());
+        P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+        mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request);
+
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
             if(DalbitUtil.isEmpty(pRoomEditOutVo.getImage_background())){
@@ -521,12 +541,19 @@ public class RoomService {
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg, request);
             }
 
+            //방송설정 입퇴장메시지 세팅 조회
+            P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
+            HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
+
             HashMap returnMap = new HashMap();
             returnMap.put("roomType", pRoomEditOutVo.getSubject_type());
             returnMap.put("title", pRoomEditOutVo.getTitle());
             returnMap.put("welcomMsg", pRoomEditOutVo.getMsg_welcom());
             returnMap.put("bgImg", new ImageVo(pRoomEditOutVo.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
+            returnMap.put("djListenerIn", DalbitUtil.getBooleanMap(settingMap, "djListenerIn"));
+            returnMap.put("djListenerOut", DalbitUtil.getBooleanMap(settingMap, "djListenerOut"));
+
             SocketVo vo = socketService.getSocketVo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 socketService.changeRoomInfo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
@@ -889,6 +916,11 @@ public class RoomService {
             returnMap.put("fanBadgeList", new ArrayList());
         }else{
             returnMap.put("fanBadgeList", fanBadgeList);
+        }
+        if(DalbitUtil.getIntMap(resultMap, "auth") == 0 || DalbitUtil.getIntMap(resultMap, "auth") == 1){
+            returnMap.put("isNewListener", DalbitUtil.getIntMap(resultMap, "new_badge") == 0 ? false : true);
+        }else{
+            returnMap.put("isNewListener", false);
         }
         procedureVo.setData(returnMap);
 
@@ -1286,14 +1318,6 @@ public class RoomService {
                         returnMap.put("kingGender", fanRankMap.get("kingGender"));
                         returnMap.put("kingAge", fanRankMap.get("kingAge"));
                         returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
-
-                    /*if(auth == 3) { // DJ
-                        try {
-                            socketService.changeRoomState(pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request), 1, 0, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                        } catch (Exception e) {
-                            log.info("Socket Service changeRoomState Exception {}", e);
-                        }
-                    }*/
 
                         result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
                     }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){

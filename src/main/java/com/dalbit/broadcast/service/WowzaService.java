@@ -1,14 +1,10 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
-import com.dalbit.broadcast.vo.RoomInfoVo;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.broadcast.vo.RoomMemberInfoVo;
-import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.broadcast.vo.request.RoomCreateVo;
-import com.dalbit.broadcast.vo.request.RoomInfo;
-import com.dalbit.broadcast.vo.request.RoomJoinVo;
-import com.dalbit.broadcast.vo.request.RoomTokenVo;
+import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
@@ -17,7 +13,11 @@ import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.BroadcastOptionAddVo;
+import com.dalbit.member.vo.request.BroadcastSettingEditVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -32,7 +32,6 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,6 +53,8 @@ public class WowzaService {
     @Autowired
     RoomService roomService;
     @Autowired
+    MypageService mypageService;
+    @Autowired
     EventService eventService;
 
     @Value("${wowza.prefix}")
@@ -68,9 +69,14 @@ public class WowzaService {
         if(DalbitUtil.isEmpty(streamName) || DalbitUtil.isEmpty(action) || !("liveStreamStarted".equals(action) || "liveStreamEnded".equals(action))){
             result.put("status", Status.파라미터오류);
         }else{
+            if(streamName.toLowerCase().endsWith("_opus") || streamName.toLowerCase().endsWith("_aac")){
+                streamName = StringUtils.replace(streamName.toLowerCase(), "_opus", "");
+                streamName = StringUtils.replace(streamName.toLowerCase(), "_aac", "");
+            }
             String roomNo = streamName.toLowerCase().substring(WOWZA_PREFIX.toLowerCase().length());
             String guestNo = "";
             boolean isGuest = false;
+
             if(streamName.indexOf("_") > -1){
                 roomNo = StringUtils.split(streamName, "_")[0].toLowerCase().substring(WOWZA_PREFIX.toLowerCase().length());
                 guestNo = StringUtils.split(streamName, "_")[1];
@@ -80,6 +86,10 @@ public class WowzaService {
             RoomOutVo target = getRoomInfo(roomNo);
             boolean roomCheck = false;
             if(target != null && target.getState() != 4) {
+                if(isGuest == true && !DalbitUtil.isEmpty(guestNo) && guestNo.equals(target.getBjMemNo())){
+                    isGuest = false;
+                    guestNo = "";
+                }
                 if(isGuest == false){
                     int old_state = target.getState();
                     int new_state = -1;
@@ -222,6 +232,41 @@ public class WowzaService {
                 memberInfoVo.setFanBadgeList(fanBadgeList);
             }
 
+            //제목 저장기록이 없을 경우 최근방송 제목 저장
+            P_BroadcastOptionListVo titleListVo = new P_BroadcastOptionListVo();
+            titleListVo.setMem_no(MemberVo.getMyMemNo(request));
+            String returnTitleCode = mypageService.callBroadcastTitleSelect(titleListVo, "roomCreate");
+            if(returnTitleCode.equals(Status.방송설정_제목조회_없음.getMessageCode())){
+                BroadcastOptionAddVo broadcastOptionAddVo = new BroadcastOptionAddVo();
+                broadcastOptionAddVo.setContents(pRoomCreateVo.getTitle());
+                P_BroadcastTitleAddVo apiData = new P_BroadcastTitleAddVo(broadcastOptionAddVo, request);
+                mypageService.callBroadcastTitleAdd(apiData);
+            }
+
+            //인사말 저장기록이 없을 경우 최근방송 인사말 저장 (내용이 있을경우)
+            if(!DalbitUtil.isEmpty(pRoomCreateVo.getWelcomMsg())){
+                P_BroadcastWelcomeMsgListVo welcomeMsgListVo = new P_BroadcastWelcomeMsgListVo();
+                welcomeMsgListVo.setMem_no(MemberVo.getMyMemNo(request));
+                String returnWelcomeMsgCode = mypageService.callBroadcastWelcomeMsgSelect(welcomeMsgListVo, "roomCreate");
+                if(returnWelcomeMsgCode.equals(Status.방송설정_인사말조회_없음.getMessageCode())){
+                    BroadcastOptionAddVo broadcastOptionAddVo = new BroadcastOptionAddVo();
+                    broadcastOptionAddVo.setContents(pRoomCreateVo.getWelcomMsg());
+                    P_BroadcastWelcomeMsgAddVo apiData = new P_BroadcastWelcomeMsgAddVo(broadcastOptionAddVo, request);
+                    mypageService.callBroadcastWelcomeMsgAdd(apiData);
+                }
+            }
+
+            //방송설정 입퇴장메시지 세팅 수정
+            BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
+            broadcastSettingEditVo.setDjListenerIn(roomCreateVo.getDjListenerIn());
+            broadcastSettingEditVo.setDjListenerOut(roomCreateVo.getDjListenerOut());
+            P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+            mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request);
+
+            //방송설정 입퇴장메시지 세팅 조회
+            P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
+            HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
+
             //출석체크 완료 여부 조회
             P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
             attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
@@ -229,7 +274,7 @@ public class WowzaService {
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
             result.put("status", Status.방송생성);
-            result.put("data", new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, attendanceCheckMap));
+            result.put("data", new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap));
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result.put("status", Status.방송생성_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
@@ -446,6 +491,9 @@ public class WowzaService {
         if(!DalbitUtil.isEmpty(fanBadgeList)){
             memberInfoVo.setFanBadgeList(fanBadgeList);
         }
+        //방송설정 입퇴장메시지 세팅 조회
+        P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
+        HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
 
         //출석체크 완료 여부 조회
         P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
@@ -453,7 +501,7 @@ public class WowzaService {
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
-        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, attendanceCheckMap);
+        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap);
     }
 
     @Async("threadTaskExecutor")

@@ -27,4 +27,6 @@ public class P_RoomMemberListVo {
     private int enableFan;
     private int gift_gold;
     private int newBadge;
+    private int specialBadge;
+    private int liveFanRank;
 }

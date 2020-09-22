@@ -74,6 +74,10 @@ public class UserService {
             roomMemberList.put("paging", new PagingVo(0, pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
             if(Status.방송참여자리스트_참여자아님.getMessageCode().equals(procedureVo.getRet())) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_참여자아님));
+            }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님));
+            }else if(Status.방송참여자리스트_방없음.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_방없음));
             } else {
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트없음, roomMemberList));
             }
@@ -116,6 +120,9 @@ public class UserService {
      */
     public String callBroadCastRoomKickout(P_RoomKickoutVo pRoomKickoutVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomKickoutVo);
+
+        HashMap bolckedMap = socketService.getMyInfo(pRoomKickoutVo.getBlocked_mem_no());
+
         userDao.callBroadCastRoomKickout(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
@@ -136,7 +143,6 @@ public class UserService {
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
             SocketVo vo = socketService.getSocketVo(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
-            HashMap bolckedMap = socketService.getMyInfo(pRoomKickoutVo.getBlocked_mem_no());
             try{
                 socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
                 vo.resetData();

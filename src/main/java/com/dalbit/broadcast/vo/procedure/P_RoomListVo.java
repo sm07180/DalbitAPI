@@ -64,4 +64,6 @@ public class P_RoomListVo{
     private int badge_special;                  //스페셜뱃지
     private int os_type;
     private int totalCnt;
+
+    private int liveDjRank;                 //실시간 DJ 순위
 }

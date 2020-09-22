@@ -32,6 +32,7 @@ public class RoomCreateVo {
     @Max(message = "{\"ko_KR\" : \"입장제한을\"}", value = 2)
     private Integer entryType;
 
-
+    private String djListenerIn = "1";
+    private String djListenerOut = "1";
 
 }

@@ -1,7 +1,7 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.broadcast.vo.procedure.P_WalletPopupListVo;
-import com.dalbit.broadcast.vo.request.WalletPopupListVo;
+import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
+import com.dalbit.member.vo.request.WalletPopupListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -753,6 +753,123 @@ public class MypageController {
         return mypageService.getMyPageNewWallet(request);
     }
 
+
+    /**
+     *  방송설정 옵션 제목 & 인사말 추가
+     */
+    @PostMapping("/broadcast/option/add")
+    public String broadcastTitleAdd(@Valid BroadcastOptionAddVo broadcastOptionAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result;
+        if(broadcastOptionAddVo.getOptionType() == 1){
+            if(broadcastOptionAddVo.getContents().length() > 20){
+                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+            }
+            P_BroadcastTitleAddVo apiData = new P_BroadcastTitleAddVo(broadcastOptionAddVo, request);
+            result = mypageService.callBroadcastTitleAdd(apiData);
+        }else{
+            if(broadcastOptionAddVo.getContents().length() > 100){
+                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+            }
+            P_BroadcastWelcomeMsgAddVo apiData = new P_BroadcastWelcomeMsgAddVo(broadcastOptionAddVo, request);
+            result = mypageService.callBroadcastWelcomeMsgAdd(apiData);
+        }
+
+        return result;
+    }
+
+
+    /**
+     *  방송설정 옵션 제목 & 인사말 수정
+     */
+    @PostMapping("/broadcast/option/edit")
+    public String broadcastTitleEdit(@Valid BroadcastOptionEditVo broadcastOptionEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result;
+        if(broadcastOptionEditVo.getOptionType() == 1){
+            if(broadcastOptionEditVo.getContents().length() > 20){
+                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+            }
+            P_BroadcastTitleEditVo apiData = new P_BroadcastTitleEditVo(broadcastOptionEditVo, request);
+            result = mypageService.callBroadcastTitleEdit(apiData);
+        }else{
+            if(broadcastOptionEditVo.getContents().length() > 100){
+                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+            }
+            P_BroadcastWelcomeMsgEditVo apiData = new P_BroadcastWelcomeMsgEditVo(broadcastOptionEditVo, request);
+           result = mypageService.callBroadcastWelcomeMsgEdit(apiData);
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송설정 옵션 제목 & 인사말 조회
+     */
+    @GetMapping("/broadcast/option")
+    public String broadcastTitleSelect(HttpServletRequest request){
+
+        String result;
+        if("1".equals(request.getParameter("optionType"))){
+            P_BroadcastOptionListVo apiData = new P_BroadcastOptionListVo(request);
+            result = mypageService.callBroadcastTitleSelect(apiData,"");
+        }else{
+            P_BroadcastWelcomeMsgListVo apiData = new P_BroadcastWelcomeMsgListVo(request);
+            result = mypageService.callBroadcastWelcomeMsgSelect(apiData,"");
+        }
+        return result;
+    }
+
+
+    /**
+     *  방송설정 옵션 제목 & 인사말 삭제
+     */
+    @PostMapping("/broadcast/option/delete")
+    public String broadcastTitleDelete(@Valid BroadcastOptionDeleteVo broadcastOptionDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        String result;
+        if(broadcastOptionDeleteVo.getOptionType() == 1){
+            P_BroadcastTitleDeleteVo apiData = new P_BroadcastTitleDeleteVo(broadcastOptionDeleteVo, request);
+            result = mypageService.callBroadcastTitleDelete(apiData);
+        }else{
+            P_BroadcastWelcomeMsgDeleteVo apiData = new P_BroadcastWelcomeMsgDeleteVo(broadcastOptionDeleteVo, request);
+            result = mypageService.callBroadcastWelcomeMsgDelete(apiData);
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송설정 조회하기(선물 시 자동 팬 추가 및 입/퇴장 메시지 설정)
+     */
+    @GetMapping("/broadcast/setting")
+    public String broadcastSettingSelect(HttpServletRequest request){
+        P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
+        String result = mypageService.callBroadcastSettingSelect(apiData);
+        return result;
+    }
+
+
+    /**
+     * 방송설정 수정하기
+     */
+    @PostMapping("/broadcast/setting/edit")
+    public String broadcastSettingEdit(@Valid BroadcastSettingEditVo broadcastSettingEditVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_BroadcastSettingEditVo apiData = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+        String result = mypageService.callBroadcastSettingEdit(apiData, request);
+        return result;
+    }
+
+
+    /**
+     *  개인 좋아요 랭킹 리스트
+     */
     @GetMapping("/good/list")
     public String memberGoodList(@Valid GoodListVo goodListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
