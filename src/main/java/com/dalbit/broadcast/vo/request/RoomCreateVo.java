@@ -33,6 +33,6 @@ public class RoomCreateVo {
     private Integer entryType;
 
     private String djListenerIn = "1";
-    private String djListenerOut = "1";
+    private String djListenerOut = "0";
 
 }

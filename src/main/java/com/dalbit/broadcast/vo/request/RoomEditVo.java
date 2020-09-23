@@ -30,6 +30,6 @@ public class RoomEditVo {
     private String welcomMsg;
 
     private String djListenerIn = "1";
-    private String djListenerOut = "1";
+    private String djListenerOut = "0";
 
 }
