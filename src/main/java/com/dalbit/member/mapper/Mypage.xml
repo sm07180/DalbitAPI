@@ -305,7 +305,7 @@
 
     <select id="selectListenerCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         /* Mypage.xml - selectMemberLevel */
-        select sum(listener)
+        select ifnull(sum(listener), 0)
         from rd_data.tb_member_broadcast_broadcasting
         where mem_no = #{mem_no}
             and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
