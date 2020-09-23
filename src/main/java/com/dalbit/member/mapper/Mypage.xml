@@ -305,11 +305,11 @@
 
     <select id="selectListenerCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         /* Mypage.xml - selectMemberLevel */
-        select count(*)
-        from rd_data.tb_member_broadcast_listening
-        where dj_mem_no = #{mem_no}
-            and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+        select sum(listener)
+        from rd_data.tb_member_broadcast_broadcasting
+        where mem_no = #{mem_no}
+            and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
+            and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
     </select>
 
     <select id="memberShortCutAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
