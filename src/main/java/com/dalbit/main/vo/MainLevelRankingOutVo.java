@@ -39,7 +39,7 @@ public class MainLevelRankingOutVo {
         setFanMemNo(target.getFan_mem_no());
         setFanNickNm(target.getFan_nickName());
         setRoomNo(target.getRoomNo());
-        setHolder("https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getLevel() + ".png");
+        setHolder(StringUtils.replace(DalbitUtil.getProperty("level.frame"), "[level]", target.getLevel() + ""));
         setListenerCnt(target.getListenerCnt());
 
         int levelArea = (target.getLevel() - 1) / 10;

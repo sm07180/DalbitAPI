@@ -138,7 +138,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
+            returnMap.put("bjHolder", StringUtils.replace(DalbitUtil.getProperty("level.frame"), "[level]", target.getBjLevel() + ""));
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
             returnMap.put("auth", 3);
             returnMap.put("ctrlRole", "1111111111");
@@ -236,7 +236,7 @@ public class RoomService {
             returnMap.put("bjMemId", target.getBjMemId());
             returnMap.put("bjNickNm", target.getBjNickNm());
             returnMap.put("bjProfImg", target.getBjProfImg());
-            returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
+            returnMap.put("bjHolder", StringUtils.replace(DalbitUtil.getProperty("level.frame"), "[level]", target.getBjLevel() + ""));
             returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
             returnMap.put("gstMemId", target.getGstMemId() == null ? "" : target.getGstMemId());
             returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
@@ -1032,7 +1032,7 @@ public class RoomService {
                     returnMap.put("bjMemId", target.getBjMemId());
                     returnMap.put("bjNickNm", target.getBjNickNm());
                     returnMap.put("bjProfImg", target.getBjProfImg());
-                    returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
+                    returnMap.put("bjHolder", StringUtils.replace(DalbitUtil.getProperty("level.frame"), "[level]", target.getBjLevel() + ""));
                     returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                     returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                     returnMap.put("gstNickId", target.getGstMemId() == null ? "" : target.getGstMemId());
@@ -1247,7 +1247,7 @@ public class RoomService {
                 returnMap.put("bjMemNo", target.getBjMemNo());
                 returnMap.put("bjNickNm", target.getBjNickNm());
                 returnMap.put("bjProfImg", target.getBjProfImg());
-                returnMap.put("bjHolder", "https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getBjLevel() + ".png");
+                returnMap.put("bjHolder", StringUtils.replace(DalbitUtil.getProperty("level.frame"), "[level]", target.getBjLevel() + ""));
                 returnMap.put("gstMemNo", target.getGstMemNo() == null ? "" : target.getGstMemNo());
                 returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                 returnMap.put("gstProfImg", target.getGstProfImg());

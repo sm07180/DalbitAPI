@@ -5,6 +5,7 @@ import com.dalbit.main.vo.procedure.P_MainGoodRankingVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter @Setter
 public class MainGoodRankingOutVo {
@@ -36,7 +37,7 @@ public class MainGoodRankingOutVo {
         setFanGoodCnt(target.getFan_goodCnt());
         setFanMemNo(target.getFan_mem_no());
         setFanNickNm(target.getFan_nickName());
-        setHolder("https://image.dalbitlive.com/level/frame/200525/AAA/ico_frame_" + target.getLevel() + ".png");
+        setHolder(StringUtils.replace(DalbitUtil.getProperty("level.frame"), "[level]", target.getLevel() + ""));
         setUpDown(target.getUpdown());
     }
 }
