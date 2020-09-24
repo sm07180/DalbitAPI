@@ -114,31 +114,16 @@
         FROM rd_admin.tb_admin_banner
         WHERE is_view = 1
             AND position = #{paramPosition}
-            AND (
-              view_type = 0
-              OR
-              (
-                (view_type = 1  AND (
-                  sex = 1 OR sex = (
-                        SELECT
-                          (CASE
-                            WHEN mem_sex = 'm' THEN 2
-                            WHEN mem_sex = 'f' THEN 3
-                            ELSE 4
-                          END)
-                        FROM tb_member_basic
-                        WHERE mem_no = #{paramMemNo}
-                    )
-                  )
-                )
-              )
-              OR
-              (view_type = 2 AND #{paramMemNo} LIKE '8%')
-            )
+            AND (view_type = 0
+                OR (view_type = 1 and left(#{paramMemNo}, 1) != '8' )
+                OR (view_type = 2 AND #{paramMemNo} LIKE '8%'))
+            AND (sex = 1
+                OR sex = (SELECT (CASE WHEN mem_sex = 'm' THEN 2 WHEN mem_sex = 'f' THEN 3 ELSE 4 END)
+                             FROM tb_member_basic
+                             WHERE mem_no = #{paramMemNo}))
             AND (
               term_type = 0
-              OR
-              (term_type = 1 and now() between start_datetime and end_datetime)
+              OR (term_type = 1 and now() between start_datetime and end_datetime)
             )
             AND platform LIKE #{paramPlatform}
         ORDER BY `order` asc, idx DESC
