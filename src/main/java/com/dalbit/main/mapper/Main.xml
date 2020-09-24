@@ -119,12 +119,12 @@
               OR
               (
                 (view_type = 1  AND (
-                  sex = 0 OR sex = (
+                  sex = 1 OR sex = (
                         SELECT
                           (CASE
-                            WHEN mem_sex = 'm' THEN 1
-                            WHEN mem_sex = 'f' THEN 2
-                            ELSE 3
+                            WHEN mem_sex = 'm' THEN 2
+                            WHEN mem_sex = 'f' THEN 3
+                            ELSE 4
                           END)
                         FROM tb_member_basic
                         WHERE mem_no = #{paramMemNo}
