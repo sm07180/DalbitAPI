@@ -19,6 +19,9 @@ public enum Status {
     로그인필요_성공("-98", "need.login.success", "로그인 필요 시"),
     로그인필요("-99", "need.login", "로그인 필요 시"),
 
+    //차단관련 운영메시지
+    차단_이용제한("0", "block.member.restriction", "운영자에 의해 차단되어 이용제한 시"),
+
     //휴대폰 sms 인증
     인증번호요청("0", "sms.number.request.success", "인증번호 요청 성공 시"),
     인증확인("1", "sms.number.check.success", "인증확인 성공 시"),
@@ -830,6 +833,7 @@ public enum Status {
     출석체크이벤트_더줘_실패("C006", "business.error", "비즈니스 에러"),
 
     설정_방생성_참여불가상태("S001", "system.config.broadcast.block", "tbl_code_defind -> system_config / 방생성_참여_가능여부 가 Y 일경우"),
+    설정_클립업로드_참여불가상태("S001", "system.config.clip.block", "tbl_code_defind -> system_config / 방생성_참여_가능여부 가 Y 일경우"),
 
     라이징이벤트_실시간순위_조회_성공("C001", "event.rising.live.success", "성공"),
     라이징이벤트_실시간순위_데이터없음("0", "event.rising.live.no.data", "데이터 없음"),

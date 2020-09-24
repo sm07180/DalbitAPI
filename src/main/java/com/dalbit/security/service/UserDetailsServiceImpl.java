@@ -1,6 +1,7 @@
 package com.dalbit.security.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.BlockVo;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -81,7 +82,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         DeviceVo deviceVo = new DeviceVo(request);
         //LocationVo locationVo = DalbitUtil.getLocation(deviceVo.getIp());
 
-        int adminBlockCnt = memberDao.selectAdminBlock(deviceVo);
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo));
         if(0 < adminBlockCnt){
             throw new CustomUsernameNotFoundException(Status.로그인실패_운영자차단);
         }

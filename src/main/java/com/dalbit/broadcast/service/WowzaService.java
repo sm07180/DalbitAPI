@@ -13,6 +13,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
@@ -50,6 +51,8 @@ public class WowzaService {
     RestService restService;
     @Autowired
     CommonDao commonDao;
+    @Autowired
+    MemberDao memberDao;
     @Autowired
     RoomService roomService;
     @Autowired
@@ -147,6 +150,13 @@ public class WowzaService {
                 result.put("status", Status.설정_방생성_참여불가상태);
                 return result;
             }
+        }
+
+        //차단관리 테이블 확인
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
+        if(0 < adminBlockCnt){
+            result.put("status", Status.차단_이용제한);
+            return result;
         }
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
@@ -303,6 +313,13 @@ public class WowzaService {
                 result.put("status", Status.설정_방생성_참여불가상태);
                 return result;
             }
+        }
+
+        //차단관리 테이블 확인
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
+        if(0 < adminBlockCnt){
+            result.put("status", Status.차단_이용제한);
+            return result;
         }
 
         P_RoomJoinVo pRoomJoinVo = new P_RoomJoinVo();

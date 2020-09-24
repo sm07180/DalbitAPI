@@ -1,5 +1,6 @@
 package com.dalbit.member.dao;
 
+import com.dalbit.common.vo.BlockVo;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.ConnectRoomVo;
@@ -28,7 +29,7 @@ public interface MemberDao {
     @Transactional(readOnly = true)
     TokenCheckVo selectMemStateForPhone(String phoneNo);
     @Transactional(readOnly = true)
-    int selectAdminBlock(DeviceVo deviceVo);
+    int selectAdminBlock(BlockVo blockVo);
     @Transactional(readOnly = true)
     TokenCheckVo selectAnonymousMem(String mem_no);
     ProcedureVo callExchangeCalc(ProcedureVo procedureVo);

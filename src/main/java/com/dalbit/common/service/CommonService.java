@@ -258,7 +258,7 @@ public class CommonService {
         }catch(GlobalException e){}
 
         //어드민 block 상태 체크
-        int adminBlockCnt = memberDao.selectAdminBlock(deviceVo);
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo, MemberVo.getMyMemNo(request)));
 
         if (isLogin && 0 == adminBlockCnt) {
             //토큰의 회원번호가 탈퇴 했거나 정상,경고가 아닐 경우 로그아웃처리

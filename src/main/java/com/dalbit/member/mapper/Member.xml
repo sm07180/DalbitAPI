@@ -91,13 +91,14 @@
             AND mem_id = #{phoneNo}
     </select>
 
-    <select id="selectAdminBlock" parameterType="com.dalbit.common.vo.DeviceVo" resultType="int">
+    <select id="selectAdminBlock" parameterType="com.dalbit.common.vo.BlockVo" resultType="int">
         select count(block_end_date)
         from rd_admin.tb_login_block
         where
             (
                 ( block_type = 1 and block_text = #{deviceUuid} )
                 or ( block_type = 2 and block_text = #{ip} )
+                or ( block_type = 3 and block_text = #{memNo} )
             )
             and block_text != ''
             and now() <![CDATA[<]]> block_end_date

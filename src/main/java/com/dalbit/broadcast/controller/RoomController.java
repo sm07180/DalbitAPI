@@ -6,10 +6,12 @@ import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.BlockVo;
 import com.dalbit.common.vo.CodeVo;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
@@ -39,6 +41,9 @@ public class RoomController {
     @Autowired
     GsonUtil gsonUtil;
 
+    @Autowired
+    MemberDao memberDao;
+
 
     /**
      * 방송방 생성
@@ -54,6 +59,12 @@ public class RoomController {
             if(codeVo.getValue().equals("Y")){
                 return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
             }
+        }
+
+        //차단관리 테이블 확인
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
+        if(0 < adminBlockCnt){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
         }
 
         //토큰생성
@@ -105,6 +116,12 @@ public class RoomController {
             if(codeVo.getValue().equals("Y")){
                 return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
             }
+        }
+
+        //차단관리 테이블 확인
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
+        if(0 < adminBlockCnt){
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
         }
 
         String roomNo = roomJoinVo.getRoomNo();

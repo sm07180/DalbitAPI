@@ -15,7 +15,7 @@ request.custom.header.error=통신 오류가 발생했습니다.\\n고객센터�
 
 # Status.enum
 # common
-need.login=로그인이 필요합니다.
+need.login=해당 서비스를 이용하기 위해\\n로그인을 해주세요.
 need.login.success=로그인이 필요합니다.
 login.success=로그인하였습니다.
 admin.login.success=관리자로 로그인하였습니다.
@@ -1177,6 +1177,7 @@ clip.play.list.select.no.success=재생목록이 없습니다.
 clip.play.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip gift
+# clip gift
 clip.gift.success=해당 클립에 선물이 전달되었습니다.
 clip.gift.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 clip.gift.object.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
@@ -1200,6 +1201,7 @@ clip.gift.rank.top3.select.success=클립 선물 랭킹이 조회되었습니다
 clip.gift.rank.top3.select.no.success=받은 선물이 없습니다.
 clip.gift.rank.top3.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
+# clip gift ranking
 # clip gift ranking
 clip.gift.rank.select.success=클립 선물랭킹 조회 성공하였습니다.
 clip.gift.rank.select.no.success=받은 선물이 없습니다.
@@ -1227,6 +1229,7 @@ clip.delete.no.clip=클립이 존재하지 않습니다.
 clip.delete.member.number.clip.member.number.unmatch=본인이 등록한 클립이 아닙니다.
 clip.delete.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
+# clip reply list select
 # clip reply list select
 clip.reply.list.select.success=댓글이 조회되었습니다.
 clip.reply.list.select.no.success=등록된 댓글이 없습니다.
@@ -1256,6 +1259,7 @@ clip.reply.delete.no.reply.idx=댓글이 존재하지 않습니다.
 clip.reply.delete.not.writer=댓글 작성자가 아닙니다.
 clip.reply.delete.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
+# clip upload list select
 # clip upload list select
 clip.upload.list.select.success=등록한 클립 목록이 조회되었습니다.
 clip.upload.list.select.no.success=등록된 클립이 없습니다.
@@ -1327,7 +1331,7 @@ event.prize.receive.choice.prize.success=경품 수령(경품 받기)에 성공�
 event.prize.receive.choice.dal.success=경품 수령(달로 받기)에 성공하였습니다.
 event.prize.receive.choice.already.choice=이미 경품을 선택하였습니다.
 event.prize.receive.choice.receiveWay.error=이벤트 경품 수령 방법을 잘못 입력하였습니다.
-event.prize.receive.choice.already.deposit=경품 입금 확인이 되었기 때문에 수정이 불가능합니다.
+event.prize.receive.choice.already.deposit=수령방법 변경이 불가 상태입니다.
 
 event.winner.add.info.select.success=이벤트 당첨자 등록정보 조회에 성공하였습니다.
 
@@ -1350,7 +1354,7 @@ member.good.list.object.member.number.error=회원정보를 불러올 수 없습
 member.good.list.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast title add
-mypage.broadcast.title.add.success=방송제목 추가 성공하였습니다.
+mypage.broadcast.title.add.success=방송 제목이 등록되었습니다.
 mypage.broadcast.title.add.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.add.limit3=방송제목 추가 최대 3개입니다.
 mypage.broadcast.title.add.fail=에러가 발생하였습니다.
@@ -1360,43 +1364,43 @@ event.good.success=추천되었습니다.
 event.good.cancel.success=추천 취소되었습니다.
 
 # mypage broadcast title edit
-mypage.broadcast.title.edit.success=방송제목 수정 성공하였습니다.
+mypage.broadcast.title.edit.success=방송 제목이 수정되었습니다.
 mypage.broadcast.title.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.edit.no.order.number=방송제목 수정번호 없습니다.
 mypage.broadcast.title.edit.fail=에러가 발생하였습니다.
 
 # mypage broadcast title select
-mypage.broadcast.title.select.success=방송제목 조회 성공하였습니다.
+mypage.broadcast.title.select.success=방송 제목을 가져왔습니다.
 mypage.broadcast.title.select.no.success=방송제목 조회 없습니다.
 mypage.broadcast.title.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast title delete
-mypage.broadcast.title.delete.success=방송제목 삭제 성공하였습니다.
+mypage.broadcast.title.delete.success=방송 제목이 삭제되었습니다.
 mypage.broadcast.title.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.delete.no.order.number=방송제목 삭제번호 없습니다.
 mypage.broadcast.title.delete.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg add
-mypage.broadcast.welcome.msg.add.success=인사말 추가 성공하였습니다.
+mypage.broadcast.welcome.msg.add.success=인사말이 등록되었습니다.
 mypage.broadcast.welcome.msg.add.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.add.limit3=인사말 추가 최대 3개입니다.
 mypage.broadcast.welcome.msg.add.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg edit
-mypage.broadcast.welcome.msg.edit.success=인사말 수정 성공하였습니다.
+mypage.broadcast.welcome.msg.edit.success=인사말이 수정되었습니다.
 mypage.broadcast.welcome.msg.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.edit.no.order.number=인사말 수정번호 없습니다.
 mypage.broadcast.welcome.msg.edit.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg select
-mypage.broadcast.welcome.msg.select.success=인사말 조회 성공하였습니다.
+mypage.broadcast.welcome.msg.select.success=인사말을 가져왔습니다.
 mypage.broadcast.welcome.msg.select.no.success=인사말 조회 없습니다.
 mypage.broadcast.welcome.msg.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg delete
-mypage.broadcast.welcome.msg.delete.success=인사말 삭제 성공하였습니다.
+mypage.broadcast.welcome.msg.delete.success=인사말이 삭제되었습니다.
 mypage.broadcast.welcome.msg.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.delete.no.order.number=인사말 삭제 번호없습니다.
 mypage.broadcast.welcome.msg.delete.fail=에러가 발생하였습니다.
@@ -1407,7 +1411,7 @@ mypage.broadcast.setting.member.number.error=회원정보를 불러올 수 없�
 mypage.broadcast.setting.fail=에러가 발생하였습니다.
 
 # mypage broadcast setting edit
-mypage.broadcast.setting.edit.success=방송설정 수정 성공하였습니다.
+mypage.broadcast.setting.edit.success=입, 퇴장 메시지 노출 조건이 변경되었습니다.
 mypage.broadcast.setting.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.setting.edit.error=에러가 발생하였습니다.
 
@@ -1416,9 +1420,34 @@ clip.exceed.play.time.limit.5min=파일 재생시간이 5분을 초과하였습�
 
 # broadcast room chat freeze
 broadcast.room.freeze.success=얼리기 성공하였습니다.
+broadcast.room.freeze.true.success=얼리기 성공하였습니다.
+broadcast.room.freeze.false.success=얼리기 해제하였습니다.
 broadcast.room.freeze.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.freeze.no.room.number=방송 정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.freeze.end.room=종료된 방송입니다.
 broadcast.room.freeze.member.not.in.room=방에 참여중이지 않습니다.
 broadcast.room.freeze.impossible=얼리기 불가 상태입니다.
 broadcast.room.freeze.fail=얼리기 실패하였습니다.
+
+# mypage broad storymypage.broadcast.setting.edit.success
+mypage.broad.story.list.select.success=방송방 사연이 조회되었습니다.
+mypage.broad.story.list.select.no.success=등록된 방송방이 없습니다.
+mypage.broad.story.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+mypage.broad.story.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
+
+# mypage wallet popup select
+mypage.wallet.history.popup.select.success=내지갑 건수 조회하였습니다.
+mypage.wallet.history.popup.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+mypage.wallet.history.popup.select.fail=에러가 발생하였습니다.
+
+# mypage wallet list select
+mypage.wallet.list.select.success=내지갑 내역조회하였습니다.
+mypage.wallet.list.select.no=사용내역이 없습니다.
+mypage.wallet.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+mypage.wallet.list.select.fail=에러가 발생하였습니다.
+
+# Broadcasting or Listening End Summary
+broad.summary.success=요약정보 조회하였습니다.
+broad.summary.no.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+broad.summary.no.room=방정보를 찾을 수 없습니다.
+broad.summary.fail=에러가 발생하였습니다.

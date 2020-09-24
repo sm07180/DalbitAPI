@@ -10,12 +10,15 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MypageService;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,11 +42,29 @@ public class ClipService {
     CommonService commonService;
     @Autowired
     MypageService mypageService;
+    @Autowired
+    MemberDao memberDao;
 
     /**
      * 클립 등록(업로드)
      */
     public String clipAdd(P_ClipAddVo pClipAddVo, HttpServletRequest request) throws GlobalException {
+
+        //방 생성 접속 불가 상태 체크
+        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_클립막기.getCode(), Code.시스템설정_클립막기.getDesc()));
+        if(!DalbitUtil.isEmpty(codeVo)){
+            if(codeVo.getValue().equals("Y")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.설정_클립업로드_참여불가상태));
+            }
+        }
+
+        //차단관리 테이블 확인
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
+        if(0 < adminBlockCnt){
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한));
+        }
+
+
         String systemBanWord = commonService.banWordSelect();
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
@@ -195,6 +216,20 @@ public class ClipService {
      * 클립 플레이
      */
     public String clipPlay(P_ClipPlayVo pClipPlayVo, String state, HttpServletRequest request) {
+
+        //방 생성 접속 불가 상태 체크
+        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_클립막기.getCode(), Code.시스템설정_클립막기.getDesc()));
+        if(!DalbitUtil.isEmpty(codeVo)){
+            if(codeVo.getValue().equals("Y")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.설정_클립업로드_참여불가상태));
+            }
+        }
+
+        //차단관리 테이블 확인
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
+        if(0 < adminBlockCnt){
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한));
+        }
 
         //비회원 플레이 불가
         if(!DalbitUtil.isLogin(request)){

@@ -150,7 +150,7 @@ public class MemberController {
         }
 
         //어드민 block 상태 체크
-        int adminBlockCnt = memberDao.selectAdminBlock(deviceVo);
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo));
         if(0 < adminBlockCnt){
             return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
         }
