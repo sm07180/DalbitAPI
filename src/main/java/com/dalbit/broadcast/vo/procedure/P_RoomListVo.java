@@ -66,4 +66,10 @@ public class P_RoomListVo{
     private int totalCnt;
 
     private int liveDjRank;                 //실시간 DJ 순위
+    private String liveBadgeText;
+    private String liveBadgeIcon;
+    private String liveBadgeStartColor;
+    private String liveBadgeEndColor;
+    private String liveBadgeImage;
+    private String liveBadgeImageSmall;
 }

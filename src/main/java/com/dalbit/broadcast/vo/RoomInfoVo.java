@@ -38,6 +38,7 @@ public class RoomInfoVo {
     private String bjHolder;
     private ImageVo bjProfImg;
     private List fanBadgeList;
+    private List liveBadgeList;
     private List fanRank;
     private boolean isRecomm;
     private boolean isPop;
@@ -137,5 +138,8 @@ public class RoomInfoVo {
         if(this.auth != 3){
             this.webRtcStreamName = wowza_prefix + this.roomNo + "_opus";
         }
+
+        this.liveBadgeList = memberInfoVo.getLiveBadgeList();
+        this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
     }
 }

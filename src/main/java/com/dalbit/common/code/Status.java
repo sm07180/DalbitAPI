@@ -1494,7 +1494,44 @@ public enum Status {
     방송종료요약_방없음("-2", "broad.summary.no.room", "방정보가 없거나 종료가 아닐때(종료여부는 DJ만)"),
     방송종료요약_실패("C006", "broad.summary.fail", "조회 실패"),
 
-    ;
+    //방송방 좋아요 내역
+    좋아요내역조회_성공("C001", "broadcast.good.history.select.success", "좋아요 내역조회 성공 시"),
+    좋아요내역조회_없음("0", "broadcast.good.history.no.success", "좋아요 내역 없을 시"),
+    좋아요내역조회_회원번호정상아님("-1", "broadcast.good.history.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    좋아요내역조회_해당방없음("-2", "broadcast.good.history.select.no.room", "해당 방이 없을 시"),
+    좋아요내역조회_미참여중("-3", "broadcast.good.history.select.not.join.member", "요청회원이 방송방에 없을 시"),
+    좋아요내역조회_권한없음("-4", "broadcast.good.history.select.no.auth", "좋아요 내역조회 권한 없을 시"),
+    좋아요내역조회_실패("C006", "broadcast.good.history.select.fail", "좋아요 내역조회 실패 시"),
+
+    //추석이벤트 체크
+    추석이벤트체크_참여가능("0", "event.chooseok.check.ok.success", "추석이벤트 참여가능"),
+    추석이벤트체크_회원아님("-1", "event.chooseok.check.member.number.error", "요청회원번호가 회원 아닐 시"),
+    추석이벤트체크_이미받음("-2", "event.chooseok.check.already", "추석이벤트 이미 지급 받음"),
+    추석이벤트체크_실패("C006", "event.chooseok.check.fail", "추석이벤트 참여 실패"),
+
+    //추석 무료 달 지급 이벤트
+    추석이벤트_무료달지급_지급성공("0", "event.chooseok.free.dal.success", "추석이벤트 무료 달 지급 성공 시"),
+    추석이벤트_무료달지급_회원아님("-1", "event.chooseok.check.member.number.error", "요청회원번호가 회원 아닐 시"),
+    추석이벤트_무료달지급_이미지급받음("-2", "event.chooseok.check.already", "추석이벤트 무료달 이미 지급받았을 시"),
+    추석이벤트_무료달지급_레벨5미만("-3", "event.chooseok.free.dal.level.not.enough", "추석이벤트 무료 달 지급 레벨에 못 미칠시"),
+    추석이벤트_무료달지급_이벤트종료("-4", "event.chooseok.free.dal.end", "추석이벤트 무료 달 지급 이벤트가 끝났을 시"),
+    추석이벤트_무료달지급_실패("C006", "event.chooseok.free.dal.fail", "추석이벤트 무료 달 지급 실패 시"),
+
+    //추석이벤트 구매 달 확인
+    추석이벤트_구매달조회_성공("0", "event.chooseok.purchaseDal.select.success", "추석이벤트 구매 달 조회 성공 시"),
+    추석이벤트_구매달조회_회원아님("-1", "event.chooseok.check.member.number.error", "요청회원번호가 회원 아닐 시"),
+    추석이벤트_구매달조회_실패("C006", "event.chooseok.purchaseDal.select.fail", "추석이벤트 구매달 조회 실패 시"),
+
+    //추석이벤트 구매 달 보너스 지급
+    추석이벤트_보너스달지급_지급성공("0", "event.chooseok.purchaseDal.bonus.success", "추석이벤트 구매 달 별 보너스 지급 성공 시"),
+    추석이벤트_보너스달지급_회원아님("-1", "event.chooseok.check.member.number.error", "요청회원번호가 회원 아닐 시"),
+    추석이벤트_보너스달지급_이미지급받음("-2", "event.chooseok.check.already", "추석이벤트 구매 달 별 보너스 이미 지급받았을 시"),
+    추석이벤트_보너스달지급_지급기간이아님("-3", "event.chooseok.purchaseDal.bonus.not.yet", "추석이벤트 구매 달 별 보너스 지급 기간이 아닐 시"),
+    추석이벤트_보너스달지급_이벤트종료("-4", "event.chooseok.purchaseDal.bonus.end", "추석이벤트 구매 달 별 보너스 지급 이벤트가 끝났을 시"),
+    추석이벤트_보너스달지급_500달미만("-5", "event.chooseok.purchaseDal.bonus.dal.not.enough", "추석이벤트 구매 달 별 보너스"),
+    추석이벤트_보너스달지급_지급실패("C006", "event.chooseok.purchaseDal.bonus.fail", "추석이벤트 구매 달 별 보너스 지급 실패 시"),
+
+   ;
 
 
 

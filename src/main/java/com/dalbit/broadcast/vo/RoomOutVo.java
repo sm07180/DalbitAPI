@@ -2,6 +2,7 @@ package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
+import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,9 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 @Getter @Setter @ToString
 public class RoomOutVo {
@@ -63,6 +66,7 @@ public class RoomOutVo {
     private int totalCnt = 0;
     private Boolean isFreeze;
     private int liveDjRank;
+    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -101,7 +105,10 @@ public class RoomOutVo {
         this.os = target.getOs_type();
         this.isWowza = target.getIs_wowza();
         this.totalCnt = target.getTotalCnt();
-        this.liveDjRank = target.getLiveDjRank();
+        this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
+        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+            this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
+        }
     }
 
     public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap) {
@@ -151,7 +158,9 @@ public class RoomOutVo {
         this.isAttendCheck = (Boolean) attendanceCheckMap.get("isCheck");
         this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/attend_event?webview=new";
 
-        this.isFreeze = (target.getFreezeMsg() == 1) ? true : false;
-        this.liveDjRank = target.getLiveDjRank();
+        this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
+        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+            this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
+        }
     }
 }

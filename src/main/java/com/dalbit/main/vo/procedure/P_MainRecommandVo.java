@@ -26,4 +26,11 @@ public class P_MainRecommandVo {
     public boolean isAdmin = false;
     public boolean isNew = false;
     public int isWowza;
+
+    public String liveBadgeText;
+    public String liveBadgeIcon;
+    public String liveBadgeStartColor;
+    public String liveBadgeEndColor;
+    public String liveBadgeImage;
+    public String liveBadgeImageSmall;
 }

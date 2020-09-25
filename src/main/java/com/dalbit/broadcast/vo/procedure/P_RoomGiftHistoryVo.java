@@ -41,5 +41,11 @@ public class P_RoomGiftHistoryVo {
     private int secret;
     private Date giftDate;
     private int liveFanRank;
+    private String liveBadgeText;
+    private String liveBadgeIcon;
+    private String liveBadgeStartColor;
+    private String liveBadgeEndColor;
+    private String liveBadgeImage;
+    private String liveBadgeImageSmall;
 
 }

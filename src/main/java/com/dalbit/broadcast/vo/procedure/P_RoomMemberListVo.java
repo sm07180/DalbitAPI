@@ -29,4 +29,11 @@ public class P_RoomMemberListVo {
     private int newBadge;
     private int specialBadge;
     private int liveFanRank;
+    private String liveBadgeText;
+    private String liveBadgeIcon;
+    private String liveBadgeStartColor;
+    private String liveBadgeEndColor;
+    private String liveBadgeImage;
+    private String liveBadgeImageSmall;
+    private int goodCnt;
 }

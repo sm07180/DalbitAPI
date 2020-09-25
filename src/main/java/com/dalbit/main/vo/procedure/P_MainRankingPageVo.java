@@ -55,4 +55,12 @@ public class P_MainRankingPageVo {
     private int listenPoint;
     private String roomNo;
     private int starCnt;
+    private int liveDjRank;
+    private int liveFanRank;
+    private String liveBadgeText;
+    private String liveBadgeIcon;
+    private String liveBadgeStartColor;
+    private String liveBadgeEndColor;
+    private String liveBadgeImage;
+    private String liveBadgeImageSmall;
 }

@@ -1,9 +1,12 @@
 package com.dalbit.main.vo.request;
 
+import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.main.vo.procedure.P_MainRecommandVo;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter @Setter
 public class MainRecommandOutVo {
@@ -26,4 +29,5 @@ public class MainRecommandOutVo {
     public boolean isAdmin = false;
     public boolean isNew = false;
     private int isWowza = 0;
+    private List<FanBadgeVo> liveBadgeList;
 }

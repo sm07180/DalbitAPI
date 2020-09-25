@@ -70,6 +70,24 @@ public class ProfileService {
             }else{
                 profileInfoOutVo.setFanBadgeList(fanBadgeList);
             }
+
+            //실시간 뱃지 리스트
+            HashMap liveBadgeMap = new HashMap();
+            liveBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
+            liveBadgeMap.put("type", -1);
+            List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
+            if(DalbitUtil.isEmpty(liveBadgeList)){
+                profileInfoOutVo.setLiveBadgeList(new ArrayList());
+            }else{
+                for(int i = (liveBadgeList.size() -1); i > -1; i--){
+                    if(DalbitUtil.isEmpty(((FanBadgeVo)liveBadgeList.get(i)).getIcon())){
+                        liveBadgeList.remove(i);
+                    }
+                }
+                profileInfoOutVo.setLiveBadgeList(liveBadgeList);
+            }
+
+
             //HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));

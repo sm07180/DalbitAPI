@@ -23,6 +23,7 @@ public class RoomMemberInfoVo {
     private String kingNickNm;
     private ImageVo kingProfImg;
     private List fanBadgeList = new ArrayList();
+    private List liveBadgeList = new ArrayList();
 
     public void isFan(boolean isFan){
         this.isFan = isFan;

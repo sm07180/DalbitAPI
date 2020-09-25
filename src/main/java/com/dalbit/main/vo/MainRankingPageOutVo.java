@@ -1,11 +1,15 @@
 package com.dalbit.main.vo;
 
+import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.main.vo.procedure.P_MainRankingPageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter
 public class MainRankingPageOutVo {
@@ -30,6 +34,9 @@ public class MainRankingPageOutVo {
     private String holder;
     private String roomNo;
     private int starCnt = 0;
+    private int liveDjRank;
+    private int liveFanRank;
+    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
 
     public MainRankingPageOutVo(){}
     public MainRankingPageOutVo(P_MainRankingPageVo target) {
@@ -54,5 +61,10 @@ public class MainRankingPageOutVo {
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         setRoomNo(target.getRoomNo());
         setStarCnt(target.getStarCnt());
+        setLiveDjRank(target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank());
+        setLiveFanRank(target.getLiveFanRank());
+        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+            this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
+        }
     }
 }

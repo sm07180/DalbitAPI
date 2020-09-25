@@ -66,10 +66,17 @@
             , D.admin_badge = 1 AS isAdmin
             , D.newdj_badge = 1 AS isNew
             , B.is_wowza AS isWowza
+            , E.name AS liveBadgeText
+            , E.icon AS liveBadgeIcon
+            , E.start_color AS liveBadgeStartColor
+            , E.end_color AS liveBadgeEndColor
+            , E.image AS liveBadgeImage
+            , E.image_small AS liveBadgeImageSmall
         FROM tb_broadcast_room_live_list AS A
-            INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.is_wowza = ${paramIsWowza} AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
+            INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
             INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no
+            LEFT OUTER JOIN tbl_badge_info AS E ON E.slct_type = 7 AND E.value = fn_get_live_dj_rank(A.mem_no)
         ORDER BY D.admin_badge DESC, D.specialdj_badge DESC, A.total DESC, B.idx DESC
         LIMIT 7;
     </select>

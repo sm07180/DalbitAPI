@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
 import com.dalbit.member.vo.request.WalletPopupListVo;
 import com.dalbit.common.code.Status;
@@ -34,6 +35,8 @@ public class MypageController {
     @Autowired
     MypageService mypageService;
     @Autowired
+    ProfileService profileService;
+    @Autowired
     GsonUtil gsonUtil;
 
     /**
@@ -41,10 +44,10 @@ public class MypageController {
      */
     @GetMapping("")
     public String memberInfo(HttpServletRequest request){
-        P_MemberInfoVo apiData = new P_MemberInfoVo();
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, new MemberVo().getMyMemNo(request), new MemberVo().getMyMemNo(request));
 
-        String result = mypageService.callMemberInfo(apiData);
+        String result = profileService.callMemberInfo(apiData, request);
 
         return result;
     }

@@ -155,6 +155,19 @@ public class MainService {
                 outVo.isSpecial = recommendVoList.get(i).isSpecial();
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
+                List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+                if(!DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeText()) && !DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeIcon())){
+                    FanBadgeVo fanBadgeVo = new FanBadgeVo(
+                            recommendVoList.get(i).getLiveBadgeText()
+                            ,recommendVoList.get(i).getLiveBadgeIcon()
+                            ,recommendVoList.get(i).getLiveBadgeStartColor()
+                            ,recommendVoList.get(i).getLiveBadgeEndColor()
+                            ,recommendVoList.get(i).getLiveBadgeImage()
+                            ,recommendVoList.get(i).getLiveBadgeImageSmall()
+                    );
+                    liveBadgeList.add(fanBadgeVo);
+                }
+                outVo.setLiveBadgeList(liveBadgeList);
                 recommend.add(outVo);
 
                 if(setBanner != 0 && ((i + 1) % setBanner) == 0){
@@ -178,6 +191,8 @@ public class MainService {
                         outVoB.setLikes(0);
                         outVoB.isSpecial = false;
                         outVoB.isAdmin = false;
+                        liveBadgeList = new ArrayList<>();
+                        outVoB.setLiveBadgeList(liveBadgeList);
                         recommend.add(outVoB);
                     }
                     bannerIdx++;
@@ -205,6 +220,8 @@ public class MainService {
                     outVo.setLikes(0);
                     outVo.isSpecial = false;
                     outVo.isAdmin = false;
+                    List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+                    outVo.setLiveBadgeList(liveBadgeList);
                     recommend.add(outVo);
                 }
             }

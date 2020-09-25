@@ -917,11 +917,32 @@ public class RoomService {
         }else{
             returnMap.put("fanBadgeList", fanBadgeList);
         }
+
+        //실시간 뱃지 리스트
+        HashMap liveBadgeMap = new HashMap();
+        liveBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
+        liveBadgeMap.put("type", -1);
+        List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
+        if(DalbitUtil.isEmpty(liveBadgeList)){
+            returnMap.put("liveBadgeList", new ArrayList());
+        }else{
+            for(int i = (liveBadgeList.size() -1); i > -1; i--){
+                if(DalbitUtil.isEmpty(((FanBadgeVo)liveBadgeList.get(i)).getIcon())){
+                    liveBadgeList.remove(i);
+                }
+            }
+            returnMap.put("liveBadgeList", liveBadgeList);
+        }
+
         if(DalbitUtil.getIntMap(resultMap, "auth") == 0 || DalbitUtil.getIntMap(resultMap, "auth") == 1){
             returnMap.put("isNewListener", DalbitUtil.getIntMap(resultMap, "new_badge") == 0 ? false : true);
         }else{
             returnMap.put("isNewListener", false);
         }
+
+        returnMap.put("liveDjRank", DalbitUtil.getIntMap(resultMap, "liveDjRank"));
+        returnMap.put("liveFanRank", DalbitUtil.getIntMap(resultMap, "liveFanRank"));
+
         procedureVo.setData(returnMap);
 
         return procedureVo;

@@ -1,11 +1,15 @@
 package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
+import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter @Setter @ToString
 public class RoomMemberOutVo{
@@ -25,6 +29,8 @@ public class RoomMemberOutVo{
     private boolean isNewListener;
     private boolean isSpecial;
     private int liveFanRank;
+    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private int goodCnt;
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();
@@ -42,5 +48,9 @@ public class RoomMemberOutVo{
         this.isNewListener = this.auth == 0 ? (target.getNewBadge() == 1 ? true : false) : false;
         this.isSpecial = target.getSpecialBadge() == 1 ? true : false;
         this.liveFanRank = target.getLiveFanRank();
+        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+            this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
+        }
+        this.goodCnt = target.getGoodCnt();
     }
 }

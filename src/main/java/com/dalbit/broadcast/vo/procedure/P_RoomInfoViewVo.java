@@ -49,5 +49,11 @@ public class P_RoomInfoViewVo {
     private int badge_special;              //스페셜뱃지
     private int freezeMsg;                  //채팅상태(0:정상,1:얼리기)
     private int liveDjRank;                 //실시간 DJ 순위
+    private String liveBadgeText;
+    private String liveBadgeIcon;
+    private String liveBadgeStartColor;
+    private String liveBadgeEndColor;
+    private String liveBadgeImage;
+    private String liveBadgeImageSmall;
 
 }

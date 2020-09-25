@@ -64,4 +64,6 @@ public class P_ProfileInfoVo {
     private String birthYear;           //생 년
     private String birthMonth;          //생 월
     private String birthDay;            //생 일
+    private int liveDjRank;             //실시간 DJ 순위
+    private int liveFanRank;            //실시간 팬 순위
 }

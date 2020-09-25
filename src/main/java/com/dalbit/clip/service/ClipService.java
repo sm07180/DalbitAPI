@@ -271,6 +271,7 @@ public class ClipService {
                 returnMap.put("goodCntOpen", true);
                 returnMap.put("byeolCntOpen", true);
                 returnMap.put("replyCntOpen", true);
+                returnMap.put("eventOpen", true);
             }else{
                 returnMap.put("commentOpen", true);
             }
@@ -983,6 +984,7 @@ public class ClipService {
             returnMap.put("goodCntOpen", true);
             returnMap.put("byeolCntOpen", true);
             returnMap.put("replyCntOpen", true);
+            returnMap.put("eventOpen", true);
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
