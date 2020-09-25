@@ -218,7 +218,7 @@ public class WowzaService {
             if(isDone){
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()), request);
             }
-            RoomOutVo target = getRoomInfo(roomNo);
+            RoomOutVo target = getRoomInfo(roomNo, pRoomCreateVo.getMem_no(), 1);
             RoomMemberInfoVo memberInfoVo = new RoomMemberInfoVo();
             memberInfoVo.setRank(DalbitUtil.getIntMap(resultMap, "rank"));
             memberInfoVo.setAuth(3);
@@ -241,6 +241,19 @@ public class WowzaService {
             if(!DalbitUtil.isEmpty(fanBadgeList)){
                 memberInfoVo.setFanBadgeList(fanBadgeList);
             }
+
+            //실시간 DJ 뱃지 리스트
+            /*HashMap liveBadgeMap = new HashMap();
+            liveBadgeMap.put("mem_no", target.getBjMemNo());
+            liveBadgeMap.put("type", 3);
+            List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
+            if(DalbitUtil.isEmpty(liveBadgeList)){
+                memberInfoVo.setLiveBadgeList(new ArrayList());
+            }else{
+                memberInfoVo.setLiveBadgeList(liveBadgeList);
+            }*/
+
+            memberInfoVo.setLiveBadgeList(new ArrayList());
 
             //제목 저장기록이 없을 경우 최근방송 제목 저장
             P_BroadcastOptionListVo titleListVo = new P_BroadcastOptionListVo();
@@ -508,6 +521,20 @@ public class WowzaService {
         if(!DalbitUtil.isEmpty(fanBadgeList)){
             memberInfoVo.setFanBadgeList(fanBadgeList);
         }
+
+        //실시간 DJ 뱃지 리스트
+/*        HashMap liveBadgeMap = new HashMap();
+        liveBadgeMap.put("mem_no", target.getBjMemNo());
+        liveBadgeMap.put("type", 3);
+        List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
+        if(DalbitUtil.isEmpty(liveBadgeList)){
+            memberInfoVo.setLiveBadgeList(new ArrayList());
+        }else{
+            memberInfoVo.setLiveBadgeList(liveBadgeList);
+        }*/
+
+        memberInfoVo.setLiveBadgeList(new ArrayList());
+
         //방송설정 입퇴장메시지 세팅 조회
         P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
         HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
