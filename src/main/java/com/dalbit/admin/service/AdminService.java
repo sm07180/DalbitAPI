@@ -917,7 +917,7 @@ public class AdminService {
         ProcedureVo procedureVo = new ProcedureVo(pStatVo);
         adminDao.callBroadcastTotal(procedureVo);
 
-        P_BroadcastTotalOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_BroadcastTotalOutVo.class);
+        P_NewBroadcastTimeOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_NewBroadcastTimeOutVo.class);
 
         var result = new HashMap<String, Object>();
         result.put("totalInfo", totalInfo);

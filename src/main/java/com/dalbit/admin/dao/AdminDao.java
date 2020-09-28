@@ -69,7 +69,7 @@ public interface AdminDao {
 
     // 통계
     @Transactional(readOnly = true)
-    ArrayList<P_BroadcastTotalOutDetailVo> callBroadcastTotal(ProcedureVo procedureVo);
+    ArrayList<P_NewBroadcastTimeOutVo> callBroadcastTotal(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
     List<P_UserTotalOutDetailVo> callUserCurrentTotal(ProcedureVo procedureVo);
