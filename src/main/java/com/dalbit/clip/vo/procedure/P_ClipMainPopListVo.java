@@ -24,4 +24,6 @@ public class P_ClipMainPopListVo {
     private String cast_no;
     private String image_background;
     private String nickName;
+    private String subject_type;
+    private String title;
 }

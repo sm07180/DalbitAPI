@@ -12,10 +12,14 @@ public class ClipMainPopListOutVo {
     private String clipNo;              //클립 번호
     private ImageVo bgImg;              //클립 배경이미지
     private String nickName;
+    private String subjectType;
+    private String title;
 
     public ClipMainPopListOutVo(P_ClipMainPopListVo target){
         setClipNo(target.getCast_no());
         setBgImg(new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url")));
         setNickName(target.getNickName());
+        setSubjectType(target.getSubject_type());
+        setTitle(target.getTitle());
     }
 }

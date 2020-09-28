@@ -67,4 +67,7 @@ public interface ClipDao {
 
     @Transactional(readOnly = true)
     HashMap callClipShare(String cast_no);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callMyClip(ProcedureVo procedureVo);
 }

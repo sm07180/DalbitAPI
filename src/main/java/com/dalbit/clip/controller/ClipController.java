@@ -278,7 +278,7 @@ public class ClipController {
     @GetMapping("/main/pop/list")
     public String clipMainPopList(HttpServletRequest request) {
         P_ClipMainPopListVo apiData = new P_ClipMainPopListVo(request);
-        String result = clipService.clipMainPopList(apiData);
+        String result = clipService.clipMainPopList(apiData, request);
         return result;
     }
 
@@ -327,4 +327,17 @@ public class ClipController {
 
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
+
+
+    /**
+     * 내 클립 현황
+     */
+    @GetMapping("/myclip")
+    public String myClip(HttpServletRequest request){
+        P_MyClipVo apiData = new P_MyClipVo(request);
+        String result = clipService.callMyClip(apiData);
+        return result;
+    }
+
+
 }

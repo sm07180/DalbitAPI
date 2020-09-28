@@ -23,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -354,6 +351,8 @@ public class ClipService {
             returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
             returnMap.put("giftCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
+            returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
+            returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipGiftVo.getCast_no());
             P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
@@ -760,10 +759,9 @@ public class ClipService {
     /**
      * 클립 메인 인기리스트
      */
-    public String clipMainPopList(P_ClipMainPopListVo pClipMainPopListVo) {
+    public String clipMainPopList(P_ClipMainPopListVo pClipMainPopListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipMainPopListVo);
         List<P_ClipMainPopListVo> clipMainPopListVo = clipDao.callClipMainPopList(procedureVo);
-
 
         HashMap clipMainPopList = new HashMap();
         if(DalbitUtil.isEmpty(clipMainPopListVo)){
@@ -771,27 +769,26 @@ public class ClipService {
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_인기리스트_조회_없음, clipMainPopList));
         }
 
-        //리스트 3배수 추가
-        int size = clipMainPopListVo.size() / 3;
-        int cnt;
-        if(size == 1){
-            cnt = 3;
-        }else if(size == 2){
-            cnt = 6;
+        List<ClipMainPopListOutVo> outVoList = new ArrayList<>();
+        DeviceVo deviceVo = new DeviceVo(request);
+
+        if(deviceVo.getOs() == 3){
+            Collections.shuffle(clipMainPopListVo);
+            for (int i=0; i<6; i++){
+                outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
+            }
         }else {
-            cnt = clipMainPopListVo.size();
+            for (int i=0; i<clipMainPopListVo.size(); i++){
+                outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
+            }
         }
 
-        List<ClipMainPopListOutVo> outVoList = new ArrayList<>();
-        for (int i=0; i<cnt; i++){
-            outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
-        }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         clipMainPopList.put("list", procedureOutputVo.getOutputBox());
         clipMainPopList.put("type", DalbitUtil.getIntMap(resultMap, "type"));
-        //clipMainPopList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
-
+        clipMainPopList.put("totalCnt", deviceVo.getOs()== 3 ? 6 :procedureOutputVo.getRet());
+        clipMainPopList.put("checkDate", DalbitUtil.getStringMap(resultMap, "checkDate"));
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
@@ -992,5 +989,31 @@ public class ClipService {
             returnMap.put("list", clipGiftRankTop3PlayCall(pClipGiftRankTop3Vo).get("list"));
         }
         return returnMap;
+    }
+
+
+    /**
+     * 내 클립 현황
+     */
+    public String callMyClip(P_MyClipVo pMyClipVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMyClipVo);
+        clipDao.callMyClip(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.내클립조회_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("regCnt", DalbitUtil.getIntMap(resultMap, "regCnt"));
+            returnMap.put("playCnt", DalbitUtil.getIntMap(resultMap, "playCnt"));
+            returnMap.put("goodCnt", DalbitUtil.getIntMap(resultMap, "goodCnt"));
+            returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "byeolCnt"));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립조회_성공, returnMap));
+        }else if(procedureVo.getRet().equals(Status.내클립조회_요청회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립조회_요청회원번호_정상아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립조회_실패));
+        }
+        return result;
     }
 }

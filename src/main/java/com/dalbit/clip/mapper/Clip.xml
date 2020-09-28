@@ -94,4 +94,9 @@
         call sp_cast_room_share(#{data, mode=IN, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMyClip" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_cast_main_myclip(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
 </mapper>
