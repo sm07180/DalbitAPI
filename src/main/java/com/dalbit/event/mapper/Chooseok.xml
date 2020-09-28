@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.event.dao.ChooseokDao" >
+
+    <select id="callChooseokCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_event_free_dal_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callChooseokFreeDalCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_event_free_dal_check(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callChooseokPurchaseSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_event_purchase_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callChooseokPurchaseBonus" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_event_purchase_bonus(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+</mapper>
