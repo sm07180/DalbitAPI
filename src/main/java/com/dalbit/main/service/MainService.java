@@ -458,7 +458,7 @@ public class MainService {
         String position = request.getParameter("position");
         List<BannerVo> bannerList =null;
 
-        if("|0|1|3|4|5|6|7|8|9|".indexOf("|" + position + "|") > -1){
+        if("|0|1|3|4|5|6|7|8|9|10|".indexOf("|" + position + "|") > -1){
             String memNo = MemberVo.getMyMemNo(request);
             DeviceVo deviceVo = new DeviceVo(request);
 
