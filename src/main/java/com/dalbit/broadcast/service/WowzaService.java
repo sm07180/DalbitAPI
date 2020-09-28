@@ -243,7 +243,7 @@ public class WowzaService {
             }
 
             //실시간 DJ 뱃지 리스트
-            /*HashMap liveBadgeMap = new HashMap();
+            HashMap liveBadgeMap = new HashMap();
             liveBadgeMap.put("mem_no", target.getBjMemNo());
             liveBadgeMap.put("type", 3);
             List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
@@ -251,9 +251,7 @@ public class WowzaService {
                 memberInfoVo.setLiveBadgeList(new ArrayList());
             }else{
                 memberInfoVo.setLiveBadgeList(liveBadgeList);
-            }*/
-
-            memberInfoVo.setLiveBadgeList(new ArrayList());
+            }
 
             //제목 저장기록이 없을 경우 최근방송 제목 저장
             P_BroadcastOptionListVo titleListVo = new P_BroadcastOptionListVo();
@@ -297,7 +295,11 @@ public class WowzaService {
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
             result.put("status", Status.방송생성);
-            result.put("data", new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap));
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap);
+            if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
+                roomInfoVo.setLiveBadgeList(new ArrayList());
+            }
+            result.put("data", roomInfoVo);
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result.put("status", Status.방송생성_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
@@ -359,6 +361,9 @@ public class WowzaService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
             RoomInfoVo roomInfoVo = getRoomInfo(target, resultMap, request);
+            if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
+                roomInfoVo.setLiveBadgeList(new ArrayList());
+            }
             SocketVo vo = socketService.getSocketVo(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             if(target.getState() == 2 || target.getState() == 3 || target.getState() == 0){
                 try{
@@ -447,6 +452,10 @@ public class WowzaService {
                 if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                     HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
                     RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
+                    DeviceVo deviceVo = new DeviceVo(request);
+                    if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
+                        roomInfoVo.setLiveBadgeList(new ArrayList());
+                    }
 
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
@@ -487,8 +496,7 @@ public class WowzaService {
             P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo();
             attendanceCheckVo.setMem_no(memNo);
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
-            ProcedureOutputVo procedureRoomInfoOutputVo = new ProcedureOutputVo(procedureInfoViewVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap));
-            return (RoomOutVo) procedureRoomInfoOutputVo.getOutputBox();
+            return new RoomOutVo(roomInfoViewVo, attendanceCheckMap);
         }
         return null;
     }
@@ -523,7 +531,7 @@ public class WowzaService {
         }
 
         //실시간 DJ 뱃지 리스트
-/*        HashMap liveBadgeMap = new HashMap();
+        HashMap liveBadgeMap = new HashMap();
         liveBadgeMap.put("mem_no", target.getBjMemNo());
         liveBadgeMap.put("type", 3);
         List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
@@ -531,9 +539,7 @@ public class WowzaService {
             memberInfoVo.setLiveBadgeList(new ArrayList());
         }else{
             memberInfoVo.setLiveBadgeList(liveBadgeList);
-        }*/
-
-        memberInfoVo.setLiveBadgeList(new ArrayList());
+        }
 
         //방송설정 입퇴장메시지 세팅 조회
         P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);

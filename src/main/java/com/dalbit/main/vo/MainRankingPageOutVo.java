@@ -63,7 +63,7 @@ public class MainRankingPageOutVo {
         setStarCnt(target.getStarCnt());
         setLiveDjRank(target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank());
         setLiveFanRank(target.getLiveFanRank());
-        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+        if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
     }

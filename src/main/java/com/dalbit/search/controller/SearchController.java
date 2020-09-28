@@ -19,7 +19,7 @@ import javax.validation.Valid;
 
 @Slf4j
 @RestController
-@RequestMapping("search")
+@RequestMapping("/search")
 public class SearchController {
 
     @Autowired
@@ -28,7 +28,7 @@ public class SearchController {
     /**
      * 회원 닉네임 검색
      */
-    @GetMapping("member")
+    @GetMapping("/member")
     public String memberNickSearch(@Valid SearchVo searchVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -43,7 +43,7 @@ public class SearchController {
     /**
      * 라이브 방송 검색
      */
-    @GetMapping("live")
+    @GetMapping("/live")
     public String liveRoomSearch(@Valid SearchVo searchVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());

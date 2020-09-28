@@ -154,6 +154,7 @@ public class MainService {
                 outVo.setLikes(recommendVoList.get(i).getLikes());
                 outVo.isSpecial = recommendVoList.get(i).isSpecial();
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
+                outVo.isNew = recommendVoList.get(i).isNew();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
                 List<FanBadgeVo> liveBadgeList = new ArrayList<>();
                 if(!DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeText()) && !DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeIcon())){

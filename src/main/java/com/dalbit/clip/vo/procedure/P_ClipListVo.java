@@ -24,6 +24,8 @@ public class P_ClipListVo {
         setDjType(clipListVo.getDjType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
+        setSearch(clipListVo.getSearch());
+        setDateType(clipListVo.getDateType());
     }
 
     /* InPut */
@@ -35,6 +37,8 @@ public class P_ClipListVo {
     private int djType;             //신입구분(0: 전체, 1: 신입)
     private int pageNo;
     private int pageCnt;
+    private String search;          //검색어
+    private int dateType;
 
     /* Output */
     private String cast_no;              //클립 번호
