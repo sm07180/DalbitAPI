@@ -7,12 +7,14 @@ import com.dalbit.event.dao.ChooseokDao;
 import com.dalbit.event.vo.procedure.P_ChooseokCheckVo;
 import com.dalbit.event.vo.procedure.P_ChooseokDalVo;
 import com.dalbit.event.vo.procedure.P_ChooseokPurchaseDalVo;
+import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Calendar;
 import java.util.HashMap;
 
 @Slf4j
@@ -29,18 +31,45 @@ public class ChooseokService {
      * 추석이벤트 참여 체크
      */
     public String callChooseokCheck(P_ChooseokCheckVo pChooseokCheckVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pChooseokCheckVo);
-        chooseokDao.callChooseokCheck(procedureVo);
+
+        //시작일 종료일 체크
+        Calendar today = Calendar.getInstance();
+        Calendar start = Calendar.getInstance();
+        Calendar end = Calendar.getInstance();
+
+        if("real".equals(DalbitUtil.getActiveProfile())) {
+            start.set(2020,8,29,0,0,0);
+        } else {
+            start.set(2020,8,27,0,0,0);
+        }
+
+        end.set(2020,9,4,11,59,59);
+
+        String state = "false";
+
+        if(start.getTimeInMillis() <= today.getTimeInMillis() && today.getTimeInMillis() <= end.getTimeInMillis()) {
+            state = "true";
+        }
+
+        HashMap resultMap = new HashMap();
+        resultMap.put("state", state);
+
 
         String result;
-        if(Status.추석이벤트체크_참여가능.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_참여가능));
-        } else if (Status.추석이벤트체크_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_회원아님));
-        } else if (Status.추석이벤트체크_이미받음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_이미받음));
+        if("true".equals(state)) {
+            ProcedureVo procedureVo = new ProcedureVo(pChooseokCheckVo);
+            chooseokDao.callChooseokCheck(procedureVo);
+            if (Status.추석이벤트체크_참여가능.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_참여가능, resultMap));
+            } else if (Status.추석이벤트체크_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_회원아님, resultMap));
+            } else if (Status.추석이벤트체크_이미받음.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_이미받음, resultMap));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_실패, resultMap));
+            }
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_참여기간아님, resultMap));
         }
 
         return result;

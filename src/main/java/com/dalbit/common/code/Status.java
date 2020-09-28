@@ -113,6 +113,7 @@ public enum Status {
     팬등록_회원아님("-1", "member.insert.fan.no", "회원이 아닐 시"),
     팬등록_스타회원번호이상("-2", "member.insert.star.number.strange", "스타회원번호 이상 시"),
     팬등록_이미팬등록됨("-3", "member.insert.fan.already", "이미 팬 등록되어있을 시"),
+    팬등록_본인불가("-4", "member.insert.fan.not.me", "팬 등록 본인 불가 시"),
     팬등록실패("C006", "member.insert.fanstar.fail", "회원 팬 등록 실패 시 "),
 
     //회원팬해제
@@ -1507,6 +1508,7 @@ public enum Status {
     추석이벤트체크_참여가능("0", "event.chooseok.check.ok.success", "추석이벤트 참여가능"),
     추석이벤트체크_회원아님("-1", "event.chooseok.check.member.number.error", "요청회원번호가 회원 아닐 시"),
     추석이벤트체크_이미받음("-2", "event.chooseok.check.already", "추석이벤트 이미 지급 받음"),
+    추석이벤트체크_참여기간아님("-3", "event.chooseok.check.invalid.date", "추석이벤트 참여 기간 아님"),
     추석이벤트체크_실패("C006", "event.chooseok.check.fail", "추석이벤트 참여 실패"),
 
     //추석 무료 달 지급 이벤트
@@ -1525,12 +1527,16 @@ public enum Status {
     //추석이벤트 구매 달 보너스 지급
     추석이벤트_보너스달지급_지급성공("0", "event.chooseok.purchaseDal.bonus.success", "추석이벤트 구매 달 별 보너스 지급 성공 시"),
     추석이벤트_보너스달지급_회원아님("-1", "event.chooseok.check.member.number.error", "요청회원번호가 회원 아닐 시"),
-    추석이벤트_보너스달지급_이미지급받음("-2", "event.chooseok.check.already", "추석이벤트 구매 달 별 보너스 이미 지급받았을 시"),
+    추석이벤트_보너스달지급_이미지급받음("-2", "event.chooseok.purchaseDal.already", "추석이벤트 구매 달 별 보너스 이미 지급받았을 시"),
     추석이벤트_보너스달지급_지급기간이아님("-3", "event.chooseok.purchaseDal.bonus.not.yet", "추석이벤트 구매 달 별 보너스 지급 기간이 아닐 시"),
     추석이벤트_보너스달지급_이벤트종료("-4", "event.chooseok.purchaseDal.bonus.end", "추석이벤트 구매 달 별 보너스 지급 이벤트가 끝났을 시"),
     추석이벤트_보너스달지급_500달미만("-5", "event.chooseok.purchaseDal.bonus.dal.not.enough", "추석이벤트 구매 달 별 보너스"),
     추석이벤트_보너스달지급_지급실패("C006", "event.chooseok.purchaseDal.bonus.fail", "추석이벤트 구매 달 별 보너스 지급 실패 시"),
 
+    //내클립 현황
+    내클립조회_성공("0", "my.clip.select.success", "내 클립 조회 성공 시"),
+    내클립조회_요청회원번호_정상아님("-1", "my.clip.select.member.numer.error", "요청회원번호가 회원 아닐 시"),
+    내클립조회_실패("C006", "my.clip.select.fail", "내 클립 조회 실패 시"),
    ;
 
 
