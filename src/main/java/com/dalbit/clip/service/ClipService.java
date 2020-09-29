@@ -766,28 +766,20 @@ public class ClipService {
         HashMap clipMainPopList = new HashMap();
         if(DalbitUtil.isEmpty(clipMainPopListVo)){
             clipMainPopList.put("list", new ArrayList<>());
+            clipMainPopList.put("totalCnt", 0);
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_메인_인기리스트_조회_없음, clipMainPopList));
         }
 
         List<ClipMainPopListOutVo> outVoList = new ArrayList<>();
-        DeviceVo deviceVo = new DeviceVo(request);
-
-        if(deviceVo.getOs() == 3){
-            Collections.shuffle(clipMainPopListVo);
-            for (int i=0; i<6; i++){
-                outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
-            }
-        }else {
-            for (int i=0; i<clipMainPopListVo.size(); i++){
-                outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
-            }
+        for (int i=0; i<clipMainPopListVo.size(); i++){
+            outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
         }
 
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         clipMainPopList.put("list", procedureOutputVo.getOutputBox());
         clipMainPopList.put("type", DalbitUtil.getIntMap(resultMap, "type"));
-        clipMainPopList.put("totalCnt", deviceVo.getOs()== 3 ? 6 :procedureOutputVo.getRet());
+        clipMainPopList.put("totalCnt", procedureOutputVo.getRet());
         clipMainPopList.put("checkDate", DalbitUtil.getStringMap(resultMap, "checkDate"));
 
         String result;
