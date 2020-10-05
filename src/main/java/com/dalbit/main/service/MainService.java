@@ -624,6 +624,18 @@ public class MainService {
         mainRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
         mainRankingList.put("myListenPoint", DalbitUtil.getIntMap(resultMap, "myListenPoint"));
         mainRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
+
+        List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+        if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
+            liveBadgeList.add(new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")
+                    , DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon")
+                    , DalbitUtil.getStringMap(resultMap, "myLiveBadgeStartColor")
+                    , DalbitUtil.getStringMap(resultMap, "myLiveBadgeEndColor")
+                    , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImage")
+                    , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImageSmall")));
+        }
+        mainRankingList.put("myLiveBadgeList", liveBadgeList);
+
         mainRankingList.put("list", procedureOutputVo.getOutputBox());
         mainRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 

@@ -64,8 +64,8 @@ public class RoomInfoVo {
     private String webRtcAppName;
     private String webRtcStreamName;
     private int bufferingLow = 3000;
-    private int bufferingHigh = 2000;
-    private int guestBuffering = 2000;
+    private int bufferingHigh = 2500;
+    private int guestBuffering = 2500;
     /* 게스트 : streamName => wowza.prefix(DEV/REAL) + room_no + _ + mem_no */
     private List guests = new ArrayList();
 

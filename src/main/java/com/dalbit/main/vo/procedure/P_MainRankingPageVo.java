@@ -63,4 +63,11 @@ public class P_MainRankingPageVo {
     private String liveBadgeEndColor;
     private String liveBadgeImage;
     private String liveBadgeImageSmall;
+
+    private String myLiveBadgeText;
+    private String myLiveBadgeIcon;
+    private String myLiveBadgeStartColor;
+    private String myLiveBadgeEndColor;
+    private String myLiveBadgeImage;
+    private String myLiveBadgeImageSmall;
 }
