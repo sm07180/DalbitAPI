@@ -583,6 +583,7 @@ public class MainService {
 
         if(DalbitUtil.isEmpty(mainRankingPageVoList)){
             mainRankingList.put("isReward", 0);
+            mainRankingList.put("rewardPoint", "");
             mainRankingList.put("myRank", 0);
             mainRankingList.put("myPoint", 0);
             mainRankingList.put("myGiftPoint", 0);
@@ -616,6 +617,12 @@ public class MainService {
         }
         mainRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
         mainRankingList.put("rewardRank", DalbitUtil.getIntMap(resultMap, "rewardRank"));
+        if(DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") && 1 == pMainRankingPageVo.getRanking_slct() && 1 == pMainRankingPageVo.getSlct_type()){
+            int rank = DalbitUtil.getIntMap(resultMap, "rewardRank");
+            mainRankingList.put("rewardPoint", (rank == 1 ? "2" : (rank == 2 ? "1" : "0.5")));
+        }else{
+            mainRankingList.put("rewardPoint", "");
+        }
         mainRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainRankingList.put("myLikePoint", DalbitUtil.getIntMap(resultMap, "myLikePoint"));

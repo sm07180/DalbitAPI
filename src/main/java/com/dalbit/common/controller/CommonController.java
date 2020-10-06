@@ -12,6 +12,7 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.util.CookieUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -27,6 +28,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.text.ParseException;
 import java.util.HashMap;
 
@@ -152,39 +156,36 @@ public class CommonController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
             // 예외
             } else {
+                try {
+                    response.addCookie(CookieUtil.deleteCookie("smsCookie", "", "/", 0));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청실패));
             }
-            request.getSession().invalidate();
         }
 
         // 위의 예외처리에 걸리지 않은 경우 인증요청
         if(isRequestSms){
             commonService.requestSms(smsVo);
-            Cookie cookie = new Cookie("phoneNo", smsVo.getPhoneNo());
+            long reqTime = System.currentTimeMillis();
+            HashMap smsCookie = new HashMap();
+            smsCookie.put("CMID", smsVo.getCMID());
+            smsCookie.put("code", code);
+            smsCookie.put("reqTime", reqTime);
+            smsCookie.put("authYn", "N");
+            smsCookie.put("phoneNo", smsVo.getPhoneNo());
+
+            Cookie cookie = new Cookie("smsCookie", URLEncoder.encode(gsonUtil.toJson(smsCookie)));
             cookie.setPath("/");
             cookie.setMaxAge(300);
             response.addCookie(cookie);
-
-            HttpSession session = request.getSession();
-            long reqTime = System.currentTimeMillis();
-            session.setAttribute("CMID", smsVo.getCMID());
-            session.setAttribute("code", code);
-            session.setAttribute("reqTime", reqTime);
-            session.setAttribute("authYn", "N");
-            session.setAttribute("phoneNo", smsVo.getPhoneNo());
 
             SmsOutVo smsOutVo = new SmsOutVo();
             smsOutVo.setCMID(smsVo.getCMID());
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
         }
-
-        HttpSession session = request.getSession();
-        log.debug("SESSION ID : {}", session.getId());
-        log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
-        log.debug("SESSION code : {}", session.getAttribute("code"));
-        log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
-
         return result;
 
     }
@@ -193,30 +194,33 @@ public class CommonController {
      * 휴대폰 인증확인
      */
     @PostMapping("/sms/auth")
-    public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String isSms(@Valid SmsCheckVo smsCheckVo, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         long checkTime = System.currentTimeMillis();
-
-        HttpSession session = request.getSession();
-
         String result;
-        log.debug("SESSION ID : {}", session.getId());
-        log.debug("SESSION CMID : {}", session.getAttribute("CMID"));
-        log.debug("SESSION code : {}", session.getAttribute("code"));
-        log.debug("SESSION reqTime : {}", session.getAttribute("reqTime"));
-        int id = (int) session.getAttribute("CMID");
-        int code = (int) session.getAttribute("code");
-        long reqTime = (long) session.getAttribute("reqTime");
+        HashMap cookieResMap = null;
+
+        CookieUtil cookieUtil = new CookieUtil(request);
+        Cookie smsCookie = cookieUtil.getCookie("smsCookie");
+        if (DalbitUtil.isEmpty(smsCookie)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+        }else{
+            cookieResMap = new Gson().fromJson(URLDecoder.decode(smsCookie.getValue()), HashMap.class);
+        }
+
+
+        int id = DalbitUtil.getIntMap(cookieResMap, "CMID");
+        int code =DalbitUtil.getIntMap(cookieResMap, "code");
+        long reqTime = DalbitUtil.getLongMap(cookieResMap, "reqTime");
 
         log.debug("휴대폰 인증요청 CMID 일치여부: {}", id==smsCheckVo.getCMID());
         log.debug("(확인시간 - 요청시간) 시간차이(s): {}",  (checkTime-reqTime)/1000 + "초");
 
-        if(session.getAttribute("authYn").equals("N")){
+        if(cookieResMap.get("authYn").equals("N")){
             if(id == smsCheckVo.getCMID()){
                 if(code == smsCheckVo.getCode()){
                     if(DalbitUtil.isSeconds(reqTime, checkTime)){
-                        session.setAttribute("authYn", "Y");
                         result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
                     }else {
                         result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
@@ -228,11 +232,15 @@ public class CommonController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.인증CMID불일치));
             }
         } else {
+            try {
+                response.addCookie(CookieUtil.deleteCookie("smsCookie", "", "/", 0));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
-            request.getSession().invalidate();
         }
 
-        log.debug("인증상태 확인 authYn: {}", session.getAttribute("authYn"));
+        log.debug("인증상태 확인 authYn: {}", new Gson().toJson(smsCookie));
 
         return result;
     }

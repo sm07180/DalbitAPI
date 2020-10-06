@@ -426,4 +426,11 @@ public class MemberService {
     public TokenCheckVo selectMemState(String mem_no){
         return memberDao.selectMemState(mem_no);
     }
+
+    /**
+     * 본인인증 히스토리 내역 저장
+     */
+    public int callProfileEditHistory(P_SelfAuthVo pSelfAuthVo) {
+        return memberDao.callProfileEditHistory(pSelfAuthVo);
+    }
 }

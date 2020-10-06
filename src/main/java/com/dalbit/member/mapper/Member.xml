@@ -164,4 +164,16 @@
           AND state = 0
           AND auth &lt; 3
     </select>
+
+    <insert id="callProfileEditHistory" parameterType="com.dalbit.common.vo.procedure.P_SelfAuthVo">
+        insert into tb_member_profile_edit_history(
+            mem_no
+            , edit_contents
+            , op_name
+        )values(
+            #{mem_no}
+            , #{comment}
+            , (select mem_nick from tb_member_basic where mem_no = #{mem_no})
+        )
+    </insert>
 </mapper>

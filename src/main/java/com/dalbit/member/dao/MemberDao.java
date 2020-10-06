@@ -1,8 +1,8 @@
 package com.dalbit.member.dao;
 
 import com.dalbit.common.vo.BlockVo;
-import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.member.vo.ConnectRoomVo;
 import com.dalbit.member.vo.ExchangeSuccessVo;
 import com.dalbit.member.vo.TokenCheckVo;
@@ -42,4 +42,6 @@ public interface MemberDao {
 
     @Transactional(readOnly = true)
     List<String> selectListeningRoom(String memNo);
+
+    int callProfileEditHistory(P_SelfAuthVo pSelfAuthVo);
 }

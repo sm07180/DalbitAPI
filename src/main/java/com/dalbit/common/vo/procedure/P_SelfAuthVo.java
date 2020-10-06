@@ -30,4 +30,6 @@ public class P_SelfAuthVo {
 
     private String add_file;
 
+    private String comment;
+
 }

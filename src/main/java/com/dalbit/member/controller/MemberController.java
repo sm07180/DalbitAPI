@@ -17,10 +17,7 @@ import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.sample.service.SampleService;
 import com.dalbit.security.vo.SecurityUserVo;
-import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
-import com.dalbit.util.JwtUtil;
-import com.dalbit.util.LoginUtil;
+import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -32,7 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 
 @Slf4j
@@ -87,7 +87,7 @@ public class MemberController {
      * 회원가입
      */
     @PostMapping("/member/signup")
-    public String signup(@Valid SignUpVo signUpVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String signup(@Valid SignUpVo signUpVo, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response) throws GlobalException{
 
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -133,16 +133,16 @@ public class MemberController {
         //String s_phoneNo = (String)request.getSession().getAttribute("phoneNo");
 
         //서버호출번호가 간혹 변경되므로 휴대폰 번호 쿠키로 대체...
-        String s_phoneNo="";
-        Cookie[] cookies = request.getCookies();
-        if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if(cookie.getName().equals("phoneNo")){
-                    s_phoneNo = cookie.getValue();
-                    s_phoneNo = s_phoneNo == null ? "" : s_phoneNo.replaceAll("-", "");
-                }
-            }
+
+        CookieUtil cookieUtil = new CookieUtil(request);
+        Cookie smsCookie = cookieUtil.getCookie("smsCookie");
+        if (DalbitUtil.isEmpty(smsCookie)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
         }
+
+        HashMap cookieResMap =  new Gson().fromJson(URLDecoder.decode(smsCookie.getValue()), HashMap.class);
+        String s_phoneNo = (String) cookieResMap.get("phoneNo");
+        s_phoneNo = DalbitUtil.isEmpty(s_phoneNo) ? "" : s_phoneNo.replaceAll("-", "");
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(memId)){
@@ -197,7 +197,11 @@ public class MemberController {
 
                 //result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, resultMap));
-
+                try {
+                    response.addCookie(CookieUtil.deleteCookie("smsCookie", "", "/", 0));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
             }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
@@ -211,7 +215,6 @@ public class MemberController {
             }
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
-            request.getSession().invalidate();
         }
 
         return result;

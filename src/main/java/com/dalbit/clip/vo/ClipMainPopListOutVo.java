@@ -14,6 +14,12 @@ public class ClipMainPopListOutVo {
     private String nickName;
     private String subjectType;
     private String title;
+    private String filePlayTime;        //재생시간
+    private Boolean isNew;              //신입뱃지(1)
+    private Boolean isSpecial;          //스페셜Dj(1)
+    private String gender;              //성별
+    private int replyCnt;               //클립 댓글 수
+    private int goodCnt;                //좋아요 수
 
     public ClipMainPopListOutVo(P_ClipMainPopListVo target){
         setClipNo(target.getCast_no());
@@ -21,5 +27,11 @@ public class ClipMainPopListOutVo {
         setNickName(target.getNickName());
         setSubjectType(target.getSubject_type());
         setTitle(target.getTitle());
+        setFilePlayTime(target.getFilePlayTime());
+        setIsNew(target.getBadge_newdj() == 1 ? true : false);
+        setIsSpecial(target.getBadge_special() == 1 ? true : false);
+        setGender(target.getMemSex());
+        setReplyCnt(target.getReplyCnt());
+        setGoodCnt(target.getCount_good());
     }
 }

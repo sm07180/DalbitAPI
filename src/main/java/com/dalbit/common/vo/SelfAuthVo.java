@@ -21,7 +21,7 @@ public class SelfAuthVo {
     private String plusInfo = "";   //추가DATA정보
     private String agreeTerm;       //동의기간
 
-    private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성, 4:환전, 5:프로필)
+    private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성, 4:환전, 5:프로필, 6:방송하기&클립)
     private String authType;        //인증타입(0: 본인, 1:보호자)
 
 

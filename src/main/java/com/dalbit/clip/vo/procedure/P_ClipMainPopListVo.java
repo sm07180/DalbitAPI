@@ -26,4 +26,12 @@ public class P_ClipMainPopListVo {
     private String nickName;
     private String subject_type;
     private String title;
+    private String filePlayTime;
+    private String memSex;
+    private int replyCnt;
+    private int count_good;
+    private int badge_special;
+    private int badge_newdj;
+
+
 }

@@ -74,11 +74,11 @@ public class ClipService {
             return gsonUtil.toJson(new JsonOutputVo(Status.클립등록제목금지));
         }
 
-        //클립재생시간 5분 체크
+        //클립재생시간 10분 체크
         int min = Integer.parseInt(pClipAddVo.getFilePlayTime().split(":")[0])*60;
         int sec = Integer.parseInt(pClipAddVo.getFilePlayTime().split(":")[1]);
-        if(min + sec > 300){
-            return gsonUtil.toJson(new JsonOutputVo(Status.클립재생시간_5분초과));
+        if(min + sec > 600){
+            return gsonUtil.toJson(new JsonOutputVo(Status.클립재생시간_10분초과));
         }
 
         String bgImg = pClipAddVo.getBackgroundImage();
@@ -259,19 +259,12 @@ public class ClipService {
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
 
             returnMap.put("playlistOpen", false);
-            DeviceVo deviceVo = new DeviceVo(request);
-            if(deviceVo.getOs() == 3
-                || (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 31)
-                || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) > 145)){
-                returnMap.put("replyOpen", true);
-                returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
-                returnMap.put("goodCntOpen", true);
-                returnMap.put("byeolCntOpen", true);
-                returnMap.put("replyCntOpen", true);
-                returnMap.put("eventOpen", true);
-            }else{
-                returnMap.put("commentOpen", true);
-            }
+            returnMap.put("replyOpen", true);
+            returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
+            returnMap.put("goodCntOpen", true);
+            returnMap.put("byeolCntOpen", true);
+            returnMap.put("replyCntOpen", true);
+            returnMap.put("eventOpen", true);
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());

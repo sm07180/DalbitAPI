@@ -1460,7 +1460,7 @@ public enum Status {
     방송설정수정_회원아님("-1", "mypage.broadcast.setting.edit.member.number.error", "방송설정 수정 회원아닐 시"),
     방송설정수정_실패("C006", "mypage.broadcast.setting.edit.error", "방송설정 수정 실패 시"),
 
-    클립재생시간_5분초과("C005", "clip.exceed.play.time.limit.5min", "클립 재생시간 초과 시"),
+    클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 
     //방송방 채팅 얼리기
     얼리기_성공("0", "broadcast.room.freeze.true.success", "얼리기 성공 시"),
@@ -1537,6 +1537,11 @@ public enum Status {
     내클립조회_성공("0", "my.clip.select.success", "내 클립 조회 성공 시"),
     내클립조회_요청회원번호_정상아님("-1", "my.clip.select.member.numer.error", "요청회원번호가 회원 아닐 시"),
     내클립조회_실패("C006", "my.clip.select.fail", "내 클립 조회 실패 시"),
+
+    //추천 방송 검색
+    추천방송검색_성공("C001", "recommand.broadcast.search.success", "추천 방송 검색 성공 시"),
+    추천방송검색_결과없음("0", "recommand.broadcast.search.no.success", "결과 없을 시"),
+    추천방송검색_실패("C006", "recommand.broadcast.search.fail", "추천 방송 검색 실패 시"),
    ;
 
 

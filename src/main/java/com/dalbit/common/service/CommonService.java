@@ -553,7 +553,7 @@ public class CommonService {
     /**
      * 회원 본인 인증
      */
-    public String callMemberCertification(P_SelfAuthVo pSelfAuthVo) throws GlobalException{
+    public String callMemberCertification(P_SelfAuthVo pSelfAuthVo){
         ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
         commonDao.callMemberCertification(procedureVo);
 
@@ -563,13 +563,23 @@ public class CommonService {
 
         String result ="";
         if(procedureVo.getRet().equals(Status.본인인증성공.getMessageCode())) {
+            pSelfAuthVo.setComment("본인인증 완료");
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증성공, procedureVo.getData()));
         } else if(procedureVo.getRet().equals(Status.본인인증_회원아님.getMessageCode())) {
+            pSelfAuthVo.setComment("본인인증 회원 오류");
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_회원아님));
         } else if(procedureVo.getRet().equals(Status.본인인증_중복.getMessageCode())) {
+            pSelfAuthVo.setComment("본인인증 중복");
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_중복));
         } else {
+            pSelfAuthVo.setComment("본인인증 실패");
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증저장실패, procedureVo.getData()));
+        }
+        //개인정보 변경내역 저장
+        try {
+            memberService.callProfileEditHistory(pSelfAuthVo);
+        }catch(Exception e){
+            log.info("본인인증 내역 callProfileEditHistory Exception {}, {}", pSelfAuthVo.getComment(), e);
         }
         return result;
     }
@@ -789,9 +799,17 @@ public class CommonService {
 
         String result ="";
         if(success > 0) {
+            pSelfAuthVo.setComment("법정대리인 인증 완료");
             result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, pSelfAuthVo));
         } else {
+            pSelfAuthVo.setComment("법정대리인 인증 실패");
             result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증실패));
+        }
+        //개인정보 변경내역 저장
+        try {
+            memberService.callProfileEditHistory(pSelfAuthVo);
+        }catch(Exception e){
+            log.info("법정대리인 인증 내역 callProfileEditHistory Exception {}, {}",pSelfAuthVo.getComment(), e);
         }
         return result;
 
