@@ -19,6 +19,7 @@ import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -257,6 +258,14 @@ public class ClipService {
             returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
             returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
             returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
+            returnMap.put("regCnt", DalbitUtil.getIntMap(resultMap, "regCnt"));
+            returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") == 1 ? true : false);
+            returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
+            returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
+            returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
+            returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
+            returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
             returnMap.put("playlistOpen", false);
             returnMap.put("replyOpen", true);
