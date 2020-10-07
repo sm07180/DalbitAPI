@@ -136,13 +136,16 @@ public class MemberController {
 
         CookieUtil cookieUtil = new CookieUtil(request);
         Cookie smsCookie = cookieUtil.getCookie("smsCookie");
+        String s_phoneNo = "";
         if (DalbitUtil.isEmpty(smsCookie) && "p".equals(signUpVo.getMemType())) {
             return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
         }
 
-        HashMap cookieResMap =  new Gson().fromJson(URLDecoder.decode(smsCookie.getValue()), HashMap.class);
-        String s_phoneNo = (String) cookieResMap.get("phoneNo");
-        s_phoneNo = DalbitUtil.isEmpty(s_phoneNo) ? "" : s_phoneNo.replaceAll("-", "");
+        if("p".equals(signUpVo.getMemType())) {
+            HashMap cookieResMap = new Gson().fromJson(URLDecoder.decode(smsCookie.getValue()), HashMap.class);
+            s_phoneNo = (String) cookieResMap.get("phoneNo");
+            s_phoneNo = DalbitUtil.isEmpty(s_phoneNo) ? "" : s_phoneNo.replaceAll("-", "");
+        }
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(memId)){
