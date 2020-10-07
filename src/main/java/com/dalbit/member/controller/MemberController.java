@@ -136,7 +136,7 @@ public class MemberController {
 
         CookieUtil cookieUtil = new CookieUtil(request);
         Cookie smsCookie = cookieUtil.getCookie("smsCookie");
-        if (DalbitUtil.isEmpty(smsCookie)) {
+        if (DalbitUtil.isEmpty(smsCookie) && "p".equals(signUpVo.getMemType())) {
             return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
         }
 
