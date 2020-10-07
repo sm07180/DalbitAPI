@@ -3,7 +3,6 @@ package com.dalbit.member.vo.request;
 import com.dalbit.validator.annotation.Password;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
