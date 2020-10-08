@@ -1,6 +1,5 @@
 package com.dalbit.main.vo.procedure;
 
-import com.dalbit.main.vo.request.MainFanRankingVo;
 import com.dalbit.main.vo.request.MainRankingPageVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -45,6 +44,7 @@ public class P_MainRankingPageVo {
     private String profileImage;
     private int level;
     private String grade;
+    private int exp;
     private int specialdj_badge;
     private int djPoint;
     private int listenerPoint;
@@ -57,6 +57,10 @@ public class P_MainRankingPageVo {
     private int starCnt;
     private int liveDjRank;
     private int liveFanRank;
+    private String dj_mem_no;
+    private String dj_nickName;
+    private int dj_goodPoint;
+
     private String liveBadgeText;
     private String liveBadgeIcon;
     private String liveBadgeStartColor;

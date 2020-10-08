@@ -60,6 +60,13 @@ public enum Code {
     포토_경품수령신청_임시_PREFIX("/eventWinner_1", "포토서버 경품 수령 신청 이미지 임시 경로 prefix"),
     포토_경품수령신청_PREFIX("/eventWinner_0", "포토서버 경품 수령 신청 이미지 실제 경로 prefix"),
 
+    //마이페이지 공지 이미지 PREFIX
+    포토_마이페이지공지_PREFIX("/room_0", "마이페이지 공지 이미지 실제 경로 prefix"),
+    포토_마이페이지공지_임시_PREFIX("/room_1", "마이페이지 공지 이미지 임시 경로 prefix"),
+
+    //환전은행명
+    환전은행("exchange_bank_code", "환전 은행 목록")
+
 
    ;
 

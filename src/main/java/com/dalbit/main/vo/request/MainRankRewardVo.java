@@ -12,7 +12,7 @@ public class MainRankRewardVo {
 
     @NotNull(message = "{\"ko_KR\" : \"랭킹 구분을\"}")
     @Min(message = "{\"ko_KR\" : \"랭킹 구분을\"}", value = 1)
-    @Max(message = "{\"ko_KR\" : \"랭킹 구분을\"}", value = 2)
+    @Max(message = "{\"ko_KR\" : \"랭킹 구분을\"}", value = 3)
     private Integer rankSlct;
 
     @NotNull(message = "{\"ko_KR\" : \"랭킹 타입을\"}")

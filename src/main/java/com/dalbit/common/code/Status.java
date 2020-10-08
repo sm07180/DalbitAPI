@@ -1542,6 +1542,33 @@ public enum Status {
     추천방송검색_성공("C001", "recommand.broadcast.search.success", "추천 방송 검색 성공 시"),
     추천방송검색_결과없음("0", "recommand.broadcast.search.no.success", "결과 없을 시"),
     추천방송검색_실패("C006", "recommand.broadcast.search.fail", "추천 방송 검색 실패 시"),
+
+    //클립 재생 확인
+    재생확인_성공("0", "clip.play.confirm.success", "재생확인 성공 시"),
+    재생확인_요청회원번호_정상아님("-1", "clip.play.confirm.member.number.error", "요청회원번호가 회원 아닐 시"),
+    재생확인_클립번호없음("-2", "clip.play.confirm.clip.number.no", "클립번호 없을 시"),
+    재생확인_번호없음("-3", "clip.play.confirm.play.idx.no", "재생확인번호 없을 시"),
+    재생확인_클립번호_재생확인번호_불일치("-4", "clip.play.confirm.number.unmatch", "클립번호와 재생확인번호 불일치 시"),
+    재생확인_이미확인("-5", "clip.play.confirm.already", "이미 확인 시"),
+    재생확인_60초미만("-6", "clip.play.confirm.60sec.limit", "60초 미만일 시"),
+    재생확인_실패("C006", "clip.play.confirm.fail", "재생확인 실패 시"),
+
+    //계좌등록
+    계좌등록_성공("C001", "exchange.my.account.number.add.success", "환전계좌 등록 성공 시"),
+    계좌등록_실패("C006", "exchange.my.account.number.add.fail", "환전계좌 등록 실패 시"),
+
+    //계좌수정
+    계좌수정_성공("C001", "exchange.my.account.number.edit.success", "환전계좌 수정 성공 시"),
+    계좌수정_실패("C006", "exchange.my.account.number.edit.fail", "환전계좌 수정 실패 시"),
+
+    //계좌삭제
+    계좌삭제_성공("C001", "exchange.my.account.number.delete.success", "환전계좌 삭제 성공 시"),
+    계좌삭제_실패("C006", "exchange.my.account.number.delete.fail", "환전계좌 삭제 실패 시"),
+
+    //계좌조회
+    계좌조회_성공("C001", "exchange.my.account.number.select.success", "환전계좌 내역 조회 성공 시"),
+    계좌조회_없음("0", "exchange.my.account.number.select.no", "환전계좌 내역 조회 없을 시"),
+
    ;
 
 

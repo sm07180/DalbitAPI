@@ -631,6 +631,10 @@ public class MainService {
         mainRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
         mainRankingList.put("myListenPoint", DalbitUtil.getIntMap(resultMap, "myListenPoint"));
         mainRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
+        mainRankingList.put("myGoodPoint", DalbitUtil.getIntMap(resultMap, "myGoodPoint"));
+        mainRankingList.put("myDjMemNo", DalbitUtil.getStringMap(resultMap, "myDj"));
+        mainRankingList.put("myDjNickNm", DalbitUtil.getStringMap(resultMap, "myDjNickName"));
+        mainRankingList.put("myDjGoodPoint", DalbitUtil.getIntMap(resultMap, "myDjGoodPoint"));
 
         List<FanBadgeVo> liveBadgeList = new ArrayList<>();
         if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
