@@ -234,7 +234,7 @@ public class CommonService {
     public HashMap<String, Object> getJwtTokenInfo(HttpServletRequest request){
         HashMap<String, Object> result = new HashMap<>();
         Status resultStatus;
-        boolean isLogin = DalbitUtil.isLogin(request);
+        boolean isLogin = false;
 
         DeviceVo deviceVo = new DeviceVo(request);
         int os = deviceVo.getOs();
@@ -250,12 +250,16 @@ public class CommonService {
         TokenVo tokenVo = null;
         String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
         try{
+            isLogin = DalbitUtil.isLogin(request);
             if(!DalbitUtil.isEmpty(headerToken) && !request.getRequestURI().startsWith("/member/logout")){
                 log.info("check HeaderToken : " + headerToken);
                 tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
                 log.info("tokenVo : " + tokenVo);
             }
-        }catch(GlobalException e){}
+        }catch(Exception e){
+            isLogin = false;
+            tokenVo = null;
+        }
 
         //어드민 block 상태 체크
         int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo, MemberVo.getMyMemNo(request)));

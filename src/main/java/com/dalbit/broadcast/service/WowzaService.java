@@ -451,14 +451,21 @@ public class WowzaService {
                 roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
                 if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                     HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
-                    RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
+                    String deviceUuid = StringUtils.defaultIfEmpty(DalbitUtil.getStringMap(resultUpdateMap, "deviceUuid"), "").trim();
+                    int auth = DalbitUtil.getIntMap(resultUpdateMap, "auth");
                     DeviceVo deviceVo = new DeviceVo(request);
-                    if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
-                        roomInfoVo.setLiveBadgeList(new ArrayList());
-                    }
+                    if(!deviceUuid.equals(deviceVo.getDeviceUuid())){ //동일 기기의 방생성,조인 등이 아닐때 처리
+                        if(auth == 3){
+                            result.put("status", Status.방송참여_방송중);
+                        }else{
+                            result.put("status", Status.방송참여_다른기기);
+                        }
+                    }else{
+                        RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
 
-                    result.put("status", Status.방정보보기);
-                    result.put("data", roomInfoVo);
+                        result.put("status", Status.방정보보기);
+                        result.put("data", roomInfoVo);
+                    }
                 }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
                     result.put("status", Status.스트림아이디_회원아님);
                 }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
