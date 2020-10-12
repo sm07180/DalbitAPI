@@ -23,17 +23,21 @@ public class P_NoticeListVo {
         setPageCnt(pageCnt);
 
         DeviceVo deviceVo = new DeviceVo(request);
-        if(deviceVo.getOs()==1){
-            setPlatform(3);
+        setOs(deviceVo.getOs());
+
+        /*if(deviceVo.getOs()==1){
+            setPlatform("010");
         } else if(deviceVo.getOs()==2) {
-            setPlatform(4);
+            setPlatform("001");
         }else if(deviceVo.getOs()==3){
-            setPlatform(2);
-        } else if(deviceVo.getIsHybrid().equals("Y")){
-            setPlatform(5);
-        } else {
-            setPlatform(1);
+            setPlatform("100");
         }
+        *//*else if(deviceVo.getIsHybrid().equals("Y")){
+            setPlatform(5);
+        }*//*
+        else {
+            setPlatform("111");
+        }*/
 
         if(DalbitUtil.isEmpty(memberVo) || DalbitUtil.isEmpty(memberVo.getGender())){
             setGender(1);
@@ -44,7 +48,8 @@ public class P_NoticeListVo {
 
     /* Input */
     private Integer slctType;
-    private int platform;
+    private String platform;
+    private int os;
     private int gender;
     private int pageNo;
     private int pageCnt;
