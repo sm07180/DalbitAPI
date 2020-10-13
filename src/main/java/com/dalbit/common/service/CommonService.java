@@ -610,7 +610,8 @@ public class CommonService {
             }
             returnMap.put("adultYn", adultYn);       //성인여부
             returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
-            returnMap.put("phoneNo", DalbitUtil.getStringMap(resultMap, "mem_phone"));   //휴대폰번호
+            returnMap.put("phoneNo", DalbitUtil.getStringMap(resultMap, "mem_phone"));      //휴대폰번호
+            returnMap.put("company", DalbitUtil.getStringMap(resultMap, "comm_company"));   //해외인증 판단 '기타'
             procedureVo.setData(returnMap);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인, procedureVo.getData()));
