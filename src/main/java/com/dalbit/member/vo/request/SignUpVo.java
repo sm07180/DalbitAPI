@@ -36,7 +36,7 @@ public class SignUpVo {
     /*@NotBlank(message = "{\"ko_KR\" : \"생년월일을\"}")
     @NotNull(message = "{\"ko_KR\" : \"생년월일을\"}")
     @Size(message = "{\"ko_KR\" : \"생년월일을\"}", min = 8, max = 8)*/
-    private String birth = "";
+    private String birth = "20200101";
 
     @NotBlank(message = "{\"ko_KR\" : \"약관 동의를\"}")
     @NotNull(message = "{\"ko_KR\" : \"약관 동의를\"}")
