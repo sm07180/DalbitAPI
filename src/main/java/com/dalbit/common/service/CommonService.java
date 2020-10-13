@@ -712,7 +712,14 @@ public class CommonService {
      */
     public String broadcastBanWordSelect(BanWordVo banWordVo){
         BanWordVo resultVo = commonDao.broadcastBanWordSelect(banWordVo);
-        return DalbitUtil.isEmpty(resultVo) ? null : resultVo.getBanWord();
+        if(DalbitUtil.isEmpty(resultVo)){
+            return null;
+        }
+
+        if(DalbitUtil.isEmpty(resultVo.getBanWord())){ // TODO - size 체크 추가
+            return null;
+        }
+        return resultVo.getBanWord();
     }
 
     public String connectGoogleNative(HttpServletRequest request){

@@ -143,7 +143,8 @@
               OR (term_type = 1 and now() between start_datetime and end_datetime)
             )
             AND platform LIKE #{paramPlatform}
-        ORDER BY `order` asc, idx DESC
+            AND IF(((SELECT value FROM rd_data.tbl_code_define WHERE TYPE = 'system_config' AND code = 'IOS_심사중여부') = 'Y') and #{paramDevice} = '2', ios_judge_view_on = 1, 1=1)
+        ORDER BY `order` ASC, idx DESC
     </select>
 
     <select id="callMainStarList" parameterType="String" resultType="P_MainStarVo">

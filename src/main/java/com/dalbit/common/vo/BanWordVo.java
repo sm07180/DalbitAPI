@@ -10,5 +10,6 @@ public class BanWordVo {
     private String banWord;
     private String memNo;
     private String roomNo;
+    private int size;
 
 }
