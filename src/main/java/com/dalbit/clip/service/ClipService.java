@@ -243,6 +243,12 @@ public class ClipService {
             returnMap.put("clipNo", DalbitUtil.getStringMap(resultMap, "cast_no"));
             returnMap.put("clipMemNo", DalbitUtil.getStringMap(resultMap, "cast_mem_no"));
             returnMap.put("subjectType", DalbitUtil.getStringMap(resultMap, "subject_type"));
+            List<CodeVo> codeVoList = commonService.selectClipTypeCodeList(new CodeVo(Code.클립주제.getCode()));
+            for (int i=0; i < codeVoList.size(); i++){
+                if(DalbitUtil.getStringMap(resultMap, "subject_type").equals(codeVoList.get(i).getValue())){
+                    returnMap.put("subjectName", codeVoList.get(i).getCdNm());
+                }
+            }
             returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));
             returnMap.put("bgImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("fileName", DalbitUtil.getStringMap(resultMap, "file_name"));
@@ -948,11 +954,18 @@ public class ClipService {
         clipDao.callClipPlay(procedureVo);
 
         HashMap returnMap = new HashMap();
+        returnMap.put("subjectName", "");
         if(Status.클립플레이_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             returnMap.put("clipNo", DalbitUtil.getStringMap(resultMap, "cast_no"));
             returnMap.put("clipMemNo", DalbitUtil.getStringMap(resultMap, "cast_mem_no"));
             returnMap.put("subjectType", DalbitUtil.getStringMap(resultMap, "subject_type"));
+            List<CodeVo> codeVoList = commonService.selectClipTypeCodeList(new CodeVo(Code.클립주제.getCode()));
+            for (int i=0; i < codeVoList.size(); i++){
+                if(DalbitUtil.getStringMap(resultMap, "subject_type").equals(codeVoList.get(i).getValue())){
+                    returnMap.put("subjectName", codeVoList.get(i).getCdNm());
+                }
+            }
             returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));
             returnMap.put("bgImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
             returnMap.put("fileName", DalbitUtil.getStringMap(resultMap, "file_name"));
