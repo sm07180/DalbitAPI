@@ -37,6 +37,8 @@ public class ProfileService {
     CommonDao commonDao;
     @Autowired
     MypageService mypageService;
+    @Autowired
+    MemberService memberService;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -59,7 +61,11 @@ public class ProfileService {
         if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
             P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
 
-            List fanRankList = commonService.getFanRankList(profileInfo.getFanRank1(), profileInfo.getFanRank2(), profileInfo.getFanRank3());
+            //팬랭킹 1,2,3 조회 프로시저 분리
+            P_FanRankVo pFanRankVo = new P_FanRankVo();
+            pFanRankVo.setMem_no(pProfileInfo.getTarget_mem_no());
+            List fanRankList = memberService.fanRank3(pFanRankVo);
+
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList);
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());

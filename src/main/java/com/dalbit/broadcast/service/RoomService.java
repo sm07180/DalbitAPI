@@ -899,7 +899,10 @@ public class RoomService {
         returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
         returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
 
-        returnMap.put("fanRank", commonService.getFanRankList(fanRank1, fanRank2, fanRank3));
+        //팬랭킹 1,2,3 조회 프로시저 분리
+        P_FanRankVo pFanRankVo = new P_FanRankVo();
+        pFanRankVo.setMem_no(pRoomMemberInfoVo.getTarget_mem_no());
+        returnMap.put("fanRank", memberService.fanRank3(pFanRankVo));
         returnMap.put("isNew", DalbitUtil.getIntMap(resultMap, "newdj_badge") == 1);
         returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1);
         FanBadgeVo fanBadgeVo = new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "fanBadgeText"), DalbitUtil.getStringMap(resultMap, "fanBadgeIcon"), DalbitUtil.getStringMap(resultMap, "fanBadgeStartColor"), DalbitUtil.getStringMap(resultMap, "fanBadgeEndColor"));
@@ -911,6 +914,7 @@ public class RoomService {
         HashMap fanBadgeMap = new HashMap();
         fanBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
         fanBadgeMap.put("type", -1);
+
         List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
         if(DalbitUtil.isEmpty(fanBadgeList)){
             returnMap.put("fanBadgeList", new ArrayList());

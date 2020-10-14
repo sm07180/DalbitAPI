@@ -165,6 +165,10 @@
           AND auth &lt; 3
     </select>
 
+    <select id="callFanRank3" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_FanRankVo">
+        call sp_member_fanrank3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <insert id="callProfileEditHistory" parameterType="com.dalbit.common.vo.procedure.P_SelfAuthVo">
         insert into tb_member_profile_edit_history(
             mem_no

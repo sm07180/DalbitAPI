@@ -44,7 +44,7 @@ public class CommonErrorController {
         //Broken pipe 처리
         if(globalException.getClass().getSimpleName().toLowerCase().equals("clientabortexception")) return false; //ClientAbortException
         if(globalException.getMessage().contains("Broken pipe")) return false;
-
+        
         return true;
     }
 

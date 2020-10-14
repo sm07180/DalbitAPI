@@ -428,6 +428,27 @@ public class MemberService {
     }
 
     /**
+     * 회원 팬랭킹 1,2,3 가져오기
+     */
+    public List fanRank3(P_FanRankVo pFanRankVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pFanRankVo);
+        List<P_FanRankVo> fanRankVoList = memberDao.callFanRank3(procedureVo);
+
+        List<FanRankVo> outVoList = new ArrayList<>();
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+
+            if (!DalbitUtil.isEmpty(fanRankVoList)) {
+                for (int i = 0; i < fanRankVoList.size(); i++) {
+                    outVoList.add(new FanRankVo(fanRankVoList.get(i), i+1));
+                }
+            }
+
+        }
+        return outVoList;
+    }
+
+
+    /**
      * 본인인증 히스토리 내역 저장
      */
     public int callProfileEditHistory(P_SelfAuthVo pSelfAuthVo) {
