@@ -863,10 +863,6 @@ public class RoomService {
         roomDao.callBroadCastRoomMemberInfo(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String fanRank1 = DalbitUtil.getStringMap(resultMap, "fanRank1");
-        String fanRank2 = DalbitUtil.getStringMap(resultMap, "fanRank2");
-        String fanRank3 = DalbitUtil.getStringMap(resultMap, "fanRank3");
-
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info(" ### 프로시저 호출결과 ###");
