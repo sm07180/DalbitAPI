@@ -412,4 +412,15 @@ public class RoomController {
     public String checkBroadcasting(HttpServletRequest request) {
         return roomService.callMemberBroadcastingCheck(request);
     }
+
+    /**
+     * 좋아요 내역
+     */
+    @GetMapping("/good/history")
+    public String getGoodHistory(@Valid RoomGoodHistoryVo roomGoodHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_RoomGoodHistoryVo apiData = new P_RoomGoodHistoryVo(roomGoodHistoryVo, request);
+        String result = roomService.getGoodHistory(apiData);
+        return result;
+    }
 }

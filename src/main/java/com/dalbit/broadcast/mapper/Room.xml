@@ -63,4 +63,7 @@
         UPDATE tb_broadcast_room SET exit_try_count = exit_try_count + 1 WHERE room_no = #{value}
     </update>
 
+    <select id="callGetGoodHistory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.broadcast.vo.procedure.P_RoomGoodHistoryVo">
+        call sp_broadcast_room_member_good_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

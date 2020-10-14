@@ -1569,7 +1569,26 @@ public enum Status {
     계좌조회_성공("C001", "exchange.my.account.number.select.success", "환전계좌 내역 조회 성공 시"),
     계좌조회_없음("0", "exchange.my.account.number.select.no", "환전계좌 내역 조회 없을 시"),
 
-   ;
+    //응모권조회(룰렛이벤트)
+    응모권조회_성공("0", "event.roulette.coupon.select.success", "응모권 조회 성공 시"),
+    응모권조회_회원아님("-1", "event.roulette.coupon.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    응모권조회_실패("C006", "event.roulette.coupon.select.fail", "응모권 조회 실패 시"),
+
+    //룰렛 스타트(룰렛이벤트)
+    스타트_성공("0", "event.roulette.start.success", "룰렛 스타트 성공 시"),
+    스타트_회원아님("-1", "event.roulette.start.member.number.error", "요청회원번호가 회원 아닐 시"),
+    스타트_응모권부족("-2", "event.roulette.start.coupon.limit", "응모권 부족 시"),
+    스타트_실패("C006", "event.roulette.start.fail", "룰렛 스타트 성공 시"),
+
+    //전화번호 입력(룰렛이벤트)
+    전화번호입력_성공("0", "event.roulette.input.phone.success", "입력 성공 시"),
+    전화번호입력_회원아님("-1", "event.roulette.input.phone.member.number.error", "요청회원번호가 회원 아닐 시"),
+    전화번호입력_당첨내역없음("-2", "event.roulette.input.phone.no.prize", "당첨내역 없을 시"),
+    전화번호입력_자리수이상("-3", "event.roulette.input.phone.error", "전화번호 자리수 오류 시"),
+    전화번호입력_실패("C006", "event.roulette.input.phone.fail", "입력 실패 시"),
+
+    //
+    ;
 
 
 

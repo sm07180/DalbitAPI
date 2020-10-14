@@ -1457,4 +1457,48 @@ public class RoomService {
         }
         return false;
     }
+
+    /**
+     * 좋아요 내역
+     */
+    public String getGoodHistory(P_RoomGoodHistoryVo pRoomGoodHistoryVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomGoodHistoryVo);
+        List<P_RoomGoodHistoryVo> goodHistoryListVo = roomDao.callGetGoodHistory(procedureVo);
+
+        String result;
+        if(DalbitUtil.isEmpty(goodHistoryListVo)) {
+            HashMap goodHistoryList = new HashMap();
+            goodHistoryList.put("list", new ArrayList<>());
+            goodHistoryList.put("totalCnt", 0);
+            goodHistoryList.put("paging", new PagingVo(0, pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_없음, goodHistoryList));
+        }else if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            List<RoomGoodHistoryOutVo> outVoList = new ArrayList<>();
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+            HashMap goodHistoryList = new HashMap();
+            for (int i=0; i<goodHistoryListVo.size(); i++){
+                outVoList.add(new RoomGoodHistoryOutVo(goodHistoryListVo.get(i)));
+            }
+
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            goodHistoryList.put("totalCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
+            goodHistoryList.put("list", procedureOutputVo.getOutputBox());
+            goodHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_성공, goodHistoryList));
+        }else if(Status.좋아요내역조회_회원번호정상아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_회원번호정상아님));
+        }else if(Status.좋아요내역조회_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_해당방없음));
+        }else if(Status.좋아요내역조회_미참여중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_미참여중));
+        }else if(Status.좋아요내역조회_권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_권한없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_실패));
+        }
+
+        return result;
+    }
 }
