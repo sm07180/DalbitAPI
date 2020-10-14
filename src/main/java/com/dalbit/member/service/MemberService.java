@@ -308,10 +308,10 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_전화번호오류));
         } else if(procedureVo.getRet().equals(Status.환전신청_주소1오류.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_주소1오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_첨부파일1오류.getMessageCode())) {
+        /*} else if(procedureVo.getRet().equals(Status.환전신청_첨부파일1오류.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일1오류));
         } else if(procedureVo.getRet().equals(Status.환전신청_첨부파일2오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일2오류));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일2오류));*/
         } else if(procedureVo.getRet().equals(Status.환전신청_동의오류.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_동의오류));
         } else if(procedureVo.getRet().equals(Status.환전신청_별부족.getMessageCode())) {

@@ -39,14 +39,15 @@ public class ExchangeApplyVo {
     @NotBlank(message = "{\"ko_KR\" : \"주소를\"}")
     @NotNull(message = "{\"ko_KR\" : \"주소를\"}")
     private String address1;
+
     private String address2;
 
-    @NotBlank(message = "{\"ko_KR\" : \"신분증사본을\"}")
-    @NotNull(message = "{\"ko_KR\" : \"신분증사본을\"}")
+    /*@NotBlank(message = "{\"ko_KR\" : \"신분증사본을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"신분증사본을\"}")*/
     private String addFile1;
 
-    @NotBlank(message = "{\"ko_KR\" : \"통장사본을\"}")
-    @NotNull(message = "{\"ko_KR\" : \"통장사본을\"}")
+    /*@NotBlank(message = "{\"ko_KR\" : \"통장사본을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"통장사본을\"}")*/
     private String addFile2;
 
     private String addFile3;
