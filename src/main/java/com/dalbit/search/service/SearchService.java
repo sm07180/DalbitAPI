@@ -7,9 +7,11 @@ import com.dalbit.common.vo.ProcedureOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.search.dao.SearchDao;
 import com.dalbit.search.vo.MemberSearchOutVo;
+import com.dalbit.search.vo.RoomRecommandListOutVo;
 import com.dalbit.search.vo.RoomSearchOutVo;
 import com.dalbit.search.vo.procedure.P_LiveRoomSearchVo;
 import com.dalbit.search.vo.procedure.P_MemberSearchVo;
+import com.dalbit.search.vo.procedure.P_RoomRecommandListVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -89,6 +91,39 @@ public class SearchService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_성공, roomSearchList));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 방송방 추천 리스트(이 방송 어때요?)
+     */
+    public String callRoomRecommandList(P_RoomRecommandListVo pRoomRecommandListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pRoomRecommandListVo);
+        List<P_RoomRecommandListVo> roomRecommandList = searchDao.callRoomRecommandList(procedureVo);
+
+        HashMap roomRecommandOutList = new HashMap();
+        if(DalbitUtil.isEmpty(roomRecommandList)){
+            roomRecommandOutList.put("list", new ArrayList<>());
+            roomRecommandOutList.put("totalCnt", 0);
+            roomRecommandOutList.put("paging", new PagingVo(0, pRoomRecommandListVo.getPageNo(), pRoomRecommandListVo.getPageCnt()));
+            return gsonUtil.toJson(new JsonOutputVo(Status.추천방송검색_결과없음, roomRecommandOutList));
+        }
+        List<RoomRecommandListOutVo> outVoList = new ArrayList<>();
+        for (int i=0; i<roomRecommandList.size(); i++){
+            outVoList.add(new RoomRecommandListOutVo(roomRecommandList.get(i)));
+        }
+        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        roomRecommandOutList.put("list", procedureOutputVo.getOutputBox());
+        roomRecommandOutList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+        String result;
+        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.추천방송검색_성공, roomRecommandOutList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.추천방송검색_실패));
         }
         return result;
     }

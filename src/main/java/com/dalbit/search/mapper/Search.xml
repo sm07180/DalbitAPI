@@ -10,5 +10,8 @@
         call sp_broadcast_room_search(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callRoomRecommandList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.search.vo.procedure.P_RoomRecommandListVo">
+        call sp_broadcast_room_recommand(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
 </mapper>

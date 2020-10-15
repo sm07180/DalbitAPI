@@ -5,6 +5,8 @@ import com.dalbit.exception.GlobalException;
 import com.dalbit.search.service.SearchService;
 import com.dalbit.search.vo.procedure.P_LiveRoomSearchVo;
 import com.dalbit.search.vo.procedure.P_MemberSearchVo;
+import com.dalbit.search.vo.procedure.P_RoomRecommandListVo;
+import com.dalbit.search.vo.request.RoomRecommandListVo;
 import com.dalbit.search.vo.request.SearchVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -56,4 +58,15 @@ public class SearchController {
 
         return result;
     }
+
+    /**
+     * 방송방 추천 리스트(이 방송 어때요?)
+     */
+     @GetMapping("/room/recommand/list")
+    public String roomRecommandList(@Valid RoomRecommandListVo roomRecommandListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+         P_RoomRecommandListVo apiData = new P_RoomRecommandListVo(roomRecommandListVo, request);
+         String result = searchService.callRoomRecommandList(apiData);
+         return result;
+     }
 }
