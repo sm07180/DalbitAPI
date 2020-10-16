@@ -844,10 +844,17 @@ public class CommonService {
     }
 
     /**
-     * 사용중인 방송주제 목록 가져오기
+     * 사용중인 클립 목록 가져오기
      */
     public List<CodeVo> selectClipTypeCodeList(CodeVo codeVo){
         return commonDao.selectTypeCodeList(codeVo);
+    }
+
+    /**
+     * 환전은행 목록
+     */
+    public List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo){
+        return commonDao.selectExchangeBankCodeList(codeVo);
     }
 
 }

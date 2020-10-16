@@ -76,4 +76,6 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     List<CodeVo> selectTypeCodeList(CodeVo codeVo);
+    @Transactional(readOnly = true)
+    List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo);
 }

@@ -348,6 +348,29 @@ public class MemberService {
             returnMap.put("address1", exchangeSuccessVo.getAddress1());
             returnMap.put("address2", exchangeSuccessVo.getAddress2());
 
+            try{
+                P_ExchangeAccountAddVo addVo = new P_ExchangeAccountAddVo();
+                addVo.setMem_no(memNo);
+                addVo.setAccount_no(exchangeSuccessVo.getAccountNo());
+                addVo.setAccount_name(exchangeSuccessVo.getAccountName());
+                addVo.setBank_code(exchangeSuccessVo.getBankCode());
+
+                List<CodeVo> codeVoList = commonService.selectExchangeBankCodeList(new CodeVo(Code.환전은행.getCode()));
+                if(!DalbitUtil.isEmpty(codeVoList)){
+                    for (int i=0; i < codeVoList.size(); i++){
+                        if(codeVoList.get(i).getValue().equals(exchangeSuccessVo.getBankCode())){
+                            addVo.setBank_name(codeVoList.get(i).getCdNm());
+                        }
+                    }
+                }else{
+                    addVo.setBank_name("은행코드 불일치");
+                }
+
+                callAccountAdd(addVo);
+            }catch (Exception e){
+                log.error("환전 승인건 저장 오류: {}", e);
+            }
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, returnMap));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
@@ -369,9 +392,9 @@ public class MemberService {
         P_ExchangeApplyVo pExchangeApplyVo = new P_ExchangeApplyVo();
         pExchangeApplyVo.setMem_no(exchangeSuccessVo.getMemNo());
         pExchangeApplyVo.setByeol(exchangeReApplyVo.getByeol());
-        pExchangeApplyVo.setAccount_name(exchangeSuccessVo.getAccountName());
-        pExchangeApplyVo.setAccount_no(exchangeSuccessVo.getAccountNo());
-        pExchangeApplyVo.setBank_code(exchangeSuccessVo.getBankCode());
+        pExchangeApplyVo.setAccount_name(!DalbitUtil.isEmpty(exchangeReApplyVo.getAccountName()) ? exchangeReApplyVo.getAccountName() : exchangeSuccessVo.getAccountName());
+        pExchangeApplyVo.setAccount_no(!DalbitUtil.isEmpty(exchangeReApplyVo.getAccountNo()) ? exchangeReApplyVo.getAccountNo() : exchangeSuccessVo.getAccountNo());
+        pExchangeApplyVo.setBank_code(!DalbitUtil.isEmpty(exchangeReApplyVo.getBankCode()) ? exchangeReApplyVo.getBankCode() : exchangeSuccessVo.getBankCode());
         pExchangeApplyVo.setSocial_no(exchangeSuccessVo.getSocialNo());
         pExchangeApplyVo.setPhone_no(exchangeSuccessVo.getPhoneNo());
         pExchangeApplyVo.setAddress1(exchangeSuccessVo.getAddress1());
@@ -455,5 +478,130 @@ public class MemberService {
      */
     public int callProfileEditHistory(P_SelfAuthVo pSelfAuthVo) {
         return memberDao.callProfileEditHistory(pSelfAuthVo);
+    }
+
+    /**
+     * 환전 계좌 등록
+     */
+    public String callAccountAdd(P_ExchangeAccountAddVo pExchangeAccountAddVo) {
+        int success;
+        try{
+            success = memberDao.callAccountAdd(pExchangeAccountAddVo);
+        }catch (Exception e){
+            log.error("계좌등록 오류: {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.계좌등록_실패));
+        }
+
+        String result;
+        if(success > 0) {
+            P_ExchangeAccountListVo apiData = new P_ExchangeAccountListVo();
+            apiData.setMem_no(pExchangeAccountAddVo.getMem_no());
+            result = callAccountListSelect(apiData, "add");
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌등록_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 환전 계좌 수정
+     */
+    public String callAccountEdit(P_ExchangeAccountEditVo pExchangeAccountEditVo, HttpServletRequest request) {
+
+        //기존 환전 신청 계좌조회 변경 불가
+        P_ExchangeAccountListVo exchangeAccountListVo = new P_ExchangeAccountListVo(request);
+        List<P_ExchangeAccountListVo> accountList = memberDao.selectExchangeHistory(exchangeAccountListVo);
+        for (int i=0; i<accountList.size(); i++){
+            if (pExchangeAccountEditVo.getBeforeAccountNo().equals(accountList.get(i).getAccountNo())){
+                return gsonUtil.toJson(new JsonOutputVo(Status.계좌수정_불가));
+            }
+        }
+
+        int success;
+        try {
+            success = memberDao.callAccountEdit(pExchangeAccountEditVo);
+        }catch (Exception e){
+            log.error("계좌수정 오류: {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.계좌수정_실패));
+        }
+
+        String result;
+        if(success > 0) {
+            P_ExchangeAccountListVo apiData = new P_ExchangeAccountListVo();
+            apiData.setMem_no(pExchangeAccountEditVo.getMem_no());
+            result = callAccountListSelect(apiData, "edit");
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌수정_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 환전 계좌 삭제
+     */
+    public String callAccountDelete(P_ExchangeAccountDeleteVo pExchangeAccountDeleteVo, HttpServletRequest request) {
+
+        //기존 환전 신청 계좌조회 변경 불가
+        P_ExchangeAccountListVo exchangeAccountListVo = new P_ExchangeAccountListVo(request);
+        List<P_ExchangeAccountListVo> accountList = memberDao.selectExchangeHistory(exchangeAccountListVo);
+        for (int i=0; i<accountList.size(); i++){
+            if (pExchangeAccountDeleteVo.getBeforeAccountNo().equals(accountList.get(i).getAccountNo())){
+                return gsonUtil.toJson(new JsonOutputVo(Status.계좌삭제_불가));
+            }
+        }
+
+        int success;
+        try{
+            success = memberDao.callAccountDelete(pExchangeAccountDeleteVo);
+        }catch (Exception e){
+            log.error("계좌삭제 오류: {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.계좌삭제_실패));
+        }
+
+        String result;
+        if(success > 0) {
+            P_ExchangeAccountListVo apiData = new P_ExchangeAccountListVo();
+            apiData.setMem_no(pExchangeAccountDeleteVo.getMemNo());
+            result = callAccountListSelect(apiData, "delete");
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌삭제_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 환전 계좌 조회
+     */
+    public String callAccountListSelect(P_ExchangeAccountListVo pExchangeAccountListVo, String state) {
+        List<P_ExchangeAccountListVo> accountListVo = memberDao.callAccountListSelect(pExchangeAccountListVo);
+
+        String result;
+        HashMap resultMap = new HashMap();
+        if(!DalbitUtil.isEmpty(accountListVo)){
+            List<ExchangeAccountListOutVo> outVoList = new ArrayList<>();
+            for (int i = 0; i < accountListVo.size(); i++) {
+                outVoList.add(new ExchangeAccountListOutVo(accountListVo.get(i)));
+            }
+            resultMap.put("list", outVoList);
+
+            Status status;
+            if("add".equals(state)) {
+                status = Status.계좌등록_성공;
+            }else if("edit".equals(state)) {
+                status = Status.계좌수정_성공;
+            }else if("delete".equals(state)) {
+                status = Status.계좌삭제_성공;
+            }else{
+                status = Status.계좌조회_성공;
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(status, resultMap));
+        }else{
+            resultMap.put("list", new ArrayList<>());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌조회_없음, resultMap));
+        }
+        return result;
     }
 }

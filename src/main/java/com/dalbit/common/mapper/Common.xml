@@ -327,6 +327,19 @@
         ORDER BY sortNo asc
     </select>
 
+    <select id="selectExchangeBankCodeList" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
+        SELECT
+            `type`    as cd
+            , `value` as `value`
+            , code    as cdNm
+            , `order` as sortNo
+            , is_use  as isUse
+        FROM rd_data.tbl_code_define
+        WHERE `type` = #{cd}
+          AND is_use = '1'
+        ORDER BY sortNo asc
+    </select>
+
     <select id="callBroadCastRoomRank3" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_KingFanRankListVo">
         call sp_broadcast_room_rank3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>

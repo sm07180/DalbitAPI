@@ -1587,7 +1587,20 @@ public enum Status {
     전화번호입력_자리수이상("-3", "event.roulette.input.phone.error", "전화번호 자리수 오류 시"),
     전화번호입력_실패("C006", "event.roulette.input.phone.fail", "입력 실패 시"),
 
-    //
+    //참여 이력 조회(룰렛이벤트)
+    참여이력조회_성공("C001", "event.roulette.apply.select.success", "참여 이력 조회 성공 시"),
+    참여이력조회_없음("0", "event.roulette.apply.select.no", "참여 이력 없을 시"),
+    참여이력조회_회원아님("-1", "event.roulette.apply.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    참여이력조회_실패("C006", "event.roulette.apply.select.fail", "참여 이력 조회 성공 시"),
+
+    //당첨자 조회(룰렛이벤트)
+    당첨자조회_성공("C001", "event.roulette.win.select.success", "당첨자 조회 성공 시"),
+    당첨자조회_없음("0", "event.roulette.win.select.no", "당첨자 조회 없을 시"),
+    당첨자조회_실패("C006", "event.roulette.win.select.fail", "당첨자 조회 실패 시"),
+
+    //계좌 수정&삭제 불가
+    계좌수정_불가("-1", "exchange.my.account.number.edit.impossible", "계좌 수정 불가 시"),
+    계좌삭제_불가("-1", "exchange.my.account.number.delete.impossible", "계좌 삭제 불가 시"),
     ;
 
 

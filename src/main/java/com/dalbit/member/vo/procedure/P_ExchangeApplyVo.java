@@ -40,8 +40,8 @@ public class P_ExchangeApplyVo {
         setPhone_no(exchangeApplyVo.getPhoneNo());
         setAddress1(exchangeApplyVo.getAddress1());
         setAddress2(exchangeApplyVo.getAddress2());
-        setAdd_file1(DalbitUtil.isEmpty(exchangeApplyVo.getAddFile1()) ? "" : exchangeApplyVo.getAddFile1());
-        setAdd_file2(DalbitUtil.isEmpty(exchangeApplyVo.getAddFile2()) ? "" : exchangeApplyVo.getAddFile2());
+        setAdd_file1(exchangeApplyVo.getAddFile1());
+        setAdd_file2(exchangeApplyVo.getAddFile2());
         setAdd_file3(exchangeApplyVo.getAddFile3());
         setTerms_agree(exchangeApplyVo.getTermsAgree());
         setOs(new DeviceVo(request).getOs());

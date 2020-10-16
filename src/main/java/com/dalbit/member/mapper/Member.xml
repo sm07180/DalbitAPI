@@ -180,4 +180,57 @@
             , (select mem_nick from tb_member_basic where mem_no = #{mem_no})
         )
     </insert>
+
+    <insert id="callAccountAdd" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountAddVo">
+        INSERT INTO tb_member_exchange_account_history(
+            mem_no
+            , account_no
+            , account_name
+            , bank_code
+            , bank_name
+        )VALUES(
+            #{mem_no}
+            , #{account_no}
+            , #{account_name}
+            , #{bank_code}
+            , #{bank_name}
+        )
+    </insert>
+
+    <update id="callAccountEdit" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountEditVo">
+        UPDATE tb_member_exchange_account_history
+        SET account_no = #{account_no}
+            , account_name = #{account_name}
+            , bank_code = #{bank_code}
+            , bank_name = #{bank_name}
+        WHERE idx = #{idx}
+          AND mem_no = #{mem_no}
+    </update>
+
+    <update id="callAccountDelete" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountDeleteVo">
+        UPDATE tb_member_exchange_account_history
+        SET delete_yn = 'y'
+        WHERE idx = #{idx}
+    </update>
+
+    <select id="callAccountListSelect" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
+        SELECT
+          idx
+          , account_no as accountNo
+          , account_name as accountName
+          , bank_code as bankCode
+          , bank_name as bankName
+        FROM tb_member_exchange_account_history
+        WHERE mem_no = #{mem_no}
+          AND delete_yn = 'n'
+        ORDER BY last_upd_date DESC
+    </select>
+
+    <select id="selectExchangeHistory" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
+        select
+            account_no as accountNo
+        from tb_member_exchange
+        where mem_no = #{mem_no}
+    </select>
+
 </mapper>

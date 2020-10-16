@@ -329,4 +329,50 @@ public class MemberController {
     public String changeDevice(HttpServletRequest request) throws GlobalException {
         return memberService.resetListeningRoom(request);
     }
+
+
+    /**
+     * 환전 계좌 등록
+     */
+    @PostMapping("/member/exchange/account/add")
+    public String accountAdd(@Valid ExchangeAccountAddVo exchangeAccountInfoVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ExchangeAccountAddVo apiData = new P_ExchangeAccountAddVo(exchangeAccountInfoVo, request);
+        String result = memberService.callAccountAdd(apiData);
+        return result;
+    }
+
+
+    /**
+     * 환전 계좌 수정
+     */
+    @PostMapping("/member/exchange/account/edit")
+    public String accountEdit(@Valid ExchangeAccountEditVo exchangeAccountEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ExchangeAccountEditVo apiData = new P_ExchangeAccountEditVo(exchangeAccountEditVo, request);
+        String result = memberService.callAccountEdit(apiData, request);
+        return result;
+    }
+
+
+    /**
+     * 환전 계좌 삭제
+     */
+    @PostMapping("/member/exchange/account/delete")
+    public String accountDelete(@Valid ExchangeAccountDeleteVo exchangeAccountDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ExchangeAccountDeleteVo apiData = new P_ExchangeAccountDeleteVo(exchangeAccountDeleteVo, request);
+        String result = memberService.callAccountDelete(apiData, request);
+        return result;
+    }
+
+    /**
+     * 환전 계좌 조회
+     */
+    @GetMapping("/member/exchange/account/list")
+    public String accountDelete(HttpServletRequest request) {
+        P_ExchangeAccountListVo apiData = new P_ExchangeAccountListVo(request);
+        String result = memberService.callAccountListSelect(apiData, "");
+        return result;
+    }
 }

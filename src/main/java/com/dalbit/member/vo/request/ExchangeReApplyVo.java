@@ -14,4 +14,7 @@ public class ExchangeReApplyVo {
     @Min(message = "{\"ko_KR\" : \"별을\"}", value = 570)
     private int byeol;
 
+    private String accountName;
+    private String accountNo;
+    private String bankCode;
 }

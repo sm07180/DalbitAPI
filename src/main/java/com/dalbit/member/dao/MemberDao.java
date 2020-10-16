@@ -48,4 +48,16 @@ public interface MemberDao {
     List<P_FanRankVo> callFanRank3(ProcedureVo procedureVo);
 
     int callProfileEditHistory(P_SelfAuthVo pSelfAuthVo);
+
+    int callAccountAdd(P_ExchangeAccountAddVo pExchangeAccountAddVo);
+
+    int callAccountEdit(P_ExchangeAccountEditVo pExchangeAccountEditVo);
+
+    int callAccountDelete(P_ExchangeAccountDeleteVo pExchangeAccountDeleteVo);
+
+    @Transactional(readOnly = true)
+    List<P_ExchangeAccountListVo> callAccountListSelect(P_ExchangeAccountListVo pExchangeAccountListVo);
+
+    @Transactional(readOnly = true)
+    List<P_ExchangeAccountListVo> selectExchangeHistory(P_ExchangeAccountListVo pExchangeAccountListVo);
 }
