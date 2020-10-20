@@ -7,7 +7,7 @@ import lombok.ToString;
 @Getter @Setter @ToString
 public class ExchangeSuccessVo {
 
-    private String exchangeIdx;
+    private int exchangeIdx;
     private String memNo;
     private String accountName;
     private String accountNo;

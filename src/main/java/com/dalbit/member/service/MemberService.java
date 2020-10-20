@@ -402,7 +402,7 @@ public class MemberService {
         pExchangeApplyVo.setAdd_file1(exchangeSuccessVo.getAddFile1());
         pExchangeApplyVo.setAdd_file2(exchangeSuccessVo.getAddFile2());
         pExchangeApplyVo.setTerms_agree(exchangeSuccessVo.getTermsAgree());
-
+        pExchangeApplyVo.setLatest_idx(exchangeSuccessVo.getExchangeIdx());
         return callExchangeApply(pExchangeApplyVo, request);
     }
 

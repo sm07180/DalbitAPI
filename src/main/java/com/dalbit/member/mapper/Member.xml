@@ -141,7 +141,8 @@
 
     <select id="exchangeReApprovalSelect" parameterType="ExchangeReApplyVo" resultType="ExchangeSuccessVo">
         select
-            mem_no as memNo
+            idx as exchangeIdx
+            , mem_no as memNo
             , account_name as accountName
             , account_no as accountNo
             , bank_code as bankCode

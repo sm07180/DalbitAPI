@@ -55,4 +55,5 @@ public class ExchangeApplyVo {
     @NotNull(message = "{\"ko_KR\" : \"약관동의를\"}")
     private int termsAgree;
 
+    private Integer latestIdx;
 }

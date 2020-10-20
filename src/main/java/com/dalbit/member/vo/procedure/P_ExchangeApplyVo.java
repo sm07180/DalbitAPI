@@ -28,6 +28,7 @@ public class P_ExchangeApplyVo {
     private int terms_agree;
     private int os;
     private String ip;
+    private int latest_idx;
 
     public P_ExchangeApplyVo(){}
     public P_ExchangeApplyVo(ExchangeApplyVo exchangeApplyVo, HttpServletRequest request){
@@ -46,5 +47,6 @@ public class P_ExchangeApplyVo {
         setTerms_agree(exchangeApplyVo.getTermsAgree());
         setOs(new DeviceVo(request).getOs());
         setIp(new DeviceVo(request).getIp());
+        setLatest_idx(DalbitUtil.isEmpty(exchangeApplyVo.getLatestIdx()) ? 0 : exchangeApplyVo.getLatestIdx());
     }
 }
