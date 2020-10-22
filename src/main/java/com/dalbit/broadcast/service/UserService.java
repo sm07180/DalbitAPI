@@ -48,6 +48,8 @@ public class UserService {
     GuestService guestService;
     @Autowired
     AdminService adminService;
+    @Autowired
+    RoomService roomService;
 
     public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
@@ -151,18 +153,31 @@ public class UserService {
                 socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
                 vo.resetData();
 
-                //게스트 강퇴 시 소켓 추가
-                GuestInfoVo guestInfoVo = new GuestInfoVo();
-                guestInfoVo.setMode(6);
-                guestInfoVo.setMemNo(pRoomKickoutVo.getBlocked_mem_no());
-                LiveChatProfileVo profileVo = new LiveChatProfileVo();
-                profileVo.setMem_no(pRoomKickoutVo.getBlocked_mem_no());
-                profileVo = adminService.getUserProfile(profileVo);
-                guestInfoVo.setNickNm(profileVo.getMem_nick());
-                guestInfoVo.setProfImg(new ImageVo(profileVo.getImage_profile(), profileVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+                boolean isGuest = false;
+                P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
+                pRoomMemberInfoVo.setTarget_mem_no(pRoomKickoutVo.getBlocked_mem_no());
+                pRoomMemberInfoVo.setRoom_no(pRoomKickoutVo.getRoom_no());
+                pRoomMemberInfoVo.setMem_no(pRoomKickoutVo.getMem_no());
+                ProcedureVo procedureInfoVo = roomService.getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
+                if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
+                    isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
+                }
 
-                socketService.sendGuest(pRoomKickoutVo.getBlocked_mem_no(), pRoomKickoutVo.getRoom_no(), pRoomKickoutVo.getMem_no(), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
-                vo.resetData();
+                if(isGuest){
+                    //게스트 강퇴 시 소켓 추가
+                    GuestInfoVo guestInfoVo = new GuestInfoVo();
+                    guestInfoVo.setMode(6);
+                    guestInfoVo.setMemNo(pRoomKickoutVo.getBlocked_mem_no());
+                    LiveChatProfileVo profileVo = new LiveChatProfileVo();
+                    profileVo.setMem_no(pRoomKickoutVo.getBlocked_mem_no());
+                    profileVo = adminService.getUserProfile(profileVo);
+                    guestInfoVo.setNickNm(profileVo.getMem_nick());
+                    guestInfoVo.setProfImg(new ImageVo(profileVo.getImage_profile(), profileVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+
+                    socketService.sendGuest(pRoomKickoutVo.getBlocked_mem_no(), pRoomKickoutVo.getRoom_no(), pRoomKickoutVo.getMem_no(), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                    vo.resetData();
+                }
+
             }catch(Exception e){
                 log.info("Socket Service kickout Exception {}", e);
             }
