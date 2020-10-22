@@ -125,10 +125,18 @@ public class UserService {
      * 방송방 강퇴하기
      */
     public String callBroadCastRoomKickout(P_RoomKickoutVo pRoomKickoutVo, HttpServletRequest request) {
+        boolean isGuest = false;
+        P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
+        pRoomMemberInfoVo.setTarget_mem_no(pRoomKickoutVo.getBlocked_mem_no());
+        pRoomMemberInfoVo.setRoom_no(pRoomKickoutVo.getRoom_no());
+        pRoomMemberInfoVo.setMem_no(pRoomKickoutVo.getMem_no());
+        ProcedureVo procedureInfoVo = roomService.getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
+        if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
+            isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(pRoomKickoutVo);
-
         HashMap bolckedMap = socketService.getMyInfo(pRoomKickoutVo.getBlocked_mem_no());
-
         userDao.callBroadCastRoomKickout(procedureVo);
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
@@ -144,16 +152,6 @@ public class UserService {
         returnMap.put("kingGender", fanRankMap.get("kingGender"));
         returnMap.put("kingAge", fanRankMap.get("kingAge"));
         returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
-
-        boolean isGuest = false;
-        P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
-        pRoomMemberInfoVo.setTarget_mem_no(pRoomKickoutVo.getBlocked_mem_no());
-        pRoomMemberInfoVo.setRoom_no(pRoomKickoutVo.getRoom_no());
-        pRoomMemberInfoVo.setMem_no(pRoomKickoutVo.getMem_no());
-        ProcedureVo procedureInfoVo = roomService.getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
-        if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
-            isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
-        }
 
         String result = "";
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
