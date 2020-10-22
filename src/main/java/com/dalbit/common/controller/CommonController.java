@@ -288,7 +288,7 @@ public class CommonController {
         selfAuthOutVo.setTr_cert(DalbitUtil.getEncAuthInfo(selfAuthVo));                //요정정보(암호화)
 
         log.info("URL CODE: {}", selfAuthVo.getUrlCode());
-
+        log.info("[API] #### selfAuthVo: {}", selfAuthVo);
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
     }
 

@@ -2,8 +2,9 @@ package com.dalbit.common.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class SelfAuthVo {
 
     private String name="";         //이름
