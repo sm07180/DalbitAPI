@@ -115,6 +115,7 @@
                     ELSE 'normal'
                 END)AS category
                 , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
+                , 'lottie' AS iosSelectType
                 , @rownum := @rownum + 1 AS sortNo
         FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
         WHERE view_yn = 1

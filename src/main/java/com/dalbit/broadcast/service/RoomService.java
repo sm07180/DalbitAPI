@@ -63,6 +63,8 @@ public class RoomService {
     @Autowired
     EventService eventService;
     @Autowired
+    GuestService guestService;
+    @Autowired
     MemberService memberService;
     @Autowired
     UserDao userDao;
@@ -373,6 +375,8 @@ public class RoomService {
      */
     public String callBroadCastRoomExit(P_RoomExitVo pRoomExitVo, HttpServletRequest request) {
         boolean isBj = false;
+        boolean isGuest = false;
+        String nickNm="";
         if(!pRoomExitVo.getMem_no().startsWith("8")){
             P_RoomMemberInfoVo pRoomMemberInfoVo = new P_RoomMemberInfoVo();
             pRoomMemberInfoVo.setTarget_mem_no(pRoomExitVo.getMem_no());
@@ -381,6 +385,8 @@ public class RoomService {
             ProcedureVo procedureInfoVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
             if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
                 isBj = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "auth") == 3;
+                isGuest = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "isGuest") == 1;
+                nickNm = DalbitUtil.getStringMap((HashMap)procedureInfoVo.getData(), "nickNm");
             }
 
         }
@@ -438,6 +444,32 @@ public class RoomService {
                 } catch (Exception e) {
                     log.info("Socket Service changeCount Exception {}", e);
                 }
+
+               //게스트 퇴장일 경우 소켓 추가
+               if(isGuest){
+                   Status status = null;
+                   HashMap selParams = new HashMap();
+                   selParams.put("mem_no", pRoomExitVo.getMem_no());
+                   selParams.put("room_no", pRoomExitVo.getRoom_no());
+                   HashMap roomGuestInfo = userDao.selectGuestStreamInfo(selParams);
+
+                   GuestInfoVo guestInfoVo = new GuestInfoVo();
+                   guestInfoVo.setMode(6);
+                   guestInfoVo.setMemNo(pRoomExitVo.getMem_no());
+                   guestInfoVo.setNickNm(nickNm);
+                   guestInfoVo.setProfImg(new ImageVo(roomGuestInfo.get("image_profile"), (String)roomGuestInfo.get("mem_sex"), DalbitUtil.getProperty("server.photo.url")));
+
+                    //P_RoomGuestVo apiData = new P_RoomGuestVo(DalbitUtil.getStringMap(roomGuestInfo, "dj_mem_no"), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), "", "", "", "", "", "", request);
+                    //status = guestService.callBroadCastRoomGuestCancel(apiData, request);
+                   //소켓통신
+                   if(status == null || "success".equals(status.getResult())){
+                       try{
+                           socketService.sendGuest(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), DalbitUtil.getStringMap(roomGuestInfo, "dj_mem_no"), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                       }catch(Exception e){}
+                   }
+
+                }
+
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
@@ -471,6 +503,30 @@ public class RoomService {
                     result = gsonUtil.toJson(new JsonOutputVo(Status.방참가실패));
                 }
             }else{
+                //게스트 퇴장일 경우 소켓 추가
+                if(isGuest){
+                    Status status = null;
+                    HashMap selParams = new HashMap();
+                    selParams.put("mem_no", pRoomExitVo.getMem_no());
+                    selParams.put("room_no", pRoomExitVo.getRoom_no());
+                    HashMap roomGuestInfo = userDao.selectGuestStreamInfo(selParams);
+
+                    GuestInfoVo guestInfoVo = new GuestInfoVo();
+                    guestInfoVo.setMode(6);
+                    guestInfoVo.setMemNo(pRoomExitVo.getMem_no());
+                    guestInfoVo.setNickNm(nickNm);
+                    guestInfoVo.setProfImg(new ImageVo(roomGuestInfo.get("image_profile"), (String)roomGuestInfo.get("mem_sex"), DalbitUtil.getProperty("server.photo.url")));
+
+                    //P_RoomGuestVo apiData = new P_RoomGuestVo(DalbitUtil.getStringMap(roomGuestInfo, "dj_mem_no"), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), "", "", "", "", "", "", request);
+                    //status = guestService.callBroadCastRoomGuestCancel(apiData, request);
+                    //소켓통신
+                    if(status == null || "success".equals(status.getResult())){
+                        try{
+                            socketService.sendGuest(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), DalbitUtil.getStringMap(roomGuestInfo, "dj_mem_no"), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                        }catch(Exception e){}
+                    }
+
+                }
                 result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
             }
         }
@@ -942,9 +998,9 @@ public class RoomService {
 
         returnMap.put("liveDjRank", DalbitUtil.getIntMap(resultMap, "liveDjRank"));
         returnMap.put("liveFanRank", DalbitUtil.getIntMap(resultMap, "liveFanRank"));
+        returnMap.put("isGuest", DalbitUtil.getIntMap(resultMap, "isGuest"));
 
         procedureVo.setData(returnMap);
-
         return procedureVo;
     }
 

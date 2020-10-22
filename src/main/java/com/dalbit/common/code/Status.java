@@ -427,6 +427,10 @@ public enum Status {
     공지삭제하기실패_삭제에러("C006", "broadcast.room.notice.delete.fail", "공지사항 삭제 실패 시"),
 
     //방송방 선물하기
+    DJ_몰래_선물하기성공("0", "broadcast.room.gift.dj.secret.success", "몰래 선물하기 성공 시"),
+    게스트_몰래_선물하기성공("0", "broadcast.room.gift.guest.secret.success", "몰래 선물하기 성공 시"),
+    DJ_선물하기성공("0", "broadcast.room.gift.dj.success", "DJ에게 선물하기 성공 시"),
+    게스트_선물하기성공("0", "broadcast.room.gift.guest.success", "게스트에게 선물하기 성공 시"),
     선물하기성공("0", "broadcast.room.gift.success", "선물하기 성공 시"),
     선물하기_요청회원_번호비정상("-1", "broadcast.room.gift.member.number.error", "요청회원 번호가 비정상일 시"),
     선물하기_해당방없음("-2", "broadcast.room.gift.no.room", "해당 방 없을 시"),
@@ -1074,6 +1078,7 @@ public enum Status {
     게스트신청_청취자아님("-4", "guest.propose.no.room.member", "방 청취자 아닐 시"),
     게스트신청_신청불가상태("-5", "guest.propose.no.state", "신청 불가 상태 시"),
     게스트신청_이미신청중("-6", "guest.propose.already", "이미 신청중일 시"),
+    게스트신청_초대받은상태("-7", "guest.propose.already.invite.success", "이미 초대받은 상태 시"),
     게스트신청_실패("C006", "guest.propose.fail", "게스트 신청 실패 시"),
 
     //게스트 신청 취소

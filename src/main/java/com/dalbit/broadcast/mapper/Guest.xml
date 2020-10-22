@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.broadcast.dao.GuestDao">
+
+    <select id="callGuestPropose" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_propose(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callGuestProposeCancel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_propose_cancel(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callGuestManagementList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.broadcast.vo.procedure.P_GuestManagementListVo">
+      call sp_broadcast_room_guest_management(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callGuestInvite" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_invite(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callGuestInviteCancel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_invite_cancel(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callGuestInviteOk" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_invite_ok(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadCastRoomGuestAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadCastRoomGuestCancel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_broadcast_room_guest_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectGuestList" parameterType="com.dalbit.broadcast.vo.request.GuestListVo" resultType="com.dalbit.broadcast.vo.procedure.P_GuestListVo">
+        SELECT
+            a.mem_no
+            , a.room_no
+            , b.image_profile
+            , c.mem_sex
+            , c.mem_nick
+            , d.auth
+        FROM tb_broadcast_room_guest a
+            INNER JOIN tb_member_profile b ON a.mem_no = b.mem_no
+            INNER JOIN tb_member_basic c ON a.mem_no = c.mem_no
+            INNER JOIN tb_broadcast_room_member d ON a.mem_no = d.mem_no AND a.room_no = d.room_no
+        AND a.state = 1
+        AND a.room_no = #{roomNo}
+    </select>
+
+    <select id="selectGuestInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        SELECT
+            a.room_no
+            , b.mem_no
+            , c.mem_nick
+            , c.mem_sex
+            , d.image_profile
+        FROM tb_broadcast_room_live_list a INNER JOIN tb_broadcast_room_member  b on a.room_no = b.room_no
+            INNER JOIN tb_member_basic c ON  b.mem_no = c.mem_no
+            INNER JOIN tb_member_profile d ON b.mem_no = d.mem_no
+        WHERE a.state &lt;&gt; 4
+            AND b.state = 0
+            AND b.auth = 2
+            AND b.guest_propose = 0
+            AND a.room_no = ${roomNo}
+            AND b.mem_no = ${memNo}
+    </select>
+
+    <select id="getGuestInfo" parameterType="com.dalbit.broadcast.vo.procedure.P_GuestListVo" resultType="com.dalbit.broadcast.vo.procedure.P_GuestListVo">
+        SELECT
+            room_no
+            , mem_no
+            , guest_propose
+            , guest_yn
+        FROM tb_broadcast_room_member
+        WHERE room_no = #{room_no}
+          AND mem_no = #{mem_no}
+          AND state = 0
+    </select>
+
+</mapper>

@@ -5,6 +5,7 @@ import com.dalbit.admin.util.AdminSocketUtil;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.*;
 import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.service.GuestService;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
@@ -28,7 +29,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.net.ssl.HttpsURLConnection;
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -70,6 +70,9 @@ public class AdminService {
 
     @Autowired
     EmailService emailService;
+
+    @Autowired
+    GuestService guestService;
 
     private final String menuJsonKey = "adminMenu";
 
@@ -284,7 +287,6 @@ public class AdminService {
     /**
      * 이미지관리 > 프로필 이미지 초기화
      */
-    @Transactional
     public String proImageInit(HttpServletRequest request, ProImageInitVo proImageInitVo) throws GlobalException {
 
         try{
@@ -1252,6 +1254,14 @@ public class AdminService {
         String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
 
         return result;
+    }
+
+    /**
+     * 닉네임, 프로필이미지 회원정보조회
+     */
+    public LiveChatProfileVo getUserProfile(LiveChatProfileVo liveChatProfileVo) {
+        LiveChatProfileVo profileVo = adminDao.selectUserProfile(liveChatProfileVo);
+        return profileVo;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.dalbit.socket.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.dao.CommonDao;
@@ -630,7 +631,7 @@ public class SocketService {
      * @param roomNo 방번호
      * @param bjMemNo bj 회원번호
      * @param gstMemNo 게스트 회원번호
-     * @param type 타입 (1:초대, 2:취소, 3:승락, 4:거절, 5:신청, 6:퇴장)
+     * @param type 타입 (1:초대, 2:취소, 3:수락, 4:거절, 5:신청, 6:퇴장, 7:신청취소, 8:방송연결, 9:비정상종료)
      * @param authToken 토큰
      * @return
      */
@@ -641,7 +642,7 @@ public class SocketService {
         bjMemNo = bjMemNo == null ? "" : bjMemNo.trim();
         gstMemNo = gstMemNo == null ? "" : gstMemNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
-        if(!"".equals(roomNo) && !"".equals(bjMemNo) && !"".equals(gstMemNo) && !"".equals(authToken) && type > 0 && type < 7){
+        if(!"".equals(roomNo) && !"".equals(bjMemNo) && !"".equals(gstMemNo) && !"".equals(authToken) && type > 0 && type < 10){
             String recvMemNo = gstMemNo;
             String sendMemno = bjMemNo;
             if(type > 2){
@@ -897,32 +898,78 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void sendGuest(String memNo, String roomNo, String mode, HttpServletRequest request, String authToken){
-        sendGuest(memNo, roomNo, null, mode, request, authToken);
+    public void sendGuest(String memNo, String roomNo, String mode, HttpServletRequest request, String authToken, GuestInfoVo guestInfoVo){
+        sendGuest(memNo, roomNo, null, mode, request, authToken, guestInfoVo);
     }
 
     @Async("threadTaskExecutor")
-    public void sendGuest(String memNo, String roomNo, String djMemNo, String mode, HttpServletRequest request, String authToken){
-        log.info("Socket Start : reqGuest {}, {}, {}, {}, {}", roomNo, memNo, djMemNo, mode, authToken);
+    public void sendGuest(String memNo, String roomNo, String djMemNo, String mode, HttpServletRequest request, String authToken, GuestInfoVo guestInfoVo){
+        log.info("Socket Start : reqGuest {}, {}, {}, {}, {}, {}", roomNo, memNo, djMemNo, mode, authToken, guestInfoVo.toString());
 
         SocketVo vo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
         if(vo != null && vo.getMemNo() != null){
             vo.setCommand("reqGuest");
             HashMap guestMap = new HashMap();
             guestMap.put("memNo", memNo);
-            guestMap.put("mode", mode);
-            vo.setMessage(guestMap);
+            guestMap.put("mode", Integer.parseInt(mode));
+            guestMap.put("nickNm", guestInfoVo.getNickNm());
+            guestMap.put("profImg", guestInfoVo.getProfImg());
+            guestMap.put("rtmpOrigin", guestInfoVo.getRtmpOrigin());
+            guestMap.put("rtmpEdge", guestInfoVo.getRtmpEdge());
+            guestMap.put("webRtcUrl", guestInfoVo.getWebRtcUrl());
+            guestMap.put("webRtcAppName", guestInfoVo.getWebRtcAppName());
+            guestMap.put("webRtcStreamName", guestInfoVo.getWebRtcStreamName());
+            guestMap.put("proposeCnt", guestInfoVo.getProposeCnt());    //5:신청, 7:신청 취소일 경우 사용
+            guestMap.put("msg", "");    //msg
+
             if("1".equals(mode)) { // 초대
+                /*vo.setRecvDj(0);
+                vo.setRecvManager(0);
+                vo.setRecvListener(0);*/
+                guestMap.put("msg", "게스트 초대 요청을 보냈습니다.");
                 vo.setRecvMemNo(memNo);
             }else if("2".equals(mode)){ // 초대취소
+                /*vo.setRecvDj(0);
+                vo.setRecvManager(0);
+                vo.setRecvListener(0);*/
+                guestMap.put("msg", "DJ님이 게스트 초대를 취소하셨습니다.");
                 vo.setRecvMemNo(memNo);
-            }else if("3".equals(mode)){ // 승락
+            }else if("3".equals(mode)){ // 수락
+                /*vo.setRecvManager(0);
+                vo.setRecvListener(0);*/
+                guestMap.put("msg", "");
+                vo.setRecvMemNo(djMemNo);
             }else if("4".equals(mode)){ // 거절
+                /*vo.setRecvManager(0);
+                vo.setRecvListener(0);*/
+                guestMap.put("msg", "게스트 초대가 거절당했습니다.");
                 vo.setRecvMemNo(djMemNo);
             }else if("5".equals(mode)){ // 신청
+                /*vo.setRecvManager(0);
+                vo.setRecvListener(0);*/
+                guestMap.put("msg", "게스트 신청이 도착했습니다.");
                 vo.setRecvMemNo(djMemNo);
-            }else if("6".equals(mode)){ // 퇴장
+            }else if("6".equals(mode) || "9".equals(mode) || "10".equals(mode)) { // 퇴장, 비정상종료, 게스트통화중
+                if("6".equals(mode)){
+                    guestMap.put("msg", "게스트 연결이 종료되었습니다.");
+                }else if("9".equals(mode)){
+                    guestMap.put("msg", "게스트 연결상태에 문제가 있어 연결이 종료되었습니다.");
+                }else if("10".equals(mode)){
+                    guestMap.put("msg", "게스트 통화중으로 연결이 종료되었습니다.");
+                }
+                guestMap.put("mode", 6);
+                vo.setRecvMemNo(djMemNo);
+            }else if("7".equals(mode)){ // 신청취소
+                /*vo.setRecvManager(0);
+                vo.setRecvListener(0);*/
+                guestMap.put("msg", "게스트 참여 신청을 취소했습니다.");
+                vo.setRecvMemNo(djMemNo);
+            }else if("8".equals(mode)){ // 방송연결
+                //vo.setRecvMemNo(djMemNo);
+                guestMap.put("msg", "게스트로 연결되었습니다.");
+                vo.setNotMemNo(memNo);
             }
+            vo.setMessage(guestMap);
             sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
     }

@@ -4,6 +4,7 @@ import com.dalbit.admin.service.AdminCommonService;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.*;
+import com.dalbit.broadcast.service.GuestService;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.MessageInsertVo;
@@ -26,6 +27,9 @@ public class AdminController {
 
     @Autowired
     AdminCommonService adminCommonService;
+
+    @Autowired
+    GuestService guestService;
 
     @Autowired
     GsonUtil gsonUtil;
@@ -363,5 +367,15 @@ public class AdminController {
     @PostMapping("/clip/reply/delete")
     public String clipReplyDelete(ClipHistoryReplyVo clipHistoryReplyVo) {
         return adminService.deleteReply(clipHistoryReplyVo);
+    }
+
+
+    /**
+     * 게스트 > 게스트 취소
+     */
+    @PostMapping("/guestOut")
+    public String guestOut(HttpServletRequest request) throws GlobalException {
+        String result = guestService.guest(request);
+        return result;
     }
 }

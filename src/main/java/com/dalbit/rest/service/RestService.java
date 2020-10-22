@@ -404,11 +404,12 @@ public class RestService {
         socialMetaTagInfo.put("socialImageLink", profImg);
 
         HashMap<String, Object> suffix = new HashMap<>();
-        suffix.put("option", "UNGUESSABLE");//SHORT
+        suffix.put("option", "SHORT");// UNGUESSABLE or SHORT
 
         HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
         dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);
-        dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link + "?etc={\"push_type\":1,\"room_no\":\"" + room_no + "\"}");
+        dynamicLinkInfo.put("link", SERVER_WWW_URL + "/broadcast/" + room_no + "?etc={\"push_type\":1,\"room_no\":\"" + room_no + "\"}");
+        //dynamicLinkInfo.put("link", SERVER_WWW_URL + "/l/" + link + "?etc={\"push_type\":1,\"room_no\":\"" + room_no + "\"}");
         dynamicLinkInfo.put("androidInfo", androidInfo);
         dynamicLinkInfo.put("iosInfo", iosInfo);
         dynamicLinkInfo.put("socialMetaTagInfo", socialMetaTagInfo);
@@ -434,7 +435,7 @@ public class RestService {
         socialMetaTagInfo.put("socialImageLink", backImg);
 
         HashMap<String, Object> suffix = new HashMap<>();
-        suffix.put("option", "UNGUESSABLE");//SHORT
+        suffix.put("option", "SHORT");// UNGUESSABLE or SHORT
 
         HashMap<String, Object> dynamicLinkInfo = new HashMap<>();
         dynamicLinkInfo.put("domainUriPrefix", FIREBASE_DYNAMIC_LINK_PREFIX);

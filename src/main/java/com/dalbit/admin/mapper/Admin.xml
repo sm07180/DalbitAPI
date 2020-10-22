@@ -481,6 +481,7 @@
         select bas.mem_no
               , bas.mem_userid
               , bas.mem_nick
+              , bas.mem_sex
               , pro.image_profile
           from rd_data.tb_member_basic bas
             inner join rd_data.tb_member_profile pro

@@ -53,6 +53,7 @@ public interface AdminDao {
 
     BroadInfoVo getBroadInfo(String room_no);
 
+    @Transactional(readOnly = true)
     ArrayList<LiveChatOutputVo> selectBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo);
 
     int updateState(DeclarationVo declarationVo);

@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.vo;
 
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -47,12 +48,14 @@ public class RoomInfoVo {
     private boolean isAttendCheck;  //출석체크 여부
     private String isAttendUrl;  //출석체크 이벤트 URL
     private int liveDjRank;
+    private int os;             //bj os정보
     /* 요청자 정보 */
     private int auth;
     private String ctrlRole;
     private boolean isFan;
     private boolean isLike;
     private long remainTime;
+    private Boolean isGuest;
     /* 황제팬 정보 */
     private String kingMemNo;
     private String kingNickNm;
@@ -65,11 +68,13 @@ public class RoomInfoVo {
     private String webRtcStreamName;
     private int bufferingLow = 3000;
     private int bufferingHigh = 2500;
-    private int guestBuffering = 2500;
+    private int guestBuffering = 500;
+    private int chatEndInterval = 1000;
     /* 게스트 : streamName => wowza.prefix(DEV/REAL) + room_no + _ + mem_no */
     private List guests = new ArrayList();
+    private boolean useGuest = true;
 
-    public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap){
+    public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
         this.roomNo = target.getRoomNo();
         this.title = target.getTitle();
         this.bgImg = target.getBgImg();
@@ -77,7 +82,15 @@ public class RoomInfoVo {
         this.bjMemNo = target.getBjMemNo();
         this.bjNickNm = target.getBjNickNm();
         this.bjProfImg = target.getBjProfImg();
-        this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", target.getBjLevel() + "");
+        if("real".equals(DalbitUtil.getActiveProfile()) && (
+            (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))
+            ||
+            (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.1", deviceVo.getAppVersion()))
+        )){
+            this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", target.getBjLevel() + "");
+        }else{
+            this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.broad.frame"),"[level]", target.getBjLevel() + "");
+        }
         this.isRecomm = target.getIsRecomm();
         this.isPop = target.getIsPop();
         this.isNew = target.getIsNew();
@@ -141,5 +154,6 @@ public class RoomInfoVo {
 
         this.liveBadgeList = memberInfoVo.getLiveBadgeList();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
+        this.os = target.getOs();
     }
 }

@@ -7,10 +7,8 @@ import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.ItemDetailVo;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
+import com.dalbit.common.vo.procedure.P_ItemVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.MemberVo;
@@ -276,9 +274,9 @@ public class ActionService {
                 }
             }
 
+            String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
             if(DalbitUtil.getIntMap(resultMap, "dj_levelUp") == 1){//DJ 레벨업 일때 소켓 발송
                 try{
-                    String djMemNo = DalbitUtil.getStringMap(resultMap, "dj_mem_no");
                     socketService.sendLevelUp(djMemNo, pRoomGiftVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
@@ -291,7 +289,13 @@ public class ActionService {
                     log.error("sendDjLevelUp error : {}", e);
                 }
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기성공, returnMap));
+            Status status;
+            if("1".equals(pRoomGiftVo.getSecret())){
+                status = pRoomGiftVo.getGifted_mem_no().equals(djMemNo) ? Status.DJ_몰래_선물하기성공 : Status.게스트_몰래_선물하기성공;
+            }else {
+                status = pRoomGiftVo.getGifted_mem_no().equals(djMemNo) ? Status.DJ_선물하기성공 : Status.게스트_선물하기성공;
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
         }else if(Status.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_요청회원_번호비정상));
         }else if(Status.선물하기_해당방없음.getMessageCode().equals(procedureVo.getRet())){

@@ -225,11 +225,23 @@
 
     <select id="selectSpecialDjLikeCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         /* Mypage.xml - selectSpecialDjLikeCnt */
-        select count(*)
-        from rd_data.tb_broadcast_room_good
-        where dj_mem_no = #{mem_no}
-            and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
-            and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+        select sum(cnt)
+        from(
+            select count(*) cnt
+            from rd_data.tb_broadcast_room_good
+            where dj_mem_no = #{mem_no}
+                and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
+                and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+
+            union all
+
+            select count(*) * 10
+            from rd_data.tb_member_broadcast_item item
+            where item.gifted_mem_no = #{mem_no}
+                and item_type = 2
+                and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> item.last_upd_date
+                and item.last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+        ) a
     </select>
 
     <select id="selectSpecialDjBroadcastCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">

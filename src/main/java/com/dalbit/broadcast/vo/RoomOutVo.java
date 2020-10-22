@@ -97,8 +97,6 @@ public class RoomOutVo {
         this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
         this.isPop = (target.getBadge_popular() == 1) ? true : false;
         this.isNew = (target.getBadge_newdj() == 1 ? true : false);
-        this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
-        this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.isSpecial = (target.getBadge_special() == 1 ? true : false);
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
@@ -162,5 +160,6 @@ public class RoomOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
+        this.os = target.getOs();
     }
 }

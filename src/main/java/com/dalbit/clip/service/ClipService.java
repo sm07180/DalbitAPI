@@ -279,7 +279,20 @@ public class ClipService {
             returnMap.put("goodCntOpen", true);
             returnMap.put("byeolCntOpen", true);
             returnMap.put("replyCntOpen", true);
-            returnMap.put("eventOpen", true);
+
+            //ios 심사중이면 false;
+            boolean eventOpen = true;
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 2) {
+                var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
+                if (!DalbitUtil.isEmpty(iosCodeVo)) {
+                    if (!"Y".equals(iosCodeVo.getValue())) {
+                        eventOpen = false;
+                    }
+                }
+            }
+            returnMap.put("eventOpen", eventOpen);
+            returnMap.put("eventUrl", DalbitUtil.getProperty("server.mobile.url") + "/event/clip_gift_event?webview=new");
 
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());

@@ -36,4 +36,5 @@ public class P_RoomMemberListVo {
     private String liveBadgeImage;
     private String liveBadgeImageSmall;
     private int goodCnt;
+    private int isGuest;
 }

@@ -1,15 +1,15 @@
 package com.dalbit.broadcast.service;
 
+import com.dalbit.admin.service.AdminService;
+import com.dalbit.admin.vo.LiveChatProfileVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.dao.UserDao;
+import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.RoomMemberOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.PagingVo;
-import com.dalbit.common.vo.ProcedureOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
@@ -44,6 +44,10 @@ public class UserService {
     CommonService commonService;
     @Autowired
     SocketService socketService;
+    @Autowired
+    GuestService guestService;
+    @Autowired
+    AdminService adminService;
 
     public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
@@ -146,6 +150,19 @@ public class UserService {
             try{
                 socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
                 vo.resetData();
+
+                //게스트 강퇴 시 소켓 추가
+                GuestInfoVo guestInfoVo = new GuestInfoVo();
+                guestInfoVo.setMode(6);
+                guestInfoVo.setMemNo(pRoomKickoutVo.getBlocked_mem_no());
+                LiveChatProfileVo profileVo = new LiveChatProfileVo();
+                profileVo.setMem_no(pRoomKickoutVo.getBlocked_mem_no());
+                profileVo = adminService.getUserProfile(profileVo);
+                guestInfoVo.setNickNm(profileVo.getMem_nick());
+                guestInfoVo.setProfImg(new ImageVo(profileVo.getImage_profile(), profileVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+
+                socketService.sendGuest(pRoomKickoutVo.getBlocked_mem_no(), pRoomKickoutVo.getRoom_no(), pRoomKickoutVo.getMem_no(), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service kickout Exception {}", e);
             }
@@ -173,8 +190,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_권한없음));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_대상회원_방소속회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_대상회원_방소속회원아님));
-        }else if(procedureVo.getRet().equals(Status.강제퇴장_게스트이상불가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_게스트이상불가));
+        /*}else if(procedureVo.getRet().equals(Status.강제퇴장_게스트이상불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_게스트이상불가));*/
         }else if(procedureVo.getRet().equals(Status.강제퇴장_매니저가매니저.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_매니저가매니저));
         }else if(procedureVo.getRet().equals(Status.강제퇴장_운영자.getMessageCode())) {

@@ -431,11 +431,11 @@ public class MemberService {
 
                 List<String> roomList = memberDao.selectListeningRoom(memNo);
                 for(String room_no : roomList){
-                    if(deviceVo.getOs() == 3){
+                    //if(deviceVo.getOs() == 3){
                         exitData.setRoom_no(room_no);
                         ProcedureVo procedureVo = new ProcedureVo(exitData);
                         roomDao.callBroadCastRoomExit(procedureVo);
-                    }
+                    //}
                     try{
                         socketService.chatEndRed(memNo, room_no, request, authToken);
                     }catch(Exception e){}

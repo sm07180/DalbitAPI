@@ -65,9 +65,9 @@ public enum Code {
     포토_마이페이지공지_임시_PREFIX("/room_1", "마이페이지 공지 이미지 임시 경로 prefix"),
 
     //환전은행명
-    환전은행("exchange_bank_code", "환전 은행 목록")
+    환전은행("exchange_bank_code", "환전 은행 목록"),
 
-
+    IOS심사중여부("system_config", "IOS_심사중여부"), //N이면 참여가능, Y이면 참여불가 (시스템 점검 전에 값을 바꿔 유입을 막는다)
    ;
 
     final private String code;

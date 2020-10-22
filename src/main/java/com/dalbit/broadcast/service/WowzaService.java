@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.service;
 
+import com.dalbit.broadcast.dao.GuestDao;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
 import com.dalbit.broadcast.vo.RoomMemberInfoVo;
@@ -55,6 +56,8 @@ public class WowzaService {
     MemberDao memberDao;
     @Autowired
     RoomService roomService;
+    @Autowired
+    GuestDao guestDao;
     @Autowired
     MypageService mypageService;
     @Autowired
@@ -120,7 +123,37 @@ public class WowzaService {
                     roomCheck = true;
                     result.put("status", Status.방송방상태변경_성공);
                 } else {
-                    //TODO: 게스트 활동 확인
+                    HashMap params = new HashMap();
+                    params.put("roomNo", roomNo);
+                    params.put("memNo", guestNo);
+                    HashMap guestInfo = guestDao.selectGuestInfo(params);
+                    if(!DalbitUtil.isEmpty(guestInfo)){
+                        SocketVo vo = socketService.getSocketVo(target.getRoomNo(), guestNo, true);
+                        GuestInfoVo guestInfoVo = new GuestInfoVo();
+                        guestInfoVo.setMode(8);
+                        guestInfoVo.setMemNo(guestNo);
+                        guestInfoVo.setNickNm((String) guestInfo.get("mem_nick"));
+                        guestInfoVo.setProfImg(new ImageVo(guestInfo.get("image_profile"), (String)guestInfo.get("mem_sex"), DalbitUtil.getProperty("server.photo.url")));
+                        String gstRtmpOrigin = DalbitUtil.getProperty("wowza.rtmp.origin") + "/" + streamName;// + "_aac";
+                        String gstRtmpEdge =  DalbitUtil.getProperty("wowza.rtmp.edge") + "/" + streamName + "_aac";
+                        String gstWebRtcUrl = DalbitUtil.getProperty("wowza.wss.url") ;
+                        String gstWebRtcAppName = "edge";
+                        String gstWebRtcStreamName = streamName + "_opus";
+                        guestInfoVo.setRtmpOrigin(gstRtmpOrigin);
+                        guestInfoVo.setRtmpEdge(gstRtmpEdge);
+                        guestInfoVo.setWebRtcUrl(gstWebRtcUrl);
+                        guestInfoVo.setWebRtcAppName(gstWebRtcAppName);
+                        guestInfoVo.setWebRtcStreamName(gstWebRtcStreamName);
+                        vo.setNotMemNo(guestNo);
+
+                        try{
+                            socketService.sendGuest(guestNo, roomNo, target.getBjMemNo(), "8", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                        }catch(Exception e){}
+                        roomCheck = true;
+                        result.put("status", Status.조회);
+                    }else{
+                        result.put("status", Status.데이터없음);
+                    }
                 }
 
                 //생성된 방송 WEBRTC EDGE 생성 호출
@@ -295,10 +328,11 @@ public class WowzaService {
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap);
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo);
             if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
                 roomInfoVo.setLiveBadgeList(new ArrayList());
             }
+            roomInfoVo.setIsGuest(false);
             result.put("data", roomInfoVo);
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result.put("status", Status.방송생성_회원아님);
@@ -361,6 +395,17 @@ public class WowzaService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
             RoomInfoVo roomInfoVo = getRoomInfo(target, resultMap, request);
+            roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), pRoomJoinVo.getMem_no()));
+
+            //참여시 게스트 여부 체크
+            for (int i=0; i<roomInfoVo.getGuests().size(); i++){
+                if(MemberVo.getMyMemNo(request).equals(((RoomGuestListOutVo) roomInfoVo.getGuests().get(i)).getMemNo())){
+                    roomInfoVo.setIsGuest(true);
+                }else{
+                    roomInfoVo.setIsGuest(false);
+                }
+            }
+
             if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
                 roomInfoVo.setLiveBadgeList(new ArrayList());
             }
@@ -462,6 +507,16 @@ public class WowzaService {
                         }
                     }else{
                         RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
+                        roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), MemberVo.getMyMemNo(request)));
+
+                        //방정보 조회시 본인 게스트여부 체크
+                        for (int i=0; i < roomInfoVo.getGuests().size(); i++ ){
+                            if(MemberVo.getMyMemNo(request).equals(((RoomGuestListOutVo) roomInfoVo.getGuests().get(i)).getMemNo())){
+                                roomInfoVo.setIsGuest(true);
+                            }else{
+                                roomInfoVo.setIsGuest(false);
+                            }
+                        }
 
                         result.put("status", Status.방정보보기);
                         result.put("data", roomInfoVo);
@@ -558,7 +613,7 @@ public class WowzaService {
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
-        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap);
+        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request));
     }
 
     @Async("threadTaskExecutor")
@@ -591,5 +646,19 @@ public class WowzaService {
         String sendMessage = new Gson().toJson(message);
         client.sendMessage(sendMessage);
         log.debug("WOWZA SEND MESSAGE : " + sendMessage);
+    }
+
+    public List getGuestList(String roomNo, String memNo){
+        List list = new ArrayList();
+        GuestListVo guestListVo = new GuestListVo();
+        guestListVo.setRoomNo(roomNo);
+        List<P_GuestListVo> pGuestListVo = guestDao.selectGuestList(guestListVo);
+        if(!DalbitUtil.isEmpty(pGuestListVo)){
+            for (int i=0; i<pGuestListVo.size(); i++){
+                RoomGuestListOutVo roomGuestListOut = new RoomGuestListOutVo(pGuestListVo.get(i), memNo, WOWZA_PREFIX);
+                list.add(roomGuestListOut);
+            }
+        }
+        return list;
     }
 }

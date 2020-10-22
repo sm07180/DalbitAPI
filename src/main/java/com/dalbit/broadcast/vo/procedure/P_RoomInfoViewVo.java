@@ -55,5 +55,6 @@ public class P_RoomInfoViewVo {
     private String liveBadgeEndColor;
     private String liveBadgeImage;
     private String liveBadgeImageSmall;
+    private int os;
 
 }
