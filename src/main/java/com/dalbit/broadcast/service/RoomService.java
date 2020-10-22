@@ -998,7 +998,7 @@ public class RoomService {
 
         returnMap.put("liveDjRank", DalbitUtil.getIntMap(resultMap, "liveDjRank"));
         returnMap.put("liveFanRank", DalbitUtil.getIntMap(resultMap, "liveFanRank"));
-        returnMap.put("isGuest", DalbitUtil.getIntMap(resultMap, "isGuest"));
+        returnMap.put("isGuest", DalbitUtil.getIntMap(resultMap, "isGuest") == 1 ? true : false);
 
         procedureVo.setData(returnMap);
         return procedureVo;
