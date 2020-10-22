@@ -303,6 +303,8 @@ public class CommonController {
 
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
+            log.info("[API] selfAuthSaveVo: {}", selfAuthSaveVo);
+            
             P_SelfAuthVo apiData = new P_SelfAuthVo();
 
             apiData.setMem_no(selfAuthSaveVo.getPlusInfo().split("_")[0]); //요청시 보낸 회원번호 (추가정보)
