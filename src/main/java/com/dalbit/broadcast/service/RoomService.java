@@ -385,7 +385,7 @@ public class RoomService {
             ProcedureVo procedureInfoVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
             if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
                 isBj = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "auth") == 3;
-                isGuest = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "isGuest") == 1;
+                isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
                 nickNm = DalbitUtil.getStringMap((HashMap)procedureInfoVo.getData(), "nickNm");
             }
 
@@ -565,7 +565,7 @@ public class RoomService {
         if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomEditVo.getWelcomMsg())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정인사말금지));
         }
-        
+
         Boolean isDone = false;
         if(!DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImage()) && pRoomEditVo.getBackgroundImage().startsWith(Code.포토_배경_임시_PREFIX.getCode())){
             isDone = true;
