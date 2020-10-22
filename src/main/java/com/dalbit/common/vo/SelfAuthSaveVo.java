@@ -2,10 +2,11 @@ package com.dalbit.common.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.validation.constraints.NotBlank;
 
-@Getter @Setter
+@Getter @Setter @ToString
 public class SelfAuthSaveVo {
 
     String rec_cert		;           // 결과수신DATA
