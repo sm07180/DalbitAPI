@@ -377,34 +377,6 @@ public class MypageController {
     }
 
     /**
-     * 내지갑 달 내역 조회
-     */
-    @GetMapping("/dal")
-    public String dalView(@Valid DalVo dalVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_DalVo apiData = new P_DalVo(dalVo, request);
-
-        String result = mypageService.callMemberWalletDal(apiData);
-
-        return result;
-    }
-
-    /**
-     * 내지갑 별 내역 조회
-     */
-    @GetMapping("/byeol")
-    public String byeolView(@Valid ByeolVo byeolVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_ByeolVo apiData = new P_ByeolVo(byeolVo, request);
-
-        String result = mypageService.callMemberWalletByeol(apiData);
-
-        return result;
-    }
-
-    /**
      * 마이페이지 리포트 방송내역 보기
      */
     @GetMapping("/report/broad")

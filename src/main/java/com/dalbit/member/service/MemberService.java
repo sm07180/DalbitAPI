@@ -5,8 +5,6 @@ import com.dalbit.admin.vo.ProImageInitVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
-import com.dalbit.clip.vo.procedure.P_ClipGiftRankTop3Vo;
-import com.dalbit.clip.vo.request.ClipGiftRankTop3Vo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
@@ -36,10 +34,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service

@@ -48,12 +48,6 @@ public interface MypageDao {
     List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    List<P_DalVo> callMemberWalletDal(ProcedureVo procedureVo);
-
-    @Transactional(readOnly = true)
-    List<P_ByeolVo> callMemberWalletByeol(ProcedureVo procedureVo);
-
-    @Transactional(readOnly = true)
     List<P_MypageReportBroadVo> callMypageMypageReportBroad(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
