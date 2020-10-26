@@ -154,7 +154,7 @@ public class RoomOutVo {
         this.isSpecial = (target.getBadge_special() == 1 ? true : false);
         //TODO 출석체크이벤트 종료 시 구분 처리 필요
         this.isAttendCheck = (Boolean) attendanceCheckMap.get("isCheck");
-        this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/attend_event?webview=new";
+        this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/event/attend_event?webview=new";
 
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){

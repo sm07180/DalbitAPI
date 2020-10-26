@@ -113,7 +113,7 @@ public class RoomInfoVo {
             this.isAttendCheck = (boolean) attendanceCheckMap.get("isCheck");
         }
 
-        this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url")+"/attend_event?webview=new";
+        this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url")+"/event/attend_event?webview=new";
 
         this.auth = memberInfoVo.getAuth();
         this.hasStory = memberInfoVo.isHashStory();
