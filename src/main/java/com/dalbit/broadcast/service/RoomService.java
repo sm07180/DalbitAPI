@@ -1523,10 +1523,19 @@ public class RoomService {
 
         String result;
         if(DalbitUtil.isEmpty(goodHistoryListVo)) {
+
+            int totalCnt = 0;
+            try {
+                HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                totalCnt = DalbitUtil.getIntMap(resultMap, "totalCnt");
+            }catch (Exception e){
+
+            }
+
             HashMap goodHistoryList = new HashMap();
             goodHistoryList.put("list", new ArrayList<>());
-            goodHistoryList.put("totalCnt", 0);
-            goodHistoryList.put("paging", new PagingVo(0, pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
+            goodHistoryList.put("totalCnt", totalCnt);
+            goodHistoryList.put("paging", new PagingVo(totalCnt, pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_없음, goodHistoryList));
         }else if(Integer.parseInt(procedureVo.getRet()) > 0) {
