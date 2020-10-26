@@ -130,7 +130,7 @@ public class UserService {
         pRoomMemberInfoVo.setTarget_mem_no(pRoomKickoutVo.getBlocked_mem_no());
         pRoomMemberInfoVo.setRoom_no(pRoomKickoutVo.getRoom_no());
         pRoomMemberInfoVo.setMem_no(pRoomKickoutVo.getMem_no());
-        ProcedureVo procedureInfoVo = roomService.getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
+        ProcedureVo procedureInfoVo = roomService.getBroadCastRoomMemberInfo(pRoomMemberInfoVo, request);
         if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
             isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
         }

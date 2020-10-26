@@ -360,7 +360,7 @@ public class RoomController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomMemberInfoVo apiData = new P_RoomMemberInfoVo(roomMemberInfoVo, request);
-        String result = roomService.callBroadCastRoomMemberInfo(apiData);
+        String result = roomService.callBroadCastRoomMemberInfo(apiData, request);
         return result;
     }
 

@@ -2030,33 +2030,41 @@ public class MypageService {
                         walletCode = 2;
                         order = 2;
                     }else if("itemGet".equals(key.get(i))){
-                        text = "라이브 아이템 선물 획득";
+                        text = "DJ-방송 선물 획득";
                         walletCode = 3;
                         order = 3;
-                    }else if("clipGet".equals(key.get(i))){
-                        text = "클립 아이템 선물 획득";
-                        walletCode = 5;
+                    }else if("guest_itemGet".equals(key.get(i))){
+                        text = "게스트-방송 선물 획득";
+                        walletCode = 10;
                         order = 4;
-                    }else if("secret_itemGet".equals(key.get(i))){
-                        text = "아이템 몰래 선물 획득";
-                        walletCode = 4;
+                    }else if("clipGet".equals(key.get(i))){
+                        text = "클립 선물 획득";
+                        walletCode = 5;
                         order = 5;
+                    }else if("secret_itemGet".equals(key.get(i))){
+                        text = "DJ-방송 몰래 선물 획득";
+                        walletCode = 4;
+                        order = 6;
+                    }else if("guest_secret_itemGet".equals(key.get(i))){
+                        text = "게스트-방송 몰래 선물 획득";
+                        walletCode = 11;
+                        order = 7;
                     }else if("levelupGet".equals(key.get(i))){
                         text = "레벨업 보상 획득";
                         walletCode = 6;
-                        order = 6;
+                        order = 8;
                     }else if("eventGet".equals(key.get(i))){
                         text = "이벤트 보상 획득";
                         walletCode = 7;
-                        order = 7;
+                        order = 9;
                     }else if("opGet".equals(key.get(i))){
                         text = "운영자 지급 획득";
                         walletCode = 8;
-                        order = 8;
+                        order = 10;
                     }else if("exchangeGet".equals(key.get(i))){
                         text = "환전 취소 복구";
                         walletCode = 9;
-                        order = 9;
+                        order = 11;
                     }
                     HashMap returnMap = new HashMap();
                     returnMap.put("walletCode", walletCode);
@@ -2069,49 +2077,57 @@ public class MypageService {
             } else { // 달
                 for (int i=0; i < key.size(); i++){
                     if("itemUse".equals(key.get(i))){
-                        text = "아이템 선물 사용";
+                        text = "DJ-방송 선물 사용";
                         walletCode = 1;
                         order = 1;
-                    }else if("secret_itemUse".equals(key.get(i))){
-                        text = "아이템 몰래 선물 사용";
-                        walletCode = 2;
+                    }else if("guest_itemUse".equals(key.get(i))){
+                        text = "게스트-방송 선물 사용";
+                        walletCode = 12;
                         order = 2;
-                    }else if("clipUse".equals(key.get(i))){
-                        text = "클립 아이템 선물 사용";
-                        walletCode = 4;
+                    }else if("secret_itemUse".equals(key.get(i))){
+                        text = "DJ-방송 몰래 선물 사용";
+                        walletCode = 2;
                         order = 3;
+                    }else if("guest_secret_itemUse".equals(key.get(i))){
+                        text = "게스트-방송 몰래 선물 사용";
+                        walletCode = 13;
+                        order = 4;
+                    }else if("clipUse".equals(key.get(i))){
+                        text = "클립 선물 사용";
+                        walletCode = 4;
+                        order = 5;
                     }else if("giftUse".equals(key.get(i))){
                         text = "달 직접 선물 사용";
                         walletCode = 3;
-                        order = 4;
+                        order = 6;
                     }else if("buyGet".equals(key.get(i))){
                         text = "달 구매 획득";
                         walletCode = 5;
-                        order = 5;
+                        order = 7;
                     }else if("changeGet".equals(key.get(i))){
                         text = "별＞달 교환 획득";
                         walletCode = 9;
-                        order = 6;
+                        order = 8;
                     }else if("UseGet".equals(key.get(i))){
                         text = "달 직접 선물 획득";
                         walletCode = 6;
-                        order = 7;
+                        order = 9;
                     }else if("rankingGet".equals(key.get(i))){
                         text = "랭킹 보상 획득";
                         walletCode = 7;
-                        order = 8;
+                        order = 10;
                     }else if("levelupGet".equals(key.get(i))){
                         text = "레벨 업 보상 획득";
                         walletCode = 8;
-                        order = 9;
+                        order = 11;
                     }else if("eventGet".equals(key.get(i))){
                         text = "이벤트 보상 획득";
                         walletCode = 10;
-                        order = 10;
+                        order = 12;
                     }else if("opGet".equals(key.get(i))){
                         text = "운영자 지급 획득";
                         walletCode = 11;
-                        order = 11;
+                        order = 13;
                     }
                     HashMap returnMap = new HashMap();
                     returnMap.put("walletCode", walletCode);

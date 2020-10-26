@@ -382,7 +382,7 @@ public class RoomService {
             pRoomMemberInfoVo.setTarget_mem_no(pRoomExitVo.getMem_no());
             pRoomMemberInfoVo.setRoom_no(pRoomExitVo.getRoom_no());
             pRoomMemberInfoVo.setMem_no(pRoomExitVo.getMem_no());
-            ProcedureVo procedureInfoVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
+            ProcedureVo procedureInfoVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo, request);
             if(!DalbitUtil.isEmpty(procedureInfoVo.getData())){
                 isBj = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "auth") == 3;
                 isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
@@ -914,7 +914,7 @@ public class RoomService {
     /**
      * 방송방 회원정보 조회
      */
-    public ProcedureVo getBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo){
+    public ProcedureVo getBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo, HttpServletRequest request){
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
         roomDao.callBroadCastRoomMemberInfo(procedureVo);
 
@@ -1007,8 +1007,8 @@ public class RoomService {
     /**
      * 방송방 회원정보 조회
      */
-    public String callBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo) {
-        ProcedureVo procedureVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo);
+    public String callBroadCastRoomMemberInfo(P_RoomMemberInfoVo pRoomMemberInfoVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo, request);
 
         String result="";
         if(Status.방송방회원정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
