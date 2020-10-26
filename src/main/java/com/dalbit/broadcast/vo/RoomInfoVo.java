@@ -72,7 +72,7 @@ public class RoomInfoVo {
     private int chatEndInterval = 1000;
     /* 게스트 : streamName => wowza.prefix(DEV/REAL) + room_no + _ + mem_no */
     private List guests = new ArrayList();
-    private boolean useGuest = false;
+    private boolean useGuest = true;
 
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
         this.roomNo = target.getRoomNo();
