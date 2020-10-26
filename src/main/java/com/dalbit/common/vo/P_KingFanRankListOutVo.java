@@ -5,6 +5,8 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter @Setter
 public class P_KingFanRankListOutVo {
 
@@ -14,6 +16,7 @@ public class P_KingFanRankListOutVo {
     private String gender;
     private String age;
     private ImageVo profImg;
+    private List liveBadgeList;
 
     public P_KingFanRankListOutVo(){}
     public P_KingFanRankListOutVo(P_KingFanRankListVo target, int i){
@@ -23,6 +26,15 @@ public class P_KingFanRankListOutVo {
         setGender(target.getMemSex());
         setAge(target.getAge());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+    }
+    public P_KingFanRankListOutVo(P_KingFanRankListVo target, int i, List liveBadgeList){
+        setRank(i);
+        setMemNo(target.getMem_no());
+        setNickNm(target.getNickName());
+        setGender(target.getMemSex());
+        setAge(target.getAge());
+        setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        setLiveBadgeList(liveBadgeList);
     }
 
 }
