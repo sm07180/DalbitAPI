@@ -437,4 +437,25 @@ public class CommonController {
     public String selectClipTypeCodeList(HttpServletRequest request){
         return gsonUtil.toJson(new JsonOutputVo(조회, commonService.selectClipTypeCodeList(new CodeVo(Code.클립주제.getCode()))));
     }
+
+    /**
+     * IOS 심사여부 조회
+     */
+    @GetMapping("/ios/judge")
+    public String selectIosJudge(HttpServletRequest request){
+        CodeVo codeVo = new CodeVo();
+        codeVo.setCd(Code.IOS심사중여부.getCode());
+        codeVo.setCdNm(Code.IOS심사중여부.getDesc());
+        CodeVo getCode = commonService.selectCodeDefine(codeVo);
+
+        HashMap resultMap = new HashMap();
+        String iosJudgeYn = "N";
+        if(!DalbitUtil.isEmpty(getCode)){
+            iosJudgeYn = getCode.getValue();
+        }
+
+        resultMap.put("iosJudgeYn", iosJudgeYn);
+        return gsonUtil.toJson(new JsonOutputVo(조회, resultMap));
+
+    }
 }
