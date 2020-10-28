@@ -63,6 +63,9 @@ public class ProfileInfoOutVo extends BaseVo {
     private int liveDjRank;
     private int liveFanRank;
 
+    private boolean wasSpecial;
+    private int specialDjCnt;
+
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
         this.memNo = target_mem_no;
@@ -113,5 +116,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.cupidNickNm = target.getCupidNickNm();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         this.liveFanRank = target.getLiveFanRank();
+
+        this.specialDjCnt = target.getSpecialDjCnt();
     }
 }

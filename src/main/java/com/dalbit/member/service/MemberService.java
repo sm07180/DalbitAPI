@@ -15,6 +15,7 @@ import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
+import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.AES;
@@ -598,5 +599,43 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.계좌조회_없음, resultMap));
         }
         return result;
+    }
+
+    /**
+     * 스페셜DJ 선정 이력(약력) 히스토리
+     */
+    public String getSpecialHistory(P_SpecialDjHistoryVo pSpecialDjHistoryVo, HttpServletRequest request){
+        List<P_SpecialDjHistoryVo> specialHistoryListVo = memberDao.getSpecialHistory(pSpecialDjHistoryVo);
+
+        String result;
+        HashMap specialHistoryList = new HashMap();
+        if(DalbitUtil.isEmpty(specialHistoryListVo)) {
+            specialHistoryList.put("list", new ArrayList<>());
+            specialHistoryList.put("specialDjCnt", 0);
+            specialHistoryList.put("nickNm", "");
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ선정내역조회_없음, specialHistoryList));
+
+        }else {
+            List<SpecialDjHistoryOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<specialHistoryListVo.size(); i++){
+                outVoList.add(new SpecialDjHistoryOutVo(specialHistoryListVo.get(i)));
+            }
+            specialHistoryList.put("list", outVoList);
+            specialHistoryList.put("specialDjCnt", specialHistoryListVo.size());
+            specialHistoryList.put("nickNm", specialHistoryListVo.get(0).getMemNick());
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ선정내역조회_성공, specialHistoryList));
+        }
+
+        return result;
+    }
+
+    /**
+     * 현재 스페셜DJ 선정여부 조회
+     */
+    public int getSpecialCnt(SpecialDjHistoryVo specialDjHistoryVo){
+        P_SpecialDjHistoryVo apiData = new P_SpecialDjHistoryVo(specialDjHistoryVo);
+        int resultCnt = memberDao.getSpecialCnt(apiData);
+        return resultCnt;
     }
 }

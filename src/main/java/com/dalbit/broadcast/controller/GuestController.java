@@ -24,6 +24,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/broad/guest")
 public class GuestController {
+
     @Autowired
     GuestService guestService;
     @Autowired

@@ -2,9 +2,11 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.GuestInfoVo;
+import com.dalbit.broadcast.vo.RoomGiftHistoryOutVo;
+import com.dalbit.broadcast.vo.RoomGoodHistoryOutVo;
+import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.broadcast.vo.request.RoomExitVo;
 import com.dalbit.broadcast.vo.request.StateVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -21,6 +23,7 @@ import com.dalbit.member.vo.procedure.P_BroadcastSettingEditVo;
 import com.dalbit.member.vo.procedure.P_BroadcastSettingVo;
 import com.dalbit.member.vo.procedure.P_FanRankVo;
 import com.dalbit.member.vo.request.BroadcastSettingEditVo;
+import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -999,6 +1002,18 @@ public class RoomService {
         returnMap.put("liveDjRank", DalbitUtil.getIntMap(resultMap, "liveDjRank"));
         returnMap.put("liveFanRank", DalbitUtil.getIntMap(resultMap, "liveFanRank"));
         returnMap.put("isGuest", DalbitUtil.getIntMap(resultMap, "isGuest") == 1 ? true : false);
+        returnMap.put("managerType", DalbitUtil.getIntMap(resultMap, "managerType"));
+        returnMap.put("likeTotCnt", DalbitUtil.getIntMap(resultMap, "receivedGoodTotal"));
+        returnMap.put("specialDjCnt", DalbitUtil.getIntMap(resultMap, "specialDjCnt"));
+
+
+        if(DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1){
+            returnMap.put("wasSpecial", false);
+        }else{
+            SpecialDjHistoryVo specialDjHistoryVo = new SpecialDjHistoryVo();
+            specialDjHistoryVo.setMemNo(pRoomMemberInfoVo.getTarget_mem_no());
+            returnMap.put("wasSpecial", memberService.getSpecialCnt(specialDjHistoryVo) > 0 ? true : false);
+        }
 
         procedureVo.setData(returnMap);
         return procedureVo;

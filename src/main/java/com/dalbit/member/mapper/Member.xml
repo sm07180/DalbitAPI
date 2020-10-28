@@ -234,4 +234,21 @@
         where mem_no = #{mem_no}
     </select>
 
+    <select id="getSpecialHistory" parameterType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo" resultType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo">
+        select
+            mem_no
+            , select_year as `year`
+            , select_month as `month`
+            , round_no as roundNo
+            , (select mem_nick from rd_data.tb_member_basic where mem_no=#{mem_no}) as memNick
+        from rd_admin.tb_special_dj
+        where mem_no=#{mem_no}
+          and date_format(now(), '%Y%m') >= concat(select_year, select_month)
+        order by round_no desc
+    </select>
+
+    <select id="getSpecialCnt" parameterType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo" resultType="int">
+        select count(*) from rd_admin.tb_special_dj where mem_no=#{mem_no} and date_format(now(), '%Y%m') >= concat(select_year, select_month);
+    </select>
+
 </mapper>

@@ -60,4 +60,11 @@ public interface MemberDao {
 
     @Transactional(readOnly = true)
     List<P_ExchangeAccountListVo> selectExchangeHistory(P_ExchangeAccountListVo pExchangeAccountListVo);
+
+    @Transactional(readOnly = true)
+    List<P_SpecialDjHistoryVo> getSpecialHistory(P_SpecialDjHistoryVo pSpecialHistoryVo);
+
+    @Transactional(readOnly = true)
+    int getSpecialCnt(P_SpecialDjHistoryVo pSpecialHistoryVo);
+
 }

@@ -16,11 +16,13 @@ public class P_ManagerAddVo {
         setRoom_no(managerAddVo.getRoomNo());
         setManager_mem_no(managerAddVo.getMemNo());
         setControl_role(managerAddVo.getRole());
+        setManager_type(managerAddVo.getManagerType());
     }
 
     private String mem_no;
     private String room_no;
     private String manager_mem_no;
     private String control_role;
+    private int manager_type;
 
 }

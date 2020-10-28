@@ -273,7 +273,11 @@ public class UserService {
             }catch(Exception e){
                 log.info("Socket Service changeManager Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_성공));
+            if(pManagerAddVo.getManager_type() == 2) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저지정_성공));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_성공));
+            }
         } else if (procedureVo.getRet().equals(Status.매니저지정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_회원아님));
         } else if (procedureVo.getRet().equals(Status.매니저지정_해당방이없음.getMessageCode())) {
@@ -290,6 +294,12 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_불가));
         } else if (procedureVo.getRet().equals(Status.매니저지정_인원제한.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_인원제한));
+        } else if (procedureVo.getRet().equals(Status.고정매니저지정_인원제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저지정_인원제한));
+        } else if (procedureVo.getRet().equals(Status.고정매니저지정_이미지정.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저지정_이미지정));
+        } else if (procedureVo.getRet().equals(Status.매니저지정_구분타입_오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_구분타입_오류));
         } else if (procedureVo.getRet().equals(Status.매니저지정_관리자.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저지정_관리자));
         } else {
@@ -319,7 +329,11 @@ public class UserService {
             }catch(Exception e){
                 log.info("Socket Service changeManager Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_성공));
+            if(pManagerDelVo.getManager_type() == 2){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.고정매니저취소_성공));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_성공));
+            }
         } else if (procedureVo.getRet().equals(Status.매니저취소_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_회원아님));
         } else if (procedureVo.getRet().equals(Status.매니저취소_해당방이없음.getMessageCode())) {
@@ -334,6 +348,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_대상회원아이디_방소속아님));
         } else if (procedureVo.getRet().equals(Status.매니저취소_매니저아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_매니저아님));
+        } else if (procedureVo.getRet().equals(Status.매니저취소_구분타입_오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_구분타입_오류));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.매니저취소_실패));
         }
