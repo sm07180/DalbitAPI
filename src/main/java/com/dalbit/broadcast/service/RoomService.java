@@ -993,6 +993,9 @@ public class RoomService {
             returnMap.put("liveBadgeList", liveBadgeList);
         }
 
+        returnMap.put("cupidMemNo", DalbitUtil.getStringMap(resultMap, "cupidMemNo"));
+        returnMap.put("cupidNickNm", DalbitUtil.getStringMap(resultMap, "cupidNickNm"));
+        returnMap.put("cupidProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "cupidProfileImage"), DalbitUtil.getStringMap(resultMap, "cupidMemSex"), DalbitUtil.getProperty("server.photo.url")));
         if(DalbitUtil.getIntMap(resultMap, "auth") == 0 || DalbitUtil.getIntMap(resultMap, "auth") == 1){
             returnMap.put("isNewListener", DalbitUtil.getIntMap(resultMap, "new_badge") == 0 ? false : true);
         }else{

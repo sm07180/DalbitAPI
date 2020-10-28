@@ -56,6 +56,7 @@ public class ProfileInfoOutVo extends BaseVo {
 
     private String cupidMemNo;
     private String cupidNickNm;
+    private ImageVo cupidProfImg;
     private boolean isNewListener = false;
     private HashMap count;
 
@@ -114,6 +115,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.fanBadge = new FanBadgeVo(target.getFanBadgeText(), target.getFanBadgeIcon(), target.getFanBadgeStartColor(), target.getFanBadgeEndColor());
         this.cupidMemNo = target.getCupidMemNo();
         this.cupidNickNm = target.getCupidNickNm();
+        this.cupidProfImg = new ImageVo(target.getCupidProfileImage(), target.getCupidMemSex(), DalbitUtil.getProperty("server.photo.url"));
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         this.liveFanRank = target.getLiveFanRank();
 

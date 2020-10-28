@@ -60,6 +60,8 @@ public class P_ProfileInfoVo {
     private String fanBadgeEndColor;
     private String cupidMemNo;
     private String cupidNickNm;
+    private String cupidMemSex;
+    private String cupidProfileImage;
     private int badge_new;                      // 신입청취자 뱃지
     private String birthYear;           //생 년
     private String birthMonth;          //생 월
