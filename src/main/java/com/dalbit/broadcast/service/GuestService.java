@@ -181,7 +181,7 @@ public class GuestService {
                     guestInfoVo.setWebRtcUrl(gstWebRtcUrl);
                     guestInfoVo.setWebRtcAppName(gstWebRtcAppName);
                     guestInfoVo.setWebRtcStreamName(gstWebRtcStreamName);
-                    status = Status.조회;
+                    status = Status.공백;
 
                 }else if("10".equals(mode)){    //게스트 통화중
                     P_RoomGuestVo apiData = new P_RoomGuestVo(djMemNo, memNo, roomNo, "", "", "", "", "", "", request);
