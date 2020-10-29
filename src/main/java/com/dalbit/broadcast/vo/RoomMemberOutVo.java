@@ -32,6 +32,7 @@ public class RoomMemberOutVo{
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
     private int goodCnt;
     private Boolean isGuest;
+    private int managerType;
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();
@@ -54,5 +55,6 @@ public class RoomMemberOutVo{
         }
         this.goodCnt = target.getGoodCnt();
         this.isGuest = target.getIsGuest() == 1 ? true : false;
+        this.managerType = target.getManagerType();
     }
 }

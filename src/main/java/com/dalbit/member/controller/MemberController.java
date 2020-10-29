@@ -375,4 +375,14 @@ public class MemberController {
         String result = memberService.callAccountListSelect(apiData, "");
         return result;
     }
+
+    /**
+     * 스페셜DJ 선정 이력(약력) 히스토리
+     */
+    @GetMapping("/member/special/history")
+    public String getSpecialHistory(@Valid SpecialDjHistoryVo specialDjHistoryVo, HttpServletRequest request){
+        P_SpecialDjHistoryVo apiData = new P_SpecialDjHistoryVo(specialDjHistoryVo);
+        String result = memberService.getSpecialHistory(apiData, request);
+        return result;
+    }
 }

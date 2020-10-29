@@ -907,12 +907,13 @@ public class SocketService {
         log.info("Socket Start : reqGuest {}, {}, {}, {}, {}, {}", roomNo, memNo, djMemNo, mode, authToken, guestInfoVo.toString());
 
         SocketVo vo = getSocketVo(roomNo, memNo, DalbitUtil.isLogin(request));
+        String nickNm = guestInfoVo.getNickNm();
         if(vo != null && vo.getMemNo() != null){
             vo.setCommand("reqGuest");
             HashMap guestMap = new HashMap();
             guestMap.put("memNo", memNo);
             guestMap.put("mode", Integer.parseInt(mode));
-            guestMap.put("nickNm", guestInfoVo.getNickNm());
+            guestMap.put("nickNm", nickNm);
             guestMap.put("profImg", guestInfoVo.getProfImg());
             guestMap.put("rtmpOrigin", guestInfoVo.getRtmpOrigin());
             guestMap.put("rtmpEdge", guestInfoVo.getRtmpEdge());
@@ -951,11 +952,11 @@ public class SocketService {
                 vo.setRecvMemNo(djMemNo);
             }else if("6".equals(mode) || "9".equals(mode) || "10".equals(mode)) { // 퇴장, 비정상종료, 게스트통화중
                 if("6".equals(mode)){
-                    guestMap.put("msg", "게스트 연결이 종료되었습니다.");
+                    guestMap.put("msg", nickNm+"님의 게스트 연결이 종료되었습니다.");
                 }else if("9".equals(mode)){
-                    guestMap.put("msg", "게스트 연결상태에 문제가 있어 연결이 종료되었습니다.");
+                    guestMap.put("msg", nickNm+"님의 게스트 연결상태에 문제가 있어 연결이 종료되었습니다.");
                 }else if("10".equals(mode)){
-                    guestMap.put("msg", "게스트 통화중으로 연결이 종료되었습니다.");
+                    guestMap.put("msg", nickNm+"님의 게스트 통화중으로 연결이 종료되었습니다.");
                 }
                 guestMap.put("mode", 6);
                 vo.setRecvMemNo(djMemNo);
@@ -966,7 +967,7 @@ public class SocketService {
                 vo.setRecvMemNo(djMemNo);
             }else if("8".equals(mode)){ // 방송연결
                 //vo.setRecvMemNo(djMemNo);
-                guestMap.put("msg", "게스트로 연결되었습니다.");
+                guestMap.put("msg", nickNm+"님께서 게스트로 방송에 참여하였습니다.");
                 vo.setNotMemNo(memNo);
             }
             vo.setMessage(guestMap);

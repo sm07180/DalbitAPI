@@ -281,12 +281,12 @@ public class ClipService {
             returnMap.put("replyCntOpen", true);
 
             //ios 심사중이면 false;
-            boolean eventOpen = false; //2020.10.22 일단 무조건 false 양부장님 변경요청때 true로 변경
+            boolean eventOpen = true; //2020.10.22 일단 무조건 false 양부장님 변경요청때 true로 변경
             DeviceVo deviceVo = new DeviceVo(request);
             if(deviceVo.getOs() == 2) {
                 var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
                 if (!DalbitUtil.isEmpty(iosCodeVo)) {
-                    if (!"Y".equals(iosCodeVo.getValue())) {
+                    if("Y".equals(iosCodeVo.getValue())) {
                         eventOpen = false;
                     }
                 }

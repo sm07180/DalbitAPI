@@ -7,6 +7,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
+import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -93,6 +94,14 @@ public class ProfileService {
                 profileInfoOutVo.setLiveBadgeList(liveBadgeList);
             }
 
+            //과거 스페셜DJ 선정 여부
+            if(profileInfoOutVo.getIsSpecial()){
+                profileInfoOutVo.setWasSpecial(false);
+            }else{
+                SpecialDjHistoryVo specialDjHistoryVo = new SpecialDjHistoryVo();
+                specialDjHistoryVo.setMemNo(pProfileInfo.getTarget_mem_no());
+                profileInfoOutVo.setWasSpecial(memberService.getSpecialCnt(specialDjHistoryVo) > 0 ? true : false);
+            }
 
             //HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));

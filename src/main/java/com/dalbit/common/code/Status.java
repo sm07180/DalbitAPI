@@ -7,6 +7,7 @@ import lombok.Getter;
 public enum Status {
 
     //공통
+    공백("TEMP", "empty.success", "공백"),
     조회("C001", "read.success", "조회"),
     수정("C002", "update.success", "수정"),
     생성("C003", "create.success", "생성"),
@@ -462,6 +463,7 @@ public enum Status {
     순위아이템사용_조회실패("C006", "broadcast.room.live.rank.info.fail", "순위 아이템사용 조회 실패 시"),
 
     //방송방 매니저지정
+    고정매니저지정_성공("0", "broadcast.room.fix.manager.add.success", "고정 매니저지정 성공 시"),
     매니저지정_성공("0", "broadcast.room.manager.add.success", "매니저지정 성공 시"),
     매니저지정_회원아님("-1", "broadcast.room.manager.add.member.no", "회원이 아닐 시"),
     매니저지정_해당방이없음("-2", "broadcast.room.manager.add.no.room", "해당 방 없을 시"),
@@ -471,10 +473,14 @@ public enum Status {
     매니저지정_대상회원아이디_방소속아님("-6", "broadcast.room.manager.add.member.not.join.id", "대상 회원아이디가 방 소속이 아닐 시"),
     매니저지정_불가("-7", "broadcast.room.manager.add.error", "매니저지정 불가 시(이미 매니저거나 방장 권한)"),
     매니저지정_인원제한("-8", "broadcast.room.manager.add.limit", "매니저 수 제한 시"),
+    고정매니저지정_인원제한("-10", "broadcast.room.fix.manager.add.limit", "고정 매니저 수 제한 시"),
+    고정매니저지정_이미지정("-11", "broadcast.room.fix.manager.add.already", "고정 매니저 이미 지정되어있을 시"),
+    매니저지정_구분타입_오류("-12", "broadcast.room.manager.add.type.error", "매니저 구분타입 오류 시"),
     매니저지정_관리자("-99", "broadcast.room.manager.add.admin", "운영자 추가시"),
     매니저지정_실패("C006", "broadcast.room.manager.add.fail", "매니저지정 실패 시"),
 
     //방송방 매니저취소
+    고정매니저취소_성공("0", "broadcast.room.fix.manager.del.success", "고정 매니저취소 성공 시"),
     매니저취소_성공("0", "broadcast.room.manager.del.success", "매니저취소 성공 시"),
     매니저취소_회원아님("-1", "broadcast.room.manager.del.member.no", "회원이 아닐 시"),
     매니저취소_해당방이없음("-2", "broadcast.room.manager.del.no.room", "해당 방 없을 시"),
@@ -483,6 +489,7 @@ public enum Status {
     매니저취소_요청회원_방장아님("-5", "broadcast.room.manager.del.member.not.bj", "요청회원이 방장이 아닐 시"),
     매니저취소_대상회원아이디_방소속아님("-6", "broadcast.room.manager.del.member.not.join.id", "대상 회원아이디가 방 소속이 아닐 시"),
     매니저취소_매니저아님("-7", "broadcast.room.manager.del.no", "매니저 아닐 시"),
+    매니저취소_구분타입_오류("-8", "broadcast.room.manager.del.type.error", "매니저 구분타입 오류 시"),
     매니저취소_실패("C006", "broadcast.room.manager.del.fail", "매니저취소 실패 시"),
 
     //방송방 스트림아이디 가져오기
@@ -1606,7 +1613,12 @@ public enum Status {
     //계좌 수정&삭제 불가
     계좌수정_불가("-1", "exchange.my.account.number.edit.impossible", "계좌 수정 불가 시"),
     계좌삭제_불가("-1", "exchange.my.account.number.delete.impossible", "계좌 삭제 불가 시"),
-    ;
+
+    //스페셜DJ 선정 이력 조회
+    스페셜DJ선정내역조회_성공("C001", "special.dj.selection.select.success", "스페셜DJ 선정 이력 조회 성공 시"),
+    스페셜DJ선정내역조회_없음("0", "special.dj.selection.select.no.success", "스페셜DJ 선정 이력 조회 없을 시"),
+
+   ;
 
 
 

@@ -2029,6 +2029,7 @@ public class MypageService {
                         text = "별＞달 교환 사용";
                         walletCode = 2;
                         order = 2;
+            /* =============================================================================== */
                     }else if("itemGet".equals(key.get(i))){
                         text = "DJ-방송 선물 획득";
                         walletCode = 3;
@@ -2100,8 +2101,9 @@ public class MypageService {
                         text = "달 직접 선물 사용";
                         walletCode = 3;
                         order = 6;
+            /* =============================================================================== */
                     }else if("buyGet".equals(key.get(i))){
-                        text = "달 구매 획득";
+                        text = "달 구매/취소 획득";
                         walletCode = 5;
                         order = 7;
                     }else if("changeGet".equals(key.get(i))){
@@ -2163,6 +2165,7 @@ public class MypageService {
         }
         return result;
     }
+
 
     /**
      * 내 지갑 달 or 별 내역 보기
