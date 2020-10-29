@@ -443,15 +443,22 @@ public class CommonController {
      */
     @GetMapping("/ios/judge")
     public String selectIosJudge(HttpServletRequest request){
-        CodeVo codeVo = new CodeVo();
-        codeVo.setCd(Code.IOS심사중여부.getCode());
-        codeVo.setCdNm(Code.IOS심사중여부.getDesc());
-        CodeVo getCode = commonService.selectCodeDefine(codeVo);
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        int os = deviceVo.getOs();
 
         HashMap resultMap = new HashMap();
         String iosJudgeYn = "N";
-        if(!DalbitUtil.isEmpty(getCode)){
-            iosJudgeYn = getCode.getValue();
+
+        if(os == 2){
+            CodeVo codeVo = new CodeVo();
+            codeVo.setCd(Code.IOS심사중여부.getCode());
+            codeVo.setCdNm(Code.IOS심사중여부.getDesc());
+            CodeVo getCode = commonService.selectCodeDefine(codeVo);
+
+            if(!DalbitUtil.isEmpty(getCode)){
+                iosJudgeYn = getCode.getValue();
+            }
         }
 
         resultMap.put("iosJudgeYn", iosJudgeYn);
