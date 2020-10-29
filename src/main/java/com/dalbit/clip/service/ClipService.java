@@ -286,7 +286,7 @@ public class ClipService {
             if(deviceVo.getOs() == 2) {
                 var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
                 if (!DalbitUtil.isEmpty(iosCodeVo)) {
-                    if (!"Y".equals(iosCodeVo.getValue())) {
+                    if("Y".equals(iosCodeVo.getValue())) {
                         eventOpen = false;
                     }
                 }
