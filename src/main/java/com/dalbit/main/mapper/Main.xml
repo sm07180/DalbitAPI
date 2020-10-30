@@ -158,7 +158,7 @@
             , T4.title AS title
             , T4.subject_type AS roomType
             , T4.code AS roomTypeNm
-        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no AND b.mem_state &lt;&gt; 5
+        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no AND T2.mem_state != 5
             INNER JOIN tb_member_profile T3 ON T1.mem_no_star = T3.mem_no
             LEFT OUTER JOIN (
                 SELECT
@@ -171,7 +171,7 @@
                 FROM tb_broadcast_room_live_list S1 INNER JOIN tb_broadcast_room AS S4 ON S1.room_no = S4.room_no
                   INNER JOIN tb_broadcast_room_member S2 ON S1.mem_no = S2.mem_no AND S2.auth = 3 and S2.state = 0
                   INNER JOIN tbl_code_define S3 ON S4.subject_type = S3.value AND S3.type = 'subject_type'
-                WHERE S4.state &lt; 4
+                WHERE S4.state <![CDATA[<]]> 4
                   AND ${value} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = S1.mem_no)
                   AND ((S1.mem_no = ${value} AND S1.hide = 1) OR S1.hide = 0)
             ) T4 ON T1.mem_no_star = T4.mem_no
