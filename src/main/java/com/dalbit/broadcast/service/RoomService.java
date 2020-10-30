@@ -1535,7 +1535,7 @@ public class RoomService {
     /**
      * 좋아요 내역
      */
-    public String getGoodHistory(P_RoomGoodHistoryVo pRoomGoodHistoryVo) {
+    public String getGoodHistory(P_RoomGoodHistoryVo pRoomGoodHistoryVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGoodHistoryVo);
         List<P_RoomGoodHistoryVo> goodHistoryListVo = roomDao.callGetGoodHistory(procedureVo);
 
@@ -1543,11 +1543,15 @@ public class RoomService {
         if(DalbitUtil.isEmpty(goodHistoryListVo)) {
 
             int totalCnt = 0;
-            try {
-                HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-                totalCnt = DalbitUtil.getIntMap(resultMap, "totalCnt");
-            }catch (Exception e){
+            //안드로이드 1.3.6 버전 분기
+            DeviceVo deviceVo = new DeviceVo(request);
+            if((deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))){
+                try {
+                    HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                    totalCnt = DalbitUtil.getIntMap(resultMap, "totalCnt");
+                }catch (Exception e){
 
+                }
             }
 
             HashMap goodHistoryList = new HashMap();

@@ -420,7 +420,7 @@ public class RoomController {
     public String getGoodHistory(@Valid RoomGoodHistoryVo roomGoodHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_RoomGoodHistoryVo apiData = new P_RoomGoodHistoryVo(roomGoodHistoryVo, request);
-        String result = roomService.getGoodHistory(apiData);
+        String result = roomService.getGoodHistory(apiData, request);
         return result;
     }
 }
