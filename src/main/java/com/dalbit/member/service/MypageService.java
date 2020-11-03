@@ -1072,6 +1072,8 @@ public class MypageService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_블랙회원번호_회원아님));
         }else if(procedureVo.getRet().equals(Status.블랙리스트등록_이미블랙등록.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_이미블랙등록));
+        }else if(procedureVo.getRet().equals(Status.블랙리스트등록_본인등록안됨.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_본인등록안됨));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_실패));
         }
