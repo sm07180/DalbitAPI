@@ -669,9 +669,11 @@ public class RoomService {
             outVoList.add(new RoomOutVo(roomVoList.get(i)));
         }
         log.debug("set list time {} ms", ((new Date()).getTime() - st));
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         roomList.put("list", procedureOutputVo.getOutputBox());
         roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
+        roomList.put("isGreenMoon", DalbitUtil.getIntMap(resultMap, "greenMoon") == 1 ? true : false);
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
