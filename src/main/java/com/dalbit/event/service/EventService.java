@@ -6,10 +6,9 @@ import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.EventCode;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.ImageVo;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.*;
+import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.event.dao.EventDao;
 import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.procedure.*;
@@ -17,7 +16,9 @@ import com.dalbit.event.vo.request.Apply004Vo;
 import com.dalbit.event.vo.request.ApplyVo;
 import com.dalbit.event.vo.request.CheckVo;
 import com.dalbit.event.vo.request.EventGoodVo;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -44,6 +45,10 @@ public class EventService {
     GsonUtil gsonUtil;
     @Autowired
     EventService roomService;
+    @Autowired
+    CommonService commonService;
+    @Autowired
+    RestService restService;
 
     public String event200608Term(){
         List<HashMap> eventTerm = new ArrayList<>();
@@ -775,8 +780,65 @@ public class EventService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("isCheck", DalbitUtil.getStringMap(resultMap, "attendance_check").equals("2") ? false : true);
-        returnMap.put("attendanceCheck", DalbitUtil.getIntMap(resultMap, "attendance_check"));
+        int attendance_check = DalbitUtil.getIntMap(resultMap, "attendance_check"); //0: 출석체크 완료, 1: 미완료 시간부족, 2: 미완료 시간충족
+        boolean isRoulette = DalbitUtil.getIntMap(resultMap, "couponCnt") > 0 ? true : false;   //룰렛가능 여부
+        int userEventCheck;                                                           //-1: 버튼없음, 0: 출석기본, 1: 출석애니메이션, 2:룰렛에니메이션
+        String eventIconUrl;
+        boolean iosAudit = false;   //ios 심사중 여부
+        DeviceVo deviceVo = new DeviceVo(request);
+        if(deviceVo.getOs() == 2) {
+            var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
+            if (!DalbitUtil.isEmpty(iosCodeVo)) {
+                if("Y".equals(iosCodeVo.getValue())) {
+                    iosAudit = true;
+                }
+            }
+        }
+
+        //출석 불가 & 룰렛 불가
+        if(attendance_check == 1 && !isRoulette){
+            userEventCheck = 0;
+            eventIconUrl="";
+        //출석 불가 & 룰렛 가능
+        }else if(attendance_check == 1 && isRoulette){
+            if(iosAudit){   //ios심사중인 경우 출석기본
+                userEventCheck = 0;
+                eventIconUrl="";
+            }else{
+                userEventCheck = 2;
+                eventIconUrl="";
+            }
+        //출석 가능 & 룰렛 불가
+        }else if(attendance_check == 2 && !isRoulette){
+            userEventCheck = 1;
+            eventIconUrl="";
+        //출석 가능 & 룰렛 가능
+        }else if(attendance_check == 2 && isRoulette){
+            userEventCheck = 1;
+            eventIconUrl="";
+        //출석 완료 & 룰렛 불가
+        }else if(attendance_check == 0 && !isRoulette){
+            userEventCheck = -1;
+            eventIconUrl="";
+        //출석 완료 & 룰렛 가능
+        }else if(attendance_check == 0 && isRoulette){
+            if(iosAudit){   //ios심사중인 경우 버튼없음
+                userEventCheck = -1;
+                eventIconUrl="";
+            }else{
+                userEventCheck = 2;
+                eventIconUrl="";
+            }
+        //나머지 버튼 없음
+        }else{
+            userEventCheck = -1;
+            eventIconUrl="";
+        }
+
+        returnMap.put("isCheck", attendance_check == 2 ? false : true);
+        returnMap.put("attendanceCheck", attendance_check);
+        returnMap.put("userEventCheck", userEventCheck);
+        returnMap.put("eventIconUrl", eventIconUrl);
 
         if(procedureVo.getRet().equals(Status.출석완료체크_성공.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, returnMap));

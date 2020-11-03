@@ -144,7 +144,7 @@ public class EventController {
     }
 
     /**
-     * 출석체크 이벤트 상태 체크
+     * 출석체크 이벤트 참여
      */
     @PostMapping("/attendance/check/in")
     public String attendanceCheckIn(HttpServletRequest request) throws GlobalException {
