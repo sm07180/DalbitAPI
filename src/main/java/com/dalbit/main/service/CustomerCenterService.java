@@ -10,10 +10,12 @@ import com.dalbit.main.vo.NoticeListOutVo;
 import com.dalbit.main.vo.QnaListOutVo;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.slack.service.SlackSenderService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Scanner;
 
 @Slf4j
 @Service
@@ -33,7 +34,8 @@ public class CustomerCenterService {
     CustomerCenterDao customerCenterDao;
     @Autowired
     RestService restService;
-
+    @Autowired
+    SlackSenderService slackSenderService;
 
     /**
      * 고객센터 공지사항 목록 조회
@@ -216,6 +218,16 @@ public class CustomerCenterService {
                 restService.imgDone(DalbitUtil.replaceDonePath(qnaFile3), request);
             }
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_성공));
+
+            try{
+                var procedureResult = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                int qnaIdx = DalbitUtil.getIntMap(procedureResult, "qnaIdx");
+                pQnaVo.setQnaIdx(qnaIdx);
+                slackSenderService.sendQnaMessage(pQnaVo);
+            }catch(Exception e){
+
+            }
+
         } else if (procedureVo.getRet().equals(Status.고객센터_문의작성_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_요청회원번호_회원아님));
         } else if (procedureVo.getRet().equals(Status.고객센터_문의작성_재문의불가.getMessageCode())) {
