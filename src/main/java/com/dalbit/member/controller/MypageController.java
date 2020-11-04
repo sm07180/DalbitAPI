@@ -58,33 +58,10 @@ public class MypageController {
      */
     @PostMapping("/profile")
     public String editProfile(@Valid ProfileEditVo profileEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        String trimNickname = profileEditVo.getNickNm().trim().replace(" ","");
-        if(trimNickname.length() < 2){
-            return gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임짦음));
-        }
-
-        P_ProfileEditVo apiData = new P_ProfileEditVo();
-
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
-        apiData.setMemSex(profileEditVo.getGender());
-        apiData.setNickName(profileEditVo.getNickNm().trim().replace(" "," "));
-        apiData.setName(profileEditVo.getName());
-        if(!DalbitUtil.isEmpty(apiData.getName()) && apiData.getName().length() > 50){
-            apiData.setName(apiData.getName().substring(0, 49));
-        }
-        apiData.setBirthYear(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getYear());
-        apiData.setBirthMonth(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getMonthValue());
-        apiData.setBirthDay(LocalDate.parse(profileEditVo.getBirth(), DateTimeFormatter.BASIC_ISO_DATE).getDayOfMonth());
-        apiData.setProfileImage(profileEditVo.getProfImg());
-        apiData.setProfileImageGrade(DalbitUtil.isStringToNumber(profileEditVo.getProfImgRacy()));
-        apiData.setProfileMsg(profileEditVo.getProfMsg());
-        apiData.setProfImgDel(profileEditVo.getProfImgDel());
-
+        P_ProfileEditVo apiData = new P_ProfileEditVo(profileEditVo, request);
         String result = mypageService.callProfileEdit(apiData, request);
-
         return result;
     }
 

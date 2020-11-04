@@ -20,6 +20,7 @@ public class ClipMainPopListOutVo {
     private String gender;              //성별
     private int replyCnt;               //클립 댓글 수
     private int goodCnt;                //좋아요 수
+    private int playCnt;
 
     public ClipMainPopListOutVo(P_ClipMainPopListVo target){
         setClipNo(target.getCast_no());
@@ -33,5 +34,6 @@ public class ClipMainPopListOutVo {
         setGender(target.getMemSex());
         setReplyCnt(target.getReplyCnt());
         setGoodCnt(target.getCount_good());
+        setPlayCnt(target.getCount_play());
     }
 }

@@ -14,11 +14,14 @@ public class P_ClipMainPopListVo {
     public P_ClipMainPopListVo(HttpServletRequest request){
         setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         setMem_no(MemberVo.getMyMemNo(request));
+        int listCnt = DalbitUtil.isEmpty(request.getParameter("listCnt")) ? 20 : Integer.parseInt(request.getParameter("listCnt"));
+        setListCnt(listCnt);
     }
 
     /* Input */
     private int memLogin;
     private String mem_no;
+    private int listCnt;
 
     /* Output */
     private String cast_no;
@@ -32,6 +35,6 @@ public class P_ClipMainPopListVo {
     private int count_good;
     private int badge_special;
     private int badge_newdj;
-
+    private int count_play;
 
 }

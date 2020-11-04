@@ -38,5 +38,9 @@ public class P_ClipUploadListVo {
     private int giftCnt;                //받은별 수
     private String nickName;            //닉네임
     private int replyCnt;               //댓글 수
+    private String filePlayTime;
+    private String memSex;
+    private int badge_newdj;                //신입뱃지
+    private int badge_special;              //스페셜뱃지
 
 }

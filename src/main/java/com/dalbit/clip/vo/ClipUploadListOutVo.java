@@ -19,6 +19,10 @@ public class ClipUploadListOutVo {
     private String memNo;               //클립 등록 회원번호
     private String nickName;            //닉네임
     private int replyCnt;               //댓글 수
+    private String gender;              //성별
+    private String filePlayTime;        //재생시간
+    private Boolean isNew;              //신입뱃지(1)
+    private Boolean isSpecial;          //스페셜Dj(1)
 
     public ClipUploadListOutVo(P_ClipUploadListVo target){
         setClipNo(target.getCast_no());
@@ -31,5 +35,9 @@ public class ClipUploadListOutVo {
         setMemNo(target.getMem_no());
         setNickName(target.getNickName());
         setReplyCnt(target.getReplyCnt());
+        setGender(target.getMemSex());
+        setFilePlayTime(target.getFilePlayTime());
+        setIsNew(target.getBadge_newdj() == 1 ? true : false);
+        setIsSpecial(target.getBadge_special() == 1 ? true : false);
     }
 }
