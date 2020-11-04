@@ -16,6 +16,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.RestApiUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -273,7 +274,7 @@ public class ClipService {
         returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
-        returnMap.put("playlistOpen", DalbitUtil.getActiveProfile().equals("local") ? true : false);
+        returnMap.put("playlistOpen", DalbitUtil.getActiveProfile().equals("real") ? true : false);
         returnMap.put("replyOpen", true);
         returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
         returnMap.put("goodCntOpen", true);
@@ -1011,7 +1012,7 @@ public class ClipService {
         returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
-        returnMap.put("playlistOpen", DalbitUtil.getActiveProfile().equals("local") ? true : false);
+        returnMap.put("playlistOpen", DalbitUtil.getActiveProfile().equals("real") ? true : false);
         returnMap.put("replyOpen", true);
         returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
         returnMap.put("goodCntOpen", true);
