@@ -270,6 +270,7 @@ public class WowzaService {
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", target.getBjMemNo());
             fanBadgeMap.put("type", 3);
+            fanBadgeMap.put("by", "api");
             List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
             if(!DalbitUtil.isEmpty(fanBadgeList)){
                 memberInfoVo.setFanBadgeList(fanBadgeList);
@@ -279,6 +280,7 @@ public class WowzaService {
             HashMap liveBadgeMap = new HashMap();
             liveBadgeMap.put("mem_no", target.getBjMemNo());
             liveBadgeMap.put("type", 3);
+            liveBadgeMap.put("by", "api");
             List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
             if(DalbitUtil.isEmpty(liveBadgeList)){
                 memberInfoVo.setLiveBadgeList(new ArrayList());
@@ -587,6 +589,7 @@ public class WowzaService {
         HashMap fanBadgeMap = new HashMap();
         fanBadgeMap.put("mem_no", target.getBjMemNo());
         fanBadgeMap.put("type", 3);
+        fanBadgeMap.put("by", "api");
         List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
         if(!DalbitUtil.isEmpty(fanBadgeList)){
             memberInfoVo.setFanBadgeList(fanBadgeList);
@@ -596,6 +599,7 @@ public class WowzaService {
         HashMap liveBadgeMap = new HashMap();
         liveBadgeMap.put("mem_no", target.getBjMemNo());
         liveBadgeMap.put("type", 3);
+        liveBadgeMap.put("by", "api");
         List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
         if(DalbitUtil.isEmpty(liveBadgeList)){
             memberInfoVo.setLiveBadgeList(new ArrayList());

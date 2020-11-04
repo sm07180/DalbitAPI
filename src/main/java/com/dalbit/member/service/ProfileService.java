@@ -71,6 +71,7 @@ public class ProfileService {
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
             fanBadgeMap.put("type", -1);
+            fanBadgeMap.put("by", "api");
             List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
             if(DalbitUtil.isEmpty(fanBadgeList)){
                 profileInfoOutVo.setFanBadgeList(new ArrayList());
@@ -82,6 +83,7 @@ public class ProfileService {
             HashMap liveBadgeMap = new HashMap();
             liveBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
             liveBadgeMap.put("type", -1);
+            liveBadgeMap.put("by", "api");
             List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
             if(DalbitUtil.isEmpty(liveBadgeList)){
                 profileInfoOutVo.setLiveBadgeList(new ArrayList());

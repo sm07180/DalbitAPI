@@ -831,6 +831,16 @@ public class MypageController {
         return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), resultMap.get("data")));
     }
 
+    @GetMapping("/story")
+    public String broadStoryList(@Valid StoryVo storyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        HashMap resultMap = mypageService.callMemberBoardStory(storyVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), resultMap.get("data")));
+    }
+
+
     /**
      * 내지갑 달 or 별 팝업 리스트 & 건수
      */

@@ -182,5 +182,8 @@ public interface MypageDao {
     ProcedureVo callWalletPopupListView(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
+    List<P_StoryVo> callMemberBoardStory(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
     List<P_WalletListVo> callWalletList(ProcedureVo procedureVo);
 }

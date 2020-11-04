@@ -72,6 +72,9 @@ public class ActionController {
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(roomInfo.getRoomNo());
+        if("index".equals(request.getParameter("mode"))){
+            apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 99);
+        }
 
         String result = actionService.callBroadCastRoomShareLink(apiData, request);
 

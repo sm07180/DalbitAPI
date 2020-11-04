@@ -414,6 +414,27 @@ public class RoomController {
     }
 
     /**
+     * 방송종료 요약 (청취차)
+     */
+    @GetMapping("/summary/listener")
+    public String getSummaryListener(@Valid RoomExitVo roomExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        HashMap result = roomService.getSummaryListener(roomExitVo, request);
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+    /**
+     * 방송종료 요약 (DJ)
+     */
+    @GetMapping("/summary/dj")
+    public String getSummaryDj(@Valid RoomExitVo roomExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        HashMap result = roomService.getSummaryDj(roomExitVo, request);
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+
+    /**
      * 좋아요 내역
      */
     @GetMapping("/good/history")

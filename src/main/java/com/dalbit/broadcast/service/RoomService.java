@@ -2,11 +2,9 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.broadcast.vo.GuestInfoVo;
-import com.dalbit.broadcast.vo.RoomGiftHistoryOutVo;
-import com.dalbit.broadcast.vo.RoomGoodHistoryOutVo;
-import com.dalbit.broadcast.vo.RoomOutVo;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.RoomExitVo;
 import com.dalbit.broadcast.vo.request.StateVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -169,6 +167,7 @@ public class RoomService {
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", target.getBjMemNo());
             fanBadgeMap.put("type", 3);
+            fanBadgeMap.put("by", "api");
             List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
             if(DalbitUtil.isEmpty(fanBadgeList)){
                 returnMap.put("fanBadgeList", new ArrayList());
@@ -278,6 +277,7 @@ public class RoomService {
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", target.getBjMemNo());
             fanBadgeMap.put("type", 3);
+            fanBadgeMap.put("by", "api");
             List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
             if(DalbitUtil.isEmpty(fanBadgeList)){
                 returnMap.put("fanBadgeList", new ArrayList());
@@ -971,7 +971,7 @@ public class RoomService {
         HashMap fanBadgeMap = new HashMap();
         fanBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
         fanBadgeMap.put("type", -1);
-
+        fanBadgeMap.put("by", "api");
         List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
         if(DalbitUtil.isEmpty(fanBadgeList)){
             returnMap.put("fanBadgeList", new ArrayList());
@@ -983,6 +983,7 @@ public class RoomService {
         HashMap liveBadgeMap = new HashMap();
         liveBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
         liveBadgeMap.put("type", -1);
+        liveBadgeMap.put("by", "api");
         List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
         if(DalbitUtil.isEmpty(liveBadgeList)){
             returnMap.put("liveBadgeList", new ArrayList());
@@ -1163,6 +1164,7 @@ public class RoomService {
                     HashMap fanBadgeMap = new HashMap();
                     fanBadgeMap.put("mem_no", target.getBjMemNo());
                     fanBadgeMap.put("type", 3);
+                    fanBadgeMap.put("by", "api");
                     List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
                     if(DalbitUtil.isEmpty(fanBadgeList)){
                         returnMap.put("fanBadgeList", new ArrayList());
@@ -1369,6 +1371,7 @@ public class RoomService {
                 HashMap fanBadgeMap = new HashMap();
                 fanBadgeMap.put("mem_no", target.getBjMemNo());
                 fanBadgeMap.put("type", 3);
+                fanBadgeMap.put("by", "api");
                 List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
                 if(DalbitUtil.isEmpty(fanBadgeList)){
                     returnMap.put("fanBadgeList", new ArrayList());
@@ -1533,6 +1536,94 @@ public class RoomService {
         }
         return false;
     }
+
+    /**
+     * 방송종료요약(청취차)
+     */
+    public HashMap getSummaryListener(RoomExitVo roomExitVo, HttpServletRequest request){
+        HashMap result = new HashMap();
+        P_SummaryListenerVo pSummaryListenerVo = new P_SummaryListenerVo(roomExitVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pSummaryListenerVo);
+        List<P_SummaryListenerVo> recommList = roomDao.callBroadcastSummaryListener(procedureVo);
+        if(Status.방송종료요약_성공.getMessageCode().equals(procedureVo.getRet())){
+            HashMap data = new HashMap();
+            HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            List<SummaryListenerOutVo> recommends = new ArrayList<>();
+            List<SummaryListenerOutVo> myStars = new ArrayList<>();
+            data.put("djMemNo", DalbitUtil.getStringMap(returnMap, "dj_mem_no"));
+            data.put("djNickNm", DalbitUtil.getStringMap(returnMap, "nickName"));
+            data.put("djProfImg", new ImageVo(DalbitUtil.getStringMap(returnMap, "image_profile"), DalbitUtil.getStringMap(returnMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+            data.put("djHolder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getStringMap(returnMap, "level")));
+            data.put("listenTime", DalbitUtil.getIntMap(returnMap, "listentime"));
+            data.put("bgImg", new ImageVo(DalbitUtil.getStringMap(returnMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
+            data.put("isFan", DalbitUtil.getIntMap(returnMap, "fan") > 0);
+            if(!DalbitUtil.isEmpty(recommList)){
+                for(P_SummaryListenerVo items : recommList){
+                    recommends.add(new SummaryListenerOutVo(items, DalbitUtil.getProperty("server.photo.url")));
+                }
+            }
+            List<P_SummaryListenerVo> myStarList = roomDao.callBroadcastSummaryListenerMyStar(procedureVo);
+            if(!DalbitUtil.isEmpty(myStarList)){
+                for(P_SummaryListenerVo items : myStarList){
+                    myStars.add(new SummaryListenerOutVo(items, DalbitUtil.getProperty("server.photo.url")));
+                }
+            }
+            data.put("recommends", recommends);
+            data.put("myStars", myStars);
+            result.put("status", Status.방송종료요약_성공);
+            result.put("data", data);
+        }else if(Status.방송종료요약_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result.put("status", Status.방송종료요약_회원아님);
+        }else if(Status.방송종료요약_방없음.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", Status.방송종료요약_방없음);
+        }else{
+            result.put("status", Status.방송종료요약_실패);
+        }
+        return result;
+    }
+
+    /**
+     * 방송종료요약(DJ)
+     */
+    public HashMap getSummaryDj(RoomExitVo roomExitVo, HttpServletRequest request){
+        HashMap result = new HashMap();
+        P_SummaryListenerVo pSummaryListenerVo = new P_SummaryListenerVo(roomExitVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pSummaryListenerVo);
+        List<P_SummaryDjVo> resultSet = roomDao.callBroadcastSummaryDj(procedureVo);
+        if(Status.방송종료요약_성공.getMessageCode().equals(procedureVo.getRet())){
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap data = new HashMap();
+            data.put("roomNo", DalbitUtil.getStringMap(resultMap, "room_no"));
+            data.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
+            data.put("title", DalbitUtil.getStringMap(resultMap, "title"));
+            data.put("nickNm", DalbitUtil.getStringMap(resultMap, "mem_nick"));
+            data.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "image_profile"), DalbitUtil.getStringMap(resultMap, "mem_sex"), DalbitUtil.getProperty("server.photo.url")));
+            data.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
+            data.put("airTime", DalbitUtil.getIntMap(resultMap, "airtime"));
+            data.put("listenerCnt", DalbitUtil.getIntMap(resultMap, "count_entry"));
+            data.put("listenerMax", DalbitUtil.getIntMap(resultMap, "count_live_max"));
+            data.put("gift", DalbitUtil.getIntMap(resultMap, "gold"));
+            data.put("good", DalbitUtil.getIntMap(resultMap, "good"));
+            data.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCnt"));
+            data.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
+            data.put("bgImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
+            List<SummaryDjOutVo> list = new ArrayList<>();
+            for(P_SummaryDjVo item : resultSet){
+                list.add(new SummaryDjOutVo(item, DalbitUtil.getProperty("server.photo.url")));
+            }
+            data.put("list", list);
+            result.put("status", Status.방송종료요약_성공);
+            result.put("data", data);
+        }else if(Status.방송종료요약_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result.put("status", Status.방송종료요약_회원아님);
+        }else if(Status.방송종료요약_방없음.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", Status.방송종료요약_방없음);
+        }else{
+            result.put("status", Status.방송종료요약_실패);
+        }
+        return result;
+    }
+
 
     /**
      * 좋아요 내역

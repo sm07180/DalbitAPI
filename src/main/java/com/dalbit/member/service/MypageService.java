@@ -14,6 +14,7 @@ import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.GoodListVo;
+import com.dalbit.member.vo.request.StoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
@@ -2004,6 +2005,33 @@ public class MypageService {
         }
         return result;
     }
+
+    public HashMap callMemberBoardStory(StoryVo storyVo, HttpServletRequest request){
+        HashMap result = new HashMap();
+
+        P_StoryVo pStoryVo = new P_StoryVo(storyVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pStoryVo);
+        List<P_StoryVo> storyList = mypageDao.callMemberBoardStory(procedureVo);
+        if(Status.방송방사연_조회_실패.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", Status.방송방사연_조회_실패);
+        }else if(Status.방송방사연_조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", Status.방송방사연_조회_회원아님);
+        }else{
+            List<StoryOutVo> outList = new ArrayList<>();
+            if(DalbitUtil.isEmpty(storyList)){
+                result.put("status", Status.방송방사연_조회_없음);
+            }else{
+                result.put("status", Status.방송방사연_조회_성공);
+                for(P_StoryVo data : storyList){
+                    outList.add(new StoryOutVo(data, DalbitUtil.getProperty("server.photo.url")));
+                }
+            }
+            result.put("data", outList);
+        }
+
+        return result;
+    }
+
 
     /**
      * 내지갑 달&별 팝업 리스트 & 건수

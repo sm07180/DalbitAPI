@@ -459,6 +459,10 @@
         call sp_member_board_count(#{target_mem_no, mode=IN, jdbcType=VARCHAR}, #{mem_no, mode=IN, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMemberBoardStory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_StoryVo">
+        call sp_member_broadcast_story(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="callWalletPopupListView" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_wallet_dal_byeol(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>

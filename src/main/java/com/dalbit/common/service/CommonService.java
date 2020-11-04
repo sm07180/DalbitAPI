@@ -463,6 +463,7 @@ public class CommonService {
                 HashMap liveBadgeMap = new HashMap();
                 liveBadgeMap.put("mem_no", kingFanRankListVo.get(i).getMem_no());
                 liveBadgeMap.put("type", 1);
+                liveBadgeMap.put("by", "api");
                 List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
                 if(DalbitUtil.isEmpty(liveBadgeList)){
                     liveBadgeList = new ArrayList();
