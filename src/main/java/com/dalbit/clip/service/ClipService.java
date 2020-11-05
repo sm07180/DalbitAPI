@@ -274,7 +274,21 @@ public class ClipService {
         returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
-        returnMap.put("playlistOpen", true);
+        DeviceVo deviceVo = new DeviceVo(request);
+        boolean playlistOpen = true;
+        if(
+            "real".equals(DalbitUtil.getActiveProfile())
+            && (
+                (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))
+                ||
+                (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.2", deviceVo.getAppVersion()))
+                ||
+                (deviceVo.getOs() == 3)
+            )
+        ){
+            playlistOpen = false;
+        }
+        returnMap.put("playlistOpen", playlistOpen);
         returnMap.put("replyOpen", true);
         returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
         returnMap.put("goodCntOpen", true);
@@ -283,7 +297,6 @@ public class ClipService {
 
         //ios 심사중이면 false;
         boolean eventOpen = true; //2020.10.22 일단 무조건 false 양부장님 변경요청때 true로 변경
-        DeviceVo deviceVo = new DeviceVo(request);
         if(deviceVo.getOs() == 2) {
             var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
             if (!DalbitUtil.isEmpty(iosCodeVo)) {
@@ -1016,7 +1029,21 @@ public class ClipService {
         returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
-        returnMap.put("playlistOpen", true);
+        DeviceVo deviceVo = new DeviceVo(request);
+        boolean playlistOpen = true;
+        if(
+            "real".equals(DalbitUtil.getActiveProfile())
+            && (
+                (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))
+                ||
+                (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.2", deviceVo.getAppVersion()))
+                ||
+                (deviceVo.getOs() == 3)
+            )
+        ){
+            playlistOpen = false;
+        }
+        returnMap.put("playlistOpen", playlistOpen);
         returnMap.put("replyOpen", true);
         returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
         returnMap.put("goodCntOpen", true);
@@ -1025,7 +1052,7 @@ public class ClipService {
 
         //ios 심사중이면 false;
         boolean eventOpen = true; //2020.10.22 일단 무조건 false 양부장님 변경요청때 true로 변경
-        DeviceVo deviceVo = new DeviceVo(request);
+        //DeviceVo deviceVo = new DeviceVo(request);
         if(deviceVo.getOs() == 2) {
             var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
             if (!DalbitUtil.isEmpty(iosCodeVo)) {
