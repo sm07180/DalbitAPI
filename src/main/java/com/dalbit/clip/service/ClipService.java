@@ -799,6 +799,8 @@ public class ClipService {
             outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
         }
 
+        //리스트 셔플
+        Collections.shuffle(outVoList);
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         clipMainPopList.put("list", procedureOutputVo.getOutputBox());
