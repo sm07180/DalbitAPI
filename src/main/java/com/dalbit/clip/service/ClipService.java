@@ -275,18 +275,22 @@ public class ClipService {
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
         DeviceVo deviceVo = new DeviceVo(request);
-        boolean playlistOpen = true;
+        boolean playlistOpen = false;
         if(
-            "real".equals(DalbitUtil.getActiveProfile())
-            && (
-                (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))
-                ||
-                (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.2", deviceVo.getAppVersion()))
-                ||
-                (deviceVo.getOs() == 3)
+            !"real".equals(DalbitUtil.getActiveProfile())
+            ||
+            (
+                "real".equals(DalbitUtil.getActiveProfile())
+                && (
+                    (deviceVo.getOs() == 1 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.6"))
+                    ||
+                    (deviceVo.getOs() == 2 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.2"))
+                    ||
+                    (deviceVo.getOs() == 3)
+                )
             )
         ){
-            playlistOpen = false;
+            playlistOpen = true;
         }
         returnMap.put("playlistOpen", playlistOpen);
         returnMap.put("replyOpen", true);
@@ -1030,18 +1034,23 @@ public class ClipService {
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
         DeviceVo deviceVo = new DeviceVo(request);
-        boolean playlistOpen = true;
+        boolean playlistOpen = false;
         if(
-            "real".equals(DalbitUtil.getActiveProfile())
-            && (
-                (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))
-                ||
-                (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.2", deviceVo.getAppVersion()))
-                ||
-                (deviceVo.getOs() == 3)
+            !"real".equals(DalbitUtil.getActiveProfile())
+            ||
+            (
+                "real".equals(DalbitUtil.getActiveProfile())
+                && (
+                    (deviceVo.getOs() == 1 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.6"))
+                    ||
+                    (deviceVo.getOs() == 2 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.2"))
+                    ||
+                    (deviceVo.getOs() == 3)
+                )
+
             )
         ){
-            playlistOpen = false;
+            playlistOpen = true;
         }
         returnMap.put("playlistOpen", playlistOpen);
         returnMap.put("replyOpen", true);
