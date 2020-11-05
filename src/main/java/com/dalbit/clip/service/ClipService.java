@@ -282,7 +282,7 @@ public class ClipService {
             (
                 "real".equals(DalbitUtil.getActiveProfile())
                 && (
-                    (deviceVo.getOs() == 1 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.6"))
+                    (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 38)
                     ||
                     (deviceVo.getOs() == 2 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.2"))
                     ||
@@ -1041,7 +1041,7 @@ public class ClipService {
             (
                 "real".equals(DalbitUtil.getActiveProfile())
                 && (
-                    (deviceVo.getOs() == 1 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.6"))
+                    (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 38)
                     ||
                     (deviceVo.getOs() == 2 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.2"))
                     ||
