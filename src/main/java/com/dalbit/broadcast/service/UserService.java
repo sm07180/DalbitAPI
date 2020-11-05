@@ -247,6 +247,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_대상아님));
+        }else if(procedureVo.getRet().equals(Status.회원정보보기_차단회원불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_차단회원불가));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_실패));
         }
@@ -393,6 +395,8 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_이미팬등록됨));
         } else if(procedureVo.getRet().equals(Status.팬등록_본인불가.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_본인불가));
+        } else if(procedureVo.getRet().equals(Status.팬등록_차단회원불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록_차단회원불가));
         } else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬등록실패));
         }

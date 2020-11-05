@@ -1038,8 +1038,12 @@ public class RoomService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_요청회원_번호비정상));
         }else if(Status.방송방회원정보조회_대상회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_번호비정상));
+        }else if(Status.방송방회원정보조회_종료된방.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_종료된방));
         }else if(Status.방송방회원정보조회_대상회원_방에없음.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_방에없음));
+        }else if(Status.방송방회원정보조회_차단회원_접근불가.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_차단회원_접근불가));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_실패));
         }

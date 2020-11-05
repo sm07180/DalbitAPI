@@ -23,6 +23,18 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("/broad/guest")
+/*
+
+    streamName => wowza.prefix(DEV/REAL) + room_no + _ + mem_no
+    var memNo : String
+    var nickNm : String
+    var rtmpOrigin : String
+    var rtmpEdge : String
+    var profImg : ImageData
+    var webRtcUrl : String
+    var webRtcAppName : String
+    var webRtcStreamName : String
+*/
 public class GuestController {
 
     @Autowired

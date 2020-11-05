@@ -274,7 +274,7 @@ public class ClipService {
         returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
-        returnMap.put("playlistOpen", DalbitUtil.getActiveProfile().equals("real") ? true : false);
+        returnMap.put("playlistOpen", true);
         returnMap.put("replyOpen", true);
         returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
         returnMap.put("goodCntOpen", true);
@@ -313,6 +313,8 @@ public class ClipService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립플레이_팬아님, returnMap));
         }else if(Status.클립플레이_20세미만.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립플레이_20세미만, returnMap));
+        }else if(Status.클립플레이_차단회원재생불가.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립플레이_차단회원재생불가, returnMap));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립플레이_실패, returnMap));
         }
@@ -1012,7 +1014,7 @@ public class ClipService {
         returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
-        returnMap.put("playlistOpen", DalbitUtil.getActiveProfile().equals("real") ? true : false);
+        returnMap.put("playlistOpen", true);
         returnMap.put("replyOpen", true);
         returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
         returnMap.put("goodCntOpen", true);

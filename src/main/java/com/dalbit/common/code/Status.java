@@ -115,6 +115,7 @@ public enum Status {
     팬등록_스타회원번호이상("-2", "member.insert.star.number.strange", "스타회원번호 이상 시"),
     팬등록_이미팬등록됨("-3", "member.insert.fan.already", "이미 팬 등록되어있을 시"),
     팬등록_본인불가("-4", "member.insert.fan.not.me", "팬 등록 본인 불가 시"),
+    팬등록_차단회원불가("-5", "member.insert.fan.black.list.no", "차단 회원 팬 등록 불가 시"),
     팬등록실패("C006", "member.insert.fanstar.fail", "회원 팬 등록 실패 시 "),
 
     //회원팬해제
@@ -128,6 +129,7 @@ public enum Status {
     회원정보보기_성공("0", "member.info.view.success", "회원정보 보기 성공 시"),
     회원정보보기_회원아님("-1", "member.no", "요청회원번호 회원 아닐 시"),
     회원정보보기_대상아님("-2", "member.this.no", "대상회원번호 회원 아닐 시"),
+    회원정보보기_차단회원불가("-5", "member.black.list.no", "차단회원 불가 시"),
     회원정보보기_실패("C006", "member.info.view.fail", "회원정보보기 실패 시"),
 
     //회원 방송방 기본설정 조회
@@ -276,6 +278,7 @@ public enum Status {
     방송참여_다른기기("-10", "broadcast.room.join.another", "다른기기에서 청취 시"),
     방송참여_블랙리스트("-11", "broadcast.room.join.blacklist", "블랙리스트에 등록되어 있을 시"),
     방송참여_비회원IP중복("-12", "broadcast.room.join.ano.ip.duplicate", "비회원 IP 동일방 중복 있을 시"),
+    방송참여_차단회원입장불가("-13", "broadcast.room.black.list.join.no", "차단회원 입장 불가 시"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
 
     //방송나가기
@@ -511,7 +514,9 @@ public enum Status {
     방송방회원정보조회_성공("0", "broadcast.room.member.info.select.success", "방송방 회원정보 조회 성공 시"),
     방송방회원정보조회_요청회원_번호비정상("-1", "broadcast.room.member.info.number.error", "요청 회원번호가 정상회원이 아닐 시"),
     방송방회원정보조회_대상회원_번호비정상("-2", "broadcast.room.member.info.object.member.number.error", "대상 회원번호가 정상회원이 아닐 시"),
-    방송방회원정보조회_대상회원_방에없음("-3", "broadcast.room.member.info.join.no", "대상 회원이 방에 없을 시"),
+    방송방회원정보조회_종료된방("-3", "broadcast.room.member.info.no.room", "종료된 방일 시"),
+    방송방회원정보조회_대상회원_방에없음("-4", "broadcast.room.member.info.join.no", "대상 회원이 방에 없을 시"),
+    방송방회원정보조회_차단회원_접근불가("-5", "broadcast.room.member.info.black.list.no","차단회원 접근 불가 시"),
     방송방회원정보조회_실패("C006", "broadcast.room.member.info.select.fail", "방송방 회원정보 조회 실패 시"),
 
     //회원 알림 내용 조회
@@ -1210,6 +1215,7 @@ public enum Status {
     클립플레이_클립번호없음("-2", "clip.play.number.error", "클립 번호가 없을 시"),
     클립플레이_팬아님("-3", "clip.play.no.fan", "팬이 아닐 시"),
     클립플레이_20세미만("-4", "clip.play.limit.20age", "20세 미만일 시"),
+    클립플레이_차단회원재생불가("-5", "clip.play.black.list.play.no", "차단회원의 클립 재생 불가 시"),
     클립플레이_실패("C006", "clip.play.fail", "클립 플레이 실패 시"),
 
     //클립 재생목록 조회

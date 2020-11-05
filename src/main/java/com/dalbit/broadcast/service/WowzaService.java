@@ -476,6 +476,8 @@ public class WowzaService {
             result.put("status", Status.방송참여_다른기기);
         } else if (procedureVo.getRet().equals(Status.방송참여_비회원IP중복.getMessageCode())) {
             result.put("status", Status.방송참여_비회원IP중복);
+        } else if (procedureVo.getRet().equals(Status.방송참여_차단회원입장불가.getMessageCode())) {
+            result.put("status", Status.방송참여_차단회원입장불가);
         } else {
             result.put("status", Status.방참가실패);
         }
