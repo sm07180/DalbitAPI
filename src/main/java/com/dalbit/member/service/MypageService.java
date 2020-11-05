@@ -55,6 +55,11 @@ public class MypageService {
      * 프로필 편집
      */
     public String callProfileEdit(P_ProfileEditVo pProfileEditVo, HttpServletRequest request) throws GlobalException {
+        //닉네임 길이체크
+        String trimNickname = pProfileEditVo.getNickName().trim().replace(" ","");
+        if(trimNickname.length() < 2){
+            return gsonUtil.toJson(new JsonOutputVo(Status.프로필편집실패_닉네임짦음));
+        }
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(pProfileEditVo.getNickName())){
