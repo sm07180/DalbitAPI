@@ -816,8 +816,15 @@ public class ClipService {
             outVoList.add(new ClipMainPopListOutVo(clipMainPopListVo.get(i)));
         }
 
+        boolean playlist = false;
+        if(!DalbitUtil.isEmpty(request.getParameter("playlist"))){
+            playlist = ("true".equals(request.getParameter("playlist").toLowerCase()) || Integer.parseInt(request.getParameter("playlist")) == 1)  ? true : false;
+        }
+
         //리스트 셔플
-        Collections.shuffle(outVoList);
+        if(!playlist){
+            Collections.shuffle(outVoList);
+        }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         clipMainPopList.put("list", procedureOutputVo.getOutputBox());
