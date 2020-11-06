@@ -480,4 +480,31 @@
         call sp_event_apply_004(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callEventPageList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_EventPageListOutputVo">
+        call sp_event_page(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventPageWinList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_EventPageWinListOutputVo">
+        call sp_event_page_win_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventPageWinResult" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_EventPageWinResultOutputVo">
+        call sp_event_page_win_result(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventPagePrizeReceiveWay" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_event_page_prize_receive_way(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventPageWinnerAddInfoSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_event_page_winner_add_info_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventPageWinnerAddInfoEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_event_page_winner_add_info_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventPageWinnerInfoFormat" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_EventPageWinnerInfoFormatVo">
+        call sp_event_page_winner_info_format(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

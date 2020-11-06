@@ -414,4 +414,90 @@ public class EventController {
 
         return gsonUtil.toJson(new JsonOutputVo((Status) result.get("status"), result.get("data")));
     }
+
+    /**
+     * 이벤트 리스트 조회
+     */
+    @GetMapping("/page/list")
+    public String eventPageList(HttpServletRequest request, P_EventPageListInputVo pEventPageListInputVo) {
+        pEventPageListInputVo.setMem_no(MemberVo.getMyMemNo(request));
+        String result = eventService.callEventPageList(pEventPageListInputVo);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 명단 조회
+     */
+    @PostMapping("/page/winList")
+    public String eventPageWinList(HttpServletRequest request, @Valid EventPageWinVo eventPageWinVo, BindingResult bindingResult) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_EventPageWinListInputVo apiData = new P_EventPageWinListInputVo(eventPageWinVo, request);
+        String result = eventService.callEventPageWinList(apiData);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨 여부 조회
+     */
+    @PostMapping("/page/winResult")
+    public String eventPageWinResult(HttpServletRequest request, @Valid EventPageWinVo eventPageWinVo, BindingResult bindingResult) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_EventPageWinResultInputVo apiData = new P_EventPageWinResultInputVo(eventPageWinVo, request);
+        String result = eventService.callEventPageWinResult(apiData);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 경품 수령방법 선택
+     */
+    @PostMapping("/page/receiveWay")
+    public String eventPagePrizeReceiveWay(HttpServletRequest request, @Valid EventPagePrizeReceiveVo eventPagePrizeReceiveVo, BindingResult bindingResult) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_EventPagePrizeReceiveVo apiData = new P_EventPagePrizeReceiveVo(eventPagePrizeReceiveVo, request);
+        String result = eventService.callEventPagePrizeReceiveWay(apiData);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 등록정보 조회
+     */
+    @PostMapping("/page/winnerAddInfo/select")
+    public String eventPageWinnerAddInfoSelect(HttpServletRequest request,@Valid EventPageWinnerAddInfoListVo eventPageWinnerAddInfoListVo, BindingResult bindingResult) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_EventPageWinnerAddInfoListInputVo apiData = new P_EventPageWinnerAddInfoListInputVo(eventPageWinnerAddInfoListVo, request);
+        String result = eventService.callEventPageWinnerAddInfoSelect(apiData);
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 이름/핸드폰 번호 조회
+     */
+    @GetMapping("/page/winnerAddInfo/infoFormat")
+    public String eventPageWinnerInfoFormat(P_EventPageWinnerInfoFormatVo pEventPageWinnerInfoFormatVo){
+        String result = eventService.callEventPageWinnerInfoFormat(pEventPageWinnerInfoFormatVo);
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 등록정보 등록/수정
+     */
+    @PostMapping("/page/winnerAddInfo/edit")
+    public String eventPageWinnerAddInfoEdit(HttpServletRequest request, @Valid EventPageWinnerAddInfoEditVo eventPageWinnerAddInfoEditVo, BindingResult bindingResult) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_EventPageWinnerAddInfoEditVo apiData = new P_EventPageWinnerAddInfoEditVo(eventPageWinnerAddInfoEditVo, request);
+        String result = eventService.callEventPageWinnerAddInfoEdit(apiData, request);
+
+        return result;
+    }
+
 }

@@ -1335,4 +1335,256 @@ public class EventService {
         return returnMap;
 
     }
+
+
+    /**
+     * 이벤트 리스트 조회
+     */
+    public String callEventPageList(P_EventPageListInputVo pEventPageListInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pEventPageListInputVo);
+        ArrayList<P_EventPageListOutputVo> eventList = eventDao.callEventPageList(procedureVo);
+        String result="";
+
+        if(eventList.size() > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_리스트조회_성공, eventList));
+        } else if (Status.이벤트_리스트조회_실패.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_리스트조회_실패));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_리스트조회_데이터없음));
+        }
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 명단 조회
+     */
+    public String callEventPageWinList(P_EventPageWinListInputVo pEventPageWinListInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pEventPageWinListInputVo);
+        ArrayList<P_EventPageWinListOutputVo> winList = eventDao.callEventPageWinList(procedureVo);
+        String result = "";
+
+        ArrayList rankList = new ArrayList();
+
+        // 등수 (중복제거) 뽑아내기
+        if(!DalbitUtil.isEmpty(winList)) {
+            for (int i = 0; i < winList.size(); i++) {
+                HashMap rank = new HashMap();
+                rank.put("rank", winList.get(i).getPrizeRank());
+                rank.put("rankName", winList.get(i).getPrizeName());
+                rank.put("winnerCnt", winList.get(i).getPrizeCnt());
+                if(!rankList.contains(rank)) {
+                    rankList.add(rank);
+                }
+            }
+        }
+
+        if(!DalbitUtil.isEmpty(winList) && !DalbitUtil.isEmpty(rankList)) {
+            for (int i = 0; i < rankList.size(); i++) {
+                List<P_EventPageWinListOutputVo> winnerList = new ArrayList<>();
+                for (int j = 0; j < winList.size(); j++) {
+                    if(DalbitUtil.getIntMap((HashMap) rankList.get(i), "rank") == winList.get(j).getPrizeRank()){
+                        winnerList.add(winList.get(j));
+                    }
+                }
+                ((HashMap) rankList.get(i)).put("winnerList", winnerList);
+            }
+        }
+        HashMap map = new HashMap();
+        map.put("rankList", rankList);
+
+        if(winList.size() > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_성공, map));
+        } else if (Status.이벤트_당첨자명단조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_이벤트번호없음));
+        } else if (Status.이벤트_당첨자명단조회_실패.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_실패));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_결과없음));
+        }
+
+        return result;
+
+    }
+
+    /**
+     * 이벤트 당첨 여부 조회
+     */
+    public String callEventPageWinResult(P_EventPageWinResultInputVo pEventPageWinResultInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pEventPageWinResultInputVo);
+        ArrayList<P_EventPageWinResultOutputVo> resultList = eventDao.callEventPageWinResult(procedureVo);
+
+        String result;
+
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_성공, resultList));
+        } else if (Status.이벤트_당첨여부조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_당첨자아님));
+        } else if (Status.이벤트_당첨여부조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_회원아님));
+        } else if (Status.이벤트_당첨여부조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_이벤트번호없음));
+        } else if (Status.이벤트_당첨여부조회_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_결과없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 경품 수령방법 선택
+     */
+    public String callEventPagePrizeReceiveWay(P_EventPagePrizeReceiveVo pEventPagePrizeReceiveVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pEventPagePrizeReceiveVo);
+        eventDao.callEventPagePrizeReceiveWay(procedureVo);
+
+        String result;
+
+        if(Status.이벤트_경품수령방법입력_경품받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_경품받기_성공));
+        } else if (Status.이벤트_경품수령방법입력_달로받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_달로받기_성공));
+        } else if (Status.이벤트_경품수령방법입력_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_회원아님));
+        } else if (Status.이벤트_경품수령방법입력_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_이벤트번호없음));
+        } else if (Status.이벤트_경품수령방법입력_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_결과없음));
+        } else if (Status.이벤트_경품수령방법입력_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_당첨자아님));
+        } else if (Status.이벤트_경품수령방법입력_이미경품선택함_입력불가능.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_이미경품선택함_입력불가능));
+        } else if (Status.이벤트_경품수령방법입력_수령방법_오류.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_수령방법_오류));
+        } else if (Status.이벤트_경품수령방법입력_입금확인후_수정불가능.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_입금확인후_수정불가능));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 등록정보 조회
+     */
+    public String callEventPageWinnerAddInfoSelect(P_EventPageWinnerAddInfoListInputVo pEventPageWinnerAddInfoListInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pEventPageWinnerAddInfoListInputVo);
+        eventDao.callEventPageWinnerAddInfoSelect(procedureVo);
+        P_EventPageWinnerAddInfoListOutputVo addInfoOutput = new Gson().fromJson(procedureVo.getExt(), P_EventPageWinnerAddInfoListOutputVo.class);
+
+        String result;
+
+        if(Status.이벤트_당첨자등록정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_성공, addInfoOutput));
+        } else if (Status.이벤트_당첨자등록정보조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_회원아님));
+        } else if (Status.이벤트_당첨자등록정보조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_이벤트번호없음));
+        } else if (Status.이벤트_당첨자등록정보조회_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_결과없음));
+        } else if (Status.이벤트_당첨자등록정보조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_당첨자아님));
+        } else if (Status.이벤트_당첨자등록정보조회_경품번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_경품번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 이름/핸드폰 번호 조회
+     */
+
+    public String callEventPageWinnerInfoFormat(P_EventPageWinnerInfoFormatVo pEventPageWinnerInfoFormatVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pEventPageWinnerInfoFormatVo);
+        P_EventPageWinnerInfoFormatVo info = eventDao.callEventPageWinnerInfoFormat(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            log.debug(info.toString());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.조회, info));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+        }
+
+        return result;
+    }
+
+    /**
+     * 이벤트 당첨자 등록정보 등록/수정
+     */
+    public String callEventPageWinnerAddInfoEdit(P_EventPageWinnerAddInfoEditVo pEventPageWinnerAddInfoEditVo, HttpServletRequest request) throws GlobalException {
+        Boolean isDone = false; // tmp
+        String addFile1 = pEventPageWinnerAddInfoEditVo.getWinner_add_file_1();
+        String addFile2 = pEventPageWinnerAddInfoEditVo.getWinner_add_file_2();
+
+        if (!DalbitUtil.isEmpty(addFile1) && addFile1.startsWith(Code.포토_경품수령신청_임시_PREFIX.getCode())) {
+            isDone = true;
+            addFile1 = DalbitUtil.replacePath(addFile1);
+        }
+
+        if (!DalbitUtil.isEmpty(addFile2) && addFile2.startsWith(Code.포토_경품수령신청_임시_PREFIX.getCode())) {
+            isDone = true;
+            addFile2 = DalbitUtil.replacePath(addFile2);
+
+            //법정대리인 인증정보 파일 업데이트
+            P_SelfAuthVo pSelfAuthVo = new P_SelfAuthVo();
+            pSelfAuthVo.setMem_no(MemberVo.getMyMemNo(request));
+            pSelfAuthVo.setAdd_file(addFile2);
+            int success = commonService.updateMemberCertificationFile(pSelfAuthVo);
+            if(success > 0) {
+                log.info("법정대리인(보호자) 서류 업데이트 성공");
+            }
+        }
+
+        pEventPageWinnerAddInfoEditVo.setWinner_add_file_1(addFile1);
+        pEventPageWinnerAddInfoEditVo.setWinner_add_file_2(addFile2);
+        ProcedureVo procedureVo = new ProcedureVo(pEventPageWinnerAddInfoEditVo);
+        eventDao.callEventPageWinnerAddInfoEdit(procedureVo);
+
+        String result;
+
+        if(Status.이벤트_당첨자등록정보수정_등록성공.getMessageCode().equals(procedureVo.getRet())) {
+            if(isDone) {
+                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
+                    restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1()), request);
+                }
+                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2())) {
+                    restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2()), request);
+                }
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_등록성공));
+        } else if (Status.이벤트_당첨자등록정보수정_성공.getMessageCode().equals(procedureVo.getRet())) {
+            if(isDone) {
+                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
+                    restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1()), request);
+                }
+                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2())) {
+                    restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2()), request);
+                }
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_성공));
+        } else if (Status.이벤트_당첨자등록정보수정_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_회원아님));
+        } else if (Status.이벤트_당첨자등록정보수정_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_이벤트번호없음));
+        } else if (Status.이벤트_당첨자등록정보수정_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_결과없음));
+        } else if (Status.이벤트_당첨자등록정보수정_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_당첨자아님));
+        } else if (Status.이벤트_당첨자등록정보수정_입금확인후_수정불가능.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_입금확인후_수정불가능));
+        } else if (Status.이벤트_당첨자등록정보수정_경품번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_경품번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_실패));
+        }
+
+        return result;
+    }
 }

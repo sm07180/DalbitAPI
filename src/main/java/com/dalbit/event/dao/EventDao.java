@@ -99,4 +99,23 @@ public interface EventDao {
     ProcedureVo callEventApply003(ProcedureVo procedureVo);
     ProcedureVo callEventDetail003(ProcedureVo procedureVo);
     ProcedureVo callEventApply004(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<P_EventPageListOutputVo> callEventPageList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<P_EventPageWinListOutputVo> callEventPageWinList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<P_EventPageWinResultOutputVo> callEventPageWinResult(ProcedureVo procedureVo);
+
+    ProcedureVo callEventPagePrizeReceiveWay(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callEventPageWinnerAddInfoSelect(ProcedureVo procedureVo);
+
+    ProcedureVo callEventPageWinnerAddInfoEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    P_EventPageWinnerInfoFormatVo callEventPageWinnerInfoFormat(ProcedureVo procedureVo);
 }
