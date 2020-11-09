@@ -209,6 +209,7 @@ public class AdminService {
      * 생방송관리 > 강제종료
      */
     public String roomForceExit(P_RoomForceExitInputVo pRoomForceExitInputVo, HttpServletRequest request) {
+        pRoomForceExitInputVo.setMemLogin(1); //로그인 여부
         ProcedureVo procedureVo = new ProcedureVo(pRoomForceExitInputVo);
 
         //방 나가기 처리
