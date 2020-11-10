@@ -47,7 +47,7 @@ public class P_RoomInfoViewVo {
     private int badge_popular;              //인기뱃지
     private int badge_newdj;                //신입뱃지
     private int badge_special;              //스페셜뱃지
-    private int freezeMsg;                  //채팅상태(0:정상,1:얼리기)
+    private int freezeMsg;                  //채팅상태(0:정상,1: DJ얼리기, 2: 관리자얼리기)
     private int liveDjRank;                 //실시간 DJ 순위
     private String liveBadgeText;
     private String liveBadgeIcon;

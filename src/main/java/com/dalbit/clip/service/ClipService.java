@@ -113,6 +113,8 @@ public class ClipService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립등록_성공, returnMap));
         }else if(Status.클립등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립등록_회원아님));
+        }else if(Status.클립등록_20세제한.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립등록_20세제한));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립등록_실패));
         }

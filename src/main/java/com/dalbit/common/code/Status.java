@@ -257,6 +257,7 @@ public enum Status {
     방송생성_회원아님("-1", "broadcast.room.member.no", "회원이 아닐 시"),
     방송중인방존재("-2", "broadcast.room.existence", "방송중인 방이 있을 시"),
     방송생성_deviceUuid비정상("-3", "broadcast.room.deviceUuid.error", "deviceUuid 비정상일 시"),
+    방송생성_20세제한("-4", "broadcast.room.limit.20age", "20세 미만 회원일 경우"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
 
     //방송방 참가를 위한 스트림아이디, 토큰받아오기
@@ -1202,6 +1203,7 @@ public enum Status {
     //클립 등록
     클립등록_성공("0", "clip.add.success", "클립 등록 성공 시"),
     클립등록_회원아님("-1", "clip.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    클립등록_20세제한("-2", "clip.add.member.limit.20age", "20세 미만인 회원일 경우"),
     클립등록_실패("C006", "clip.add.fail", "클립 등록 실패 시"),
 
     //클립 리스트 조회
@@ -1484,6 +1486,10 @@ public enum Status {
     //방송방 채팅 얼리기
     얼리기_성공("0", "broadcast.room.freeze.true.success", "얼리기 성공 시"),
     얼리기_해제("0", "broadcast.room.freeze.false.success", "얼리기 해제 시"),
+    관리자_얼리기_성공("0", "broadcast.room.freeze.admin.true.success", "얼리기 성공 시"),
+    관리자_얼리기_해제("0", "broadcast.room.freeze.admin.false.success", "얼리기 해제 시"),
+    관리자_얼리기중_얼리기시도("0", "broadcast.room.freeze.already.admin", "관리자가 채팅 얼리기 중 DJ 얼리기 시도 시"),
+    관리자_얼리기중_DJ해제실패("0", "broadcast.room.freeze.admin.state", "관리자가 얼리기 중 얼리기 해제 시도 시"),
     얼리기_회원아님("-1", "broadcast.room.freeze.member.number.error", "요청 회원번호가 정상회원이 아닐 시"),
     얼리기_방번호없음("-2", "broadcast.room.freeze.no.room.number", "방 번호 없을 시"),
     얼리기_종료된방("-3", "broadcast.room.freeze.end.room", "종료된 방일 시"),
@@ -1624,6 +1630,39 @@ public enum Status {
     //스페셜DJ 선정 이력 조회
     스페셜DJ선정내역조회_성공("C001", "special.dj.selection.select.success", "스페셜DJ 선정 이력 조회 성공 시"),
     스페셜DJ선정내역조회_없음("0", "special.dj.selection.select.no.success", "스페셜DJ 선정 이력 조회 없을 시"),
+
+    //마이페이지 공지사항 댓글
+    공지댓글등록_성공("0", "mypage.notice.reply.add.success", "마이페이지 공지 댓글 등록 성공 시"),
+    공지댓글등록_공지회원번호없음("-1", "mypage.notice.reply.add.object.member.number.error", "대상 회원번호가 회원이 아닐 시"),
+    공지댓글등록_작성자회원번호없음("-2", "mypage.notice.reply.add.writer.member.number.error", "요청 회원번호가 회원이 아닐 시"),
+    공지댓글등록_공지번호없음("-3", "mypage.notice.reply.add.no.noticeIdx", "등록할 공지 번호가 없을 시"),
+    공지댓글등록_댓글내용없음("-4", "mypage.notice.reply.add.no.contents", "등록할 공지 댓글 내용이 없을 시"),
+    공지댓글등록_실패("C006", "mypage.notice.reply.add.fail", "마이페이지 공지 댓글 등록 실패 시"),
+
+    공지댓글삭제_성공("0", "mypage.notice.reply.delete.success", "마이페이지 공지 댓글 삭제 성공 시"),
+    공지댓글삭제_공지회원번호없음("-1", "mypage.notice.reply.delete.object.member.number.error", "대상 회원번호가 회원이 아닐 시"),
+    공지댓글삭제_삭제자회원번호없음("-2", "mypage.notice.reply.delete.writer.member.number.error", "요청 회원번호가 회원이 아닐 시"),
+    공지댓글삭제_댓글번호없음("-3", "mypage.notice.reply.delete.no.replyIdx", "삭제할 댓글 번호가 없을 시"),
+    공지댓글삭제_댓글번호등록공지불일치("-4", "mypage.notice.reply.delete.star.notice.mismatch", "댓글의 회원번호와 해당 공지의 회원번호가 불일치 시"),
+    공지댓글삭제_이미삭제됨("-5", "mypage.notice.reply.delete.already.delete", "이미 삭제된 댓글일 시"),
+    공지댓글삭제_삭제권한없음("-6", "mypage.notice.reply.delete.no.auth", "댓글 삭제 권한이 없을 시"),
+    공지댓글삭제_실패("C006", "mypage.notice.reply.delete.fail", "마이페이지 공지 댓글 삭제 실패 시"),
+
+    공지댓글수정_성공("0", "mypage.notice.reply.edit.success", "마이페이지 공지 댓글 수정 성공 시"),
+    공지댓글수정_공지회원번호없음("-1", "mypage.notice.reply.edit.object.member.number.error", "대상 회원번호가 회원이 아닐 시"),
+    공지댓글수정_수정자회원번호없음("-2", "mypage.notice.reply.edit.writer.member.number.error", "수정자 회원번호가 회원이 아닐 시"),
+    공지댓글수정_댓글번호없음("-3", "mypage.notice.reply.edit.no.replyIdx", "수정할 댓글 번호가 없을 시"),
+    공지댓글수정_댓글번호등록공지불일치("-4", "mypage.notice.reply.edit.star.notice.mismatch", "댓글의 회원번호와 해당 공지의 회원번호가 불일치 시"),
+    공지댓글수정_삭제된댓글("-5", "mypage.notice.reply.edit.already.delete", "삭제된 댓글일 시"),
+    공지댓글수정_수정권한없음("-6", "mypage.notice.reply.edit.no.auth", "댓글 수정 권한이 없을 시"),
+    공지댓글수정_실패("C006", "mypage.notice.reply.edit.fail", "마이페이지 공지 댓글 수정 실패 시"),
+
+    공지댓글보기_성공("C001","mypage.notice.reply.select.success","마이페이지 공지 댓글 보기 성공 시"),
+    공지댓글보기_댓글없음("0","mypage.notice.reply.select.no.reply","댓글이 없을 시"),
+    공지댓글보기_회원번호없음("-1", "mypage.notice.reply.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    공지댓글보기_공지회원번호없음("-2","mypage.notice.reply.select.object.member.number.error","대상 회원번호가 회원이 아닐 시"),
+    공지댓글보기_실패("C006", "mypage.notice.reply.select.fail", "마이페이지 공지 댓글 보기 실패 시"),
+
 
    ;
 

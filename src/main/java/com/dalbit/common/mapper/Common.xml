@@ -126,10 +126,11 @@
             WHEN item_code = #{direct} THEN 0
             ELSE 1
         END) DESC, isNew DESC, item_price ASC, item_name ASC -->
-        ORDER BY (CASE
+        <!--ORDER BY (CASE
             WHEN item_code = #{direct} THEN 0
             ELSE 1
-        END) DESC, isNew DESC , `order` ASC, item_price DESC
+        END) DESC, isNew DESC , `order` ASC, item_price DESC-->
+        ORDER BY `order` ASC, item_price DESC
     </select>
 
     <select id="selectBooster" parameterType="String" resultType="ItemVo">

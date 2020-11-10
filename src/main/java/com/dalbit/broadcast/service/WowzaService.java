@@ -342,6 +342,8 @@ public class WowzaService {
             result.put("status", Status.방송중인방존재);
         } else if (procedureVo.getRet().equals(Status.방송생성_deviceUuid비정상.getMessageCode())) {
             result.put("status", Status.방송생성_deviceUuid비정상);
+        } else if (procedureVo.getRet().equals(Status.방송생성_20세제한.getMessageCode())) {
+            result.put("status", Status.방송생성_20세제한);
         } else {
             result.put("status", Status.방생성실패);
         }
