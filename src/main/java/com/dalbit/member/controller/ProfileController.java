@@ -129,7 +129,7 @@ public class ProfileController {
 
         P_FanRankingVo apiData = new P_FanRankingVo(fanRankingVo, request);
 
-        String result = profileService.callMemberFanRanking(apiData);
+        String result = profileService.callMemberFanRanking(apiData, request);
         return result;
     }
 

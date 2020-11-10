@@ -293,7 +293,7 @@ public class ProfileService {
     /**
      * 회원 팬 랭킹 조회
      */
-    public String callMemberFanRanking(P_FanRankingVo pFanRankingVo) {
+    public String callMemberFanRanking(P_FanRankingVo pFanRankingVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pFanRankingVo);
         List<P_FanRankingVo> fanRankingVoList = profileDao.callMemberFanRanking(procedureVo);
 
@@ -302,7 +302,12 @@ public class ProfileService {
             fanRankingList.put("list", new ArrayList<>());
             fanRankingList.put("totalCnt", 0);
             fanRankingList.put("paging", new PagingVo(0, pFanRankingVo.getPageNo(), pFanRankingVo.getPageCnt()));
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(2 == deviceVo.getOs()){ //IOS crash 대응 20.11.10 이재은
+                return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_실패, fanRankingList));
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
+            }
         }
 
         List<FanRankingOutVo> outVoList = new ArrayList<>();
