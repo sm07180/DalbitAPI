@@ -335,6 +335,7 @@ public class WowzaService {
                 roomInfoVo.setLiveBadgeList(new ArrayList());
             }
             roomInfoVo.setIsGuest(false);
+            roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("data", roomInfoVo);
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result.put("status", Status.방송생성_회원아님);
@@ -437,6 +438,7 @@ public class WowzaService {
             //애드브릭스 전달을 위한 데이터 생성
             //adbrixService("roomJoin", "1151231231312")
 
+            roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
@@ -524,6 +526,7 @@ public class WowzaService {
                             }
                         }
 
+                        roomInfoVo.changeBackgroundImg(deviceVo);
                         result.put("status", Status.방정보보기);
                         result.put("data", roomInfoVo);
                     }

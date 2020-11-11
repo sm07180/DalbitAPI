@@ -159,4 +159,10 @@ public class RoomInfoVo {
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         this.os = target.getOs();
     }
+
+    public void changeBackgroundImg(DeviceVo deviceVo){
+        if(("iPhone 6".equals(deviceVo.getDeviceModel()) || "iPhone 6 Plus".equals(deviceVo.getDeviceModel())) && this.bgImg.getUrl().endsWith(".gif")){
+            this.bgImg.setUrl(this.bgImg.getUrl() + "?750x1334");
+        }
+    }
 }
