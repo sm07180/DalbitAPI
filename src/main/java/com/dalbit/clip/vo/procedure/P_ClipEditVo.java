@@ -2,6 +2,7 @@ package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipEditVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,8 +30,8 @@ public class P_ClipEditVo {
         setEntryType(castEditVo.getEntryType());
         setOpenType(castEditVo.getOpenType());
         setBackgroundImage(castEditVo.getBgImg());
-        setCoverTitle(castEditVo.getCoverTitle());
-        setCoverSinger(castEditVo.getCoverSinger());
+        setCoverTitle(DalbitUtil.isEmpty(castEditVo.getCoverTitle()) ? "" : castEditVo.getCoverTitle());
+        setCoverSinger(DalbitUtil.isEmpty(castEditVo.getCoverSinger()) ? "" : castEditVo.getCoverSinger());
     }
     
 }

@@ -3,6 +3,7 @@ package com.dalbit.clip.vo.procedure;
 import com.dalbit.clip.vo.request.ClipAddVo;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -38,8 +39,8 @@ public class P_ClipAddVo {
         setFilePlayTime(clipAddVo.getFilePlayTime());
         setFileSize(clipAddVo.getFileSize().toUpperCase().replace("KB","").split("\\.")[0]+"KB");
         setOs(new DeviceVo(request).getOs());
-        setCoverTitle(clipAddVo.getCoverTitle());
-        setCoverSinger(clipAddVo.getCoverSinger());
+        setCoverTitle(DalbitUtil.isEmpty(clipAddVo.getCoverTitle()) ? "" : clipAddVo.getCoverTitle());
+        setCoverSinger(DalbitUtil.isEmpty(clipAddVo.getCoverSinger()) ? "" : clipAddVo.getCoverSinger());
     }
     
 }
