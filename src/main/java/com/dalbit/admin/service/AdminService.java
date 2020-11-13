@@ -27,7 +27,6 @@ import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -369,7 +368,6 @@ public class AdminService {
     /**
      * 이미지관리 > 방송방 이미지 초기화
      */
-    @Transactional
     public String broImageInit(HttpServletRequest request, BroImageInitVo broImageInitVo) throws GlobalException {
 
         try{
@@ -425,7 +423,6 @@ public class AdminService {
     /**
      * 텍스트관리 > 닉네임 초기화
      */
-    @Transactional
     public String nickTextInit(HttpServletRequest request, NickTextInitVo nickTextInitVo, ProImageInitVo proImageInitVo) throws GlobalException {
 
         try {
@@ -509,7 +506,6 @@ public class AdminService {
     /**
      * 텍스트관리 > 방송 제목 초기화
      */
-    @Transactional
     public String broTitleTextInit(HttpServletRequest request, BroTitleTextInitVo broTitleTextInitVo, BroImageInitVo broImageInitVo) throws GlobalException {
 
         try {
@@ -566,7 +562,6 @@ public class AdminService {
     /**
      * 신고하기
      */
-    @Transactional
     public String declarationOperate(HttpServletRequest request, DeclarationVo declarationVo) throws GlobalException {
 
         try {
@@ -705,7 +700,6 @@ public class AdminService {
     /**
      * 생방송관리 > 채팅 내역 가져오기
      */
-    @Transactional(readOnly = true)
     public String callBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo) {
         String result;
 
@@ -1423,4 +1417,5 @@ public class AdminService {
         adminDao.deleteReply(clipHistoryReplyVo);
         return gsonUtil.toJson(new JsonOutputVo(Status.삭제));
     }
+
 }

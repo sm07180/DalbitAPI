@@ -139,4 +139,17 @@ public class ActionController {
         return result;
     }
 
+
+    /**
+     * 방송방 채팅 얼리기
+     */
+    @PostMapping("/freeze")
+    public String roomFreeze(@Valid FreezeVo freezeVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FreezeVo apiData = new P_FreezeVo(freezeVo, request);
+        String result = actionService.callRoomFreeze(apiData, request);
+        return result;
+    }
+
 }

@@ -117,6 +117,7 @@ public class RoomInfoVo {
         }
 
         this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url")+"/event/attend_event?webview=new";
+        this.isFreeze = target.getIsFreeze();
 
         this.auth = memberInfoVo.getAuth();
         this.hasStory = memberInfoVo.isHashStory();

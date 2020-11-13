@@ -67,6 +67,7 @@ public class RoomOutVo {
     private Boolean isFreeze;
     private int liveDjRank;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private int freezeMsg;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -156,11 +157,13 @@ public class RoomOutVo {
         this.isAttendCheck = (Boolean) attendanceCheckMap.get("isCheck");
         this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/event/attend_event?webview=new";
 
+        this.isFreeze = (target.getFreezeMsg() == 0) ? false : true;
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
 
         this.os = target.getOs();
+        this.freezeMsg = target.getFreezeMsg();
     }
 }

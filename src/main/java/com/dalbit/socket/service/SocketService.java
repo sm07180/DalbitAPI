@@ -974,5 +974,22 @@ public class SocketService {
             sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
     }
+
+    @Async("threadTaskExecutor")
+    public void changeRoomFreeze(String memNo, String roomNo, Object message, String authToken, boolean isLogin) {
+        log.info("Socket Start : changeRoomFreeze {}, {}, {}", memNo, message, isLogin);
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        if(!"".equals(memNo) && !"".equals(authToken)){
+            SocketVo vo = new SocketVo();
+            vo.setMemNo(memNo);
+            vo.setLogin(isLogin ? 1 : 0);
+            vo.setCommand("reqRoomLock");
+            vo.setMessage(message);
+
+            log.info("Socket vo to Query String: {}",vo.toQueryString());
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+    }
 }
 

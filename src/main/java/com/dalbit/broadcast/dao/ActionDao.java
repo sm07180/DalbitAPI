@@ -15,4 +15,6 @@ public interface ActionDao {
     ProcedureVo callBroadCastRoomGift(ProcedureVo procedureVo);
     ProcedureVo callBroadCastRoomBooster(ProcedureVo procedureVo);
     ProcedureVo callroomExtendTime(ProcedureVo procedureVo);
+
+    ProcedureVo callRoomFreeze(ProcedureVo procedureVo);
 }

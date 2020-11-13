@@ -46,122 +46,6 @@ public class RoomController {
 
 
     /**
-     * 방송방 생성
-     */
-    @PostMapping("/create")
-    public String roomCreate(@Valid RoomCreateVo roomCreateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            if(codeVo.getValue().equals("Y")){
-                return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
-            }
-        }
-
-        //차단관리 테이블 확인
-        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
-        if(0 < adminBlockCnt){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
-        }
-
-        //토큰생성
-        String streamId = (String) restService.antCreate(roomCreateVo.getTitle(), request).get("streamId");
-        String publishToken = (String) restService.antToken(streamId, "publish", request).get("tokenId");
-        String playToken = "";//(String) restService.antToken(streamId, "play", request).get("tokenId");
-        log.info("bj_streamId: {}", streamId);
-        log.info("bj_publishToken: {}", publishToken);
-        log.info("bj_playToken: {}", playToken);
-
-        P_RoomCreateVo apiData = new P_RoomCreateVo();
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setSubjectType(roomCreateVo.getRoomType());
-        apiData.setTitle(roomCreateVo.getTitle());
-        apiData.setBackgroundImage(roomCreateVo.getBgImg());
-        apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomCreateVo.getBgImgRacy()));
-        apiData.setWelcomMsg(roomCreateVo.getWelcomMsg());
-        apiData.setNotice(roomCreateVo.getNotice());
-        apiData.setEntryType(roomCreateVo.getEntryType());
-
-        DeviceVo deviceVo = new DeviceVo(request);
-        apiData.setOs(deviceVo.getOs());
-        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
-        apiData.setDeviceToken(deviceVo.getDeviceToken());
-        apiData.setAppVersion(deviceVo.getAppVersion());
-
-        apiData.setBj_streamid(streamId);
-        apiData.setBj_publish_tokenid(publishToken);
-        apiData.setBj_play_tokenid(playToken);
-        apiData.setIsWowza(0);
-
-        String result = roomService.callBroadCastRoomCreate(apiData, request);
-
-        return result;
-    }
-
-
-    /**
-     * 방송방 참여하기
-     */
-    @PostMapping("/join")
-    public String roomJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            if(codeVo.getValue().equals("Y")){
-                return gsonUtil.toJson(new JsonOutputVo(Status.설정_방생성_참여불가상태));
-            }
-        }
-
-        //차단관리 테이블 확인
-        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(new DeviceVo(request), MemberVo.getMyMemNo(request)));
-        if(0 < adminBlockCnt){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
-        }
-
-        String roomNo = roomJoinVo.getRoomNo();
-
-        //방참가를 위한 토큰 조회
-        HashMap resultMap = commonService.callBroadCastRoomStreamIdRequest(roomNo);
-
-        P_RoomJoinVo apiData = new P_RoomJoinVo();
-        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setRoom_no(roomNo);
-        apiData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
-        if(roomJoinVo.getShadow() != null && roomJoinVo.getShadow() == 1){
-            apiData.setShadow(1);
-        }else{
-            apiData.setShadow(0);
-        }
-        //apiData.setGuest_publish_tokenid(DalbitUtil.getStringMap(resultMap,"guest_publish_tokenid"));
-        if(!DalbitUtil.isEmpty(apiData.getGuest_streamid())){
-            apiData.setGuest_play_tokenid((String) restService.antToken(apiData.getGuest_streamid(), "play", request).get("tokenId"));
-        }
-        apiData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
-        //apiData.setBj_publish_tokenid(DalbitUtil.getStringMap(resultMap,"bj_publish_tokenid"));
-        apiData.setBj_play_tokenid((String) restService.antToken(apiData.getBj_streamid(), "play", request).get("tokenId"));
-        DeviceVo deviceVo = new DeviceVo(request);
-        apiData.setOs(deviceVo.getOs());
-        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
-        apiData.setIp(deviceVo.getIp());
-        apiData.setAppVersion(deviceVo.getAppVersion());
-        apiData.setDeviceToken(deviceVo.getDeviceToken());
-        apiData.setIsHybrid(deviceVo.getIsHybrid());
-
-
-        String result = roomService.callBroadCastRoomJoin(apiData, request);
-
-        return result;
-    }
-
-
-    /**
      * 방송방 나가기 (종료)
      */
     @DeleteMapping("/exit")
@@ -186,6 +70,7 @@ public class RoomController {
 
         return result;
     }
+
 
     @DeleteMapping("/exit/force")
     public String roomExitForce(@Valid RoomExitVo roomExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
@@ -278,27 +163,6 @@ public class RoomController {
 
         return result;
     }
-
-
-    /**
-     * 방송방 정보조회
-     */
-    @GetMapping("/info")
-    public String roomInfo(@Valid RoomInfo roomInfo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        P_RoomInfoViewVo apiData = new P_RoomInfoViewVo();
-        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setRoom_no(roomInfo.getRoomNo());
-
-        String result = roomService.callBroadCastRoomInfoView(apiData, request);
-
-        return result;
-
-    }
-
 
     /**
      * 방송방 현재 순위, 아이템 사용 현황 조회

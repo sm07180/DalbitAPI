@@ -17,6 +17,7 @@ import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,8 @@ public class ActionService {
     CommonDao commonDao;
     @Autowired
     ProfileDao profileDao;
+    @Autowired
+    MessageUtil messageUtil;
 
 
     /**
@@ -477,6 +480,71 @@ public class ActionService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장_남은시간_5분안됨));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장실패));
+        }
+
+        return result;
+    }
+
+
+    /**
+     * 방송방 채팅 얼리기
+     */
+    public String callRoomFreeze(P_FreezeVo pFreezeVo, HttpServletRequest request) {
+        HashMap returnMap = new HashMap();
+        returnMap.put("isFreeze", false);
+
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        pRoomInfoViewVo.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        pRoomInfoViewVo.setMem_no(pFreezeVo.getMem_no());
+        pRoomInfoViewVo.setRoom_no(pFreezeVo.getRoom_no());
+        //관리자 얼리기 상태 체크 (방송방 정보 조회)
+        ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
+        if(((RoomOutVo) roomInfoVo.getOutputBox()).getFreezeMsg() == 2){
+            if(pFreezeVo.getFreezeMsg() == 0){
+                returnMap.put("msg", messageUtil.get(Status.관리자_얼리기중_DJ해제실패.getMessageKey()));
+                return gsonUtil.toJson(new JsonOutputVo(Status.관리자_얼리기중_DJ해제실패, returnMap));
+            }else if(pFreezeVo.getFreezeMsg() == 1){
+                returnMap.put("msg", messageUtil.get(Status.관리자_얼리기중_얼리기시도.getMessageKey()));
+                return gsonUtil.toJson(new JsonOutputVo(Status.관리자_얼리기중_얼리기시도, returnMap));
+            }
+        };
+
+        ProcedureVo procedureVo = new ProcedureVo(pFreezeVo);
+        actionDao.callRoomFreeze(procedureVo);
+
+        String result;
+        if(Status.얼리기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            boolean isFreeze = DalbitUtil.getIntMap(resultMap, "freezeMsg") == 1 ? true : false;
+            returnMap.put("isFreeze", isFreeze);
+            try{
+                returnMap.put("msg", isFreeze ? messageUtil.get(Status.얼리기_성공.getMessageKey()) : messageUtil.get(Status.얼리기_해제.getMessageKey()));
+                socketService.changeRoomFreeze(pFreezeVo.getMem_no(), pFreezeVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            }catch(Exception e){}
+
+            if(isFreeze){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_성공, returnMap));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_해제, returnMap));
+            }
+        }else if(Status.얼리기_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            returnMap.put("msg", messageUtil.get(Status.얼리기_회원아님.getMessageKey()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_회원아님, returnMap));
+        }else if(Status.얼리기_방번호없음.getMessageCode().equals(procedureVo.getRet())){
+            returnMap.put("msg", messageUtil.get(Status.얼리기_방번호없음.getMessageKey()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_방번호없음, returnMap));
+        }else if(Status.얼리기_종료된방.getMessageCode().equals(procedureVo.getRet())){
+            returnMap.put("msg", messageUtil.get(Status.얼리기_종료된방.getMessageKey()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_종료된방, returnMap));
+        }else if(Status.얼리기_요청회원_방에없음.getMessageCode().equals(procedureVo.getRet())){
+            returnMap.put("msg", messageUtil.get(Status.얼리기_요청회원_방에없음.getMessageKey()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_요청회원_방에없음, returnMap));
+        }else if(Status.얼리기_불가상태.getMessageCode().equals(procedureVo.getRet())){
+            returnMap.put("msg", messageUtil.get(Status.얼리기_불가상태.getMessageKey()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_불가상태, returnMap));
+        }else{
+            returnMap.put("msg", messageUtil.get(Status.얼리기_실패.getMessageKey()));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_실패, returnMap));
         }
 
         return result;

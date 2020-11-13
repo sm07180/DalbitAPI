@@ -4,13 +4,17 @@ import com.dalbit.admin.service.AdminCommonService;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.*;
+import com.dalbit.broadcast.service.ActionService;
 import com.dalbit.broadcast.service.GuestService;
+import com.dalbit.broadcast.vo.procedure.P_FreezeVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.MessageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +34,15 @@ public class AdminController {
 
     @Autowired
     GuestService guestService;
+
+    @Autowired
+    ActionService actionService;
+
+    @Autowired
+    SocketService socketService;
+
+    @Autowired
+    MessageUtil messageUtil;
 
     @Autowired
     GsonUtil gsonUtil;
@@ -376,6 +389,29 @@ public class AdminController {
     @PostMapping("/guestOut")
     public String guestOut(HttpServletRequest request) throws GlobalException {
         String result = guestService.guest(request);
+        return result;
+    }
+
+    /**
+     * 방송방 얼리기/얼리기 해제
+     */
+    @PostMapping("/freeze")
+    public String freeze(P_FreezeVo pFreezeVo, HttpServletRequest request) throws GlobalException {
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("isFreeze", false);
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_성공, returnMap));
+
+        //0:해제,  1:DJ , 2:관리자
+        boolean isFreeze = !(pFreezeVo.getFreezeMsg() == 0);
+        returnMap.put("isFreeze", isFreeze);
+        returnMap.put("msg", isFreeze ? messageUtil.get(Status.관리자_얼리기_성공.getMessageKey()) : messageUtil.get(Status.관리자_얼리기_해제.getMessageKey()));
+
+        socketService.changeRoomFreeze(pFreezeVo.getMem_no(), pFreezeVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+
+        if(!isFreeze){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_해제, returnMap));
+        }
         return result;
     }
 }
