@@ -313,6 +313,8 @@ public class ClipService {
         }
         returnMap.put("eventOpen", eventOpen);
         returnMap.put("eventUrl", DalbitUtil.getProperty("server.mobile.url") + "/event/clip_gift_event?webview=new");
+        returnMap.put("coverTitle", DalbitUtil.getStringMap(resultMap, "coverTitle"));
+        returnMap.put("coverSinger", DalbitUtil.getStringMap(resultMap, "coverSinger"));
 
         ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
         clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
@@ -1081,6 +1083,8 @@ public class ClipService {
         }
         returnMap.put("eventOpen", eventOpen);
         returnMap.put("eventUrl", DalbitUtil.getProperty("server.mobile.url") + "/event/clip_gift_event?webview=new");
+        returnMap.put("coverTitle", DalbitUtil.getStringMap(resultMap, "coverTitle"));
+        returnMap.put("coverSinger", DalbitUtil.getStringMap(resultMap, "coverSinger"));
 
         ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
         clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());

@@ -22,7 +22,8 @@ public class P_ClipAddVo {
     private String filePlayTime;    //재생시간
     private String fileSize;        //파일용량
     private int os;                 //os (1: aos, 2: ios, 3: pc)
-
+    private String coverTitle;
+    private String coverSinger;
 
     public P_ClipAddVo(){}
     public P_ClipAddVo(ClipAddVo clipAddVo, HttpServletRequest request){
@@ -37,6 +38,8 @@ public class P_ClipAddVo {
         setFilePlayTime(clipAddVo.getFilePlayTime());
         setFileSize(clipAddVo.getFileSize().toUpperCase().replace("KB","").split("\\.")[0]+"KB");
         setOs(new DeviceVo(request).getOs());
+        setCoverTitle(clipAddVo.getCoverTitle());
+        setCoverSinger(clipAddVo.getCoverSinger());
     }
     
 }

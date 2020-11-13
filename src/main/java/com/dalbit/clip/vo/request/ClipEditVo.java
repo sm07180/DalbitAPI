@@ -31,4 +31,10 @@ public class ClipEditVo {
     private Integer openType;
 
     private String bgImg;
+
+    @Size(message = "{\"ko_KR\" : \"커버제목을\"}", max = 20)
+    private String coverTitle;
+    @Size(message = "{\"ko_KR\" : \"커버가수를\"}", max = 20)
+    private String coverSinger;
+
 }

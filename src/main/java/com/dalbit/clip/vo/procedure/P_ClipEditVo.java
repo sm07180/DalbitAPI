@@ -17,6 +17,8 @@ public class P_ClipEditVo {
     private int entryType;          //청취제한 (0: 전체, 1: 팬, 2: 20세이상)
     private int openType;           //공개여부(0: 비공개, 1: 공개)
     private String backgroundImage; //배경이미지
+    private String coverTitle;
+    private String coverSinger;
 
     public P_ClipEditVo(){}
     public P_ClipEditVo(ClipEditVo castEditVo, HttpServletRequest request){
@@ -27,6 +29,8 @@ public class P_ClipEditVo {
         setEntryType(castEditVo.getEntryType());
         setOpenType(castEditVo.getOpenType());
         setBackgroundImage(castEditVo.getBgImg());
+        setCoverTitle(castEditVo.getCoverTitle());
+        setCoverSinger(castEditVo.getCoverSinger());
     }
     
 }
