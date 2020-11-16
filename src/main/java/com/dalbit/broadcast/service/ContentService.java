@@ -208,6 +208,7 @@ public class ContentService {
         HashMap storyList = new HashMap();
         if(DalbitUtil.isEmpty(storyVoList)){
             storyList.put("list", new ArrayList<>());
+            storyList.put("paging", new PagingVo(0, pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_등록된사연없음, storyList));
         }
 
