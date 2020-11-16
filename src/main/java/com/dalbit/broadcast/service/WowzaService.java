@@ -220,6 +220,7 @@ public class WowzaService {
         pRoomCreateVo.setWelcomMsg(roomCreateVo.getWelcomMsg());
         pRoomCreateVo.setNotice(roomCreateVo.getNotice());
         pRoomCreateVo.setEntryType(roomCreateVo.getEntryType());
+        pRoomCreateVo.setImageType(roomCreateVo.getImageType());
 
         DeviceVo deviceVo = new DeviceVo(request);
         pRoomCreateVo.setOs(deviceVo.getOs());

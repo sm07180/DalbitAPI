@@ -68,7 +68,7 @@ public class RoomOutVo {
     private int liveDjRank;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
     private int freezeMsg;
-    private Boolean isExtend;
+    private Boolean hasExtend;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -170,6 +170,6 @@ public class RoomOutVo {
 
         this.os = target.getOs();
         this.freezeMsg = target.getFreezeMsg();
-        this.isExtend = target.getExtendCnt() > 0 ? true : false;
+        this.hasExtend = target.getExtendCnt() > 0 ? true : false;
     }
 }

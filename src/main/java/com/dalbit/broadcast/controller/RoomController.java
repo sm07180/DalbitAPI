@@ -102,27 +102,7 @@ public class RoomController {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_RoomEditVo apiData = new P_RoomEditVo();
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setRoom_no(roomEditVo.getRoomNo());
-        apiData.setSubjectType(roomEditVo.getRoomType());
-        apiData.setTitle(roomEditVo.getTitle());
-        if(!DalbitUtil.isEmpty(roomEditVo.getBgImg())){
-            apiData.setBackgroundImage(roomEditVo.getBgImg());
-        }
-        apiData.setBackgroundImageDelete(roomEditVo.getBgImgDel());
-        apiData.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomEditVo.getBgImgRacy()));
-        apiData.setWelcomMsg(roomEditVo.getWelcomMsg());
-
-        DeviceVo deviceVo = new DeviceVo(request);
-        apiData.setOs(deviceVo.getOs());
-        apiData.setDeviceUuid(deviceVo.getDeviceUuid());
-        apiData.setDeviceToken(deviceVo.getDeviceToken());
-        apiData.setAppVersion(deviceVo.getAppVersion());
-
-        apiData.setDjListenerIn(roomEditVo.getDjListenerIn());
-        apiData.setDjListenerOut(roomEditVo.getDjListenerOut());
-
+        P_RoomEditVo apiData = new P_RoomEditVo(roomEditVo, request);
         String result = roomService.callBroadCastRoomEdit(apiData, request);
 
         return result;
@@ -136,29 +116,7 @@ public class RoomController {
     public String roomList(@Valid RoomListVo roomListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
-        int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
-
-        DeviceVo deviceVo = new DeviceVo(request);
-        P_RoomListVo apiData = new P_RoomListVo();
-        apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setSubjectType(roomListVo.getRoomType());
-        apiData.setSlctType(roomListVo.getSearchType());
-        apiData.setSearch(roomListVo.getSearch());
-
-        if(!DalbitUtil.isEmpty(roomListVo.getGender())){
-            if(roomListVo.getGender().equals("d")){
-                apiData.setDjType("1");
-            } else {
-                apiData.setGender(roomListVo.getGender());
-            }
-        }
-        apiData.setPageNo(pageNo);
-        apiData.setPageCnt(pageCnt);
-        apiData.setIsWowza(DalbitUtil.isWowza(deviceVo));
-
+        P_RoomListVo apiData = new P_RoomListVo(roomListVo, request);
         String result = roomService.callBroadCastRoomList(apiData);
 
         return result;

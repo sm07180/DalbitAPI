@@ -314,6 +314,7 @@ public class RoomService {
             returnMap.put("bgImgRacy", DalbitUtil.isEmpty(pRoomEditVo.getBackgroundImageGrade()) ? 0 : pRoomEditVo.getBackgroundImageGrade());
             returnMap.put("djListenerIn", DalbitUtil.getBooleanMap(settingMap, "djListenerIn"));
             returnMap.put("djListenerOut", DalbitUtil.getBooleanMap(settingMap, "djListenerOut"));
+            returnMap.put("imageType", pRoomEditVo.getImageType());
 
             SocketVo vo = socketService.getSocketVo(pRoomEditOutVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
