@@ -33,6 +33,7 @@ public class RoomInfoVo {
     private boolean listenerIn;
     private boolean listenerOut;
     private boolean isFreeze;
+    private boolean isExtend;
     /* DJ정보 */
     private String bjMemNo;
     private String bjNickNm;
@@ -159,6 +160,7 @@ public class RoomInfoVo {
         this.liveBadgeList = memberInfoVo.getLiveBadgeList();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         this.os = target.getOs();
+        this.isExtend = target.getIsExtend();
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){

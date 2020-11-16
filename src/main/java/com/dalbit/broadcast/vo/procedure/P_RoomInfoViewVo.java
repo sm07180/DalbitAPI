@@ -56,4 +56,6 @@ public class P_RoomInfoViewVo {
     private String liveBadgeImage;
     private String liveBadgeImageSmall;
     private int os;
+    private int extendCnt;                  //방송연장 횟수
+    private int completeMoon;
 }

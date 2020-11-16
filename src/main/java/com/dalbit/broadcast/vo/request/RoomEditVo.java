@@ -32,4 +32,5 @@ public class RoomEditVo {
     private String djListenerIn = "1";
     private String djListenerOut = "0";
 
+    private Integer imageType=1;                  //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
 }

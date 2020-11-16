@@ -68,6 +68,7 @@ public class RoomOutVo {
     private int liveDjRank;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
     private int freezeMsg;
+    private Boolean isExtend;
 
     public RoomOutVo(P_RoomListVo target) {
 
@@ -89,7 +90,11 @@ public class RoomOutVo {
         this.bjNickNm = target.getBj_nickName();
         this.bjGender = target.getBj_memSex();
         this.bjAge = DalbitUtil.ageCalculation(target.getBj_birthYear());
-        this.bjProfImg = new ImageVo(target.getBj_profileImage(), target.getBj_memSex(), DalbitUtil.getProperty("server.photo.url"));
+        if(target.getType_image() == 2){    //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
+            this.bjProfImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
+        }else{
+            this.bjProfImg = new ImageVo(target.getBj_profileImage(), target.getBj_memSex(), DalbitUtil.getProperty("server.photo.url"));
+        }
         this.gstMemNo = target.getGuest_mem_no();
         this.gstNickNm = target.getGuest_nickName();
         this.gstGender = target.getGuest_memSex();
@@ -165,5 +170,6 @@ public class RoomOutVo {
 
         this.os = target.getOs();
         this.freezeMsg = target.getFreezeMsg();
+        this.isExtend = target.getExtendCnt() > 0 ? true : false;
     }
 }

@@ -493,6 +493,8 @@ public class RoomService {
             returnMap.put("boostByeul", item.getByeol());
             returnMap.put("boostLottie", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.json");
             returnMap.put("boostWebp", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.webp");
+            returnMap.put("boostItemCnt", DalbitUtil.getIntMap(resultMap, "haveItemCnt"));
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공, returnMap));
         }else if(Status.순위아이템사용_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_번호비정상));

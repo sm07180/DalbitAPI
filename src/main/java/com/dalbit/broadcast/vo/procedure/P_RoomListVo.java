@@ -1,13 +1,42 @@
 package com.dalbit.broadcast.vo.procedure;
 
+import com.dalbit.broadcast.vo.request.RoomListVo;
+import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter
 @Setter
 public class P_RoomListVo{
+
+    public P_RoomListVo(){}
+    public P_RoomListVo(RoomListVo roomListVo, HttpServletRequest request){
+        int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        setMem_no(MemberVo.getMyMemNo(request));
+        setSubjectType(roomListVo.getRoomType());
+        setSlctType(roomListVo.getSearchType());
+        setSearch(roomListVo.getSearch());
+
+        if(!DalbitUtil.isEmpty(roomListVo.getGender())){
+            if(roomListVo.getGender().equals("d")){
+                setDjType("1");
+            } else {
+                setGender(roomListVo.getGender());
+            }
+        }
+        setPageNo(pageNo);
+        setPageCnt(pageCnt);
+        setIsWowza(DalbitUtil.isWowza(deviceVo));
+    }
 
     /* Input */
     private int memLogin;                   //회원 로그인 상태(1: 회원, 0: 비회원)
@@ -72,4 +101,6 @@ public class P_RoomListVo{
     private String liveBadgeEndColor;
     private String liveBadgeImage;
     private String liveBadgeImageSmall;
+
+    private int type_image;                 //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
 }

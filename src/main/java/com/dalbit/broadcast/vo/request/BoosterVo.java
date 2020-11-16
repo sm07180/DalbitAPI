@@ -16,4 +16,6 @@ public class BoosterVo {
     private String itemNo;
     @NotNull(message = "{\"ko_KR\" : \"선물 갯수를\"}")
     private Integer itemCnt;
+
+    private String isItemUse="";
 }

@@ -112,12 +112,7 @@ public class ActionController {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
-        P_RoomBoosterVo apiData = new P_RoomBoosterVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
-        apiData.setRoom_no(boosterVo.getRoomNo());
-        apiData.setItem_no(boosterVo.getItemNo());
-        apiData.setItem_cnt(boosterVo.getItemCnt());
-        apiData.setItem_code(DalbitUtil.getProperty("item.code.boost"));
+        P_RoomBoosterVo apiData = new P_RoomBoosterVo(boosterVo, request);
         String result = actionService.callBroadCastRoomBooster(apiData, request);
 
         return result;

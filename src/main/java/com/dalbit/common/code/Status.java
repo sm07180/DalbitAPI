@@ -807,6 +807,16 @@ public enum Status {
     별_달_교환하기_별부족("-4", "mypage.change.item.byeol.lack", "별 부족 시"),
     별_달_교환하기_실패("C006", "mypage.change.item.fail", "별 달 교환하기 실패 시"),
 
+    //별 달 자동교환 설정 변경
+    별_달_자동교환설정변경_성공("0", "mypage.autoChange.setting.edit.success", "별 달 자동 교환 설정 변경 성공 시"),
+    별_달_자동교환설정변경_요청회원번호_회원아님("-1", "mypage.autoChange.setting.edit.member.number.error", "요청회원번호 회원 아닐 시"),
+    별_달_자동교환설정변경_실패("C006", "mypage.autoChange.setting.edit.fail", "별 달 자동 교환 설정 변경 실패 시"),
+
+    //별 달 자동교환 설정 조회
+    별_달_자동교환설정조회_성공("0", "mypage.autoChange.setting.select.success", "별 달 자동 교환 설정 조회 성공 시"),
+    별_달_자동교환설정조회_요청회원번호_회원아님("-1", "mypage.autoChange.setting.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    별_달_자동교환설정조회_실패("C006", "mypage.autoChange.setting.select.fail", "별 달 자동 교환 설정 조회 실패 시"),
+
     //팬 조회
     팬조회_성공("C001", "member.fan.list.select.success", "팬 랭킹 조회 성공 시"),
     팬조회_팬없음("0", "member.fan.list.no.fan.success", "팬 없을 시"),

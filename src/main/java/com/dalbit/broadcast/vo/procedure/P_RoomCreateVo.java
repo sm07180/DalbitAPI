@@ -28,4 +28,5 @@ public class P_RoomCreateVo {
     private String appVersion;              //앱 버전
 
     private int isWowza;                    // 와우자 여부
+    private int imageType;                  //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
 }
