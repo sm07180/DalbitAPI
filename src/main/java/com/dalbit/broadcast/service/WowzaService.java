@@ -228,6 +228,7 @@ public class WowzaService {
         pRoomCreateVo.setDeviceToken(deviceVo.getDeviceToken());
         pRoomCreateVo.setAppVersion(deviceVo.getAppVersion());
         pRoomCreateVo.setIsWowza(1);
+        pRoomCreateVo.setIp(deviceVo.getIp());
 
         String bgImg = pRoomCreateVo.getBackgroundImage();
         Boolean isDone = false;

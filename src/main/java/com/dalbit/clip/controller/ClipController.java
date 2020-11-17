@@ -163,7 +163,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipGiftRankListVo apiData = new P_ClipGiftRankListVo(clipGiftRankListVo, request);
-        String result = clipService.clipRankList(apiData);
+        String result = clipService.clipRankList(apiData, request);
         return result;
     }
 
@@ -176,7 +176,7 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
 
         P_ClipGiftListVo apiData = new P_ClipGiftListVo(clipGiftListVo, request);
-        String result = clipService.clipGiftList(apiData);
+        String result = clipService.clipGiftList(apiData, request);
         return result;
     }
 

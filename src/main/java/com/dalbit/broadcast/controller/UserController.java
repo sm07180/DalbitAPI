@@ -47,7 +47,7 @@ public class UserController {
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 
-        String result = userService.callBroadCastRoomMemberList(apiData);
+        String result = userService.callBroadCastRoomMemberList(apiData, request);
 
         return result;
     }

@@ -200,15 +200,21 @@ public class ContentService {
     /**
      * 방송방 사연 조회
      */
-    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo) {
+    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo, HttpServletRequest request) {
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryListVo);
         List<P_RoomStoryListVo> storyVoList = contentDao.callGetStory(procedureVo);
 
         HashMap storyList = new HashMap();
         if(DalbitUtil.isEmpty(storyVoList)){
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             storyList.put("list", new ArrayList<>());
-            storyList.put("paging", new PagingVo(0, pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 2){
+                storyList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
+            }else{
+                storyList.put("paging", new PagingVo(0, pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
+            }
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_등록된사연없음, storyList));
         }
 

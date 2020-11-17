@@ -831,7 +831,7 @@ public class RoomService {
                     returnMap.put("startDt", target.getStartDt());
                     returnMap.put("startTs", target.getStartTs());
                     returnMap.put("hasNotice", DalbitUtil.getIntMap(resultUpdateMap, "auth") == 3 ? false : !DalbitUtil.isEmpty(target.getNotice()));
-                    returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
+                    returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request), request));
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
 
@@ -1033,7 +1033,7 @@ public class RoomService {
                 returnMap.put("gstNickNm", target.getGstNickNm() == null ? "" : target.getGstNickNm());
                 returnMap.put("gstProfImg", target.getGstProfImg());
                 returnMap.put("remainTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-                returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request)));
+                returnMap.put("hasStory", getHasStory(auth, pRoomStreamVo.getRoom_no(), MemberVo.getMyMemNo(request), request));
                 returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
                 returnMap.put("isRecomm", target.getIsRecomm());
                 returnMap.put("isPop", target.getIsPop());
@@ -1193,7 +1193,7 @@ public class RoomService {
         return false;
     }
 
-    public boolean getHasStory(int auth, String room_no, String mem_no){
+    public boolean getHasStory(int auth, String room_no, String mem_no, HttpServletRequest request){
         if(auth == 3) { // DJ
             //사연조회
             P_RoomStoryListVo apiData = new P_RoomStoryListVo();
@@ -1202,7 +1202,7 @@ public class RoomService {
             apiData.setPageNo(1);
             apiData.setPageCnt(1);
 
-            String resultStory = contentService.callGetStory(apiData);
+            String resultStory = contentService.callGetStory(apiData, request);
             HashMap storyMap = new Gson().fromJson(resultStory, HashMap.class);
             if(storyMap.containsKey("result") && "success".equals(storyMap.get("result").toString()) && storyMap.containsKey("data")){
                 try{
@@ -1316,7 +1316,7 @@ public class RoomService {
 
         String result;
         if(DalbitUtil.isEmpty(goodHistoryListVo)) {
-
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             int totalCnt = 0;
             //안드로이드 1.3.6 버전 분기
             DeviceVo deviceVo = new DeviceVo(request);
@@ -1331,8 +1331,12 @@ public class RoomService {
 
             HashMap goodHistoryList = new HashMap();
             goodHistoryList.put("list", new ArrayList<>());
-            goodHistoryList.put("totalCnt", totalCnt);
-            goodHistoryList.put("paging", new PagingVo(totalCnt, pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
+            goodHistoryList.put("totalCnt", Integer.valueOf(procedureOutputVo.getRet()));
+            if(deviceVo.getOs() == 2){
+                goodHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
+            }else{
+                goodHistoryList.put("paging", new PagingVo(totalCnt, pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
+            }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_없음, goodHistoryList));
         }else if(Integer.parseInt(procedureVo.getRet()) > 0) {

@@ -64,7 +64,7 @@ public class UserService {
     /**
      * 방송방 참여자 리스트
      */
-    public String callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo) {
+    public String callBroadCastRoomMemberList(P_RoomMemberListVo pRoomMemberListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomMemberListVo);
         List<P_RoomMemberListVo> roomMemberVoList = userDao.callBroadCastRoomMemberList(procedureVo);
 
@@ -77,7 +77,13 @@ public class UserService {
             //roomMemberList.put("noMemCnt", DalbitUtil.getIntMap(resultMap, "noMemCnt"));
             roomMemberList.put("noMemCnt", 0);
             roomMemberList.put("list", new ArrayList<>());
-            roomMemberList.put("paging", new PagingVo(0, pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 2){
+                roomMemberList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
+            }else{
+                roomMemberList.put("paging", new PagingVo(0, pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
+            }
+
             if(Status.방송참여자리스트_참여자아님.getMessageCode().equals(procedureVo.getRet())) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_참여자아님));
             }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureVo.getRet())) {

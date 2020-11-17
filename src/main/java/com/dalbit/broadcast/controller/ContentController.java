@@ -111,7 +111,7 @@ public class ContentController {
         apiData.setPageNo(pageNo);
         apiData.setPageCnt(pageCnt);
 
-        String result = contentService.callGetStory(apiData);
+        String result = contentService.callGetStory(apiData, request);
 
         return result;
     }

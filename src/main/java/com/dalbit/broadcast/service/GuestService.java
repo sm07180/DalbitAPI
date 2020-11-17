@@ -297,17 +297,23 @@ public class GuestService {
     /**
      * 게스트 관리
      */
-    public String callGuestManagementList(P_GuestManagementListVo pGuestManagementListVo) {
+    public String callGuestManagementList(P_GuestManagementListVo pGuestManagementListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pGuestManagementListVo);
         List<P_GuestManagementListVo> guestManagementVoList = guestDao.callGuestManagementList(procedureVo);
 
         HashMap guestVoList = new HashMap();
         if(DalbitUtil.isEmpty(guestManagementVoList)){
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
+            DeviceVo deviceVo = new DeviceVo(request);
             guestVoList.put("list", new ArrayList<>());
             guestVoList.put("gstCnt", 0);
             guestVoList.put("proposeCnt", 0);
             guestVoList.put("totalCnt", 0);
-            guestVoList.put("paging", new PagingVo(0, pGuestManagementListVo.getPageNo(), pGuestManagementListVo.getPageCnt()));
+            if(deviceVo.getOs() == 2){
+                guestVoList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pGuestManagementListVo.getPageNo(), pGuestManagementListVo.getPageCnt()));
+            }else{
+                guestVoList.put("paging", new PagingVo(0, pGuestManagementListVo.getPageNo(), pGuestManagementListVo.getPageCnt()));
+            }
             return gsonUtil.toJson(new JsonOutputVo(Status.게스트리스트_없음, guestVoList));
         }
 

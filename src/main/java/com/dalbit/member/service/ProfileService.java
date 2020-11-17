@@ -303,7 +303,11 @@ public class ProfileService {
             fanRankingList.put("totalCnt", 0);
             fanRankingList.put("paging", new PagingVo(0, pFanRankingVo.getPageNo(), pFanRankingVo.getPageCnt()));
             DeviceVo deviceVo = new DeviceVo(request);
-            if(2 == deviceVo.getOs()){ //IOS crash 대응 20.11.10 이재은
+            if(2 == deviceVo.getOs()){
+                HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                fanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+            }
+            if(2 == deviceVo.getOs() && !DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.3")){ //IOS crash 대응 20.11.10 이재은
                 return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_실패, fanRankingList));
             }else{
                 return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));

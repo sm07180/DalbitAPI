@@ -65,7 +65,7 @@ public class GuestController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_GuestManagementListVo apiData = new P_GuestManagementListVo(guestManagementVo, request);
-        String result = guestService.callGuestManagementList(apiData);
+        String result = guestService.callGuestManagementList(apiData, request);
 
         return result;
     }

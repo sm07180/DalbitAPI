@@ -488,17 +488,23 @@ public class ClipService {
     /**
      * 클립 선물랭킹 리스트
      */
-    public String clipRankList(P_ClipGiftRankListVo pClipGiftRankListVo) {
+    public String clipRankList(P_ClipGiftRankListVo pClipGiftRankListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipGiftRankListVo);
         List<P_ClipGiftRankListVo> clipGiftRankListVo = clipDao.callClipGiftRankList(procedureVo);
 
         HashMap clipGiftRankList = new HashMap();
         if(DalbitUtil.isEmpty(clipGiftRankListVo)){
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             clipGiftRankList.put("list", new ArrayList<>());
             clipGiftRankList.put("giftCnt", 0);
             clipGiftRankList.put("byeolCnt", 0);
-            clipGiftRankList.put("totalCnt", 0);
-            clipGiftRankList.put("paging", new PagingVo(0, pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
+            clipGiftRankList.put("totalCnt", Integer.parseInt(procedureOutputVo.getExt()));
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 2){
+                clipGiftRankList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
+            }else{
+                clipGiftRankList.put("paging", new PagingVo(0, pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
+            }
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_선물랭킹_조회_없음, clipGiftRankList));
         }
         List<ClipGiftRankListOutVo> outVoList = new ArrayList<>();
@@ -525,17 +531,23 @@ public class ClipService {
     /**
      * 클립 받은선물내역
      */
-    public String clipGiftList(P_ClipGiftListVo pClipGiftListVo) {
+    public String clipGiftList(P_ClipGiftListVo pClipGiftListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pClipGiftListVo);
         List<P_ClipGiftListVo> clipGiftListVo = clipDao.callClipGiftList(procedureVo);
 
         HashMap clipGiftList = new HashMap();
         if(DalbitUtil.isEmpty(clipGiftListVo)){
+            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             clipGiftList.put("list", new ArrayList<>());
             clipGiftList.put("giftCnt", 0);
             clipGiftList.put("byeolCnt", 0);
-            clipGiftList.put("totalCnt", 0);
-            clipGiftList.put("paging", new PagingVo(0, pClipGiftListVo.getPageNo(), pClipGiftListVo.getPageCnt()));
+            clipGiftList.put("totalCnt", Integer.valueOf(procedureOutputVo.getRet()));
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(deviceVo.getOs() == 2){
+                clipGiftList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pClipGiftListVo.getPageNo(), pClipGiftListVo.getPageCnt()));
+            }else{
+                clipGiftList.put("paging", new PagingVo(0, pClipGiftListVo.getPageNo(), pClipGiftListVo.getPageCnt()));
+            }
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_받은선물내역_조회_없음, clipGiftList));
         }
         List<ClipGiftListOutVo> outVoList = new ArrayList<>();
