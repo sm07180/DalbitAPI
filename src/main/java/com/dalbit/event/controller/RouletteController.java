@@ -6,6 +6,7 @@ import com.dalbit.event.vo.procedure.P_RouletteCouponVo;
 import com.dalbit.event.vo.procedure.P_RoulettePhoneVo;
 import com.dalbit.event.vo.procedure.P_RouletteWinListVo;
 import com.dalbit.event.vo.request.RouletteApplyVo;
+import com.dalbit.event.vo.request.RouletteInfoVo;
 import com.dalbit.event.vo.request.RoulettePhoneVo;
 import com.dalbit.event.vo.request.RouletteWinVo;
 import com.dalbit.exception.GlobalException;
@@ -83,4 +84,8 @@ public class RouletteController {
         return result;
     }
 
+    @GetMapping("/info")
+    public String rouletteInfo(HttpServletRequest request, RouletteInfoVo rouletteInfoVo){
+        return rouletteService.selectRouletteInfo(rouletteInfoVo);
+    }
 }

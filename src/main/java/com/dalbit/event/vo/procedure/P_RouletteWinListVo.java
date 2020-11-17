@@ -39,4 +39,6 @@ public class P_RouletteWinListVo {
     private String nickName;
     private String memSex;
     private String profileImage;
+    private String item_name;
+    private String item_image_url;
 }

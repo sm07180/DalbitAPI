@@ -3,6 +3,7 @@ package com.dalbit.event.dao;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.vo.procedure.P_RouletteApplyListVo;
 import com.dalbit.event.vo.procedure.P_RouletteWinListVo;
+import com.dalbit.event.vo.request.RouletteInfoVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,4 +24,7 @@ public interface RouletteDao {
 
     @Transactional(readOnly = true)
     List<P_RouletteWinListVo> winList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<RouletteInfoVo> selectRouletteInfo(RouletteInfoVo rouletteInfoVo);
 }

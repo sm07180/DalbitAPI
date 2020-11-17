@@ -6,16 +6,19 @@ import com.dalbit.event.dao.RouletteDao;
 import com.dalbit.event.vo.RouletteApplyListOutVo;
 import com.dalbit.event.vo.RouletteWinListOutVo;
 import com.dalbit.event.vo.procedure.*;
+import com.dalbit.event.vo.request.RouletteInfoVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -66,6 +69,9 @@ public class RouletteService {
             returnMap.put("winIdx", DalbitUtil.getIntMap(resultMap, "winIdx"));
             returnMap.put("tempNo", DalbitUtil.getIntMap(resultMap, "itemNo"));
             returnMap.put("inputEndDate", DalbitUtil.getStringMap(resultMap, "inputEndDate"));
+            returnMap.put("itemName", DalbitUtil.getStringMap(resultMap, "itemName"));
+            returnMap.put("itemWinMsg", DalbitUtil.getStringMap(resultMap, "itemWinMsg"));
+            returnMap.put("imageUrl", DalbitUtil.getStringMap(resultMap, "imageUrl"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.스타트_성공, returnMap));
         } else if (Status.스타트_회원아님.getMessageCode().equals(procedureVo.getRet())) {
@@ -168,5 +174,20 @@ public class RouletteService {
         }
 
         return result;
+    }
+
+    public String selectRouletteInfo(RouletteInfoVo rouletteInfoVo){
+        List<RouletteInfoVo> rouletteInfoList = rouletteDao.selectRouletteInfo(rouletteInfoVo);
+        if(DalbitUtil.isEmpty(rouletteInfoList)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
+
+        var resultMap = new HashMap();
+        var infoData = rouletteInfoList.stream().filter(item -> item.getSlct_type().equals("0")).findFirst().orElse(new RouletteInfoVo());
+        var itemList = rouletteInfoList.stream().filter(item -> !item.getSlct_type().equals("0")).collect(Collectors.toList());
+        resultMap.put("info", infoData);
+        resultMap.put("itemList", itemList);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 }
