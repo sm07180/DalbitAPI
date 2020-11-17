@@ -33,7 +33,7 @@ public class RoomInfoVo {
     private boolean listenerIn;
     private boolean listenerOut;
     private boolean isFreeze;
-    private boolean hasExtend;
+    private boolean isExtend;
     /* DJ정보 */
     private String bjMemNo;
     private String bjNickNm;
@@ -50,6 +50,7 @@ public class RoomInfoVo {
     private String isAttendUrl;  //출석체크 이벤트 URL
     private int liveDjRank;
     private int os;             //bj os정보
+    private int imageType;
     /* 요청자 정보 */
     private int auth;
     private String ctrlRole;
@@ -160,7 +161,8 @@ public class RoomInfoVo {
         this.liveBadgeList = memberInfoVo.getLiveBadgeList();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         this.os = target.getOs();
-        this.hasExtend = target.getHasExtend();
+        this.isExtend = target.getIsExtend();
+        this.imageType = target.getImageType();
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){
