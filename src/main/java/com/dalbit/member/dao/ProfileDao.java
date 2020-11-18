@@ -47,5 +47,4 @@ public interface ProfileDao {
     ProcedureVo callStarMemo(ProcedureVo procedureVo);
 
     ProcedureVo callStarMemoSave(ProcedureVo procedureVo);
-
 }

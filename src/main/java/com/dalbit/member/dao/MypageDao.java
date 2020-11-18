@@ -186,4 +186,7 @@ public interface MypageDao {
 
     @Transactional(readOnly = true)
     List<P_WalletListVo> callWalletList(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    Integer selectIsSpecial(String mem_no);
 }

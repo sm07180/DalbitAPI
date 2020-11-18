@@ -88,5 +88,4 @@
         WHERE T1.mem_no_fan = #{targetMemNo}
             AND T2.mem_no IS NOT NULL
     </select>
-
 </mapper>

@@ -638,14 +638,14 @@ public class MainService {
         mainRankingList.put("myDjGoodPoint", DalbitUtil.getIntMap(resultMap, "myDjGoodPoint"));
 
         List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-        if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
+        /*if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
             liveBadgeList.add(new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeStartColor")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeEndColor")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImage")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImageSmall")));
-        }
+        }*/
         mainRankingList.put("myLiveBadgeList", liveBadgeList);
 
         mainRankingList.put("list", procedureOutputVo.getOutputBox());

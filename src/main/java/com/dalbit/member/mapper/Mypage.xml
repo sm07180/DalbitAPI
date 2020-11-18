@@ -471,5 +471,7 @@
         call sp_member_wallet_dal_byeol_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-
+    <select id="selectIsSpecial" parameterType="String" resultType="Integer">
+        SELECT specialdj_badge FROM tb_member_profile WHERE mem_no = #{value};
+    </select>
 </mapper>

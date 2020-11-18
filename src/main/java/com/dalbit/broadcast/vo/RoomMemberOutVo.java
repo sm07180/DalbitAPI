@@ -50,9 +50,9 @@ public class RoomMemberOutVo{
         this.isNewListener = this.auth == 0 ? (target.getNewBadge() == 1 ? true : false) : false;
         this.isSpecial = target.getSpecialBadge() == 1 ? true : false;
         this.liveFanRank = target.getLiveFanRank();
-        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+        /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
-        }
+        }*/
         this.goodCnt = target.getGoodCnt();
         this.isGuest = target.getIsGuest() == 1 ? true : false;
         this.managerType = target.getManagerType();

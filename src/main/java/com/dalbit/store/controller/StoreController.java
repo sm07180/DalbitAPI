@@ -1,7 +1,6 @@
 package com.dalbit.store.controller;
 
 import com.dalbit.common.code.Status;
-import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.store.service.StoreService;
 import com.dalbit.store.vo.StoreChargeVo;
@@ -30,11 +29,7 @@ public class StoreController {
 
     @GetMapping("/store/charge")
     public String getChargeList(HttpServletRequest request){
-        List<StoreChargeVo> list = new ArrayList<>();
-        DeviceVo deviceVo = new DeviceVo(request);
-        if(deviceVo.getOs() == 1 || deviceVo.getOs() == 3 || (deviceVo.getOs() == 2 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.0"))){
-            list = storeService.getStoreChargeList(request);
-        }
+        List<StoreChargeVo> list = storeService.getStoreChargeList(request);
         HashMap data = new HashMap();
         data.put("dalCnt", storeService.getDalCnt(request));
         data.put("list", list == null ? new ArrayList<>() : list);

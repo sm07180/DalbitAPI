@@ -657,6 +657,9 @@ public class DalbitUtil {
                                     argList.add(fieldError.getArguments()[1]);
                                 }
                             }
+                        } else if ("Pattern".equals(fieldError.getCode())) {
+                            validation_message_key="validation.pattern";
+                            argList.add(fieldError.getArguments()[1]);
                         }
                         if (!isEmpty(validation_message_key)) {
                             message = messageSource.getMessage(validation_message_key, argList.toArray(), LocaleContextHolder.getLocale());

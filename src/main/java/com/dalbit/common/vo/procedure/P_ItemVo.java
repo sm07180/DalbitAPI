@@ -10,4 +10,6 @@ public class P_ItemVo {
     private String booster;
     private String levelUp;
     private String direct;
+    private String[] directs;
+    private String[] visibilityDirects;
 }

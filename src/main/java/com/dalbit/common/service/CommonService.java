@@ -36,10 +36,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Slf4j
@@ -63,6 +60,9 @@ public class CommonService {
 
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
+
+    @Value("${item.direct.code}")
+    private String[] ITEM_DIRECT_CODE;
 
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
@@ -128,6 +128,9 @@ public class CommonService {
         pItemVo.setBooster(DalbitUtil.getProperty("item.code.boost"));
         pItemVo.setLevelUp(DalbitUtil.getProperty("item.code.levelUp"));
         pItemVo.setDirect(DalbitUtil.getProperty("item.code.direct"));
+        String mainDirectCode = DalbitUtil.getProperty("item.direct.code.main");
+        pItemVo.setDirects(ITEM_DIRECT_CODE);
+        pItemVo.setVisibilityDirects((Arrays.stream(ITEM_DIRECT_CODE).filter(s->!s.equals(mainDirectCode))).toArray(String[]::new));
 
         List<ItemVo> items = commonDao.selectItemList(pItemVo);
         HashMap itemIsNew = new HashMap();
@@ -391,6 +394,7 @@ public class CommonService {
         result.put("roomRight", setData(data, "broadcast_auth"));
         result.put("declarReason", setData(data, "report_reason"));
         result.put("clipType", setData(data, "clip_type"));
+        result.put("exchangeBankCode", setData(data, "exchange_bank_code"));
 
         return result;
     }
@@ -462,7 +466,7 @@ public class CommonService {
             for (int i = 0; i < kingFanRankListVo.size(); i++) {
                 HashMap liveBadgeMap = new HashMap();
                 liveBadgeMap.put("mem_no", kingFanRankListVo.get(i).getMem_no());
-                liveBadgeMap.put("type", 1);
+                liveBadgeMap.put("type", 5);
                 liveBadgeMap.put("by", "api");
                 List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
                 if(DalbitUtil.isEmpty(liveBadgeList)){

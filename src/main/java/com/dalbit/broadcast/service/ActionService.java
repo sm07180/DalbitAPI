@@ -21,6 +21,7 @@ import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -52,6 +53,14 @@ public class ActionService {
     @Autowired
     MessageUtil messageUtil;
 
+    @Value("${item.direct.code}")
+    private String[] ITEM_DIRECT_CODE;
+    @Value("${item.direct.min}")
+    private int[] ITEM_DIRECT_MIN;
+    @Value("${item.direct.max}")
+    private int[] ITEM_DIRECT_MAX;
+    @Value("${item.direct.code.main}")
+    private String ITEM_DIRECT_CODE_MAIN;
 
     /**
      * 방송방 좋아요 추가
@@ -201,6 +210,21 @@ public class ActionService {
      * 방송방 선물하기
      */
     public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
+        String item_code = pRoomGiftVo.getItem_code();
+        boolean isDirect = false;
+        int directItemCnt = 1;
+        if(ITEM_DIRECT_CODE_MAIN.equals(pRoomGiftVo.getItem_code())){ //직접선물하기 일경우 체크
+            isDirect = true;
+            for(int i = 0; i <  ITEM_DIRECT_MIN.length; i++){
+                if (ITEM_DIRECT_MIN[i] <= pRoomGiftVo.getItem_cnt() && (ITEM_DIRECT_MAX[i] >= pRoomGiftVo.getItem_cnt() || ITEM_DIRECT_MAX[i] == -1)) {
+                    item_code = ITEM_DIRECT_CODE[i];
+                    if(ITEM_DIRECT_MAX[i] == -1){
+                        directItemCnt = 2;
+                    }
+                    break;
+                }
+            }
+        }
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
         actionDao.callBroadCastRoomGift(procedureVo);
 
@@ -234,17 +258,18 @@ public class ActionService {
             SocketVo vo = socketService.getSocketVo(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 HashMap itemMap = new HashMap();
-                itemMap.put("itemNo", pRoomGiftVo.getItem_code());
+                itemMap.put("itemNo", item_code);
+                itemMap.put("itemMoveNo", pRoomGiftVo.getItem_code());
                 SocketVo vo1 = socketService.getSocketVo(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getGifted_mem_no(), DalbitUtil.isLogin(request));
 
-                ItemDetailVo item = commonDao.selectItem(pRoomGiftVo.getItem_code());
+                ItemDetailVo item = commonDao.selectItem(item_code);
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
-                itemMap.put("itemCnt", pRoomGiftVo.getItem_code().equals(DalbitUtil.getProperty("item.code.direct")) ? 1 : pRoomGiftVo.getItem_cnt());
+                itemMap.put("itemCnt", isDirect ? directItemCnt : pRoomGiftVo.getItem_cnt());
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
-                itemMap.put("itemType", pRoomGiftVo.getItem_code().equals(DalbitUtil.getProperty("item.code.direct")) ? "direct" : "items");
+                itemMap.put("itemType", isDirect ? "direct" : "items");
                 itemMap.put("authName", vo1.getAuthName());
                 itemMap.put("auth", vo1.getAuth());
                 itemMap.put("nickNm", vo1.getMemNk());

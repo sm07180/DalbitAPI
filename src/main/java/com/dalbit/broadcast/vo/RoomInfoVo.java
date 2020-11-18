@@ -84,18 +84,16 @@ public class RoomInfoVo {
         this.bjMemNo = target.getBjMemNo();
         this.bjNickNm = target.getBjNickNm();
         this.bjProfImg = target.getBjProfImg();
-        /*
-        20.10.27 뱃지기획 보류로 주석
         if("real".equals(DalbitUtil.getActiveProfile()) && (
-            (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.3.6", deviceVo.getAppVersion()))
+            (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) < 41)
             ||
-            (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.1", deviceVo.getAppVersion()))
+            (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.3.4", deviceVo.getAppVersion()))
         )){
             this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", target.getBjLevel() + "");
         }else{
             this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.broad.frame"),"[level]", target.getBjLevel() + "");
-        }*/
-        this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", target.getBjLevel() + "");
+        }
+        //this.bjHolder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", target.getBjLevel() + "");
         this.isRecomm = target.getIsRecomm();
         this.isPop = target.getIsPop();
         this.isNew = target.getIsNew();

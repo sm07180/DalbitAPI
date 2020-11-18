@@ -1673,6 +1673,15 @@ public enum Status {
     공지댓글보기_공지회원번호없음("-2","mypage.notice.reply.select.object.member.number.error","대상 회원번호가 회원이 아닐 시"),
     공지댓글보기_실패("C006", "mypage.notice.reply.select.fail", "마이페이지 공지 댓글 보기 실패 시"),
 
+    //이어하기
+    이어하기가능("C100", "broadcast.continue.possibility.success", "이어하기 가능 시"),
+    이어하기_성공("0", "broadcast.continue.success", "이어하기 성공 시"),
+    이어하기_회원아님("-1", "broadcast.continue.member.number.error", "요청 회원번호가 회원이 아닐 시"),
+    이어하기_방없음("-2", "broadcast.continue.no.room", "이어하기할 방이 없을 시"),
+    이어하기_연장한방송("-3", "broadcast.continue.extend.room", "연장한 방송이라 이어하기 불가"),
+    이어하기_종료시간5분지남("-4", "broadcast.continue.end.time.5min.pass", "종료시간이 5분 지남"),
+    이어하기_남은시간5분안됨("-5", "broadcast.continue.remaining.time.5min.limit", "남은시간이 5분 안됨"),
+    이어하기_실패("C006", "broadcast.continue.fail", "이어하기 실패 시"),
 
    ;
 

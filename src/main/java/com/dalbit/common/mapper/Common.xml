@@ -66,7 +66,7 @@
                 , (CASE
                     WHEN use_area = '1' THEN IF(item_slct = 2, 'particle', IF(item_code = #{direct}, 'direct', 'ani'))
                     WHEN use_area = '2' THEN 'sticker'
-                    ELSE IF(item_code = #{direct}, 'direct', 'ani')
+                    ELSE IF(item_code IN <foreach collection="directs" item="v" open="(" close=")" separator=",">#{v}</foreach>, 'direct', 'ani')
                 END) AS `type`
                 , item_price        AS cost
                 , item_thumbnail    AS thumbs
@@ -115,7 +115,8 @@
                     ELSE 'normal'
                 END)AS category
                 , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
-                , 'lottie' AS iosSelectType
+                , IF(item_code = 'G1827', 'webp', 'lottie') AS iosSelectType
+                , IF(item_code IN <foreach collection="visibilityDirects" item="v" open="(" close=")" separator=",">#{v}</foreach>, false, true) AS visibility
                 , @rownum := @rownum + 1 AS sortNo
         FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
         WHERE view_yn = 1
@@ -127,7 +128,7 @@
             ELSE 1
         END) DESC, isNew DESC, item_price ASC, item_name ASC -->
         <!--ORDER BY (CASE
-            WHEN item_code = #{direct} THEN 0
+            WHEN item_code IN <foreach collection="directs" item="v" open="(" close=")" separator=",">#{v}</foreach> THEN 0
             ELSE 1
         END) DESC, isNew DESC , `order` ASC, item_price DESC-->
         ORDER BY `order` ASC, item_price DESC
@@ -276,7 +277,7 @@
     </select>
 
     <select id="callLiveBadgeSelect" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.FanBadgeVo">
-      call sp_member_live_badge(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
+      call sp_member_live_badge_icon(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
     </select>
 
     <update id="updateMemberCertification" parameterType="P_SelfAuthVo">

@@ -365,6 +365,7 @@ public class MypageService {
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
         returnMap.put("all_ok", DalbitUtil.getIntMap(resultMap, "all_ok"));
+        returnMap.put("isAll", DalbitUtil.getIntMap(resultMap, "all_ok"));
         returnMap.put("isMyStar", DalbitUtil.getIntMap(resultMap, "set_1"));
         returnMap.put("isGift", DalbitUtil.getIntMap(resultMap, "set_2"));
         returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "set_3"));
@@ -1910,6 +1911,9 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송설정조회_성공.getMessageCode())) {
+            Integer special_badge = mypageDao.selectIsSpecial(pBroadcastSettingVo.getMem_no());
+            boolean isSpecial = special_badge != null && special_badge == 1;
+
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
@@ -1917,6 +1921,7 @@ public class MypageService {
             returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
             returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
             returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+            returnMap.put("isSpecial", isSpecial);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.방송설정조회_회원아님.getMessageCode())) {

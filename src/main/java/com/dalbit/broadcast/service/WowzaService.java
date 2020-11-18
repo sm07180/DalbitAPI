@@ -271,23 +271,23 @@ public class WowzaService {
             }catch(Exception e) {}
             HashMap fanBadgeMap = new HashMap();
             fanBadgeMap.put("mem_no", target.getBjMemNo());
-            fanBadgeMap.put("type", 3);
+            fanBadgeMap.put("type", 4);
             fanBadgeMap.put("by", "api");
             List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
             if(!DalbitUtil.isEmpty(fanBadgeList)){
-                memberInfoVo.setFanBadgeList(fanBadgeList);
+                memberInfoVo.setLiveBadgeList(fanBadgeList);
             }
 
             //실시간 DJ 뱃지 리스트
             HashMap liveBadgeMap = new HashMap();
             liveBadgeMap.put("mem_no", target.getBjMemNo());
-            liveBadgeMap.put("type", 3);
+            liveBadgeMap.put("type", 4);
             liveBadgeMap.put("by", "api");
             List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
             if(DalbitUtil.isEmpty(liveBadgeList)){
-                memberInfoVo.setLiveBadgeList(new ArrayList());
+                memberInfoVo.setFanBadgeList(new ArrayList());
             }else{
-                memberInfoVo.setLiveBadgeList(liveBadgeList);
+                memberInfoVo.setFanBadgeList(liveBadgeList);
             }
 
             //제목 저장기록이 없을 경우 최근방송 제목 저장
@@ -333,9 +333,6 @@ public class WowzaService {
 
             result.put("status", Status.방송생성);
             RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo);
-            if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
-                roomInfoVo.setLiveBadgeList(new ArrayList());
-            }
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("data", roomInfoVo);
@@ -413,9 +410,6 @@ public class WowzaService {
                 }
             }
 
-            if(deviceVo.getOs() != 1 && "real".equals(DalbitUtil.getActiveProfile())){
-                roomInfoVo.setLiveBadgeList(new ArrayList());
-            }
             SocketVo vo = socketService.getSocketVo(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             if(target.getState() == 2 || target.getState() == 3 || target.getState() == 0){
                 try{
@@ -597,23 +591,23 @@ public class WowzaService {
         }catch(Exception e) {}
         HashMap fanBadgeMap = new HashMap();
         fanBadgeMap.put("mem_no", target.getBjMemNo());
-        fanBadgeMap.put("type", 3);
+        fanBadgeMap.put("type", 4);
         fanBadgeMap.put("by", "api");
         List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
         if(!DalbitUtil.isEmpty(fanBadgeList)){
-            memberInfoVo.setFanBadgeList(fanBadgeList);
+            memberInfoVo.setLiveBadgeList(fanBadgeList);
         }
 
         //실시간 DJ 뱃지 리스트
         HashMap liveBadgeMap = new HashMap();
         liveBadgeMap.put("mem_no", target.getBjMemNo());
-        liveBadgeMap.put("type", 3);
+        liveBadgeMap.put("type", 4);
         liveBadgeMap.put("by", "api");
         List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
         if(DalbitUtil.isEmpty(liveBadgeList)){
-            memberInfoVo.setLiveBadgeList(new ArrayList());
+            memberInfoVo.setFanBadgeList(new ArrayList());
         }else{
-            memberInfoVo.setLiveBadgeList(liveBadgeList);
+            memberInfoVo.setFanBadgeList(liveBadgeList);
         }
 
         //방송설정 입퇴장메시지 세팅 조회
