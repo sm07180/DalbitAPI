@@ -9,12 +9,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 
 @Getter @Setter
 public class P_ExchangeApplyVo {
 
     private String mem_no;
-    private int byeol;
+    private BigDecimal byeol;
     private String account_name;
     private String bank_code;
     private String account_no;

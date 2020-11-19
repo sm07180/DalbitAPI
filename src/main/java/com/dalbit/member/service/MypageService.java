@@ -1194,6 +1194,50 @@ public class MypageService {
 
     }
 
+    /**
+     * 별 달 자동교환 설정 변경
+     */
+    public String callAutoChangeSettingEdit(P_AutoChangeSettingEditVo pAutoChangeSettingEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pAutoChangeSettingEditVo);
+        mypageDao.callAutoChangeSettingEdit(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.별_달_자동교환설정변경_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("autoChange", DalbitUtil.getIntMap(resultMap, "auto_change"));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_자동교환설정변경_성공, returnMap));
+        } else if (procedureVo.getRet().equals(Status.별_달_자동교환설정변경_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_자동교환설정변경_요청회원번호_회원아님));
+        } else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_자동교환설정변경_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 별 달 자동교환 설정 가져오기
+     */
+    public String callAutoChangeSettingSelect(P_AutoChangeSettingSelectVo pAutoChangeSettingSelectVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pAutoChangeSettingSelectVo);
+        mypageDao.callAutoChangeSettingSelect(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.별_달_자동교환설정조회_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("autoChange", DalbitUtil.getIntMap(resultMap, "auto_change"));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_자동교환설정조회_성공, returnMap));
+        } else if (procedureVo.getRet().equals(Status.별_달_자동교환설정조회_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_자동교환설정조회_요청회원번호_회원아님));
+        } else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_자동교환설정조회_실패));
+        }
+
+        return result;
+    }
+
 
     /**
      * 회원 알림 내용 읽음처리

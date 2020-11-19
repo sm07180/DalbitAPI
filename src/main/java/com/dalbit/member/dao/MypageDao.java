@@ -78,6 +78,12 @@ public interface MypageDao {
     List<P_ChangeItemListVo> changeItemSelect(ProcedureVo procedureVo);
 
     ProcedureVo changeItem(ProcedureVo procedureVo);
+
+    ProcedureVo callAutoChangeSettingEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ProcedureVo callAutoChangeSettingSelect(ProcedureVo procedureVo);
+
     ProcedureVo callReadNotification(ProcedureVo procedureVo);
 
     int callReadALLNotification(P_NotificationVo pNotificationVo);

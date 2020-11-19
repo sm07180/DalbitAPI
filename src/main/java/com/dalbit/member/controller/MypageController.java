@@ -554,6 +554,27 @@ public class MypageController {
     }
 
     /**
+     * 별 달 자동교환 설정 변경
+     */
+    @PostMapping("/auto/change")
+    public String autoChangeSettingEdit(@Valid AutoChangeSettingEditVo autoChangeSettingEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_AutoChangeSettingEditVo apiData = new P_AutoChangeSettingEditVo(autoChangeSettingEditVo, request);
+        String result = mypageService.callAutoChangeSettingEdit(apiData);
+        return result;
+    }
+
+    /**
+     * 별 달 자동교환 설정 가져오기
+     */
+    @GetMapping("/auto/change")
+    public String autoChangeSettingSelect(HttpServletRequest request) {
+        P_AutoChangeSettingSelectVo apiData = new P_AutoChangeSettingSelectVo(request);
+        String result = mypageService.callAutoChangeSettingSelect(apiData);
+        return result;
+    }
+
+    /**
      * 회원 알림 내용 읽음처리
      */
     @PostMapping("/read")

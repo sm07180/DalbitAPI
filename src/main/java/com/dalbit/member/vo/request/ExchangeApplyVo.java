@@ -7,12 +7,13 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 
 @Getter @Setter
 public class ExchangeApplyVo {
 
     @Min(message = "{\"ko_KR\" : \"별을\"}", value = 570)
-    private int byeol;
+    private BigDecimal byeol;
 
     @NotBlank(message = "{\"ko_KR\" : \"예금주를\"}")
     @NotNull(message = "{\"ko_KR\" : \"예금주를\"}")
