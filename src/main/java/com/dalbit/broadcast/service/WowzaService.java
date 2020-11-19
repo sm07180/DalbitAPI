@@ -668,4 +668,34 @@ public class WowzaService {
         }
         return list;
     }
+
+    public HashMap doContinueBroadcast(HttpServletRequest request) throws GlobalException {
+        P_BroadContinueVo pBroadContinueVo = new P_BroadContinueVo(request);
+        ProcedureVo procedureVo = new ProcedureVo(pBroadContinueVo);
+        roomDao.callBroadCastRoomContinue(procedureVo);
+
+        HashMap result = new HashMap();
+        if(procedureVo.getRet().equals(Status.이어하기_성공.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            String roomNo = DalbitUtil.isNullToString(resultMap.get("room_no"));
+            RoomTokenVo roomTokenVo = new RoomTokenVo();
+            roomTokenVo.setRoomNo(roomNo);
+            return getBroadcast(roomTokenVo, request);
+
+        }else if(procedureVo.getRet().equals(Status.이어하기_회원아님.getMessageCode())){
+            result.put("status", Status.이어하기_회원아님);
+        }else if(procedureVo.getRet().equals(Status.이어하기_방없음.getMessageCode())){
+            result.put("status", Status.이어하기_방없음);
+        }else if(procedureVo.getRet().equals(Status.이어하기_연장한방송.getMessageCode())){
+            result.put("status", Status.이어하기_연장한방송);
+        }else if(procedureVo.getRet().equals(Status.이어하기_종료시간5분지남.getMessageCode())){
+            result.put("status", Status.이어하기_종료시간5분지남);
+        }else if(procedureVo.getRet().equals(Status.이어하기_남은시간5분안됨.getMessageCode())){
+            result.put("status", Status.이어하기_남은시간5분안됨);
+        }else{
+            result.put("status", Status.이어하기_실패);
+        }
+        return result;
+    }
+
 }

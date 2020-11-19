@@ -442,7 +442,14 @@ public class RoomService {
         roomDao.callMemberBroadcastingCheck(procedureVo);
         String result = "";
         if(Status.방송진행여부체크_방송방없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송방없음));
+            //이어하기 체크
+            ProcedureVo continueVo = new ProcedureVo(pMemberBroadcastingCheckVo);
+            roomDao.callBroadCastRoomContinueCheck(continueVo);
+            if("0".equals(continueVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.이어하기가능));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송방없음));
+            }
         }else if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();

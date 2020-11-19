@@ -46,4 +46,8 @@ public interface RoomDao {
 
     @Transactional(readOnly = true)
     List<P_RoomGoodHistoryVo> callGetGoodHistory(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadCastRoomContinueCheck(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadCastRoomContinue(ProcedureVo procedureVo);
 }

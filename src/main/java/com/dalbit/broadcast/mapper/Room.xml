@@ -78,4 +78,13 @@
     <select id="callGetGoodHistory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.broadcast.vo.procedure.P_RoomGoodHistoryVo">
         call sp_broadcast_room_member_good_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callBroadCastRoomContinueCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        call sp_broadcast_room_check(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadCastRoomContinue" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        call sp_broadcast_room_continue(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>
