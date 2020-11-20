@@ -3,7 +3,6 @@ package com.dalbit.socket.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
-import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.ItemDetailVo;
@@ -11,7 +10,6 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
-import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LevelUpCheckVo;
 import com.dalbit.socket.dao.SocketDao;
 import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
@@ -31,8 +29,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service

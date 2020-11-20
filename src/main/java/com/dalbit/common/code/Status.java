@@ -173,6 +173,32 @@ public enum Status {
     알림설정수정_회원아님("-1", "mypage.member.notify.edit.no", "알림 설정수정 회원아닐 시"),
     알림설정수정오류("C006", "mypage.member.notify.edit.error", "알림 설정 오류 시"),
 
+    알림무음("0", "mypage.member.notify.edit.all.silent.success", "알림 모드 무음"),
+    알림소리("0", "mypage.member.notify.edit.all.sound.success", "알림 모드 소리"),
+    알림진동("0", "mypage.member.notify.edit.all.vibration.success", "알림 모드 진동"),
+    전제알림수신_ON("0", "mypage.member.notify.edit.all.on.success", "전체 알림 수신 ON"),
+    전제알림수신_OFF("0", "mypage.member.notify.edit.all.off.success", "전체 알림 수신 OFF"),
+    마이스타방송시작_ON("0", "mypage.member.notify.edit.mystar.broadcast.start.on.success", "마이스타 방송 시작 알림 ON"),
+    마이스타방송시작_OFF("0", "mypage.member.notify.edit.mystar.broadcast.start.off.success", "마이스타 방송 시작 알림 OFF"),
+    마이스타클립등록_ON("0", "mypage.member.notify.edit.mystar.clip.add.on.success", "마이스타 클립 등록 알림 ON"),
+    마이스타클립등록_OFF("0", "mypage.member.notify.edit.mystar.clip.add.off.success", "마이스타 클립 등록 알림 OFF"),
+    마이스타방송공지_ON("0", "mypage.member.notify.edit.mystar.broadcast.notice.on.success", "마이스타 방송 공지 ON"),
+    마이스타방송공지_OFF("0", "mypage.member.notify.edit.mystar.broadcast.notice.off.success", "마이스타 방송 공지 OFF"),
+    내클립_ON("0", "mypage.member.notify.edit.my.clip.on.success", "내 클립 ON"),
+    내클립_OFF("0", "mypage.member.notify.edit.my.clip.off.success", "내 클립 OFF"),
+    신규팬추가_ON("0", "mypage.member.notify.edit.new.fan.on.success", "신규 팬 추가 ON"),
+    신규팬추가_OFF("0", "mypage.member.notify.edit.new.fan.off.success", "신규 팬 추가 OFF"),
+    팬보드신규글등록_ON("0", "mypage.member.notify.edit.fanboard.new.on.success", "팬보드 신규 글 등록 ON"),
+    팬보드신규글등록_OFF("0", "mypage.member.notify.edit.fanboard.new.off.success", "팬보드 신규 글 등록 OFF"),
+    팬보드댓글등록_ON("0", "mypage.member.notify.edit.fanboard.reply.on.success", "팬보드 댓글 등록 ON"),
+    팬보드댓글등록_OFF("0", "mypage.member.notify.edit.fanboard.reply.off.success", "팬보드 댓글 등록 OFF"),
+    선물도착_ON("0", "mypage.member.notify.edit.gift.on.success", "선물 도착 ON"),
+    선물도착_OFF("0", "mypage.member.notify.edit.gift.off.success", "선물 도착 OFF"),
+    일대일문의답변도착_ON("0", "mypage.member.notify.edit.one.on.success", "1:1문의 답변 도착 ON"),
+    일대일문의답변도착_OFF("0", "mypage.member.notify.edit.one.off.success", "1:1문의 답변 도착 OFF"),
+    서비스알림_ON("0", "mypage.member.notify.edit.service.on.success", "서비스 알림 ON"),
+    서비스알림_OFF("0", "mypage.member.notify.edit.service.off.success", "서비스 알림 OFF"),
+
     //회원 방송방 빠른말 가져오기
     회원방송방빠른말조회_성공("0", "mypage.member.shorucut.success", "회원 방송방 빠른말 가져오기 성공 시"),
     회원방송방빠른말조회_회원아님("-1", "mypage.member.shorucut.no", "요청번호가 회원이 아닐 시"),
@@ -1683,6 +1709,10 @@ public enum Status {
     이어하기_남은시간5분안됨("-5", "broadcast.continue.remaining.time.5min.limit", "남은시간이 5분 안됨"),
     이어하기_실패("C006", "broadcast.continue.fail", "이어하기 실패 시"),
 
+    //방송방 뱃지 교체 체크
+    뱃지교체대상체크_없음("0", "broadcast.badge.change.checnk.no.success", "뱃지 교체 체크대상 없을 시"),
+    뱃지교체대상체크_성공("C001", "broadcast.badge.change.check.success", "뱃지 교체대상 체크 성공 시"),
+    뱃지교체대상체크_실패("C006", "broadcast.badge.change.check.fail", "뱃지 교체대상 체크 실패 시"),
    ;
 
 

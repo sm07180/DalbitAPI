@@ -134,7 +134,11 @@ public class MainService {
                 outVo.setNickNm(recommendVoList.get(i).getNickNm());
                 outVo.setGender(recommendVoList.get(i).getGender());
                 if(recommendVoList.get(i).getBannerUrl().toLowerCase().endsWith(".gif")){
-                    outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                    if(deviceVo.getOs() == 2 && DalbitUtil.versionCompare("14.0", deviceVo.getSdkVersion())){
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
+                    }else{
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + ".webp");
+                    }
                 }else{
                     if(deviceVo.getOs() == 3 && !"Y".equals(deviceVo.getIsHybrid())){
                         outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());

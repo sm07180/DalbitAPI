@@ -505,27 +505,31 @@ public class WowzaService {
                     DeviceVo deviceVo = new DeviceVo(request);
                     if(!deviceUuid.equals(deviceVo.getDeviceUuid())){ //동일 기기의 방생성,조인 등이 아닐때 처리
                         if(auth == 3){
-                            result.put("status", Status.방송참여_방송중);
+                            if(target.getState() != 5){
+                                result.put("status", Status.방송참여_방송중);
+                                return result;
+                            }
                         }else{
                             result.put("status", Status.방송참여_다른기기);
+                            return result;
                         }
-                    }else{
-                        RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
-                        roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), MemberVo.getMyMemNo(request)));
-
-                        //방정보 조회시 본인 게스트여부 체크
-                        for (int i=0; i < roomInfoVo.getGuests().size(); i++ ){
-                            if(MemberVo.getMyMemNo(request).equals(((RoomGuestListOutVo) roomInfoVo.getGuests().get(i)).getMemNo())){
-                                roomInfoVo.setIsGuest(true);
-                            }else{
-                                roomInfoVo.setIsGuest(false);
-                            }
-                        }
-
-                        roomInfoVo.changeBackgroundImg(deviceVo);
-                        result.put("status", Status.방정보보기);
-                        result.put("data", roomInfoVo);
                     }
+
+                    RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
+                    roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), MemberVo.getMyMemNo(request)));
+
+                    //방정보 조회시 본인 게스트여부 체크
+                    for (int i=0; i < roomInfoVo.getGuests().size(); i++ ){
+                        if(MemberVo.getMyMemNo(request).equals(((RoomGuestListOutVo) roomInfoVo.getGuests().get(i)).getMemNo())){
+                            roomInfoVo.setIsGuest(true);
+                        }else{
+                            roomInfoVo.setIsGuest(false);
+                        }
+                    }
+
+                    roomInfoVo.changeBackgroundImg(deviceVo);
+                    result.put("status", Status.방정보보기);
+                    result.put("data", roomInfoVo);
                 }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
                     result.put("status", Status.스트림아이디_회원아님);
                 }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
