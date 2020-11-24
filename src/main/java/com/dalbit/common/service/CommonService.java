@@ -887,7 +887,7 @@ public class CommonService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
             returnMap.put("type", DalbitUtil.getIntMap(resultMap, "type"));
-            DateFormat format = DateFormat.getDateInstance(DateFormat.LONG);
+            DateFormat format = DateFormat.getDateInstance(DateFormat.LONG, Locale.KOREAN);
             returnMap.put("lastLoginDate", format.format(DalbitUtil.getDateMap(resultMap, "lastLoginDate")));
             returnMap.put("dueDate", format.format(DalbitUtil.getDateMap(resultMap, "dueDate")));
             var codeVo = selectCodeDefine(new CodeVo(Code.장기_미접속_시행일자.getCode(), Code.장기_미접속_시행일자.getDesc()));
