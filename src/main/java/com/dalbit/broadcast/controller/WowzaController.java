@@ -64,5 +64,4 @@ public class WowzaController {
         HashMap result = wowzaService.doContinueBroadcast(request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
-
 }

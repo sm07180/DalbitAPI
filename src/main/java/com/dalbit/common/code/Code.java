@@ -68,6 +68,8 @@ public enum Code {
     환전은행("exchange_bank_code", "환전 은행 목록"),
 
     IOS심사중여부("system_config", "IOS_심사중여부"), //N이면 참여가능, Y이면 참여불가 (시스템 점검 전에 값을 바꿔 유입을 막는다)
+
+    장기_미접속_시행일자("long_term_date", "장기_미접속_시행일자")
    ;
 
     final private String code;

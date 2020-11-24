@@ -78,4 +78,6 @@ public interface CommonDao {
     List<CodeVo> selectTypeCodeList(CodeVo codeVo);
     @Transactional(readOnly = true)
     List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo);
+
+    ProcedureVo getLongTermDate(ProcedureVo procedureVo);
 }

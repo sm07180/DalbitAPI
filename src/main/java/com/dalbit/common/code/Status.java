@@ -1,6 +1,5 @@
 package com.dalbit.common.code;
 
-import com.dalbit.common.vo.JsonOutputVo;
 import lombok.Getter;
 
 @Getter
@@ -1694,7 +1693,7 @@ public enum Status {
     공지댓글수정_실패("C006", "mypage.notice.reply.edit.fail", "마이페이지 공지 댓글 수정 실패 시"),
 
     공지댓글보기_성공("C001","mypage.notice.reply.select.success","마이페이지 공지 댓글 보기 성공 시"),
-    공지댓글보기_댓글없음("0","mypage.notice.reply.select.no.reply","댓글이 없을 시"),
+    공지댓글보기_댓글없음("0","mypage.notice.reply.select.no.reply.success","댓글이 없을 시"),
     공지댓글보기_회원번호없음("-1", "mypage.notice.reply.select.member.number.error", "요청회원번호 회원 아닐 시"),
     공지댓글보기_공지회원번호없음("-2","mypage.notice.reply.select.object.member.number.error","대상 회원번호가 회원이 아닐 시"),
     공지댓글보기_실패("C006", "mypage.notice.reply.select.fail", "마이페이지 공지 댓글 보기 실패 시"),
@@ -1713,6 +1712,17 @@ public enum Status {
     뱃지교체대상체크_없음("0", "broadcast.badge.change.checnk.no.success", "뱃지 교체 체크대상 없을 시"),
     뱃지교체대상체크_성공("C001", "broadcast.badge.change.check.success", "뱃지 교체대상 체크 성공 시"),
     뱃지교체대상체크_실패("C006", "broadcast.badge.change.check.fail", "뱃지 교체대상 체크 실패 시"),
+
+    //회원 휴면,탈퇴 예정일 조회
+    휴면탈퇴_일자조회_성공("0", "sleep.withdrawal.select.date.success", "휴면탈퇴 일자조회 성공 시"),
+    휴면탈퇴_일자조회_회원아님("-1", "sleep.withdrawal.select.date.member.number.error", "요청회원번호 회원 아닐 시"),
+    휴면탈퇴_일자조회_실패("C006", "sleep.withdrawal.select.date.fail", "휴면탈퇴 일자조회 실패 시"),
+
+    //가산점 조회
+    가산점조회_성공("C001", "special.addpoint.select.success", "가산점 조회 성공 시"),
+    가산점조회_없음("0", "special.addpoint.select.no.success", "가산점 내역 없을 시"),
+    가산점조회_회원아님("-1", "special.addpoint.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    가산점조회_실패("C006", "special.addpoint.select.fail", "가산점 조회 실패 시"),
    ;
 
 

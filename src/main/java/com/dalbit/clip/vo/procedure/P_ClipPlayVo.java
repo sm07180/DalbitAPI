@@ -16,6 +16,7 @@ public class P_ClipPlayVo {
     private String mem_no;
     private String cast_no;
     private int os;
+    private String ip;
 
     public P_ClipPlayVo(){}
     public P_ClipPlayVo(ClipPlayVo clipPlayVo, HttpServletRequest request){
@@ -24,6 +25,7 @@ public class P_ClipPlayVo {
         setCast_no(clipPlayVo.getClipNo());
         DeviceVo deviceVo = new DeviceVo(request);
         setOs(deviceVo.getOs());
+        setIp(deviceVo.getIp());
     }
 
     public P_ClipPlayVo(P_ClipReplyAddVo pClipReplyListVo, HttpServletRequest request){
@@ -32,6 +34,7 @@ public class P_ClipPlayVo {
         setCast_no(pClipReplyListVo.getCast_no());
         DeviceVo deviceVo = new DeviceVo(request);
         setOs(deviceVo.getOs());
+        setIp(deviceVo.getIp());
     }
 
     public P_ClipPlayVo(P_ClipReplyEditVo pClipReplyEditVo, HttpServletRequest request){
@@ -40,6 +43,7 @@ public class P_ClipPlayVo {
         setCast_no(pClipReplyEditVo.getCast_no());
         DeviceVo deviceVo = new DeviceVo(request);
         setOs(deviceVo.getOs());
+        setIp(deviceVo.getIp());
     }
 
     public P_ClipPlayVo(P_ClipReplyDeleteVo clipReplyDeleteVo, HttpServletRequest request){
@@ -48,6 +52,7 @@ public class P_ClipPlayVo {
         setCast_no(clipReplyDeleteVo.getCast_no());
         DeviceVo deviceVo = new DeviceVo(request);
         setOs(deviceVo.getOs());
+        setIp(deviceVo.getIp());
     }
 
 }

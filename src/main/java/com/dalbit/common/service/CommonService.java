@@ -2,6 +2,7 @@ package com.dalbit.common.service;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.annotation.NoLogging;
+import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.*;
@@ -24,6 +25,7 @@ import com.google.gson.Gson;
 import com.nimbusds.jose.util.Base64URL;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,6 +38,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -869,4 +873,36 @@ public class CommonService {
         return commonDao.selectExchangeBankCodeList(codeVo);
     }
 
+
+    /**
+     * 장기 미접속 & 탈퇴 예정 일자 조회
+     */
+    public String getLongTermDate(P_LongTermVo pLongTermVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pLongTermVo);
+        commonDao.getLongTermDate(procedureVo);
+
+        HashMap returnMap  = new HashMap<>();
+        String result;
+        if(Status.클립등록_성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
+            returnMap.put("type", DalbitUtil.getIntMap(resultMap, "type"));
+            DateFormat format = DateFormat.getDateInstance(DateFormat.LONG);
+            returnMap.put("lastLoginDate", format.format(DalbitUtil.getDateMap(resultMap, "lastLoginDate")));
+            returnMap.put("dueDate", format.format(DalbitUtil.getDateMap(resultMap, "dueDate")));
+            var codeVo = selectCodeDefine(new CodeVo(Code.장기_미접속_시행일자.getCode(), Code.장기_미접속_시행일자.getDesc()));
+            if (!DalbitUtil.isEmpty(codeVo)) {
+                returnMap.put("longTermDate", codeVo.getValue());
+            } else {
+                returnMap.put("longTermDate", "");
+            }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_성공, returnMap));
+        }else if(Status.클립등록_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_실패));
+        }
+
+        return result;
+    }
 }

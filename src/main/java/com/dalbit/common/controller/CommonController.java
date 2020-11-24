@@ -465,4 +465,15 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(조회, resultMap));
 
     }
+
+    /**
+     * 장기 미접속 & 탈퇴 예정 일자 조회
+     */
+    @GetMapping("/long/term")
+    public String getLongTermDate(HttpServletRequest request){
+        P_LongTermVo apiData = new P_LongTermVo(request);
+        String result = commonService.getLongTermDate(apiData);
+        return result;
+    }
+
 }
