@@ -69,9 +69,6 @@ public interface CommonDao {
     AdultCheckVo getMembirth(String mem_no);
 
     @Transactional(readOnly = true)
-    List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo);
-
-    @Transactional(readOnly = true)
     List<P_KingFanRankListVo> callBroadCastRoomRank3(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
