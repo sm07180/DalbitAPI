@@ -36,5 +36,5 @@ public class P_ClipMainLatestListVo {
     private int count_play;
     private int count_good;
     private int replyCnt;
-
+    
 }

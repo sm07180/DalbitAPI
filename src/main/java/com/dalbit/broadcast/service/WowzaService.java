@@ -732,6 +732,7 @@ public class WowzaService {
         return result;
     }
 
+
     public String getFanMemNoList(P_FanNumberVo pFanNumberVo){
         ProcedureVo procedureVo = new ProcedureVo(pFanNumberVo);
         memberDao.getFanMemNoList(procedureVo);

@@ -1724,6 +1724,12 @@ public enum Status {
     가산점조회_없음("0", "special.addpoint.select.no.success", "가산점 내역 없을 시"),
     가산점조회_회원아님("-1", "special.addpoint.select.member.number.error", "요청회원번호 회원 아닐 시"),
     가산점조회_실패("C006", "special.addpoint.select.fail", "가산점 조회 실패 시"),
+
+    //휴면 해제
+    휴면해제_성공("0", "member.sleep.return.success", "휴면 해제 성공 시"),
+    휴면해제_회원아님("-1", "member.sleep.return.member.number.error", "요청회원번호 회원 아닐 시"),
+    휴면해제_상태아님("-2", "member.sleep.return.no.sleep.state", "휴면상태가 아닐 시"),
+    휴면해제_실패("C006", "member.sleep.return.fail", "휴면 해제 실패 시"),
    ;
 
 

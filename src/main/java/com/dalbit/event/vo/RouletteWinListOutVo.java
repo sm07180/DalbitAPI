@@ -19,6 +19,8 @@ public class RouletteWinListOutVo {
     private ImageVo profImg;
     private String winDt;
     private long winTs;
+    private String itemName;
+    private String itemImageUrl;
 
     public RouletteWinListOutVo(P_RouletteWinListVo target){
         setMemNo(target.getMem_no());
@@ -29,5 +31,7 @@ public class RouletteWinListOutVo {
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setWinDt(DalbitUtil.getUTCFormat(target.getWin_date()));
         setWinTs(DalbitUtil.getUTCTimeStamp(target.getWin_date()));
+        setItemName(target.getItem_name());
+        setItemImageUrl(target.getItem_image_url());
     }
 }
