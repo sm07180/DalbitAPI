@@ -43,14 +43,21 @@ import java.util.regex.Pattern;
 public class DalbitUtil {
 
     private static Environment environment;
+    private static JwtUtil jwtUtil;
     private static CommonService commonService;
 
     @Autowired
     private Environment activeEnvironment;
+    @Autowired
+    private JwtUtil getJwtUtil;
+    @Autowired
+    private CommonService getCommonService;
 
     @PostConstruct
     private void init () {
         environment = this.activeEnvironment;
+        jwtUtil = this.getJwtUtil;
+        commonService = this.getCommonService;
     }
 
     public static String randomValue(String type, int cnt) {
