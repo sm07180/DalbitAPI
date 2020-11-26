@@ -52,14 +52,14 @@ public class ImageVo extends BaseVo{
     }
 
     public void setThumbs(){
-        this.thumb62x62 = url + "?62x62";
-        this.thumb80x80 = url + "?80x80";
-        this.thumb88x88 = url + "?88x88";
-        this.thumb120x120 = url + "?120x120";
-        this.thumb150x150 = url + "?150x150";
-        this.thumb190x190 = url + "?190x190";
-        this.thumb292x292 = url + "?292x292";
-        this.thumb336x336 = url + "?336x336";
-        this.thumb700x700 = url + "?700x700";
+        this.thumb62x62 = url + (this.url.endsWith("webp") ? "" : "?62x62");
+        this.thumb80x80 = url + (this.url.endsWith("webp") ? "" : "?80x80");
+        this.thumb88x88 = url + (this.url.endsWith("webp") ? "" : "?88x88");
+        this.thumb120x120 = url + (this.url.endsWith("webp") ? "" : "?120x120");
+        this.thumb150x150 = url + (this.url.endsWith("webp") ? "" : "?150x150");
+        this.thumb190x190 = url + (this.url.endsWith("webp") ? "" : "?190x190");
+        this.thumb292x292 = url + (this.url.endsWith("webp") ? "" : "?292x292");
+        this.thumb336x336 = url + (this.url.endsWith("webp") ? "" : "?336x336");
+        this.thumb700x700 = url + (this.url.endsWith("webp") ? "" : "?700x700");
     }
 }

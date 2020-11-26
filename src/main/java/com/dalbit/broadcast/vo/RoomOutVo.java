@@ -2,6 +2,7 @@ package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.PagingVo;
@@ -70,8 +71,17 @@ public class RoomOutVo {
     private int freezeMsg;
     private Boolean isExtend;
     private int imageType;
+    private Boolean isGoodMem;
 
     public RoomOutVo(P_RoomListVo target) {
+        setRoomOutVo(target, null);
+    }
+
+    public RoomOutVo(P_RoomListVo target, DeviceVo deviceVo) {
+        setRoomOutVo(target, deviceVo);
+    }
+
+    public void setRoomOutVo(P_RoomListVo target, DeviceVo deviceVo) {
 
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
@@ -92,7 +102,15 @@ public class RoomOutVo {
         this.bjGender = target.getBj_memSex();
         this.bjAge = DalbitUtil.ageCalculation(target.getBj_birthYear());
         if(target.getType_image() == 2){    //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
-            this.bjProfImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
+            if(deviceVo != null && target.getImage_background().toString().toLowerCase().endsWith(".gif")){
+                if(deviceVo.getOs() == 2 && DalbitUtil.versionCompare("14.0", deviceVo.getSdkVersion())){
+                    this.bjProfImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
+                }else{ //webp사용
+                    this.bjProfImg = new ImageVo(target.getImage_background().toString() + ".webp", DalbitUtil.getProperty("server.photo.url"));
+                }
+            }else{
+                this.bjProfImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
+            }
         }else{
             this.bjProfImg = new ImageVo(target.getBj_profileImage(), target.getBj_memSex(), DalbitUtil.getProperty("server.photo.url"));
         }
@@ -114,6 +132,7 @@ public class RoomOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
+        this.isGoodMem = target.getGoodMem() > 0 ? true : false;
     }
 
     public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap) {

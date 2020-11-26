@@ -71,7 +71,11 @@
                 , item_price        AS cost
                 , item_thumbnail    AS thumbs
                 , webp_image        AS webpUrl
+                , webp_file_name    AS webpFileName
                 , jason_image       AS lottieUrl
+                , jason_file_name   AS lottieFileName
+                , sound_url         AS soundFileUrl
+                , sound_file_name   AS soundFileName
                 , (CASE
                     WHEN use_area in ('1', '4') THEN 360
                     WHEN use_area = '2' THEN 108
@@ -115,7 +119,10 @@
                     ELSE 'normal'
                 END)AS category
                 , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
-                , IF(item_code = 'G1827', 'webp', 'lottie') AS iosSelectType
+                , (CASE
+                    WHEN item_code = 'G1827' OR jason_image IS NULL OR jason_image = '' THEN 'webp'
+                    ELSE 'lottie'
+                END) AS iosSelectType
                 , IF(item_code IN <foreach collection="visibilityDirects" item="v" open="(" close=")" separator=",">#{v}</foreach>, false, true) AS visibility
                 , @rownum := @rownum + 1 AS sortNo
         FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
@@ -206,6 +213,7 @@
                 , webp_image        AS webpUrl
                 , jason_image       AS lottieUrl
                 , byeol
+                , sound_url         AS soundFileUrl
         FROM rd_data.tbl_gift_item
         WHERE view_yn = 1
           AND item_code = #{value}
@@ -351,4 +359,9 @@
         call sp_member_sleep_withdrawal_date(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="getDownloadList" resultType="java.lang.String">
+        SELECT enterAni FROM tbl_badge_info WHERE enterAni IS NOT NULL
+        UNION
+        SELECT sound_url FROM tbl_gift_item WHERE sound_url IS NOT NULL
+    </select>
 </mapper>

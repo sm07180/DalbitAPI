@@ -7,6 +7,7 @@ import com.dalbit.clip.vo.request.ClipGiftRankTop3Vo;
 import com.dalbit.clip.vo.request.ClipMainSubjectTop3Vo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
@@ -22,6 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -43,6 +45,17 @@ public class ClipService {
     MypageService mypageService;
     @Autowired
     MemberDao memberDao;
+    @Autowired
+    CommonDao commonDao;
+
+    @Value("${item.direct.code}")
+    private String[] ITEM_DIRECT_CODE;
+    @Value("${item.direct.min}")
+    private int[] ITEM_DIRECT_MIN;
+    @Value("${item.direct.max}")
+    private int[] ITEM_DIRECT_MAX;
+    @Value("${item.direct.code.main}")
+    private String ITEM_DIRECT_CODE_MAIN;
 
     /**
      * 클립 등록(업로드)
@@ -380,6 +393,21 @@ public class ClipService {
      * 클립 선물하기
      */
     public String clipGift(P_ClipGiftVo pClipGiftVo) {
+        String item_code = pClipGiftVo.getItem_code();
+        boolean isDirect = false;
+        int directItemCnt = 1;
+        if(ITEM_DIRECT_CODE_MAIN.equals(pClipGiftVo.getItem_code())){ //직접선물하기 일경우 체크
+            isDirect = true;
+            for(int i = 0; i <  ITEM_DIRECT_MIN.length; i++){
+                if (ITEM_DIRECT_MIN[i] <= pClipGiftVo.getItem_cnt() && (ITEM_DIRECT_MAX[i] >= pClipGiftVo.getItem_cnt() || ITEM_DIRECT_MAX[i] == -1)) {
+                    item_code = ITEM_DIRECT_CODE[i];
+                    if(ITEM_DIRECT_MAX[i] == -1){
+                        directItemCnt = 2;
+                    }
+                    break;
+                }
+            }
+        }
         ProcedureVo procedureVo = new ProcedureVo(pClipGiftVo);
         clipDao.callClipGift(procedureVo);
 
@@ -387,6 +415,7 @@ public class ClipService {
         if(Status.클립_선물하기_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
+            ItemDetailVo item = commonDao.selectItem(item_code);
             returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
             returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
             returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
@@ -398,6 +427,10 @@ public class ClipService {
             returnMap.put("giftCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
             returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
             returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+            returnMap.put("itemCnt", isDirect ? 1 : pClipGiftVo.getItem_cnt());
+            returnMap.put("itemNo", item_code);
+            returnMap.put("itemType", isDirect ? "direct" : "items");
+            returnMap.put("repeatCnt", isDirect ? directItemCnt : (DalbitUtil.isEmpty(item.getSoundFileUrl()) ? pClipGiftVo.getItem_cnt() : pClipGiftVo.getItem_cnt() * 2));
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipGiftVo.getCast_no());
             P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
@@ -1128,6 +1161,35 @@ public class ClipService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.내클립조회_요청회원번호_정상아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.내클립조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 클립 재생 확인
+     */
+    public String callPlayConfirm(P_PlayConfirmVo pPlayConfirmVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pPlayConfirmVo);
+        clipDao.callPlayConfirm(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.재생확인_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_성공));
+        }else if(procedureVo.getRet().equals(Status.재생확인_요청회원번호_정상아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_요청회원번호_정상아님));
+        }else if(procedureVo.getRet().equals(Status.재생확인_클립번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_클립번호없음));
+        }else if(procedureVo.getRet().equals(Status.재생확인_번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_번호없음));
+        }else if(procedureVo.getRet().equals(Status.재생확인_클립번호_재생확인번호_불일치.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_클립번호_재생확인번호_불일치));
+        }else if(procedureVo.getRet().equals(Status.재생확인_이미확인.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_이미확인));
+        }else if(procedureVo.getRet().equals(Status.재생확인_60초미만.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_60초미만));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.재생확인_실패));
         }
         return result;
     }

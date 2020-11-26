@@ -314,14 +314,14 @@ public class WowzaService {
                 }
             }
 
-            //방송설정 입퇴장메시지 세팅 수정
+            //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 수정
             BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
             broadcastSettingEditVo.setDjListenerIn(roomCreateVo.getDjListenerIn());
             broadcastSettingEditVo.setDjListenerOut(roomCreateVo.getDjListenerOut());
             P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
             mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request);
 
-            //방송설정 입퇴장메시지 세팅 조회
+            //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 조회
             P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
             HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
 
@@ -336,6 +336,25 @@ public class WowzaService {
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("data", roomInfoVo);
+
+            //나를 스타로 등록한 팬들에게 PUSH 소켓연동
+            try{
+                HashMap socketMap = new HashMap();
+                socketMap.put("nickNm", roomInfoVo.getBjNickNm());
+                socketMap.put("profImg", target.getBjProfImg());
+                socketMap.put("roomNo", roomNo + "");
+                socketMap.put("msg", roomInfoVo.getBjNickNm()+"님이 방송을 시작했습니다.");
+
+                P_FanNumberVo fanNumberVo = new P_FanNumberVo();
+                fanNumberVo.setMem_no(new MemberVo().getMyMemNo(request));
+                String memNoStr = getFanMemNoList(fanNumberVo);
+                if(!DalbitUtil.isEmpty(memNoStr)){
+                    socketService.sendRoomCreate(new MemberVo().getMyMemNo(request), DalbitUtil.getProperty("socket.global.room"), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), memNoStr);
+                }
+            }catch(Exception e){
+                log.info("Socket Service Create Exception {}", e);
+            }
+
         } else if (procedureVo.getRet().equals(Status.방송생성_회원아님.getMessageCode())) {
             result.put("status", Status.방송생성_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송중인방존재.getMessageCode())) {
@@ -576,6 +595,7 @@ public class WowzaService {
         return getRoomInfo(target, null, request);
     }
     public RoomInfoVo getRoomInfo(RoomOutVo target, HashMap resultMap, HttpServletRequest request){
+        String memNo = MemberVo.getMyMemNo(request);
         RoomMemberInfoVo memberInfoVo = new RoomMemberInfoVo();
         if(!DalbitUtil.isEmpty(resultMap)){
             memberInfoVo.setRemainTime(DalbitUtil.getLongMap(resultMap, "remainTime"));
@@ -587,7 +607,7 @@ public class WowzaService {
             memberInfoVo.isLike(DalbitUtil.isLogin(request) ? "1".equals(DalbitUtil.getStringMap(resultMap, "isGood")) : true);
         }
         memberInfoVo.setHashStory(false);
-        memberInfoVo.setUseBoost(roomService.existsBoostByRoom(target.getRoomNo(), MemberVo.getMyMemNo(request)));
+        memberInfoVo.setUseBoost(roomService.existsBoostByRoom(target.getRoomNo(), memNo));
         HashMap fanRankMap = commonService.getKingFanRankList(target.getRoomNo());
         memberInfoVo.setFanRank((List)fanRankMap.get("list"));
         try{
@@ -614,13 +634,13 @@ public class WowzaService {
             memberInfoVo.setFanBadgeList(liveBadgeList);
         }
 
-        //방송설정 입퇴장메시지 세팅 조회
+        //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 조회
         P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
         HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
 
         //출석체크 완료 여부 조회
         P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo(request);
-        attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
+        attendanceCheckVo.setMem_no(memNo);
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
@@ -684,8 +704,18 @@ public class WowzaService {
             String roomNo = DalbitUtil.isNullToString(resultMap.get("room_no"));
             RoomTokenVo roomTokenVo = new RoomTokenVo();
             roomTokenVo.setRoomNo(roomNo);
-            return getBroadcast(roomTokenVo, request);
-
+            HashMap roomInfo = getBroadcast(roomTokenVo, request);
+            if(roomInfo.containsKey("data")){
+                RoomInfoVo roomInfoVo = (RoomInfoVo)roomInfo.get("data");
+                if(!DalbitUtil.isEmpty(roomInfoVo)){
+                    SocketVo vo = socketService.getSocketVo(roomInfoVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                    try{
+                        socketService.roomChangeTime(roomInfoVo.getRoomNo(), roomInfoVo.getBjMemNo(), DalbitUtil.getStringMap(resultMap, "extendEndDate"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                        vo.resetData();
+                    }catch(Exception e){}
+                }
+            }
+            return roomInfo;
         }else if(procedureVo.getRet().equals(Status.이어하기_회원아님.getMessageCode())){
             result.put("status", Status.이어하기_회원아님);
         }else if(procedureVo.getRet().equals(Status.이어하기_방없음.getMessageCode())){
@@ -702,4 +732,11 @@ public class WowzaService {
         return result;
     }
 
+    public String getFanMemNoList(P_FanNumberVo pFanNumberVo){
+        ProcedureVo procedureVo = new ProcedureVo(pFanNumberVo);
+        memberDao.getFanMemNoList(procedureVo);
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        String memNoStr = DalbitUtil.getStringMap(resultMap, "memNoList");
+        return memNoStr;
+    }
 }

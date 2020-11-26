@@ -36,11 +36,15 @@ public class P_MypageNoticeSelectVo {
     private Long noticeIdx;
     private String title;
     private String contents;
+    private String imagePath;
     private int topFix;
     private Date writeDate;
 
     private String nickName;
     private String memSex;
     private String profileImage;
+
+    // 2020.11.10 강다인. 댓글 추가
+    private int replyCnt;
 
 }

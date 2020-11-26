@@ -25,4 +25,5 @@ public class MypageNoticeEditVo {
     private Integer noticeIdx;
 
     private String isTop;
+    private String imagePath;
 }

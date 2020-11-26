@@ -399,8 +399,39 @@ public class MypageService {
         mypageDao.callMemberNotifyEdit(procedureVo);
 
         String result;
+        Status status = null;
         if(procedureVo.getRet().equals(Status.알림설정수정_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림설정수정_성공));
+            if("n".equals(pMemberNotifyEditVo.getAlim_slct())){
+                status =Status.알림무음;
+            }else if("s".equals(pMemberNotifyEditVo.getAlim_slct())){
+                status =Status.알림소리;
+            }else if("v".equals(pMemberNotifyEditVo.getAlim_slct())){
+                status =Status.알림진동;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getAll_ok())){
+                status = pMemberNotifyEditVo.getAll_ok() == 1 ? Status.전제알림수신_ON : Status.전제알림수신_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_1())){
+                status = pMemberNotifyEditVo.getSet_1() == 1 ? Status.마이스타방송시작_ON : Status.마이스타방송시작_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_9())){
+                status = pMemberNotifyEditVo.getSet_9() == 1 ? Status.마이스타클립등록_ON : Status.마이스타클립등록_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_2())){
+                status = pMemberNotifyEditVo.getSet_2() == 1 ? Status.마이스타방송공지_ON : Status.마이스타방송공지_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_10())){
+                status = pMemberNotifyEditVo.getSet_10() == 1 ? Status.내클립_ON : Status.내클립_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_3())){
+                status = pMemberNotifyEditVo.getSet_3() == 1 ? Status.신규팬추가_ON : Status.신규팬추가_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_4())){
+                status = pMemberNotifyEditVo.getSet_4() == 1 ? Status.팬보드신규글등록_ON : Status.팬보드신규글등록_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_8())){
+                status = pMemberNotifyEditVo.getSet_8() == 1 ? Status.팬보드댓글등록_ON : Status.팬보드댓글등록_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_5())){
+                status = pMemberNotifyEditVo.getSet_5() == 1 ? Status.선물도착_ON : Status.선물도착_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_6())){
+                status = pMemberNotifyEditVo.getSet_6() == 1 ? Status.일대일문의답변도착_ON : Status.일대일문의답변도착_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_7())){
+                status = pMemberNotifyEditVo.getSet_7() == 1 ? Status.서비스알림_ON : Status.서비스알림_OFF;
+            }
+
+            result = gsonUtil.toJson(new JsonOutputVo(status));
         }else if(procedureVo.getRet().equals(Status.알림설정수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.알림설정수정_회원아님));
         }else{
@@ -620,12 +651,27 @@ public class MypageService {
     /**
      * 마이페이지 공지사항 등록
      */
-    public String callMypageNoticeAdd(P_MypageNoticeAddVo pMypageNoticeAddVo) {
+    public String callMypageNoticeAdd(P_MypageNoticeAddVo pMypageNoticeAddVo, HttpServletRequest request) throws GlobalException {
+        Boolean isDone = false;
+        String addFile = pMypageNoticeAddVo.getImagePath();
+
+        if(!DalbitUtil.isEmpty(addFile) && addFile.startsWith(Code.포토_마이페이지공지_임시_PREFIX.getCode())){
+            isDone = true;
+            addFile = DalbitUtil.replacePath(addFile);
+        }
+
+        pMypageNoticeAddVo.setImagePath(addFile);
+
         ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeAddVo);
         mypageDao.callMypageNoticeAdd(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.공지등록_성공.getMessageCode())) {
+            if(isDone) {
+                if(!DalbitUtil.isEmpty(pMypageNoticeAddVo.getImagePath())) {
+                    restService.imgDone(DalbitUtil.replaceDonePath(pMypageNoticeAddVo.getImagePath()), request);
+                }
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
         }else if(procedureVo.getRet().equals(Status.공지등록_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지등록_요청회원번호_회원아님));
@@ -645,12 +691,26 @@ public class MypageService {
     /**
      * 마이페이지 공지사항 수정
      */
-    public String callMypageNoticeEdit(P_MypageNoticeEditVo pMypageNoticeEditVo) {
+    public String callMypageNoticeEdit(P_MypageNoticeEditVo pMypageNoticeEditVo, HttpServletRequest request) throws GlobalException {
+        Boolean isDone = false;
+        String addFile = pMypageNoticeEditVo.getImagePath();
+
+        if(!DalbitUtil.isEmpty(addFile) && addFile.startsWith(Code.포토_마이페이지공지_임시_PREFIX.getCode())){
+            isDone = true;
+            addFile = DalbitUtil.replacePath(addFile);
+        }
+
+        pMypageNoticeEditVo.setImagePath(addFile);
         ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeEditVo);
         mypageDao.callMypageNoticeEdit(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.공지수정_성공.getMessageCode())) {
+            if(isDone) {
+                if(!DalbitUtil.isEmpty(pMypageNoticeEditVo.getImagePath())) {
+                    restService.imgDone(DalbitUtil.replaceDonePath(pMypageNoticeEditVo.getImagePath()), request);
+                }
+            }
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
         }else if(procedureVo.getRet().equals(Status.공지수정_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지수정_요청회원번호_회원아님));
@@ -739,6 +799,137 @@ public class MypageService {
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
         }
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 등록
+     */
+    public String callMyPageNoticeReplyAdd(P_MypageNoticeReplyAddVo pMypageNoticeReplyAddVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeReplyAddVo);
+        mypageDao.callMyPageNoticeReplyAdd(procedureVo);
+
+        String result="";
+
+        if (Status.공지댓글등록_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_성공));
+        } else if (Status.공지댓글등록_공지회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_공지회원번호없음));
+        } else if(Status.공지댓글등록_작성자회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_작성자회원번호없음));
+        } else if(Status.공지댓글등록_공지번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_공지번호없음));
+        } else if(Status.공지댓글등록_댓글내용없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_댓글내용없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 삭제
+     */
+    public String callMyPageNoticeReplyDelete(P_MypageNoticeReplyDeleteVo pMypageNoticeReplyDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeReplyDeleteVo);
+        mypageDao.callMyPageNoticeReplyDelete(procedureVo);
+
+        String result="";
+
+        if (Status.공지댓글삭제_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_성공));
+        } else if (Status.공지댓글삭제_공지회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_공지회원번호없음));
+        } else if(Status.공지댓글삭제_삭제자회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_삭제자회원번호없음));
+        } else if(Status.공지댓글삭제_댓글번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_댓글번호없음));
+        } else if(Status.공지댓글삭제_댓글번호등록공지불일치.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_댓글번호등록공지불일치));
+        } else if(Status.공지댓글삭제_이미삭제됨.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_이미삭제됨));
+        } else if(Status.공지댓글삭제_삭제권한없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_삭제권한없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 수정
+     */
+    public String callMyPageNoticeReplyEdit(P_MypageNoticeReplyEditVo pMypageNoticeReplyEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeReplyEditVo);
+        mypageDao.callMyPageNoticeReplyEdit(procedureVo);
+
+        String result;
+        if (Status.공지댓글수정_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_성공));
+        } else if (Status.공지댓글수정_공지회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_공지회원번호없음));
+        } else if(Status.공지댓글수정_수정자회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_수정자회원번호없음));
+        } else if(Status.공지댓글수정_댓글번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_댓글번호없음));
+        } else if(Status.공지댓글수정_댓글번호등록공지불일치.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_댓글번호등록공지불일치));
+        } else if(Status.공지댓글수정_삭제된댓글.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_삭제된댓글));
+        } else if(Status.공지댓글수정_수정권한없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_수정권한없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 보기
+     */
+    public String callMyPageNoticeReplySelect(P_MypageNoticeReplyListVo pMypageNoticeReplyListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeReplyListVo);
+        List<P_MypageNoticeReplyListVo> replyVoList = mypageDao.callMyPageNoticeReplySelect(procedureVo);
+
+        HashMap replyList = new HashMap();
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        if(DalbitUtil.isEmpty(replyVoList)) {
+            replyList.put("list", new ArrayList<>());
+            replyList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), pMypageNoticeReplyListVo.getPageNo(), pMypageNoticeReplyListVo.getPageCnt()));
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_댓글없음, replyList));
+        }
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            List<MypageNoticeReplyListOutVo> outVoList = new ArrayList<>();
+            BanWordVo banWordVo = new BanWordVo();
+            banWordVo.setMemNo(pMypageNoticeReplyListVo.getStar_mem_no());
+            String systemBanWord = commonService.banWordSelect();
+            String banWord = commonService.broadcastBanWordSelect(banWordVo);
+            for(int i=0; i<replyVoList.size(); i++) {
+                //사이트+방송방 금지어 조회 마이페이지 공지 댓글 내용 마스킹 처리
+                if(!DalbitUtil.isEmpty(banWord)) {
+                    replyVoList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, replyVoList.get(i).getContents()));
+                } else if(!DalbitUtil.isEmpty(systemBanWord)) {
+                    replyVoList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, replyVoList.get(i).getContents()));
+                }
+                outVoList.add(new MypageNoticeReplyListOutVo(replyVoList.get(i)));
+            }
+            replyList.put("list", outVoList);
+            replyList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_성공, replyList));
+        } else if(Status.공지댓글보기_회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_회원번호없음));
+        } else if(Status.공지댓글보기_공지회원번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_회원번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_실패));
+        }
+
         return result;
     }
 

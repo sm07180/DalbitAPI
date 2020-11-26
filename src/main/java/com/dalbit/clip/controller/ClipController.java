@@ -340,4 +340,15 @@ public class ClipController {
     }
 
 
+    /**
+     * 클립 재생 확인
+     */
+    @PostMapping("/play/confirm")
+    public String playConfirm(@Valid PlayConfirmVo playConfirmVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_PlayConfirmVo apiData = new P_PlayConfirmVo(playConfirmVo, request);
+        String result = clipService.callPlayConfirm(apiData);
+        return result;
+    }
+
 }

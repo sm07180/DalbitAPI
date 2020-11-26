@@ -38,4 +38,7 @@ public class P_RoomRecommandListVo {
     private Date start_date;
     private int badge_special;
     private String nickName;
+    private int imageType;
+    private String bj_profileImage;
+    private String bj_memSex;
 }

@@ -113,7 +113,7 @@ public class RoomController {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_RoomListVo apiData = new P_RoomListVo(roomListVo, request);
-        String result = roomService.callBroadCastRoomList(apiData);
+        String result = roomService.callBroadCastRoomList(apiData, request);
 
         return result;
     }

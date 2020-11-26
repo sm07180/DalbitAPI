@@ -98,5 +98,9 @@
         call sp_cast_main_myclip(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callPlayConfirm" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_cast_room_play_confirm(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 
 </mapper>

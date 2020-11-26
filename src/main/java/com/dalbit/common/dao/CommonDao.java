@@ -77,4 +77,7 @@ public interface CommonDao {
     List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo);
 
     ProcedureVo getLongTermDate(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<String> getDownloadList();
 }

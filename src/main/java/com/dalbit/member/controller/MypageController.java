@@ -303,7 +303,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MypageNoticeAddVo apiData = new P_MypageNoticeAddVo(mypageNoticeAddVo, request);
 
-        String result = mypageService.callMypageNoticeAdd(apiData);
+        String result = mypageService.callMypageNoticeAdd(apiData, request);
 
         return result;
     }
@@ -317,7 +317,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MypageNoticeEditVo apiData = new P_MypageNoticeEditVo(mypageNoticeEditVo, request);
 
-        String result = mypageService.callMypageNoticeEdit(apiData);
+        String result = mypageService.callMypageNoticeEdit(apiData, request);
 
         return result;
     }
@@ -350,6 +350,64 @@ public class MypageController {
 
         return result;
     }
+
+    /**
+     * 마이페이지 공지사항 댓글 등록
+     */
+    @PostMapping("/notice/reply/add")
+    public String noticeReplyAdd(@Valid MypageNoticeReplyAddVo mypageNoticeReplyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MypageNoticeReplyAddVo apiData = new P_MypageNoticeReplyAddVo(mypageNoticeReplyAddVo, request);
+
+        String result = mypageService.callMyPageNoticeReplyAdd(apiData);
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 삭제
+     */
+    @PostMapping("/notice/reply/delete")
+    public String noticeReplyDelete(@Valid MypageNoticeReplyDeleteVo mypageNoticeReplyDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MypageNoticeReplyDeleteVo apiData = new P_MypageNoticeReplyDeleteVo(mypageNoticeReplyDeleteVo, request);
+
+        String result = mypageService.callMyPageNoticeReplyDelete(apiData);
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 수정
+     */
+    @PostMapping("/notice/reply/edit")
+    public String noticeReplyEdit(@Valid MypageNoticeReplyEditVo mypageNoticeReplyEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MypageNoticeReplyEditVo apiData = new P_MypageNoticeReplyEditVo(mypageNoticeReplyEditVo, request);
+
+        String result = mypageService.callMyPageNoticeReplyEdit(apiData);
+
+        return result;
+    }
+
+    /**
+     * 마이페이지 공지사항 댓글 보기
+     */
+    @PostMapping("/notice/reply/list")
+    public String noticeReplyList(@Valid MypageNoticeReplyListVo mypageNoticeReplyListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MypageNoticeReplyListVo apiData = new P_MypageNoticeReplyListVo(mypageNoticeReplyListVo, request);
+
+        String result = mypageService.callMyPageNoticeReplySelect(apiData);
+
+        return result;
+    }
+
+
 
     /**
      * 마이페이지 리포트 방송내역 보기

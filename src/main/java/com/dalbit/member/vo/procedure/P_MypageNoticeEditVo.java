@@ -18,6 +18,7 @@ public class P_MypageNoticeEditVo {
         setNoticeIdx(mypageNoticeEditVo.getNoticeIdx());
         setTitle(mypageNoticeEditVo.getTitle());
         setContents(mypageNoticeEditVo.getContents());
+        setImagePath(mypageNoticeEditVo.getImagePath());
         setTopFix(topFix);
     }
 
@@ -26,6 +27,7 @@ public class P_MypageNoticeEditVo {
     private Integer noticeIdx;
     private String title;
     private String contents;
+    private String imagePath;
     private int topFix;
 
 }

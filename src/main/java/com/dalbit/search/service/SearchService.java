@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -99,7 +100,7 @@ public class SearchService {
     /**
      * 방송방 추천 리스트(이 방송 어때요?)
      */
-    public String callRoomRecommandList(P_RoomRecommandListVo pRoomRecommandListVo) {
+    public String callRoomRecommandList(P_RoomRecommandListVo pRoomRecommandListVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomRecommandListVo);
         List<P_RoomRecommandListVo> roomRecommandList = searchDao.callRoomRecommandList(procedureVo);
 
@@ -112,7 +113,7 @@ public class SearchService {
         }
         List<RoomRecommandListOutVo> outVoList = new ArrayList<>();
         for (int i=0; i<roomRecommandList.size(); i++){
-            outVoList.add(new RoomRecommandListOutVo(roomRecommandList.get(i)));
+            outVoList.add(new RoomRecommandListOutVo(roomRecommandList.get(i), request));
         }
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);

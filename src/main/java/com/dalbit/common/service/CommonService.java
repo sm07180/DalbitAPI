@@ -27,6 +27,7 @@ import com.nimbusds.jwt.SignedJWT;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import net.minidev.json.JSONObject;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
@@ -141,10 +142,14 @@ public class CommonService {
         itemIsNew.put("normal", false);
         itemIsNew.put("combo", false);
         itemIsNew.put("emotion", false);
+
         if(!DalbitUtil.isEmpty(items)){
-            for(ItemVo item : items){
-                if(item.isNew()){
-                    itemIsNew.put(item.getCategory(), true);
+            for(int i = 0; i < items.size(); i++){
+                if(deviceVo.getOs() == 3){
+                    items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
+                }
+                if(items.get(i).isNew()){
+                    itemIsNew.put(items.get(i).getCategory(), true);
                 }
             }
         }
@@ -234,6 +239,11 @@ public class CommonService {
             resultMap.put("giftDalByRoomDirect", true);
         }
         resultMap.put("itemRepeat", true);
+        List<String> downloadList = commonDao.getDownloadList();
+        if(DalbitUtil.isEmpty(downloadList)){
+            downloadList = new ArrayList<>();
+        }
+        resultMap.put("downloadList", downloadList);
 
         return resultMap;
     }

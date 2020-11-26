@@ -251,4 +251,12 @@
         select count(*) from rd_admin.tb_special_dj where mem_no=#{mem_no} and date_format(now(), '%Y%m') >= concat(select_year, select_month);
     </select>
 
+    <select id="getFanMemNoList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fan_no_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="getSpecialPointList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_SpecialPointListVo">
+        call sp_member_specialdj_addpoint_popup(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

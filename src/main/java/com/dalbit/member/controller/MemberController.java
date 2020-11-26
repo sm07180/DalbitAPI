@@ -385,4 +385,16 @@ public class MemberController {
         String result = memberService.getSpecialHistory(apiData, request);
         return result;
     }
+
+
+    /**
+     * 스페셜DJ 선발 누적 가산점 조회
+     */
+    @GetMapping("/member/special/point/list")
+    public String getSpecialPointList(@Valid SpecialPointListVo specialPointListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_SpecialPointListVo apiData = new P_SpecialPointListVo(specialPointListVo);
+        String result = memberService.getSpecialPointList(apiData);
+        return result;
+    }
 }

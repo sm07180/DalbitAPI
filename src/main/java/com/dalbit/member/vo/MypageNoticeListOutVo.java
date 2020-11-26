@@ -17,6 +17,10 @@ public class MypageNoticeListOutVo {
     private Long writeTs;
     private String nickNm;
     private ImageVo profImg;
+    private String imagePath;
+
+    // 2020.11.10 강다인. 댓글 추가
+    private int replyCnt;
 
     public MypageNoticeListOutVo(P_MypageNoticeSelectVo target) {
         setNoticeIdx(target.getNoticeIdx());
@@ -26,6 +30,8 @@ public class MypageNoticeListOutVo {
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
         setNickNm(target.getNickName());
+        setImagePath(target.getImagePath());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        setReplyCnt(target.getReplyCnt());
     }
 }

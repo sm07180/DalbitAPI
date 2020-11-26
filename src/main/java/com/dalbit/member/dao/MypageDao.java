@@ -47,6 +47,15 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
 
+    ProcedureVo callMyPageNoticeReplyAdd(ProcedureVo procedureVo);
+
+    ProcedureVo callMyPageNoticeReplyDelete(ProcedureVo procedureVo);
+
+    ProcedureVo callMyPageNoticeReplyEdit(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_MypageNoticeReplyListVo> callMyPageNoticeReplySelect(ProcedureVo procedureVo);
+
     @Transactional(readOnly = true)
     List<P_MypageReportBroadVo> callMypageMypageReportBroad(ProcedureVo procedureVo);
 

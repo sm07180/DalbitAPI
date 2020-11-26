@@ -12,7 +12,11 @@ public class ItemVo {
     private int cost;
     private String thumbs;
     private String webpUrl;
+    private String webpFileName;
     private String lottieUrl;
+    private String lottieFileName;
+    private String soundFileUrl;
+    private String soundFileName;
     private int width;
     private int height;
     private double deviceRate;

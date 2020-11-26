@@ -16,6 +16,7 @@ public class P_MypageNoticeAddVo {
         setMem_no(new MemberVo().getMyMemNo(request));
         setTarget_mem_no(mypageNoticeAddVo.getMemNo());
         setContents(mypageNoticeAddVo.getContents());
+        setImagePath(mypageNoticeAddVo.getImagePath());
         setTitle(mypageNoticeAddVo.getTitle());
         setTopFix(topFix);
 
@@ -25,5 +26,6 @@ public class P_MypageNoticeAddVo {
     private String target_mem_no;
     private String title;
     private String contents;
+    private String imagePath;
     private int topFix;
 }

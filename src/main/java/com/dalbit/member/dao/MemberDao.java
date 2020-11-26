@@ -67,4 +67,8 @@ public interface MemberDao {
     @Transactional(readOnly = true)
     int getSpecialCnt(P_SpecialDjHistoryVo pSpecialHistoryVo);
 
+    @Transactional(readOnly = true)
+    ProcedureVo getFanMemNoList(ProcedureVo procedureVo);
+
+    List<P_SpecialPointListVo> getSpecialPointList(ProcedureVo procedureVo);
 }

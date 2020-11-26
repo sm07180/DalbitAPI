@@ -27,7 +27,7 @@ public class AuthenticationFailureHandlerImpl implements AuthenticationFailureHa
         Status status = ((CustomUsernameNotFoundException) exception).getStatus();
         Object data = ((CustomUsernameNotFoundException) exception).getData();
 
-        log.debug("로그인 실패 : {}" + MemberVo.getMyMemNo(request));
+        log.debug("로그인 실패 : {}", MemberVo.getMyMemNo(request));
         log.debug("status : {}", status);
         log.debug("data : {}", data);
 

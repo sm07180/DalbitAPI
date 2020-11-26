@@ -815,6 +815,7 @@ public class SocketService {
         String itemThumbs = item.getThumbs();
         itemMap.put("itemNm", itemNm);
         itemMap.put("itemCnt", 1);
+        itemMap.put("repeatCnt", 1);
         itemMap.put("itemImg", itemThumbs);
         itemMap.put("isSecret", false);
         itemMap.put("itemType", "levelUp");
@@ -981,6 +982,24 @@ public class SocketService {
             vo.setMemNo(memNo);
             vo.setLogin(isLogin ? 1 : 0);
             vo.setCommand("reqRoomLock");
+            vo.setMessage(message);
+
+            log.info("Socket vo to Query String: {}",vo.toQueryString());
+            sendSocketApi(authToken, roomNo, vo.toQueryString());
+        }
+    }
+
+    @Async("threadTaskExecutor")
+    public void sendRoomCreate(String memNo, String roomNo, Object message, String authToken, boolean isLogin, String memNoStr) {
+        log.info("Socket Start : changeRoomFreeze {}, {}, {}", memNo, message, isLogin);
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+        if(!"".equals(memNo) && !"".equals(authToken)){
+            SocketVo vo = new SocketVo();
+            vo.setMemNo(memNo);
+            vo.setLogin(isLogin ? 1 : 0);
+            vo.setCommand("reqSocketPush");
+            vo.setRecvMemNo(memNoStr);
             vo.setMessage(message);
 
             log.info("Socket vo to Query String: {}",vo.toQueryString());

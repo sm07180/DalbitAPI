@@ -78,6 +78,22 @@
         call sp_member_broadcast_notice_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMyPageNoticeReplyAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_notice_reply_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMyPageNoticeReplyDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_notice_reply_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMyPageNoticeReplyEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_broadcast_notice_reply_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMyPageNoticeReplySelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_MypageNoticeReplyListVo">
+        call sp_member_broadcast_notice_reply_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="callMypageMypageReportBroad" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MypageReportBroadVo">
         call sp_member_broadcast_broadcasting_report(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
@@ -370,43 +386,49 @@
         SELECT
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{myMemNo} AND STATUS &lt;&gt; 2 AND idx &gt; #{fanBoard} AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
+                    (SELECT COUNT(*) FROM tb_member_fanboard WHERE mem_no = #{myMemNo} AND STATUS &lt;&gt; 2 AND idx &gt; #{fanBoard} AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
                 ELSE
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_fanboard WHERE mem_no = #{targetMemNo} AND STATUS &lt;&gt; 2 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
+                    (SELECT COUNT(*) FROM tb_member_fanboard WHERE mem_no = #{targetMemNo} AND STATUS &lt;&gt; 2 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
             END) AS fanBoard,
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
-                    FALSE
+                    0
                 ELSE
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_broadcast_notice WHERE mem_no = #{targetMemNo} AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+                    (SELECT COUNT(*) FROM tb_member_broadcast_notice WHERE mem_no = #{targetMemNo} AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
             END)AS broadNotice,
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_wallet_ruby WHERE mem_no = #{myMemNo} AND idx &gt; #{dal} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0)
-                ELSE FALSE
+                    (SELECT COUNT(*) FROM tb_member_wallet_ruby WHERE mem_no = #{myMemNo} AND idx &gt; #{dal} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0)
+                ELSE 0
             END) AS dal,
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_member_wallet_gold WHERE mem_no = #{myMemNo} and idx &gt; #{byeol} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0)
-                ELSE FALSE
+                    (SELECT COUNT(*) FROM tb_member_wallet_gold WHERE mem_no = #{myMemNo} and idx &gt; #{byeol} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0)
+                ELSE 0
             END) AS byeol,
             <if test = 'notice == null or notice == ""'>
-                (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
             </if>
             <if test = 'notice != null and notice != ""'>
-                (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 AND idx NOT IN (${notice}))
+                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 AND idx NOT IN (${notice}))
             </if>
             AS notice,
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
             <if test = 'qna == null or qna == ""'>
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7)
+                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7)
             </if>
             <if test = 'qna != null and qna != ""'>
-                    (SELECT IF(count(*) > 0, TRUE, FALSE) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7 AND idx NOT IN (CONCAT('', ${qna})))
+                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7 AND idx NOT IN (CONCAT('', ${qna})))
             </if>
-                ELSE FALSE
-            END) AS qna
+                ELSE 0
+            END) AS qna,
+            (CASE
+                WHEN #{myMemNo} = #{targetMemNo} THEN
+                    (SELECT COUNT(*) FROM tb_member_notification WHERE mem_no = #{mem_no} AND read_yn = 0)
+                ELSE
+                    0
+            END) AS alarm
     </select>
 
     <select id="selectMyPageFanBoard" parameterType="String" resultType="Long">

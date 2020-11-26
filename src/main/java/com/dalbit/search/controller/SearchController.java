@@ -66,7 +66,7 @@ public class SearchController {
     public String roomRecommandList(@Valid RoomRecommandListVo roomRecommandListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
          DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
          P_RoomRecommandListVo apiData = new P_RoomRecommandListVo(roomRecommandListVo, request);
-         String result = searchService.callRoomRecommandList(apiData);
+         String result = searchService.callRoomRecommandList(apiData, request);
          return result;
      }
 }

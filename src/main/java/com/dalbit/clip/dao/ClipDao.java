@@ -70,4 +70,6 @@ public interface ClipDao {
 
     @Transactional(readOnly = true)
     ProcedureVo callMyClip(ProcedureVo procedureVo);
+
+    ProcedureVo callPlayConfirm(ProcedureVo procedureVo);
 }

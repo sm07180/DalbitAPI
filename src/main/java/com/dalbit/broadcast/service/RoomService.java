@@ -342,7 +342,7 @@ public class RoomService {
      * 방송방 리스트
      */
     @Transactional(readOnly = true)
-    public String callBroadCastRoomList(P_RoomListVo pRoomListVo){
+    public String callBroadCastRoomList(P_RoomListVo pRoomListVo, HttpServletRequest request){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         long st = (new Date()).getTime();
         List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
@@ -358,6 +358,7 @@ public class RoomService {
         List<RoomOutVo> outVoList = new ArrayList<>();
         BanWordVo banWordVo = new BanWordVo();
         String systemBanWord = commonService.banWordSelect();
+        DeviceVo deviceVo = new DeviceVo(request);
         for (int i=0; i<roomVoList.size(); i++){
             if(!DalbitUtil.isEmpty(roomVoList.get(i).getNotice())){
                 //사이트+방송방 금지어 조회 공지사항 마스킹처리 목록에서 사용하지 않아 주석 처리
@@ -369,7 +370,7 @@ public class RoomService {
                     roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord, roomVoList.get(i).getNotice()));
                 }
             }
-            outVoList.add(new RoomOutVo(roomVoList.get(i)));
+            outVoList.add(new RoomOutVo(roomVoList.get(i), deviceVo));
         }
         log.debug("set list time {} ms", ((new Date()).getTime() - st));
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);

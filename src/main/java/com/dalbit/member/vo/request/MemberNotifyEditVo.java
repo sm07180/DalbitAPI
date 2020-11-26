@@ -10,40 +10,40 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class MemberNotifyEditVo {
     /*@NotNull(message = "{\"ko_KR\" : \"전체 알림을\"}")*/
-    private int isAll;
+    private Integer isAll;
 
     /*@NotNull(message = "{\"ko_KR\" : \"DJ 알림을\"}")*/
-    private int isMyStar;
+    private Integer isMyStar;
 
     /*@NotNull(message = "{\"ko_KR\" : \"선물 알림을\"}")*/
-    private int isGift;
+    private Integer isGift;
 
     /*@NotNull(message = "{\"ko_KR\" : \"팬 알림을\"}")*/
-    private int isFan;
+    private Integer isFan;
 
     /*@NotNull(message = "{\"ko_KR\" : \"팬보드 알림을\"}")*/
-    private int isComment;
+    private Integer isComment;
 
     /*@NotNull(message = "{\"ko_KR\" : \"공지 알림을\"}")*/
-    private int isRadio;
+    private Integer isRadio;
 
     /*@NotNull(message = "{\"ko_KR\" : \"푸쉬 알림을\"}")*/
-    private int isPush;
+    private Integer isPush;
 
     /*@NotNull(message = "{\"ko_KR\" : \"좋아요 알림을\"}")*/
-    private int isLike;
+    private Integer isLike;
 
     /*@NotNull(message = "{\"ko_KR\" : \"팬보드 댓글 알림을\"}")*/
-    private int isReply;
+    private Integer isReply;
 
     /*@NotNull(message = "{\"ko_KR\" : \"마이스타 클립 등록 알림을\"}")*/
-    private int isStarClip;
+    private Integer isStarClip;
 
     /*@NotNull(message = "{\"ko_KR\" : \"내클립 알림을\"}")*/
-    private int isMyClip;
+    private Integer isMyClip;
 
-    @NotBlank(message = "{\"ko_KR\" : \"알림음을\"}")
-    @NotNull(message = "{\"ko_KR\" : \"알림음을\"}")
+    /*@NotBlank(message = "{\"ko_KR\" : \"알림음을\"}")
+    @NotNull(message = "{\"ko_KR\" : \"알림음을\"}")*/
     private String alimType;    //알림음구분(n:무음,s:소리,v:진동)
 
 }
