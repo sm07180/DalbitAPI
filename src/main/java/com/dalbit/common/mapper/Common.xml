@@ -360,8 +360,8 @@
     </select>
 
     <select id="getDownloadList" resultType="java.lang.String">
-        SELECT enterAni FROM tbl_badge_info WHERE enterAni IS NOT NULL
+        SELECT enterAni FROM tbl_badge_info WHERE enterAni IS NOT NULL AND enterAni != ''
         UNION
-        SELECT sound_url FROM tbl_gift_item WHERE sound_url IS NOT NULL
+        SELECT sound_url FROM tbl_gift_item WHERE sound_url IS NOT NULL AND sound_url != ''
     </select>
 </mapper>
