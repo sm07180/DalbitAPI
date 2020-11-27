@@ -908,13 +908,19 @@ public class MypageController {
         return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), resultMap.get("data")));
     }
 
+    /**
+     * 사연 모아보기
+     */
     @GetMapping("/story")
     public String broadStoryList(@Valid StoryVo storyVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         HashMap resultMap = mypageService.callMemberBoardStory(storyVo, request);
+        HashMap returnMap = new HashMap<>();
+        returnMap.put("data", resultMap.get("data"));
+        returnMap.put("paging", resultMap.get("paging"));
 
-        return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), resultMap.get("data")));
+        return gsonUtil.toJson(new JsonOutputVo((Status) resultMap.get("status"), returnMap));
     }
 
 

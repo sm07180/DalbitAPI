@@ -2269,11 +2269,13 @@ public class MypageService {
                 result.put("status", Status.방송방사연_조회_없음);
             }else{
                 result.put("status", Status.방송방사연_조회_성공);
+                DeviceVo deviceVo = new DeviceVo(request);
                 for(P_StoryVo data : storyList){
                     outList.add(new StoryOutVo(data, DalbitUtil.getProperty("server.photo.url")));
                 }
             }
             result.put("data", outList);
+            result.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), storyVo.getPage(), storyVo.getRecords()));
         }
 
         return result;
