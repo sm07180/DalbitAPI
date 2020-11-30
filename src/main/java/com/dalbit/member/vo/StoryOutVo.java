@@ -4,7 +4,11 @@ import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.member.vo.procedure.P_StoryVo;
 import com.dalbit.util.DalbitUtil;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
+@Getter @Setter @ToString
 public class StoryOutVo {
     private String roomNo;
     private String title;
