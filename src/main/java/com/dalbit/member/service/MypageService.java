@@ -2271,7 +2271,7 @@ public class MypageService {
                 result.put("status", Status.방송방사연_조회_성공);
                 DeviceVo deviceVo = new DeviceVo(request);
                 for(P_StoryVo data : storyList){
-                    outList.add(new StoryOutVo(data, DalbitUtil.getProperty("server.photo.url")));
+                    outList.add(new StoryOutVo(data, DalbitUtil.getProperty("server.photo.url"), deviceVo));
                 }
             }
             result.put("data", outList);
