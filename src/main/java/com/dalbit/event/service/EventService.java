@@ -1587,4 +1587,16 @@ public class EventService {
 
         return result;
     }
+
+    /**
+     * 타임 이벤트 정보 조회
+     */
+    public String selectTimeEventInfo(TimeEventVo timeEventVo){
+        TimeEventVo timeEventInfo = eventDao.selectTimeEventInfo(timeEventVo);
+        if(DalbitUtil.isEmpty(timeEventInfo)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_진행중인이벤트없음));
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, timeEventInfo));
+    }
 }

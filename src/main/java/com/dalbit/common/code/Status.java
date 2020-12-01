@@ -898,6 +898,7 @@ public enum Status {
 
     이벤트_참여날짜아님("-1", "event.join.invalid.date", "이벤트 기간이 아닌경우"),
     이벤트_이미참여("-2", "event.join.already", "이미 이벤트에 참여한 경우"),
+    이벤트_진행중인이벤트없음("-3", "event.current.not.exist", "진행중인 이벤트가 없는경우"),
 
     //////////////////////////
     //모바일 관리자

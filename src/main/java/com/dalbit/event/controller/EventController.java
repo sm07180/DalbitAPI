@@ -6,6 +6,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.KnowhowEventInputVo;
 import com.dalbit.event.vo.PhotoEventInputVo;
+import com.dalbit.event.vo.TimeEventVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
@@ -497,6 +498,12 @@ public class EventController {
         P_EventPageWinnerAddInfoEditVo apiData = new P_EventPageWinnerAddInfoEditVo(eventPageWinnerAddInfoEditVo, request);
         String result = eventService.callEventPageWinnerAddInfoEdit(apiData, request);
 
+        return result;
+    }
+
+    @PostMapping("/timeEvent/info")
+    public String timeEventInfo(HttpServletRequest request, TimeEventVo timeEventVo){
+        String result = eventService.selectTimeEventInfo(timeEventVo);
         return result;
     }
 

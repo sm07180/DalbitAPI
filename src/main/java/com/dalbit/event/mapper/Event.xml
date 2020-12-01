@@ -507,4 +507,18 @@
     <select id="callEventPageWinnerInfoFormat" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_EventPageWinnerInfoFormatVo">
         call sp_event_page_winner_info_format(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="selectTimeEventInfo" parameterType="com.dalbit.event.vo.TimeEventVo" resultType="com.dalbit.event.vo.TimeEventVo">
+        /* Event.xml - selectTimeEventInfo */
+        select
+            date_format(start_date, '%Y.%m.%d %H:%i:%s') as start_date
+            , date_format(end_date, '%Y.%m.%d %H:%i:%s') as end_date
+            , event_time as minute
+            , rate
+        from rd_data.tbl_time_event
+        where `state` = 0
+            and start_date <![CDATA[<=]]> now()
+            and now() <![CDATA[<=]]> end_date
+        limit 1
+    </select>
 </mapper>

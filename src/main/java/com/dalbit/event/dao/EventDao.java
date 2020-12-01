@@ -118,4 +118,7 @@ public interface EventDao {
 
     @Transactional(readOnly = true)
     P_EventPageWinnerInfoFormatVo callEventPageWinnerInfoFormat(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    TimeEventVo selectTimeEventInfo(TimeEventVo timeEventVo);
 }
