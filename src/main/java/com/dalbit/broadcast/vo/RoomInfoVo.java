@@ -31,7 +31,7 @@ public class RoomInfoVo {
     private boolean djListenerOut;
     private boolean listenerIn;
     private boolean listenerOut;
-    private boolean liveBadgeView = true;
+    private boolean liveBadgeView;
     private boolean isFreeze;
     private boolean isExtend;
     /* DJ정보 */
@@ -112,7 +112,7 @@ public class RoomInfoVo {
         this.djListenerOut = (boolean) settingMap.get("djListenerOut");
         this.listenerIn = (boolean) settingMap.get("listenerIn");
         this.listenerOut = (boolean) settingMap.get("listenerOut");
-        //this.liveBadgeView = (boolean) settingMap.get("liveBadgeView");
+        this.liveBadgeView = DalbitUtil.isEmpty(settingMap.get("liveBadgeView")) ? true : (boolean) settingMap.get("liveBadgeView");
 
         //TODO 출석체크이벤트 종료 시 구분 처리 필요 추후...
         if(memberInfoVo.getAuth() == 3){
