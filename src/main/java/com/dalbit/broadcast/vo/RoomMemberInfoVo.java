@@ -24,6 +24,7 @@ public class RoomMemberInfoVo {
     private ImageVo kingProfImg;
     private List fanBadgeList = new ArrayList();
     private List liveBadgeList = new ArrayList();
+    private List commonBadgeList = new ArrayList();
 
     public void isFan(boolean isFan){
         this.isFan = isFan;

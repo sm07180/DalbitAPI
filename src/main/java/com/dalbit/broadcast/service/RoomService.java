@@ -681,6 +681,7 @@ public class RoomService {
             }
             returnMap.put("liveBadgeList", liveBadgeList);
         }
+        returnMap.put("commonBadgeList", new ArrayList<>());
 
         returnMap.put("cupidMemNo", DalbitUtil.getStringMap(resultMap, "cupidMemNo"));
         returnMap.put("cupidNickNm", DalbitUtil.getStringMap(resultMap, "cupidNickNm"));

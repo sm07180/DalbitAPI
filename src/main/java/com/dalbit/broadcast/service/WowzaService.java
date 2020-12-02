@@ -24,6 +24,7 @@ import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -62,6 +63,8 @@ public class WowzaService {
     MypageService mypageService;
     @Autowired
     EventService eventService;
+    @Autowired
+    IPUtil ipUtil;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -177,11 +180,14 @@ public class WowzaService {
 
     public HashMap doCreateBroadcast(RoomCreateVo roomCreateVo, HttpServletRequest request) throws GlobalException {
         HashMap result = new HashMap();
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            if(codeVo.getValue().equals("Y")){
-                result.put("status", Status.설정_방생성_참여불가상태);
-                return result;
+        /* 방생성 권한 검증 */
+        if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
+            var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
+            if(!DalbitUtil.isEmpty(codeVo)){
+                if(codeVo.getValue().equals("Y")){
+                    result.put("status", Status.설정_방생성_참여불가상태);
+                    return result;
+                }
             }
         }
 
@@ -378,12 +384,14 @@ public class WowzaService {
             return result;
         }
 
-        //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            if(codeVo.getValue().equals("Y")){
-                result.put("status", Status.설정_방생성_참여불가상태);
-                return result;
+        //방 참여 접속 불가 상태 체크
+        if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
+            var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
+            if(!DalbitUtil.isEmpty(codeVo)){
+                if(codeVo.getValue().equals("Y")){
+                    result.put("status", Status.설정_방생성_참여불가상태);
+                    return result;
+                }
             }
         }
 

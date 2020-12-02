@@ -25,6 +25,7 @@ public class RoomGoodHistoryOutVo {
     private Boolean isSpecial;
     private int liveFanRank;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
     private int goodCnt;
     private Boolean isJoin;
 

@@ -26,6 +26,7 @@ public class RoomGiftHistoryOutVo {
     private String giftDt;
     private int liveFanRank;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
 
     public RoomGiftHistoryOutVo(P_RoomGiftHistoryVo target) {
         this.memNo = target.getMem_no();

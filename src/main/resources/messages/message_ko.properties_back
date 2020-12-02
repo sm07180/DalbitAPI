@@ -1572,6 +1572,109 @@ event.roulette.win.select.fail=에러가 발생하였습니다.
 exchange.my.account.number.edit.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n수정을 할 수 없습니다.
 exchange.my.account.number.delete.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n삭제가 불가합니다.
 
+# broadcast good history
+broadcast.good.history.select.success=좋아요 내역을 조회하였습니다.
+broadcast.good.history.no.success=좋아요 내역이 없습니다.
+broadcast.good.history.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+broadcast.good.history.select.no.room=종료된 방송입니다.
+broadcast.good.history.select.not.join.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+broadcast.good.history.select.no.auth=좋아요 내역조회 권한이 없습니다.
+broadcast.good.history.select.fail=에러가 발생하였습니다.
+
+# event chooseok check
+event.chooseok.check.ok.success=추석이벤트 참여가능합니다.
+event.chooseok.check.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+event.chooseok.check.already=이미 추석이벤트 보상달을 \\n지급받았습니다.
+event.chooseok.check.fail=에러가 발생하였습니다.
+event.chooseok.check.invalid.date=이벤트 기간이 아닙니다.
+
+# event chooseok free dal
+event.chooseok.free.dal.success=추석 이벤트 무료 달이 지급되었습니다.
+event.chooseok.free.dal.level.not.enough=추석 선물은 5레벨 이상부터 \\n받을 수 있습니다.
+event.chooseok.free.dal.end=무료 달 지급 이벤트가 종료되었습니다.
+event.chooseok.free.dal.fail=에러가 발생하였습니다.
+
+# event chooseok purchase dal select
+event.chooseok.purchaseDal.select.success=구매 달을 조회하였습니다.
+event.chooseok.purchaseDal.select.fail=에러가 발생하였습니다.
+
+# event chooseok purchase dal bonus
+event.chooseok.purchaseDal.bonus.success=보너스 달이 지급되었습니다.
+event.chooseok.purchaseDal.bonus.not.yet=추가 보너스는 \\n10월 5일(월요일)에 받을 수 있습니다.
+event.chooseok.purchaseDal.bonus.end=보너스 달 지급 이벤트가 종료되었습니다.
+event.chooseok.purchaseDal.bonus.dal.not.enough=조건 미달로 보너스를 받을 수 없습니다.
+event.chooseok.purchaseDal.already=이미 보너스가 지급되었습니다.
+event.chooseok.purchaseDal.bonus.fail=에러가 발생하였습니다.
+
+# my clip
+my.clip.select.success=내 클립현황 조회하였습니다.
+my.clip.select.member.numer.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+my.clip.select.fail=에러가 발생하였습니다.
+
+#추천 방송 검색
+recommand.broadcast.search.success=추천 방송리스트 조회하였습니다.
+recommand.broadcast.search.no.success=추천 방송리스트가 없습니다.
+recommand.broadcast.search.fail=에러가 발생하였습니다.
+
+# clip play confirm
+clip.play.confirm.success=재생확인 성공하였습니다.
+clip.play.confirm.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+clip.play.confirm.clip.number.no=클립번호 오류입니다.
+clip.play.confirm.play.idx.no=재생확인번호 오류입니다.
+clip.play.confirm.number.unmatch=클립번호와 재생확인번호가 불일치 합니다.
+clip.play.confirm.already=이미 재생확인되었습니다.
+clip.play.confirm.60sec.limit=60초 미만입니다.
+clip.play.confirm.fail=에러가 발생하였습니다.
+
+# 계좌등록
+exchange.my.account.number.add.success=선택하신 계좌정보 등록이 완료되었습니다.
+exchange.my.account.number.add.fail=에러가 발생하였습니다.
+
+# 계좌수정
+exchange.my.account.number.edit.success=선택하신 계좌정보 수정이 완료되었습니다.
+exchange.my.account.number.edit.fail=에러가 발생하였습니다.
+
+# 계좌삭제
+exchange.my.account.number.delete.success=선택하신 계좌정보 삭제가 완료되었습니다.
+exchange.my.account.number.delete.fail=에러가 발생하였습니다.
+
+# 계좌조회
+exchange.my.account.number.select.success=계좌정보 조회하였습니다.
+exchange.my.account.number.select.no=회원님께서는 최초 환전을 신청한 회원으로 「최근 계좌」 정보가 없습니다.
+
+# 응모권조회(룰렛이벤트)
+event.roulette.coupon.select.success=응모권 조회하였습니다
+event.roulette.coupon.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+event.roulette.coupon.select.fail=에러가 발생하였습니다.
+
+# 룰렛 스타트
+event.roulette.start.success=응모 성공하였습니다.
+event.roulette.start.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+event.roulette.start.coupon.limit=응모권이 부족합니다.
+event.roulette.start.fail=에러가 발생하였습니다.
+
+# 전화번호 입력(룰렛이벤트)
+event.roulette.input.phone.success=입력 성공하였습니다
+event.roulette.input.phone.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+event.roulette.input.phone.no.prize=당첨내역이 없습니다.
+event.roulette.input.phone.error=전화번호 자리수를 확인해주세요.
+event.roulette.input.phone.fail=에러가 발생하였습니다.
+
+# 참여 이력 조회(룰렛이벤트)
+event.roulette.apply.select.success=참여 이력 조회하였습니다.
+event.roulette.apply.select.no=참여 이력 없습니다.
+event.roulette.apply.selectmember.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+event.roulette.apply.select.fail=에러가 발생하였습니다.
+
+# 당첨자 조회(룰렛이벤트)
+event.roulette.win.select.success=당첨자 조회하였습니다.
+event.roulette.win.select.no=당첨자가 없습니다.
+event.roulette.win.select.fail=에러가 발생하였습니다.
+
+# 계좌 수정 & 삭제 불가
+exchange.my.account.number.edit.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n수정을 할 수 없습니다.
+exchange.my.account.number.delete.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n삭제가 불가합니다.
+
 # 스페셜DJ 선정 이력 조회
 special.dj.selection.select.success=스페셜DJ 선정 이력 조회 성공하였습니다.
 special.dj.selection.select.no.success=스페셜DJ 선정 이력이 없습니다.

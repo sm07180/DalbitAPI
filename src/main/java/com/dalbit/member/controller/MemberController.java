@@ -64,7 +64,26 @@ public class MemberController {
      */
     @GetMapping("/token")
     public String token(HttpServletRequest request){
-        HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
+        HashMap<String, Object> result = null;
+        try{
+            result = commonService.getJwtTokenInfo(request);
+        }catch (Exception e){
+            //비회원
+            LocationVo locationVo = null;
+            String browser = DalbitUtil.getUserAgent(request);
+            DeviceVo deviceVo = new DeviceVo(request) ;
+            String dbSelectMemNo = "88888888888888";
+            boolean isLogin = false;
+            P_LoginVo pLoginVo = new P_LoginVo("a", deviceVo.getOs(), deviceVo.getDeviceUuid(), deviceVo.getDeviceToken(), deviceVo.getAppVersion(), deviceVo.getAdId(), locationVo == null ? "" : locationVo.getRegionName(), deviceVo.getIp(), browser);
+            memberService.callMemberLogin(pLoginVo);
+
+            TokenVo tokenVo = new TokenVo(jwtUtil.generateToken(dbSelectMemNo, isLogin), dbSelectMemNo, isLogin);
+            memberService.refreshAnonymousSecuritySession(dbSelectMemNo);
+
+            log.info("#### OverStack ##### tokenVo: {}", tokenVo);
+            return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
+
+        }
 
         if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));

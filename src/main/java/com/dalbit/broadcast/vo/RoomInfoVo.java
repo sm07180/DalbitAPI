@@ -1,7 +1,6 @@
 package com.dalbit.broadcast.vo;
 
-import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.ImageVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +31,7 @@ public class RoomInfoVo {
     private boolean djListenerOut;
     private boolean listenerIn;
     private boolean listenerOut;
-    //private boolean liveBadgeView;
+    private boolean liveBadgeView = true;
     private boolean isFreeze;
     private boolean isExtend;
     /* DJ정보 */
@@ -76,6 +75,10 @@ public class RoomInfoVo {
     /* 게스트 : streamName => wowza.prefix(DEV/REAL) + room_no + _ + mem_no */
     private List guests = new ArrayList();
     private boolean useGuest = true;
+
+    /* 뱃지 정책 변경에 따른 데이터 20.11.25 이재은 */
+    private List<BadgeVo> commonBadgeList = new ArrayList<>();
+    private BadgeFrameVo badgeFrame = new BadgeFrameVo();
 
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
         this.roomNo = target.getRoomNo();

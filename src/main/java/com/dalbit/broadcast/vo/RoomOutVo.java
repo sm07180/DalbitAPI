@@ -68,6 +68,7 @@ public class RoomOutVo {
     private Boolean isFreeze;
     private int liveDjRank;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
     private int freezeMsg;
     private Boolean isExtend;
     private int imageType;

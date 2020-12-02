@@ -33,6 +33,7 @@ public class RoomMemberOutVo{
     private int goodCnt;
     private Boolean isGuest;
     private int managerType;
+    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();

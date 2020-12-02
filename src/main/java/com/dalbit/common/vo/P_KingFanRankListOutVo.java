@@ -5,6 +5,7 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
@@ -16,7 +17,8 @@ public class P_KingFanRankListOutVo {
     private String gender;
     private String age;
     private ImageVo profImg;
-    private List liveBadgeList;
+    private List liveBadgeList = new ArrayList();
+    private BadgeFrameVo badgeFrame = new BadgeFrameVo();
 
     public P_KingFanRankListOutVo(){}
     public P_KingFanRankListOutVo(P_KingFanRankListVo target, int i){
