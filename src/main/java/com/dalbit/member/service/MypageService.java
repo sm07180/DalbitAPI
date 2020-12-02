@@ -2215,7 +2215,7 @@ public class MypageService {
 
             Status status = null;
             if(state.equals("edit")){
-                if(pBroadcastSettingEditVo.getLiveBadgeView() != DalbitUtil.getIntMap(boforeMap, "liveBadgeView")){
+                if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getLiveBadgeView()) && pBroadcastSettingEditVo.getLiveBadgeView() != DalbitUtil.getIntMap(boforeMap, "liveBadgeView")){
                     if(DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1){
                         status = Status.실시간팬배지_ON;
                     }else{
