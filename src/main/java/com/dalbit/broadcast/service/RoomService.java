@@ -280,12 +280,12 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomEditVo);
         P_RoomEditOutVo pRoomEditOutVo = roomDao.callBroadCastRoomEdit(procedureVo);
 
-        //방송설정 입퇴장메시지 세팅 수정
+        //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 수정
         BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
         broadcastSettingEditVo.setDjListenerIn(pRoomEditVo.getDjListenerIn());
         broadcastSettingEditVo.setDjListenerOut(pRoomEditVo.getDjListenerOut());
         P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
-        mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request);
+        mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "edit");
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
@@ -302,7 +302,7 @@ public class RoomService {
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomEditVo.getBackgroundImage()), delImg, request);
             }
 
-            //방송설정 입퇴장메시지 세팅 조회
+            //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 조회
             P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
             HashMap settingMap = mypageService.callBroadcastSettingSelectRoomCreate(pBroadcastSettingVo);
 

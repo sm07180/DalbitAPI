@@ -10,4 +10,5 @@ public class BroadcastSettingEditVo {
     private String djListenerOut;
     private String listenerIn;
     private String listenerOut;
+    private String liveBadgeView;
 }

@@ -127,6 +127,13 @@ public class DalbitUtil {
         return 0 < list.size() ? false : true;
     }
 
+    public static boolean isEmpty(String[] arr){
+        if(arr != null && arr.length != 0){
+            return false;
+        }
+        return 0 < arr.length ? false : true;
+    }
+
     /**
      * Object 값이 있는지 체크
      * @param object
@@ -412,7 +419,6 @@ public class DalbitUtil {
 
     public static String getProperty(String key){
         return environment.getProperty(key);
-
     }
 
     public static boolean isLogin(HttpServletRequest request){

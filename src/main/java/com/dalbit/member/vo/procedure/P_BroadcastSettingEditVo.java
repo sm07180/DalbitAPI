@@ -17,6 +17,7 @@ public class P_BroadcastSettingEditVo {
     private Integer djListenerOut;
     private Integer listenerIn;
     private Integer listenerOut;
+    private Integer liveBadgeView;
 
     public P_BroadcastSettingEditVo(){}
     public P_BroadcastSettingEditVo(BroadcastSettingEditVo broadcastSettingEditVo, HttpServletRequest request){
@@ -26,6 +27,7 @@ public class P_BroadcastSettingEditVo {
         setDjListenerOut(!DalbitUtil.isEmpty(broadcastSettingEditVo.getDjListenerOut()) ? (("true".equals(broadcastSettingEditVo.getDjListenerOut().toLowerCase()) || "1".equals(broadcastSettingEditVo.getDjListenerOut())) ?  1 : 0) : null);
         setListenerIn(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenerIn()) ? (("true".equals(broadcastSettingEditVo.getListenerIn().toLowerCase()) || "1".equals(broadcastSettingEditVo.getListenerIn())) ? 1: 0) : null);
         setListenerOut(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenerOut()) ? (("true".equals(broadcastSettingEditVo.getListenerOut().toLowerCase()) || "1".equals(broadcastSettingEditVo.getListenerOut())) ? 1: 0) : null);
+        setLiveBadgeView(!DalbitUtil.isEmpty(broadcastSettingEditVo.getLiveBadgeView()) ? (("true".equals(broadcastSettingEditVo.getLiveBadgeView().toLowerCase()) || "1".equals(broadcastSettingEditVo.getLiveBadgeView())) ? 1: 0) : null);
     }
 
 }

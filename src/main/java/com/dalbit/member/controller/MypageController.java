@@ -891,7 +891,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BroadcastSettingEditVo apiData = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
-        String result = mypageService.callBroadcastSettingEdit(apiData, request);
+        String result = mypageService.callBroadcastSettingEdit(apiData, request, "edit");
         return result;
     }
 

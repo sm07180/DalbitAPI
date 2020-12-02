@@ -888,7 +888,7 @@ public enum Status {
     출석체크이벤트_더줘_실패("C006", "business.error", "비즈니스 에러"),
 
     설정_방생성_참여불가상태("S001", "system.config.broadcast.block", "tbl_code_defind -> system_config / 방생성_참여_가능여부 가 Y 일경우"),
-    설정_클립업로드_참여불가상태("S001", "system.config.clip.block", "tbl_code_defind -> system_config / 방생성_참여_가능여부 가 Y 일경우"),
+    설정_클립업로드_참여불가상태("S001", "system.config.clip.block", "tbl_code_defind -> system_config / 클립_업로드_가능여부 가 Y 일경우"),
 
     라이징이벤트_실시간순위_조회_성공("C001", "event.rising.live.success", "성공"),
     라이징이벤트_실시간순위_데이터없음("0", "event.rising.live.no.data", "데이터 없음"),
@@ -1517,6 +1517,8 @@ public enum Status {
     방송설정수정_성공("0", "mypage.broadcast.setting.edit.success", "방송설정 수정 성공 시"),
     방송설정수정_회원아님("-1", "mypage.broadcast.setting.edit.member.number.error", "방송설정 수정 회원아닐 시"),
     방송설정수정_실패("C006", "mypage.broadcast.setting.edit.error", "방송설정 수정 실패 시"),
+    실시간팬배지_ON("0", "mypage.broadcast.setting.live.badge.on.success", "실시간 팬 배지 ON"),
+    실시간팬배지_OFF("0", "mypage.broadcast.setting.live.badge.off.success", "실시간 팬 배지 OFF"),
 
     클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 
@@ -1731,6 +1733,52 @@ public enum Status {
     휴면해제_회원아님("-1", "member.sleep.return.member.number.error", "요청회원번호 회원 아닐 시"),
     휴면해제_상태아님("-2", "member.sleep.return.no.sleep.state", "휴면상태가 아닐 시"),
     휴면해제_실패("C006", "member.sleep.return.fail", "휴면 해제 실패 시"),
+
+    //우체통 대화방 리스트
+    우체통대화방_조회_성공("C001", "mailbox.list.select.success", "대화방 리스트 조회 성공 시"),
+    우체통대화방_조회_없음("0", "mailbox.list.select.no.success", "대화방 리스트 없을 시"),
+    우체통팬대화방_조회_회원아님("-1", "mailbox.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    우체통팬대화방_조회_실패("C006", "mailbox.list.select.fail", "대화방 리스트 조회 실패 시"),
+
+    //우체통 대화방 추가대상
+    우체통대화방추가대상_조회_성공("C001", "mailbox.add.target.list.select.success", "추가 대상 목록조회 성공 시"),
+    우체통대화방추가대상_조회_없음("0", "mailbox.add.target.list.select.no.success", "추가 대상 목록조회 없을 시"),
+    우체통대화방추가대상_조회_회원아님("-1", "mailbox.add.target.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    우체통대화방추가대상_조회_실패("C006", "mailbox.add.target.list.select.fail", "추가 대상 목록조회 실패 시"),
+
+    //대화방 입장
+    대화방입장_신규입장_성공("1", "mailbox.chatroom.enter.new.success", "대화방 신규 입장 성공 시"),
+    대화방입장_성공("0", "mailbox.chatroom.enter.success", "대화방 입장 성공 시"),
+    대화방입장_요청회원아님("-1", "mailbox.chatroom.enter.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화방입장_대상회원아님("-2", "mailbox.chatroom.enter.target.member.number.error", "대상회원번호 회원 아닐 시"),
+    대화방입장_본인안됨("-3", "mailbox.chatroom.enter.me.impossible", "본인에게 입장 불가 시"),
+    대화방입장_실패("C006", "mailbox.chatroom.enter.fail", "대화방 입장 실패 시"),
+
+    //대화방 퇴장
+    대화방퇴장_성공("0", "mailbox.chatroom.exit.success", "대화방 퇴장 성공 시"),
+    대화방퇴장_회원아님("-1", "mailbox.chatroom.exit.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화방퇴장_번호없음("-2", "mailbox.chatroom.exit.chat.number.error", "대화방번호 없을 시"),
+    대화방퇴장_이미나감("-3", "mailbox.chatroom.exit.already", "대화방 이미 나가있는 경우일 시"),
+    대화방퇴장_실패("C006", "mailbox.chatroom.exit.fail", "대화방 퇴장 실패 시"),
+
+    //대화전송
+    대화전송_성공("0", "mailbox.chatroom.msg.send.success", "대화 전송 성공 시"),
+    대화전송_회원아님("-1", "mailbox.chatroom.msg.send.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화전송_채팅번호없음("-2", "mailbox.chatroom.msg.send.chat.number.error", "대화방번호 없을 시"),
+    대화전송_상대회원아님("-3", "mailbox.chatroom.msg.send.target.member.number.error", "상대회원번호 회원 아닐 시"),
+    대화전송_실패("C006", "mailbox.chatroom.msg.send.fail", "대화 전송 실패 시"),
+
+    //대화읽음
+    대화읽음_성공("0", "mailbox.chatroom.msg.read.success", "대화 읽음 성공 시"),
+    대화읽음_회원아님("-1", "mailbox.chatroom.msg.read.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화읽음_채팅번호없음("-2", "mailbox.chatroom.msg.read.chat.number.error", "대화방번호 없을 시"),
+    대화읽음_실패("C006", "mailbox.chatroom.msg.read.fail", "대화 읽음 실패 시"),
+
+    //대화조회
+    대화조회_성공("C001", "mailbox.chatroom.msg.select.success", "대화 조회 성공시"),
+    대화조회_회원아님("-1", "mailbox.chatroom.msg.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화조회_채팅번호없음("-2", "mailbox.chatroom.msg.select.chat.number.error", "대화방번호 없을 시"),
+    대화조회_실패("C006", "mailbox.chatroom.msg.select.fail", "대화 조회 실패 시"),
    ;
 
 

@@ -2156,6 +2156,7 @@ public class MypageService {
             returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
             returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
             returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+            returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
             returnMap.put("isSpecial", isSpecial);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
@@ -2171,7 +2172,14 @@ public class MypageService {
     /**
      * 방송설정 수정하기(입퇴장 메시지)
      */
-    public String callBroadcastSettingEdit(P_BroadcastSettingEditVo pBroadcastSettingEditVo, HttpServletRequest request) {
+    public String callBroadcastSettingEdit(P_BroadcastSettingEditVo pBroadcastSettingEditVo, HttpServletRequest request, String state) {
+        //이전 세팅 값 조회 (라이브 배지 문구 변경체크 확인)
+        P_BroadcastSettingVo beforeBroadcastSettingVo = new P_BroadcastSettingVo();
+        beforeBroadcastSettingVo.setMem_no(pBroadcastSettingEditVo.getMem_no());
+        ProcedureVo beforeSettingVo = new ProcedureVo(beforeBroadcastSettingVo);
+        mypageDao.callBroadcastSettingSelect(beforeSettingVo);
+        HashMap boforeMap = new Gson().fromJson(beforeSettingVo.getExt(), HashMap.class);
+
         ProcedureVo procedureVo = new ProcedureVo(pBroadcastSettingEditVo);
         mypageDao.callBroadcastSettingEdit(procedureVo);
 
@@ -2189,6 +2197,7 @@ public class MypageService {
             returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
             returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
             returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+            returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
 
             try{
                 HashMap socketMap = new HashMap();
@@ -2198,12 +2207,28 @@ public class MypageService {
                 socketMap.put("dj_fan_out", DalbitUtil.getIntMap(resultMap, "djListenerOut"));
                 socketMap.put("listener_in", DalbitUtil.getIntMap(resultMap, "listenerIn"));
                 socketMap.put("listener_out", DalbitUtil.getIntMap(resultMap, "listenerOut"));
+                socketMap.put("badge_view", DalbitUtil.getIntMap(resultMap, "liveBadgeView"));
                 HashMap inOutMap = new HashMap();
                 inOutMap.put("inOut", socketMap);
                 socketService.changeMemberInfo(pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch (Exception e){}
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정수정_성공, returnMap));
+            Status status = null;
+            if(state.equals("edit")){
+                if(pBroadcastSettingEditVo.getLiveBadgeView() != DalbitUtil.getIntMap(boforeMap, "liveBadgeView")){
+                    if(DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1){
+                        status = Status.실시간팬배지_ON;
+                    }else{
+                        status = Status.실시간팬배지_OFF;
+                    }
+                }else{
+                    status = Status.방송설정수정_성공;
+                }
+            }else{
+                status = Status.방송설정수정_성공;
+            }
+
+            result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
         }else if(procedureVo.getRet().equals(Status.방송설정수정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정수정_회원아님));
         }else{
@@ -2224,6 +2249,7 @@ public class MypageService {
         returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
         returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
         returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
+        returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
 
         return returnMap;
     }

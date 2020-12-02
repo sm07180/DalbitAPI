@@ -325,7 +325,7 @@ public class WowzaService {
             broadcastSettingEditVo.setDjListenerIn(roomCreateVo.getDjListenerIn());
             broadcastSettingEditVo.setDjListenerOut(roomCreateVo.getDjListenerOut());
             P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
-            mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request);
+            mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "create");
 
             //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 조회
             P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
