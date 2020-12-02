@@ -21,6 +21,11 @@ public class FanBadgeVo {
     private String msgBorderSrtColor;
     private String msgBorderEndColor;
 
+    private String textColor = "#ffffff";
+    private String borderColor = "";
+    private float bgAlpha = (float)1.0;
+    private String bgImg = "";
+
     public FanBadgeVo(String text, String icon, String startColor, String endColor){
         this.text = text;
         this.icon = icon;
@@ -45,6 +50,27 @@ public class FanBadgeVo {
         this.imageSmall = imageSmall;
     }
 
+    public FanBadgeVo(String text, String icon, String startColor, String endColor, String textColor, String borderColor, float bgAlpha, String bgImg, String frameTop, String frameChat, String frameAni, String tipMsg, String explainMsg, String enterAni, String enterBgImg, String msgBorderSrtColor, String msgBorderEndColor){
+        this.text = text;
+        this.icon = icon;
+        this.startColor = startColor;
+        this.endColor = endColor;
+        this.frameTop = frameTop;
+        this.frameChat = frameChat;
+        this.frameAni = frameAni;
+        this.tipMsg = tipMsg;
+        this.explainMsg = explainMsg;
+        this.enterAni = enterAni;
+        this.enterBgImg = enterBgImg;
+        this.msgBorderSrtColor = msgBorderSrtColor;
+        this.msgBorderEndColor = msgBorderEndColor;
+
+        this.textColor = textColor;
+        this.borderColor = borderColor;
+        this.bgAlpha = bgAlpha;
+        this.bgImg = bgImg;
+    }
+
     public FanBadgeVo(String text, String icon, String startColor, String endColor, String image, String imageSmall, String frameTop, String frameChat, String frameAni, String tipMsg, String explainMsg, String enterAni, String enterBgImg, String msgBorderSrtColor, String msgBorderEndColor){
         this.text = text;
         this.icon = icon;
@@ -55,6 +81,21 @@ public class FanBadgeVo {
         this.frameTop = frameTop;
         this.frameChat = frameChat;
         this.frameAni = frameAni;
+        this.tipMsg = tipMsg;
+        this.explainMsg = explainMsg;
+        this.enterAni = enterAni;
+        this.enterBgImg = enterBgImg;
+        this.msgBorderSrtColor = msgBorderSrtColor;
+        this.msgBorderEndColor = msgBorderEndColor;
+    }
+
+    public FanBadgeVo(String text, String icon, String startColor, String endColor, String image, String imageSmall, String tipMsg, String explainMsg, String enterAni, String enterBgImg, String msgBorderSrtColor, String msgBorderEndColor){
+        this.text = text;
+        this.icon = icon;
+        this.startColor = startColor;
+        this.endColor = endColor;
+        this.image = image;
+        this.imageSmall = imageSmall;
         this.tipMsg = tipMsg;
         this.explainMsg = explainMsg;
         this.enterAni = enterAni;
