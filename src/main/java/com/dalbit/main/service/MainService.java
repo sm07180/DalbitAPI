@@ -154,9 +154,18 @@ public class MainService {
                 outVo.isNew = recommendVoList.get(i).isNew();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
 
-                badgeService.setBadgeInfo(recommendVoList.get(i).getMemNo(), 6);
-                outVo.setLiveBadgeList(badgeService.getCommonBadge());
-                outVo.setCommonBadgeList(badgeService.getCommonBadge());
+                //badgeService.setBadgeInfo(recommendVoList.get(i).getMemNo(), 6);
+                List<BadgeVo> badgeList = new ArrayList<>();
+                if(!DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeText()) && !DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeIcon())){
+                    BadgeVo badgeVo = new BadgeVo();
+                    badgeVo.setText(recommendVoList.get(i).getLiveBadgeText());
+                    badgeVo.setEndColor(recommendVoList.get(i).getLiveBadgeEndColor());
+                    badgeVo.setIcon(recommendVoList.get(i).getLiveBadgeIcon());
+                    badgeVo.setStartColor(recommendVoList.get(i).getLiveBadgeStartColor());
+                    badgeList.add(badgeVo);
+                }
+                outVo.setLiveBadgeList(badgeList);
+                outVo.setCommonBadgeList(badgeList);
                 recommend.add(outVo);
 
                 if(setBanner != 0 && ((i + 1) % setBanner) == 0){

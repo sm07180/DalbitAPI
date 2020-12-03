@@ -16,6 +16,7 @@ public class BadgeVo {
     private String tipMsg;
     private String explainMsg;
 
+    public BadgeVo(){}
     public BadgeVo(FanBadgeVo fanBadgeVo){
         this.text = fanBadgeVo.getText();
         this.icon = fanBadgeVo.getIcon();

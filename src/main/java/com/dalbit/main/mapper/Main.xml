@@ -51,7 +51,7 @@
     </select>
 
     <select id="callMainRecommandList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
-        /*WITH liveDjRank AS (
+        WITH liveDjRank AS (
             SELECT @liveDjRank := @liveDjRank + 1 AS rank, e.mem_no
             FROM (
                 SELECT  a.mem_no, a.gift_point, a.broadcast_point, a.good_point, a.listener_point, a.dj_point
@@ -60,7 +60,7 @@
                     INNER JOIN tb_member_profile AS c ON a.mem_no = c.mem_no AND c.admin_badge = 0
                 ) AS e , (SELECT @liveDjRank := 0 ) AS f
             ORDER BY e.dj_point DESC, e.gift_point DESC, e.good_point DESC, e.listener_point DESC, e.broadcast_point DESC
-        )*/
+        )
         SELECT
             C.mem_no AS memNo
             , C.mem_nick AS nickNm
@@ -76,17 +76,17 @@
             , D.admin_badge = 1 AS isAdmin
             , D.newdj_badge = 1 AS isNew
             , B.is_wowza AS isWowza
-            #, E.name AS liveBadgeText
-            #, E.icon AS liveBadgeIcon
-            #, E.start_color AS liveBadgeStartColor
-            #, E.end_color AS liveBadgeEndColor
-            #, E.image AS liveBadgeImage
-            #, E.image_small AS liveBadgeImageSmall
+            , E.name AS liveBadgeText
+            , E.icon AS liveBadgeIcon
+            , E.start_color AS liveBadgeStartColor
+            , E.end_color AS liveBadgeEndColor
+            , E.image AS liveBadgeImage
+            , E.image_small AS liveBadgeImageSmall
         FROM tb_broadcast_room_live_list AS A
             INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.state &lt;&gt; 4 AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
             INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND C.mem_state &lt;&gt; 5
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no
-            #LEFT OUTER JOIN tbl_badge_info AS E ON E.slct_type = 7 AND E.value = IFNULL((SELECT rank FROM liveDjRank WHERE mem_no = A.mem_no), 0)
+            LEFT OUTER JOIN tbl_badge_info AS E ON E.slct_type = 7 AND E.value = IFNULL((SELECT rank FROM liveDjRank WHERE mem_no = A.mem_no), 0)
         ORDER BY D.admin_badge DESC, D.specialdj_badge DESC, A.total DESC, B.idx DESC
         LIMIT 7;
     </select>
