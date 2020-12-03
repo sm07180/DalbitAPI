@@ -20,6 +20,7 @@ public class StarListNewOutVo {
     private long lastListenTs;
     private String regDt;
     private long regTs;
+    private String gender;
 
     public StarListNewOutVo(){}
     public StarListNewOutVo(P_StarListNewVo target){
@@ -29,12 +30,11 @@ public class StarListNewOutVo {
         setIsFan(target.getEnableFan() == 0 ? true : false);
         setStarMemo(target.getStarMemo());
         setListenTime(target.getListenTime());
-        //setGiftedByeol(target.getGiftedByeol());
         setGiftedByeol(target.getGiftDal());
         setLastListenDt(DalbitUtil.isEmpty(target.getLastlistenDate()) ? "" : DalbitUtil.getUTCFormat(target.getLastlistenDate()));
         setLastListenTs(DalbitUtil.isEmpty(target.getLastlistenDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getLastlistenDate()));
         setRegDt(DalbitUtil.isEmpty(target.getRegDate()) ? "" : DalbitUtil.getUTCFormat(target.getRegDate()));
         setRegTs(DalbitUtil.isEmpty(target.getRegDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getRegDate()));
-
+        setGender(target.getMemSex());
     }
 }

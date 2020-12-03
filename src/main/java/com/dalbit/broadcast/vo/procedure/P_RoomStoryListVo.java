@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_RoomStoryListVo {
+public class P_RoomStoryListVo extends P_ApiVo {
 
     /* input */
     private String mem_no;                  // 회원 번호

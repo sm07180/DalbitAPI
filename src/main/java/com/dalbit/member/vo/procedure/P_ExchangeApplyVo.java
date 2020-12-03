@@ -1,6 +1,7 @@
 package com.dalbit.member.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.ExchangeApplyVo;
 import com.dalbit.util.AES;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 
 @Getter @Setter
-public class P_ExchangeApplyVo {
+public class P_ExchangeApplyVo extends P_ApiVo {
 
     private String mem_no;
     private BigDecimal byeol;

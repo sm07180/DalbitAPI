@@ -1,13 +1,10 @@
 package com.dalbit.main.vo;
 
 import com.dalbit.common.vo.ImageVo;
-import com.dalbit.main.vo.procedure.P_MainFanRankingVo;
 import com.dalbit.main.vo.procedure.P_MainMyDjVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.util.Date;
 
 @Getter @Setter
 public class MainMyDjOutVo {

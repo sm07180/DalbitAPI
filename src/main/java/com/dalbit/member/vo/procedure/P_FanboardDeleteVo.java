@@ -1,6 +1,7 @@
 package com.dalbit.member.vo.procedure;
 
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.FanboardDelVo;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_FanboardDeleteVo {
+public class P_FanboardDeleteVo extends P_ApiVo {
 
     /* input */
     private String star_mem_no;     // 팬보드 스타 회원번호

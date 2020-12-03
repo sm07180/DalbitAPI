@@ -1,5 +1,6 @@
 package com.dalbit.admin.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class P_LoginTotalOutDetailVo {
+public class P_LoginTotalOutDetailVo extends P_ApiVo {
 
     private String date;
     private String year;

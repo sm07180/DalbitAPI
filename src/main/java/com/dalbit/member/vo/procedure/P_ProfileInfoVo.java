@@ -1,11 +1,12 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_ProfileInfoVo {
+public class P_ProfileInfoVo extends P_ApiVo {
 
     public P_ProfileInfoVo(){}
 
@@ -69,4 +70,6 @@ public class P_ProfileInfoVo {
     private int liveDjRank;             //실시간 DJ 순위
     private int liveFanRank;            //실시간 팬 순위\
     private int specialDjCnt;
+    private int memState;
+    private String listen_room_no;
 }

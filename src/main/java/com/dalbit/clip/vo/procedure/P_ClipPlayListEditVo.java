@@ -1,6 +1,7 @@
 package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipPlayListEditVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ClipPlayListEditVo {
+public class P_ClipPlayListEditVo extends P_ApiVo {
 
     public P_ClipPlayListEditVo(){}
     public P_ClipPlayListEditVo(ClipPlayListEditVo clipPlayListEditVo, HttpServletRequest request){

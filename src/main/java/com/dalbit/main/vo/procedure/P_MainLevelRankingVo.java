@@ -1,5 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.MainLevelRankingVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_MainLevelRankingVo {
+public class P_MainLevelRankingVo extends P_ApiVo {
 
     public P_MainLevelRankingVo(){}
     public P_MainLevelRankingVo(MainLevelRankingVo mainLevelRankingVo, HttpServletRequest request){

@@ -28,6 +28,7 @@ public class P_KingFanRankListOutVo {
         setGender(target.getMemSex());
         setAge(target.getAge());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        setLiveBadgeList(new ArrayList());
     }
     public P_KingFanRankListOutVo(P_KingFanRankListVo target, int i, List liveBadgeList){
         setRank(i);
@@ -39,4 +40,14 @@ public class P_KingFanRankListOutVo {
         setLiveBadgeList(liveBadgeList);
     }
 
+    public P_KingFanRankListOutVo(P_KingFanRankListVo target, int i, BadgeFrameVo badgeFrame){
+        setRank(i);
+        setMemNo(target.getMem_no());
+        setNickNm(target.getNickName());
+        setGender(target.getMemSex());
+        setAge(target.getAge());
+        setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        setBadgeFrame(badgeFrame);
+        setLiveBadgeList(new ArrayList());
+    }
 }

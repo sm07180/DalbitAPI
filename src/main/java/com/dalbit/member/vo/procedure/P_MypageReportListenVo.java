@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageReportListenVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_MypageReportListenVo {
+public class P_MypageReportListenVo extends P_ApiVo {
 
     public P_MypageReportListenVo(){}
     public P_MypageReportListenVo(MypageReportListenVo mypageReportListenVo, HttpServletRequest request){

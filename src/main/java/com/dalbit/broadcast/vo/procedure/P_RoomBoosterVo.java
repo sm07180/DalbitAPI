@@ -2,6 +2,7 @@ package com.dalbit.broadcast.vo.procedure;
 
 
 import com.dalbit.broadcast.vo.request.BoosterVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_RoomBoosterVo {
+public class P_RoomBoosterVo extends P_ApiVo {
 
     public P_RoomBoosterVo(){}
     public P_RoomBoosterVo(BoosterVo boosterVo, HttpServletRequest request){

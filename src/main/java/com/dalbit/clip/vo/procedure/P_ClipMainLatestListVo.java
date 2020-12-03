@@ -1,5 +1,6 @@
 package com.dalbit.clip.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ClipMainLatestListVo {
+public class P_ClipMainLatestListVo extends P_ApiVo {
 
     public P_ClipMainLatestListVo(){}
     public P_ClipMainLatestListVo(HttpServletRequest request){

@@ -1,5 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.FaqListVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter
-public class P_FaqListVo {
+public class P_FaqListVo extends P_ApiVo {
 
     public P_FaqListVo(){}
     public P_FaqListVo(FaqListVo faqListVo){

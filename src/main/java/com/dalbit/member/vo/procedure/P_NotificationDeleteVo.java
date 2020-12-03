@@ -1,6 +1,7 @@
 package com.dalbit.member.vo.procedure;
 
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.NotificationDeleteVo;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_NotificationDeleteVo {
+public class P_NotificationDeleteVo extends P_ApiVo {
 
     public P_NotificationDeleteVo(){}
     public P_NotificationDeleteVo(NotificationDeleteVo notificationDeleteVo, HttpServletRequest request){

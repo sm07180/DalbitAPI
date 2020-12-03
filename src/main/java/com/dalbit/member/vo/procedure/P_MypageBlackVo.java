@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageBlackVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_MypageBlackVo {
+public class P_MypageBlackVo extends P_ApiVo {
 
     /* Input */
     private String mem_no;

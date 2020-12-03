@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.AutoChangeSettingEditVo;
 import lombok.Getter;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Getter
 @Setter
-public class P_AutoChangeSettingEditVo {
+public class P_AutoChangeSettingEditVo extends P_ApiVo {
 
     public P_AutoChangeSettingEditVo(){}
     public P_AutoChangeSettingEditVo(AutoChangeSettingEditVo autoChangeSettingEditVo, HttpServletRequest request) {

@@ -2,6 +2,7 @@ package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
+import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
@@ -40,6 +41,8 @@ public class ProfileService {
     MypageService mypageService;
     @Autowired
     MemberService memberService;
+    @Autowired
+    BadgeService badgeService;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -68,33 +71,10 @@ public class ProfileService {
             List fanRankList = memberService.fanRank3(pFanRankVo);
 
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList);
-            HashMap fanBadgeMap = new HashMap();
-            fanBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
-            fanBadgeMap.put("type", -1);
-            fanBadgeMap.put("by", "api");
-            List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
-            if(DalbitUtil.isEmpty(fanBadgeList)){
-                profileInfoOutVo.setFanBadgeList(new ArrayList());
-            }else{
-                profileInfoOutVo.setFanBadgeList(fanBadgeList);
-            }
-
-            //실시간 뱃지 리스트
-            HashMap liveBadgeMap = new HashMap();
-            liveBadgeMap.put("mem_no", pProfileInfo.getTarget_mem_no());
-            liveBadgeMap.put("type", -1);
-            liveBadgeMap.put("by", "api");
-            List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
-            if(DalbitUtil.isEmpty(liveBadgeList)){
-                profileInfoOutVo.setLiveBadgeList(new ArrayList());
-            }else{
-                for(int i = (liveBadgeList.size() -1); i > -1; i--){
-                    if(DalbitUtil.isEmpty(((FanBadgeVo)liveBadgeList.get(i)).getIcon())){
-                        liveBadgeList.remove(i);
-                    }
-                }
-                profileInfoOutVo.setLiveBadgeList(liveBadgeList);
-            }
+            badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1);
+            profileInfoOutVo.setLiveBadgeList(badgeService.getCommonBadge());
+            profileInfoOutVo.setCommonBadgeList(badgeService.getCommonBadge());
+            profileInfoOutVo.setFanBadgeList(new ArrayList());
 
             //과거 스페셜DJ 선정 여부
             if(profileInfoOutVo.getIsSpecial()){

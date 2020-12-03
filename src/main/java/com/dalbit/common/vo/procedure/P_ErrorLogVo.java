@@ -1,6 +1,7 @@
 package com.dalbit.common.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.common.vo.request.ErrorLogVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ErrorLogVo {
+public class P_ErrorLogVo extends P_ApiVo {
 
     public P_ErrorLogVo(){}
     public P_ErrorLogVo(ErrorLogVo errorLogVo, HttpServletRequest request){

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 
 @Slf4j
@@ -39,7 +40,7 @@ public class ClipController {
      * 클립 등록
      */
     @PostMapping("/add")
-    public String clipAdd(@Valid ClipAddVo clipAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+    public String clipAdd(@Valid ClipAddVo clipAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException, UnsupportedEncodingException {
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 

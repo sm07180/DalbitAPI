@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.StarListNewVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_StarListNewVo {
+public class P_StarListNewVo extends P_ApiVo {
 
     public P_StarListNewVo(){}
     public P_StarListNewVo(StarListNewVo starListNewVo, HttpServletRequest request){

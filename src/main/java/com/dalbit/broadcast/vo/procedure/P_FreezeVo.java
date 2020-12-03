@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.FreezeVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_FreezeVo {
+public class P_FreezeVo extends P_ApiVo {
     private String mem_no;
     private String room_no;
     int freezeMsg;

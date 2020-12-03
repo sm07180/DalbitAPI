@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.ProfileEditVo;
 import com.dalbit.util.DalbitUtil;
@@ -12,7 +13,7 @@ import java.time.format.DateTimeFormatter;
 
 @Getter
 @Setter
-public class P_ProfileEditVo {
+public class P_ProfileEditVo extends P_ApiVo {
 
     public P_ProfileEditVo(){}
     public P_ProfileEditVo(ProfileEditVo profileEditVo, HttpServletRequest request){

@@ -1,11 +1,12 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.request.SpecialPointListVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class P_SpecialPointListVo {
+public class P_SpecialPointListVo extends P_ApiVo {
 
     public P_SpecialPointListVo(){}
     public P_SpecialPointListVo(SpecialPointListVo specialPointListVo){

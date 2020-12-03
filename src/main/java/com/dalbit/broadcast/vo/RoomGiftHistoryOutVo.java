@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomGiftHistoryVo;
+import com.dalbit.common.vo.BadgeVo;
 import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
@@ -25,8 +26,8 @@ public class RoomGiftHistoryOutVo {
     private long giftTs;
     private String giftDt;
     private int liveFanRank;
-    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
+    private List<BadgeVo> liveBadgeList = new ArrayList<>();
+    private List<BadgeVo> commonBadgeList = new ArrayList<>();
 
     public RoomGiftHistoryOutVo(P_RoomGiftHistoryVo target) {
         this.memNo = target.getMem_no();
@@ -40,9 +41,9 @@ public class RoomGiftHistoryOutVo {
         this.giftTs = DalbitUtil.getUTCTimeStamp(target.getGiftDate());
         this.giftDt = DalbitUtil.getUTCFormat(target.getGiftDate());
         this.liveFanRank = target.getLiveFanRank();
-        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+        /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
-        }
+        }*/
     }
 
 }

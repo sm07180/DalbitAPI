@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter @ToString
-public class P_BroadContinueVo {
+public class P_BroadContinueVo extends P_ApiVo {
 
     public P_BroadContinueVo(){}
     public P_BroadContinueVo(HttpServletRequest request){

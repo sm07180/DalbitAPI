@@ -1,11 +1,12 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_RisingEventListOutputVo {
+public class P_RisingEventListOutputVo extends P_ApiVo {
     /* Output */
     private int rank;
     private String mem_no;

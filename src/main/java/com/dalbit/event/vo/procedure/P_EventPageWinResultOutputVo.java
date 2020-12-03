@@ -1,11 +1,12 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_EventPageWinResultOutputVo {
+public class P_EventPageWinResultOutputVo extends P_ApiVo {
     /* Output */
     private int prizeRank;
     private int prizeIdx;

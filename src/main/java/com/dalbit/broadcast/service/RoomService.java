@@ -9,6 +9,7 @@ import com.dalbit.broadcast.vo.request.StateVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
+import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
@@ -71,6 +72,8 @@ public class RoomService {
     UserDao userDao;
     @Autowired
     CommonDao commonDao;
+    @Autowired
+    BadgeService badgeService;
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -370,7 +373,10 @@ public class RoomService {
                     roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord, roomVoList.get(i).getNotice()));
                 }
             }
-            outVoList.add(new RoomOutVo(roomVoList.get(i), deviceVo));
+            RoomOutVo roomOutVo = new RoomOutVo(roomVoList.get(i), deviceVo);
+            badgeService.setBadgeInfo(roomOutVo.getBjMemNo(), 6);
+            roomOutVo.setLiveBadgeList(badgeService.getCommonBadge());
+            outVoList.add(roomOutVo);
         }
         log.debug("set list time {} ms", ((new Date()).getTime() - st));
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
@@ -629,6 +635,7 @@ public class RoomService {
         if(l > 4){
             returnMap.put("holderBg", StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + ""));
         }
+        returnMap.put("levelColor", DalbitUtil.getProperty("level.color."+l).split(","));
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
@@ -654,34 +661,10 @@ public class RoomService {
         }else{
             returnMap.put("fanBadge", fanBadgeVo);
         }
-        HashMap fanBadgeMap = new HashMap();
-        fanBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
-        fanBadgeMap.put("type", -1);
-        fanBadgeMap.put("by", "api");
-        List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
-        if(DalbitUtil.isEmpty(fanBadgeList)){
-            returnMap.put("fanBadgeList", new ArrayList());
-        }else{
-            returnMap.put("fanBadgeList", fanBadgeList);
-        }
-
-        //실시간 뱃지 리스트
-        HashMap liveBadgeMap = new HashMap();
-        liveBadgeMap.put("mem_no", pRoomMemberInfoVo.getTarget_mem_no());
-        liveBadgeMap.put("type", -1);
-        liveBadgeMap.put("by", "api");
-        List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
-        if(DalbitUtil.isEmpty(liveBadgeList)){
-            returnMap.put("liveBadgeList", new ArrayList());
-        }else{
-            for(int i = (liveBadgeList.size() -1); i > -1; i--){
-                if(DalbitUtil.isEmpty(((FanBadgeVo)liveBadgeList.get(i)).getIcon())){
-                    liveBadgeList.remove(i);
-                }
-            }
-            returnMap.put("liveBadgeList", liveBadgeList);
-        }
-        returnMap.put("commonBadgeList", new ArrayList<>());
+        badgeService.setBadgeInfo(pRoomMemberInfoVo.getTarget_mem_no(), -1);
+        returnMap.put("liveBadgeList", badgeService.getCommonBadge());
+        returnMap.put("commonBadgeList", badgeService.getCommonBadge());
+        returnMap.put("fanBadgeList", new ArrayList());
 
         returnMap.put("cupidMemNo", DalbitUtil.getStringMap(resultMap, "cupidMemNo"));
         returnMap.put("cupidNickNm", DalbitUtil.getStringMap(resultMap, "cupidNickNm"));

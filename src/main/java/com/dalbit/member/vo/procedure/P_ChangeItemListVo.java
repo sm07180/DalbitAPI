@@ -1,6 +1,7 @@
 package com.dalbit.member.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.ChangeItemListVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ChangeItemListVo {
+public class P_ChangeItemListVo extends P_ApiVo {
 
     public P_ChangeItemListVo(){}
     public P_ChangeItemListVo(ChangeItemListVo changeItemListVo, HttpServletRequest request){

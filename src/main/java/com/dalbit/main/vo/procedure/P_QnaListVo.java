@@ -1,5 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.QnaListVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_QnaListVo {
+public class P_QnaListVo extends P_ApiVo {
 
     public P_QnaListVo(){}
     public P_QnaListVo(QnaListVo qnaListVo, HttpServletRequest request){

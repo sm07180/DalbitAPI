@@ -163,4 +163,9 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     P_BroadcastDetailOutputVo callBroadcastInfo(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    ArrayList<SettingListVo> selectSettingList(SettingListVo settingListVo);
+
+    int updateSetting(SettingListVo settingListVo);
 }

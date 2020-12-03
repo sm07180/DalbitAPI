@@ -22,6 +22,7 @@ public class FanListNewOutVo {
     private long lastListenTs;
     private String regDt;
     private long regTs;
+    private String gender;
 
     public FanListNewOutVo(){}
     public FanListNewOutVo(P_FanListNewVo target){
@@ -36,6 +37,6 @@ public class FanListNewOutVo {
         setLastListenTs(DalbitUtil.isEmpty(target.getLastlistenDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getLastlistenDate()));
         setRegDt(DalbitUtil.isEmpty(target.getRegDate()) ? "" : DalbitUtil.getUTCFormat(target.getRegDate()));
         setRegTs(DalbitUtil.isEmpty(target.getRegDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getRegDate()));
-
+        setGender(target.getMemSex());
     }
 }

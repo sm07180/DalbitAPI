@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -7,7 +8,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_GuestInviteVo {
+public class P_GuestInviteVo extends P_ApiVo {
 
     public P_GuestInviteVo(){}
     public P_GuestInviteVo(String memNo, String roomNo, HttpServletRequest request){

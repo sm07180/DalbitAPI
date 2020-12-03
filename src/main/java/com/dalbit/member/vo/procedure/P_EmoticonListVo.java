@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter @Setter
-public class P_EmoticonListVo {
+public class P_EmoticonListVo extends P_ApiVo {
 
     public P_EmoticonListVo(){}
     public P_EmoticonListVo(HttpServletRequest request){

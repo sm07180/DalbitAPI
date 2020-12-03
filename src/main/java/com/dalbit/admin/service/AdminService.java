@@ -1418,4 +1418,34 @@ public class AdminService {
         return gsonUtil.toJson(new JsonOutputVo(Status.삭제));
     }
 
+    /**
+     * 설정 (tbl_code_define, type="system_config"인 목록)
+     */
+    public String selectSettingList(SettingListVo settingListVo) {
+        ArrayList<SettingListVo> list = adminDao.selectSettingList(settingListVo);
+        if(DalbitUtil.isEmpty(list) || list.size() == 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.조회, new ArrayList<>()));
+        } else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+        }
+
+
+    }
+
+    /**
+     * 설정 값 변경
+     */
+    public String updateSetting(SettingListVo settingListVo) {
+        String result ="";
+        if(!DalbitUtil.isEmpty(settingListVo.getCode()) && !DalbitUtil.isEmpty(settingListVo.getValue())) {
+            int status = adminDao.updateSetting(settingListVo);
+
+            if (status > 0) {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.수정));
+            } else {
+                result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+            }
+        }
+        return result;
+    }
 }

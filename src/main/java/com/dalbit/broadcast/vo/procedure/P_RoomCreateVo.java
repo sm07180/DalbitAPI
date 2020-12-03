@@ -1,11 +1,12 @@
 package com.dalbit.broadcast.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_RoomCreateVo {
+public class P_RoomCreateVo extends P_ApiVo {
 
     private String mem_no;                  //회원번호
     private String subjectType;             //방송종류

@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.RouletteApplyVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_RouletteApplyListVo {
+public class P_RouletteApplyListVo extends P_ApiVo {
 
     public P_RouletteApplyListVo(){}
     public P_RouletteApplyListVo(RouletteApplyVo rouletteApplyVo, HttpServletRequest request){

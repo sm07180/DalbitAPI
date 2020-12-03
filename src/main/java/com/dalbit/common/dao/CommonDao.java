@@ -61,6 +61,11 @@ public interface CommonDao {
 
     List<FanBadgeVo> callLiveBadgeSelect(HashMap param);
 
+    List<FanBadgeVo> callMemberBadgeList(HashMap param);
+
+    @Transactional(readOnly = true)
+    BadgeFrameVo callMemberBadgeFrame(HashMap param);
+
     int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo);
 
     ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);

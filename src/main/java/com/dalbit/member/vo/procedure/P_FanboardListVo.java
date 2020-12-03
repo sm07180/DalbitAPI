@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.FanboardViewVo;
 import com.dalbit.util.DalbitUtil;
@@ -11,7 +12,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_FanboardListVo {
+public class P_FanboardListVo extends P_ApiVo {
 
     public P_FanboardListVo(){}
     public P_FanboardListVo(FanboardViewVo fanboardViewVo, HttpServletRequest request){

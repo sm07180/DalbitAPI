@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageNoticeReplyListVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_MypageNoticeReplyListVo {
+public class P_MypageNoticeReplyListVo extends P_ApiVo {
 
     public P_MypageNoticeReplyListVo(){}
     public P_MypageNoticeReplyListVo(MypageNoticeReplyListVo mypageNoticeReplyListVo, HttpServletRequest request){

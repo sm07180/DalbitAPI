@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageNoticeReplyDeleteVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_MypageNoticeReplyDeleteVo {
+public class P_MypageNoticeReplyDeleteVo extends P_ApiVo {
 
     private String star_mem_no;
     private String delete_mem_no;

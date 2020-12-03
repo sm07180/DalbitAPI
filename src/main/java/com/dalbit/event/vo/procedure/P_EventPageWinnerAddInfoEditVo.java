@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.EventPageWinnerAddInfoEditVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_EventPageWinnerAddInfoEditVo {
+public class P_EventPageWinnerAddInfoEditVo extends P_ApiVo {
 
     public P_EventPageWinnerAddInfoEditVo(EventPageWinnerAddInfoEditVo pageWinnerAddInfoEditVo, HttpServletRequest request) {
         setMem_no(MemberVo.getMyMemNo(request));

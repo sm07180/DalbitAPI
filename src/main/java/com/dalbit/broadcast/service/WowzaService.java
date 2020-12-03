@@ -3,12 +3,15 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.GuestDao;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
-import com.dalbit.broadcast.vo.RoomMemberInfoVo;
 import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.broadcast.vo.request.*;
+import com.dalbit.broadcast.vo.request.GuestListVo;
+import com.dalbit.broadcast.vo.request.RoomCreateVo;
+import com.dalbit.broadcast.vo.request.RoomJoinVo;
+import com.dalbit.broadcast.vo.request.RoomTokenVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
+import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
@@ -65,6 +68,8 @@ public class WowzaService {
     EventService eventService;
     @Autowired
     IPUtil ipUtil;
+    @Autowired
+    BadgeService badgeService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -275,26 +280,6 @@ public class WowzaService {
             try{
                 memberInfoVo.setKingMember((String)fanRankMap.get("kingMemNo"), (String)fanRankMap.get("kingNickNm"), (ImageVo) fanRankMap.get("kingProfImg"));
             }catch(Exception e) {}
-            HashMap fanBadgeMap = new HashMap();
-            fanBadgeMap.put("mem_no", target.getBjMemNo());
-            fanBadgeMap.put("type", 4);
-            fanBadgeMap.put("by", "api");
-            List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
-            if(!DalbitUtil.isEmpty(fanBadgeList)){
-                memberInfoVo.setLiveBadgeList(fanBadgeList);
-            }
-
-            //실시간 DJ 뱃지 리스트
-            HashMap liveBadgeMap = new HashMap();
-            liveBadgeMap.put("mem_no", target.getBjMemNo());
-            liveBadgeMap.put("type", 4);
-            liveBadgeMap.put("by", "api");
-            List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
-            if(DalbitUtil.isEmpty(liveBadgeList)){
-                memberInfoVo.setFanBadgeList(new ArrayList());
-            }else{
-                memberInfoVo.setFanBadgeList(liveBadgeList);
-            }
 
             //제목 저장기록이 없을 경우 최근방송 제목 저장
             P_BroadcastOptionListVo titleListVo = new P_BroadcastOptionListVo();
@@ -341,6 +326,9 @@ public class WowzaService {
             RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
+            badgeService.setBadgeInfo(target.getBjMemNo(), 4);
+            roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
+            roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             result.put("data", roomInfoVo);
 
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
@@ -621,26 +609,6 @@ public class WowzaService {
         try{
             memberInfoVo.setKingMember((String)fanRankMap.get("kingMemNo"), (String)fanRankMap.get("kingNickNm"), (ImageVo) fanRankMap.get("kingProfImg"));
         }catch(Exception e) {}
-        HashMap fanBadgeMap = new HashMap();
-        fanBadgeMap.put("mem_no", target.getBjMemNo());
-        fanBadgeMap.put("type", 4);
-        fanBadgeMap.put("by", "api");
-        List fanBadgeList = commonDao.callMemberBadgeSelect(fanBadgeMap);
-        if(!DalbitUtil.isEmpty(fanBadgeList)){
-            memberInfoVo.setLiveBadgeList(fanBadgeList);
-        }
-
-        //실시간 DJ 뱃지 리스트
-        HashMap liveBadgeMap = new HashMap();
-        liveBadgeMap.put("mem_no", target.getBjMemNo());
-        liveBadgeMap.put("type", 4);
-        liveBadgeMap.put("by", "api");
-        List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
-        if(DalbitUtil.isEmpty(liveBadgeList)){
-            memberInfoVo.setFanBadgeList(new ArrayList());
-        }else{
-            memberInfoVo.setFanBadgeList(liveBadgeList);
-        }
 
         //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 조회
         P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
@@ -652,7 +620,11 @@ public class WowzaService {
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
-        return new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request));
+        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request));
+        badgeService.setBadgeInfo(target.getBjMemNo(), 4);
+        roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
+        roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+        return roomInfoVo;
     }
 
     @Async("threadTaskExecutor")

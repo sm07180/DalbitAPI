@@ -1,11 +1,12 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_ReplyAddInputVo {
+public class P_ReplyAddInputVo extends P_ApiVo {
 
     /* Input */
     private int memLogin;                       //회원 로그인 상태(1: 회원, 0: 비회원)

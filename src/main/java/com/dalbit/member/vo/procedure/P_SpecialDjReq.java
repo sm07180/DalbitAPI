@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Getter @Setter
-public class P_SpecialDjReq {
+public class P_SpecialDjReq extends P_ApiVo {
 
     private String mem_no;
     @NotBlank(message = "{\"ko_KR\" : \"성명을\"}")

@@ -480,13 +480,14 @@ public class CommonService {
             for (int i = 0; i < kingFanRankListVo.size(); i++) {
                 HashMap liveBadgeMap = new HashMap();
                 liveBadgeMap.put("mem_no", kingFanRankListVo.get(i).getMem_no());
-                liveBadgeMap.put("type", 5);
+                liveBadgeMap.put("type", 0);
                 liveBadgeMap.put("by", "api");
-                List liveBadgeList = commonDao.callLiveBadgeSelect(liveBadgeMap);
-                if(DalbitUtil.isEmpty(liveBadgeList)){
-                    liveBadgeList = new ArrayList();
+                BadgeFrameVo badgeFrameVo = commonDao.callMemberBadgeFrame(liveBadgeMap);
+                if(DalbitUtil.isEmpty(badgeFrameVo)){
+                    outVoList.add(new P_KingFanRankListOutVo(kingFanRankListVo.get(i), i+1));
+                }else{
+                    outVoList.add(new P_KingFanRankListOutVo(kingFanRankListVo.get(i), i+1, badgeFrameVo));
                 }
-                outVoList.add(new P_KingFanRankListOutVo(kingFanRankListVo.get(i), i+1, liveBadgeList));
             }
 
             HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);

@@ -8,6 +8,7 @@ import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.common.vo.request.SelfAuthChkVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenVo;
 import com.google.gson.Gson;
 import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
@@ -421,9 +422,20 @@ public class DalbitUtil {
         return environment.getProperty(key);
     }
 
-    public static boolean isLogin(HttpServletRequest request){
+    public static boolean isLogin(HttpServletRequest request) {
         String memNo = new MemberVo().getMyMemNo(request);
-        return isLogin(memNo);
+        String authToken = request.getHeader("authToken");
+        if(isLogin(memNo)){
+            //회원번호지만 로그인 여부가 false인 경우 체크 (휴면회원 추가 체크)
+            try{
+                TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
+                return tokenVo.isLogin();
+            }catch (Exception e){
+                return false;
+            }
+        }else{
+            return false;
+        }
     }
 
     public static boolean isLogin(String memNo){

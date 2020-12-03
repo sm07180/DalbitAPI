@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomGoodHistoryVo;
+import com.dalbit.common.vo.BadgeVo;
 import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
@@ -24,8 +25,8 @@ public class RoomGoodHistoryOutVo {
     private Boolean isNewListener;
     private Boolean isSpecial;
     private int liveFanRank;
-    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
+    private List<BadgeVo> liveBadgeList = new ArrayList<>();
+    private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private int goodCnt;
     private Boolean isJoin;
 
@@ -41,9 +42,9 @@ public class RoomGoodHistoryOutVo {
         setIsNewListener(this.auth == 0 ? (target.getNewBadge() == 1 ? true : false) : false);
         setIsSpecial(target.getSpecialBadge() == 1 ? true : false);
         setLiveFanRank(target.getLiveFanRank());
-        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+        /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
-        }
+        }*/
         setGoodCnt(target.getGoodCnt());
         setIsJoin(target.getState() == 0 ? true : false);
     }

@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.RoomGiftHistoryVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_RoomGiftHistoryVo {
+public class P_RoomGiftHistoryVo extends P_ApiVo {
 
     public P_RoomGiftHistoryVo(){}
     public P_RoomGiftHistoryVo(RoomGiftHistoryVo roomGiftHistoryVo, HttpServletRequest request){

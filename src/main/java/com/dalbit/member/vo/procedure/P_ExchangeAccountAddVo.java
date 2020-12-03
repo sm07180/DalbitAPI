@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.ExchangeAccountAddVo;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ExchangeAccountAddVo {
+public class P_ExchangeAccountAddVo extends P_ApiVo {
     public P_ExchangeAccountAddVo(){}
     public P_ExchangeAccountAddVo(ExchangeAccountAddVo exchangeAccountAddVo, HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));

@@ -1,12 +1,13 @@
 package com.dalbit.broadcast.vo.procedure;
 
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_RoomGiftVo {
+public class P_RoomGiftVo extends P_ApiVo {
     private String mem_no;          //요청 회원번호
     private String room_no;         //해당 방 번호
     private String gifted_mem_no;   //선물받을 회원 번호

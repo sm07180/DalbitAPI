@@ -1,5 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.QnaVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @Getter @Setter
-public class P_QnaVo {
+public class P_QnaVo extends P_ApiVo {
 
     private String mem_no;
     private int slctType;

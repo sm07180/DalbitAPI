@@ -1,6 +1,7 @@
 package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipGiftRankListVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ClipGiftRankListVo {
+public class P_ClipGiftRankListVo extends P_ApiVo {
 
     public P_ClipGiftRankListVo(){}
     public P_ClipGiftRankListVo(ClipGiftRankListVo clipGiftRankListVo, HttpServletRequest request){

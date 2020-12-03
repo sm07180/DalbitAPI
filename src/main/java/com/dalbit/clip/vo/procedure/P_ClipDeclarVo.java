@@ -2,6 +2,7 @@ package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipDeclarVo;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 @Slf4j
 @Getter
 @Setter
-public class P_ClipDeclarVo {
+public class P_ClipDeclarVo extends P_ApiVo {
 
     private String mem_no;
     private String reported_mem_no;                           //신고회원번호

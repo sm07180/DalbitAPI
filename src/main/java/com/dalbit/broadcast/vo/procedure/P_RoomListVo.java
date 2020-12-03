@@ -2,6 +2,7 @@ package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_RoomListVo{
+public class P_RoomListVo extends P_ApiVo {
 
     public P_RoomListVo(){}
     public P_RoomListVo(RoomListVo roomListVo, HttpServletRequest request){

@@ -414,4 +414,22 @@ public class AdminController {
         }
         return result;
     }
+
+    /**
+     * 설정 (tbl_code_define, type="system_config"인 목록)
+     */
+    @PostMapping("/setting")
+    public String selectSettingList(SettingListVo settingListVo) {
+        String result = adminService.selectSettingList(settingListVo);
+        return result;
+    }
+
+    /**
+     * 설정 값 변경
+     */
+    @PostMapping("/setting/update")
+    public String updateSetting(SettingListVo settingListVo) {
+        String result = adminService.updateSetting(settingListVo);
+        return result;
+    }
 }

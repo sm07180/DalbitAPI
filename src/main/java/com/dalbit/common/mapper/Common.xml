@@ -288,6 +288,14 @@
       call sp_member_live_badge_icon(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
     </select>
 
+    <select id="callMemberBadgeList" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.FanBadgeVo">
+      call sp_member_badge_list(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="callMemberBadgeFrame" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.BadgeFrameVo">
+      call sp_member_badge_frame(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
+    </select>
+
     <update id="updateMemberCertification" parameterType="P_SelfAuthVo">
         /* Common.xml - updateMemberCertification */
         UPDATE rd_data.tb_member_certification

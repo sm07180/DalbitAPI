@@ -1,13 +1,14 @@
 package com.dalbit.broadcast.vo.procedure;
 
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
 
 @Getter @Setter
-public class P_RoomShareLinkVo {
+public class P_RoomShareLinkVo extends P_ApiVo {
 
     /* Input */
     private int memLogin;       //회원 로그인 상태(1: 회원, 0: 비회원)

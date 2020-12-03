@@ -1,5 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.MainRankingPageVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_MainRankingPageVo {
+public class P_MainRankingPageVo extends P_ApiVo {
 
     public P_MainRankingPageVo(){}
     public P_MainRankingPageVo(MainRankingPageVo mainRankingPageVo, HttpServletRequest request){
@@ -60,6 +61,7 @@ public class P_MainRankingPageVo {
     private String dj_mem_no;
     private String dj_nickName;
     private int dj_goodPoint;
+    private String listenRoomNo;
 
     private String liveBadgeText;
     private String liveBadgeIcon;

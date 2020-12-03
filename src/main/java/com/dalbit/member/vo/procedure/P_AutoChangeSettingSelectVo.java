@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @Getter
 @Setter
-public class P_AutoChangeSettingSelectVo {
+public class P_AutoChangeSettingSelectVo extends P_ApiVo {
     public P_AutoChangeSettingSelectVo(){}
     public P_AutoChangeSettingSelectVo(HttpServletRequest request){
         setMem_no(new MemberVo().getMyMemNo(request));

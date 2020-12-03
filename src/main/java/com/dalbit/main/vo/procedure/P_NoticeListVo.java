@@ -1,6 +1,7 @@
 package com.dalbit.main.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.NoticeListVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -11,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_NoticeListVo {
+public class P_NoticeListVo extends P_ApiVo {
 
     public P_NoticeListVo(){}
     public P_NoticeListVo(NoticeListVo noticeListVo, HttpServletRequest request, MemberVo memberVo){

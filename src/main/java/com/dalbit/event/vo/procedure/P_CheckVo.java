@@ -1,12 +1,13 @@
 package com.dalbit.event.vo.procedure;
 
 import com.dalbit.common.code.EventCode;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.CheckVo;
 import com.dalbit.member.vo.MemberVo;
 
 import javax.servlet.http.HttpServletRequest;
 
-public class P_CheckVo {
+public class P_CheckVo extends P_ApiVo {
     private String mem_no;
     private int event_idx;
     private boolean isMulti;

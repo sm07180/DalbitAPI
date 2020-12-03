@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.RouletteWinVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Getter @Setter
-public class P_RouletteWinListVo {
+public class P_RouletteWinListVo extends P_ApiVo {
 
     public P_RouletteWinListVo(){}
     public P_RouletteWinListVo(RouletteWinVo rouletteWinVo, HttpServletRequest request){

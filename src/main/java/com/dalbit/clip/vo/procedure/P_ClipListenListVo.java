@@ -1,6 +1,7 @@
 package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipListenListVo;
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 
 @Getter @Setter
-public class P_ClipListenListVo {
+public class P_ClipListenListVo extends P_ApiVo {
     public P_ClipListenListVo(){}
     public P_ClipListenListVo(ClipListenListVo clipListenListVo, HttpServletRequest request){
         int pageNo = DalbitUtil.isEmpty(clipListenListVo.getPage()) ? 1 : clipListenListVo.getPage();

@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.FanboardAddVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_FanboardAddVo {
+public class P_FanboardAddVo extends P_ApiVo {
 
     /* input */
     private String star_mem_no;     // 팬보드 스타 회원번호

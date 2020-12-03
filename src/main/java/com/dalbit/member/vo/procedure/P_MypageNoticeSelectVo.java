@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageNoticeSelectVo;
 import com.dalbit.util.DalbitUtil;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 @Slf4j
 @Getter @Setter
-public class P_MypageNoticeSelectVo {
+public class P_MypageNoticeSelectVo extends P_ApiVo {
 
     public P_MypageNoticeSelectVo(){}
     public P_MypageNoticeSelectVo(MypageNoticeSelectVo mypageNoticeSelectVo, HttpServletRequest request){

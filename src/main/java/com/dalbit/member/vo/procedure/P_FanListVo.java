@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.FanListVo;
 import com.dalbit.member.vo.request.FanRankingVo;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_FanListVo {
+public class P_FanListVo extends P_ApiVo {
 
     public P_FanListVo(){}
     public P_FanListVo(FanListVo fanListVo, HttpServletRequest request){

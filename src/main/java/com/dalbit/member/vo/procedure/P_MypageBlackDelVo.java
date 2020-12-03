@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageBlackDelVo;
 import com.dalbit.member.vo.request.MypageManagerDelVo;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_MypageBlackDelVo {
+public class P_MypageBlackDelVo extends P_ApiVo {
 
     private String mem_no;
     private String black_mem_no;

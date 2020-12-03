@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageNoticeAddVo;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_MypageNoticeAddVo {
+public class P_MypageNoticeAddVo extends P_ApiVo {
 
     public P_MypageNoticeAddVo(MypageNoticeAddVo mypageNoticeAddVo, HttpServletRequest request){
         int topFix = (mypageNoticeAddVo.getIsTop().equals("1") || mypageNoticeAddVo.getIsTop().toUpperCase().equals("TRUE")) ? 1 : 0;

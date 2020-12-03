@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_RoomGuestVo {
+public class P_RoomGuestVo extends P_ApiVo {
 
     private String mem_no;                      //요청 회원번호
     private String room_no;                     //참가하려는 방 번호

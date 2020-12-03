@@ -17,7 +17,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.dalbit.util.RestApiUtil;
+import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -47,6 +47,8 @@ public class ClipService {
     MemberDao memberDao;
     @Autowired
     CommonDao commonDao;
+    @Autowired
+    IPUtil ipUtil;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -62,11 +64,13 @@ public class ClipService {
      */
     public String clipAdd(P_ClipAddVo pClipAddVo, HttpServletRequest request) throws GlobalException {
 
-        //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_클립막기.getCode(), Code.시스템설정_클립막기.getDesc()));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            if(codeVo.getValue().equals("Y")){
-                return gsonUtil.toJson(new JsonOutputVo(Status.설정_클립업로드_참여불가상태));
+        //클립 업로드 불가 상태 체크
+        if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
+            var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_클립막기.getCode(), Code.시스템설정_클립막기.getDesc()));
+            if(!DalbitUtil.isEmpty(codeVo)){
+                if(codeVo.getValue().equals("Y")){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.설정_클립업로드_참여불가상태));
+                }
             }
         }
 
@@ -231,11 +235,13 @@ public class ClipService {
      */
     public String clipPlay(P_ClipPlayVo pClipPlayVo, String state, HttpServletRequest request) {
 
-        //방 생성 접속 불가 상태 체크
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_클립막기.getCode(), Code.시스템설정_클립막기.getDesc()));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            if(codeVo.getValue().equals("Y")){
-                return gsonUtil.toJson(new JsonOutputVo(Status.설정_클립업로드_참여불가상태));
+        //클립 플레이 불가 상태 체크
+        if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
+            var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_클립막기.getCode(), Code.시스템설정_클립막기.getDesc()));
+            if(!DalbitUtil.isEmpty(codeVo)){
+                if(codeVo.getValue().equals("Y")){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.설정_클립업로드_참여불가상태));
+                }
             }
         }
 

@@ -2,6 +2,7 @@ package com.dalbit.event.vo.procedure;
 
 import com.dalbit.common.code.EventCode;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.Apply004Vo;
 import com.dalbit.event.vo.request.ApplyVo;
 import com.dalbit.member.vo.MemberVo;
@@ -11,7 +12,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ApplyVo {
+public class P_ApplyVo extends P_ApiVo {
     private String mem_no;
     private int event_idx;
     private boolean isMulti;

@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_RankingLiveOutputVo {
+public class P_RankingLiveOutputVo extends P_ApiVo {
     /* Output */
     private int rank;				        //순위
     private String mem_no;				//회원번호

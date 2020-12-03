@@ -1,6 +1,6 @@
 package com.dalbit.search.vo.procedure;
 
-import com.dalbit.common.vo.FanBadgeVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.search.vo.request.RoomRecommandListVo;
 import com.dalbit.util.DalbitUtil;
@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_RoomRecommandListVo {
+public class P_RoomRecommandListVo extends P_ApiVo {
 
     public P_RoomRecommandListVo(){}
     public P_RoomRecommandListVo(RoomRecommandListVo roomRecommandListVo, HttpServletRequest request){

@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
+import com.dalbit.common.vo.BadgeVo;
 import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.util.DalbitUtil;
@@ -29,11 +30,11 @@ public class RoomMemberOutVo{
     private boolean isNewListener;
     private boolean isSpecial;
     private int liveFanRank;
-    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private List<BadgeVo> liveBadgeList = new ArrayList<>();
+    private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private int goodCnt;
     private Boolean isGuest;
     private int managerType;
-    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
 
     public RoomMemberOutVo(P_RoomMemberListVo target){
         this.memNo = target.getMem_no();

@@ -1,6 +1,7 @@
 package com.dalbit.member.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MemberReportAddVo;
 import com.dalbit.util.DalbitUtil;
@@ -15,7 +16,7 @@ import java.util.HashMap;
 @Slf4j
 @Getter
 @Setter
-public class P_MemberReportAddVo {
+public class P_MemberReportAddVo extends P_ApiVo {
 
     private String mem_no;
     private String reported_mem_no;                           //신고회원번호

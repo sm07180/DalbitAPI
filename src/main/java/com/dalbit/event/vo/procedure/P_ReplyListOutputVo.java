@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_ReplyListOutputVo {
+public class P_ReplyListOutputVo extends P_ApiVo {
     /* Output */
     private int reply_idx;				// '순서'
     private int event_idx;		    // '이벤트번호'

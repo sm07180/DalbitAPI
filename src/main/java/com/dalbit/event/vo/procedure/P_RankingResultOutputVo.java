@@ -1,11 +1,12 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_RankingResultOutputVo {
+public class P_RankingResultOutputVo extends P_ApiVo {
     /* Output */
     private int rank;				        //순위
     private String mem_no;				//회원번호

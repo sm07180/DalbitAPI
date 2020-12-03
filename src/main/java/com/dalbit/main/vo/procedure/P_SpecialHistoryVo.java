@@ -1,5 +1,6 @@
 package com.dalbit.main.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import org.apache.commons.lang3.math.NumberUtils;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_SpecialHistoryVo {
+public class P_SpecialHistoryVo extends P_ApiVo {
     private String year;
     private String month;
     private String mem_no;

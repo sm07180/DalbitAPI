@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MemberNotifyEditVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_MemberNotifyEditVo {
+public class P_MemberNotifyEditVo extends P_ApiVo {
 
     private String mem_no;      //요청 회원번호
     private Integer all_ok;         //전체알림

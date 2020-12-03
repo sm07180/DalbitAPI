@@ -2,10 +2,7 @@ package com.dalbit.broadcast.vo;
 
 import com.dalbit.broadcast.vo.procedure.P_RoomInfoViewVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
-import com.dalbit.common.vo.DeviceVo;
-import com.dalbit.common.vo.FanBadgeVo;
-import com.dalbit.common.vo.ImageVo;
-import com.dalbit.common.vo.PagingVo;
+import com.dalbit.common.vo.*;
 import com.dalbit.util.DalbitUtil;
 import com.google.gson.Gson;
 import lombok.Getter;
@@ -67,8 +64,8 @@ public class RoomOutVo {
     private int totalCnt = 0;
     private Boolean isFreeze;
     private int liveDjRank;
-    private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-    private List<FanBadgeVo> commonBadgeList = new ArrayList<>();
+    private List<BadgeVo> liveBadgeList = new ArrayList<>();
+    private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private int freezeMsg;
     private Boolean isExtend;
     private int imageType;
@@ -130,9 +127,9 @@ public class RoomOutVo {
         this.isWowza = target.getIs_wowza();
         this.totalCnt = target.getTotalCnt();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
-        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+        /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
-        }
+        }*/
         this.isGoodMem = target.getGoodMem() > 0 ? true : false;
     }
 
@@ -185,9 +182,9 @@ public class RoomOutVo {
 
         this.isFreeze = (target.getFreezeMsg() == 0) ? false : true;
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
-        if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
+        /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
-        }
+        }*/
 
         this.os = target.getOs();
         this.freezeMsg = target.getFreezeMsg();

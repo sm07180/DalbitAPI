@@ -2,6 +2,7 @@ package com.dalbit.clip.vo.procedure;
 
 import com.dalbit.clip.vo.request.ClipPlayVo;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ClipPlayVo {
+public class P_ClipPlayVo extends P_ApiVo {
 
     private int memLogin;
     private String mem_no;

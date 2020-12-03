@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.StarMemoVo;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_StarMemoVo {
+public class P_StarMemoVo extends P_ApiVo {
 
     public P_StarMemoVo(){}
     public P_StarMemoVo(StarMemoVo starMemoVo, HttpServletRequest request){

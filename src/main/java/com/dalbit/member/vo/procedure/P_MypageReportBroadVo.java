@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MypageReportBroadVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_MypageReportBroadVo {
+public class P_MypageReportBroadVo extends P_ApiVo {
 
     public P_MypageReportBroadVo(){}
     public P_MypageReportBroadVo(MypageReportBroadVo mypageReportBroadVo, HttpServletRequest request){

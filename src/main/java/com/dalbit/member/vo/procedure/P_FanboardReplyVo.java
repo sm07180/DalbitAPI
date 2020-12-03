@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.FanboardReplyVo;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-public class P_FanboardReplyVo {
+public class P_FanboardReplyVo extends P_ApiVo {
 
     /* input */
     private String mem_no;          // 팬보드 댓글 리스트 요청 회원번호

@@ -1,6 +1,7 @@
 package com.dalbit.main.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.vo.*;
@@ -27,6 +28,8 @@ public class MainService {
     GsonUtil gsonUtil;
     @Autowired
     MainDao mainDao;
+    @Autowired
+    BadgeService badgeService;
 
     public String getMain(HttpServletRequest request){
 
@@ -56,17 +59,6 @@ public class MainService {
         pMainRecommandVo.setParamPlatform(platform);
         pMainRecommandVo.setParamIsWowza(isWowza);
         List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
-        /*if(DalbitUtil.isEmpty(recommendVoList) || recommendVoList.size() < 5){
-            List<P_MainRecommandVo> recommendVoLiveList = mainDao.callMainRecommandLiveList(pMainRecommandVo);
-            if(!DalbitUtil.isEmpty(recommendVoLiveList)){
-                for(int i = 0; i < recommendVoLiveList.size(); i++){
-                    recommendVoList.add(recommendVoLiveList.get(i));
-                    if(recommendVoList.size() > 4){
-                        break;
-                    }
-                }
-            }
-        }*/
 
         Calendar yesterday = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
@@ -128,6 +120,7 @@ public class MainService {
             }
 
             int bannerIdx = 0;
+            String startUrl = request.getHeader("referer");
             for (int i=0; i < recommendVoList.size(); i++){
                 MainRecommandOutVo outVo = new MainRecommandOutVo();
                 outVo.setMemNo(recommendVoList.get(i).getMemNo());
@@ -140,10 +133,10 @@ public class MainService {
                         outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + ".webp");
                     }
                 }else{
-                    if(deviceVo.getOs() == 3 && !"Y".equals(deviceVo.getIsHybrid())){
-                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl());
-                    }else{
+                    if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
                         outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?720x440");
+                    }else{
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?920x632");
                     }
                 }
                 outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
@@ -160,19 +153,10 @@ public class MainService {
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
                 outVo.isNew = recommendVoList.get(i).isNew();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
-                List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-                if(!DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeText()) && !DalbitUtil.isEmpty(recommendVoList.get(i).getLiveBadgeIcon())){
-                    FanBadgeVo fanBadgeVo = new FanBadgeVo(
-                            recommendVoList.get(i).getLiveBadgeText()
-                            ,recommendVoList.get(i).getLiveBadgeIcon()
-                            ,recommendVoList.get(i).getLiveBadgeStartColor()
-                            ,recommendVoList.get(i).getLiveBadgeEndColor()
-                            ,recommendVoList.get(i).getLiveBadgeImage()
-                            ,recommendVoList.get(i).getLiveBadgeImageSmall()
-                    );
-                    liveBadgeList.add(fanBadgeVo);
-                }
-                outVo.setLiveBadgeList(liveBadgeList);
+
+                badgeService.setBadgeInfo(recommendVoList.get(i).getMemNo(), 6);
+                outVo.setLiveBadgeList(badgeService.getCommonBadge());
+                outVo.setCommonBadgeList(badgeService.getCommonBadge());
                 recommend.add(outVo);
 
                 if(setBanner != 0 && ((i + 1) % setBanner) == 0){
@@ -196,8 +180,6 @@ public class MainService {
                         outVoB.setLikes(0);
                         outVoB.isSpecial = false;
                         outVoB.isAdmin = false;
-                        liveBadgeList = new ArrayList<>();
-                        outVoB.setLiveBadgeList(liveBadgeList);
                         recommend.add(outVoB);
                     }
                     bannerIdx++;
@@ -225,8 +207,6 @@ public class MainService {
                     outVo.setLikes(0);
                     outVo.isSpecial = false;
                     outVo.isAdmin = false;
-                    List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-                    outVo.setLiveBadgeList(liveBadgeList);
                     recommend.add(outVo);
                 }
             }
@@ -642,14 +622,14 @@ public class MainService {
         mainRankingList.put("myDjGoodPoint", DalbitUtil.getIntMap(resultMap, "myDjGoodPoint"));
 
         List<FanBadgeVo> liveBadgeList = new ArrayList<>();
-        /*if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
+        if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
             liveBadgeList.add(new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeStartColor")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeEndColor")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImage")
                     , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImageSmall")));
-        }*/
+        }
         mainRankingList.put("myLiveBadgeList", liveBadgeList);
 
         mainRankingList.put("list", procedureOutputVo.getOutputBox());

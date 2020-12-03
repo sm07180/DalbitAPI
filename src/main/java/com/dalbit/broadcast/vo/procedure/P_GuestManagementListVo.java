@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.GuestManagementVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_GuestManagementListVo {
+public class P_GuestManagementListVo extends P_ApiVo {
 
     public P_GuestManagementListVo(){}
     public P_GuestManagementListVo(GuestManagementVo guestManagementVo, HttpServletRequest request){

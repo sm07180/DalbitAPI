@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.WithdrawalVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
-public class P_WithdrawalVo {
+public class P_WithdrawalVo extends P_ApiVo {
 
     private String mem_no;
     private String mem_userid;

@@ -1,12 +1,13 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.request.StarRankingVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-public class P_StarRankingVo {
+public class P_StarRankingVo extends P_ApiVo {
     private String selfMemNo;
     private String targetMemNo;
 

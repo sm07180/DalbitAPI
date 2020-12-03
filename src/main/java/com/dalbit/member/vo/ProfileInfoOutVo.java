@@ -10,7 +10,6 @@ import lombok.Setter;
 import lombok.ToString;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -54,6 +53,7 @@ public class ProfileInfoOutVo extends BaseVo {
     List fanRank;
     private FanBadgeVo fanBadge;
     List fanBadgeList;
+    List commonBadgeList;
 
     private String cupidMemNo;
     private String cupidNickNm;
@@ -68,7 +68,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private boolean wasSpecial;
     private int specialDjCnt;
 
-    List commonBadgeList = new ArrayList();
+    private String[] levelColor = new String[0];
+
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
         this.memNo = target_mem_no;
@@ -88,6 +89,7 @@ public class ProfileInfoOutVo extends BaseVo {
         if(l > 4){
             this.holderBg = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + "");
         }
+        this.levelColor = DalbitUtil.getProperty("level.color."+l).split(",");
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
             this.expBegin = target.getExpBegin();

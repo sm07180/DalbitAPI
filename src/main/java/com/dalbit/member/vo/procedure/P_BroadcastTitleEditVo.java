@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.BroadcastOptionEditVo;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_BroadcastTitleEditVo {
+public class P_BroadcastTitleEditVo extends P_ApiVo {
     private String mem_no;
     private String title;
     private int titleIdx;
