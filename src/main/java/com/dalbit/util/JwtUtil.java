@@ -2,8 +2,11 @@ package com.dalbit.util;
 
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MemberService;
 import com.dalbit.member.vo.TokenVo;
+import com.dalbit.member.vo.procedure.P_LoginVo;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,8 @@ public class JwtUtil {
     HttpServletRequest request;
     @Autowired
     CommonService commonService;
+    @Autowired
+    MemberService memberService;
 
     @Value("${spring.jwt.secret}")
     private String JWT_SECRET_KEY;
@@ -136,8 +141,17 @@ public class JwtUtil {
 
     private void throwGlobalException(ErrorStatus errorStatus) throws GlobalException{
         if(!DalbitUtil.isEmpty(request) && request.getRequestURI().startsWith("/token")){
-            HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
-            throw new GlobalException(errorStatus, result.get("tokenVo"), Thread.currentThread().getStackTrace()[1].getMethodName());
+            //HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
+            String browser = DalbitUtil.getUserAgent(request);
+            DeviceVo deviceVo = new DeviceVo(request) ;
+            String dbSelectMemNo = "88888888888888";
+            boolean isLogin = false;
+            P_LoginVo pLoginVo = new P_LoginVo("a", deviceVo.getOs(), deviceVo.getDeviceUuid(), deviceVo.getDeviceToken(), deviceVo.getAppVersion(), deviceVo.getAdId(), "", deviceVo.getIp(), browser);
+            memberService.callMemberLogin(pLoginVo);
+
+            TokenVo tokenVo = new TokenVo(generateToken(dbSelectMemNo, isLogin), dbSelectMemNo, isLogin);
+            memberService.refreshAnonymousSecuritySession(dbSelectMemNo);
+            throw new GlobalException(errorStatus, tokenVo, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         throw new GlobalException(errorStatus, Thread.currentThread().getStackTrace()[1].getMethodName());
     }
