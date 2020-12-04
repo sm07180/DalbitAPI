@@ -82,7 +82,6 @@ public class MemberController {
 
             log.info("#### OverStack ##### tokenVo: {}", tokenVo);
             return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
-
         }
 
         if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_회원가입필요.getMessageCode())) {

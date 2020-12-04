@@ -419,7 +419,11 @@ public class DalbitUtil {
     }
 
     public static String getProperty(String key){
-        return environment.getProperty(key);
+        try{
+            return environment.getProperty(key);
+        }catch(Exception e){
+            return "";
+        }
     }
 
     public static boolean isLogin(HttpServletRequest request) {
