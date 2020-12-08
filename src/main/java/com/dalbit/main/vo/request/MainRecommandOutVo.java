@@ -30,6 +30,7 @@ public class MainRecommandOutVo {
     public boolean isSpecial;
     public boolean isAdmin = false;
     public boolean isNew = false;
+    public boolean isShining = false;
     private int isWowza = 0;
     private List<BadgeVo> liveBadgeList = new ArrayList<>();
     private List<BadgeVo> commonBadgeList = new ArrayList<>();

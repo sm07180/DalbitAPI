@@ -136,7 +136,7 @@ public class MainService {
                     if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
                         outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?720x440");
                     }else{
-                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?920x632");
+                        outVo.setBannerUrl(photoSvrUrl + recommendVoList.get(i).getBannerUrl() + "?920x560");
                     }
                 }
                 outVo.setProfImg(new ImageVo(recommendVoList.get(i).getProfileUrl(), recommendVoList.get(i).getGender(), photoSvrUrl));
@@ -152,6 +152,7 @@ public class MainService {
                 outVo.isSpecial = recommendVoList.get(i).isSpecial();
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
                 outVo.isNew = recommendVoList.get(i).isNew();
+                outVo.isShining = recommendVoList.get(i).isShining();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
 
                 //badgeService.setBadgeInfo(recommendVoList.get(i).getMemNo(), 6);
@@ -162,6 +163,14 @@ public class MainService {
                     badgeVo.setEndColor(recommendVoList.get(i).getLiveBadgeEndColor());
                     badgeVo.setIcon(recommendVoList.get(i).getLiveBadgeIcon());
                     badgeVo.setStartColor(recommendVoList.get(i).getLiveBadgeStartColor());
+                    badgeList.add(badgeVo);
+                }
+                if(!DalbitUtil.isEmpty(recommendVoList.get(i).getFanBadgeText())){
+                    BadgeVo badgeVo = new BadgeVo();
+                    badgeVo.setText(recommendVoList.get(i).getFanBadgeText());
+                    badgeVo.setEndColor(recommendVoList.get(i).getFanBadgeEndColor());
+                    badgeVo.setIcon(recommendVoList.get(i).getFanBadgeIcon());
+                    badgeVo.setStartColor(recommendVoList.get(i).getFanBadgeStartColor());
                     badgeList.add(badgeVo);
                 }
                 outVo.setLiveBadgeList(badgeList);

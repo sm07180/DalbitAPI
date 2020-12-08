@@ -17,7 +17,9 @@ public class P_KingFanRankListOutVo {
     private String gender;
     private String age;
     private ImageVo profImg;
-    private List liveBadgeList = new ArrayList();
+    private List liveBadgeList;
+
+    /* 뱃지 정책 변경에 따른 데이터 20.11.25 이재은 */
     private BadgeFrameVo badgeFrame = new BadgeFrameVo();
 
     public P_KingFanRankListOutVo(){}

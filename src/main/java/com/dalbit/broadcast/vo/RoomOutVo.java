@@ -70,6 +70,7 @@ public class RoomOutVo {
     private Boolean isExtend;
     private int imageType;
     private Boolean isGoodMem;
+    private boolean isShining;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -127,10 +128,24 @@ public class RoomOutVo {
         this.isWowza = target.getIs_wowza();
         this.totalCnt = target.getTotalCnt();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
-        /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
-            this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
-        }*/
+        if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
+            BadgeVo badgeVo = new BadgeVo();
+            badgeVo.setIcon(target.getLiveBadgeIcon());
+            badgeVo.setText(target.getLiveBadgeText());
+            badgeVo.setStartColor(target.getLiveBadgeStartColor());
+            badgeVo.setEndColor(target.getLiveBadgeEndColor());
+            this.liveBadgeList.add(badgeVo);
+        }
+        if(!DalbitUtil.isEmpty(target.getFanBadgeText())){
+            BadgeVo badgeVo = new BadgeVo();
+            badgeVo.setIcon(target.getFanBadgeIcon());
+            badgeVo.setText(target.getFanBadgeText());
+            badgeVo.setStartColor(target.getFanBadgeStartColor());
+            badgeVo.setEndColor(target.getFanBadgeEndColor());
+            this.liveBadgeList.add(badgeVo);
+        }
         this.isGoodMem = target.getGoodMem() > 0 ? true : false;
+        this.isShining = target.isShining();
     }
 
     public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap) {

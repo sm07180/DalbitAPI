@@ -374,8 +374,8 @@ public class RoomService {
                 }
             }
             RoomOutVo roomOutVo = new RoomOutVo(roomVoList.get(i), deviceVo);
-            badgeService.setBadgeInfo(roomOutVo.getBjMemNo(), 6);
-            roomOutVo.setLiveBadgeList(badgeService.getCommonBadge());
+            //badgeService.setBadgeInfo(roomOutVo.getBjMemNo(), 6);
+            //roomOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             outVoList.add(roomOutVo);
         }
         log.debug("set list time {} ms", ((new Date()).getTime() - st));

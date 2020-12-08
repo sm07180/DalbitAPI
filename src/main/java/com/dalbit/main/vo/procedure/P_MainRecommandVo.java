@@ -27,11 +27,14 @@ public class P_MainRecommandVo extends P_ApiVo {
     public boolean isAdmin = false;
     public boolean isNew = false;
     public int isWowza;
+    public boolean isShining = false;
 
     public String liveBadgeText;
     public String liveBadgeIcon;
     public String liveBadgeStartColor;
     public String liveBadgeEndColor;
-    public String liveBadgeImage;
-    public String liveBadgeImageSmall;
+    public String fanBadgeText;
+    public String fanBadgeIcon;
+    public String fanBadgeStartColor;
+    public String fanBadgeEndColor;
 }
