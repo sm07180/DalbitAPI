@@ -69,7 +69,10 @@ public enum Code {
 
     IOS심사중여부("system_config", "IOS_심사중여부"), //N이면 참여가능, Y이면 참여불가 (시스템 점검 전에 값을 바꿔 유입을 막는다)
 
-    장기_미접속_시행일자("long_term_date", "장기_미접속_시행일자")
+    장기_미접속_시행일자("long_term_date", "장기_미접속_시행일자"),
+
+    보름달_단계("moon_step", "보름달 단계"),
+    보름달_애니메이션("moon_step_ani", "보름달 애니메이션")
    ;
 
     final private String code;

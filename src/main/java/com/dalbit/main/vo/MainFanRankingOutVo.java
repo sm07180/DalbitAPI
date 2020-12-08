@@ -30,6 +30,7 @@ public class MainFanRankingOutVo {
     private boolean isSpecial;
     private String holder;
     private String roomNo;
+    private String listenRoomNo;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
 
     public MainFanRankingOutVo(){}
@@ -67,5 +68,6 @@ public class MainFanRankingOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
+        setListenRoomNo(target.getListenRoomNo());
     }
 }

@@ -41,6 +41,7 @@ public class MainRankingPageOutVo {
     private String djNickNm;
     private int djGoodPoint;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+    private String listenRoomNo;
 
     public MainRankingPageOutVo(){}
     public MainRankingPageOutVo(P_MainRankingPageVo target) {
@@ -74,5 +75,6 @@ public class MainRankingPageOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
+        setListenRoomNo(target.getListenRoomNo());
     }
 }

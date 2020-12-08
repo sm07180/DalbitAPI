@@ -67,8 +67,9 @@ public class ProfileInfoOutVo extends BaseVo {
 
     private boolean wasSpecial;
     private int specialDjCnt;
-
+    private int memState;
     private String[] levelColor = new String[0];
+    private String listenRoomNo;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
@@ -124,5 +125,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.liveFanRank = target.getLiveFanRank();
 
         this.specialDjCnt = target.getSpecialDjCnt();
+        this.memState = target.getMemState();
+        this.listenRoomNo = target.getListenRoomNo();
     }
 }

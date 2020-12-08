@@ -19,7 +19,7 @@
     </select>
 
     <select id="callBroadCastRoomList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_RoomListVo">
-      call sp_broadcast_room_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_broadcast_room_list_je(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callBroadCastRoomInfoView" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_RoomInfoViewVo">

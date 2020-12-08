@@ -1779,6 +1779,27 @@ public enum Status {
     대화조회_회원아님("-1", "mailbox.chatroom.msg.select.member.number.error", "요청회원번호 회원 아닐 시"),
     대화조회_채팅번호없음("-2", "mailbox.chatroom.msg.select.chat.number.error", "대화방번호 없을 시"),
     대화조회_실패("C006", "mailbox.chatroom.msg.select.fail", "대화 조회 실패 시"),
+
+    //보름달 띄우기
+    보름달_완성("1", "moon.complete.success", "보름달 완성 시"),
+    보름달_미완성("0", "moon.no.complete.success", "보름달 미완성 시"),
+    보름달_회원아님("-1", "moon.member.number.error", "요청회원번호 회원 아닐 시"),
+    보름달_방번호_오류("-2", "moon.room.number.error", "방 번호 오류 시"),
+    보름달_종료된방("-3", "moon.room.end", "종료된 방일 시"),
+    보름달_청취자아님("-4", "moon.not.room.member", "청취자가 아닐 시"),
+    보름달_실패("C006", "moon.fail", "보름달 실패 시"),
+
+    //보름달 체크
+    보름달체크_방번호_오류("-1", "moon.check.room.number.error", "방 번호 오류 시"),
+    보름달체크_종료된방("-2", "moon.check.room.end", "종료된 방일 시"),
+    보름달체크_이미완성("-3", "moon.check.complete.already", "보름달 이미 완성 시"),
+
+    //가입이벤트 팝업노출
+    오레벨노출_성공("5", "join.event.check.5.show.success", "5레벨 배너, 팝업노출 시"),
+    십레벨노출_성공("10", "join.event.check.10.show.success", "10레벨 배너, 팝업노출 시"),
+    노출_회원아님("-1", "join.event.check.member.number.error", "요청회원번호 회원 아닐 시"),
+    노출_대상아님("-2", "join.event.check.no.show", "배너, 팝업노출 대상 아닐 시"),
+    노출_실패("C006", "join.event.check.fail", "배너, 팝업노출 체크 실패 시"),
    ;
 
 

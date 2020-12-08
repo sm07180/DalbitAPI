@@ -71,5 +71,5 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private int liveFanRank;            //실시간 팬 순위\
     private int specialDjCnt;
     private int memState;
-    private String listen_room_no;
+    private String listenRoomNo;
 }

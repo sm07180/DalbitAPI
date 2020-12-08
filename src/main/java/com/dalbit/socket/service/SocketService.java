@@ -66,8 +66,8 @@ public class SocketService {
         String result = "";
 
         params = StringUtils.defaultIfEmpty(params, "").trim();
-
         String request_uri = "https://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + SERVER_SOCKET_URL + roomNo;
+
         log.info("소켓 request_uri: {}", request_uri);
         //log.error("Socket Start {}, {}, {}", roomNo, params);
 
