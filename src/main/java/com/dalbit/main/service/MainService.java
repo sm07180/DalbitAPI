@@ -32,15 +32,19 @@ public class MainService {
     BadgeService badgeService;
 
     public String getMain(HttpServletRequest request){
-
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         String memNo = MemberVo.getMyMemNo(request);
         DeviceVo deviceVo = new DeviceVo(request);
+        String startUrl = request.getHeader("referer");
 
         String platform = "";
         int osInt = deviceVo.getOs() + 1;
         if(osInt == 4){
-            osInt = 1;
+            if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
+                osInt = 2;
+            }else{
+                osInt = 1;
+            }
         }
         for(int i = 1; i < 4; i++){
             if(i == osInt){
@@ -120,7 +124,6 @@ public class MainService {
             }
 
             int bannerIdx = 0;
-            String startUrl = request.getHeader("referer");
             for (int i=0; i < recommendVoList.size(); i++){
                 MainRecommandOutVo outVo = new MainRecommandOutVo();
                 outVo.setMemNo(recommendVoList.get(i).getMemNo());

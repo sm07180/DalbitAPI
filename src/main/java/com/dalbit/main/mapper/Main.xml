@@ -26,30 +26,6 @@
         call sp_member_ranking_reward_randbox(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-
-    <select id="callMainRecommandList_Backup200904" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
-        SELECT
-            C.mem_no AS memNo
-            , C.mem_nick AS nickNm
-            , C.mem_sex AS gender
-            , D.image_profile AS profileUrl
-            , B.room_no AS roomNo
-            , B.subject_type AS roomType
-            , B.title AS title
-            , A.entry AS listeners
-            , (A.good+A.booster) AS likes
-            , B.image_background AS bannerUrl
-            , true AS isSpecial
-            , D.admin_badge = 1 AS isAdmin
-            , B.is_wowza AS isWowza
-        FROM tb_broadcast_room_live_list AS A
-            INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.is_wowza = ${paramIsWowza} AND ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no) AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
-            INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND B.state &lt; 4 AND C.mem_state = 1
-            INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no AND (D.specialdj_badge = 1 OR D.admin_badge = 1)
-        ORDER BY D.admin_badge DESC, B.idx DESC
-        LIMIT 5;
-    </select>
-
     <select id="callMainRecommandList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
         WITH liveDjRank AS (
             SELECT @liveDjRank := @liveDjRank + 1 AS rank, e.mem_no
@@ -106,63 +82,6 @@
             INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no
             LEFT OUTER JOIN tbl_badge_info AS E ON E.slct_type = 7 AND E.value = IFNULL((SELECT rank FROM liveDjRank WHERE mem_no = A.mem_no), 0)
         ORDER BY D.admin_badge DESC, D.specialdj_badge DESC, A.total DESC, B.idx DESC
-        LIMIT 7;
-    </select>
-
-    <select id="callMainRecommandLiveList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
-        WITH liveDjRank AS (
-            SELECT @liveDjRank := @liveDjRank + 1 AS rank, e.mem_no
-            FROM (
-                SELECT  a.mem_no, a.gift_point, a.broadcast_point, a.good_point, a.listener_point, a.dj_point
-                FROM tb_ranking_dj_live_data_day AS a
-                    INNER JOIN tb_member_basic AS b ON a.mem_no = b.mem_no AND b.mem_state &lt;&gt; 5
-                    INNER JOIN tb_member_profile AS c ON a.mem_no = c.mem_no AND c.admin_badge = 0
-                ) AS e , (SELECT @liveDjRank := 0 ) AS f
-            ORDER BY e.dj_point DESC, e.gift_point DESC, e.good_point DESC, e.listener_point DESC, e.broadcast_point DESC
-        )
-        SELECT
-            @bjMemNo := B.mem_no AS memNo
-            , (select mem_nick from tb_member_basic where mem_no = B.mem_no ) AS nickNm
-            , (select mem_sex from tb_member_basic where mem_no = B.mem_no ) AS gender
-            , (select image_profile from tb_member_profile where mem_no = B.mem_no ) AS profileUrl
-            , B.room_no AS roomNo
-            , B.subject_type AS roomType
-            , B.title AS title
-            , A.entry AS listeners
-            , (A.good+A.booster) AS likes
-            , B.image_background AS bannerUrl
-            , false AS isSpecial
-            , false AS isAdmin
-            , D.newdj_badge = 1 AS isNew
-            , B.is_wowza AS isWowza
-            , E.name AS liveBadgeText
-            , E.icon AS liveBadgeIcon
-            , E.start_color AS liveBadgeStartColor
-            , E.end_color AS liveBadgeEndColor
-            , (SELECT COUNT(*) > 0 FROM tb_member_badge s1 WHERE s1.mem_no = A.mem_no AND s1.slct_type = 10 AND NOW() BETWEEN s1.start_date AND s1.end_date) AS isShining
-            , @badgeType := (SELECT
-                s1.slct_type
-            FROM tbl_badge_info s1 INNER JOIN tb_member_badge s2 ON s1.slct_type = s2.slct_type AND s1.value = s2.badge_value AND s2.mem_no = @bjMemNo AND s1.slct_type IN (3, 5) AND NOW() BETWEEN s2.start_date AND s2.end_date
-            ORDER BY s1.sort_no ASC
-            LIMIT 1) AS badgeType
-            , @badgeValue := (SELECT
-                s1.value
-            FROM tbl_badge_info s1 INNER JOIN tb_member_badge s2 ON s1.slct_type = s2.slct_type AND s1.value = s2.badge_value AND s2.mem_no = @bjMemNo AND s1.slct_type IN (3, 5) AND NOW() BETWEEN s2.start_date AND s2.end_date
-            ORDER BY s1.sort_no ASC
-            LIMIT 1) AS badgeValue
-            , (SELECT s1.name FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeText
-            , (SELECT s1.icon FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeIcon
-            , (SELECT s1.start_color FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeStartColor
-            , (SELECT s1.end_color FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeEndColor
-        FROM tb_broadcast_room_live_list A INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.state &lt; 4 AND B.is_wowza = ${paramIsWowza} AND (
-                ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no)
-                OR
-                A.mem_no NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = ${paramMemNo})
-            )
-            AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
-            INNER JOIN tb_member_profile AS D ON A.mem_no = D.mem_no
-        WHERE A.mem_no NOT IN (SELECT mem_no FROM tb_member_profile WHERE (specialdj_badge = 1 OR admin_badge = 1))
-        ORDER BY A.total DESC
         LIMIT 7;
     </select>
 

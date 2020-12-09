@@ -14,45 +14,45 @@ import java.util.Map;
 
 @Repository
 public interface CommonDao {
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo callBroadCastRoomStreamIdRequest(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<Map> callCodeDefineSelect();
 
     void requestSms(SmsVo smsVo);
 
     ProcedureVo callMemberCertification(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo getCertificationChk(ProcedureVo procedureVo);
 
     ProcedureVo saveErrorLog(ProcedureVo procedureVo);
 
     ProcedureVo callPushAdd(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<ItemVo> selectItemList(P_ItemVo item);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<ItemVo> selectBooster(String itemCode);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ItemDetailVo selectItem(String item);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     AppVersionVo selectAppVersion(Integer item);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     BanWordVo banWordSelect();
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     NowBroadcastVo selectNowBroadcast(String memNo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     CodeVo selectCodeDefine(CodeVo codeVo);
 
     int updateMemberCertification(P_SelfAuthVo pSelfAuthVo);
@@ -61,28 +61,29 @@ public interface CommonDao {
 
     List<FanBadgeVo> callLiveBadgeSelect(HashMap param);
 
+    @Transactional(readOnly = true)
     List<FanBadgeVo> callMemberBadgeList(HashMap param);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     BadgeFrameVo callMemberBadgeFrame(HashMap param);
 
     int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo);
 
     ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     AdultCheckVo getMembirth(String mem_no);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_KingFanRankListVo> callBroadCastRoomRank3(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<CodeVo> selectTypeCodeList(CodeVo codeVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo);
 
     ProcedureVo getLongTermDate(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<String> getDownloadList();
 }

@@ -1787,6 +1787,7 @@ public enum Status {
     보름달_방번호_오류("-2", "moon.room.number.error", "방 번호 오류 시"),
     보름달_종료된방("-3", "moon.room.end", "종료된 방일 시"),
     보름달_청취자아님("-4", "moon.not.room.member", "청취자가 아닐 시"),
+    보름달_이미완성("-5", "moon.already", "보름달 이미 완성 시"),
     보름달_실패("C006", "moon.fail", "보름달 실패 시"),
 
     //보름달 체크
@@ -1800,6 +1801,21 @@ public enum Status {
     노출_회원아님("-1", "join.event.check.member.number.error", "요청회원번호 회원 아닐 시"),
     노출_대상아님("-2", "join.event.check.no.show", "배너, 팝업노출 대상 아닐 시"),
     노출_실패("C006", "join.event.check.fail", "배너, 팝업노출 체크 실패 시"),
+
+    //가입이벤트 상세보기
+    가입이벤트_상세보기_성공("0", "join.event.detail.success", "가입이벤트 상세보기 시"),
+    가입이벤트_상세보기_회원아님("-1", "join.event.detail.member.number.error", "요청회원번호 회원 아닐 시"),
+    가입이벤트_상세보기_실패("C006", "join.event.detail.fail", "가입이벤트 상세보기 실패 시"),
+
+    //가입이벤트 보상받기
+    가입이벤트_보상받기_성공("0", "join.event.reward.success", "보상받기 성공 시"),
+    가입이벤트_보상받기_회원아님("-1", "join.event.reward.member.number.error", "요청회원번호 회원 아닐 시"),
+    가입이벤트_보상받기_레벨부족("-2", "join.event.reward.level.limit", "보상받기 레벨부족 시"),
+    가입이벤트_보상받기_기간종료("-3", "join.event.reward.date.end", "보상받기 기간종료 시"),
+    가입이벤트_보상받기_이미받음("-4", "join.event.reward.already", "보상받기 이미 받았을 시"),
+    가입이벤트_보상받기_본인인증안됨("-5", "join.event.reward.auth.no", "보상받기 본인인증 안됨"),
+    가입이벤트_보상받기_본인인증번호_이미보상받음("-6", "join.event.reward.auth.already", "이미 본인인증번호로 보상받음"),
+    가입이벤트_보상받기_실패("C006", "join.event.reward.fail", "보상받기 실패 시"),
    ;
 
 
