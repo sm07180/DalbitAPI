@@ -190,18 +190,10 @@ public class MemberController {
                 String memNo = DalbitUtil.getStringMap(map, "mem_no");
                 String jwtToken = jwtUtil.generateToken(memNo, true);
 
-                ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
-
-                MemberVo memberVo = null;
-                if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
-
-                    P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
-                    memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, memNo, null));
-                    memberVo.setMemSlct(memType);
-                    memberVo.setMemPasswd(memPwd);
-                }else{
-                    new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
-                }
+                MemberVo memberVo = new MemberVo();
+                memberVo.setMemId(signUpVo.getMemId());
+                memberVo.setMemPasswd(signUpVo.getMemId());
+                memberVo.setMemSlct(signUpVo.getMemType());
 
                 SecurityUserVo securityUserVo = new SecurityUserVo(memberVo.getMemId(), memberVo.getMemPasswd(), DalbitUtil.getAuthorities());
                 securityUserVo.setMemberVo(memberVo);
