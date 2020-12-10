@@ -40,4 +40,10 @@ public interface MainDao {
 
     //@Transactional(readOnly = true)
     List<P_SpecialHistoryVo> callSpecialDjHistory(ProcedureVo procedureVo);
+
+    //@Transactional(readOnly = true)
+    List<P_MarketingVo> callMarketingList(ProcedureVo procedureVo);
+
+    //@Transactional(readOnly = true)
+    P_MarketingVo callMarketingDetail(ProcedureVo procedureVo);
 }

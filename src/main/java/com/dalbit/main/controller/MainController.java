@@ -156,4 +156,30 @@ public class MainController {
 
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
+
+    /**
+     * 위클리픽 & 15초 광고모델
+     */
+    @GetMapping(value = {"/marketing/weekly", "/marketing/second"})
+    public String marketingWeeklyList(@Valid P_MarketingVo pMarketingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        int slctType = request.getRequestURI().contains("/marketing/weekly") ? 1 : 2;
+
+        pMarketingVo.setSlctType(slctType);
+        HashMap result = mainService.getMarketingList(pMarketingVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+    /**
+     * 위클리픽 & 15초 광고모델
+     */
+    @GetMapping("/marketing/detail")
+    public String marketingDetail(P_MarketingVo pMarketingVo, HttpServletRequest request) throws GlobalException {
+
+        HashMap result = mainService.marketingDetail(pMarketingVo, request);
+
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
 }

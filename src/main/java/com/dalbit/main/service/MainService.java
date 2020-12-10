@@ -13,6 +13,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -719,6 +720,67 @@ public class MainService {
         HashMap data = new HashMap();
         data.put("info", new Gson().fromJson(procedureVo.getExt(), HashMap.class));
         data.put("list", outList);
+        result.put("data", data);
+        return result;
+    }
+
+    /**
+     * 마케팅 게시판 목록
+     */
+    public HashMap getMarketingList(P_MarketingVo pMarketingVo, HttpServletRequest request){
+        HashMap result = new HashMap();
+        ProcedureVo procedureVo = new ProcedureVo(pMarketingVo);
+        List<P_MarketingVo> list = mainDao.callMarketingList(procedureVo);
+
+        list.stream().forEach(marketing -> {
+            int l = (marketing.getLevel() - 1) / 10;
+            if(!DalbitUtil.isEmpty(marketing.getMemNo1())){
+                marketing.setImageInfo1(new ImageVo(marketing.getImageProfile1(), marketing.getMemSex1() ,DalbitUtil.getProperty("server.photo.url")));
+                marketing.setHolder(StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", marketing.getLevel()+ ""));
+                if(l > 4) {
+                    marketing.setHolderBg(StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + ""));
+                }
+                marketing.setLevelColor(DalbitUtil.getProperty("level.color." + l).split(","));
+            }
+
+            if(!DalbitUtil.isEmpty(marketing.getMemNo2())){
+                marketing.setImageInfo2(new ImageVo(marketing.getImageProfile2(), marketing.getMemSex2(), DalbitUtil.getProperty("server.photo.url")));
+            }
+        });
+
+        HashMap data = new HashMap();
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            result.put("status", Status.조회);
+            data.put("list", list);
+            data.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+        }else if(Integer.parseInt(procedureVo.getRet()) == 0){
+            result.put("status", Status.데이터없음);
+        }else{
+            result.put("status", Status.비즈니스로직오류);
+        }
+
+        result.put("data", data);
+        return result;
+    }
+
+    /**
+     * 마케팅 게시판 상세
+     */
+    public HashMap marketingDetail(P_MarketingVo pMarketingVo, HttpServletRequest request){
+        HashMap result = new HashMap();
+        ProcedureVo procedureVo = new ProcedureVo(pMarketingVo);
+        mainDao.callMarketingDetail(procedureVo);
+
+        HashMap data = new HashMap();
+
+        if(Integer.parseInt(procedureVo.getRet()) == 0){
+            result.put("status", Status.조회);
+            data.put("detail", new Gson().fromJson(procedureVo.getExt(), HashMap.class));
+        }else{
+            result.put("status", Status.데이터없음);
+        }
+
         result.put("data", data);
         return result;
     }
