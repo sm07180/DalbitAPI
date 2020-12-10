@@ -78,7 +78,9 @@ public class CommonErrorController {
                     desc += "GlobalException : \n" + sw.toString();
                 }
                 apiData.setDesc(desc);
-                commonService.saveErrorLog(apiData, request);
+                if(!desc.toLowerCase().contains("clientabortexception") && !desc.contains("Broken pipe")){
+                    commonService.saveErrorLog(apiData, request);
+                }
             }
         }catch (Exception e){}
 
