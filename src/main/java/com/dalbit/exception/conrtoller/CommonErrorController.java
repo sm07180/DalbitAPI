@@ -43,6 +43,7 @@ public class CommonErrorController {
 
         //Broken pipe 처리
         if(globalException.getClass().getSimpleName().toLowerCase().equals("clientabortexception")) return false; //ClientAbortException
+        if(globalException.getClass().getSimpleName().toLowerCase().contains("clientabortexception")) return false; //ClientAbortException
         if(globalException.getMessage().contains("Broken pipe")) return false;
         
         return true;
@@ -69,6 +70,8 @@ public class CommonErrorController {
                 if (!DalbitUtil.isEmpty(globalException.getValidationMessageDetail())) {
                     desc += "Validation : \n" + globalException.getValidationMessageDetail().toString() + "\n";
                 }
+                desc += "DeviceVo : \n" + gsonUtil.toJson(deviceVo);
+                desc += "AuthToken : \n" + request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
                 StringWriter sw = new StringWriter();
                 globalException.printStackTrace(new PrintWriter(sw));
                 if (sw != null) {
