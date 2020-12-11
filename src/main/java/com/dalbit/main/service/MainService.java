@@ -13,6 +13,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -733,20 +735,47 @@ public class MainService {
         List<P_MarketingVo> list = mainDao.callMarketingList(procedureVo);
 
         list.stream().forEach(marketing -> {
+
+            var memberList = new ArrayList<>();
+
             int l = (marketing.getLevel() - 1) / 10;
             if(!DalbitUtil.isEmpty(marketing.getMemNo1())){
-                marketing.setImageInfo1(new ImageVo(marketing.getImageProfile1(), marketing.getMemSex1() ,DalbitUtil.getProperty("server.photo.url")));
                 marketing.setHolder(StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", marketing.getLevel()+ ""));
                 if(l > 4) {
                     marketing.setHolderBg(StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + ""));
                 }
                 marketing.setLevelColor(DalbitUtil.getProperty("level.color." + l).split(","));
+
+                var member = new HashMap<>();
+                member.put("memNo", marketing.getMemNo1());
+                member.put("memSex", marketing.getMemSex1());
+                member.put("memNick", marketing.getMemNick1());
+                member.put("imageProfile", marketing.getImageProfile1());
+                member.put("imageInfo", new ImageVo(marketing.getImageProfile1(), marketing.getMemSex1() ,DalbitUtil.getProperty("server.photo.url")));
+
+                if(marketing.getSlctType() == 2){
+                    member.put("level", marketing.getLevel());
+                    member.put("holder", marketing.getHolder());
+                    member.put("holderBg", marketing.getHolderBg());
+                    member.put("levelColor", marketing.getLevelColor());
+                }
+
+                memberList.add(member);
             }
 
             if(!DalbitUtil.isEmpty(marketing.getMemNo2())){
-                marketing.setImageInfo2(new ImageVo(marketing.getImageProfile2(), marketing.getMemSex2(), DalbitUtil.getProperty("server.photo.url")));
+                var member = new HashMap<>();
+                member.put("memNo", marketing.getMemNo2());
+                member.put("memSex", marketing.getMemSex2());
+                member.put("memNick", marketing.getMemNick2());
+                member.put("imageProfile", marketing.getImageProfile2());
+                member.put("imageInfo", new ImageVo(marketing.getImageProfile2(), marketing.getMemSex2(), DalbitUtil.getProperty("server.photo.url")));
+
+                memberList.add(member);
             }
+            marketing.setMemberList(memberList);
         });
+
 
         HashMap data = new HashMap();
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);

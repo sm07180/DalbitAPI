@@ -4,6 +4,8 @@ import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
+
 @Getter
 @Setter
 public class P_MarketingVo {
@@ -14,27 +16,28 @@ public class P_MarketingVo {
     private String title;
     private String round;
 
-    private String memNo1;
-    private String memSex1;
-    private String memNick1;
-    private String imageProfile1;
-    private ImageVo imageInfo1;
+    private ArrayList memberList;
 
-    private String memNo2;
-    private String memSex2;
-    private String memNick2;
-    private String imageProfile2;
-    private ImageVo imageInfo2;
+    private transient String memNo1;
+    private transient String memSex1;
+    private transient String memNick1;
+    private transient String imageProfile1;
+    private transient ImageVo imageInfo1;
+
+    private transient String memNo2;
+    private transient String memSex2;
+    private transient String memNick2;
+    private transient String imageProfile2;
+    private transient ImageVo imageInfo2;
 
     private String regDate;
-
-    private int level;
+    private transient int level;
     private int likeCnt;
     private int listenCnt;
     private int airTime;
-    private String holder;
-    private String holderBg;
-    private String[] levelColor;
+    private transient String holder;
+    private transient String holderBg;
+    private transient String[] levelColor;
 
     private int pageNo;
     private int pageCnt;
