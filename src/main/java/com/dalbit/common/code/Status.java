@@ -1816,6 +1816,53 @@ public enum Status {
     가입이벤트_보상받기_본인인증안됨("-5", "join.event.reward.auth.no", "보상받기 본인인증 안됨"),
     가입이벤트_보상받기_본인인증번호_이미보상받음("-6", "join.event.reward.auth.already", "이미 본인인증번호로 보상받음"),
     가입이벤트_보상받기_실패("C006", "join.event.reward.fail", "보상받기 실패 시"),
+
+    //클립랭킹
+    클립랭킹조회_성공("C001", "clip.rank.select.success", "클립랭킹 조회 성공 시"),
+    클립랭킹조회_실패("C006", "clip.rank.select.fail", "클립랭킹 조회 실패 시"),
+
+    //달대리 추천클립
+    달대리추천클립조회_성공("C001", "clip.recommend.list.select.success", "달대리 추천 클립 조회 성공 시"),
+    달대리추천클립조회_회원아님("-1", "clip.recommend.list.member.number.error", "요청회원번호 회원 아닐 시"),
+    달대리추천클립조회_실패("C006", "clip.recommend.list.select.fail", "달대리 추천 클립 조회 실패 시"),
+
+    //클립랭킹 일간보상
+    클립일간보상_성공("C001", "clip.reward.day.success", "클립 일간보상 조회 성공 시"),
+    클립일간보상_회원아님("-1", "clip.reward.day.member.number.error", "요청회원번호 회원 아닐 시"),
+    클립일간보상_탑3아님("-2", "clip.reward.day.top3.no", "탑3 아닐 시"),
+    클립일간보상_없음("-3", "clip.reward.day.no", "일간보상이 없을 시"),
+    클립일간보상_실패("C006", "clip.reward.day.fail", "클립 일간보상 조회 실패 시"),
+
+    //클립랭킹 주간보상
+    클립주간보상_성공("C001", "clip.reward.week.success", "클립 주간보상 조회 성공 시"),
+    클립주간보상_회원아님("-1", "clip.reward.week.member.number.error", "요청회원번호 회원 아닐 시"),
+    클립주간보상_탑3아님("-2", "clip.reward.week.top3.no", "탑3 아닐 시"),
+    클립주간보상_없음("-3", "clip.reward.week.no", "주간보상이 없을 시"),
+    클립주간보상_실패("C006", "clip.reward.week.fail", "클립 주간보상 조회 실패 시"),
+
+    //클립 소감작성
+    소감작성_성공("0", "clip.win.msg.success", "소감작성 성공 시"),
+    소감작성_회원아님("-1", "clip.win.member.number.error", "요청회원번호 회원 아닐 시"),
+    소감작성_탑3아님("-2", "clip.win.top3.no", "탑3 아닐 시"),
+    소감작성_실패("C006", "clip.win.msg.fail", "소감작성 실패 시"),
+
+    //어워드DJ리스트
+    어워드DJ조회_성공("C001", "award.dj.list.success", "어워드 DJ조회 성공 시"),
+    어워드DJ조회_회원아님("-1", "award.dj.list.member.number.error", "요청회원번호 회원 아닐 시"),
+    어워드DJ조회_실패("C006", "award.dj.list.fail", "어워드 DJ조회 실패 시"),
+
+    //어워드 DJ투표
+    투표_성공("0", "award.vote.success", "투표 성공 시"),
+    투표_회원아님("-1", "award.vote.member.number.error", "요청회원번호 회원 아닐 시"),
+    투표_이미함("-2", "award.vote.already", "투표 이미한 경우"),
+    투표_10레벨미만("-3", "award.vote.level.limit.10", "10레벨 미만일 경우"),
+    투표_동일번호("-4", "award.vote.same.phone.number", "동일 휴대폰번호 중복 투표시"),
+    투표_실패("C006", "award.vote.fail", "투표 실패 시"),
+
+    //투표결과조회
+    투표결과조회_성공("C001", "award.vote.result.success", "투표결과 조회 성공 시"),
+    투표결과조회_회원아님("-1", "award.vote.result.member.number.error", "요청회원번호 회원 아닐 시"),
+    투표결과조회_실패("C006", "award.vote.result.fail", "투표결과 조회 실패 시"),
    ;
 
 

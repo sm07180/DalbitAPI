@@ -41,6 +41,7 @@ public class RouletteService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("couponCnt", DalbitUtil.getIntMap(resultMap, "couponCnt"));
+            returnMap.put("eventCouponCnt", DalbitUtil.getIntMap(resultMap, "eventCoupon"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.응모권조회_성공, returnMap));
         } else if (Status.응모권조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
@@ -65,6 +66,7 @@ public class RouletteService {
             returnMap.put("giftiCon", DalbitUtil.getIntMap(resultMap, "giftiCon"));
             returnMap.put("itemNo", DalbitUtil.getIntMap(resultMap, "itemNo"));
             returnMap.put("couponCnt", DalbitUtil.getIntMap(resultMap, "couponCnt"));
+            returnMap.put("eventCouponCnt", DalbitUtil.getIntMap(resultMap, "eventCoupon"));
             returnMap.put("phone", DalbitUtil.getStringMap(resultMap, "phone"));
             returnMap.put("winIdx", DalbitUtil.getIntMap(resultMap, "winIdx"));
             returnMap.put("tempNo", DalbitUtil.getIntMap(resultMap, "itemNo"));

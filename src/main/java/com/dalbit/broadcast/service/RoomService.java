@@ -69,6 +69,8 @@ public class RoomService {
     @Autowired
     MemberService memberService;
     @Autowired
+    ActionService actionService;
+    @Autowired
     UserDao userDao;
     @Autowired
     CommonDao commonDao;
@@ -419,7 +421,11 @@ public class RoomService {
             attendanceCheckVo.setMem_no(MemberVo.getMyMemNo(request));
             int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap));
+            //보름달 체크
+            P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
+            pMoonCheckVo.setRoom_no(pRoomInfoViewVo.getRoom_no());
+            HashMap moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap));
         }
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());

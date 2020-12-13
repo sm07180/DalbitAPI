@@ -147,4 +147,29 @@ public class ActionController {
         return result;
     }
 
+
+    /**
+     * 보름달 띄우기 달 클릭
+     */
+    @GetMapping("/moon")
+    public String moon(@Valid MoonVo moonVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_MoonVo apiData = new P_MoonVo(moonVo, request);
+        String result = actionService.callMoon(apiData);
+        return result;
+    }
+
+
+    /**
+     * 보름달 띄우기 체크 (서버용)
+     */
+    @GetMapping("/moon/check")
+    public String moonCheck(@Valid MoonVo moonVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_MoonCheckVo apiData = new P_MoonCheckVo(moonVo);
+        String result = actionService.callMoonCheck(apiData, request);
+        return result;
+    }
 }

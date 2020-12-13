@@ -70,6 +70,8 @@ public class WowzaService {
     IPUtil ipUtil;
     @Autowired
     BadgeService badgeService;
+    @Autowired
+    ActionService actionService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -448,6 +450,23 @@ public class WowzaService {
 
             //애드브릭스 전달을 위한 데이터 생성
             //adbrixService("roomJoin", "1151231231312")
+            if(target.getCompleteMoon() != 1){
+                if(target.getStep() != target.getOldStep()){
+                    HashMap moonCheckMap = new HashMap();
+                    moonCheckMap.put("moonStep", target.getMoonCheck().getMoonStep());
+                    moonCheckMap.put("moonStepFileNm", target.getMoonCheck().getMoonStepFileNm());
+                    moonCheckMap.put("moonStepAniFileNm", target.getMoonCheck().getMoonStepAniFileNm());
+                    moonCheckMap.put("dlgTitle", target.getMoonCheck().getDlgTitle());
+                    moonCheckMap.put("dlgText", target.getMoonCheck().getDlgText());
+                    moonCheckMap.put("aniDuration", target.getMoonCheck().getAniDuration());
+                    try{ //보름달 체크
+                        socketService.sendMoonCheck(roomJoinVo.getRoomNo(), moonCheckMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                        vo.resetData();
+                    }catch(Exception e){
+                        log.info("Socket Service MoonCheck Complete Exception {}", e);
+                    }
+                }
+            }
 
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
@@ -582,7 +601,26 @@ public class WowzaService {
             P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo();
             attendanceCheckVo.setMem_no(memNo);
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
-            return new RoomOutVo(roomInfoViewVo, attendanceCheckMap);
+            //보름달 체크
+            HashMap moonCheckMap = null;
+            P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
+            pMoonCheckVo.setRoom_no(roomNo);
+            moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
+            if(roomInfoViewVo.getCompleteMoon() == 1){
+                var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), "4"));
+                moonCheckMap.put("moonStep", 4);
+                if(!DalbitUtil.isEmpty(codeVo)){
+                    moonCheckMap.put("moonStepFileNm", codeVo.getValue());
+                    var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), "4"));
+                    if(!DalbitUtil.isEmpty(aniCodeVo)) {
+                        moonCheckMap.put("moonStepAniFileNm", "");
+                        moonCheckMap.put("aniDuration", aniCodeVo.getSortNo());
+                    }
+                }
+                moonCheckMap.put("dlgTitle", DalbitUtil.getStringMap(moonCheckMap, "dlgTitle"));
+                moonCheckMap.put("dlgText", DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
+            }
+            return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap);
         }
         return null;
     }
@@ -619,6 +657,14 @@ public class WowzaService {
         attendanceCheckVo.setMem_no(memNo);
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
+
+        //행위 유도 랜덤 메시지 조회
+        if(!memNo.equals(target.getBjMemNo())){
+            P_BehaviorRandomVo apiData = new P_BehaviorRandomVo();
+            apiData.setMem_no(memNo);
+            apiData.setDj_mem_no(target.getBjMemNo());
+            memberInfoVo.setRandomMsgList(getBehaviorRandomMsgList(apiData));
+        }
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request));
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -719,5 +765,14 @@ public class WowzaService {
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         String memNoStr = DalbitUtil.getStringMap(resultMap, "memNoList");
         return memNoStr;
+    }
+
+    public List getBehaviorRandomMsgList(P_BehaviorRandomVo pBehaviorRandomVo){
+        ProcedureVo procedureVo = new ProcedureVo(pBehaviorRandomVo);
+        List<RandomMsgVo> randomMsgList = memberDao.getBehaviorRandomMsgList(procedureVo);
+        if(DalbitUtil.isEmpty(randomMsgList)){
+            randomMsgList = new ArrayList<>();
+        }
+        return randomMsgList;
     }
 }

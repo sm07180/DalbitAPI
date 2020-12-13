@@ -1006,5 +1006,32 @@ public class SocketService {
             sendSocketApi(authToken, roomNo, vo.toQueryString());
         }
     }
+
+    @Async("threadTaskExecutor")
+    public void sendMoonCheck(String roomNo, HashMap message, String authToken, boolean isLogin) {
+        log.info("Socket Start : sendMoonCheck {}, {}", message, isLogin);
+        authToken = authToken == null ? "" : authToken.trim();
+
+        HashMap socketMap = new HashMap();
+        socketMap.put("moonStep", DalbitUtil.getIntMap(message, "moonStep"));
+        socketMap.put("moonStepFileNm", DalbitUtil.getStringMap(message, "moonStepFileNm"));
+        socketMap.put("moonStepAniFileNm", DalbitUtil.getStringMap(message, "moonStepAniFileNm"));
+        socketMap.put("dlgTitle", DalbitUtil.getStringMap(message, "dlgTitle"));
+        socketMap.put("dlgText", DalbitUtil.getStringMap(message, "dlgText"));
+        socketMap.put("aniDuration", DalbitUtil.getIntMap(message, "aniDuration"));
+
+        HashMap moonCheckMap = new HashMap();
+        moonCheckMap.put("clientCommand", "moonCheck");
+        moonCheckMap.put("data", socketMap);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(moonCheckMap);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
+
+    }
 }
 

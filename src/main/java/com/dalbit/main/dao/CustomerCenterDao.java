@@ -3,7 +3,7 @@ package com.dalbit.main.dao;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.main.vo.procedure.*;
 import org.springframework.stereotype.Repository;
-//import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +26,6 @@ public interface CustomerCenterDao {
 
     ProcedureVo callQnaDel(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     HashMap selectAppVersion();
 }

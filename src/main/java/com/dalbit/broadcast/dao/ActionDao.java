@@ -17,4 +17,8 @@ public interface ActionDao {
     ProcedureVo callroomExtendTime(ProcedureVo procedureVo);
 
     ProcedureVo callRoomFreeze(ProcedureVo procedureVo);
+
+    ProcedureVo callMoon(ProcedureVo procedureVo);
+
+    ProcedureVo callMoonCheck(ProcedureVo procedureVo);
 }

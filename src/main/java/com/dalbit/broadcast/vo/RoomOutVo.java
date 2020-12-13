@@ -71,6 +71,10 @@ public class RoomOutVo {
     private int imageType;
     private Boolean isGoodMem;
     private boolean isShining;
+    private MoonCheckInfoVo moonCheck = new MoonCheckInfoVo();
+    private int step;
+    private int oldStep;
+    private int completeMoon;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -148,7 +152,7 @@ public class RoomOutVo {
         this.isShining = target.isShining();
     }
 
-    public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap) {
+    public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap, HashMap moonCheckMap) {
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
         this.title = target.getTitle();
@@ -205,5 +209,16 @@ public class RoomOutVo {
         this.freezeMsg = target.getFreezeMsg();
         this.isExtend = target.getExtendCnt() > 0 ? true : false;
         this.imageType = target.getImageType();
+
+        moonCheck.setMoonStep(DalbitUtil.getIntMap(moonCheckMap, "moonStep"));
+        moonCheck.setMoonStepFileNm(DalbitUtil.getStringMap(moonCheckMap, "moonStepFileNm"));
+        moonCheck.setMoonStepAniFileNm(DalbitUtil.getStringMap(moonCheckMap, "moonStepAniFileNm"));
+        moonCheck.setDlgTitle(DalbitUtil.getStringMap(moonCheckMap, "dlgTitle"));
+        moonCheck.setDlgText(DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
+        moonCheck.setAniDuration(DalbitUtil.getIntMap(moonCheckMap, "aniDuration"));
+
+        this.step = DalbitUtil.getIntMap(moonCheckMap, "moonStep");
+        this.oldStep = DalbitUtil.getIntMap(moonCheckMap, "oldStep");
+        this.completeMoon = target.getCompleteMoon();
     }
 }

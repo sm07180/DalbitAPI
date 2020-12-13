@@ -26,6 +26,12 @@
       call sp_broadcast_room_freeze(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callMoon" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_moon_click(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
+    <select id="callMoonCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_moon_complete_check(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
 </mapper>

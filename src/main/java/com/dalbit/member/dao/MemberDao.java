@@ -1,5 +1,6 @@
 package com.dalbit.member.dao;
 
+import com.dalbit.broadcast.vo.RandomMsgVo;
 import com.dalbit.common.vo.BlockVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
@@ -69,6 +70,8 @@ public interface MemberDao {
 
     //@Transactional(readOnly = true)
     ProcedureVo getFanMemNoList(ProcedureVo procedureVo);
+
+    List<RandomMsgVo> getBehaviorRandomMsgList(ProcedureVo procedureVo);
 
     List<P_SpecialPointListVo> getSpecialPointList(ProcedureVo procedureVo);
 }

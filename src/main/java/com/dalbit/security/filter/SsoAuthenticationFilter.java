@@ -65,6 +65,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/api-tester"
         , "/broad/vw/broadcast/hook"
         , "/broad/share", "/clip/share"
+        , "/broad/moon/check"
     };
 
     @Override

@@ -58,6 +58,7 @@ public class RoomInfoVo {
     private boolean isLike;
     private long remainTime;
     private Boolean isGuest;
+    private List randomMsgList = new ArrayList();
     /* 황제팬 정보 */
     private String kingMemNo;
     private String kingNickNm;
@@ -79,6 +80,9 @@ public class RoomInfoVo {
     /* 뱃지 정책 변경에 따른 데이터 20.11.25 이재은 */
     private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private BadgeFrameVo badgeFrame = new BadgeFrameVo();
+
+    /* 보름달 단계 정보 */
+    private MoonCheckInfoVo moonCheck = new MoonCheckInfoVo();
 
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
         this.roomNo = target.getRoomNo();
@@ -166,6 +170,16 @@ public class RoomInfoVo {
         this.os = target.getOs();
         this.isExtend = target.getIsExtend();
         this.imageType = target.getImageType();
+        if(!DalbitUtil.isEmpty(memberInfoVo.getRandomMsgList())){
+            this.randomMsgList = memberInfoVo.getRandomMsgList();
+        }
+
+        moonCheck.setMoonStep(target.getMoonCheck().getMoonStep());
+        moonCheck.setMoonStepFileNm(target.getMoonCheck().getMoonStepFileNm());
+        moonCheck.setMoonStepAniFileNm(target.getMoonCheck().getMoonStepAniFileNm());
+        moonCheck.setDlgTitle(target.getMoonCheck().getDlgTitle());
+        moonCheck.setDlgText(target.getMoonCheck().getDlgText());
+        moonCheck.setAniDuration(target.getMoonCheck().getAniDuration());
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){

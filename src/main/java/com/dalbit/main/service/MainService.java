@@ -61,7 +61,6 @@ public class MainService {
         //상위 추천 데이터 조회
         P_MainRecommandVo pMainRecommandVo = new P_MainRecommandVo();
         pMainRecommandVo.setParamPlanMemNo(DalbitUtil.getProperty("inforex.plan.memNo"));
-        pMainRecommandVo.setParamDevice(deviceVo.getOs() + "");
         pMainRecommandVo.setParamMemNo(memNo);
         pMainRecommandVo.setParamPlatform(platform);
         pMainRecommandVo.setParamIsWowza(isWowza);

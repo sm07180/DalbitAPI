@@ -8,7 +8,6 @@ import lombok.Setter;
 public class P_MainRecommandVo extends P_ApiVo {
 
     private String paramMemNo;
-    private String paramDevice;
     private String paramPlanMemNo;
     private String paramPlatform;
     private int paramIsWowza;

@@ -255,6 +255,10 @@
         call sp_member_fan_no_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="getBehaviorRandomMsgList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.broadcast.vo.RandomMsgVo">
+        call sp_broadcast_room_behavior_random(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="getSpecialPointList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_SpecialPointListVo">
         call sp_member_specialdj_addpoint_popup(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
