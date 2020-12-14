@@ -1683,9 +1683,11 @@ public class MypageService {
     /**
      * 회원 알림설정 조회하기
      */
-    public String callNewAlarm(P_MemberNotifyVo pMemberNotifyVo){
-        int newCnt = mypageDao.callNewAlarm(pMemberNotifyVo);
-
+    public String callNewAlarm(P_MemberNotifyVo pMemberNotifyVo) {
+        int newCnt = 0;
+        if (DalbitUtil.isLogin(pMemberNotifyVo.getMem_no())){
+            newCnt = mypageDao.callNewAlarm(pMemberNotifyVo);
+        }
         HashMap returnMap = new HashMap();
         returnMap.put("newCnt", newCnt);
 
