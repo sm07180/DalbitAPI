@@ -26,134 +26,16 @@
         call sp_member_ranking_reward_randbox(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callMainRecommandList" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
-        WITH liveDjRank AS (
-            SELECT @liveDjRank := @liveDjRank + 1 AS rank, e.mem_no
-            FROM (
-                SELECT  a.mem_no, a.gift_point, a.broadcast_point, a.good_point, a.listener_point, a.dj_point
-                FROM tb_ranking_dj_live_data_day AS a
-                    INNER JOIN tb_member_basic AS b ON a.mem_no = b.mem_no AND b.mem_state &lt;&gt; 5
-                    INNER JOIN tb_member_profile AS c ON a.mem_no = c.mem_no AND c.admin_badge = 0
-                ) AS e , (SELECT @liveDjRank := 0 ) AS f
-            ORDER BY e.dj_point DESC, e.gift_point DESC, e.good_point DESC, e.listener_point DESC, e.broadcast_point DESC
-        )
-        SELECT
-            @bjMemNo := C.mem_no AS memNo
-            , C.mem_nick AS nickNm
-            , C.mem_sex AS gender
-            , D.image_profile AS profileUrl
-            , B.room_no AS roomNo
-            , B.subject_type AS roomType
-            , B.title AS title
-            , A.entry AS listeners
-            , (A.good+A.booster) AS likes
-            , B.image_background AS bannerUrl
-            , D.specialdj_badge = 1 AS isSpecial
-            , D.admin_badge = 1 AS isAdmin
-            , D.newdj_badge = 1 AS isNew
-            , B.is_wowza AS isWowza
-            , E.name AS liveBadgeText
-            , E.icon AS liveBadgeIcon
-            , E.start_color AS liveBadgeStartColor
-            , E.end_color AS liveBadgeEndColor
-            , (SELECT COUNT(*) > 0 FROM tb_member_badge s1 WHERE s1.mem_no = A.mem_no AND s1.slct_type = 10 AND NOW() BETWEEN s1.start_date AND s1.end_date) AS isShining
-            , @badgeType := (SELECT
-                s1.slct_type
-            FROM tbl_badge_info s1 INNER JOIN tb_member_badge s2 ON s1.slct_type = s2.slct_type AND s1.value = s2.badge_value AND s2.mem_no = @bjMemNo AND s1.slct_type IN (3, 5) AND NOW() BETWEEN s2.start_date AND s2.end_date
-            ORDER BY s1.sort_no ASC
-            LIMIT 1) AS badgeType
-            , @badgeValue := (SELECT
-                s1.value
-            FROM tbl_badge_info s1 INNER JOIN tb_member_badge s2 ON s1.slct_type = s2.slct_type AND s1.value = s2.badge_value AND s2.mem_no = @bjMemNo AND s1.slct_type IN (3, 5) AND NOW() BETWEEN s2.start_date AND s2.end_date
-            ORDER BY s1.sort_no ASC
-            LIMIT 1) AS badgeValue
-            , (SELECT s1.name FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeText
-            , (SELECT s1.icon FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeIcon
-            , (SELECT s1.start_color FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeStartColor
-            , (SELECT s1.end_color FROM tbl_badge_info s1 WHERE s1.slct_type = @badgeType AND s1.value = @badgeValue LIMIT 1) AS fanBadgeEndColor
-        FROM tb_broadcast_room_live_list AS A
-            INNER JOIN tb_broadcast_room AS B ON A.room_no = B.room_no AND B.state &lt; 4 AND (
-                ${paramMemNo} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = A.mem_no)
-                OR
-                A.mem_no NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = ${paramMemNo})
-            )
-             AND ((A.mem_no = ${paramMemNo} AND A.hide = 1) OR A.hide = 0)
-            INNER JOIN tb_member_basic AS C ON B.mem_no = C.mem_no AND C.mem_state &lt;&gt; 5
-            INNER JOIN tb_member_profile AS D ON B.mem_no = D.mem_no
-            LEFT OUTER JOIN tbl_badge_info AS E ON E.slct_type = 7 AND E.value = IFNULL((SELECT rank FROM liveDjRank WHERE mem_no = A.mem_no), 0)
-        ORDER BY D.admin_badge DESC, D.specialdj_badge DESC, A.total DESC, B.idx DESC
-        LIMIT 7;
+    <select id="callMainRecommandList" statementType="CALLABLE" parameterType="P_MainRecommandVo" resultType="P_MainRecommandVo">
+        CALL sp_main_top_live_select(#{paramMemNo, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="selectBanner" parameterType="P_BannerVo" resultType="BannerVo">
-        SELECT
-            idx AS idx
-            , thumb_img_url AS thumbsUrl
-            , IF(#{paramDevice} = '3', pc_link_url, mobile_link_url) AS linkUrl
-            , IF(is_pop = 1, 'popup', 'link') AS linkType
-            , title
-            , IF(#{paramDevice} = '3', pc_img_url, mobile_img_url) AS bannerUrl
-            , popup_type
-            , is_cookie
-            , contents
-            , is_title_view
-            , is_button_view
-            , IF(is_button_view = 0, '확인', '상세로 이동') AS buttonNm
-        FROM rd_admin.tb_admin_banner
-        WHERE is_view = 1
-            AND position = #{paramPosition}
-            AND (view_type = 0
-                OR (view_type = 1 and left(#{paramMemNo}, 1) != '8' )
-                OR (view_type = 2 AND #{paramMemNo} LIKE '8%'))
-            AND (sex = 1
-                OR sex = (SELECT (CASE WHEN mem_sex = 'm' THEN 2 WHEN mem_sex = 'f' THEN 3 ELSE 4 END)
-                             FROM tb_member_basic
-                             WHERE mem_no = #{paramMemNo}))
-            AND (
-              term_type = 0
-              OR (term_type = 1 and now() between start_datetime and end_datetime)
-            )
-            AND platform LIKE #{paramPlatform}
-            AND IF(((SELECT value FROM rd_data.tbl_code_define WHERE TYPE = 'system_config' AND code = 'IOS_심사중여부') = 'Y') and #{paramDevice} = '2', ios_judge_view_on = 1, 1=1)
-        ORDER BY `order` ASC, idx DESC
+    <select id="selectBanner" statementType="CALLABLE" parameterType="P_BannerVo" resultType="BannerVo">
+        CALL sp_banner_select(#{paramMemNo, mode=IN, jdbcType=INTEGER}, #{paramDevice, mode=IN, jdbcType=INTEGER}, #{paramPlatform, mode=IN, jdbcType=CHAR}, #{paramPosition, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="callMainStarList" parameterType="String" resultType="P_MainStarVo">
-        SELECT
-            DISTINCT
-            T1.mem_no_star AS memNo
-            , T2.mem_nick AS nickNm
-            , T2.mem_sex AS gender
-            , T3.image_profile AS profImgUrl
-            , T4.room_no AS roomNo
-            , T4.title AS title
-            , T4.subject_type AS roomType
-            , T4.code AS roomTypeNm
-        FROM tb_member_fanstar T1 INNER JOIN tb_member_basic T2 ON T1.mem_no_star = T2.mem_no AND T2.mem_state != 5
-            INNER JOIN tb_member_profile T3 ON T1.mem_no_star = T3.mem_no
-            LEFT OUTER JOIN (
-                SELECT
-                    S1.room_no
-                    , S1.mem_no
-                    , S4.title
-                    , S4.subject_type
-                    , S3.code
-                    , S4.idx
-                FROM tb_broadcast_room_live_list S1 INNER JOIN tb_broadcast_room AS S4 ON S1.room_no = S4.room_no
-                  INNER JOIN tb_broadcast_room_member S2 ON S1.mem_no = S2.mem_no AND S2.auth = 3 and S2.state = 0
-                  INNER JOIN tbl_code_define S3 ON S4.subject_type = S3.value AND S3.type = 'subject_type'
-                WHERE S4.state <![CDATA[<]]> 4
-                  AND (
-                    ${value} NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = S1.mem_no)
-                    OR
-                    S1.mem_no NOT IN (SELECT black_mem_no FROM tb_member_broadcast_black WHERE mem_no = ${value})
-                  )
-                  AND ((S1.mem_no = ${value} AND S1.hide = 1) OR S1.hide = 0)
-            ) T4 ON T1.mem_no_star = T4.mem_no
-            LEFT OUTER JOIN tb_member_session T5 ON T2.mem_no = T5.mem_no
-        WHERE T1.mem_no_fan = #{value}
-        ORDER BY IFNULL(T4.idx, 0) DESC, IFNULL(T5.last_upd_date, T2.mem_join_date) DESC, T2.mem_nick ASC
-        LIMIT 0, 10
+    <select id="callMainStarList" statementType="CALLABLE" parameterType="String" resultType="P_MainStarVo">
+        CALL sp_main_mystar_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callMainRankingPage" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_MainRankingPageVo">
