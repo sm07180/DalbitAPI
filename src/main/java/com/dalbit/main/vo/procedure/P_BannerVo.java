@@ -17,4 +17,6 @@ public class P_BannerVo extends P_ApiVo {
     private String linkType;
     private String title;
     private String bannerUrl;
+
+    private int isLogin;
 }

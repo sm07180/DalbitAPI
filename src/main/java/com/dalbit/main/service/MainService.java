@@ -3,6 +3,8 @@ package com.dalbit.main.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.vo.*;
+import com.dalbit.event.dao.JoinDao;
+import com.dalbit.event.vo.procedure.P_JoinCheckVo;
 import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
@@ -31,6 +33,8 @@ public class MainService {
     GsonUtil gsonUtil;
     @Autowired
     MainDao mainDao;
+    @Autowired
+    JoinDao joinDao;
     @Autowired
     BadgeService badgeService;
 
@@ -294,6 +298,9 @@ public class MainService {
         }
         mainMap.put("myStar", myStar);
 
+        HashMap checkMap = callEventJoinCheck(new P_JoinCheckVo(request));
+        mainMap.put("popupLevel", Integer.parseInt((String) checkMap.get("level")));
+
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
     }
 
@@ -489,6 +496,7 @@ public class MainService {
             pBannerVo.setParamMemNo(memNo);
             pBannerVo.setParamDevice("" + deviceVo.getOs());
             pBannerVo.setParamPosition(position);
+            pBannerVo.setIsLogin(DalbitUtil.isLogin(request) ? 1 : 0);
             bannerList = mainDao.selectBanner(pBannerVo);
         }
 
@@ -811,5 +819,17 @@ public class MainService {
 
         result.put("data", data);
         return result;
+    }
+
+
+    /**
+     * 가입 이벤트 팝업,배너 노출 체크
+     */
+    public HashMap callEventJoinCheck(P_JoinCheckVo pJoinCheckVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pJoinCheckVo);
+        joinDao.callEventJoinCheck(procedureVo);
+        HashMap returnMap = new HashMap();
+        returnMap.put("level", procedureVo.getRet());
+        return returnMap;
     }
 }

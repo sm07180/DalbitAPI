@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.event.dao.JoinDao" >
+
+    <select id="callEventJoinCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_event_new_join_level_check(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventJoinDetail" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_event_new_join_level_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callEventJoinReward" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_event_new_join_level_reward(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+</mapper>
