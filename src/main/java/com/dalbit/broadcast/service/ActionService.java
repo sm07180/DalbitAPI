@@ -123,16 +123,9 @@ public class ActionService {
                 }catch(Exception e){}
             }
 
-            try{ //보름달 체크
-                P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
-                pMoonCheckVo.setRoom_no(pRoomGoodVo.getRoom_no());
-                HashMap checkMap = callMoonCheckMap(pMoonCheckVo);
-                if(checkMap.get("moonStep") != checkMap.get("oldStep")){
-                    socketService.sendMoonCheck(pRoomGoodVo.getRoom_no(), checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                }
-                vo.resetData();
-            }catch(Exception e){
-                log.info("Socket Service MoonCheck Complete Exception {}", e);
+            String resultCode = moonCheckSocket(pRoomGoodVo.getRoom_no(), request, "good");
+            if("error".equals(resultCode)){
+                log.error("보름달 체크 오류");
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요, procedureVo.getData()));
@@ -334,16 +327,10 @@ public class ActionService {
                 }
             }
 
-            try{ //보름달 체크
-                P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
-                pMoonCheckVo.setRoom_no(pRoomGiftVo.getRoom_no());
-                HashMap checkMap = callMoonCheckMap(pMoonCheckVo);
-                if(checkMap.get("moonStep") != checkMap.get("oldStep")){
-                    socketService.sendMoonCheck(pRoomGiftVo.getRoom_no(), checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                }
-                vo.resetData();
-            }catch(Exception e){
-                log.info("Socket Service MoonCheck Complete Exception {}", e);
+            //보름달 체크
+            String resultCode = moonCheckSocket(pRoomGiftVo.getRoom_no(), request, "gift");
+            if("error".equals(resultCode)){
+                log.error("보름달 체크 오류");
             }
 
             Status status;
@@ -483,20 +470,13 @@ public class ActionService {
                 }
             }
 
-            try{ //보름달 체크
-                P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
-                pMoonCheckVo.setRoom_no(pRoomBoosterVo.getRoom_no());
-                HashMap checkMap = callMoonCheckMap(pMoonCheckVo);
-                if(checkMap.get("moonStep") != checkMap.get("oldStep")){
-                    socketService.sendMoonCheck(pRoomBoosterVo.getRoom_no(), checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                }
-                vo.resetData();
-            }catch(Exception e){
-                log.info("Socket Service MoonCheck Complete Exception {}", e);
+            //보름달 체크
+            String resultCode = moonCheckSocket(pRoomBoosterVo.getRoom_no(), request, "booster");
+            if("error".equals(resultCode)){
+                log.error("보름달 체크 오류");
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터성공, returnMap));
-
         }else if(Status.부스터_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_요청회원_번호비정상));
         }else if(Status.부스터_해당방없음.getMessageCode().equals(procedureVo.getRet())){
@@ -627,19 +607,73 @@ public class ActionService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
+        List<HashMap> resultList = new ArrayList<>();
         returnMap.put("step", DalbitUtil.getIntMap(resultMap, "step"));
+
         returnMap.put("broadcastTime", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
         returnMap.put("targetTime", DalbitUtil.getIntMap(resultMap, "targetTime"));
+        returnMap.put("textTime", DalbitUtil.getIntMap(resultMap, "broadcastTime") >= DalbitUtil.getIntMap(resultMap, "targetTime") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "broadcastTime") + "/" + DalbitUtil.getIntMap(resultMap, "targetTime")+"분");
+        if(DalbitUtil.getIntMap(resultMap, "targetTime") > 0){
+            HashMap data = new HashMap();
+            data.put("labelStr", "방송시간");
+            data.put("currentCount", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
+            data.put("maxCount", DalbitUtil.getIntMap(resultMap, "targetTime"));
+            data.put("countStr", DalbitUtil.getIntMap(resultMap, "broadcastTime") >= DalbitUtil.getIntMap(resultMap, "targetTime") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "broadcastTime") + "/" + DalbitUtil.getIntMap(resultMap, "targetTime")+"분");
+            resultList.add(data);
+        }
+
         returnMap.put("totalCount", DalbitUtil.getIntMap(resultMap, "totalCount"));
         returnMap.put("targetCount", DalbitUtil.getIntMap(resultMap, "targetCount"));
+        returnMap.put("textCount", DalbitUtil.getIntMap(resultMap, "totalCount") >= DalbitUtil.getIntMap(resultMap, "targetCount") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "totalCount") + "/" + DalbitUtil.getIntMap(resultMap, "targetCount")+"명");
+        if(DalbitUtil.getIntMap(resultMap, "targetCount") > 0){
+            HashMap data = new HashMap();
+            data.put("labelStr", "누적 청취자");
+            data.put("currentCount", DalbitUtil.getIntMap(resultMap, "totalCount"));
+            data.put("maxCount", DalbitUtil.getIntMap(resultMap, "targetCount"));
+            data.put("countStr", DalbitUtil.getIntMap(resultMap, "totalCount") >= DalbitUtil.getIntMap(resultMap, "targetCount") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "totalCount") + "/" + DalbitUtil.getIntMap(resultMap, "targetCount")+"명");
+            resultList.add(data);
+        }
+
         returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
         returnMap.put("targetByeol", DalbitUtil.getIntMap(resultMap, "targetByeol"));
+        returnMap.put("textByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "giftedByeol") + "/" + DalbitUtil.getIntMap(resultMap, "targetByeol")+"별");
+        if(DalbitUtil.getIntMap(resultMap, "targetByeol") > 0){
+            HashMap data = new HashMap();
+            data.put("labelStr", "선물");
+            data.put("maxCount", DalbitUtil.getIntMap(resultMap, "targetByeol"));
+            if(DalbitUtil.getIntMap(resultMap, "auth") == 3) {
+                data.put("currentCount", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
+                data.put("countStr", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "giftedByeol") + "/" + DalbitUtil.getIntMap(resultMap, "targetByeol")+"별");
+            }else{
+                data.put("currentCount", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? DalbitUtil.getIntMap(resultMap, "targetByeol") : 0);
+                data.put("countStr", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : "ING..");
+            }
+            resultList.add(data);
+        }
+
         returnMap.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
         returnMap.put("targetGood", DalbitUtil.getIntMap(resultMap, "targetGood"));
+        returnMap.put("textGood", DalbitUtil.getIntMap(resultMap, "goodPoint") >= DalbitUtil.getIntMap(resultMap, "targetGood") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "goodPoint") + "/" + DalbitUtil.getIntMap(resultMap, "targetGood")+"개");
+        if(DalbitUtil.getIntMap(resultMap, "targetGood") > 0){
+            HashMap data = new HashMap();
+            data.put("labelStr", "좋아요");
+            data.put("currentCount", DalbitUtil.getIntMap(resultMap, "goodPoint"));
+            data.put("maxCount", DalbitUtil.getIntMap(resultMap, "targetGood"));
+            data.put("countStr", DalbitUtil.getIntMap(resultMap, "goodPoint") >= DalbitUtil.getIntMap(resultMap, "targetGood") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "goodPoint") + "/" + DalbitUtil.getIntMap(resultMap, "targetGood")+"개");
+            resultList.add(data);
+        }
+
         returnMap.put("dlgText", DalbitUtil.getStringMap(resultMap, "dlgText"));
         returnMap.put("helpText1", DalbitUtil.getStringMap(resultMap, "helpText1"));
         returnMap.put("helpText2", DalbitUtil.getStringMap(resultMap, "helpText2"));
         returnMap.put("helpText3", DalbitUtil.getStringMap(resultMap, "helpText3"));
+
+        //청취자일 경우
+        if(DalbitUtil.getIntMap(resultMap, "auth") != 3){
+            returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? DalbitUtil.getIntMap(resultMap, "targetByeol") : 0);
+            returnMap.put("textByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : "ING..");
+        }
+        returnMap.put("results", resultList);
 
         String result ="";
         if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode())) {
@@ -687,6 +721,7 @@ public class ActionService {
         var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
         if(!DalbitUtil.isEmpty(codeVo)){
             returnMap.put("moonStepFileNm", codeVo.getValue());
+            returnMap.put("aniDuration", codeVo.getSortNo());
             if(DalbitUtil.getIntMap(resultMap, "step") == 4){
                 var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), String.valueOf(returnMap.get("moonStep"))));
                 if(!DalbitUtil.isEmpty(aniCodeVo)) {
@@ -698,14 +733,12 @@ public class ActionService {
 
         String result ="";
         if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode()) || procedureVo.getRet().equals(Status.보름달_미완성.getMessageCode())) {
-            try{ //보름달 체크
-                //SocketVo vo = socketService.getSocketVo(pMoonCheckVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
-                if(returnMap.get("moonStep") != returnMap.get("oldStep")){
-                    socketService.sendMoonCheck(pMoonCheckVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            //보름달 체크
+            if(DalbitUtil.getIntMap(resultMap, "step") != DalbitUtil.getIntMap(resultMap, "oldStep")) {
+                String resultCode = moonCheckSocket(pMoonCheckVo.getRoom_no(), request, "server", returnMap);
+                if("error".equals(resultCode)){
+                    log.error("보름달 체크 오류");
                 }
-                //vo.resetData();
-            }catch(Exception e){
-                log.info("Socket Service MoonCheck Complete Exception {}", e);
             }
             Status status = null;
             if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode())){
@@ -750,6 +783,7 @@ public class ActionService {
         var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
         if(!DalbitUtil.isEmpty(codeVo)){
             returnMap.put("moonStepFileNm", codeVo.getValue());
+            returnMap.put("aniDuration", codeVo.getSortNo());
             if(DalbitUtil.getIntMap(resultMap, "step") == 4){
                 var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), String.valueOf(returnMap.get("moonStep"))));
                 if(!DalbitUtil.isEmpty(aniCodeVo)) {
@@ -760,5 +794,42 @@ public class ActionService {
         }
 
         return returnMap;
+    }
+
+
+    /**
+     *  보름달 체크 소켓발송(공통)
+     */
+    public String moonCheckSocket(String roomNo, HttpServletRequest request, String callState){
+        return moonCheckSocket(roomNo, request, callState, null);
+    }
+    public String moonCheckSocket(String roomNo, HttpServletRequest request, String callState, HashMap checkMap){
+
+        String result;
+        SocketVo vo = socketService.getSocketVo(roomNo, MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+        P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
+        pMoonCheckVo.setRoom_no(roomNo);
+        if(checkMap == null){
+            checkMap = callMoonCheckMap(pMoonCheckVo);
+        }
+        try{ //보름달 체크
+            if("roomJoin".equals(callState) || "server".equals(callState)){
+                socketService.sendMoonCheck(roomNo, checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), callState);
+            }else{
+                if(checkMap.get("moonStep") != checkMap.get("oldStep")){
+                    socketService.sendMoonCheck(roomNo, checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), callState);
+                }
+            }
+            vo.resetData();
+            result = "success";
+        }catch(Exception e){
+            if (DalbitUtil.getIntMap(checkMap, "moonStep") == 4){
+                log.error("Socket Service MoonCheck Complete Exception {}, {}", e, callState);
+            }else{
+                log.info("Socket Service MoonCheck Complete Exception {}, {}", e, callState);
+            }
+            result = "error";
+        }
+        return result;
     }
 }

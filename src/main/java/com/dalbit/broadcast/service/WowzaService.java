@@ -452,6 +452,7 @@ public class WowzaService {
             //adbrixService("roomJoin", "1151231231312")
             if(target.getCompleteMoon() != 1){
                 if(target.getStep() != target.getOldStep()){
+                    //보름달 체크
                     HashMap moonCheckMap = new HashMap();
                     moonCheckMap.put("moonStep", target.getMoonCheck().getMoonStep());
                     moonCheckMap.put("moonStepFileNm", target.getMoonCheck().getMoonStepFileNm());
@@ -459,11 +460,9 @@ public class WowzaService {
                     moonCheckMap.put("dlgTitle", target.getMoonCheck().getDlgTitle());
                     moonCheckMap.put("dlgText", target.getMoonCheck().getDlgText());
                     moonCheckMap.put("aniDuration", target.getMoonCheck().getAniDuration());
-                    try{ //보름달 체크
-                        socketService.sendMoonCheck(roomJoinVo.getRoomNo(), moonCheckMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
-                        vo.resetData();
-                    }catch(Exception e){
-                        log.info("Socket Service MoonCheck Complete Exception {}", e);
+                    String resultCode = actionService.moonCheckSocket(roomJoinVo.getRoomNo(), request, "roomJoin", moonCheckMap);
+                    if("error".equals(resultCode)){
+                        log.error("보름달 체크 오류");
                     }
                 }
             }
@@ -611,6 +610,7 @@ public class WowzaService {
                 moonCheckMap.put("moonStep", 4);
                 if(!DalbitUtil.isEmpty(codeVo)){
                     moonCheckMap.put("moonStepFileNm", codeVo.getValue());
+                    moonCheckMap.put("aniDuration", codeVo.getSortNo());
                     var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), "4"));
                     if(!DalbitUtil.isEmpty(aniCodeVo)) {
                         moonCheckMap.put("moonStepAniFileNm", "");

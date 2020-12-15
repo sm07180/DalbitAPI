@@ -1008,8 +1008,13 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void sendMoonCheck(String roomNo, HashMap message, String authToken, boolean isLogin) {
-        log.info("Socket Start : sendMoonCheck {}, {}", message, isLogin);
+    public void sendMoonCheck(String roomNo, HashMap message, String authToken, boolean isLogin, String callState) {
+        if (DalbitUtil.getIntMap(message, "moonStep") == 4){
+            log.error("Socket Start : sendMoonCheck {}, {}, {}", message, isLogin, callState);
+        }else{
+            log.info("Socket Start : sendMoonCheck {}, {}, {}", message, isLogin, callState);
+        }
+
         authToken = authToken == null ? "" : authToken.trim();
 
         HashMap socketMap = new HashMap();
@@ -1029,7 +1034,18 @@ public class SocketService {
         vo.setCommand("reqByPass");
         vo.setMessage(moonCheckMap);
 
-        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        if (DalbitUtil.getIntMap(message, "moonStep") == 4){
+            log.error("Socket vo to Query String: {}",vo.toQueryString());
+        }else{
+            log.info("Socket vo to Query String: {}",vo.toQueryString());
+        }
+
+        if("gift".equals(callState) && DalbitUtil.getIntMap(message, "moonStep") == 4){
+            try{
+                Thread.sleep(5000);
+            }catch(InterruptedException e){}
+
+        }
         sendSocketApi(authToken, roomNo, vo.toQueryString());
 
     }
