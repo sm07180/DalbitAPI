@@ -670,7 +670,7 @@ public class ActionService {
 
         //청취자일 경우
         if(DalbitUtil.getIntMap(resultMap, "auth") != 3){
-            returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? DalbitUtil.getIntMap(resultMap, "targetByeol") : 0);
+            returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? DalbitUtil.getIntMap(resultMap, "targetByeol") : DalbitUtil.getIntMap(resultMap, "giftedByeol"));
             returnMap.put("textByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : "ING..");
         }
         returnMap.put("results", resultList);
