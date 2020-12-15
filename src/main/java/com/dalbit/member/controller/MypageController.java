@@ -731,13 +731,13 @@ public class MypageController {
             msgSlct = 1;
         } else {
             msgSlct = 2;
+            return gsonUtil.toJson(new JsonOutputVo(Status.메시지클릭업데이트_성공));
         }
 
         apiData.setMsg_slct(msgSlct);
         apiData.setMsg_idx(msgClickUpdateVo.getMsgIdx());
 
         String result = mypageService.msgClickUpdate(apiData);
-
         return result;
     }
 
