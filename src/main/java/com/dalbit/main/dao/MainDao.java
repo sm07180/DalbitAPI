@@ -4,7 +4,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.main.vo.BannerVo;
 import com.dalbit.main.vo.procedure.*;
 import org.springframework.stereotype.Repository;
-//import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface MainDao {
     //@Transactional(readOnly = true)
     List<P_MainStarVo> callMainStarList(String memNo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<BannerVo> selectBanner(P_BannerVo pBannerVo);
 
     //@Transactional(readOnly = true)

@@ -720,8 +720,9 @@ public class MypageController {
      */
     @PostMapping("/click/update")
     public String msgClickUpdate(@Valid MsgClickUpdateVo msgClickUpdateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        return gsonUtil.toJson(new JsonOutputVo(Status.메시지클릭업데이트_성공));
 
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        /*DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_MsgClickUpdateVo apiData = new P_MsgClickUpdateVo();
         apiData.setMem_no(new MemberVo().getMyMemNo(request));
@@ -738,7 +739,7 @@ public class MypageController {
         apiData.setMsg_idx(msgClickUpdateVo.getMsgIdx());
 
         String result = mypageService.msgClickUpdate(apiData);
-        return result;
+        return result;*/
     }
 
     /**
