@@ -416,10 +416,10 @@
             (CASE
                 WHEN #{myMemNo} = #{targetMemNo} THEN
             <if test = 'qna == null or qna == ""'>
-                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7)
+                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND delete_yn = 'n' AND DATEDIFF(now(), op_date ) &lt;= 7)
             </if>
             <if test = 'qna != null and qna != ""'>
-                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND DATEDIFF(now(), op_date ) &lt;= 7 AND idx NOT IN (CONCAT('', ${qna})))
+                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND delete_yn = 'n' AND DATEDIFF(now(), op_date ) &lt;= 7 AND idx NOT IN (CONCAT('', ${qna})))
             </if>
                 ELSE 0
             END) AS qna,

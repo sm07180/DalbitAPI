@@ -825,10 +825,13 @@ public class MainService {
      * 가입 이벤트 팝업,배너 노출 체크
      */
     public HashMap callEventJoinCheck(P_JoinCheckVo pJoinCheckVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pJoinCheckVo);
-        joinDao.callEventJoinCheck(procedureVo);
         HashMap returnMap = new HashMap();
-        returnMap.put("level", procedureVo.getRet());
+        returnMap.put("level", -1);
+        if(DalbitUtil.isLogin(pJoinCheckVo.getMem_no())){
+            ProcedureVo procedureVo = new ProcedureVo(pJoinCheckVo);
+            joinDao.callEventJoinCheck(procedureVo);
+            returnMap.put("level", procedureVo.getRet());
+        }
         return returnMap;
     }
 }
