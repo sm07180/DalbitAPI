@@ -826,7 +826,7 @@ public class MainService {
      */
     public HashMap callEventJoinCheck(P_JoinCheckVo pJoinCheckVo) {
         HashMap returnMap = new HashMap();
-        returnMap.put("level", -1);
+        returnMap.put("level", "-1");
         if(DalbitUtil.isLogin(pJoinCheckVo.getMem_no())){
             ProcedureVo procedureVo = new ProcedureVo(pJoinCheckVo);
             joinDao.callEventJoinCheck(procedureVo);
