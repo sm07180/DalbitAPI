@@ -352,4 +352,16 @@ public class ClipController {
         return result;
     }
 
+
+    /**
+     * 달대리 추천클립
+     */
+    @GetMapping("/recommend/list")
+    public String clipRecommendList(@Valid ClipRecommendListInputVo clipRecommendListInputVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ClipRecommendListInputVo apiData = new P_ClipRecommendListInputVo(clipRecommendListInputVo, request);
+        String result = clipService.callClipRecommendList(apiData);
+        return result;
+    }
+
 }

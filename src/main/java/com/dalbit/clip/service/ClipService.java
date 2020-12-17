@@ -1199,4 +1199,36 @@ public class ClipService {
         }
         return result;
     }
+
+    /**
+     * 달대리 추천클립
+     */
+    public String callClipRecommendList(P_ClipRecommendListInputVo pClipRecommendListInputVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pClipRecommendListInputVo);
+        List<P_ClipRecommendListOutputVo> listVo = clipDao.callClipRecommendList(procedureVo);
+
+        HashMap resultMap = new HashMap();
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            List<ClipRecommendListOuputVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(listVo)) {
+                for(int i=0; i<listVo.size(); i++) {
+                    outVoList.add(new ClipRecommendListOuputVo(listVo.get(i)));
+                }
+            }
+
+            P_ClipRecommendInfoVo infoVo = new Gson().fromJson(procedureVo.getExt(), P_ClipRecommendInfoVo.class);
+            ClipRecommendInfoVo recommendInfo = new ClipRecommendInfoVo(infoVo);
+
+            resultMap.put("recommendInfo", recommendInfo);
+            resultMap.put("list", outVoList);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달대리추천클립조회_성공, resultMap));
+        } else if(procedureVo.getRet().equals(Status.달대리추천클립조회_회원아님.getMessageCode())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달대리추천클립조회_회원아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.달대리추천클립조회_실패));
+        }
+        return result;
+    }
 }

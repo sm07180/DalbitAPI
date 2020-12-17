@@ -102,5 +102,7 @@
         call sp_cast_room_play_confirm(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-
+    <select id="callClipRecommendList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipRecommendListOutputVo">
+        call sp_clip_recommend_list	(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>
