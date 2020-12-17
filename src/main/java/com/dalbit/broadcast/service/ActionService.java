@@ -641,12 +641,28 @@ public class ActionService {
             HashMap data = new HashMap();
             data.put("labelStr", "선물");
             data.put("maxCount", DalbitUtil.getIntMap(resultMap, "targetByeol"));
+            data.put("currentCount", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
             if(DalbitUtil.getIntMap(resultMap, "auth") == 3) {
-                data.put("currentCount", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
                 data.put("countStr", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : DalbitUtil.getIntMap(resultMap, "giftedByeol") + "/" + DalbitUtil.getIntMap(resultMap, "targetByeol")+"별");
             }else{
-                data.put("currentCount", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? DalbitUtil.getIntMap(resultMap, "targetByeol") : 0);
-                data.put("countStr", DalbitUtil.getIntMap(resultMap, "giftedByeol") >= DalbitUtil.getIntMap(resultMap, "targetByeol") ? "CLEAR!" : "ING..");
+                String textByeol = "보름달 대박 가자!";
+                int ingPercent = (int)((DalbitUtil.getDoubleMap(resultMap, "giftedByeol") / DalbitUtil.getDoubleMap(resultMap, "targetByeol")) * 100);
+                if(ingPercent >= 100){
+                    textByeol = "CLEAR!";
+                    data.put("currentCount", 100);
+                    data.put("maxCount", 100);
+                }else if(ingPercent >= 70){
+                    textByeol = "거의 다 왔습니다!";
+                    data.put("currentCount", ingPercent);
+                    data.put("maxCount", 100);
+                }else if(ingPercent >= 35){
+                    textByeol = "조금만 힘을 내요!";
+                    data.put("currentCount", (ingPercent / 10.0) * 10);
+                    data.put("maxCount", 100);
+                }else{
+                    data.put("currentCount", 0);
+                }
+                data.put("countStr", textByeol);
             }
             resultList.add(data);
         }
