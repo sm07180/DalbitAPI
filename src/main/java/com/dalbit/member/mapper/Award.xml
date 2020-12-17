@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.member.dao.AwardDao" >
+
+    <select id="callAwardList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_AwardListVo">
+        call sp_member_dalbitaward_dj_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callAwardVote" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+        call sp_member_dalbitaward_dj_vote(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callAwardVoteResult" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_AwardVoteResultVo">
+        call sp_member_dalbitaward_vote_result(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+</mapper>
