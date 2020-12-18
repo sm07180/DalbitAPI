@@ -657,7 +657,8 @@ public class ActionService {
                     data.put("maxCount", 100);
                 }else if(ingPercent >= 35){
                     textByeol = "조금만 힘을 내요!";
-                    data.put("currentCount", (ingPercent / 10.0) * 10);
+                    data.put("currentCount", ingPercent);
+                    //data.put("currentCount", (ingPercent / 10.0) * 10);
                     data.put("maxCount", 100);
                 }else{
                     data.put("currentCount", 0);
