@@ -97,9 +97,9 @@ public class EventController {
     @PostMapping("/reply")
     public String replyAdd(@Valid ReplyAddVo replyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_이벤트종료));
+        //return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_이벤트종료));
 
-        /*DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_ReplyAddInputVo apiData = new P_ReplyAddInputVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
@@ -108,9 +108,9 @@ public class EventController {
         apiData.setDepth(replyAddVo.getDepth());
         apiData.setEvent_idx(replyAddVo.getEventIdx());
 
-        String result = eventService.callEventReplyAdd(apiData);*/
+        String result = eventService.callEventReplyAdd(apiData);
 
-        /*return result;*/
+        return result;
     }
 
 
