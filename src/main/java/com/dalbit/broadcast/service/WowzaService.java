@@ -460,6 +460,7 @@ public class WowzaService {
                     moonCheckMap.put("dlgTitle", target.getMoonCheck().getDlgTitle());
                     moonCheckMap.put("dlgText", target.getMoonCheck().getDlgText());
                     moonCheckMap.put("aniDuration", target.getMoonCheck().getAniDuration());
+                    moonCheckMap.put("fullmoon_yn", target.getFullmoon_yn());
                     String resultCode = actionService.moonCheckSocket(roomJoinVo.getRoomNo(), request, "roomJoin", moonCheckMap);
                     if("error".equals(resultCode)){
                         log.error("보름달 체크 오류");
@@ -619,6 +620,10 @@ public class WowzaService {
                 }
                 moonCheckMap.put("dlgTitle", DalbitUtil.getStringMap(moonCheckMap, "dlgTitle"));
                 moonCheckMap.put("dlgText", DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
+            }
+            //보름달 사용여부 체크
+            if(roomInfoViewVo.getFullmoon_yn() == 0){
+                moonCheckMap.put("moonStep", 4);
             }
             return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap);
         }

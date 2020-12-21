@@ -1,11 +1,8 @@
 package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.MoonVo;
-import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
 public class P_MoonCheckVo {

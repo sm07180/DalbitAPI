@@ -75,6 +75,7 @@ public class RoomOutVo {
     private int step;
     private int oldStep;
     private int completeMoon;
+    private int fullmoon_yn;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -220,5 +221,6 @@ public class RoomOutVo {
         this.step = DalbitUtil.getIntMap(moonCheckMap, "moonStep");
         this.oldStep = DalbitUtil.getIntMap(moonCheckMap, "oldStep");
         this.completeMoon = target.getCompleteMoon();
+        this.fullmoon_yn = target.getFullmoon_yn();
     }
 }

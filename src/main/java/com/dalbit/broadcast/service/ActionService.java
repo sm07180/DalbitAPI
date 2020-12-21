@@ -734,6 +734,7 @@ public class ActionService {
         returnMap.put("moonStepFileNm", "");
         returnMap.put("moonStepAniFileNm", "");
         returnMap.put("aniDuration", 0);
+        returnMap.put("fullmoon_yn", DalbitUtil.getIntMap(resultMap, "fullmoon_yn"));
 
         var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
         if(!DalbitUtil.isEmpty(codeVo)){
@@ -751,7 +752,7 @@ public class ActionService {
         String result ="";
         if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode()) || procedureVo.getRet().equals(Status.보름달_미완성.getMessageCode())) {
             //보름달 체크
-            if(DalbitUtil.getIntMap(resultMap, "step") != DalbitUtil.getIntMap(resultMap, "oldStep")) {
+            if(DalbitUtil.getIntMap(resultMap, "fullmoon_yn") == 1 && DalbitUtil.getIntMap(resultMap, "step") != DalbitUtil.getIntMap(resultMap, "oldStep")) {
                 String resultCode = moonCheckSocket(pMoonCheckVo.getRoom_no(), request, "server", returnMap);
                 if("error".equals(resultCode)){
                     log.error("보름달 체크 오류");
@@ -796,6 +797,7 @@ public class ActionService {
         returnMap.put("moonStepFileNm", "");
         returnMap.put("moonStepAniFileNm", "");
         returnMap.put("aniDuration", 0);
+        returnMap.put("fullmoon_yn", DalbitUtil.getIntMap(resultMap, "fullmoon_yn"));
 
         var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
         if(!DalbitUtil.isEmpty(codeVo)){
@@ -830,11 +832,13 @@ public class ActionService {
             checkMap = callMoonCheckMap(pMoonCheckVo);
         }
         try{ //보름달 체크
-            if("roomJoin".equals(callState) || "server".equals(callState)){
-                socketService.sendMoonCheck(roomNo, checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), callState);
-            }else{
-                if(checkMap.get("moonStep") != checkMap.get("oldStep")){
+            if(DalbitUtil.getIntMap(checkMap, "fullmoon_yn") == 1){
+                if("roomJoin".equals(callState) || "server".equals(callState)){
                     socketService.sendMoonCheck(roomNo, checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), callState);
+                }else{
+                    if(checkMap.get("moonStep") != checkMap.get("oldStep")){
+                        socketService.sendMoonCheck(roomNo, checkMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), callState);
+                    }
                 }
             }
             vo.resetData();

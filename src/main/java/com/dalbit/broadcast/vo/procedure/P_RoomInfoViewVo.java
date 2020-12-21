@@ -60,4 +60,5 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private int extendCnt;                  //방송연장 횟수
     private int completeMoon;
     private int imageType;
+    private int fullmoon_yn;                //보름달 사용여부
 }
