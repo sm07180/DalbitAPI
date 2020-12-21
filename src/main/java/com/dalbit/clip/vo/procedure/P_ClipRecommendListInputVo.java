@@ -18,8 +18,8 @@ public class P_ClipRecommendListInputVo extends P_ApiVo {
     public P_ClipRecommendListInputVo(ClipRecommendListInputVo clipRecommendListInputVo, HttpServletRequest request) {
         setMem_no(MemberVo.getMyMemNo(request));
         setMemLogin(clipRecommendListInputVo.getIsLogin() == false ? 0 : 1);
-        setRecDate(clipRecommendListInputVo.getRecDate());
         setClickYn(clipRecommendListInputVo.getIsClick() == null || clipRecommendListInputVo.getIsClick() == false ? 0 : 1);
+        setRecDate(clipRecommendListInputVo.getRecDate());
     }
 
     private String mem_no;

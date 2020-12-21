@@ -4,6 +4,8 @@ import com.dalbit.clip.vo.procedure.P_ClipRecommendInfoVo;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Calendar;
+
 @Getter @Setter
 public class ClipRecommendInfoVo {
 
@@ -11,9 +13,7 @@ public class ClipRecommendInfoVo {
 
     public ClipRecommendInfoVo(P_ClipRecommendInfoVo target) {
         setRecDate(target.getRecDate());
-        setYearMonth(target.getYearMonth());
-        setMonth(target.getYearMonth().substring(4,6));
-        setWeekNo(target.getWeekNo());
+        setMonth(target.getRecDate().substring(5,7));
         setClipNo(target.getCastNo());
         setClipMemNo(target.getCastMemNo());
         setRegCnt(target.getRegCnt());
@@ -27,13 +27,22 @@ public class ClipRecommendInfoVo {
         setMemNo(target.getMemNo());
         setNickNm(target.getMemNick());
         setDescMsg(target.getDescMsg());
-        setIsPrev(target.getPrevYn() == 1 ? true : false);
-        setIsNext(target.getNextYn() == 1 ? true : false);
+
+        Calendar calendar = Calendar.getInstance();
+        String date = target.getRecDate();
+        String[] dates = date.replace(" 00:00:00", "").split("-");
+        int year = Integer.parseInt(dates[0]);
+        int month = Integer.parseInt(dates[1]);
+        int day = Integer.parseInt(dates[2]);
+        calendar.setFirstDayOfWeek(Calendar.MONDAY);
+        calendar.setMinimalDaysInFirstWeek(7);
+        calendar.set(year, month - 1, day);
+
+        setTime(date.substring(5,7).replace("-"," ")+"월 "+calendar.get(Calendar.WEEK_OF_MONTH)+"주차");
     }
     private String recDate;         // 날짜
-    private String yearMonth;       // 년/월
-    private String month;       // 월
-    private int weekNo;             // 주차
+    private String month;           // 월
+    private String time;
     private String clipNo;          // 클립번호
     private String clipMemNo;       // 클립회원번호
     private int regCnt;             // 클립등록수
@@ -47,7 +56,5 @@ public class ClipRecommendInfoVo {
     private String memNo;           // 요청회원번호
     private String nickNm;         // 회원닉네임
     private String descMsg;         // 소개내용
-    private Boolean isPrev;         // 이전주 클립 여부
-    private Boolean isNext;         // 다음주 클립 여부
 
 }
