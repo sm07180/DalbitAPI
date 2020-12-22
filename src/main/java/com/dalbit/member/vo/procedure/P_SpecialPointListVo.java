@@ -20,5 +20,6 @@ public class P_SpecialPointListVo extends P_ApiVo {
     private String ranking_date;
     private int rank;
     private double addPoint;
+    private int timeRound;          //타임회차 (0: 일간, 1,2,3 회차)
 
 }

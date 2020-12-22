@@ -1781,6 +1781,7 @@ public enum Status {
     대화조회_실패("C006", "mailbox.chatroom.msg.select.fail", "대화 조회 실패 시"),
 
     //보름달 띄우기
+    슈퍼문_완성("2", "super.moon.complete.success", "슈퍼문 완성 시"),
     보름달_완성("1", "moon.complete.success", "보름달 완성 시"),
     보름달_미완성("0", "moon.no.complete.success", "보름달 미완성 시"),
     보름달_회원아님("-1", "moon.member.number.error", "요청회원번호 회원 아닐 시"),
@@ -1863,6 +1864,11 @@ public enum Status {
     투표결과조회_성공("C001", "award.vote.result.success", "투표결과 조회 성공 시"),
     투표결과조회_회원아님("-1", "award.vote.result.member.number.error", "요청회원번호 회원 아닐 시"),
     투표결과조회_실패("C006", "award.vote.result.fail", "투표결과 조회 실패 시"),
+
+    //타임랭킹조회
+    메인_타임랭킹조회_성공("C001", "main.time.rank.select.success", "타임랭킹 조회 시"),
+    메인_타임랭킹조회_요청회원_회원아님("-1", "main.time.rank.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    메인_타임랭킹조회_실패("C006", "main.time.rank.select.fail", "타임랭킹 조회 실패 시"),
    ;
 
 

@@ -46,4 +46,6 @@ public interface MainDao {
 
     //@Transactional(readOnly = true)
     P_MarketingVo callMarketingDetail(ProcedureVo procedureVo);
+
+    List<P_MainTimeRankingPageVo> callMainTimeRankingPage(ProcedureVo procedureVo);
 }

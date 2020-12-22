@@ -649,28 +649,20 @@ public class MemberService {
         ProcedureVo procedureVo = new ProcedureVo(pSpecialPointListVo);
         List<P_SpecialPointListVo> specialPointListVo = memberDao.getSpecialPointList(procedureVo);
 
-        HashMap specialPointOutList = new HashMap();
-        if(DalbitUtil.isEmpty(specialPointListVo)){
-            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
-            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-            specialPointOutList.put("list", new ArrayList<>());
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap specialPointOutList = new HashMap();
+            List<SpecialPointListOutVo> outVoList = new ArrayList<>();
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            if(!DalbitUtil.isEmpty(specialPointListVo)) {
+                for (int i = 0; i < specialPointListVo.size(); i++) {
+                    outVoList.add(new SpecialPointListOutVo(specialPointListVo.get(i)));
+                }
+            }
+            specialPointOutList.put("list", outVoList);
             specialPointOutList.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
             specialPointOutList.put("totalPoint", DalbitUtil.getDoubleMap(resultMap, "totalPoint"));
-            return gsonUtil.toJson(new JsonOutputVo(Status.가산점조회_없음, specialPointOutList));
-        }
 
-        List<SpecialPointListOutVo> outVoList = new ArrayList<>();
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        for (int i=0; i<specialPointListVo.size(); i++){
-            outVoList.add(new SpecialPointListOutVo(specialPointListVo.get(i)));
-        }
-        specialPointOutList.put("list", procedureOutputVo.getOutputBox());
-        specialPointOutList.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
-        specialPointOutList.put("totalPoint", DalbitUtil.getDoubleMap(resultMap, "totalPoint"));
-
-        String result;
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.가산점조회_성공, specialPointOutList));
         }else if(Status.가산점조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.가산점조회_회원아님));

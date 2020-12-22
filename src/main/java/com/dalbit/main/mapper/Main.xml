@@ -57,4 +57,9 @@
     <select id="callMarketingDetail" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_MarketingVo">
         call sp_service_center_marketing_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callMainTimeRankingPage" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_MainTimeRankingPageVo">
+        call sp_ranking_page_time(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

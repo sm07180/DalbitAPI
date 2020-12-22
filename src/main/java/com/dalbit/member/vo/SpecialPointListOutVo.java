@@ -12,9 +12,11 @@ public class SpecialPointListOutVo {
         setRankDate(target.getRanking_date());
         setRank(target.getRank());
         setAddPoint(target.getAddPoint());
+        setTimeRound(target.getTimeRound());
     }
 
     private String rankDate;
     private int rank;
     private double addPoint;
+    private int timeRound;
 }

@@ -182,4 +182,17 @@ public class MainController {
 
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
+
+    /**
+     * 타임랭킹
+     */
+    @GetMapping("/time/rank")
+    public String mainTimeRankingPage(@Valid MainTimeRankingPageVo mainTimeRankingPageVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MainTimeRankingPageVo apiData = new P_MainTimeRankingPageVo(mainTimeRankingPageVo, request);
+
+        String result = mainService.mainTimeRankingPage(apiData);
+
+        return result;
+    }
 }

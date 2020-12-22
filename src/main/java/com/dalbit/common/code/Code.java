@@ -72,7 +72,8 @@ public enum Code {
     장기_미접속_시행일자("long_term_date", "장기_미접속_시행일자"),
 
     보름달_단계("moon_step", "보름달 단계"),
-    보름달_애니메이션("moon_step_ani", "보름달 애니메이션")
+    보름달_애니메이션("moon_step_ani", "보름달 애니메이션"),
+    슈퍼문_애니메이션("super_moon_step_ani", "슈퍼문 애니메이션")
    ;
 
     final private String code;

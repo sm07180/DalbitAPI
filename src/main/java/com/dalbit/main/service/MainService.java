@@ -74,28 +74,19 @@ public class MainService {
         String today_str = sdf.format(yesterday.getTime());
 
         //DJ랭킹 조회
-        P_MainRankingPageVo pMainRankingPageVo = new P_MainRankingPageVo();
-        pMainRankingPageVo.setSlct_type(1);
+        P_MainTimeRankingPageVo pMainRankingPageVo = new P_MainTimeRankingPageVo();
+        pMainRankingPageVo.setMemLogin(0);
+        pMainRankingPageVo.setMem_no(MemberVo.getMyMemNo(request));
         pMainRankingPageVo.setRanking_slct(1);
         pMainRankingPageVo.setPageNo(1);
         pMainRankingPageVo.setPageCnt(10);
-        pMainRankingPageVo.setMemLogin(0);
-        pMainRankingPageVo.setMem_no(memNo);
-        pMainRankingPageVo.setRankingDate(today_str);
-        ProcedureVo procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
-        List<P_MainRankingPageVo> mainRankingPageVoList = mainDao.callMainRankingPage(procedureRankingVo);
-
-        //팬랭킹조회
-        pMainRankingPageVo = new P_MainRankingPageVo();
-        pMainRankingPageVo.setSlct_type(1);
+        pMainRankingPageVo.setRank_date(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
+        ProcedureVo procedureVo = new ProcedureVo(pMainRankingPageVo);
+        List<P_MainTimeRankingPageVo> mainRankingPageVoList = mainDao.callMainTimeRankingPage(procedureVo);
+        //Fan랭킹 조회
         pMainRankingPageVo.setRanking_slct(2);
-        pMainRankingPageVo.setPageNo(1);
-        pMainRankingPageVo.setPageCnt(10);
-        pMainRankingPageVo.setMemLogin(0);
-        pMainRankingPageVo.setMem_no(memNo);
-        pMainRankingPageVo.setRankingDate(today_str);
-        procedureRankingVo = new ProcedureVo(pMainRankingPageVo);
-        List<P_MainRankingPageVo> mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
+        procedureVo = new ProcedureVo(pMainRankingPageVo);
+        List<P_MainTimeRankingPageVo> mainFanRankingVoList = mainDao.callMainTimeRankingPage(procedureVo);
 
         //마이스타
         List<P_MainStarVo> starVoList = null;
@@ -265,14 +256,14 @@ public class MainService {
         List djRank = new ArrayList();
         if(!DalbitUtil.isEmpty(mainRankingPageVoList)){
             for (int i=0; i<mainRankingPageVoList.size(); i++){
-                djRank.add(new MainDjRankingOutVo(mainRankingPageVoList.get(i)));
+                djRank.add(new MainTimeRankingPageOutVo(mainRankingPageVoList.get(i)));
             }
         }
         mainMap.put("djRank", djRank);
 
         List fanRank = new ArrayList();
         for (int i=0; i<mainFanRankingVoList.size(); i++){
-            fanRank.add(new MainFanRankingOutVo(mainFanRankingVoList.get(i)));
+            fanRank.add(new MainTimeRankingPageOutVo(mainFanRankingVoList.get(i)));
         }
         mainMap.put("fanRank", fanRank);
 
@@ -833,5 +824,55 @@ public class MainService {
             returnMap.put("level", procedureVo.getRet());
         }
         return returnMap;
+    }
+
+    public String mainTimeRankingPage(P_MainTimeRankingPageVo pMainTimeRankingPageVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMainTimeRankingPageVo);
+        List<P_MainTimeRankingPageVo> mainTimeRankingPageVoList = mainDao.callMainTimeRankingPage(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap mainTimeRankingList = new HashMap();
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            mainTimeRankingList.put("titleText", DalbitUtil.getStringMap(resultMap, "titleText"));
+            mainTimeRankingList.put("rankRound", DalbitUtil.getIntMap(resultMap, "rankRound"));
+            mainTimeRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+            mainTimeRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
+            mainTimeRankingList.put("myLikePoint", DalbitUtil.getIntMap(resultMap, "myLikePoint"));
+            mainTimeRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
+            mainTimeRankingList.put("myBroadPoint", DalbitUtil.getIntMap(resultMap, "myBroadPoint"));
+            mainTimeRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
+            mainTimeRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
+            mainTimeRankingList.put("prevDate", DalbitUtil.getStringMap(resultMap, "prevDate"));
+            mainTimeRankingList.put("nextDate", DalbitUtil.getStringMap(resultMap, "nextDate"));
+
+            List<FanBadgeVo> liveBadgeList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
+                liveBadgeList.add(new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")
+                        , DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon")
+                        , DalbitUtil.getStringMap(resultMap, "myLiveBadgeStartColor")
+                        , DalbitUtil.getStringMap(resultMap, "myLiveBadgeEndColor")
+                        , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImage")
+                        , DalbitUtil.getStringMap(resultMap, "myLiveBadgeImageSmall")));
+            }
+
+            List<MainTimeRankingPageOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(mainTimeRankingPageVoList)){
+                for (int i=0; i<mainTimeRankingPageVoList.size(); i++){
+                    outVoList.add(new MainTimeRankingPageOutVo(mainTimeRankingPageVoList.get(i)));
+                }
+            }
+
+            mainTimeRankingList.put("myLiveBadgeList", liveBadgeList);
+            mainTimeRankingList.put("list", outVoList);
+            mainTimeRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_타임랭킹조회_성공, mainTimeRankingList));
+        }else if (procedureVo.getRet().equals(Status.메인_타임랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_타임랭킹조회_요청회원_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_타임랭킹조회_실패));
+        }
+        return result;
     }
 }
