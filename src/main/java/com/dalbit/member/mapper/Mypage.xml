@@ -407,10 +407,10 @@
                 ELSE 0
             END) AS byeol,
             <if test = 'notice == null or notice == ""'>
-                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
+                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt; 7)
             </if>
             <if test = 'notice != null and notice != ""'>
-                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 AND idx NOT IN (${notice}))
+                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt; 7 AND idx NOT IN (${notice}))
             </if>
             AS notice,
             (CASE
