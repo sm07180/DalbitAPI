@@ -8,6 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter @Setter
 public class AwardVoteVo {
+    @NotBlank(message = "{\"ko_KR\" : \"재투표여부를\"}")
+    @NotNull(message = "{\"ko_KR\" : \"재투표여부를\"}")
+    private String isRevote;
+
     @NotBlank(message = "{\"ko_KR\" : \"투표년도를\"}")
     @NotNull(message = "{\"ko_KR\" : \"투표년도를\"}")
     private String year;

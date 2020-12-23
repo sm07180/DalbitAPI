@@ -52,12 +52,12 @@ public class AwardController {
 
 
     /**
-     * 어워드 투표결과 //TODO 기획서 보완필요 DB작업중
+     * 어워드 투표결과
      */
     @GetMapping("/vote/result")
     public String awardVoteResult(@Valid AwardVoteResultVo awardVoteResultVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_AwardVoteResultVo apiData = new P_AwardVoteResultVo(awardVoteResultVo, request);
+        P_AwardVoteResultVo apiData = new P_AwardVoteResultVo(awardVoteResultVo);
         String result = awardService.callAwardVoteResult(apiData);
         return result;
     }

@@ -48,7 +48,10 @@ public class AwardService {
                     outVoList.add(new AwardListOutVo(awardListVo.get(i)));
                 }
             }
-            mailBoxList.put("voteState", DalbitUtil.getIntMap(resultMap, "voteYn"));    //0:미투표, 1:투표완료, 2:기간만료
+            mailBoxList.put("voteState", DalbitUtil.getIntMap(resultMap, "voteYn"));    //0:미투표, 1:투표완료, 2:기간만료, 3:재투표완료
+            mailBoxList.put("dj1_memNo", DalbitUtil.getStringMap(resultMap, "dj1_memNo"));    //투표한 dj_memNo
+            mailBoxList.put("dj2_memNo", DalbitUtil.getStringMap(resultMap, "dj2_memNo"));
+            mailBoxList.put("dj3_memNo", DalbitUtil.getStringMap(resultMap, "dj3_memNo"));
             mailBoxList.put("list", outVoList);
             result = gsonUtil.toJson(new JsonOutputVo(Status.어워드DJ조회_성공, mailBoxList));
         } else if (procedureVo.getRet().equals(Status.어워드DJ조회_회원아님.getMessageCode())) {
