@@ -37,13 +37,14 @@ public class ChooseokService {
         Calendar start = Calendar.getInstance();
         Calendar end = Calendar.getInstance();
 
+        //Calendar month + 1 확인
         if("real".equals(DalbitUtil.getActiveProfile())) {
-            start.set(2020,8,29,0,0,0);
+            start.set(2020,11,24,0,0,0);
         } else {
-            start.set(2020,8,27,0,0,0);
+            start.set(2020,11,23,0,0,0);
         }
 
-        end.set(2020,9,4,11,59,59);
+        end.set(2020,11,30,23,59,59);
 
         String state = "false";
 

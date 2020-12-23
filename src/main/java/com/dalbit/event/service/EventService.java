@@ -59,7 +59,7 @@ public class EventService {
         Calendar srt1 = Calendar.getInstance();
         Calendar end1 = Calendar.getInstance();
         srt1.set(2020, 5,8,0,0,0);
-        end1.set(2020, 5, 14, 23, 59, 59);
+        end1.set(2021, 5, 14, 23, 59, 59);
         term1.put("round", 1);
         term1.put("srtDt", srt1);
         term1.put("endDt", end1);
@@ -68,7 +68,7 @@ public class EventService {
         Calendar srt2 = Calendar.getInstance();
         Calendar end2 = Calendar.getInstance();
         srt2.set(2020, 5,15,0,0,0);
-        end2.set(2020, 5, 21, 23, 59, 59);
+        end2.set(2021, 5, 21, 23, 59, 59);
         term2.put("round", 2);
         term2.put("srtDt", srt2);
         term2.put("endDt", end2);
@@ -77,7 +77,7 @@ public class EventService {
         Calendar srt3 = Calendar.getInstance();
         Calendar end3 = Calendar.getInstance();
         srt3.set(2020, 5,22,0,0,0);
-        end3.set(2020, 5, 28, 23, 59, 59);
+        end3.set(2021, 5, 28, 23, 59, 59);
         term3.put("round", 3);
         term3.put("srtDt", srt3);
         term3.put("endDt", end3);
@@ -475,6 +475,7 @@ public class EventService {
         paramMap.put("mem_no", mem_no);
         paramMap.put("os", deviceVo.getOs());
         paramMap.put("deviceUuid", deviceVo.getDeviceUuid());
+        paramMap.put("ip", deviceVo.getIp());
 
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckGift(procedureVo);
