@@ -32,7 +32,7 @@ public class P_ClipListVo extends P_ApiVo {
     /* InPut */
     private int memLogin;           //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;          //요청회원번호
-    private int slctType;           //검색구분(0: 전체, 1: 추천, 2: 재생수, 3: 좋아요)
+    private int slctType;           //검색구분(0:전체, 1:최신, 2:인기, 3:선물, 4:재생 5:오래된, 6:랜덤)
     private String subjectType;     //클립 주제 (01~99)
     private String gender;          //성별(null: 전체, m: 남성, f: 여성)
     private int djType;             //신입구분(0: 전체, 1: 신입)
