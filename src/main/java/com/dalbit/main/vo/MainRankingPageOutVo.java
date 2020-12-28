@@ -44,7 +44,7 @@ public class MainRankingPageOutVo {
     private String listenRoomNo;
 
     public MainRankingPageOutVo(){}
-    public MainRankingPageOutVo(P_MainRankingPageVo target) {
+    public MainRankingPageOutVo(P_MainRankingPageVo target, boolean isAdmin) {
         setRank(target.getRank());
         setUpDown(target.getUp_down());
         setMemNo(target.getMem_no());
@@ -75,6 +75,6 @@ public class MainRankingPageOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
-        setListenRoomNo(target.getListenRoomNo());
+        setListenRoomNo(DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin));
     }
 }

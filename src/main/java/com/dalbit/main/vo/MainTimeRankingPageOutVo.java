@@ -43,7 +43,7 @@ public class MainTimeRankingPageOutVo {
     private String listenRoomNo;
 
     public MainTimeRankingPageOutVo(){}
-    public MainTimeRankingPageOutVo(P_MainTimeRankingPageVo target) {
+    public MainTimeRankingPageOutVo(P_MainTimeRankingPageVo target, boolean isAdmin) {
         setRank(target.getRank());
         setUpDown(target.getUp_down());
         setMemNo(target.getMem_no());
@@ -69,7 +69,7 @@ public class MainTimeRankingPageOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
-        setListenRoomNo(target.getListenRoomNo());
+        setListenRoomNo(DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin));
         setLiveTime(target.getLiveTime());
     }
 }

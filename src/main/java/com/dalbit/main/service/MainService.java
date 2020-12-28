@@ -1,5 +1,6 @@
 package com.dalbit.main.service;
 
+import com.dalbit.admin.service.AdminService;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.vo.*;
@@ -36,6 +37,8 @@ public class MainService {
     JoinDao joinDao;
     @Autowired
     BadgeService badgeService;
+    @Autowired
+    AdminService adminService;
 
     public String getMain(HttpServletRequest request){
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;
@@ -256,14 +259,14 @@ public class MainService {
         List djRank = new ArrayList();
         if(!DalbitUtil.isEmpty(mainRankingPageVoList)){
             for (int i=0; i<mainRankingPageVoList.size(); i++){
-                djRank.add(new MainTimeRankingPageOutVo(mainRankingPageVoList.get(i)));
+                djRank.add(new MainTimeRankingPageOutVo(mainRankingPageVoList.get(i), false));
             }
         }
         mainMap.put("djRank", djRank);
 
         List fanRank = new ArrayList();
         for (int i=0; i<mainFanRankingVoList.size(); i++){
-            fanRank.add(new MainTimeRankingPageOutVo(mainFanRankingVoList.get(i)));
+            fanRank.add(new MainTimeRankingPageOutVo(mainFanRankingVoList.get(i), false));
         }
         mainMap.put("fanRank", fanRank);
 
@@ -568,7 +571,7 @@ public class MainService {
     /**
      * 랭킹조회
      */
-    public String mainRankingPage(P_MainRankingPageVo pMainRankingPageVo) {
+    public String mainRankingPage(HttpServletRequest request, P_MainRankingPageVo pMainRankingPageVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMainRankingPageVo);
         List<P_MainRankingPageVo> mainRankingPageVoList = mainDao.callMainRankingPage(procedureVo);
 
@@ -600,8 +603,9 @@ public class MainService {
         }
 
         List<MainRankingPageOutVo> outVoList = new ArrayList<>();
+        boolean isAdmin = adminService.isAdmin(request);
         for (int i=0; i<mainRankingPageVoList.size(); i++){
-            outVoList.add(new MainRankingPageOutVo(mainRankingPageVoList.get(i)));
+            outVoList.add(new MainRankingPageOutVo(mainRankingPageVoList.get(i), isAdmin));
         }
 
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
@@ -826,7 +830,7 @@ public class MainService {
         return returnMap;
     }
 
-    public String mainTimeRankingPage(P_MainTimeRankingPageVo pMainTimeRankingPageVo) {
+    public String mainTimeRankingPage(HttpServletRequest request, P_MainTimeRankingPageVo pMainTimeRankingPageVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMainTimeRankingPageVo);
         List<P_MainTimeRankingPageVo> mainTimeRankingPageVoList = mainDao.callMainTimeRankingPage(procedureVo);
 
@@ -858,8 +862,9 @@ public class MainService {
 
             List<MainTimeRankingPageOutVo> outVoList = new ArrayList<>();
             if(!DalbitUtil.isEmpty(mainTimeRankingPageVoList)){
+                boolean isAdmin = adminService.isAdmin(request);
                 for (int i=0; i<mainTimeRankingPageVoList.size(); i++){
-                    outVoList.add(new MainTimeRankingPageOutVo(mainTimeRankingPageVoList.get(i)));
+                    outVoList.add(new MainTimeRankingPageOutVo(mainTimeRankingPageVoList.get(i), isAdmin));
                 }
             }
 

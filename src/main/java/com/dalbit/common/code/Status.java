@@ -307,6 +307,7 @@ public enum Status {
     방송참여_비회원IP중복("-12", "broadcast.room.join.ano.ip.duplicate", "비회원 IP 동일방 중복 있을 시"),
     방송참여_차단회원입장불가("-13", "broadcast.room.black.list.join.no", "차단회원 입장 불가 시"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
+    방송방조인따라가기비공개("-999", "broadcast.room.join.not.allow.fallow", "일반회원 참여시 따라가기 비공개일 경우"),
 
     //방송나가기
     방송나가기("0", "broadcast.room.out.success", "방송 나가기 시"),
@@ -879,6 +880,7 @@ public enum Status {
     출석체크이벤트_출석_실패_필요시간부족("-3", "event.attendance.checkIn.fail.short.time", "필요시간부족"),
     출석체크이벤트_출석_실패_보상테이블없음("-4", "event.attendance.checkIn.fail.table.emapty", "보상테이블없음"),
     출석체크이벤트_출석_실패_동일기기중복불가("-5", "event.attendance.checkIn.fail.device.check", "동일기기 중복불가"),
+    출석체크이벤트_출석_실패_동일아이피중복불가("-6", "event.attendance.checkIn.fail.ip.check", "동일아이피 중복불가"),
     출석체크이벤트_출석_실패("C006", "business.error", "비즈니스 에러"),
 
     출석체크이벤트_더줘_성공("0", "event.attendance.checkIn.success", "성공"),
@@ -1519,6 +1521,10 @@ public enum Status {
     방송설정수정_실패("C006", "mypage.broadcast.setting.edit.error", "방송설정 수정 실패 시"),
     실시간팬배지_ON("0", "mypage.broadcast.setting.live.badge.on.success", "실시간 팬 배지 ON"),
     실시간팬배지_OFF("0", "mypage.broadcast.setting.live.badge.off.success", "실시간 팬 배지 OFF"),
+    청취정보_ON("0", "mypage.broadcast.setting.listen.open.on.success", "청취정보공개 ON"),
+    청취정보_OFF("0", "mypage.broadcast.setting.listen.open.off.success", "청취정보공개 OFF"),
+    선물스타추가_ON("0", "mypage.broadcast.setting.gift.star.on.success", "선물시자동스타추가 ON"),
+    선물스타추가_OFF("0", "mypage.broadcast.setting.gift.star.off.success", "선물시자동스타추가 OFF"),
 
     클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 

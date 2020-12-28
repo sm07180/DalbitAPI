@@ -1623,4 +1623,31 @@ public class DalbitUtil {
             return false;
         }
     }
+
+    /**
+     * 보름달 애니매이션 번호 랜덤 추출
+     */
+    public static String randomMoonAniValue() {
+        StringBuffer strPwd = new StringBuffer();
+        int[] strs = new int[1];
+        for (int i = 0; i < 1; ++i) {
+            strs[0] = (int) (Math.random() * 3.0D);
+            strPwd.append(strs[0]);
+        }
+        return strPwd.toString();
+    }
+
+    public static String getListenRoomNo(String roomNo, int listenOpen, boolean isAdmin){
+        if(isAdmin){
+            return roomNo;
+        }
+        if(!isEmpty(roomNo)){
+            if(listenOpen == 1){
+                return roomNo;
+            }else{
+                return "A000000000";
+            }
+        }
+        return "";
+    }
 }

@@ -395,40 +395,49 @@ public class MypageService {
      * 회원 알림설정 수정하기
      */
     public String callMemberNotifyEdit(P_MemberNotifyEditVo pMemberNotifyEditVo){
+        P_MemberNotifyVo pMemberNotifyVo = new P_MemberNotifyVo();
+        pMemberNotifyVo.setMem_no(pMemberNotifyEditVo.getMem_no());
+        ProcedureVo procedureViewVo = new ProcedureVo(pMemberNotifyVo);
+        mypageDao.callMemberNotify(procedureViewVo);
+
         ProcedureVo procedureVo = new ProcedureVo(pMemberNotifyEditVo);
         mypageDao.callMemberNotifyEdit(procedureVo);
 
         String result;
         Status status = null;
         if(procedureVo.getRet().equals(Status.알림설정수정_성공.getMessageCode())) {
-            if("n".equals(pMemberNotifyEditVo.getAlim_slct())){
+            HashMap resultMap = new Gson().fromJson(procedureViewVo.getExt(), HashMap.class);
+
+            if(!(DalbitUtil.getStringMap(resultMap, "alim_slct").equals(pMemberNotifyEditVo.getAlim_slct())) && "n".equals(pMemberNotifyEditVo.getAlim_slct())){
                 status =Status.알림무음;
-            }else if("s".equals(pMemberNotifyEditVo.getAlim_slct())){
+            }else if(!(DalbitUtil.getStringMap(resultMap, "alim_slct").equals(pMemberNotifyEditVo.getAlim_slct())) && "s".equals(pMemberNotifyEditVo.getAlim_slct())){
                 status =Status.알림소리;
-            }else if("v".equals(pMemberNotifyEditVo.getAlim_slct())){
+            }else if(!(DalbitUtil.getStringMap(resultMap, "alim_slct").equals(pMemberNotifyEditVo.getAlim_slct())) && "v".equals(pMemberNotifyEditVo.getAlim_slct())){
                 status =Status.알림진동;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getAll_ok())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getAll_ok()) && DalbitUtil.getIntMap(resultMap, "all_ok") != pMemberNotifyEditVo.getAll_ok()){
                 status = pMemberNotifyEditVo.getAll_ok() == 1 ? Status.전제알림수신_ON : Status.전제알림수신_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_1())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_1()) && DalbitUtil.getIntMap(resultMap, "set_1") != pMemberNotifyEditVo.getSet_1()){
                 status = pMemberNotifyEditVo.getSet_1() == 1 ? Status.마이스타방송시작_ON : Status.마이스타방송시작_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_9())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_9()) && DalbitUtil.getIntMap(resultMap, "set_9") != pMemberNotifyEditVo.getSet_9()){
                 status = pMemberNotifyEditVo.getSet_9() == 1 ? Status.마이스타클립등록_ON : Status.마이스타클립등록_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_2())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_2()) && DalbitUtil.getIntMap(resultMap, "set_2") != pMemberNotifyEditVo.getSet_2()){
                 status = pMemberNotifyEditVo.getSet_2() == 1 ? Status.마이스타방송공지_ON : Status.마이스타방송공지_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_10())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_10()) && DalbitUtil.getIntMap(resultMap, "set_10") != pMemberNotifyEditVo.getSet_10()){
                 status = pMemberNotifyEditVo.getSet_10() == 1 ? Status.내클립_ON : Status.내클립_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_3())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_3()) && DalbitUtil.getIntMap(resultMap, "set_3") != pMemberNotifyEditVo.getSet_3()){
                 status = pMemberNotifyEditVo.getSet_3() == 1 ? Status.신규팬추가_ON : Status.신규팬추가_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_4())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_4()) && DalbitUtil.getIntMap(resultMap, "set_4") != pMemberNotifyEditVo.getSet_4()){
                 status = pMemberNotifyEditVo.getSet_4() == 1 ? Status.팬보드신규글등록_ON : Status.팬보드신규글등록_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_8())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_8()) && DalbitUtil.getIntMap(resultMap, "set_8") != pMemberNotifyEditVo.getSet_8()){
                 status = pMemberNotifyEditVo.getSet_8() == 1 ? Status.팬보드댓글등록_ON : Status.팬보드댓글등록_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_5())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_5()) && DalbitUtil.getIntMap(resultMap, "set_5") != pMemberNotifyEditVo.getSet_5()){
                 status = pMemberNotifyEditVo.getSet_5() == 1 ? Status.선물도착_ON : Status.선물도착_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_6())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_6()) && DalbitUtil.getIntMap(resultMap, "set_6") != pMemberNotifyEditVo.getSet_6()){
                 status = pMemberNotifyEditVo.getSet_6() == 1 ? Status.일대일문의답변도착_ON : Status.일대일문의답변도착_OFF;
-            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_7())){
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_7()) && DalbitUtil.getIntMap(resultMap, "set_7") != pMemberNotifyEditVo.getSet_7()){
                 status = pMemberNotifyEditVo.getSet_7() == 1 ? Status.서비스알림_ON : Status.서비스알림_OFF;
+            }else{
+                status = Status.알림설정수정_성공;
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(status));
@@ -2159,6 +2168,7 @@ public class MypageService {
             returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
             returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
             returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
+            returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen") == 1 ? true : false);
             returnMap.put("isSpecial", isSpecial);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
@@ -2200,6 +2210,7 @@ public class MypageService {
             returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
             returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
             returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
+            returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen") == 1 ? true : false);
 
             try{
                 HashMap socketMap = new HashMap();
@@ -2217,11 +2228,23 @@ public class MypageService {
 
             Status status = null;
             if(state.equals("edit")){
-                if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getLiveBadgeView()) && pBroadcastSettingEditVo.getLiveBadgeView() != DalbitUtil.getIntMap(boforeMap, "liveBadgeView")){
-                    if(DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1){
+                if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getLiveBadgeView()) && pBroadcastSettingEditVo.getLiveBadgeView() != DalbitUtil.getIntMap(boforeMap, "liveBadgeView")) {
+                    if (DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1) {
                         status = Status.실시간팬배지_ON;
-                    }else{
+                    } else {
                         status = Status.실시간팬배지_OFF;
+                    }
+                }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenOpen()) && pBroadcastSettingEditVo.getListenOpen() != DalbitUtil.getIntMap(boforeMap, "listenOpen")){
+                    if (DalbitUtil.getIntMap(resultMap, "listenOpen") == 1) {
+                        status = Status.청취정보_ON;
+                    } else {
+                        status = Status.청취정보_OFF;
+                    }
+                }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getGiftFanReg()) && pBroadcastSettingEditVo.getGiftFanReg() != DalbitUtil.getIntMap(boforeMap, "giftFanReg")){
+                    if (DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1) {
+                        status = Status.선물스타추가_ON;
+                    } else {
+                        status = Status.선물스타추가_OFF;
                     }
                 }else{
                     status = Status.방송설정수정_성공;

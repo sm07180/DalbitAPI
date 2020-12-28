@@ -56,6 +56,7 @@ public class P_MainTimeRankingPageVo extends P_ApiVo {
     private int listenPoint;
     private String roomNo;
     private String listenRoomNo;
+    private int listenOpen;
     private int starCnt;
 
     private String liveBadgeText;

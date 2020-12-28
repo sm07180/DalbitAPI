@@ -127,7 +127,7 @@ public class MainController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MainRankingPageVo apiData = new P_MainRankingPageVo(mainRankingPageVo, request);
 
-        String result = mainService.mainRankingPage(apiData);
+        String result = mainService.mainRankingPage(request, apiData);
 
         return result;
     }
@@ -191,7 +191,7 @@ public class MainController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MainTimeRankingPageVo apiData = new P_MainTimeRankingPageVo(mainTimeRankingPageVo, request);
 
-        String result = mainService.mainTimeRankingPage(apiData);
+        String result = mainService.mainTimeRankingPage(request, apiData);
 
         return result;
     }

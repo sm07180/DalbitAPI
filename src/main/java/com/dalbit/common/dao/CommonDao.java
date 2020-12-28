@@ -17,7 +17,7 @@ public interface CommonDao {
     //@Transactional(readOnly = true)
     ProcedureVo callBroadCastRoomStreamIdRequest(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<Map> callCodeDefineSelect();
 
     void requestSms(SmsVo smsVo);
@@ -40,13 +40,13 @@ public interface CommonDao {
     //@Transactional(readOnly = true)
     ItemDetailVo selectItem(String item);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     AppVersionVo selectAppVersion(Integer item);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     BanWordVo banWordSelect();
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
 
     //@Transactional(readOnly = true)
@@ -64,14 +64,14 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     List<FanBadgeVo> callMemberBadgeList(HashMap param);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     BadgeFrameVo callMemberBadgeFrame(HashMap param);
 
     int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo);
 
     ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     AdultCheckVo getMembirth(String mem_no);
 
     //@Transactional(readOnly = true)
@@ -84,6 +84,6 @@ public interface CommonDao {
 
     ProcedureVo getLongTermDate(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<String> getDownloadList();
 }

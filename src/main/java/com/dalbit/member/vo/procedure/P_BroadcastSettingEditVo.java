@@ -19,6 +19,7 @@ public class P_BroadcastSettingEditVo extends P_ApiVo {
     private Integer listenerIn;
     private Integer listenerOut;
     private Integer liveBadgeView;
+    private Integer listenOpen;
 
     public P_BroadcastSettingEditVo(){}
     public P_BroadcastSettingEditVo(BroadcastSettingEditVo broadcastSettingEditVo, HttpServletRequest request){
@@ -29,6 +30,7 @@ public class P_BroadcastSettingEditVo extends P_ApiVo {
         setListenerIn(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenerIn()) ? (("true".equals(broadcastSettingEditVo.getListenerIn().toLowerCase()) || "1".equals(broadcastSettingEditVo.getListenerIn())) ? 1: 0) : null);
         setListenerOut(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenerOut()) ? (("true".equals(broadcastSettingEditVo.getListenerOut().toLowerCase()) || "1".equals(broadcastSettingEditVo.getListenerOut())) ? 1: 0) : null);
         setLiveBadgeView(!DalbitUtil.isEmpty(broadcastSettingEditVo.getLiveBadgeView()) ? (("true".equals(broadcastSettingEditVo.getLiveBadgeView().toLowerCase()) || "1".equals(broadcastSettingEditVo.getLiveBadgeView())) ? 1: 0) : null);
+        setListenOpen(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenOpen()) ? (("true".equals(broadcastSettingEditVo.getListenOpen().toLowerCase()) || "1".equals(broadcastSettingEditVo.getListenOpen())) ? 1: 0) : null);
     }
 
 }

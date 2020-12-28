@@ -47,6 +47,10 @@ public class WowzaController {
     public String doJoin(@Valid RoomJoinVo roomJoinVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
+        if("A000000000".equals(roomJoinVo.getRoomNo())){ //일반회원 참여시 따라가기 비공개일 경우
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방조인따라가기비공개));
+        }
+
         HashMap result = wowzaService.doJoinBroadcast(roomJoinVo, request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }

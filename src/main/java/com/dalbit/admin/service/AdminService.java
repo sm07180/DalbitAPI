@@ -124,6 +124,17 @@ public class AdminService {
 
     }
 
+    public boolean isAdmin(HttpServletRequest request) {
+        String mem_no = MemberVo.getMyMemNo(request);
+        if (!DalbitUtil.isEmpty(mem_no)) {
+            SearchVo searchVo = new SearchVo();
+            searchVo.setMem_no(mem_no);
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            return !DalbitUtil.isEmpty(menuList);
+        }
+        return false;
+    }
+
     public String selectAdminMenu(HttpServletRequest request){
 
         var map = new HashMap<>();

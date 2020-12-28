@@ -73,6 +73,12 @@ public class ProfileInfoOutVo extends BaseVo {
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
+        setProfileInfoOutVo(target, target_mem_no, mem_no, fanRank, false);
+    }
+    public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank, boolean isAdmin) {
+        setProfileInfoOutVo(target, target_mem_no, mem_no, fanRank, isAdmin);
+    }
+    public void setProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank, boolean isAdmin) {
         this.memNo = target_mem_no;
         this.nickNm = target.getNickName();
         this.gender = target.getMemSex();
@@ -126,6 +132,6 @@ public class ProfileInfoOutVo extends BaseVo {
 
         this.specialDjCnt = target.getSpecialDjCnt();
         this.memState = target.getMemState();
-        this.listenRoomNo = target.getListenRoomNo();
+        this.listenRoomNo = DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin);
     }
 }

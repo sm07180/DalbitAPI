@@ -1,5 +1,6 @@
 package com.dalbit.member.service;
 
+import com.dalbit.admin.service.AdminService;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.BadgeService;
@@ -43,6 +44,8 @@ public class ProfileService {
     MemberService memberService;
     @Autowired
     BadgeService badgeService;
+    @Autowired
+    AdminService adminService;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -70,7 +73,7 @@ public class ProfileService {
             pFanRankVo.setMem_no(pProfileInfo.getTarget_mem_no());
             List fanRankList = memberService.fanRank3(pFanRankVo);
 
-            ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList);
+            ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList, adminService.isAdmin(request));
             badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1);
             profileInfoOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             profileInfoOutVo.setCommonBadgeList(badgeService.getCommonBadge());

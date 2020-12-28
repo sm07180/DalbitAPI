@@ -24,7 +24,7 @@ public interface ProfileDao {
     ProcedureVo callMemberLevelUpCheck(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardEdit(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_StarRankingVo> selectStarRanking(P_StarRankingVo procedureVo);
 
     //@Transactional(readOnly = true)
