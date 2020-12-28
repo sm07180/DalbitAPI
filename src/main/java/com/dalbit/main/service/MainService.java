@@ -846,6 +846,7 @@ public class MainService {
             mainTimeRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
             mainTimeRankingList.put("myBroadPoint", DalbitUtil.getIntMap(resultMap, "myBroadPoint"));
             mainTimeRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
+            mainTimeRankingList.put("myListenPoint", DalbitUtil.getIntMap(resultMap, "myListenPoint"));
             mainTimeRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
             mainTimeRankingList.put("prevDate", DalbitUtil.getStringMap(resultMap, "prevDate"));
             mainTimeRankingList.put("nextDate", DalbitUtil.getStringMap(resultMap, "nextDate"));
