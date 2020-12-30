@@ -1875,6 +1875,33 @@ public enum Status {
     메인_타임랭킹조회_성공("C001", "main.time.rank.select.success", "타임랭킹 조회 시"),
     메인_타임랭킹조회_요청회원_회원아님("-1", "main.time.rank.select.member.number.error", "요청회원번호 회원 아닐 시"),
     메인_타임랭킹조회_실패("C006", "main.time.rank.select.fail", "타임랭킹 조회 실패 시"),
+
+    //대화방 이미지조회
+    대화방_이미지조회_성공("C001", "mailbox.chatroom.image.select.success", "대화방 이미지조회 성공 시"),
+    대화방_이미지조회_회원아님("-1", "mailbox.chatroom.image.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화방_이미지조회_채팅번호없음("-2", "mailbox.chatroom.image.select.chat.number.error", "대화방번호 없을 시"),
+    대화방_이미지조회_이미지타입아님("-3", "mailbox.chatroom.image.select.type.error", "이미지 타입 아닐 시"),
+    대화방_이미지조회_삭제된이미지("-4", "mailbox.chatroom.image.select.already.delete", "이미 삭제된 이미지"),
+    대화방_이미지조회_실패("C006", "mailbox.chatroom.image.select.fail", "대화방 이미지조회 실패 시"),
+
+    //대화방 이미지 삭제
+    대화방_이미지삭제_성공("0", "mailbox.chatroom.image.delete.success", "대화방 이미지 삭제 성공 시"),
+    대화방_이미지삭제_회원아님("-1", "mailbox.chatroom.image.delete.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화방_이미지삭제_대화번호없음("-2", "mailbox.chatroom.image.delete.chat.number.error", "대화방번호 없을 시"),
+    대화방_이미지삭제_이미지타입아님("-3", "mailbox.chatroom.image.delete.type.error", "이미지 타입 아닐 시"),
+    대화방_이미지삭제_이미삭제됨("-4", "mailbox.chatroom.image.delete.already", "이미 삭제된 이미지"),
+    대화방_이미지삭제_본인이미지아님("-5", "mailbox.chatroom.image.delete.not.me", "본인이미지 아닐 시"),
+    대화방_이미지삭제_실패("C006", "mailbox.chatroom.image.delete.fail", "이미지 삭제 실패 시"),
+
+    //환전 취소하기
+    환전취소_성공("0", "exchange.cancel.success", "환전 취소 성공 시"),
+    환전취소_회원아님("-1", "exchange.cancel.member.number.error", "요청회원번호 회원 아닐 시"),
+    환전취소_환전번호없음("-2", "exchange.cancel.exchange.idx.error", "환전 신청 번호 없을 시"),
+    환전취소_미처리상태아님("-3", "exchange.cancel.state.error", "미처리 상태가 아닐 시"),
+    환전취소_취소불가시간("-4", "exchange.cancel.time.impossible", "취소 불가 시간일 경우"),
+    환전취소_대상불일지("-5", "exchange.cancel.member.error", "환전신청 대상 불일치일 경우"),
+    환전취소_이미취소됨("-6", "exchange.cancel.already", "이미 취소된 경우"),
+    환전취소_실패("C006", "exchange.cancel.fail", "환전 취소 실패 시"),
    ;
 
 

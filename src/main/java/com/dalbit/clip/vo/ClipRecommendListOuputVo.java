@@ -22,22 +22,28 @@ public class ClipRecommendListOuputVo {
         setSubjectName(target.getSubjectName());
         setTitle(target.getTitle());
         setMemNo(target.getMemNo());
-        setNickNm(target.getMemNick());
         setGender(target.getMemSex());
+        setNickNm(target.getMemNick());
         setIsLeader(target.getLeaderYn() == 0 ? false : true);
+        setByeolCnt(target.getByeolCnt());
+        setGoodCnt(target.getGoodCnt());
+        setReplyCnt(target.getReplyCnt());
     }
 
     private String clipNo;               //  클립번호
-    private ImageVo bgImg;            // 클립이미지
-    private String fileName;            // 파일이름
-//        private String filePath;            // 파일경로
-    private String filePlay;            // 재생시간
+    private ImageVo bgImg;               // 클립이미지
+    private String fileName;             // 파일이름
+    //    private String filePath;            // 파일경로
+    private String filePlay;             // 재생시간
     //    private String fileSize;            // 파일크기
-    private String subjectType;         // 주제
-    private String subjectName;         // 주제명
+    private String subjectType;          // 주제
+    private String subjectName;          // 주제명
     private String title;                // 클립제목
     private String memNo;                // 회원번호
-    private String nickNm;              // 닉네임
-    private String gender;              // 성별
-    private Boolean isLeader;           // 대표 여부 (0:일반 1:대표)
+    private String gender;               // 성별
+    private String nickNm;               // 닉네임
+    private Boolean isLeader;            // 대표 여부 (0:일반 1:대표)
+    private int byeolCnt;                // 받은 별 수
+    private int goodCnt;                 //  받은 좋아요 수
+    private int replyCnt;                //  받은 댓글 수
 }

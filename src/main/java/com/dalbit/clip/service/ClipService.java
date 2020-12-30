@@ -1207,22 +1207,33 @@ public class ClipService {
     public String callClipRecommendList(P_ClipRecommendListInputVo pClipRecommendListInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pClipRecommendListInputVo);
         List<P_ClipRecommendListOutputVo> listVo = clipDao.callClipRecommendList(procedureVo);
-
+        ProcedureVo procedureVo1 = new ProcedureVo();
+        List<P_ClipRecommendLeaderListVo> leaderListVo = clipDao.callClipRecommendLeaderList(procedureVo1);
         HashMap resultMap = new HashMap();
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > -1) {
             List<ClipRecommendListOuputVo> outVoList = new ArrayList<>();
+            List<ClipRecommendLeaderListVo> leaderList = new ArrayList<>();
             if(!DalbitUtil.isEmpty(listVo)) {
                 for(int i=0; i<listVo.size(); i++) {
                     outVoList.add(new ClipRecommendListOuputVo(listVo.get(i)));
                 }
             }
+            if(!DalbitUtil.isEmpty(leaderListVo) && Integer.parseInt(procedureVo1.getRet()) > 0) {
+                for(int i=0; i<leaderListVo.size(); i++) {
+                    leaderList.add(new ClipRecommendLeaderListVo(leaderListVo.get(i)));
+                }
+            }
 
             P_ClipRecommendInfoVo infoVo = new Gson().fromJson(procedureVo.getExt(), P_ClipRecommendInfoVo.class);
             ClipRecommendInfoVo recommendInfo = new ClipRecommendInfoVo(infoVo);
-
+            P_ClipRecommendLeaderExtVo minDateVo = new Gson().fromJson(procedureVo1.getExt(), P_ClipRecommendLeaderExtVo.class);
+            String minDate = minDateVo.getMinRecDate().replace(" 00:00:00", "");
+            Collections.reverse(leaderList);
             resultMap.put("recommendInfo", recommendInfo);
             resultMap.put("list", outVoList);
+            resultMap.put("leaderList", leaderList);
+            resultMap.put("minRecDate", minDate);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.달대리추천클립조회_성공, resultMap));
         } else if(procedureVo.getRet().equals(Status.달대리추천클립조회_회원아님.getMessageCode())){

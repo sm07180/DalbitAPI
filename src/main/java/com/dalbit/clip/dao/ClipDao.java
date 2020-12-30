@@ -74,4 +74,7 @@ public interface ClipDao {
     ProcedureVo callPlayConfirm(ProcedureVo procedureVo);
 
     List<P_ClipRecommendListOutputVo> callClipRecommendList(ProcedureVo procedureVo);
+
+    List<P_ClipRecommendLeaderListVo> callClipRecommendLeaderList(ProcedureVo procedureVo);
+
 }
