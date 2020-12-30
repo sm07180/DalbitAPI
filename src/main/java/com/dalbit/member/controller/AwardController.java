@@ -54,7 +54,7 @@ public class AwardController {
     /**
      * 어워드 투표결과
      */
-    @GetMapping("/vote/result")
+    @GetMapping("/result")
     public String awardVoteResult(@Valid AwardVoteResultVo awardVoteResultVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_AwardVoteResultVo apiData = new P_AwardVoteResultVo(awardVoteResultVo);
