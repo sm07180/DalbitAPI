@@ -1202,7 +1202,7 @@ public class ClipService {
     }
 
     /**
-     * 달대리 추천클립
+     * 주간 클립 테이블
      */
     public String callClipRecommendList(P_ClipRecommendListInputVo pClipRecommendListInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pClipRecommendListInputVo);

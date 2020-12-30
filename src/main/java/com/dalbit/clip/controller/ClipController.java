@@ -352,9 +352,8 @@ public class ClipController {
         return result;
     }
 
-
     /**
-     * 달대리 추천클립
+     * 주간 클립 테이블
      */
     @GetMapping("/recommend/list")
     public String clipRecommendList(@Valid ClipRecommendListInputVo clipRecommendListInputVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
