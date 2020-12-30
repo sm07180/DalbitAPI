@@ -76,6 +76,7 @@ public class RoomOutVo {
     private int oldStep;
     private int completeMoon;
     private int fullmoon_yn;
+    private List<Integer> goodMem = new ArrayList();
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -149,7 +150,16 @@ public class RoomOutVo {
             badgeVo.setEndColor(target.getFanBadgeEndColor());
             this.liveBadgeList.add(badgeVo);
         }
-        this.isGoodMem = target.getGoodMem() > 0 ? true : false;
+        if(target.getGoodMem() == 1){
+            this.goodMem.add(1);
+        }
+        if(target.getGoodMem2() == 1){
+            this.goodMem.add(2);
+        }
+        if(target.getGoodMem3() == 1){
+            this.goodMem.add(3);
+        }
+        this.isGoodMem = (target.getGoodMem() + target.getGoodMem2() + target.getGoodMem3()) > 0 ? true : false;
         this.isShining = target.isShining();
     }
 

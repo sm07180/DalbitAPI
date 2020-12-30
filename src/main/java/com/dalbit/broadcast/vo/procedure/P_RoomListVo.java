@@ -112,5 +112,7 @@ public class P_RoomListVo extends P_ApiVo {
 
     private int type_image;                 //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
     private int goodMem;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
+    private int goodMem2;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
+    private int goodMem3;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
     private boolean isShining = false;
 }
