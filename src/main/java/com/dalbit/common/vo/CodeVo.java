@@ -29,4 +29,12 @@ public class CodeVo {
         this.sortNo = sortNo;
         this.isUse = isUse;
     }
+
+    public CodeVo(String type, String value, String cdNm, int sortNo, int isUse){
+        this.cd = type;
+        this.value = value;
+        this.cdNm = cdNm;
+        this.sortNo = sortNo;
+        this.isUse = isUse;
+    }
 }

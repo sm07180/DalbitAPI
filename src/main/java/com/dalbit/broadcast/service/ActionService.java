@@ -721,45 +721,54 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pMoonCheckVo);
         actionDao.callMoonCheck(procedureVo);
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        HashMap returnMap = new HashMap();
-        returnMap.put("moonStep", DalbitUtil.getIntMap(resultMap, "step"));
-        returnMap.put("oldStep", DalbitUtil.getIntMap(resultMap, "oldStep"));
-        returnMap.put("broadcastTime", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
-        returnMap.put("totalCount", DalbitUtil.getIntMap(resultMap, "totalCount"));
-        returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
-        returnMap.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
-        returnMap.put("dlgTitle", DalbitUtil.getStringMap(resultMap, "dlgTitle"));
-        returnMap.put("dlgText", DalbitUtil.getStringMap(resultMap, "dlgText"));
-        returnMap.put("moonStepFileNm", "");
-        returnMap.put("moonStepAniFileNm", "");
-        returnMap.put("aniDuration", 0);
-        returnMap.put("fullmoon_yn", DalbitUtil.getIntMap(resultMap, "fullmoon_yn"));
+        String result ="";
+        if(procedureVo.getRet().equals(Status.슈퍼문_완성.getMessageCode()) || procedureVo.getRet().equals(Status.보름달_완성.getMessageCode()) || procedureVo.getRet().equals(Status.보름달_미완성.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("moonStep", DalbitUtil.getIntMap(resultMap, "step"));
+            returnMap.put("oldStep", DalbitUtil.getIntMap(resultMap, "oldStep"));
+            returnMap.put("broadcastTime", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
+            returnMap.put("totalCount", DalbitUtil.getIntMap(resultMap, "totalCount"));
+            returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
+            returnMap.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
+            returnMap.put("dlgTitle", DalbitUtil.getStringMap(resultMap, "dlgTitle"));
+            returnMap.put("dlgText", DalbitUtil.getStringMap(resultMap, "dlgText"));
+            returnMap.put("moonStepFileNm", "");
+            returnMap.put("moonStepAniFileNm", "");
+            returnMap.put("aniDuration", 0);
+            returnMap.put("fullmoon_yn", DalbitUtil.getIntMap(resultMap, "fullmoon_yn"));
 
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            returnMap.put("moonStepFileNm", codeVo.getValue());
-            returnMap.put("aniDuration", codeVo.getSortNo());
-            if(DalbitUtil.getIntMap(resultMap, "step") == 4){
-                var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), String.valueOf(returnMap.get("moonStep"))));
-                if(!DalbitUtil.isEmpty(aniCodeVo)) {
-                    returnMap.put("moonStepAniFileNm", aniCodeVo.getValue());
-                    returnMap.put("aniDuration", aniCodeVo.getSortNo());
+            var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
+            if (!DalbitUtil.isEmpty(codeVo)) {
+                returnMap.put("moonStepFileNm", codeVo.getValue());
+                returnMap.put("aniDuration", codeVo.getSortNo());
+                if (DalbitUtil.getIntMap(resultMap, "step") == 4) {
+                    String code = Code.보름달_애니메이션.getCode();
+                    String value = DalbitUtil.randomMoonAniValue();
+
+                    if(procedureVo.getRet().equals(Status.슈퍼문_완성.getMessageCode())){
+                        code = Code.슈퍼문_애니메이션.getCode();
+                        value = "1";
+                    }
+                    var aniCodeVo = commonService.selectCodeDefine(new CodeVo(code, value));
+                    if (!DalbitUtil.isEmpty(aniCodeVo)) {
+                        returnMap.put("moonStepAniFileNm", aniCodeVo.getValue());
+                        returnMap.put("aniDuration", aniCodeVo.getSortNo());
+                    }
                 }
             }
-        }
 
-        String result ="";
-        if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode()) || procedureVo.getRet().equals(Status.보름달_미완성.getMessageCode())) {
             //보름달 체크
-            if(DalbitUtil.getIntMap(resultMap, "fullmoon_yn") == 1 && DalbitUtil.getIntMap(resultMap, "step") != DalbitUtil.getIntMap(resultMap, "oldStep")) {
+            if (DalbitUtil.getIntMap(resultMap, "fullmoon_yn") == 1 && DalbitUtil.getIntMap(resultMap, "step") != DalbitUtil.getIntMap(resultMap, "oldStep")) {
                 String resultCode = moonCheckSocket(pMoonCheckVo.getRoom_no(), request, "server", returnMap);
-                if("error".equals(resultCode)){
+                if ("error".equals(resultCode)) {
                     log.error("보름달 체크 오류");
                 }
             }
             Status status = null;
             if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode())){
+                status = Status.슈퍼문_완성;
+            }else if(procedureVo.getRet().equals(Status.보름달_완성.getMessageCode())){
                 status = Status.보름달_완성;
             }else{
                 status = Status.보름달_미완성;
@@ -804,7 +813,14 @@ public class ActionService {
             returnMap.put("moonStepFileNm", codeVo.getValue());
             returnMap.put("aniDuration", codeVo.getSortNo());
             if(DalbitUtil.getIntMap(resultMap, "step") == 4){
-                var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), String.valueOf(returnMap.get("moonStep"))));
+                String code = Code.보름달_애니메이션.getCode();
+                String value = DalbitUtil.randomMoonAniValue();
+
+                if(procedureVo.getRet().equals(Status.슈퍼문_완성.getMessageCode())){
+                    code = Code.슈퍼문_애니메이션.getCode();
+                    value = "1";
+                }
+                var aniCodeVo = commonService.selectCodeDefine(new CodeVo(code, value));
                 if(!DalbitUtil.isEmpty(aniCodeVo)) {
                     returnMap.put("moonStepAniFileNm", aniCodeVo.getValue());
                     returnMap.put("aniDuration", aniCodeVo.getSortNo());
