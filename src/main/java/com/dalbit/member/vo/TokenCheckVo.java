@@ -32,4 +32,5 @@ public class TokenCheckVo {
     private String location;
     private String ip;
     private Date last_upd_date;
+    private int isAdmin;
 }

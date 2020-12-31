@@ -527,6 +527,9 @@ public class EventService {
         }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_동일기기중복불가.getMessageCode())){
             return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_동일기기중복불가));
 
+        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_동일아이피중복불가.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_동일아이피중복불가));
+
         }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_성공.getMessageCode())){
 
             var returnMap = attendanceResultMap(procedureVo, dateList);
