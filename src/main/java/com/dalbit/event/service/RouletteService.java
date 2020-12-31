@@ -6,7 +6,9 @@ import com.dalbit.event.dao.RouletteDao;
 import com.dalbit.event.vo.RouletteApplyListOutVo;
 import com.dalbit.event.vo.RouletteWinListOutVo;
 import com.dalbit.event.vo.procedure.*;
+import com.dalbit.event.vo.request.RouletteCouponHistVo;
 import com.dalbit.event.vo.request.RouletteInfoVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -15,6 +17,7 @@ import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -191,5 +194,24 @@ public class RouletteService {
         resultMap.put("itemList", itemList);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
+
+    public String callCouponHistory(HttpServletRequest request, P_RouletteCouponVo pRouletteCouponVo){
+        pRouletteCouponVo.setMem_no(MemberVo.getMyMemNo(request));
+        ProcedureVo procedureVo = new ProcedureVo(pRouletteCouponVo);
+        List<RouletteCouponHistVo> rouletteCouponList = rouletteDao.callCouponHistory(procedureVo);
+        if(DalbitUtil.isEmpty(rouletteCouponList)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
+
+        rouletteCouponList.parallelStream().forEach(couponHistVo -> {
+            if(!DalbitUtil.isEmpty(couponHistVo.getMem_nick()) && !couponHistVo.getMem_nick().equals("탈퇴회원")){
+                couponHistVo.setProfile_image_info(new ImageVo(couponHistVo.getImage_profile(), couponHistVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+            }
+        });
+
+        HashMap map = new HashMap();
+        map.put("list", rouletteCouponList);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
     }
 }

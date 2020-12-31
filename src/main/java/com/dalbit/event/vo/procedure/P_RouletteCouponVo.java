@@ -16,4 +16,6 @@ public class P_RouletteCouponVo extends P_ApiVo {
     }
 
     private String mem_no;
+    private String pageNo;
+    private String pageCnt;
 }

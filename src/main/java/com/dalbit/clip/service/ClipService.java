@@ -458,6 +458,8 @@ public class ClipService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_선물하기_아이템코드없음));
         }else if(Status.클립_선물하기_달부족.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_선물하기_달부족));
+        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_선물하기_실패));
         }

@@ -18,6 +18,7 @@ public enum Status {
     데이터없음("0", "no.data", "데이터가 없을 시"),
     로그인필요_성공("-98", "need.login.success", "로그인 필요 시"),
     로그인필요("-99", "need.login", "로그인 필요 시"),
+    이전작업대기중("-97", "ready.to.prev.process", "동일작업 중복 호출"),
 
     //차단관련 운영메시지
     차단_이용제한("0", "block.member.restriction", "운영자에 의해 차단되어 이용제한 시"),
@@ -1902,6 +1903,28 @@ public enum Status {
     환전취소_대상불일지("-5", "exchange.cancel.member.error", "환전신청 대상 불일치일 경우"),
     환전취소_이미취소됨("-6", "exchange.cancel.already", "이미 취소된 경우"),
     환전취소_실패("C006", "exchange.cancel.fail", "환전 취소 실패 시"),
+
+    //플레이리스트 폴더 조회
+    폴더조회_성공("C001", "folder.list.select.success", "폴더 조회 성공 시"),
+    폴더조회_실패("C006", "folder.list.select.fail", "폴더 조회 실패 시"),
+
+    //플레이리스트 폴더 추가
+    폴더추가_성공("0", "folder.add.success", "폴더 추가 성공 시"),
+    폴더추가_회원아님("-1", "folder.add.member.number.error", "요청회원번호 회원 아닐 시"),
+    폴더추가_10개초과("-2", "folder.add.10.limit", "폴더 10개 초과 시"),
+    폴더추가_실패("C006", "folder.add.fail", "폴더 추가 실패 시"),
+
+    //플레이리스트 폴더 삭제
+    폴더삭제_성공("0", "folder.delete.success", "폴더 삭제 성공 시"),
+    폴더삭제_회원아님("-1", "folder.delete.member.number.error", "요청회원번호 회원 아닐 시"),
+    폴더삭제_없음("-2", "folder.delete.no", "폴더가 없을 경우"),
+    폴더삭제_실패("C006", "folder.delete.fail", "폴더 삭제 실패 시"),
+
+    //플레이리스트 폴더 수정
+    폴더수정_성공("0", "folder.edit.success", "폴더 수정 성공 시"),
+    폴더수정_회원아님("-1", "folder.edit.member.number.error", "요청회원번호 회원 아닐 시"),
+    폴더수정_본인아님("-2", "folder.edit.not.me", "본인 폴더가 아닐 시"),
+    폴더수정_실패("C006", "folder.edit.fail", "폴더 수정 실패 시"),
    ;
 
 

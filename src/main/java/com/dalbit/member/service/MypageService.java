@@ -611,6 +611,8 @@ public class MypageService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_달개수_비정상));
         }else if(procedureVo.getRet().equals(Status.달선물_달개수_부족.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_달개수_부족));
+        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.달선물_실패));
         }
@@ -1386,6 +1388,8 @@ public class MypageService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_상품코드없음));
         } else if (procedureVo.getRet().equals(Status.별_달_교환하기_별부족.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_별부족));
+        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.별_달_교환하기_실패));
         }

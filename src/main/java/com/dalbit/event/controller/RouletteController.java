@@ -88,4 +88,9 @@ public class RouletteController {
     public String rouletteInfo(HttpServletRequest request, RouletteInfoVo rouletteInfoVo){
         return rouletteService.selectRouletteInfo(rouletteInfoVo);
     }
+
+    @PostMapping("/coupon/history")
+    public String couponHistory(HttpServletRequest request, P_RouletteCouponVo pRouletteCouponVo){
+        return rouletteService.callCouponHistory(request, pRouletteCouponVo);
+    }
 }

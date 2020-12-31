@@ -37,4 +37,8 @@
         where `set` = (select `set` from rd_data.tbl_roulette_rate rate limit 1)
         order by item_no asc
     </select>
+
+    <select id="callCouponHistory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.request.RouletteCouponHistVo">
+        call sp_event_coupon_member_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

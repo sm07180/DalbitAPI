@@ -318,6 +318,8 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_별부족));
         } else if(procedureVo.getRet().equals(Status.환전신청_신청제한.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_신청제한));
+        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청실패));
         }

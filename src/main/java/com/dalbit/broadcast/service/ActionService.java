@@ -356,6 +356,8 @@ public class ActionService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_아이템번호없음));
         }else if(Status.선물하기_달부족.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_달부족));
+        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.선물하기_실패));
         }
@@ -491,6 +493,8 @@ public class ActionService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_사용불가능아이템번호));
         }else if(Status.부스터_달부족.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_달부족));
+        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.부스터_실패));
         }
