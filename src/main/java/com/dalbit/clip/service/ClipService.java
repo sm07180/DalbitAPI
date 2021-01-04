@@ -536,32 +536,31 @@ public class ClipService {
 
         HashMap clipGiftRankList = new HashMap();
         if(DalbitUtil.isEmpty(clipGiftRankListVo)){
-            ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             clipGiftRankList.put("list", new ArrayList<>());
             clipGiftRankList.put("giftCnt", 0);
             clipGiftRankList.put("byeolCnt", 0);
-            clipGiftRankList.put("totalCnt", Integer.parseInt(procedureOutputVo.getExt()));
+            clipGiftRankList.put("totalCnt", Integer.valueOf(procedureVo.getRet()));
             DeviceVo deviceVo = new DeviceVo(request);
             if(deviceVo.getOs() == 2){
-                clipGiftRankList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
+                clipGiftRankList.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
             }else{
                 clipGiftRankList.put("paging", new PagingVo(0, pClipGiftRankListVo.getPageNo(), pClipGiftRankListVo.getPageCnt()));
             }
             return gsonUtil.toJson(new JsonOutputVo(Status.클립_선물랭킹_조회_없음, clipGiftRankList));
         }
+
         List<ClipGiftRankListOutVo> outVoList = new ArrayList<>();
         for (int i=0; i<clipGiftRankListVo.size(); i++){
             outVoList.add(new ClipGiftRankListOutVo(clipGiftRankListVo.get(i)));
         }
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        clipGiftRankList.put("list", procedureOutputVo.getOutputBox());
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+        clipGiftRankList.put("list", outVoList);
         clipGiftRankList.put("giftCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
         clipGiftRankList.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
         clipGiftRankList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_선물랭킹_조회_성공, clipGiftRankList));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_선물랭킹_조회_실패));
