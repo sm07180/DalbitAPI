@@ -14,7 +14,7 @@ public class ClipRecommendInfoVo {
     public ClipRecommendInfoVo() {}
 
     public ClipRecommendInfoVo(P_ClipRecommendInfoVo target) {
-        setRecDate(target.getRecDate());
+        setRecDate(target.getRecDate().replace(" 00:00:00", ""));
         setClipNo(target.getCastNo());
         setClipMemNo(target.getCastMemNo());
         setRegCnt(target.getRegCnt());
