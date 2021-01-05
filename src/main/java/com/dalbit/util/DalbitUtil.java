@@ -122,6 +122,11 @@ public class DalbitUtil {
      * @return
      */
     public static boolean isEmpty(List list){
+
+        if(null == list){
+            return true;
+        }
+
         if(list != null && list.size() != 0){
             return false;
         }

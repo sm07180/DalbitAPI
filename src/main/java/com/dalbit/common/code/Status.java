@@ -1925,6 +1925,30 @@ public enum Status {
     폴더수정_회원아님("-1", "folder.edit.member.number.error", "요청회원번호 회원 아닐 시"),
     폴더수정_본인아님("-2", "folder.edit.not.me", "본인 폴더가 아닐 시"),
     폴더수정_실패("C006", "folder.edit.fail", "폴더 수정 실패 시"),
+
+    //랭킹반영설정
+    랭킹반영("0", "rank.setting.on.success", "랭킹 반영 시"),
+    랭킹미반영("0", "rank.setting.off.success", "랭킹 미반영 시"),
+    랭킹반영설정_회원아님("-1", "rank.setting.member.number.error", "요청회원번호 회원 아닐 시"),
+    랭킹반영설정_실패("C006", "rank.setting.fail", "랭킹 설정 실패 시"),
+
+    //마이 플레이리스트 조회
+    플레이리스트_조회_성공("0", "my.playlist.select.success", "플레이리스트 조회 시"),
+    플레이리스트_조회_실패("C006", "my.playlist.select.fail", "플레이리스트 조회 실패 시"),
+
+    //마이 플레이리스트 추가
+    플레이리스트_추가_성공("0", "my.playlist.add.success", "플레이리스트 추가 시"),
+    플레이리스트_추가_회원아님("-1", "my.playlist.add.member.number.error", "요청회원번호 회원 아닐 시"),
+    플레이리스트_추가_클립없음("-2", "my.playlist.add.clip.no", "클립이 없을 시"),
+    플레이리스트_추가_100개초과("-3", "my.playlist.add.100.limit", "100개 초과 시"),
+    플레이리스트_추가_중복("-4", "my.playlist.add.duplicate", "폴더 내 동일한 클립 존재 시"),
+    플레이리스트_추가_폴더없음("-5", "my.playlist.add.not.folder", "폴더가 없을 시"),
+    플레이리스트_추가_실패("C006", "my.playlist.add.fail", "플레이리스트 추가 실패 시"),
+
+    //마이 플레이리스트 편집
+    플레이리스트_수정_성공("0", "my.playlist.edit.success", "플레이리스트 수정 시"),
+    플레이리스트_수정_회원아님("-1", "my.playlist.edit.member.number.error", "요청회원번호 회원 아닐 시"),
+    플레이리스트_수정_실패("C006", "my.playlist.edit.fail", "플레이리스트 수정 실패 시"),
    ;
 
 

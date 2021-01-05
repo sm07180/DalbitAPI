@@ -74,4 +74,6 @@ public interface MemberDao {
     List<RandomMsgVo> getBehaviorRandomMsgList(ProcedureVo procedureVo);
 
     List<P_SpecialPointListVo> getSpecialPointList(ProcedureVo procedureVo);
+
+    ProcedureVo callRankSetting(ProcedureVo procedureVo);
 }

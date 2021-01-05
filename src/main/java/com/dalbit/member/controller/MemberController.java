@@ -407,4 +407,16 @@ public class MemberController {
         String result = memberService.getSpecialPointList(apiData);
         return result;
     }
+
+
+    /**
+     * 랭킹데이터 반영 ON/OFF
+     */
+    @PostMapping("/member/rank/setting")
+    public String rankSetting(@Valid MemberRankSettingVo memberRankSettingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MemberRankSettingVo apiData = new P_MemberRankSettingVo(memberRankSettingVo, request);
+        String result = memberService.callRankSetting(apiData);
+        return result;
+    }
 }

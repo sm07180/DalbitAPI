@@ -589,6 +589,7 @@ public class MainService {
             time = sdf.format(today.getTime()) + " 업데이트";
         }
         mainRankingList.put("time",time);*/
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
 
         if(DalbitUtil.isEmpty(mainRankingPageVoList)){
             mainRankingList.put("isReward", 0);
@@ -599,6 +600,7 @@ public class MainService {
             mainRankingList.put("myListenPoint", 0);
             mainRankingList.put("myUpDown", "");
             mainRankingList.put("list", new ArrayList<>());
+            mainRankingList.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1 ? true : false);
             return gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_내역없음, mainRankingList));
         }
 
@@ -608,8 +610,6 @@ public class MainService {
             outVoList.add(new MainRankingPageOutVo(mainRankingPageVoList.get(i), isAdmin));
         }
 
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         if(pMainRankingPageVo.getSlct_type() == 2){
             Calendar calendar = Calendar.getInstance();
             String date = pMainRankingPageVo.getRankingDate();
@@ -645,6 +645,7 @@ public class MainService {
         mainRankingList.put("myDjMemNo", DalbitUtil.getStringMap(resultMap, "myDj"));
         mainRankingList.put("myDjNickNm", DalbitUtil.getStringMap(resultMap, "myDjNickName"));
         mainRankingList.put("myDjGoodPoint", DalbitUtil.getIntMap(resultMap, "myDjGoodPoint"));
+        mainRankingList.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1 ? true : false);
 
         List<FanBadgeVo> liveBadgeList = new ArrayList<>();
         if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
@@ -657,11 +658,11 @@ public class MainService {
         }
         mainRankingList.put("myLiveBadgeList", liveBadgeList);
 
-        mainRankingList.put("list", procedureOutputVo.getOutputBox());
+        mainRankingList.put("list", outVoList);
         mainRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+        if(Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_성공, mainRankingList));
         } else if (procedureVo.getRet().equals(Status.메인_랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_요청회원_회원아님));
@@ -850,6 +851,7 @@ public class MainService {
             mainTimeRankingList.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
             mainTimeRankingList.put("prevDate", DalbitUtil.getStringMap(resultMap, "prevDate"));
             mainTimeRankingList.put("nextDate", DalbitUtil.getStringMap(resultMap, "nextDate"));
+            mainTimeRankingList.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1 ? true : false);
 
             List<FanBadgeVo> liveBadgeList = new ArrayList<>();
             if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){
