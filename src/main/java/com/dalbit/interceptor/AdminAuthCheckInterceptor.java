@@ -5,6 +5,7 @@ import com.dalbit.admin.vo.AdminMenuVo;
 import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -48,23 +49,6 @@ public class AdminAuthCheckInterceptor extends HandlerInterceptorAdapter {
             }
         }
 
-        log.info("========================== Start Request uri = " + request.getRequestURI());
-      /*  for(Enumeration<String> itertor = (Enumeration<String>)request.getParameterNames(); itertor.hasMoreElements();){
-            String key = itertor.nextElement();
-            String[] values = request.getParameterValues(key);
-            if (values != null && values.length > 0){
-                if(values.length == 1){
-                    log.info("========================================= " + request.getRequestURI() + " " + key + " = |" + values[0] + "|");
-                }else{
-                    for(int i = 0; i < values.length; i++){
-                        log.info("========================================= " + request.getRequestURI() + " " + key + "." + i + " = |" + values[i] + "|");
-                    }
-                }
-            }
-        }*/
-        log.info("========================== " + request.getRequestURI() + " HEADER authToken : " + request.getHeader("authToken"));
-        log.info("========================== End Request uri = " + request.getRequestURI());
-
         String authToken = request.getHeader(DalbitUtil.getProperty("sso.header.cookie.name"));
         if(jwtUtil.validateToken(authToken)){
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
@@ -72,7 +56,8 @@ public class AdminAuthCheckInterceptor extends HandlerInterceptorAdapter {
 
             var searchVo = new SearchVo();
             searchVo.setMem_no(tokenVo.getMemNo());
-            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            ProcedureVo procedureVo = new ProcedureVo(searchVo);
+            ArrayList<AdminMenuVo> menuList = adminDao.callMobileAdminMenuAuth(procedureVo);
             if(DalbitUtil.isEmpty(menuList)){
                 responseJson(response, gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음)));
                 return false;
