@@ -38,4 +38,5 @@ public class P_WalletListVo extends P_ApiVo {
     private int useDal;
     private Date updateDate;
     private int type;
+    private int cancelIdx;
 }

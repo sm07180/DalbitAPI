@@ -504,4 +504,9 @@
     <select id="selectIsSpecial" parameterType="String" resultType="Integer">
         SELECT specialdj_badge FROM tb_member_profile WHERE mem_no = #{value};
     </select>
+
+    <select id="callExchangeCancel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_wallet_exchange_cancel(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

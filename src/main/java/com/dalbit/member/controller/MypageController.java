@@ -15,6 +15,7 @@ import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.internal.connection.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -946,6 +947,17 @@ public class MypageController {
         P_WalletListVo apiData = new P_WalletListVo(walletListVo, request);
 
         String result = mypageService.callWalletList(apiData);
+        return result;
+    }
+
+    /**
+     * 환전 취소하기
+     */
+    @PostMapping("/exchange/cancel")
+    public String exchangeCancel(@Valid ExchangeCancelVo exchangeCancelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ExchangeCancelVo apiData = new P_ExchangeCancelVo(exchangeCancelVo, request);
+        String result = mypageService.callExchangeCancel(apiData);
         return result;
     }
 }

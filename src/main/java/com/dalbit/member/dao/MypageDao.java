@@ -204,4 +204,6 @@ public interface MypageDao {
 
     //@Transactional(readOnly = true)
     Integer selectIsSpecial(String mem_no);
+
+    ProcedureVo callExchangeCancel(ProcedureVo procedureVo);
 }

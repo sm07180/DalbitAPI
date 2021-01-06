@@ -14,6 +14,7 @@ public class WalletListOutVo {
     private int dalCnt;
     private String updateDt;
     private Long updateTs;
+    private int exchangeIdx;
 
     public WalletListOutVo(P_WalletListVo pWalletListVo){
         setType(pWalletListVo.getType());
@@ -22,5 +23,6 @@ public class WalletListOutVo {
         setDalCnt(pWalletListVo.getUseDal());
         setUpdateDt(DalbitUtil.getUTCFormat(pWalletListVo.getUpdateDate()));
         setUpdateTs(DalbitUtil.getUTCTimeStamp(pWalletListVo.getUpdateDate()));
+        setExchangeIdx(pWalletListVo.getCancelIdx());
     }
 }

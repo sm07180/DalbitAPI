@@ -2539,4 +2539,32 @@ public class MypageService {
         }
         return result;
     }
+
+    /**
+     * 환전 취소하기
+     */
+    public String callExchangeCancel(P_ExchangeCancelVo pExchangeCancelVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pExchangeCancelVo);
+        mypageDao.callExchangeCancel(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.환전취소_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_성공));
+        }else if(procedureVo.getRet().equals(Status.환전취소_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_회원아님));
+        }else if(procedureVo.getRet().equals(Status.환전취소_환전번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_환전번호없음));
+        }else if(procedureVo.getRet().equals(Status.환전취소_미처리상태아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_미처리상태아님));
+        }else if(procedureVo.getRet().equals(Status.환전취소_취소불가시간.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_취소불가시간));
+        }else if(procedureVo.getRet().equals(Status.환전취소_대상불일지.getMessageCode())) {
+           result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_대상불일지));
+        }else if(procedureVo.getRet().equals(Status.환전취소_이미취소됨.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_이미취소됨));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.환전취소_실패));
+        }
+        return result;
+    }
 }
