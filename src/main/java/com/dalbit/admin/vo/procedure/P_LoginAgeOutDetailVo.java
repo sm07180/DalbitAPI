@@ -18,6 +18,7 @@ public class P_LoginAgeOutDetailVo extends P_ApiVo {
     private int hour;
 
     private int totalCnt;
+    private int age00Cnt;
     private int age10Cnt;
     private int age20Cnt;
     private int age30Cnt;

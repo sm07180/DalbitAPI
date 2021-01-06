@@ -15,6 +15,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.TokenVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.*;
@@ -94,12 +95,23 @@ public class AdminService {
     @Value("${wowza.prefix}")
     private String WOWZA_PREFIX;
 
+    @Value("${sso.header.cookie.name}")
+    private String SSO_HEADER_COOKIE_NAME;
+
     private String PROFILE_DEFAULT_IMAGE = "/profile_3/profile_n_200327.jpg";
 
     public String authCheck(HttpServletRequest request, SearchVo searchVo) throws GlobalException {
+        String headerToken = request.getHeader(SSO_HEADER_COOKIE_NAME);
+        TokenVo tokenVo = null;
+        try {
+            tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
+        }catch(Exception e){}
 
         var resultMap = new HashMap();
-
+        if(tokenVo != null && tokenVo.isAdmin()){
+            resultMap.put("isAdmin", true);
+            return gsonUtil.toJson(new JsonOutputVo(Status.관리자로그인성공, resultMap));
+        }
         try{
             String mem_no = MemberVo.getMyMemNo(request);
             if(DalbitUtil.isEmpty(mem_no)){
@@ -108,7 +120,8 @@ public class AdminService {
             }
 
             searchVo.setMem_no(mem_no);
-            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+            ProcedureVo procedureVo = new ProcedureVo(searchVo);
+            ArrayList<AdminMenuVo> menuList = adminDao.callMobileAdminMenuAuth(procedureVo);
             if (DalbitUtil.isEmpty(menuList)) {
                 resultMap.put("isAdmin", false);
                 return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음, resultMap));

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.admin.dao.AdminMemberDao" >
+
+    <select id="callMemberDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="java.util.HashMap">
+        call rd_admin.sp_m_admin_member_info(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastRoomList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="java.util.HashMap">
+        call rd_admin.sp_m_admin_broadcast_room_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="java.util.HashMap">
+        call rd_admin.sp_admin_clip_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callQuestionList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="java.util.HashMap">
+        call rd_admin.sp_m_admin_service_center_qna_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+</mapper>

@@ -24,6 +24,7 @@ public class P_NewBroadcastTimeOutVo extends P_ApiVo {
     private int listener_totalCnt;
     private int listener_max_Cnt;
     private int unique_listener_Cnt;
+    private int total_guest_totalCnt;
     private int airtime;
     private int gift_Cnt;
     private int gift_Amt;

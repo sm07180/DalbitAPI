@@ -1,0 +1,778 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.admin.dao.AdminDao" >
+
+    <select id="selectMobileAdminMenuAuth" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.AdminMenuVo">
+        /* Admin.xml - selectMobileAdminMenuAuth */
+        select menu.idx
+            , menu.menu_name
+            , menu.menu_url
+            , menu.depth
+            , menu.order_no
+            , menu.parent_idx
+            , auth.is_read
+            , auth.is_insert
+            , auth.is_delete
+        from rd_admin.tb_admin_test_account test
+            , rd_admin.tb_admin_menu_auth auth
+            , rd_admin.tb_admin_menu menu
+        where test.emp_no = auth.emp_no
+            and auth.menu_idx = menu.idx
+            and mem_no = #{mem_no}
+            and menu.is_use = 1
+            and menu.mobile_yn = 'Y'
+        order by menu.order_no asc
+    </select>
+
+    <select id="selectBroadcastList" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.BroadcastVo">
+        /* Admin.xml - selectBroadcastList */
+        select *
+        from(
+            select
+                room.room_no as room_no
+                , room.image_background as image_background
+                , room.mem_no as mem_no
+                , room.start_date as start_date
+                , basic.mem_nick as mem_nick
+                , basic.mem_userid as mem_userid
+                , (select `code` from rd_data.tbl_code_define where type = 'subject_type' and value = room.subject_type) as subject_name
+                , room.title as title
+                , (select count(*) from rd_data.tb_broadcast_room_member where room_no = room.room_no and state = 0 and auth <![CDATA[!=]]> 3) as liveListener
+                , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = room.mem_no) as reportedCnt
+                , room.state as state
+            from rd_data.tb_broadcast_room room
+                , rd_data.tb_member_basic basic
+            where room.mem_no = basic.mem_no
+                and room.state <![CDATA[<>]]> 4
+        ) list
+        <where>
+            <if test='reportYn == "Y"'>
+                 0 <![CDATA[<]]> reportedCnt
+            </if>
+            <if test='searchText != null and searchText != ""'>
+                and (
+                room_no like concat('%', #{searchText}, '%')
+                or title like concat('%', #{searchText}, '%')
+                or mem_no like concat('%', #{searchText}, '%')
+                or mem_nick like concat('%', #{searchText}, '%')
+                or mem_userid like concat('%', #{searchText}, '%')
+                )
+            </if>
+        </where>
+        order by list.state asc, list.start_date desc
+        limit #{searchStart}, #{searchEnd}
+    </select>
+
+    <select id="callBroadcastRoomExit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callBroadcastRoomExit */
+        call rd_data.sp_broadcast_room_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <update id="updateBroadcastMemberExit" parameterType="com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo">
+        /* Admin.xml - updateBroadcastMemberExit */
+        update rd_data.tb_broadcast_room_member
+		   set state = 1,
+			   last_upd_date = now()
+        where  room_no = #{room_no} and state = 0
+    </update>
+
+    <update id="updateBroadcastExit" parameterType="com.dalbit.admin.vo.BroadcastExitVo">
+        /* Admin.xml - updateBroadcastExit */
+        update rd_data.tb_broadcast_room
+           set state= 4,
+               end_date = now(),
+               airtime = TIMESTAMPDIFF( second, #{start_date}, NOW()),
+               last_upd_date = now()
+         where room_no = #{room_no}
+    </update>
+
+    <select id="selectProfileList" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.ProfileVo">
+        /* Admin.xml - selectProfileList */
+        select *
+        from (
+            select
+                session.last_upd_date as last_upd_date
+                , session.mem_no as mem_no
+                , profile.image_profile as image_profile
+                , basic.mem_nick as mem_nick
+                , basic.mem_userid as mem_userid
+                , basic.mem_join_date as mem_join_date
+                , basic.mem_phone as mem_phone
+                , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
+                from rd_data.tb_member_basic basic
+                inner join rd_data.tb_member_profile profile on basic.mem_no = profile.mem_no
+                inner join (select mem_no, max(last_upd_date) last_upd_date
+                                from rd_data.tb_member_session
+                                group by mem_no
+                                order by max(last_upd_date) desc) session on basic.mem_no = session.mem_no
+                where session.mem_no is not null
+        ) list
+        <where>
+            <if test='reportYn == "Y"'>
+                0 <![CDATA[<]]> reportedCnt
+            </if>
+            <if test='searchText != null and searchText != ""'>
+              and (
+                mem_userid like concat('%', #{searchText}, '%')
+                or mem_nick like concat('%', #{searchText}, '%')
+                or mem_no like concat('%', #{searchText}, '%')
+                or mem_phone like concat('%', #{searchText}, '%')
+                )
+            </if>
+        </where>
+        order by list.last_upd_date desc
+        limit #{searchStart}, #{searchEnd}
+    </select>
+
+    <update id="proImageInit" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - proImageInit */
+        update rd_data.tb_member_profile
+           set image_profile = #{reset_image_profile}
+         where mem_no = #{mem_no}
+    </update>
+
+    <insert id="insertProfileHistory" parameterType="com.dalbit.admin.vo.ProImageInitVo">
+        /* Admin.xml - insertProfileHistory */
+        insert into
+          rd_data.tb_member_profile_edit_history (mem_no, edit_contents, op_name, last_upd_date, type)
+        values
+          (#{mem_no}, #{edit_contents}, #{op_name}, current_timestamp(), #{type})
+    </insert>
+
+    <update id="broImageInit" parameterType="com.dalbit.admin.vo.BroImageInitVo">
+        /* Admin.xml - broImageInit */
+        update rd_data.tb_broadcast_room
+           set image_background= #{reset_image_background}
+         where room_no = #{room_no}
+    </update>
+
+    <insert id="insertBroadHistory" parameterType="com.dalbit.admin.vo.BroImageInitVo">
+        /* Admin.xml - insertBroadHistory */
+        insert into
+          rd_data.tb_broadcast_room_edit_history (room_no, edit_contents, op_name, last_upd_date)
+        values
+          (#{room_no}, #{edit_contents}, #{op_name}, current_timestamp())
+    </insert>
+
+    <update id="nickTextInit" parameterType="com.dalbit.admin.vo.NickTextInitVo">
+        /* Admin.xml - nickTextInit */
+        update rd_data.tb_member_basic
+          set mem_nick = #{mem_userid}
+        where mem_no = #{mem_no}
+    </update>
+
+    <update id="broTitleTextInit" parameterType="com.dalbit.admin.vo.BroTitleTextInitVo">
+        /* Admin.xml - broTitleTextInit */
+        update rd_data.tb_broadcast_room
+          set title = #{reset_title}
+        where room_no = #{room_no}
+    </update>
+
+    <insert id="insertNotiHistory" parameterType="com.dalbit.admin.vo.NotiInsertVo">
+        /* Admin.xml - insertNotiHistory */
+        insert into
+          rd_data.tb_member_notification( mem_no, type_noti, contents, memo  )
+        values
+          ( #{mem_no}, #{slctType}, #{notiContents}, #{notiMemo})
+    </insert>
+
+    <insert id="declarationOperate" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        /* Admin.xml - declarationOperate */
+        insert into rd_data.tb_member_report(
+            mem_no
+            , mem_userid
+            , mem_nick
+            , mem_phone
+            , mem_level
+            , mem_grade
+            , reported_mem_no
+            , reported_userid
+            , reported_nick
+            , reported_phone
+            , reported_level
+            , reported_grade
+            , room_no
+            , reason
+            , etc
+            , status
+            , op_code
+            , op_msg
+            , platform
+            , browser
+            , ip
+            , op_name
+            , op_date
+            , reg_date
+        )value(
+            #{mem_no}
+            , #{mem_userid}
+            , #{mem_nick}
+            , null
+            , 1
+            , null
+            , #{reported_mem_no}
+            , #{reported_userid}
+            , #{reported_nick}
+            , #{reported_phone}
+            , #{reported_level}
+            , #{reported_grade}
+            , null
+            , 1
+            , #{etc, jdbcType=VARCHAR}
+            , #{status}
+            , #{opCode}
+            , #{notiMemo}
+            , 'Mobile'
+            , #{browser}
+            , #{ip}
+            , #{opName}
+            , now()
+            , now()
+        )
+     </insert>
+
+    <select id="getMemberInfo" parameterType="String" resultType="com.dalbit.admin.vo.MemberInfoVo">
+        /* Admin.xml - getMemberInfo */
+        select
+              b.mem_no
+              , b.mem_userid
+              , b.mem_nick
+              , b.mem_phone
+              , b.mem_state
+              , l.level
+              , l.grade
+              , p.image_profile
+          from rd_data.tb_member_basic b
+            , rd_data.tb_member_level l
+            , rd_data.tb_member_profile p
+            where b.mem_no = l.mem_no
+              and b.mem_no = p.mem_no
+              and b.mem_no = #{mem_no}
+    </select>
+
+    <select id="getBroadInfo" parameterType="String" resultType="com.dalbit.admin.vo.BroadInfoVo">
+        /* Admin.xml - getBroadInfo */
+        select
+          room_no
+          , subject_type
+          , title
+          , msg_welcom
+          , image_background
+          , grade_background
+        from rd_data.tb_broadcast_room
+        where room_no = #{room_no}
+    </select>
+
+    <select id="selectBroadcastSimpleInfo" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.BroadcastDetailVo">
+        /* Admin.xml - selectBroadcastSimpleInfo */
+        SELECT
+            a.title
+            , date_format(a.start_date, '%Y.%m.%d %H:%i:%S') AS srtDt
+            , date_format(a.expected_end_date, '%Y.%m.%d %H:%i:%S') AS expectedEndDt
+            , a.os_type AS osType
+            , a.image_background AS roomBgImg
+            , b.bj_streamid AS bjStreamId
+            , c.mem_nick AS nickNm
+            , c.mem_sex AS gender
+            , d.image_profile AS profImg
+            , (select count(*) from rd_data.tb_broadcast_room_member where room_no = a.room_no and state = 0 and auth != 3) AS entryCnt
+            , (a.count_good + rd_data.fn_get_point_used_item(a.room_no, 'U1447')) AS linkCnt
+            , (select ifnull(sum(ifnull(gold, 0)), 0) from rd_data.tb_member_broadcast_item where room_no = a.room_no and item_type = 1) AS goldCnt
+            , a.room_no
+            , a.mem_no
+            , c.mem_nick
+        FROM rd_data.tb_broadcast_room a INNER JOIN rd_data.tb_broadcast_room_member b ON a.room_no = b.room_no AND a.mem_no = b.mem_no AND b.auth = 3
+            INNER JOIN rd_data.tb_member_basic c ON a.mem_no = c.mem_no
+            INNER JOIN rd_data.tb_member_profile d ON c.mem_no = d.mem_no
+        WHERE a.room_no = #{room_no}
+    </select>
+
+    <select id="selectBroadcastLiveChatInfo" parameterType="com.dalbit.admin.vo.LiveChatInputVo" resultType="com.dalbit.admin.vo.LiveChatOutputVo">
+        /* Admin.xml - selectBroadcastLiveChatInfo */
+        select a.*
+        from
+          (
+              select
+                msg.idx as chatIdx
+               , msg.mem_no as mem_no
+               , msg.nickname as nickname
+               , msg.auth as auth
+               , msg.last_upd_date as writeDate
+               , msg.room_no as room_no
+               , msg.msg as msg
+               , pro.image_profile as image_profile
+              from
+                rd_data.tb_broadcast_room_msg msg
+                , rd_data.tb_member_profile pro
+              where
+                msg.room_no = #{room_no}
+                and msg.mem_no = pro.mem_no
+                and msg.`type` = 'chat'
+                and msg.idx > #{chatIdx}
+                order by msg.idx
+                desc limit 500
+          ) as a
+          order by a.chatIdx asc;
+    </select>
+
+    <update id="updateState" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        /* Admin.xml - updateState */
+        update rd_data.tb_member_basic
+        set mem_state = #{state}
+        <if test='opCode gt 2 and opCode lt 6'>
+            , block_day = #{blockDay}
+            , block_end_date = DATE_ADD(now(), interval #{blockDay} day)
+        </if>
+        , block_type = #{block_type}
+        , last_upd_date = now()
+        where mem_no = #{mem_no}
+    </update>
+
+    <select id="getLiveChatProfile" parameterType="com.dalbit.admin.vo.LiveChatProfileVo" resultType="com.dalbit.admin.vo.LiveChatProfileVo">
+        /* Admin.xml - getLiveChatProfile */
+        select bas.mem_no
+              , bas.mem_userid
+              , bas.mem_nick
+              , pro.image_profile
+              , room.room_no
+              , room.state
+              , room.auth
+        from rd_data.tb_member_basic bas
+            inner join rd_data.tb_member_profile pro on bas.mem_no = pro.mem_no
+            inner join rd_data.tb_broadcast_room_member room on bas.mem_no = room.mem_no
+        where bas.mem_no = #{mem_no}
+            and room_no = #{room_no}
+    </select>
+
+    <select id="callForceLeave" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callForceLeave */
+        call rd_admin.sp_admin_broadcast_room_member_forced_leave(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <insert id="insertForceLeave_roomBlock" parameterType="com.dalbit.admin.vo.ForcedOutVo">
+        /* Admin.xml - insertForceLeave_roomBlock */
+        INSERT INTO rd_data.tb_broadcast_room_block( mem_no, blocked_mem_no, last_upd_date) VALUES ( #{dj_mem_no}, #{mem_no}, NOW() );
+    </insert>
+
+    <insert id="insertContentsMessageAdd" parameterType="com.dalbit.common.vo.MessageInsertVo">
+        /* Admin.xml - insertContentsMessageAdd */
+          INSERT INTO rd_admin.tb_admin_message
+          (
+                title
+                ,send_cont
+                ,target_rooms
+                ,send_cnt
+                ,op_name
+                ,reg_date
+          )
+          VALUES
+          (
+                #{title}
+                ,#{send_cont}
+                ,#{target_rooms}
+                ,#{send_cnt}
+                ,#{op_name}
+                ,NOW()
+          )
+    </insert>
+
+    <select id="selectLiveListener" parameterType="com.dalbit.admin.vo.ProfileVo" resultType="com.dalbit.admin.vo.ProfileVo">
+        /* Admin.xml - selectLiveListener */
+                select a.mem_no as mem_no
+                  , pro.image_profile as image_profile
+                  , bas.mem_userid as mem_userid
+                  , bas.mem_nick as mem_nick
+                  , a.state as state
+                  , a.auth as auth
+                  , a.last_upd_date as last_upd_date
+                from (
+                  select roommem.mem_no
+                        , roommem.state
+                        , roommem.auth
+                        , roommem.last_upd_date
+                  from rd_data.tb_broadcast_room_live_list live
+                    inner join rd_data.tb_broadcast_room_member roommem on live.room_no = roommem.room_no
+                  where live.room_no = #{room_no}
+                  and roommem.auth <![CDATA[!=]]> 3
+                )a
+                , rd_data.tb_member_basic bas
+                , rd_data.tb_member_profile pro
+                where a.mem_no = bas.mem_no
+                  and a.mem_no = pro.mem_no
+                order by a.state asc, a.last_upd_date desc
+    </select>
+
+    <select id="callBroadcastTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_NewBroadcastTimeOutVo">
+        /* Admin.xml - callBroadcastTotal */
+        call rd_admin.sp_admin_stat_broadcast_time(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callUserCurrentTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_UserTotalOutDetailVo">
+        /* Admin.xml - callUserTotal */
+        call rd_admin.sp_admin_connect_stat_current_connect(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callPayInfo" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_PayInfoOutVo">
+        /* Admin.xml - callPayInfo */
+        call rd_admin.sp_admin_stat_member_payment_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callLoginTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_LoginTotalOutDetailVo">
+        /* Admin.xml - callLoginGender */
+        call rd_admin.sp_admin_connect_stat_login_total(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callLoginAge" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_LoginAgeOutDetailVo">
+        /* Admin.xml - callLoginAge */
+        call rd_admin.sp_admin_connect_stat_login_age(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callQuestionList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionListOutputVo">
+        /* Admin.xml - callQuestionList */
+        call rd_admin.sp_admin_service_center_qna_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callServiceCenterQnaDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
+        /* Admin.xml - callServiceCenterQnaDetail */
+        call rd_admin.sp_admin_service_center_qna_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectFaqSubList" parameterType="com.dalbit.admin.vo.FaqVo" resultType="com.dalbit.admin.vo.FaqVo">
+        /* Admin.xml - selectFaqSubList */
+        select *
+          from rd_data.tb_service_center_faq
+          where slct_type = #{slct_type}
+    </select>
+
+    <select id="selectServiceCenterQnaState" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
+        /* Admin.xml - selectServiceCenterQnaState */
+        select *
+            , (select code from rd_data.tbl_code_define where type = 'question_type' and value = slct_type) slct_type_name
+          from rd_data.tb_service_center_qna_v25
+          where idx = #{qnaIdx}
+    </select>
+
+    <select id="callServiceCenterQnaOperate" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        /* Admin.xml - callServiceCenterQnaOperate */
+        call rd_admin.sp_admin_service_center_qna_operate(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <update id="updateServiceCenterQnaUpdate" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo">
+        /* Admin.xml - updateServiceCenterQnaUpdate */
+        update rd_data.tb_service_center_qna_v25
+        set answer = #{answer}
+            ,op_date=now()
+            ,op_name=#{opName}
+        where idx = #{qnaIdx}
+    </update>
+
+    <select id="callServiceCenterReportList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_DeclarationListOutputVo">
+        /* Admin.xml - callServiceCenterReportList */
+        call rd_admin.sp_admin_service_center_report_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callServiceCenterReportDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_DeclarationDetailOutputVo">
+        /* Admin.xml - callServiceCenterReportDetail */
+        call rd_admin.sp_admin_service_center_report_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectUserProfile" parameterType="com.dalbit.admin.vo.LiveChatProfileVo" resultType="com.dalbit.admin.vo.LiveChatProfileVo">
+        /* Admin.xml - selectUserProfile */
+        select bas.mem_no
+              , bas.mem_userid
+              , bas.mem_nick
+              , bas.mem_sex
+              , pro.image_profile
+          from rd_data.tb_member_basic bas
+            inner join rd_data.tb_member_profile pro
+          where bas.mem_no = pro.mem_no
+          and bas.mem_no = #{mem_no}
+    </select>
+
+    <select id="callMemberEditHistory" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_MemberEditHistOutputVo">
+        /* Admin.xml - callMemberEditHistory */
+        call rd_admin.sp_admin_member_all_info_edit_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectAdminName" parameterType="java.lang.String" resultType="java.lang.String">
+        /* Admin.xml - selectAdminName */
+        select emp_name
+        from rd_admin.tb_admin_test_account
+        where mem_no = #{mem_no}
+    </select>
+
+    <select id="selectRecentIdIp" parameterType="com.dalbit.admin.vo.DeclarationVo" resultType="com.dalbit.admin.vo.DeclarationVo">
+      /* Admin.xml - selectRecentIdIp */
+          select device_uuid, ip
+          from rd_data.tb_member_session_history
+          where mem_no = #{reported_mem_no}
+          order by last_upd_date desc
+          limit 1
+    </select>
+
+    <insert id="insertBlock" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        /* Admin.xml - insertBlockHistory */
+        insert into
+          rd_admin.tb_login_block (
+            block_type
+            , block_text
+            , block_day
+            , block_end_date
+            , last_upd_date
+            , op_name
+            , report_idx
+            , memo
+          ) values (
+            #{block_type}
+            , #{block_text}
+            , #{block_day}
+            <choose>
+                <when test="block_day == 99">
+                    , '9999-12-31'
+                </when>
+                <otherwise>
+                    , DATE_ADD(now(), interval #{block_day} day)
+                </otherwise>
+            </choose>
+            , now()
+            , #{opName}
+            , null
+            , #{adminMemo}
+          )
+    </insert>
+
+    <insert id="insertBlockHistory" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        /* Admin.xml - insertBlockHistory */
+      insert into
+        rd_admin.tb_login_block_history (
+            edit_contents
+            , edit_type
+            , last_upd_date
+            , op_name
+            , report_idx
+            , memo
+        ) values (
+          #{edit_contents}
+          , #{edit_type}
+          , now()
+          , #{opName}
+          , null
+          , #{adminMemo}
+        )
+    </insert>
+
+    <select id="selectClipList">
+        /* Admin.xml - selectClipList */
+        SELECT
+            clip.idx AS clipIdx
+            , clip.cast_no AS castNo
+            , clip.subject_type AS subjectType
+            , code.code AS subjectName
+            , clip.title AS title
+            , clip.type_entry AS typeEntry
+            , clip.image_background AS imageBackground
+            , clip.file_name AS fileName
+            , clip.file_path AS filePath
+            , clip.file_play AS filePlay
+            , clip.mem_no AS memNo
+            , clipInfo.mem_sex AS memSex
+            , clipInfo.mem_birth_year AS memBirthYear
+            , clipInfo.mem_nick AS memNick
+            , clip.type_open AS typeOpen
+            , clip.state AS state
+            , clip.hide AS hide
+            , clip.code_link AS codeLink
+            , clip.count_play AS countPlay
+            , clip.count_good AS countGood
+            , clip.count_gift AS countGift
+            , clip.count_byeol AS countByeol
+            , clip.start_date AS startDate
+            , clip.end_date AS endDate
+            , clip.badge_newdj AS badgeNewdj
+            , clip.os_type AS osType
+            , clip.last_upd_date AS lastUpdDate
+            , (SELECT COUNT(*) FROM rd_data.tb_cast_room WHERE mem_no = clip.mem_no) AS memInsertCnt
+            , clipInfo.`inner` AS 'inner'
+            , (SELECT COUNT(*) FROM rd_data.tb_cast_room_board WHERE cast_no = clip.cast_no) AS replyCnt
+        FROM rd_data.tb_cast_room clip
+        LEFT JOIN
+            rd_data.tb_member_basic clipInfo
+        ON
+            clipInfo.mem_no = clip.mem_no
+    </select>
+
+    <select id="selectVersion" resultType="java.util.HashMap">
+        /* Admin.xml - selectVersion */
+        SELECT
+            verName
+            , COUNT(*) AS cnt
+        FROM rd_admin.tb_ios_test_app
+        WHERE delYn = 0
+        GROUP BY verName
+        ORDER BY verName DESC
+    </select>
+
+    <select id="selectLast" resultType="java.util.HashMap">
+        /* Admin.xml - selectLast */
+        SELECT
+            verName
+            , appBuild
+            , dirName
+        FROM rd_admin.tb_ios_test_app
+        WHERE delYn = 0
+            AND idx = (SELECT idx FROM rd_admin.tb_ios_test_app WHERE delYn = 0 ORDER BY appBuild DESC LIMIT 1)
+    </select>
+
+    <select id="selectApp" parameterType="String" resultType="java.util.HashMap">
+        /* Admin.xml - selectApp */
+        SELECT
+            *
+        FROM rd_admin.tb_ios_test_app
+        WHERE delYn = 0
+            AND verName = #{value}
+        ORDER BY verName DESC, appBuild DESC
+    </select>
+
+    <insert id="insertApp" parameterType="java.util.HashMap">
+        /* Admin.xml - insertApp */
+        INSERT INTO rd_admin.tb_ios_test_app (
+            verName
+            , appBuild
+            , dirName
+            , description
+            , regDate
+            , opName
+        ) VALUES (
+            #{verName}
+            , #{appBuild}
+            , #{dirName}
+            , #{description}
+            , NOW()
+            , #{opName}
+        )
+    </insert>
+
+    <update id="deleteApp" parameterType="java.util.HashMap">
+        /* Admin.xml - deleteApp */
+        UPDATE rd_admin.tb_ios_test_app SET
+            delYn = 1
+            , delDate = NOW()
+            , delName = #{opName}
+        WHERE idx = #{idx}
+    </update>
+
+    <select id="callClipHistoryList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipHistoryVo">
+        call rd_admin.sp_admin_clip_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipDetailVo">
+        call rd_admin.sp_admin_clip_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callClipEdit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipAdminEditVo">
+        call rd_admin.sp_admin_clip_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectReplyList" parameterType="com.dalbit.admin.vo.ClipHistoryReplyVo" resultType="com.dalbit.admin.vo.ClipHistoryReplyVo">
+        /* Admin.xml - selectReplyList */
+        SELECT
+            borad.idx	AS replyIdx
+            , borad.cast_no	AS castNo
+            , borad.cast_mem_no	AS castMemNo
+            , borad.writer_mem_no	AS writerMemNo
+            , borad.contents	AS contents
+            , borad.status	AS status
+            , borad.write_date	AS writeDate
+            , borad.last_upd_date	AS lastUpdDate
+            , basic.mem_nick AS memNick
+            , basic.mem_sex AS memSex
+            , basic.mem_birth_year AS memBirthYear
+            , profile.image_profile AS profileImage
+        FROM
+            rd_data.tb_cast_room_board borad
+            LEFT JOIN rd_data.tb_member_basic basic ON basic.mem_no = borad.writer_mem_no
+            LEFT JOIN rd_data.tb_member_profile profile ON profile.mem_no = borad.writer_mem_no
+        WHERE
+            cast_no = #{castNo}
+        ORDER BY
+            write_date DESC
+    </select>
+
+    <update id="deleteReply" parameterType="com.dalbit.admin.vo.ClipHistoryReplyVo">
+        /* Admin.xml - deleteReply */
+        update rd_data.tb_cast_room_board
+        set status = #{status}
+            , last_upd_date = now()
+        where idx = #{replyIdx}
+    </update>
+
+    <select id="selectMemberRoomListen" parameterType="String" resultType="java.util.HashMap">
+        /* Admin.xml - selectMemberRoomListen */
+        select a.room_no as listen_room_no
+               ,b.title as listen_title
+          from rd_data.tb_broadcast_room_member a
+          inner join rd_data.tb_broadcast_room b on a.room_no = b.room_no
+         where a.mem_no=#{mem_no}
+           and a.state=0
+           and a.auth != 3
+           and b.state != 4
+         order by a.last_upd_date desc
+         limit 1;
+    </select>
+
+    <select id="selectMemberRoom" parameterType="String" resultType="java.util.HashMap">
+        /* Admin.xml - selectMemberRoom */
+        select room_no
+              ,title
+        from rd_data.tb_broadcast_room
+        where state != 4 and mem_no =#{mem_no}
+    </select>
+
+    <select id="selectBroadCastList" parameterType="com.dalbit.admin.vo.MemberBroadcastOutputVo" resultType="com.dalbit.admin.vo.MemberBroadcastOutputVo">
+        /* Admin.xml - selectBroadCastList */
+        SELECT a.room_no
+            ,a.mem_no
+            ,a.subject_type
+            ,title
+            ,image_background
+            ,start_date
+            ,msg_welcom
+        FROM rd_data.tb_broadcast_room a
+        LEFT JOIN rd_data.tb_member_basic b ON a.mem_no = b.mem_no
+        where a.mem_no = #{mem_no}
+        <if test='room_no != "" and room_no != null'>
+            and a.room_no = #{room_no}
+        </if>
+        and start_date > DATE_SUB(now(), INTERVAL 7 DAY)
+        order by start_date desc
+        limit 5;
+    </select>
+
+    <select id="callMemAdminMemoAdd" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
+        call rd_admin.sp_admin_op_memo_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callBroadcastInfo" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo">
+        call rd_admin.sp_admin_broadcast_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectSettingList" parameterType="com.dalbit.admin.vo.SettingListVo" resultType="com.dalbit.admin.vo.SettingListVo">
+    /* Admin.xml - selectSettingList */
+        select
+            code
+            , `value`
+            , is_use
+            , @rownum := @rownum + 1 as rowNum
+        from rd_data.tbl_code_define
+            , (select @rownum := 0) r
+        where type = #{type}
+            and is_use = #{is_use}
+    </select>
+
+    <update id="updateSetting" parameterType="com.dalbit.admin.vo.SettingListVo">
+    /* Admin.xml - updateSetting */
+        update rd_data.tbl_code_define
+            set `value` = #{value}
+            where `code` = #{code}
+    </update>
+</mapper>

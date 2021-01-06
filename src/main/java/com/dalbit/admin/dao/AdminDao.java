@@ -17,6 +17,7 @@ public interface AdminDao {
 
     //@Transactional(readOnly = true)
     ArrayList<AdminMenuVo> selectMobileAdminMenuAuth(SearchVo searchVo);
+    ArrayList<AdminMenuVo> callMobileAdminMenuAuth(ProcedureVo procedureVo);
 
     //@Transactional(readOnly = true)
     ArrayList<BroadcastVo> selectBroadcastList(BroadcastVo broadcastVo);
