@@ -5,6 +5,7 @@ import com.dalbit.broadcast.vo.procedure.P_GuestManagementListVo;
 import com.dalbit.broadcast.vo.request.GuestListVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
@@ -17,7 +18,7 @@ public interface GuestDao {
 
     ProcedureVo callGuestProposeCancel(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_GuestManagementListVo> callGuestManagementList(ProcedureVo procedureVo);
 
     ProcedureVo callGuestInvite(ProcedureVo procedureVo);
@@ -30,12 +31,12 @@ public interface GuestDao {
 
     ProcedureVo callBroadCastRoomGuestCancel(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_GuestListVo> selectGuestList(GuestListVo guestListVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     HashMap selectGuestInfo(HashMap params);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_GuestListVo> getGuestInfo(P_GuestListVo pGuestListVo);
 }
