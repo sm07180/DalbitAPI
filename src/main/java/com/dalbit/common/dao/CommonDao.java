@@ -49,10 +49,10 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     NowBroadcastVo selectNowBroadcast(String memNo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     CodeVo selectCodeDefine(CodeVo codeVo);
 
     int updateMemberCertification(P_SelfAuthVo pSelfAuthVo);
