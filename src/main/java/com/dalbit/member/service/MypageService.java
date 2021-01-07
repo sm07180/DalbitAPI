@@ -1847,16 +1847,24 @@ public class MypageService {
     }
 
     public String getMyPageNew(HttpServletRequest request){
-        HashMap params = new HashMap();
-        params.put("myMemNo", MemberVo.getMyMemNo(request));
-        params.put("targetMemNo", request.getParameter("targetMemNo"));
-        params.put("fanBoard", request.getParameter("fanBoard"));
-        params.put("dal", request.getParameter("dal"));
-        params.put("byoel", request.getParameter("byoel"));
-        params.put("notice", request.getParameter("notice"));
-        params.put("qna", request.getParameter("qna"));
+        HashMap returnMap = new HashMap();
+        if(DalbitUtil.isLogin(request)){
+            HashMap params = new HashMap();
+            params.put("myMemNo", MemberVo.getMyMemNo(request));
+            params.put("targetMemNo", DalbitUtil.isEmpty(request.getParameter("targetMemNo")) ? MemberVo.getMyMemNo(request) : request.getParameter("targetMemNo"));
+            params.put("fanBoard", request.getParameter("fanBoard"));
+            params.put("dal", request.getParameter("dal"));
+            params.put("byoel", request.getParameter("byoel"));
+            params.put("notice", request.getParameter("notice"));
+            params.put("qna", request.getParameter("qna"));
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageNew(params)));
+            returnMap = mypageDao.selectMyPageNew(params);
+            returnMap.put("newCnt", DalbitUtil.getIntMap(returnMap, "alarm") + DalbitUtil.getIntMap(returnMap, "qna") + DalbitUtil.getIntMap(returnMap, "notice"));
+        }else{
+            returnMap.put("newCnt", 0);
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
     }
 
     public String getMyPageNewFanBoard(HttpServletRequest request){
