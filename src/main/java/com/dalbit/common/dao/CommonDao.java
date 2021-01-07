@@ -31,10 +31,10 @@ public interface CommonDao {
 
     ProcedureVo callPushAdd(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<ItemVo> selectItemList(P_ItemVo item);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<ItemVo> selectBooster(String itemCode);
 
     //@Transactional(readOnly = true)
