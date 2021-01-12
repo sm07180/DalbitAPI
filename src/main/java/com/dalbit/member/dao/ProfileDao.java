@@ -3,6 +3,7 @@ package com.dalbit.member.dao;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
