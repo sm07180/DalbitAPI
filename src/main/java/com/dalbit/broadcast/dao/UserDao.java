@@ -15,7 +15,6 @@ public interface UserDao {
 
     ProcedureVo callBroadCastRoomKickout(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
 
     ProcedureVo callBroadCastRoomManagerAdd(ProcedureVo procedureVo);

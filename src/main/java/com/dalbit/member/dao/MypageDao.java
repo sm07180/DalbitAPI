@@ -16,7 +16,6 @@ public interface MypageDao {
     ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callBroadBasic(ProcedureVo procedureVo);

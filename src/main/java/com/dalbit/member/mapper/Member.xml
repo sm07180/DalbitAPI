@@ -46,7 +46,6 @@
         CALL sp_member_anonymous_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
-
     <select id="callExchangeCalc" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_exchange_calc(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
