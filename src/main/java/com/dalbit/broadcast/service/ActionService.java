@@ -221,7 +221,13 @@ public class ActionService {
         String item_code = pRoomGiftVo.getItem_code();
         boolean isDirect = false;
         int directItemCnt = 1;
-        if(ITEM_DIRECT_CODE_MAIN.equals(pRoomGiftVo.getItem_code())){ //직접선물하기 일경우 체크
+        for(String direct : ITEM_DIRECT_CODE){
+            if(direct.equals(pRoomGiftVo.getItem_code())){
+                isDirect = true;
+                break;
+            }
+        }
+        if(ITEM_DIRECT_CODE_MAIN.equals(pRoomGiftVo.getItem_code()) || isDirect){ //직접선물하기 일경우 체크
             isDirect = true;
             for(int i = 0; i <  ITEM_DIRECT_MIN.length; i++){
                 if (ITEM_DIRECT_MIN[i] <= pRoomGiftVo.getItem_cnt() && (ITEM_DIRECT_MAX[i] >= pRoomGiftVo.getItem_cnt() || ITEM_DIRECT_MAX[i] == -1)) {
