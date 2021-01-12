@@ -91,10 +91,18 @@ public class MainService {
         pMainRankingPageVo.setRank_date(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
         ProcedureVo procedureVo = new ProcedureVo(pMainRankingPageVo);
         List<P_MainTimeRankingPageVo> mainRankingPageVoList = mainDao.callMainTimeRankingPage(procedureVo);
+
         //Fan랭킹 조회
-        pMainRankingPageVo.setRanking_slct(2);
-        procedureVo = new ProcedureVo(pMainRankingPageVo);
-        List<P_MainTimeRankingPageVo> mainFanRankingVoList = mainDao.callMainTimeRankingPage(procedureVo);
+        P_MainRankingPageVo pMainFanRankingPageVo = new P_MainRankingPageVo();
+        pMainFanRankingPageVo.setSlct_type(1);
+        pMainFanRankingPageVo.setRanking_slct(2);
+        pMainFanRankingPageVo.setPageNo(1);
+        pMainFanRankingPageVo.setPageCnt(10);
+        pMainFanRankingPageVo.setMemLogin(0);
+        pMainFanRankingPageVo.setMem_no(memNo);
+        pMainFanRankingPageVo.setRankingDate(today_str);
+        ProcedureVo procedureRankingVo = new ProcedureVo(pMainFanRankingPageVo);
+        List<P_MainRankingPageVo> mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
 
         //마이스타
         List<P_MainStarVo> starVoList = null;
@@ -271,7 +279,7 @@ public class MainService {
 
         List fanRank = new ArrayList();
         for (int i=0; i<mainFanRankingVoList.size(); i++){
-            fanRank.add(new MainTimeRankingPageOutVo(mainFanRankingVoList.get(i), false));
+            fanRank.add(new MainFanRankingOutVo(mainFanRankingVoList.get(i), false));
         }
         mainMap.put("fanRank", fanRank);
 
