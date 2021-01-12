@@ -10,6 +10,7 @@ import java.util.List;
 @Repository
 public interface ProfileDao {
 
+    @Transactional(readOnly = true)
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardAdd(ProcedureVo procedureVo);
     //@Transactional(readOnly = true)
