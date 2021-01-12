@@ -1849,14 +1849,44 @@ public class MypageService {
     public String getMyPageNew(HttpServletRequest request){
         HashMap returnMap = new HashMap();
         if(DalbitUtil.isLogin(request)){
+            String notice = request.getParameter("notice");
+            String qna = request.getParameter("qna");
+            if(!DalbitUtil.isEmpty(notice)){
+                String[] nos = notice.split(",");
+                List<String> tmp = new ArrayList<>();
+                notice = "";
+                for(String n : nos){
+                    if(!tmp.contains(n)){
+                        tmp.add(n);
+                        if(!DalbitUtil.isEmpty(notice)){
+                            notice += ",";
+                        }
+                        notice += n;
+                    }
+                }
+            }
+            if(!DalbitUtil.isEmpty(qna)){
+                String[] nos = qna.split(",");
+                List<String> tmp = new ArrayList<>();
+                qna = "";
+                for(String n : nos){
+                    if(!tmp.contains(n)){
+                        tmp.add(n);
+                        if(!DalbitUtil.isEmpty(qna)){
+                            qna += ",";
+                        }
+                        qna += n;
+                    }
+                }
+            }
             HashMap params = new HashMap();
             params.put("myMemNo", MemberVo.getMyMemNo(request));
             params.put("targetMemNo", DalbitUtil.isEmpty(request.getParameter("targetMemNo")) ? MemberVo.getMyMemNo(request) : request.getParameter("targetMemNo"));
             params.put("fanBoard", request.getParameter("fanBoard"));
             params.put("dal", request.getParameter("dal"));
             params.put("byoel", request.getParameter("byoel"));
-            params.put("notice", request.getParameter("notice"));
-            params.put("qna", request.getParameter("qna"));
+            params.put("notice", notice);
+            params.put("qna", qna);
 
             returnMap = mypageDao.selectMyPageNew(params);
             returnMap.put("newCnt", DalbitUtil.getIntMap(returnMap, "alarm") + DalbitUtil.getIntMap(returnMap, "qna") + DalbitUtil.getIntMap(returnMap, "notice"));

@@ -132,7 +132,7 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     List<LevelVo> selectLevel();
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     int callNewAlarm(P_MemberNotifyVo pMemberNotifyVo);
 
     ProcedureVo memberShortCutAdd(ProcedureVo procedureVo);
@@ -153,7 +153,7 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     List<EmoticonCategoryListVo> selectEmoticonCategory();
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     HashMap selectMyPageNew(HashMap params);
 
     @Transactional(readOnly = true)
