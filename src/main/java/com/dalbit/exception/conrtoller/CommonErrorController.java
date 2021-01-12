@@ -10,6 +10,7 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -40,12 +41,13 @@ public class CommonErrorController {
     public boolean isSaveLog(GlobalException globalException, HttpServletResponse response, HttpServletRequest request){
         if(globalException.getStatus() == Status.벨리데이션체크) return false;
         if(request.getRequestURL().toString().endsWith("/error/log")) return false;
+        if(request.getRequestURL().toString().endsWith("/ctrl/check/service")) return false;
 
         //Broken pipe 처리
         if(globalException.getClass().getSimpleName().toLowerCase().equals("clientabortexception")) return false; //ClientAbortException
         if(globalException.getClass().getSimpleName().toLowerCase().contains("clientabortexception")) return false; //ClientAbortException
         if(globalException.getMessage().contains("Broken pipe")) return false;
-        
+
         return true;
     }
 
@@ -139,4 +141,11 @@ public class CommonErrorController {
         map.put("message", exception.getMessage());
         return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, map, null, request.getMethod() + ""));
     }
+
+    @ExceptionHandler(ClientAbortException.class)
+    public String exceptionHandle(ClientAbortException exception, HttpServletResponse response, HttpServletRequest request){
+        DalbitUtil.setHeader(request, response);
+        return gsonUtil.toJson(new JsonOutputVo(Status.사용자요청취소));
+    }
+
 }

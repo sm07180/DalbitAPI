@@ -85,8 +85,8 @@ public class ReplicationDatabaseConfig {
         masterHikariConfig.setPassword(JDBC_PASSWORD);
         //masterHikariConfig.addDataSourceProperty("autoReconnect",true);
         masterHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
-        masterHikariConfig.setMaximumPoolSize(25);
-        masterHikariConfig.setMinimumIdle(10);
+        masterHikariConfig.setMaximumPoolSize(10);
+        masterHikariConfig.setMinimumIdle(6);
         masterHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         masterHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         masterHikariConfig.setMaxLifetime(MAX_LIFETIME);
@@ -103,8 +103,8 @@ public class ReplicationDatabaseConfig {
         slaveHikariConfig.setPassword(JDBC_PASSWORD);
         //slaveHikariConfig.addDataSourceProperty("autoReconnect",true);
         slaveHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
-        slaveHikariConfig.setMaximumPoolSize(20);
-        slaveHikariConfig.setMinimumIdle(10);
+        slaveHikariConfig.setMaximumPoolSize(10);
+        slaveHikariConfig.setMinimumIdle(6);
         slaveHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         slaveHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         slaveHikariConfig.setMaxLifetime(MAX_LIFETIME);

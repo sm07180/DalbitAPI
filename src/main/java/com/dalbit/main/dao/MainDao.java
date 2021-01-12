@@ -32,10 +32,10 @@ public interface MainDao {
 
     ProcedureVo callMainRankRandomBox(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_MainRankingPageVo> callMainRankingPage(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_MainGoodRankingVo> callMainGoodRanking(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
@@ -46,6 +46,6 @@ public interface MainDao {
 
     P_MarketingVo callMarketingDetail(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_MainTimeRankingPageVo> callMainTimeRankingPage(ProcedureVo procedureVo);
 }

@@ -19,6 +19,7 @@ public enum Status {
     로그인필요_성공("-98", "need.login.success", "로그인 필요 시"),
     로그인필요("-99", "need.login", "로그인 필요 시"),
     이전작업대기중("-97", "ready.to.prev.process", "동일작업 중복 호출"),
+    사용자요청취소("C999", "client.abort.exception", "사용자 요청취소"),
 
     //차단관련 운영메시지
     차단_이용제한("0", "block.member.restriction", "운영자에 의해 차단되어 이용제한 시"),
