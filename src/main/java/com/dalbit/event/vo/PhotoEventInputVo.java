@@ -27,4 +27,5 @@ public class PhotoEventInputVo {
     @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
     private String contents;
     private int del_yn;
+    private int totalCnt = 0;
 }

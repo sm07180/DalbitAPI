@@ -381,8 +381,6 @@ public class CommonService {
             memberService.callMemberSessionUpdate(pMemberSessionUpdateVo);
         }
 
-
-
         result.put("tokenVo", tokenVo);
         result.put("Status", resultStatus);
         return result;
@@ -413,13 +411,26 @@ public class CommonService {
         return result;
     }
 
+    @Cacheable(cacheNames = "codeCache", key = "#code")
+    public List<Map> callCodeDefineSelect(String code) {
+        return commonDao.callCodeDefineSelect();
+    }
+
     public List<CodeVo> setData(List<Map> list, String type) {
+        return setData(list, type, 1);
+    }
+
+    public List<CodeVo> setData(List<Map> list, String type, int append) {
         List<CodeVo> data = new ArrayList<>();
         if(!DalbitUtil.isEmpty(list)){
             for(int i = 0; i < list.size(); i++){
                 if(type.equals(list.get(i).get("type"))){
                     if((int) list.get(i).get("is_use") == 1){
-                        data.add(new CodeVo((String)list.get(i).get("value"), (String)list.get(i).get("code"), DalbitUtil.isEmpty(list.get(i).get("order"))? i : (int) list.get(i).get("order"), (int) list.get(i).get("is_use")));
+                        if(append == 2){
+                            data.add(new CodeVo((String)list.get(i).get("type"), (String)list.get(i).get("value"), (String)list.get(i).get("code"), DalbitUtil.isEmpty(list.get(i).get("order"))? i : (int) list.get(i).get("order"), (int) list.get(i).get("is_use")));
+                        }else{
+                            data.add(new CodeVo((String)list.get(i).get("value"), (String)list.get(i).get("code"), DalbitUtil.isEmpty(list.get(i).get("order"))? i : (int) list.get(i).get("order"), (int) list.get(i).get("is_use")));
+                        }
                     }
                 }
             }
@@ -815,17 +826,22 @@ public class CommonService {
         return result;
     }
 
-    public String selectNowBroadcast(HttpServletRequest request) {
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, commonDao.selectNowBroadcast(MemberVo.getMyMemNo(request))));
-    }
-
     /**
      * 공통코드 조회
      * @param codeVo
      * @return
      */
     public CodeVo selectCodeDefine(CodeVo codeVo){
-        return commonDao.selectCodeDefine(codeVo);
+        List<Map> list = callCodeDefineSelect("splash");
+        if(!DalbitUtil.isEmpty(list)){
+            for(int i = 0; i < list.size(); i++){
+                if(codeVo.getCd().equals(list.get(i).get("type")) && codeVo.getCdNm().equals(list.get(i).get("code"))){
+                    return new CodeVo((String)list.get(i).get("type"), (String)list.get(i).get("value"), (String)list.get(i).get("code"), DalbitUtil.isEmpty(list.get(i).get("order"))? i : (int) list.get(i).get("order"), (int) list.get(i).get("is_use"));
+                }
+            }
+        }
+
+        return null;
     }
 
 
@@ -834,10 +850,11 @@ public class CommonService {
      */
     public String updateMemberCertification(P_SelfAuthVo pSelfAuthVo) {
 
-        int success = commonDao.updateMemberCertification(pSelfAuthVo);
+        ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
+        commonDao.updateMemberCertification(procedureVo);
 
         String result ="";
-        if(success > 0) {
+        if("0".equals(procedureVo.getRet())) {
             pSelfAuthVo.setComment("법정대리인 인증 완료");
             result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, pSelfAuthVo));
         } else {
@@ -859,29 +876,34 @@ public class CommonService {
      * 법정대리인(보호자) 인증 파일 업데이트
      */
     public int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo) {
-        return commonDao.updateMemberCertificationFile(pSelfAuthVo);
+        ProcedureVo procedureVo = new ProcedureVo(pSelfAuthVo);
+        commonDao.updateMemberCertification(procedureVo);
+        return "0".equals(procedureVo.getRet()) ? 1 : 0;
     }
 
+    public List<CodeVo> getCodeListCache(String code){
+        return setData(callCodeDefineSelect("splash"), code, 2);
+    }
 
     /**
      * 사용중인 방송주제 목록 가져오기
      */
     public List<CodeVo> selectRoomTypeCodeList(CodeVo codeVo){
-        return commonDao.selectTypeCodeList(codeVo);
+        return getCodeListCache(codeVo.getCd());
     }
 
     /**
      * 사용중인 클립 목록 가져오기
      */
     public List<CodeVo> selectClipTypeCodeList(CodeVo codeVo){
-        return commonDao.selectTypeCodeList(codeVo);
+        return getCodeListCache(codeVo.getCd());
     }
 
     /**
      * 환전은행 목록
      */
     public List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo){
-        return commonDao.selectExchangeBankCodeList(codeVo);
+        return getCodeListCache(codeVo.getCd());
     }
 
 

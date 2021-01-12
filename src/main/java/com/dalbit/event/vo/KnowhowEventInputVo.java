@@ -35,4 +35,6 @@ public class KnowhowEventInputVo {
     private String image_url3;
 
     private int del_yn;
+
+    private int totalCnt = 0;
 }

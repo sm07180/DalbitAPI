@@ -30,85 +30,20 @@
         call sp_member_withdrawal(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectMemState" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
-        select
-          idx
-          , mem_no
-          , mem_id
-          , mem_passwd
-          , mem_phone
-          , mem_nick
-          , mem_userid
-          , mem_name
-          , mem_email
-          , foreign_yn
-          , mem_sex
-          , mem_birth_year
-          , mem_birth_month
-          , mem_birth_day
-          , mem_slct
-          , mem_adid
-          , mem_state
-          , block_day
-          , block_end_date
-          , mem_join_date
-          , os_type
-          , location
-          , ip
-          , last_upd_date
-        from tb_member_basic
-        where mem_no = #{value}
+    <select id="selectMemState" statementType="CALLABLE" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
+        CALL sp_member_state_select(#{value, mode=IN, jdbcType=INTEGER}, NULL)
     </select>
 
-    <select id="selectMemStateForPhone" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
-        select
-          idx
-          , mem_no
-          , mem_id
-          , mem_passwd
-          , mem_phone
-          , mem_nick
-          , mem_userid
-          , mem_name
-          , mem_email
-          , foreign_yn
-          , mem_sex
-          , mem_birth_year
-          , mem_birth_month
-          , mem_birth_day
-          , mem_slct
-          , mem_adid
-          , mem_state
-          , block_day
-          , block_end_date
-          , mem_join_date
-          , os_type
-          , location
-          , ip
-          , last_upd_date
-        from tb_member_basic
-        where mem_slct = 'p'
-            AND mem_id = #{phoneNo}
+    <select id="selectMemStateForPhone" statementType="CALLABLE" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
+        CALL sp_member_state_select(NULL, #{value, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectAdminBlock" parameterType="com.dalbit.common.vo.BlockVo" resultType="int">
-        select count(block_end_date)
-        from rd_admin.tb_login_block
-        where
-            (
-                ( block_type = 1 and block_text = #{deviceUuid} )
-                or ( block_type = 2 and block_text = #{ip} )
-                or ( block_type = 3 and block_text = #{memNo} )
-            )
-            and block_text != ''
-            and now() <![CDATA[<]]> block_end_date
+    <select id="selectAdminBlock" statementType="CALLABLE" parameterType="com.dalbit.common.vo.BlockVo" resultType="int">
+        CALL sp_member_block_select(#{deviceUuid, mode=IN, jdbcType=VARCHAR}, #{ip, mode=IN, jdbcType=VARCHAR}, #{memNo, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectAnonymousMem" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
-        select
-          idx
-        from tb_member_basic_a
-        where mem_no = #{value}
+    <select id="selectAnonymousMem" statementType="CALLABLE" parameterType="String" resultType="com.dalbit.member.vo.TokenCheckVo">
+        CALL sp_member_anonymous_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
 
@@ -121,134 +56,52 @@
     </select>
 
 
-    <select id="exchangeApprovalSelect" parameterType="string" resultType="ExchangeSuccessVo">
-        select
-            idx as exchangeIdx
-            , account_name as accountName
-            , account_no as accountNo
-            , bank_code as bankCode
-            , social_no as socialNo
-            , phone_no as phoneNo
-            , address_1 as address1
-            , address_2 as address2
-        from tb_member_exchange
-        where mem_no = #{memNo}
-          and state = 1
-        order by reg_date desc
-        limit 1
+    <select id="exchangeApprovalSelect" statementType="CALLABLE" parameterType="string" resultType="ExchangeSuccessVo">
+        CALL sp_member_exchange_select(#{value, mode=IN, jdbcType=INTEGER}, NULL)
     </select>
 
-
-    <select id="exchangeReApprovalSelect" parameterType="ExchangeReApplyVo" resultType="ExchangeSuccessVo">
-        select
-            idx as exchangeIdx
-            , mem_no as memNo
-            , account_name as accountName
-            , account_no as accountNo
-            , bank_code as bankCode
-            , social_no as socialNo
-            , phone_no as phoneNo
-            , address_1 as address1
-            , address_2 as address2
-            , add_file1 as addFile1
-            , add_file2 as addFile2
-            , terms_agree as termsAgree
-        from tb_member_exchange
-        where idx = #{exchangeIdx}
+    <select id="exchangeReApprovalSelect" statementType="CALLABLE" parameterType="ExchangeReApplyVo" resultType="ExchangeSuccessVo">
+        CALL sp_member_exchange_select(NULL, #{exchangeIdx, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="selectListeningRoom" parameterType="String" resultType="String">
-        SELECT
-          room_no
-        FROM tb_broadcast_room_member
-        WHERE mem_no = #{value}
-          AND state = 0
-          AND auth &lt; 3
+    <select id="selectListeningRoom" statementType="CALLABLE" parameterType="String" resultType="String">
+        CALL sp_member_listening_room_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callFanRank3" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_FanRankVo">
         call sp_member_fanrank3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <insert id="callProfileEditHistory" parameterType="com.dalbit.common.vo.procedure.P_SelfAuthVo">
-        insert into tb_member_profile_edit_history(
-            mem_no
-            , edit_contents
-            , op_name
-        )values(
-            #{mem_no}
-            , #{comment}
-            , (select mem_nick from tb_member_basic where mem_no = #{mem_no})
-        )
-    </insert>
-
-    <insert id="callAccountAdd" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountAddVo">
-        INSERT INTO tb_member_exchange_account_history(
-            mem_no
-            , account_no
-            , account_name
-            , bank_code
-            , bank_name
-        )VALUES(
-            #{mem_no}
-            , #{account_no}
-            , #{account_name}
-            , #{bank_code}
-            , #{bank_name}
-        )
-    </insert>
-
-    <update id="callAccountEdit" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountEditVo">
-        UPDATE tb_member_exchange_account_history
-        SET account_no = #{account_no}
-            , account_name = #{account_name}
-            , bank_code = #{bank_code}
-            , bank_name = #{bank_name}
-        WHERE idx = #{idx}
-          AND mem_no = #{mem_no}
-    </update>
-
-    <update id="callAccountDelete" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountDeleteVo">
-        UPDATE tb_member_exchange_account_history
-        SET delete_yn = 'y'
-        WHERE idx = #{idx}
-    </update>
-
-    <select id="callAccountListSelect" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
-        SELECT
-          idx
-          , account_no as accountNo
-          , account_name as accountName
-          , bank_code as bankCode
-          , bank_name as bankName
-        FROM tb_member_exchange_account_history
-        WHERE mem_no = #{mem_no}
-          AND delete_yn = 'n'
-        ORDER BY last_upd_date DESC
+    <select id="callProfileEditHistory" statementType="CALLABLE" parameterType="com.dalbit.common.vo.procedure.P_SelfAuthVo" resultType="int">
+        CALL sp_member_profile_edit_history_add(#{mem_no, mode=IN, jdbcType=INTEGER}, #{comment, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectExchangeHistory" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
-        select
-            account_no as accountNo
-        from tb_member_exchange
-        where mem_no = #{mem_no}
+    <select id="callAccountAdd" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountAddVo" resultType="int">
+        CALL sp_member_exchange_bank_add(#{mem_no, mode=IN, jdbcType=INTEGER}, #{account_no, mode=IN, jdbcType=VARCHAR}, #{account_name, mode=IN, jdbcType=VARCHAR}, #{bank_code, mode=IN, jdbcType=VARCHAR}, #{bank_name, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="getSpecialHistory" parameterType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo" resultType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo">
-        select
-            mem_no
-            , select_year as `year`
-            , select_month as `month`
-            , round_no as roundNo
-            , (select mem_nick from rd_data.tb_member_basic where mem_no=#{mem_no}) as memNick
-        from rd_admin.tb_special_dj
-        where mem_no=#{mem_no}
-          and date_format(now(), '%Y%m') >= concat(select_year, select_month)
-        order by round_no desc
+    <select id="callAccountEdit" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountEditVo" resultType="int">
+        CALL sp_member_exchange_bank_edit(#{idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{account_no, mode=IN, jdbcType=VARCHAR}, #{account_name, mode=IN, jdbcType=VARCHAR}, #{bank_code, mode=IN, jdbcType=VARCHAR}, #{bank_name, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="getSpecialCnt" parameterType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo" resultType="int">
-        select count(*) from rd_admin.tb_special_dj where mem_no=#{mem_no} and date_format(now(), '%Y%m') >= concat(select_year, select_month);
+    <select id="callAccountDelete" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountDeleteVo" resultType="int">
+        CALL sp_member_exchange_bank_delete(#{idx, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="callAccountListSelect" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
+        CALL sp_member_exchange_bank_select(#{mem_no, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="selectExchangeHistory" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
+        CALL sp_member_exchange_history(#{mem_no, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="getSpecialHistory" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo" resultType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo">
+        CALL sp_member_special_dj_history_select(#{mem_no, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="getSpecialCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_SpecialDjHistoryVo" resultType="int">
+        CALL sp_member_special_dj_history_count(#{mem_no, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="getFanMemNoList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

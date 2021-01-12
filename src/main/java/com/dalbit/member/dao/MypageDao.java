@@ -6,7 +6,6 @@ import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -94,7 +93,7 @@ public interface MypageDao {
 
     ProcedureVo callReadNotification(ProcedureVo procedureVo);
 
-    int callReadALLNotification(P_NotificationVo pNotificationVo);
+    void callReadALLNotification(P_NotificationVo pNotificationVo);
 
     @Transactional(readOnly = true)
     long selectMyByeolCnt(String mem_no);
@@ -185,7 +184,6 @@ public interface MypageDao {
     @Transactional(readOnly = true)
     List<P_GoodListVo> callMemberGoodList(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
     ProcedureVo callBroadcastSettingSelect(ProcedureVo procedureVo);
 
     ProcedureVo callBroadcastSettingEdit(ProcedureVo procedureVo);

@@ -30,31 +30,7 @@
         call sp_member_fanstar_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectGuestStreamInfo" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-        SELECT
-            a.guest_streamid
-            , a.guest_publish_tokenid
-            , a.guest_play_tokenid
-            , b.title
-            , a.mem_no
-            , c.mem_sex
-            , c.mem_nick
-            , d.image_profile
-            , b.mem_no as dj_mem_no
-        FROM tb_broadcast_room_member a INNER JOIN tb_broadcast_room b ON a.room_no = b.room_no
-            INNER JOIN tb_member_basic c ON a.mem_no = c.mem_no
-            INNER JOIN tb_member_profile d ON a.mem_no = d.mem_no
-        WHERE a.room_no = #{room_no}
-          AND a.mem_no = #{mem_no}
-          ORDER BY a.idx DESC limit 1;
+    <select id="selectGuestStreamInfo" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        CALL sp_broadcast_room_guest_info(#{room_no, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, 0)
     </select>
-
-    <update id="updateGuestStreamInfo" parameterType="java.util.HashMap">
-        UPDATE tb_broadcast_room_member SET
-          guest_streamid = #{guest_stream_id}
-          , guest_publish_tokenid = #{guest_publish_token}
-          , guest_play_tokenid = #{guest_play_token}
-        WHERE room_no = #{room_no}
-          AND mem_no = #{mem_no}
-    </update>
 </mapper>

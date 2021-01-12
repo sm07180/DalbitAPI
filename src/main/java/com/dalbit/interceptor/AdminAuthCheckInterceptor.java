@@ -5,7 +5,6 @@ import com.dalbit.admin.vo.AdminMenuVo;
 import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -56,8 +55,7 @@ public class AdminAuthCheckInterceptor extends HandlerInterceptorAdapter {
 
             var searchVo = new SearchVo();
             searchVo.setMem_no(tokenVo.getMemNo());
-            ProcedureVo procedureVo = new ProcedureVo(searchVo);
-            ArrayList<AdminMenuVo> menuList = adminDao.callMobileAdminMenuAuth(procedureVo);
+            ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
             if(DalbitUtil.isEmpty(menuList)){
                 responseJson(response, gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음)));
                 return false;

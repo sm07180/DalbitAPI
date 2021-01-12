@@ -1,37 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dalbit.store.dao.StoreDao" >
-    <select id="selectChargeItem" parameterType="String" resultType="StoreChargeVo">
-        SELECT
-            item_code AS itemNo
-            , item_name AS itemNm
-            , item_thumbnail AS img
-            , item_type AS itemType
-            , IF(platform = '001', item_price_ios, item_price) itemPrice
-            , discount_rate AS discountRate
-            , sale_price AS salePrice
-            , dal as givenDal
-        FROM rd_data.tbl_charge_item
-        WHERE view_yn = 1
-            AND platform = #{value}
-        ORDER BY dal
+    <select id="selectChargeItem" statementType="CALLABLE" parameterType="String" resultType="StoreChargeVo">
+        CALL sp_store_item_select(#{value, mode=IN, jdbcType=VARCHAR}, NULL)
     </select>
 
-    <select id="selectPayChargeItem" parameterType="PayChargeVo" resultType="StoreChargeVo">
-        SELECT
-            item_code AS itemNo
-            , item_name AS itemNm
-            , item_thumbnail AS img
-            , item_type AS itemType
-            , IF(#{platform} = '001', item_price_ios, item_price) itemPrice
-            , discount_rate AS discountRate
-            , sale_price AS salePrice
-            , dal as givenDal
-            , item_price as itemPriceDefault
-            , item_price_ios as itemPriceIos
-        FROM rd_data.tbl_charge_item
-        WHERE view_yn = 1
-          AND item_code = #{itemNo}
+    <select id="selectPayChargeItem" statementType="CALLABLE" parameterType="PayChargeVo" resultType="StoreChargeVo">
+        CALL sp_store_item_select(NULL, #{itemNo, mode=IN, jdbcType=VARCHAR})
     </select>
 
 </mapper>

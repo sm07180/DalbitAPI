@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Repository
 public interface CommonDao {
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     ProcedureVo callBroadCastRoomStreamIdRequest(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
@@ -24,7 +24,7 @@ public interface CommonDao {
 
     ProcedureVo callMemberCertification(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     ProcedureVo getCertificationChk(ProcedureVo procedureVo);
 
     ProcedureVo saveErrorLog(ProcedureVo procedureVo);
@@ -37,7 +37,7 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     List<ItemVo> selectBooster(String itemCode);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     ItemDetailVo selectItem(String item);
 
     @Transactional(readOnly = true)
@@ -49,14 +49,8 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
 
+    int updateMemberCertification(ProcedureVo pSelfAuthVo);
     @Transactional(readOnly = true)
-    NowBroadcastVo selectNowBroadcast(String memNo);
-
-    @Transactional(readOnly = true)
-    CodeVo selectCodeDefine(CodeVo codeVo);
-
-    int updateMemberCertification(P_SelfAuthVo pSelfAuthVo);
-
     List<FanBadgeVo> callMemberBadgeSelect(HashMap param);
 
     List<FanBadgeVo> callLiveBadgeSelect(HashMap param);
@@ -67,21 +61,13 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     BadgeFrameVo callMemberBadgeFrame(HashMap param);
 
-    int updateMemberCertificationFile(P_SelfAuthVo pSelfAuthVo);
-
     ProcedureVo callPushClickUpdate(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
     AdultCheckVo getMembirth(String mem_no);
 
-    //@Transactional(readOnly = true)
     List<P_KingFanRankListVo> callBroadCastRoomRank3(ProcedureVo procedureVo);
-
-    //@Transactional(readOnly = true)
-    List<CodeVo> selectTypeCodeList(CodeVo codeVo);
-    //@Transactional(readOnly = true)
-    List<CodeVo> selectExchangeBankCodeList(CodeVo codeVo);
-
+    @Transactional(readOnly = true)
     ProcedureVo getLongTermDate(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)

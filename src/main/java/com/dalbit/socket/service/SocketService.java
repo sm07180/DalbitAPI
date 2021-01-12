@@ -1007,6 +1007,10 @@ public class SocketService {
         }
     }
 
+
+    /**
+     * 보름달 체크
+     */
     @Async("threadTaskExecutor")
     public void sendMoonCheck(String roomNo, HashMap message, String authToken, boolean isLogin, String callState) {
         if (DalbitUtil.getIntMap(message, "moonStep") == 4){

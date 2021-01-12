@@ -34,6 +34,7 @@ public interface MemberDao {
     int selectAdminBlock(BlockVo blockVo);
     @Transactional(readOnly = true)
     TokenCheckVo selectAnonymousMem(String mem_no);
+    @Transactional(readOnly = true)
     ProcedureVo callExchangeCalc(ProcedureVo procedureVo);
     ProcedureVo callExchangeApply(ProcedureVo procedureVo);
 
@@ -70,9 +71,8 @@ public interface MemberDao {
 
     @Transactional(readOnly = true)
     ProcedureVo getFanMemNoList(ProcedureVo procedureVo);
-
+    @Transactional(readOnly = true)
     List<RandomMsgVo> getBehaviorRandomMsgList(ProcedureVo procedureVo);
-
     @Transactional(readOnly = true)
     List<P_SpecialPointListVo> getSpecialPointList(ProcedureVo procedureVo);
 

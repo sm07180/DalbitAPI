@@ -30,7 +30,8 @@ public class P_SelfAuthVo extends P_ApiVo {
     private String authType;
 
     private String add_file;
-
     private String comment;
+    private String authToken;
+
 
 }

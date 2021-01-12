@@ -1,91 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dalbit.member.dao.ProfileDao" >
-
-    <select id = "callMemberInfo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+<mapper namespace="com.dalbit.member.dao.ProfileDao">
+    <select id="callMemberInfo" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_mypage_info(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardAdd" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
+    <select id="callMemberFanboardAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_fanboard_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanboardListVo">
-            call sp_member_fanboard_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callMemberFanboardList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FanboardListVo">
+        call sp_member_fanboard_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardDelete" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-            call sp_member_fanboard_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callMemberFanboardDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fanboard_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardReply" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanboardReplyVo">
-            call sp_member_fanboard_reply(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callMemberFanboardReply" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FanboardReplyVo">
+        call sp_member_fanboard_reply(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanRanking" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanRankingVo">
-            call sp_member_fan_ranking(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callMemberFanRanking" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FanRankingVo">
+        call sp_member_fan_ranking(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberLevelUpCheck" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-            call sp_member_level_up(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callMemberLevelUpCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_level_up(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callMemberFanboardEdit" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-            call sp_member_fanboard_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callMemberFanboardEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fanboard_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callFanList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanListVo">
-            call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callFanList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FanListVo">
+        call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callFanListNew" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanListNewVo">
-            call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callFanListNew" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FanListNewVo">
+        call sp_member_fan_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callFanMemo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_FanMemoVo">
-            call sp_member_fan_memo_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callFanMemo" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_FanMemoVo">
+        call sp_member_fan_memo_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callFanMemoSave" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-            call sp_member_fan_memo_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callFanMemoSave" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fan_memo_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callFanEdit" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-            call sp_member_fan_list_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callFanEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_fan_list_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callStarListNew" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_StarListNewVo">
-            call sp_member_star_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callStarListNew" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_StarListNewVo">
+        call sp_member_star_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callStarMemo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="P_StarMemoVo">
-            call sp_member_star_memo_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callStarMemo" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_StarMemoVo">
+        call sp_member_star_memo_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id = "callStarMemoSave" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
-            call sp_member_star_memo_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    <select id="callStarMemoSave" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_star_memo_save(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
-
 
     <select id="selectStarRanking" parameterType="P_StarRankingVo" resultType="P_StarRankingVo">
-        SELECT
-            T2.mem_no AS memNo
-            , T2.mem_nick AS nickNm
-            , T2.mem_sex AS gender
-            , T2.image_profile AS profUrl
-            , (CASE
-                WHEN T1.mem_no_star = #{selfMemNo} THEN 0
-                ELSE IF((SELECT IFNULL(COUNT(*), 0) FROM tb_member_fanstar S1 WHERE S1.mem_no_fan = #{selfMemNo} AND S1.mem_no_star = T1.mem_no_star) = 0 , 0, 1)
-            END) AS isFan
-        FROM tb_member_fanstar T1 LEFT OUTER JOIN (
-                SELECT
-                    T2.mem_no
-                    , T2.mem_nick
-                    , T2.mem_sex
-                    , T3.image_profile
-                FROM tb_member_basic T2 INNER JOIN tb_member_profile T3 ON T2.mem_no = T3.mem_no
-        ) T2 ON T1.mem_no_star = T2.mem_no
-        WHERE T1.mem_no_fan = #{targetMemNo}
-            AND T2.mem_no IS NOT NULL
+        CALL sp_member_star_rank(#{selfMemNo, mode=IN, jdbcType=INTEGER}, #{targetMemNo, mode=IN, jdbcType=INTEGER})
     </select>
 </mapper>

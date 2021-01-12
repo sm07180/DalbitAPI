@@ -4,7 +4,6 @@ import com.dalbit.broadcast.vo.procedure.P_RoomShareLinkVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

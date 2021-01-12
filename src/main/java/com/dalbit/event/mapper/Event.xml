@@ -7,96 +7,23 @@
     </select>
 
     <select id="callEventRankingResult" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RankingResultOutputVo">
-      call sp_event_ranking_result	(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_event_ranking_result(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="callEventReplyList" parameterType="com.dalbit.event.vo.procedure.P_ReplyListInputVo" resultType="com.dalbit.event.vo.procedure.P_ReplyListOutputVo">
-      /* Event.xml - callEventReplyList */
-      SELECT
-            a.idx AS reply_idx
-            ,a.event_idx AS event_idx
-            ,a.mem_no AS write_mem_no
-            ,a.depth AS depth
-            ,a.contents AS contents
-            ,a.status AS status
-            ,a.reg_date AS writeDate
-            ,a.op_name AS op_name
-            ,a.last_upd_date AS updateDate
-            ,mb.mem_userId AS userId
-            ,mb.mem_nick AS nickName
-            ,mb.mem_sex AS memSex
-            ,#{mem_no} AS req_mem_no
-            ,(SELECT image_profile FROM rd_data.tb_member_profile WHERE mem_no = a.mem_no) AS profileImage
-        FROM
-            rd_admin.tb_event_reply AS a
-        LEFT JOIN
-            rd_data.tb_member_basic AS mb
-        ON
-            a.mem_no = mb.mem_no
-        WHERE
-            a.event_idx = ${event_idx}
-            AND a.depth = 1
-            AND a.status = 1
-        ORDER BY
-            a.idx desc
+    <select id="callEventReplyList" statementType="CALLABLE" parameterType="com.dalbit.event.vo.procedure.P_ReplyListInputVo" resultType="com.dalbit.event.vo.procedure.P_ReplyListOutputVo">
+        CALL sp_event_reply_list(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <insert id="callEventReplyAdd" parameterType="com.dalbit.event.vo.procedure.P_ReplyAddInputVo">
-        /* Event.xml - callEventReplyAdd */
-        INSERT INTO rd_admin.tb_event_reply
-        (
-            event_idx
-            ,mem_no
-            ,depth
-            ,contents
-            ,status
-            ,reg_date
-            ,op_name
-        )
-        VALUES
-        (
-             #{event_idx}
-             ,#{mem_no}
-             ,#{depth}
-             ,#{contents}
-             ,1
-             ,NOW()
-             ,#{op_name}
-        )
-    </insert>
+    <select id="callEventReplyAdd" statementType="CALLABLE" parameterType="com.dalbit.event.vo.procedure.P_ReplyAddInputVo" resultType="int">
+        CALL sp_event_reply_add(#{event_idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{depth, mode=IN, jdbcType=INTEGER}, #{contents, mode=IN, jdbcType=VARCHAR}, #{op_name, mode=IN, jdbcType=VARCHAR})
+    </select>
 
-    <update id="callEventReplyDelete" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo">
-        /* Event.xml - callEventReplyDelete */
-        UPDATE rd_admin.tb_event_reply
-        SET
-          status = 2
-          ,op_name = #{mem_no}
-          ,last_upd_date = NOW()
-        WHERE
-          idx = #{reply_idx}
-          AND event_idx = #{event_idx}
-    </update>
+    <select id="callEventReplyDelete" statementType="CALLABLE" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo" resultType="int">
+        CALL sp_event_reply_delete(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{reply_idx, mode=IN, jdbcType=INTEGER})
+    </select>
 
-    <select id="callEventAuthCheck" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo" resultType="integer">
-        /* Event.xml - callEventAuthCheck */
-        SELECT
-          count(*)
-        FROM
-        (
-             SELECT
-                mem_no
-             FROM
-                rd_admin.tb_event_reply AS er
-             WHERE
-                er.event_idx = #{event_idx} AND er.idx = #{reply_idx} AND er.mem_no = #{mem_no}
-             UNION ALL
-             SELECT
-                mem_no
-             FROM
-                rd_data.tb_member_basic AS mb
-             WHERE
-                mb.mem_no = #{mem_no} AND mb.inner = 1
-          ) AS a
+    <select id="callEventAuthCheck" statementType="CALLABLE" parameterType="com.dalbit.event.vo.procedure.P_ReplyDeleteInputVo" resultType="integer">
+        CALL sp_event_auth_check(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{reply_idx, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callAttendanceCheckLoad" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_AttendanceCheckLoadOutputVo">
@@ -131,326 +58,78 @@
       call sp_gifticon_win_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectLunarDate" resultType="com.dalbit.event.vo.LunarVo">
-        /* Event.xml - selectLunarDate */
-        SELECT
-            concat(month (date), '월 ', day(date), '일') as lunarDate
-            , date_format(date, '%Y%m%d') date
-        FROM tbl_lunar_calendar
-        where date_format(now(), '%y%m%d') <![CDATA[<=]]> date
-        ORDER BY ABS(DATEDIFF(NOW(), DATE))
-        LIMIT 1
+    <select id="selectLunarDate" statementType="CALLABLE" resultType="com.dalbit.event.vo.LunarVo">
+        CALL sp_event_attend_lunar_select()
     </select>
 
-    <select id="selectPhotoList" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="com.dalbit.event.vo.PhotoEventOutputVo">
-        /* Event.xml - selectPhotoList */
-        select photo.idx
-            , photo.event_idx
-            , photo.mem_no
-            , photo.image_url
-            , photo.contents
-            , date_format(photo.reg_date, '%Y.%m.%d %H:%i') reg_date
-            , level.level
-            , profile.image_profile
-            , ifnull(basic.mem_nick, withdrawal.mem_nick) mem_nick
-        from rd_admin.tb_event_photo photo
-            inner join rd_data.tb_member_level level on photo.mem_no = level.mem_no
-            inner join rd_data.tb_member_profile profile on photo.mem_no = profile.mem_no
-            left join rd_data.tb_member_basic basic on photo.mem_no = basic.mem_no
-            left join rd_data.tb_member_withdrawal_bak withdrawal on photo.mem_no = withdrawal.mem_no
-        where photo.del_yn = 0
-            and photo.event_idx = #{event_idx}
-        <if test='slct_type == 1' >
-            and photo.mem_no = #{mem_no}
-        </if>
-        order by photo.reg_date desc
-
-        <if test='slct_type != 1' >
-            limit #{page}, #{records}
-        </if>
+    <select id="selectPhotoList" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="com.dalbit.event.vo.PhotoEventOutputVo">
+        CALL sp_event_photo_list(#{slct_type, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}
+                                , #{page, mode=IN, jdbcType=INTEGER}, #{records, mode=IN, jdbcType=INTEGER}, #{totalCnt, mode=OUT, jdbcType=INTEGER})
     </select>
 
-    <select id="selectPhotoCnt" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
-        /* Event.xml - selectPhotoCnt */
-        select count(*)
-        from rd_admin.tb_event_photo
-        where del_yn = 0
-            and event_idx = #{event_idx}
-        <if test='slct_type == 1' >
-            and mem_no = #{mem_no}
-        </if>
+    <select id="insertEventMember" statementType="CALLABLE" parameterType="com.dalbit.event.vo.EventMemberVo" resultType="int">
+        CALL sp_event_member_add(#{event_idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{platform, mode=IN, jdbcType=INTEGER}, #{event_member_idx, mode=OUT, jdbcType=INTEGER}, )
     </select>
-
-    <insert id="insertEventMember" parameterType="com.dalbit.event.vo.EventMemberVo">
-        /* Event.xml - insertEventMember */
-        <selectKey keyProperty="event_member_idx" resultType="int" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-        insert into rd_admin.tb_event_member(
-            event_idx
-            , mem_no
-            , platform
-            , enter_date
-            , reg_date
-            , op_name
-        )values(
-            #{event_idx}
-            , #{mem_no}
-            , #{platform}
-            , now()
-            , now()
-            , #{mem_no}
-        )
-    </insert>
 
     <select id="callEventApply" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call rd_data.sp_event_apply(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <update id="deleteEventMemberPhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
-        /* Event.xml - deleteEventMember */
-        update rd_admin.tb_event_member
-        set
-            del_yn = #{del_yn}
-            , last_op_name = #{mem_no}
-            , last_upd_date = now()
-        where idx = (select event_member_idx from rd_admin.tb_event_photo where idx = #{idx})
-    </update>
-
-    <insert id="insertPhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
-        /* Event.xml - insertPhoto */
-        insert into rd_admin.tb_event_photo(
-            event_idx
-            , event_member_idx
-            , mem_no
-            , image_url
-            , contents
-            , reg_date
-        )values(
-            #{event_idx}
-            , #{event_member_idx}
-            , #{mem_no}
-            , #{image_url}
-            , #{contents}
-            , now()
-        )
-    </insert>
-
-    <update id="updatePhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
-        /* Event.xml - updatePhoto */
-        update rd_admin.tb_event_photo
-        set
-            image_url = #{image_url}
-            , contents = #{contents}
-            , op_name = #{mem_no}
-            , last_upd_date = now()
-        where idx = #{idx}
-    </update>
-
-    <update id="deletePhoto" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
-        /* Event.xml - updatePhoto */
-        update rd_admin.tb_event_photo
-        set
-            del_yn = #{del_yn}
-            , op_name = #{mem_no}
-            , last_upd_date = now()
-        where idx = #{idx}
-    </update>
-
-    <select id="selectPhotoPcAirTime" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
-        select ifnull(sum(airtime), 0) airtime
-        from rd_data.tb_broadcast_room
-        where os_type = 3
-            and (select start_datetime from rd_admin.tb_event_basic where idx = #{event_idx}) <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> (select end_datetime from rd_admin.tb_event_basic where idx = #{event_idx})
-            and mem_no = #{mem_no}
+    <select id="deleteEventMemberPhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        CALL sp_event_member_photo_delete(#{idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{del_yn, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="selectEventBasic" parameterType="int" resultType="com.dalbit.event.vo.EventBasicVo">
-        /* Event.xml - selectEventBasic */
-        select
-            idx
-            , event_title
-            , start_datetime
-            , end_datetime
-            , view_start_datetime
-            , view_end_datetime
-            , platform
-            , event_slct
-            , is_pop
-            , is_view
-            , is_reply
-            , pc_img_url
-            , pc_link_url
-            , mobile_img_url
-            , mobile_link_url
-            , thumb_img_url
-            , `desc`
-            , reg_date
-            , op_name
-            , last_upd_date
-            , last_op_name
-        from rd_admin.tb_event_basic
-        where idx = #{idx}
+    <select id="insertPhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        CALL sp_event_photo_add(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{event_member_idx, mode=IN, jdbcType=INTEGER}
+                                , #{image_url, mode=IN, jdbcType=VARCHAR}, NULL, NULL
+                                , NULL, #{contents, mode=IN, jdbcType=VARCHAR}, NULL
+                                , NULL, NUL)
     </select>
 
-    <select id="selectKnowhowList" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="com.dalbit.event.vo.KnowhowEventOutputVo">
-        /* Event.xml - selectKnowhowList */
-        select photo.idx
-            , photo.event_idx
-            , photo.mem_no
-            , photo.image_url
-            , photo.image_url2
-            , photo.image_url3
-            , photo.title
-            , photo.contents
-            , photo.view_cnt
-            , photo.good_cnt
-            , photo.slct_device
-            , photo.device1
-            , photo.device2
-            , date_format(photo.reg_date, '%Y.%m.%d %H:%i') reg_date
-            , level.level
-            , profile.image_profile
-            , ifnull(basic.mem_nick, withdrawal.mem_nick) mem_nick
-            , ifnull((select count(*) from rd_admin.tb_event_good good where photo.event_idx = good.event_idx and good.mem_no = #{mem_no} and photo.idx = good.add_idx), 0) is_good
-        from rd_admin.tb_event_photo photo
-            inner join rd_data.tb_member_level level on photo.mem_no = level.mem_no
-            inner join rd_data.tb_member_profile profile on photo.mem_no = profile.mem_no
-            left join rd_data.tb_member_basic basic on photo.mem_no = basic.mem_no
-            left join rd_data.tb_member_withdrawal_bak withdrawal on photo.mem_no = withdrawal.mem_no
-        where photo.del_yn = 0
-            and photo.event_idx = #{event_idx}
-        <if test='slct_type == 1' >
-            and photo.mem_no = #{mem_no}
-        </if>
-
-        <if test='slct_platform == 1' >
-            and photo.slct_device in (1, 2)
-        </if>
-        <if test='slct_platform == 2' >
-            and photo.slct_device in (3, 4, 5)
-        </if>
-
-        <choose>
-            <when test='slct_order == 1'>
-                order by photo.good_cnt desc, photo.reg_date desc
-            </when>
-            <otherwise>
-                order by photo.reg_date desc
-            </otherwise>
-        </choose>
-
-        <if test='slct_type != 1' >
-            limit #{page}, #{records}
-        </if>
+    <select id="updatePhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        CALL sp_event_photo_update(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{idx, mode=IN, jdbcType=INTEGER}
+                                , #{image_url, mode=IN, jdbcType=VARCHAR}, NULL, NULL
+                                , NULL, #{contents, mode=IN, jdbcType=VARCHAR}, NULL
+                                , NULL, NULL)
     </select>
 
-    <select id="selectKnowhowDetail" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="com.dalbit.event.vo.KnowhowEventOutputVo">
-        /* Event.xml - selectKnowhowDetail */
-        select
-            photo.idx
-            , photo.event_idx
-            , photo.mem_no
-            , photo.image_url
-            , photo.image_url2
-            , photo.image_url3
-            , photo.title
-            , photo.contents
-            , photo.slct_device
-            , photo.device1
-            , photo.device2
-            , date_format(photo.reg_date, '%Y.%m.%d %H:%i') reg_date
-            , photo.view_cnt
-            , photo.good_cnt
-            , level.level
-            , profile.image_profile
-            , ifnull(basic.mem_nick, withdrawal.mem_nick) mem_nick
-            , ifnull((select count(*) from rd_admin.tb_event_good where event_idx = #{event_idx} and mem_no = #{mem_no} and add_idx = #{idx}), 0) is_good
-        from rd_admin.tb_event_basic evt
-            inner join rd_admin.tb_event_photo photo on evt.idx = photo.event_idx
-            inner join rd_data.tb_member_level level on photo.mem_no = level.mem_no
-            inner join rd_data.tb_member_profile profile on photo.mem_no = profile.mem_no
-            left join rd_data.tb_member_basic basic on photo.mem_no = basic.mem_no
-            left join rd_data.tb_member_withdrawal_bak withdrawal on photo.mem_no = withdrawal.mem_no
-        where photo.idx = #{idx}
-            and evt.idx = #{event_idx}
+    <select id="deletePhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        CALL sp_event_photo_delete(#{idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{del_yn, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <update id="updatePhotoViewCnt" parameterType="int">
-        /* Event.xml - updatePhotoViewCnt */
-        UPDATE rd_admin.tb_event_photo
-        SET
-          view_cnt = view_cnt + 1
-        WHERE
-          idx = #{idx}
-    </update>
-
-    <select id="selectKnowhowCnt" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="int">
-        /* Event.xml - selectKnowhowCnt */
-        select count(*)
-        from rd_admin.tb_event_photo
-        where del_yn = 0
-        and event_idx = #{event_idx}
-        <if test='slct_type == 1' >
-            and mem_no = #{mem_no}
-        </if>
-        <if test='slct_platform == 1' >
-            and slct_device in (1, 2)
-        </if>
-        <if test='slct_platform == 2' >
-            and slct_device in (3, 4, 5)
-        </if>
+    <select id="selectPhotoPcAirTime" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        CALL sp_event_pc_live_time(#{event_idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <insert id="insertKnowhow" parameterType="com.dalbit.event.vo.PhotoEventInputVo">
-        /* Event.xml - insertKnowhow */
-        insert into rd_admin.tb_event_photo(
-            event_idx
-            , event_member_idx
-            , mem_no
-            , image_url
-            , image_url2
-            , image_url3
-            , title
-            , contents
-            , slct_device
-            , device1
-            , device2
-            , reg_date
-        )values(
-            #{event_idx}
-            , #{event_member_idx}
-            , #{mem_no}
-            , #{image_url}
-            , #{image_url2}
-            , #{image_url3}
-            , #{title}
-            , #{contents}
-            , #{slct_device}
-            , #{device1}
-            , #{device2}
-            , now()
-        )
-    </insert>
+    <select id="selectEventBasic" statementType="CALLABLE" parameterType="int" resultType="com.dalbit.event.vo.EventBasicVo">
+        CALL sp_event_basic_view(#{idx, mode=IN, jdbcType=INTEGER})
+    </select>
 
-    <update id="updateKnowhow" parameterType="com.dalbit.event.vo.KnowhowEventInputVo">
-        /* Event.xml - updateKnowhow */
-        update rd_admin.tb_event_photo
-        set image_url = #{image_url, jdbcType=VARCHAR}
-            , image_url2 = #{image_url2, jdbcType=VARCHAR}
-            , image_url3 = #{image_url3, jdbcType=VARCHAR}
-            , title = #{title}
-            , contents = #{contents}
-            , slct_device = #{slct_device}
-            , device1 = #{device1}
-            , device2 = #{device2}
-            , op_name = #{mem_no}
-            , last_upd_date = now()
-        where idx = #{idx}
-            and mem_no = #{mem_no}
-            and event_idx = #{event_idx}
-    </update>
+    <select id="selectKnowhowList" statementType="CALLABLE" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="com.dalbit.event.vo.KnowhowEventOutputVo">
+        CALL sp_event_photo_all_list(#{slct_type, mode=IN, jdbcType=INTEGER}), #{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{page, mode=IN, jdbcType=INTEGER}, #{records, mode=IN, jdbcType=INTEGER}, #{slct_order, mode=IN, jdbcType=INTEGER}, #{slct_platform, mode=IN, jdbcType=INTEGER}, #{totalCnt, mode=OUT, jdbcType=INTEGER}
+    </select>
+
+    <select id="selectKnowhowDetail" statementType="CALLABLE" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="com.dalbit.event.vo.KnowhowEventOutputVo">
+        CALL sp_event_photo_view(#{event_idx, mode=IN, jdbcType=INTEGER}, #{idx, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="updatePhotoViewCnt" statementType="CALLABLE" parameterType="int" resultType="int">
+        CALL sp_event_photo_read_update(#{idx, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="insertKnowhow" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
+        CALL sp_event_photo_add(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{event_member_idx, mode=IN, jdbcType=INTEGER}
+                                , #{image_url, mode=IN, jdbcType=VARCHAR}, #{image_url2, mode=IN, jdbcType=VARCHAR}, #{image_url3, mode=IN, jdbcType=VARCHAR}
+                                , #{title, mode=IN, jdbcType=VARCHAR}, #{contents, mode=IN, jdbcType=VARCHAR}, #{slct_device, mode=IN, jdbcType=INTEGER}
+                                , #{device1, mode=IN, jdbcType=VARCHAR}, #{device2, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+    <select id="updateKnowhow" statementType="CALLABLE" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="int">
+        CALL sp_event_photo_update(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{idx, mode=IN, jdbcType=INTEGER}
+                                , #{image_url, mode=IN, jdbcType=VARCHAR}, #{image_url2, mode=IN, jdbcType=VARCHAR}, #{image_url3, mode=IN, jdbcType=VARCHAR}
+                                , #{title, mode=IN, jdbcType=VARCHAR}, #{contents, mode=IN, jdbcType=VARCHAR}, #{slct_device, mode=IN, jdbcType=INTEGER}
+                                , #{device1, mode=IN, jdbcType=VARCHAR}, #{device2, mode=IN, jdbcType=VARCHAR})
+    </select>
 
     <select id="callEventGood" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_event_good(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
@@ -509,16 +188,6 @@
     </select>
 
     <select id="selectTimeEventInfo" parameterType="com.dalbit.event.vo.TimeEventVo" resultType="com.dalbit.event.vo.TimeEventVo">
-        /* Event.xml - selectTimeEventInfo */
-        select
-            date_format(start_date, '%Y.%m.%d %H:%i:%s') as start_date
-            , date_format(end_date, '%Y.%m.%d %H:%i:%s') as end_date
-            , event_time as minute
-            , rate
-        from rd_data.tbl_time_event
-        where `state` = 0
-            and start_date <![CDATA[<=]]> now()
-            and now() <![CDATA[<=]]> end_date
-        limit 1
+        CALL sp_event_time_info()
     </select>
 </mapper>

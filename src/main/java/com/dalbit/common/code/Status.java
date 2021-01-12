@@ -199,6 +199,8 @@ public enum Status {
     일대일문의답변도착_OFF("0", "mypage.member.notify.edit.one.off.success", "1:1문의 답변 도착 OFF"),
     서비스알림_ON("0", "mypage.member.notify.edit.service.on.success", "서비스 알림 ON"),
     서비스알림_OFF("0", "mypage.member.notify.edit.service.off.success", "서비스 알림 OFF"),
+    방송시작알림_ON("0", "mypage.member.notify.edit.broadcast.start.on.success", "방송 시작 알림 ON"),
+    방송시작알림_OFF("0", "mypage.member.notify.edit.broadcast.start.off.success", "방송 시작 알림 OFF"),
 
     //회원 방송방 빠른말 가져오기
     회원방송방빠른말조회_성공("0", "mypage.member.shorucut.success", "회원 방송방 빠른말 가져오기 성공 시"),
@@ -1933,7 +1935,7 @@ public enum Status {
     랭킹반영설정_실패("C006", "rank.setting.fail", "랭킹 설정 실패 시"),
 
     //마이 플레이리스트 조회
-    플레이리스트_조회_성공("0", "my.playlist.select.success", "플레이리스트 조회 시"),
+    플레이리스트_조회_성공("C001", "my.playlist.select.success", "플레이리스트 조회 시"),
     플레이리스트_조회_실패("C006", "my.playlist.select.fail", "플레이리스트 조회 실패 시"),
 
     //마이 플레이리스트 추가
@@ -1949,6 +1951,25 @@ public enum Status {
     플레이리스트_수정_성공("0", "my.playlist.edit.success", "플레이리스트 수정 시"),
     플레이리스트_수정_회원아님("-1", "my.playlist.edit.member.number.error", "요청회원번호 회원 아닐 시"),
     플레이리스트_수정_실패("C006", "my.playlist.edit.fail", "플레이리스트 수정 실패 시"),
+
+    //명예의전당 조회
+    명예의전당_조회_성공("C001", "award.honor.select.success", "명예의 전당 조회 시"),
+    명예의전당_조회_실패("C006", "award.honor.select.fail", "명예의 전당 조회 실패 시"),
+
+    //알림받기 등록/해제
+    알림_등록("0", "recv.on.success", "알림 등록 시"),
+    알림_해제("0", "recv.off.success", "알림 해제 시"),
+    알림_회원아님("-1", "recv.member.number.error", "요청회원번호 회원 아닐 시"),
+    알림_실패("C006", "recv.fail", "랭킹 설정 실패 시"),
+
+    //알림회원 삭제
+    알림회원삭제_성공("0", "recv.delete.success", "알림회원 삭제 시"),
+    알림회원삭제_회원아님("-1", "recv.delete.member.number.error", "요청회원번호 회원 아닐 시"),
+    알림회원삭제_실패("C006", "recv.delete.fail", "알림회원 삭제 실패 시"),
+
+    //알림회원조회
+    알림회원조회_성공("C001", "recv.select.success", "알림회원 조회 시"),
+    알림회원조회_실패("C006", "recv.select.fail", "알림회원 조회 실패 시"),
    ;
 
 

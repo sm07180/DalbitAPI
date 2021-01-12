@@ -937,7 +937,7 @@ public class EventService {
         list.stream().parallel().forEach(item -> {
             item.setProfImg(new ImageVo(item.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
         });
-        int totCnt = eventDao.selectPhotoCnt(photoEventInputVo);
+        int totCnt = photoEventInputVo.getTotalCnt();
 
         HashMap map = new HashMap();
         map.put("list", list);
@@ -959,7 +959,8 @@ public class EventService {
             checkDuplJoin.setEvent_idx(EventCode.인증샷.getEventIdx());
             checkDuplJoin.setSlct_type(1);
             checkDuplJoin.setMem_no(MemberVo.getMyMemNo(request));
-            int totCnt = eventDao.selectPhotoCnt(checkDuplJoin);
+            eventDao.selectPhotoList(checkDuplJoin);
+            int totCnt = checkDuplJoin.getTotalCnt();
             if(0 < totCnt){
                 return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_이미참여));
             }
@@ -1074,10 +1075,11 @@ public class EventService {
         list.stream().parallel().forEach(item -> {
             item.setProfImg(new ImageVo(item.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
         });
-        int totCnt = eventDao.selectKnowhowCnt(knowhowEventInputVo);
+        int totCnt = knowhowEventInputVo.getTotalCnt();
 
         knowhowEventInputVo.setSlct_type(1);
-        int myCnt = eventDao.selectKnowhowCnt(knowhowEventInputVo);
+        eventDao.selectKnowhowList(knowhowEventInputVo);
+        int myCnt = knowhowEventInputVo.getTotalCnt();
 
         HashMap map = new HashMap();
         map.put("list", list);

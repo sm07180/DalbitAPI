@@ -4,10 +4,8 @@ import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.MessageInsertVo;
-import com.dalbit.member.vo.MemberVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,7 +21,7 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     ArrayList<BroadcastVo> selectBroadcastList(BroadcastVo broadcastVo);
-
+    @Transactional(readOnly = true)
     BroadcastDetailVo selectBroadcastSimpleInfo(SearchVo searchVo);
 
     ProcedureVo callBroadcastRoomExit(ProcedureVo procedureVo);
@@ -51,16 +49,16 @@ public interface AdminDao {
 
     // 신고 처리
     int declarationOperate(DeclarationVo declarationVo);
-
+    @Transactional(readOnly = true)
     MemberInfoVo getMemberInfo(String mem_no);
-
+    @Transactional(readOnly = true)
     BroadInfoVo getBroadInfo(String room_no);
 
     @Transactional(readOnly = true)
     ArrayList<LiveChatOutputVo> selectBroadcastLiveChatInfo(LiveChatInputVo liveChatInputVo);
 
     int updateState(DeclarationVo declarationVo);
-
+    @Transactional(readOnly = true)
     LiveChatProfileVo getLiveChatProfile(LiveChatProfileVo liveChatProfileVo);
 
     ProcedureVo callForceLeave(ProcedureVo procedureVo);
@@ -68,7 +66,7 @@ public interface AdminDao {
     int insertForceLeave_roomBlock(ForcedOutVo forcedOutVo);
 
     int insertContentsMessageAdd(MessageInsertVo messageInsertVo);
-
+    @Transactional(readOnly = true)
     ArrayList<ProfileVo> selectLiveListener(ProfileVo profileVo);
 
     // 통계
@@ -100,7 +98,6 @@ public interface AdminDao {
     @Transactional(readOnly = true)
     P_QuestionDetailOutputVo selectServiceCenterQnaState(P_QuestionOperateVo pQuestionOperateVo);
 
-    @Transactional(readOnly = true)
     ProcedureVo callServiceCenterQnaOperate(ProcedureVo procedureVo);
 
     int updateServiceCenterQnaUpdate(P_QuestionOperateVo pQuestionOperateVo);
@@ -120,7 +117,7 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     String selectAdminName(String mem_no);
-
+    @Transactional(readOnly = true)
     DeclarationVo selectRecentIdIp(DeclarationVo declarationVo);
 
     int insertBlock(DeclarationVo declarationVo);
@@ -164,7 +161,7 @@ public interface AdminDao {
 
     ProcedureVo callMemAdminMemoAdd(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     P_BroadcastDetailOutputVo callBroadcastInfo(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)

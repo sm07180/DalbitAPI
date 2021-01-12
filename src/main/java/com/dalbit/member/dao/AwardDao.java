@@ -10,7 +10,9 @@ import java.util.List;
 
 @Repository
 public interface AwardDao {
+    @Transactional(readOnly = true)
     List<P_AwardListVo> callAwardList(ProcedureVo procedureVo);
     ProcedureVo callAwardVote(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
     List<P_AwardVoteResultVo> callAwardVoteResult(ProcedureVo procedureVo);
 }

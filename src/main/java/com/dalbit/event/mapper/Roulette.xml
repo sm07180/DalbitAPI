@@ -22,20 +22,8 @@
       call sp_event_coupon_win_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectRouletteInfo" parameterType="com.dalbit.event.vo.request.RouletteInfoVo" resultType="com.dalbit.event.vo.request.RouletteInfoVo">
-        /* Roulette.xml - selectRouletteInfo */
-        select slct_type
-            , `set`
-            , item_no
-            , image_url
-            , bg_image_url
-            , pin_image_url
-            , start_image_url
-            , item_name
-            , item_win_msg
-        from rd_data.tbl_roulette_rel
-        where `set` = (select `set` from rd_data.tbl_roulette_rate rate limit 1)
-        order by item_no asc
+    <select id="selectRouletteInfo" statementType="CALLABLE" parameterType="com.dalbit.event.vo.request.RouletteInfoVo" resultType="com.dalbit.event.vo.request.RouletteInfoVo">
+        CALL sp_event_roulette_info()
     </select>
 
     <select id="callCouponHistory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.request.RouletteCouponHistVo">

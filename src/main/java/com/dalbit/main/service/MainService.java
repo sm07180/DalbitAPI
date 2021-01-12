@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -37,8 +38,12 @@ public class MainService {
     JoinDao joinDao;
     @Autowired
     BadgeService badgeService;
+
     @Autowired
     AdminService adminService;
+
+    @Value("${sso.header.cookie.name}")
+    private String SSO_HEADER_COOKIE_NAME;
 
     public String getMain(HttpServletRequest request){
         int isLogin = DalbitUtil.isLogin(request) ? 1 : 0;

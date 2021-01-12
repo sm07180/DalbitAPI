@@ -4,7 +4,6 @@ import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
-//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -53,6 +52,6 @@ public interface RoomDao {
 
     ProcedureVo callBroadCastRoomContinue(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_BadgeChangeListVo> changeBadge(ProcedureVo procedureVo);
 }

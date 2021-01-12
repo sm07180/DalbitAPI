@@ -416,12 +416,6 @@ public class CommonController {
         return commonService.connectGoogleNative(request);
     }
 
-    @PostMapping("/inforex/broadCheck")
-    public String broadCheck(HttpServletRequest request){
-        return commonService.selectNowBroadcast(request);
-    }
-
-
     /**
      * 방송주제 리스트 가져오기(사용중인 것만 가져옴)
      */

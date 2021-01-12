@@ -20,7 +20,7 @@ public interface ProfileDao {
     List<P_FanboardReplyVo> callMemberFanboardReply(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_FanRankingVo> callMemberFanRanking(ProcedureVo procedureVo);
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     ProcedureVo callMemberLevelUpCheck(ProcedureVo procedureVo);
     ProcedureVo callMemberFanboardEdit(ProcedureVo procedureVo);
 
@@ -34,7 +34,7 @@ public interface ProfileDao {
     List<P_FanListNewVo> callFanListNew(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    ProcedureVo callFanMemo(ProcedureVo procedureVo);
+    P_FanMemoVo callFanMemo(ProcedureVo procedureVo);
 
     ProcedureVo callFanMemoSave(ProcedureVo procedureVo);
 
@@ -44,7 +44,7 @@ public interface ProfileDao {
     List<P_StarListNewVo> callStarListNew(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    ProcedureVo callStarMemo(ProcedureVo procedureVo);
+    P_StarMemoVo callStarMemo(ProcedureVo procedureVo);
 
     ProcedureVo callStarMemoSave(ProcedureVo procedureVo);
 }

@@ -89,7 +89,7 @@ public class GuestService {
                     status = guestService.callGuestInviteCancel(inviteVo);
 
                 }else if("3".equals(mode) || "4".equals(mode) || "5".equals(mode)){ // 수락 | 거절 | 신청 방장번호 필요
-                    if(roomGuestInfo != null && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(roomGuestInfo, "title"))){
+                    if(roomGuestInfo != null /*&& !DalbitUtil.isEmpty(DalbitUtil.getStringMap(roomGuestInfo, "title"))*/){
                         if("3".equals(mode)) { // 수락
                             try{
                                 P_GuestInviteOkVo inviteOkVo = new P_GuestInviteOkVo(roomNo, 1, request);

@@ -162,182 +162,72 @@
       call sp_member_notification_read(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <update id="callReadALLNotification" parameterType="P_NotificationVo" >
-        UPDATE tb_member_notification
-			SET read_yn = 1
-		WHERE mem_no = #{mem_no}
-    </update>
-
-    <select id="selectMyByeolCnt" parameterType="String" resultType="long">
-        SELECT gold FROM tb_member_wallet WHERE mem_no = #{value}
+    <select id="callReadALLNotification" statementType="CALLABLE" parameterType="P_NotificationVo">
+        CALL sp_member_notification_all_read(#{mem_no, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectExistsSpecialReq" parameterType="String" resultType="int">
-        SELECT
-          COUNT(*)
-        FROM rd_admin.tb_req_special_dj
-        WHERE mem_no = #{value}
-          -- AND state = 1
-          <!-- 스페셜 DJ는 매달 신청을 받는다. -->
-          AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+    <select id="selectMyByeolCnt" statementType="CALLABLE" parameterType="String" resultType="long">
+        CALL sp_member_byeol_count(#{mem_no, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectExistsPhoneSpecialReq" parameterType="String" resultType="int">
-        SELECT
-          COUNT(*)
-        FROM rd_admin.tb_req_special_dj
-        WHERE mem_phone = #{value}
-          AND state = 1
-          <!-- 스페셜 DJ는 매달 신청을 받는다. -->
-          AND DATE_FORMAT(reg_date, '%Y%m') = DATE_FORMAT(now(), '%Y%m')
+    <select id="selectExistsSpecialReq" statementType="CALLABLE" parameterType="String" resultType="int">
+        CALL sp_member_special_dj_request_check(#{value, mode=IN, jdbcType=VARCHAR}, NULL)
     </select>
 
-    <insert id="insertSpecialReq" parameterType="P_SpecialDjReq">
-        INSERT INTO rd_admin.tb_req_special_dj(
-          mem_no
-          , mem_name
-          , mem_phone
-          , title
-          , contents
-          , broadcast_time1
-          , broadcast_time2
-          , reg_date
-          , state
-        ) values (
-          #{mem_no}
-          , #{name}
-          , #{phone}
-          , #{title}
-          , #{contents}
-          , #{broadcast_time1}
-          , #{broadcast_time2, jdbcType=VARCHAR}
-          , NOW()
-          , 1
+    <select id="selectExistsPhoneSpecialReq" statementType="CALLABLE" parameterType="String" resultType="int">
+        CALL sp_member_special_dj_request_check(NULL, #{value, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+    <select id="insertSpecialReq" statementType="CALLABLE" parameterType="P_SpecialDjReq">
+        CALL sp_member_special_dj_apply(
+            #{mem_no, mode=IN, jdbcType=INTEGER}
+            , #{name, mode=IN, jdbcType=VARCHAR}
+            , #{phone, mode=IN, jdbcType=VARCHAR}
+            , #{title, mode=IN, jdbcType=VARCHAR}
+            , #{contents, mode=IN, jdbcType=VARCHAR}
+            , #{broadcast_time1, mode=IN, jdbcType=VARCHAR}
+            , #{broadcast_time2, mode=IN, jdbcType=VARCHAR}
         )
-    </insert>
-
-    <select id="selectLevel" resultType="LevelVo">
-      SELECT
-        `level`
-        , grade
-        , ruby AS dal
-        , gold AS byeol
-      FROM tbl_level_exp
-      WHERE `level` > 0 ORDER BY `level` ASC
     </select>
 
-    <select id="callNewAlarm" parameterType="com.dalbit.member.vo.procedure.P_MemberNotifyVo" resultType="int">
-		SELECT COUNT(*) FROM tb_member_notification WHERE mem_no = #{mem_no} AND read_yn = '0'
+    <select id="selectLevel" statementType="CALLABLE" resultType="LevelVo">
+        CALL sp_level_list()
     </select>
 
-    <select id="selectSpecialDjBroadcastTime" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="long">
-        /* Mypage.xml - selectSpecialDjBroadcastTime */
-        select TRUNCATE(ifnull(sum(airtime), 0) / 3600, 0) airtime
-        from rd_data.tb_broadcast_room
-        where mem_no = #{mem_no}
-            and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+    <select id="callNewAlarm" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_MemberNotifyVo" resultType="int">
+        CALL sp_member_notification_new(#{mem_no, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="selectSpecialDjLikeCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
-        /* Mypage.xml - selectSpecialDjLikeCnt */
-        select sum(cnt)
-        from(
-            select count(*) cnt
-            from rd_data.tb_broadcast_room_good
-            where dj_mem_no = #{mem_no}
-                and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
-                and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
-
-            union all
-
-            select count(*) * 10
-            from rd_data.tb_member_broadcast_item item
-            where item.gifted_mem_no = #{mem_no}
-                and item_type = 2
-                and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> item.last_upd_date
-                and item.last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
-        ) a
+    <select id="selectSpecialDjBroadcastTime" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="long">
+        CALL sp_member_special_dj_broadcast_time(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectSpecialDjBroadcastCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
-        /* Mypage.xml - selectSpecialDjBroadcastCnt */
-        select count(*)
-        from rd_data.tb_broadcast_room
-        where mem_no = #{mem_no}
-            and 5400 <![CDATA[<=]]> airtime
-            and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> start_date
-            and start_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+    <select id="selectSpecialDjLikeCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
+        CALL sp_member_special_dj_like_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectSpecialDjReqManage" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjRegManageVo">
-        /* Mypage.xml - selectSpecialDjReqManage */
-        select
-            idx
-            , title
-            , select_year
-            , select_month
-            , date_format(req_start_date, '%Y%m%d000000') req_start_date
-            , date_format(req_end_date, '%Y%m%d235959') req_end_date
-            , date_format(condition_start_date, '%Y.%m.%d') condition_start_date
-            , date_format(condition_end_date, '%Y.%m.%d') condition_end_date
-            , condition_code1
-            , condition_data1
-            , condition_code2
-            , condition_data2
-            , condition_code3
-            , condition_data3
-            , is_view
-            , platform
-        from rd_admin.tb_req_special_dj_manage
-        where select_year = #{select_year}
-            and select_month = #{select_month}
+    <select id="selectSpecialDjBroadcastCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
+        CALL sp_member_special_dj_broadcast_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectSpecialDjReqContent" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjContentVo">
-        /* Mypage.xml - selectSpecialDjReqContent */
-        select
-            content_type
-            , image_pc_url
-            , image_mobile_url
-            , button_type
-            , button_name
-            , button_name_color
-            , button_color
-            , button_pc_link
-            , button_mobile_link
-        from rd_admin.tb_req_special_dj_content
-        where select_year = #{select_year}
-            and select_month = #{select_month}
-        order by content_order asc
+    <select id="selectSpecialDjReqManage" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjRegManageVo">
+        CALL sp_special_dj_manage(#{select_year, mode=IN, jdbcType=VARCHAR}, #{select_month, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectMemberLevel" parameterType="java.lang.String" resultType="com.dalbit.admin.vo.MemberInfoVo">
-        /* Mypage.xml - selectMemberLevel */
-        select
-            mem_no
-            , `level`
-            , grade
-            , exp
-            , last_upd_date
-        from rd_data.tb_member_level
-        where mem_no = #{mem_no}
+    <select id="selectSpecialDjReqContent" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjRegManageVo" resultType="com.dalbit.member.vo.SpecialDjContentVo">
+        CALL sp_special_dj_manage_content(#{select_year, mode=IN, jdbcType=VARCHAR}, #{select_month, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectMemberFanCnt" parameterType="java.lang.String" resultType="int">
-        /* Mypage.xml - selectMemberFanCnt */
-        select count(*)
-        from rd_data.tb_member_fanstar
-        where mem_no_star = #{mem_no}
+    <select id="selectMemberLevel" statementType="CALLABLE" parameterType="java.lang.String" resultType="com.dalbit.admin.vo.MemberInfoVo">
+        CALL sp_member_special_dj_level(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="selectListenerCnt" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
-        /* Mypage.xml - selectMemberLevel */
-        select ifnull(sum(listener), 0)
-        from rd_data.tb_member_broadcast_broadcasting
-        where mem_no = #{mem_no}
-            and DATE_FORMAT(concat(#{condition_start_date}, ' 00:00:00'), '%Y-%m-%d %H:%i:%s') <![CDATA[<=]]> last_upd_date
-            and last_upd_date <![CDATA[<=]]> DATE_FORMAT(concat(#{condition_end_date}, ' 23:59:59'), '%Y-%m-%d %H:%i:%s')
+    <select id="selectMemberFanCnt" statementType="CALLABLE" parameterType="java.lang.String" resultType="int">
+        CALL sp_member_special_dj_fan_count(#{value, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="selectListenerCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
+        CALL sp_member_special_dj_listener_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
     </select>
 
     <select id="memberShortCutAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
@@ -373,72 +263,28 @@
         call sp_member_notification_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectEmoticonCategory" resultType="com.dalbit.member.vo.EmoticonCategoryListVo">
-         SELECT
-            idx as idx
-            ,category_order as categoryOrderNo
-            ,category_nm as categoryNm
-        FROM rd_admin.tbl_emoticon_category
-        ORDER BY category_order
+    <select id="selectEmoticonCategory" statementType="CALLABLE" resultType="com.dalbit.member.vo.EmoticonCategoryListVo">
+        CALL sp_emoticon_category()
     </select>
 
-    <select id="selectMyPageNew" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-        SELECT
-            (CASE
-                WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT COUNT(*) FROM tb_member_fanboard WHERE mem_no = #{myMemNo} AND STATUS &lt;&gt; 2 AND idx &gt; #{fanBoard} AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
-                ELSE
-                    (SELECT COUNT(*) FROM tb_member_fanboard WHERE mem_no = #{targetMemNo} AND STATUS &lt;&gt; 2 AND DATEDIFF(now(), last_upd_date ) &lt;= 7 and depth = 1 and view_yn = 1)
-            END) AS fanBoard,
-            (CASE
-                WHEN #{myMemNo} = #{targetMemNo} THEN
-                    0
-                ELSE
-                    (SELECT COUNT(*) FROM tb_member_broadcast_notice WHERE mem_no = #{targetMemNo} AND DATEDIFF(now(), last_upd_date ) &lt;= 7)
-            END)AS broadNotice,
-            (CASE
-                WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT COUNT(*) FROM tb_member_wallet_ruby WHERE mem_no = #{myMemNo} AND idx &gt; #{dal} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0)
-                ELSE 0
-            END) AS dal,
-            (CASE
-                WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT COUNT(*) FROM tb_member_wallet_gold WHERE mem_no = #{myMemNo} and idx &gt; #{byeol} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0)
-                ELSE 0
-            END) AS byeol,
-            <if test = 'notice == null or notice == ""'>
-                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt; 7)
-            </if>
-            <if test = 'notice != null and notice != ""'>
-                (SELECT COUNT(*) FROM tb_service_center_notice WHERE view_on = 1 AND DATEDIFF(now(), last_upd_date ) &lt; 7 AND idx NOT IN (${notice}))
-            </if>
-            AS notice,
-            (CASE
-                WHEN #{myMemNo} = #{targetMemNo} THEN
-            <if test = 'qna == null or qna == ""'>
-                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND delete_yn = 'n' AND DATEDIFF(now(), op_date ) &lt;= 7)
-            </if>
-            <if test = 'qna != null and qna != ""'>
-                    (SELECT COUNT(*) FROM tb_service_center_qna_v25 WHERE mem_no = #{myMemNo} AND state = 1 AND delete_yn = 'n' AND DATEDIFF(now(), op_date ) &lt;= 7 AND idx NOT IN (${qna}))
-            </if>
-                ELSE 0
-            END) AS qna,
-            (CASE
-                WHEN #{myMemNo} = #{targetMemNo} THEN
-                    (SELECT COUNT(*) FROM tb_member_notification WHERE mem_no = #{mem_no} AND read_yn = 0)
-                ELSE
-                    0
-            END) AS alarm
+    <select id="selectMyPageNew" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+        CALL sp_member_mypage_new_count(
+            #{myMemNo, mode=IN, jdbcType=INTEGER}
+            , #{targetMemNo, mode=IN, jdbcType=INTEGER}
+            , #{fanBoard, mode=IN, jdbcType=INTEGER}
+            , #{dal, mode=IN, jdbcType=INTEGER}
+            , #{byeol, mode=IN, jdbcType=INTEGER}
+            , #{notice, mode=IN, jdbcType=VARCHAR}
+            , #{qna, mode=IN, jdbcType=VARCHAR}
+        )
     </select>
 
     <select id="selectMyPageFanBoard" parameterType="String" resultType="Long">
-        SELECT MAX(idx) as fanBoard FROM tb_member_fanboard WHERE mem_no = ${value} AND STATUS &lt;&gt; 2
+        CALL sp_member_mypage_fanboard_max(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="selectMyPageWallet" parameterType="String" resultType="java.util.HashMap">
-        SELECT
-            (SELECT MAX(idx) FROM tb_member_wallet_ruby WHERE mem_no = ${value} AND `type` IN (5, 7, 10, 11, 12, 22, 23) AND ruby &gt; 0) AS dal,
-            (SELECT MAX(idx) FROM tb_member_wallet_gold WHERE mem_no = ${value} AND `type` IN (2, 4, 6, 21, 22, 23) AND gold &gt; 0) AS byeol
+        CALL sp_member_mypage_wallet_max(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callBroadcastTitleAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
@@ -502,7 +348,7 @@
     </select>
 
     <select id="selectIsSpecial" parameterType="String" resultType="Integer">
-        SELECT specialdj_badge FROM tb_member_profile WHERE mem_no = #{value};
+        CALL sp_member_is_special_dj(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callExchangeCancel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

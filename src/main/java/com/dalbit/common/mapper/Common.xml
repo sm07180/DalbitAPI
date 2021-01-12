@@ -9,34 +9,18 @@
       	call sp_code_define_select
     </select>
 
-    <insert id="requestSms" parameterType="SmsVo" useGeneratedKeys="true" keyProperty="CMID" keyColumn="CMID">
-        <selectKey keyProperty="CMID" resultType="int" order="AFTER">
-            SELECT LAST_INSERT_ID()
-        </selectKey>
-      	INSERT INTO hp_msg(
-          UMID
-          , MSG_TYPE
-          , SEND_PHONE
-          , DEST_PHONE
-          , SUBJECT
-          , MSG_BODY
-          , VXML_FILE
-          , mem_no
-          , request_time
-          , send_time
-        ) values(
-          #{umId}
-          , '0'
-          , #{sendPhoneNo}
-          , #{phoneNo}
-          , 'TEST'
-          , CONCAT('[',#{text},'] 인증번호는 (', #{code}, ') 입니다.')
-          , #{authType}
-          , #{memNo}
-          , now()
-          , now()
+    <select id="requestSms" statementType="CALLABLE" parameterType="SmsVo">
+        CALL sp_auth_sms_send(
+            #{umId, mode=IN, jdbcType=VARCHAR}
+            , #{sendPhoneNo, mode=IN, jdbcType=VARCHAR}
+            , #{phoneNo, mode=IN, jdbcType=VARCHAR}
+            , #{text, mode=IN, jdbcType=VARCHAR}
+            , #{code, mode=IN, jdbcType=VARCHAR}
+            , #{authType, mode=IN, jdbcType=VARCHAR}
+            , #{memNo, mode=IN, jdbcType=INTEGER}
+            , #{CMID, mode=OUT, jdbcType=INTEGER}
         )
-    </insert>
+    </select>
 
     <select id="callMemberCertification" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
       call sp_member_certification(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
@@ -58,226 +42,55 @@
       call sp_member_push_click_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectItemList" parameterType="P_ItemVo" resultType="ItemVo">
-        /* Common.xml - selectItemList */
-        SELECT
-                item_code         AS itemNo
-                , item_name         AS itemNm
-                , (CASE
-                    WHEN use_area = '1' THEN IF(item_slct = 2, 'particle', IF(item_code = #{direct}, 'direct', 'ani'))
-                    WHEN use_area = '2' THEN 'sticker'
-                    ELSE IF(item_code IN <foreach collection="directs" item="v" open="(" close=")" separator=",">#{v}</foreach>, 'direct', 'ani')
-                END) AS `type`
-                , item_price        AS cost
-                , item_thumbnail    AS thumbs
-                , webp_image        AS webpUrl
-                , webp_file_name    AS webpFileName
-                , jason_image       AS lottieUrl
-                , jason_file_name   AS lottieFileName
-                , sound_url         AS soundFileUrl
-                , sound_file_name   AS soundFileName
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 360
-                    WHEN use_area = '2' THEN 108
-                    WHEN use_area = '3' THEN 720
-                    WHEN use_area = '5' THEN 720
-                END) AS width
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 900
-                    WHEN use_area = '2' THEN 108
-                    WHEN use_area = '3' THEN 504
-                    WHEN use_area = '5' THEN 1080
-                END) AS height
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 0.5
-                    WHEN use_area = '2' THEN 1
-                    WHEN use_area = '3' THEN 1
-                    WHEN use_area = '5' THEN 1
-                END) AS deviceRate
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 1
-                    WHEN use_area = '2' THEN 1
-                    WHEN use_area = '3' THEN 1
-                    WHEN use_area = '5' THEN 1
-                END) AS widthRate
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 2.5
-                    WHEN use_area = '2' THEN 1
-                    WHEN use_area = '3' THEN 0.7
-                    WHEN use_area = '5' THEN 1.5
-                END) AS heightRate
-                , (CASE
-                    WHEN use_area = '2' THEN 'midLeft'
-                    WHEN use_area = '3' THEN 'topLeft'
-                    WHEN use_area = '5' THEN 'topLeft'
-                    ELSE 'bottomRight'
-                END) AS location
-                , play_time         AS duration
-                , (CASE
-                    WHEN use_area = '2' THEN 'combo'
-                    WHEN use_area = '1' THEN 'emotion'
-                    ELSE 'normal'
-                END)AS category
-                , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
-                , (CASE
-                    WHEN item_code = 'G1827' OR jason_image IS NULL OR jason_image = '' THEN 'webp'
-                    ELSE 'lottie'
-                END) AS iosSelectType
-                , IF(item_code IN <foreach collection="visibilityDirects" item="v" open="(" close=")" separator=",">#{v}</foreach>, false, true) AS visibility
-                , @rownum := @rownum + 1 AS sortNo
-        FROM rd_data.tbl_gift_item a, (SELECT @rownum := 0 ) AS f
-        WHERE view_yn = 1
-            AND item_code NOT IN (#{booster}, #{levelUp})
-            AND item_slct = #{item_slct}
-            AND platform like #{platform}
-        <!--ORDER BY (CASE
-            WHEN item_code = #{direct} THEN 0
-            ELSE 1
-        END) DESC, isNew DESC, item_price ASC, item_name ASC -->
-        <!--ORDER BY (CASE
-            WHEN item_code IN <foreach collection="directs" item="v" open="(" close=")" separator=",">#{v}</foreach> THEN 0
-            ELSE 1
-        END) DESC, isNew DESC , `order` ASC, item_price DESC-->
-        ORDER BY `order` ASC, item_price DESC
+    <select id="selectItemList" statementType="CALLABLE" parameterType="P_ItemVo" resultType="ItemVo">
+        CALL sp_gift_item_select(
+            #{jsonDirects, mode=IN, jdbcType=VARCHAR}
+            , #{jsonVisibilityDirects, mode=IN, jdbcType=VARCHAR}
+            , #{direct, mode=IN, jdbcType=VARCHAR}
+            , #{booster, mode=IN, jdbcType=VARCHAR}
+            , #{levelUp, mode=IN, jdbcType=VARCHAR}
+            , #{item_slct, mode=IN, jdbcType=INTEGER}
+            , #{platform, mode=IN, jdbcType=VARCHAR}
+            , NULL
+        )
     </select>
 
-    <select id="selectBooster" parameterType="String" resultType="ItemVo">
-        /* Common.xml - selectBooster */
-        SELECT
-                item_code         AS itemNo
-                , item_name         AS itemNm
-                , (CASE
-                    WHEN use_area = '1' THEN 'particle'
-                    WHEN use_area = '2' THEN 'sticker'
-                    ELSE 'ani'
-                END) AS `type`
-                , item_price        AS cost
-                , item_thumbnail    AS thumbs
-                , webp_image        AS webpUrl
-                , jason_image       AS lottieUrl
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 360
-                    WHEN use_area = '2' THEN 108
-                    WHEN use_area = '3' THEN 720
-                    WHEN use_area = '5' THEN 720
-                END) AS width
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 900
-                    WHEN use_area = '2' THEN 108
-                    WHEN use_area = '3' THEN 504
-                    WHEN use_area = '5' THEN 1080
-                END) AS height
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 0.5
-                    WHEN use_area = '2' THEN 1
-                    WHEN use_area = '3' THEN 1
-                    WHEN use_area = '5' THEN 1
-                END) AS deviceRate
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 1
-                    WHEN use_area = '2' THEN 1
-                    WHEN use_area = '3' THEN 1
-                    WHEN use_area = '5' THEN 1
-                END) AS widthRate
-                , (CASE
-                    WHEN use_area in ('1', '4') THEN 2.5
-                    WHEN use_area = '2' THEN 1
-                    WHEN use_area = '3' THEN 0.7
-                    WHEN use_area = '5' THEN 1.5
-                END) AS heightRate
-                , (CASE
-                    WHEN use_area = '2' THEN 'midLeft'
-                    WHEN use_area = '3' THEN 'topLeft'
-                    WHEN use_area = '5' THEN 'topLeft'
-                    ELSE 'bottomRight'
-                END) AS location
-                , play_time         AS duration
-                , (CASE
-                    WHEN use_area = '2' THEN 'combo'
-                    WHEN use_area = '1' THEN 'emotion'
-                    ELSE 'normal'
-                END)AS category
-                , (DATEDIFF(NOW(), IFNULL(reg_date, '2020-01-01')) &lt; 8) AS isNew
-                , 1 AS sortNo
-        FROM rd_data.tbl_gift_item
-        WHERE item_code = #{value}
+    <select id="selectBooster" statementType="CALLABLE" parameterType="String" resultType="ItemVo">
+        CALL sp_gift_item_select(
+            NULL
+            , NULL
+            , NULL
+            , NULL
+            , NULL
+            , NULL
+            , NULL
+            , #{value, mode=IN, jdbcType=VARCHAR}
+        )
     </select>
 
-    <select id="selectItem" parameterType="String" resultType="ItemDetailVo">
-        /* Common.xml - selectItem */
-        SELECT
-                item_code         AS itemNo
-                , item_name         AS itemNm
-                , item_price        AS cost
-                , item_thumbnail    AS thumbs
-                , webp_image        AS webpUrl
-                , jason_image       AS lottieUrl
-                , byeol
-                , sound_url         AS soundFileUrl
-        FROM rd_data.tbl_gift_item
-        WHERE view_yn = 1
-          AND item_code = #{value}
+    <select id="selectItem" statementType="CALLABLE" parameterType="String" resultType="ItemDetailVo">
+        CALL sp_gift_item_select(
+            NULL
+            , NULL
+            , NULL
+            , NULL
+            , NULL
+            , NULL
+            , NULL
+            , #{value, mode=IN, jdbcType=VARCHAR}
+        )
     </select>
 
-    <select id="selectAppVersion" parameterType="Integer" resultType="AppVersionVo">
-        /* Common.xml - selectAppVersion */
-        SELECT
-            version
-            , build_no AS buildNo
-            , upBuild_no AS upBuildNo
-        FROM rd_admin.tb_app_version
-        WHERE os = #{value}
-            AND is_use = 1
-        ORDER BY IDX DESC
-        LIMIT 0, 1
+    <select id="selectAppVersion" statementType="CALLABLE" parameterType="Integer" resultType="AppVersionVo">
+        CALL sp_app_version_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="banWordSelect" parameterType="String" resultType="BanWordVo">
-        /* Common.xml - banWordSelect */
-        SELECT
-            ban_word AS banWord
-        FROM tbl_banword
-        WHERE is_use = 1
-        ORDER BY idx DESC
-        limit 0, 1
+    <select id="banWordSelect" statementType="CALLABLE" parameterType="String" resultType="BanWordVo">
+        CALL sp_ban_word_system()
     </select>
 
-    <select id="broadcastBanWordSelect" parameterType="BanWordVo" resultType="BanWordVo">
-        /* Common.xml - broadcastBanWordSelect */
-        SELECT
-            ban_word AS banWord
-        FROM tb_member_broadcast_banword
-        WHERE 1=1
-        <choose>
-            <when test='memNo != null and memNo != ""'>
-                AND mem_no = #{memNo}
-            </when>
-            <when test='roomNo != null and roomNo != ""'>
-                AND mem_no = (select mem_no from tb_broadcast_room where room_no = #{roomNo})
-            </when>
-            <otherwise>
-                AND mem_no = '99999999999999'
-            </otherwise>
-        </choose>
-    </select>
-
-    <select id="selectNowBroadcast" parameterType="String" resultType="NowBroadcastVo">
-        SELECT
-            @isInforex := IFNULL((SELECT `inner` FROM tb_member_basic WHERE mem_no = #{value}), 0) AS isInforex
-            , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room WHERE state &lt; 4), 0) AS roomCnt
-            , IF(@isInforex = 1, (SELECT COUNT(*) FROM tb_broadcast_room a INNER JOIN tb_broadcast_room_member b ON a.room_no = b.room_no AND a.state &lt; 4 AND b.auth &lt; 3 AND b.state = 0), 0) AS listenerCnt
-    </select>
-
-    <select id="selectCodeDefine" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
-        /* Common.xml - selectCodeDefine */
-        SELECT `type` as cd
-            , `value` as `value`
-            , code    as cdNm
-            , `order` as sortNo
-            , is_use  as isUse
-        FROM rd_data.tbl_code_define
-        where `type` = #{cd}
-            and code = #{cdNm}
+    <select id="broadcastBanWordSelect" statementType="CALLABLE" parameterType="BanWordVo" resultType="BanWordVo">
+        CALL sp_ban_word_broadcast(#{memNo, mode=IN, jdbcType=INTEGER}, #{roomNo, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callMemberBadgeSelect" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.FanBadgeVo">
@@ -296,67 +109,12 @@
       call sp_member_badge_frame(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <update id="updateMemberCertification" parameterType="P_SelfAuthVo">
-        /* Common.xml - updateMemberCertification */
-        UPDATE rd_data.tb_member_certification
-        SET parents_agree_yn = 'y'
-            , parents_name = #{name}
-            , parents_phone = #{phoneNum}
-            , parents_sex = #{memSex}
-            , parents_birth_year = #{birthYear}
-            , parents_birth_month = #{birthMonth}
-            , parents_birth_day = #{birthDay}
-            , parents_comm_company = #{commCompany}
-            , parents_foreign_yn = #{foreignYN}
-            , parents_cert_code = #{certCode}
-            , parents_agree_term = #{parents_agreeTerm}
-            , parents_agree_dt = #{parents_agreeDt}
-            , recant_yn = 'n'
-            , expire_yn = 'n'
-        WHERE mem_no = #{mem_no}
+    <update id="updateMemberCertification" statementType="CALLABLE" parameterType="ProcedureVo">
+        CALL sp_member_certification_parents_update(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </update>
 
-    <update id="updateMemberCertificationFile" parameterType="P_SelfAuthVo">
-        /* Common.xml - updateMemberCertificationFile */
-        UPDATE rd_data.tb_member_certification
-        SET add_file = #{add_file}
-        WHERE mem_no = #{mem_no}
-    </update>
-
-    <select id="getMembirth" parameterType="String" resultType="com.dalbit.common.vo.AdultCheckVo">
-        SELECT
-            mem_no as memNo
-            , mem_birth_year
-            , LPAD(mem_birth_month, 2, '0') as mem_birth_month
-            , LPAD(mem_birth_day, 2, '0') as mem_birth_day
-        FROM tb_member_certification
-        where mem_no = #{value}
-    </select>
-
-    <select id="selectTypeCodeList" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
-        SELECT
-            `type`    as cd
-            , `value` as `value`
-            , code    as cdNm
-            , `order` as sortNo
-            , is_use  as isUse
-        FROM rd_data.tbl_code_define
-        WHERE `type` = #{cd}
-          AND is_use = '1'
-        ORDER BY sortNo asc
-    </select>
-
-    <select id="selectExchangeBankCodeList" parameterType="com.dalbit.common.vo.CodeVo" resultType="com.dalbit.common.vo.CodeVo">
-        SELECT
-            `type`    as cd
-            , `value` as `value`
-            , code    as cdNm
-            , `order` as sortNo
-            , is_use  as isUse
-        FROM rd_data.tbl_code_define
-        WHERE `type` = #{cd}
-          AND is_use = '1'
-        ORDER BY sortNo asc
+    <select id="getMembirth" statementType="CALLABLE" parameterType="String" resultType="com.dalbit.common.vo.AdultCheckVo">
+        CALL sp_member_cert_birth(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="callBroadCastRoomRank3" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_KingFanRankListVo">
@@ -367,9 +125,7 @@
         call sp_member_sleep_withdrawal_date(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
-    <select id="getDownloadList" resultType="java.lang.String">
-        SELECT enterAni FROM tbl_badge_info WHERE enterAni IS NOT NULL AND enterAni != ''
-        UNION
-        SELECT sound_url FROM tbl_gift_item WHERE sound_url IS NOT NULL AND sound_url != ''
+    <select id="getDownloadList" statementType="CALLABLE" resultType="java.lang.String">
+        CALL sp_app_splash_download()
     </select>
 </mapper>
