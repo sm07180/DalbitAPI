@@ -71,7 +71,6 @@ public interface ClipDao {
 
     ProcedureVo callPlayConfirm(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
     List<P_ClipRecommendListOutputVo> callClipRecommendList(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_ClipRecommendLeaderListVo> callClipRecommendLeaderList(ProcedureVo procedureVo);
