@@ -3,6 +3,7 @@ package com.dalbit.common.service;
 import com.dalbit.common.dao.AdbrixDao;
 import com.dalbit.common.vo.AdbrixLayoutVo;
 import com.dalbit.common.vo.AdbrixVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +21,7 @@ public class AdbrixService {
 
         AdbrixLayoutVo adbrixLayoutVo = new AdbrixLayoutVo();
         adbrixLayoutVo.setEventName(eventName);
-        adbrixLayoutVo.setAttr(adbrixVo);
+        adbrixLayoutVo.setAttr(DalbitUtil.isEmpty(adbrixVo) ? new AdbrixVo() : adbrixVo);
 
         /*if(adbrixVo.getKorAge() < 10){
             adbrixVo.setAge("0~9세");
