@@ -1220,16 +1220,18 @@ public class ClipService {
                     outVoList.add(new ClipRecommendListOuputVo(listVo.get(i)));
                 }
             }
+            String minDate="";
             if(!DalbitUtil.isEmpty(leaderListVo) && Integer.parseInt(procedureVo1.getRet()) > 0) {
                 for(int i=0; i<leaderListVo.size(); i++) {
                     leaderList.add(new ClipRecommendLeaderListVo(leaderListVo.get(i)));
+                    minDate = leaderList.get(i).getRecDate();
                 }
             }
 
             P_ClipRecommendInfoVo infoVo = new Gson().fromJson(procedureVo.getExt(), P_ClipRecommendInfoVo.class);
             ClipRecommendInfoVo recommendInfo = new ClipRecommendInfoVo(infoVo);
-            P_ClipRecommendLeaderExtVo minDateVo = new Gson().fromJson(procedureVo1.getExt(), P_ClipRecommendLeaderExtVo.class);
-            String minDate = minDateVo.getMinRecDate().replace(" 00:00:00", "");
+            //P_ClipRecommendLeaderExtVo minDateVo = new Gson().fromJson(procedureVo1.getExt(), P_ClipRecommendLeaderExtVo.class);
+            //String minDate = minDateVo.getMinRecDate().replace(" 00:00:00", "");
             Collections.reverse(leaderList);
             resultMap.put("recommendInfo", recommendInfo);
             resultMap.put("list", outVoList);
