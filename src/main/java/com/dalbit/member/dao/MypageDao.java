@@ -153,7 +153,7 @@ public interface MypageDao {
     //@Transactional(readOnly = true)
     List<EmoticonCategoryListVo> selectEmoticonCategory();
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     HashMap selectMyPageNew(HashMap params);
 
     //@Transactional(readOnly = true)
