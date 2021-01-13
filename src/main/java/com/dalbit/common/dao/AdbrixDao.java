@@ -7,7 +7,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 public interface AdbrixDao {
 
-    @Transactional(readOnly = true)
     AdbrixVo getMakeAdbrixData(String memNo);
 
 }
