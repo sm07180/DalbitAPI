@@ -132,7 +132,7 @@ public interface MypageDao {
     //@Transactional(readOnly = true)
     List<LevelVo> selectLevel();
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     int callNewAlarm(P_MemberNotifyVo pMemberNotifyVo);
 
     ProcedureVo memberShortCutAdd(ProcedureVo procedureVo);
