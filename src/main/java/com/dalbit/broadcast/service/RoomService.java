@@ -347,7 +347,7 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     public String callBroadCastRoomList(P_RoomListVo pRoomListVo, HttpServletRequest request){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         long st = (new Date()).getTime();
@@ -386,7 +386,8 @@ public class RoomService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         roomList.put("list", procedureOutputVo.getOutputBox());
         roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
-        roomList.put("isGreenMoon", DalbitUtil.getIntMap(resultMap, "greenMoon") == 1 ? true : false);
+        //roomList.put("isGreenMoon", DalbitUtil.getIntMap(resultMap, "greenMoon") == 1 ? true : false);
+        roomList.put("isGreenMoon", false);
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());
