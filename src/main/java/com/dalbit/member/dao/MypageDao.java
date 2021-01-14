@@ -197,6 +197,9 @@ public interface MypageDao {
     List<P_StoryVo> callMemberBoardStory(ProcedureVo procedureVo);
 
     //@Transactional(readOnly = true)
+    List<P_StorySendVo> callMemberBoardStorySend(ProcedureVo procedureVo);
+
+    //@Transactional(readOnly = true)
     List<P_WalletListVo> callWalletList(ProcedureVo procedureVo);
 
     //@Transactional(readOnly = true)

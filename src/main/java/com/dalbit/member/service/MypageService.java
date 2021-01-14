@@ -2381,6 +2381,38 @@ public class MypageService {
         return result;
     }
 
+    /**
+     * 사연모아보기 (청취자)
+     */
+    public HashMap callMemberBoardStorySend(StoryVo storyVo, HttpServletRequest request) {
+        HashMap result = new HashMap();
+
+        P_StoryVo pStoryVo = new P_StoryVo(storyVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pStoryVo);
+
+        List<P_StorySendVo> storyList = mypageDao.callMemberBoardStorySend(procedureVo);
+        if(Status.방송방사연_조회_실패.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", Status.방송방사연_조회_실패);
+        }else if(Status.방송방사연_조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", Status.방송방사연_조회_회원아님);
+        }else{
+            List<StorySendOutVo> outList = new ArrayList<>();
+            if(DalbitUtil.isEmpty(storyList)){
+                result.put("status", Status.방송방사연_조회_없음);
+            }else{
+                result.put("status", Status.방송방사연_조회_성공);
+                for(P_StorySendVo data : storyList){
+                    outList.add(new StorySendOutVo(data, DalbitUtil.getProperty("server.photo.url")));
+                }
+            }
+            HashMap data = new HashMap();
+            data.put("list", outList);
+            data.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), storyVo.getPage(), storyVo.getRecords()));
+            result.put("data", data);
+        }
+
+        return result;
+    }
 
     /**
      * 내지갑 달&별 팝업 리스트 & 건수
