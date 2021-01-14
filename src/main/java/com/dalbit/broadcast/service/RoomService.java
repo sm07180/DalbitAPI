@@ -347,7 +347,7 @@ public class RoomService {
     /**
      * 방송방 리스트
      */
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     public String callBroadCastRoomList(P_RoomListVo pRoomListVo, HttpServletRequest request){
         ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
         long st = (new Date()).getTime();
