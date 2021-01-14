@@ -66,7 +66,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/broad/vw/broadcast/hook"
         , "/broad/share", "/clip/share"
         , "/broad/moon/check"
-        , "/broad/list/bySocket"
+        , "/socket/dbCheck/bySocket"
     };
 
     @Override

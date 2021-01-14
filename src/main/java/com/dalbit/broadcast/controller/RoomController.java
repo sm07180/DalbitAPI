@@ -108,7 +108,7 @@ public class RoomController {
     /**
      * 방송방 리스트
      */
-    @GetMapping(value = {"/list", "/list/bySocket"})
+    @GetMapping("/list")
     public String roomList(@Valid RoomListVo roomListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
