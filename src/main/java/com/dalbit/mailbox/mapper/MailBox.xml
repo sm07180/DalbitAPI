@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.mailbox.dao.MailBoxDao">
+
+    <select id="callMailboxList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.mailbox.vo.procedure.P_MailBoxListVo">
+      call sp_mailbox_chatroom_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxAddTargetList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.mailbox.vo.procedure.P_MailBoxAddTargetListVo">
+      call sp_mailbox_chatroom_add_target_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxChatEnter" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_mailbox_chatroom_target_enter(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxChatExit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_mailbox_chatroom_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxChatSend" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_mailbox_chatroom_msg_send(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxChatRead" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+      call sp_mailbox_chatroom_msg_read(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxMsg" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.mailbox.vo.procedure.P_MailBoxMsgListVo">
+      call sp_mailbox_chatroom_msg_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxImageList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.mailbox.vo.procedure.P_MailBoxImageListVo">
+        call sp_mailbox_chatroom_image_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMailboxImageDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_mailbox_chatroom_image_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+</mapper>

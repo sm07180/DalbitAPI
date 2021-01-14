@@ -17,6 +17,7 @@ import com.dalbit.member.vo.request.GoodListVo;
 import com.dalbit.member.vo.request.StoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
+import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -255,6 +256,7 @@ public class MypageService {
     public String callBroadBasicEdit(P_BroadBasicEditVo pBroadBasicEdit){
 
         String systemBanWord = commonService.banWordSelect();
+        String titleBanWord = commonService.titleBanWordSelect();
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(pBroadBasicEdit.getTitle())){
@@ -262,7 +264,7 @@ public class MypageService {
         }
 
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(systemBanWord, pBroadBasicEdit.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(titleBanWord, pBroadBasicEdit.getTitle())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
         }
 
@@ -1270,12 +1272,17 @@ public class MypageService {
     /**
      * 방송설정 블랙리스트 등록
      */
-    public String callMypageBlackListAdd(P_MypageBlackAddVo pMypageBlackAddVo) {
+    public String callMypageBlackListAdd(P_MypageBlackAddVo pMypageBlackAddVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pMypageBlackAddVo);
         mypageDao.callMypageBlackListAdd(procedureVo);
 
         String result;
         if(procedureVo.getRet().equals(Status.블랙리스트등록_성공.getMessageCode())) {
+
+            //우체통 체크
+            SocketVo vo = socketService.getSocketVo(DalbitUtil.getProperty("socket.global.room"), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+            socketService.chatBlack(DalbitUtil.getProperty("socket.global.room"), pMypageBlackAddVo.getMem_no(), pMypageBlackAddVo.getBlack_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_성공));
         }else if(procedureVo.getRet().equals(Status.블랙리스트등록_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_요청회원번호_회원아님));

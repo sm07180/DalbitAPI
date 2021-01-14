@@ -1,5 +1,9 @@
 package com.dalbit.common.service;
 
+import com.dalbit.admin.dao.AdminDao;
+import com.dalbit.admin.service.AdminService;
+import com.dalbit.admin.vo.AdminMenuVo;
+import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
@@ -63,11 +67,15 @@ public class CommonService {
     @Autowired
     GsonUtil gsonUtil;
 
+    @Autowired
+    AdminDao adminDao;
+
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
+
 
     /**
      * 방송방 참가를 위해 스트림아이디 토큰아이디 받아오기
@@ -244,7 +252,18 @@ public class CommonService {
             downloadList = new ArrayList<>();
         }
         resultMap.put("downloadList", downloadList);
-
+        if("real".equals(DalbitUtil.getActiveProfile())) {
+            if (DalbitUtil.isLogin(request)) { //TODO 운영최종오픈시 TRUE 변경하기
+                SearchVo searchVo = new SearchVo();
+                searchVo.setMem_no(MemberVo.getMyMemNo(request));
+                ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
+                resultMap.put("useMailBox", !DalbitUtil.isEmpty(menuList));
+            } else {
+                resultMap.put("useMailBox", false);
+            }
+        }else{
+            resultMap.put("useMailBox", true);
+        }
         return resultMap;
     }
 
@@ -419,6 +438,7 @@ public class CommonService {
     public List<CodeVo> setData(List<Map> list, String type) {
         return setData(list, type, 1);
     }
+
 
     public List<CodeVo> setData(List<Map> list, String type, int append) {
         List<CodeVo> data = new ArrayList<>();
@@ -741,7 +761,14 @@ public class CommonService {
      * 사이트 금지어 조회
      */
     public String banWordSelect(){
-        BanWordVo banWordVo = commonDao.banWordSelect();
+        BanWordVo banWordVo = commonDao.banWordSelect(0);
+        return banWordVo.getBanWord();
+    }
+    /**
+     * 방송방제목 금지어 조회
+     */
+    public String titleBanWordSelect(){
+        BanWordVo banWordVo = commonDao.banWordSelect(1);
         return banWordVo.getBanWord();
     }
 

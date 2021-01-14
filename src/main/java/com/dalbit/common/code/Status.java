@@ -1762,6 +1762,7 @@ public enum Status {
     대화방입장_요청회원아님("-1", "mailbox.chatroom.enter.member.number.error", "요청회원번호 회원 아닐 시"),
     대화방입장_대상회원아님("-2", "mailbox.chatroom.enter.target.member.number.error", "대상회원번호 회원 아닐 시"),
     대화방입장_본인안됨("-3", "mailbox.chatroom.enter.me.impossible", "본인에게 입장 불가 시"),
+    대화방입장_차단회원("-4", "mailbox.chatroom.enter.black", "차단회원일 경우"),
     대화방입장_실패("C006", "mailbox.chatroom.enter.fail", "대화방 입장 실패 시"),
 
     //대화방 퇴장
@@ -1776,6 +1777,10 @@ public enum Status {
     대화전송_회원아님("-1", "mailbox.chatroom.msg.send.member.number.error", "요청회원번호 회원 아닐 시"),
     대화전송_채팅번호없음("-2", "mailbox.chatroom.msg.send.chat.number.error", "대화방번호 없을 시"),
     대화전송_상대회원아님("-3", "mailbox.chatroom.msg.send.target.member.number.error", "상대회원번호 회원 아닐 시"),
+    대화전송_아이템코드없음("-4", "mailbox.chatroom.msg.send.item.code.no", "아이템 코드가 없을 시"),
+    대화전송_아이템타입없음("-5", "mailbox.chatroom.msg.send.item.type.no", "아이템 타입이 없을 시"),
+    대화전송_달부족("-6", "mailbox.chatroom.msg.send.dal.limit", "달 부족 시"),
+    대화전송_차단회원("-7", "mailbox.chatroom.msg.send.blacklist", "차단회원일 시"),
     대화전송_실패("C006", "mailbox.chatroom.msg.send.fail", "대화 전송 실패 시"),
 
     //대화읽음

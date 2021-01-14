@@ -85,8 +85,8 @@
         CALL sp_app_version_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="banWordSelect" statementType="CALLABLE" parameterType="String" resultType="BanWordVo">
-        CALL sp_ban_word_system()
+    <select id="banWordSelect" statementType="CALLABLE" parameterType="Integer" resultType="BanWordVo">
+        CALL sp_ban_word_system(#{slcyType, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="broadcastBanWordSelect" statementType="CALLABLE" parameterType="BanWordVo" resultType="BanWordVo">

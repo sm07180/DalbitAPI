@@ -23,7 +23,7 @@ public interface RoomDao {
     ProcedureVo callBroadCastRoomLiveRankInfo(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_RoomGiftHistoryVo> callBroadCastRoomGiftHistory(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo callBroadCastRoomMemberInfo(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ProcedureVo callBroadcastRoomStreamSelect(ProcedureVo procedureVo);

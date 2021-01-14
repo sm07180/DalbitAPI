@@ -675,9 +675,9 @@ public class MainService {
         mainRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+        if(procedureVo.getRet() != null && Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_성공, mainRankingList));
-        } else if (procedureVo.getRet().equals(Status.메인_랭킹조회_요청회원_회원아님.getMessageCode())) {
+        } else if (procedureVo.getRet() != null && procedureVo.getRet().equals(Status.메인_랭킹조회_요청회원_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_요청회원_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_실패));

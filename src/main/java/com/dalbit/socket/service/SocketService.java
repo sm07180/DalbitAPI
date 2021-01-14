@@ -1053,5 +1053,80 @@ public class SocketService {
         sendSocketApi(authToken, roomNo, vo.toQueryString());
 
     }
+
+    /**
+     * 우체통 선물
+     */
+    @Async("threadTaskExecutor")
+    public void chatGiftItem(String chatNo, String memNo, String giftedMemNo, Object item, String authToken, boolean isLogin, SocketVo vo){
+        log.info("Socket Start : chatGiftItem {}, {}, {}, {}, {}", chatNo, memNo, giftedMemNo, item, isLogin);
+        chatNo = chatNo == null ? "" : chatNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(chatNo) && !"".equals(authToken) && item != null){
+            if(vo != null || vo.getMemNo() != null) {
+                vo.setCommand("reqMailBoxGiftImg");
+                vo.setMessage(item);
+                if (giftedMemNo != null && !"".equals(giftedMemNo.trim())) {
+                    vo.setRecvMemNo(giftedMemNo);
+                }
+                sendSocketApi(authToken, chatNo, vo.toQueryString());
+            }
+        }
+    }
+
+
+    /**
+     *  우체통 이미지 삭제
+     */
+    @Async("threadTaskExecutor")
+    public void sendChatImageDelete(String chatNo, HashMap message, String authToken, boolean isLogin) {
+        log.info("Socket Start : sendChatImageDelete {}, {}", message, isLogin);
+        authToken = authToken == null ? "" : authToken.trim();
+
+        HashMap socketMap = new HashMap();
+        socketMap.put("chatNo", DalbitUtil.getStringMap(message, "chatNo"));
+        socketMap.put("targetMemNo", DalbitUtil.getStringMap(message, "targetMemNo"));
+        socketMap.put("msgIdx", DalbitUtil.getStringMap(message, "msgIdx"));
+        socketMap.put("isDelete", DalbitUtil.getBooleanMap(message, "isDelete"));
+
+        HashMap moonCheckMap = new HashMap();
+        moonCheckMap.put("clientCommand", "reqMailBoxImageChatDelete");
+        moonCheckMap.put("data", socketMap);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(moonCheckMap);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken, chatNo, vo.toQueryString());
+    }
+
+
+    /**
+     *  차단하기 소켓 발송
+     */
+    @Async("threadTaskExecutor")
+    public void chatBlack(String chatNo, String memNo, String blackMemNo, String authToken, boolean isLogin, SocketVo vo){
+        log.info("Socket Start : chatBlack {}, {}, {}, {}, {}", chatNo, memNo, blackMemNo, isLogin);
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(blackMemNo) && !"".equals(authToken)){
+            if(vo != null || vo.getMemNo() != null) {
+                HashMap socketMap = new HashMap();
+                socketMap.put("memNo", memNo);
+                socketMap.put("blackMemNo", blackMemNo);
+
+                vo.setLogin(isLogin ? 1 : 0);
+                vo.setCommand("reqMemBlack");
+                vo.setMessage(socketMap);
+                vo.setRecvMemNo(blackMemNo);
+                sendSocketApi(authToken, chatNo, vo.toQueryString());
+            }
+        }
+    }
 }
 

@@ -44,7 +44,7 @@ public interface CommonDao {
     AppVersionVo selectAppVersion(Integer item);
 
     @Transactional(readOnly = true)
-    BanWordVo banWordSelect();
+    BanWordVo banWordSelect(int slctType);
 
     @Transactional(readOnly = true)
     BanWordVo broadcastBanWordSelect(BanWordVo banWordVo);
