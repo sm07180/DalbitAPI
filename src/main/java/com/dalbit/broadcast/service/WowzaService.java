@@ -211,10 +211,10 @@ public class WowzaService {
             return result;
         }
 
-        String titleBanWord = commonService.titleBanWordSelect();
+        //String titleBanWord = commonService.titleBanWordSelect();
         String systemBanWord = commonService.banWordSelect();
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(titleBanWord, roomCreateVo.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, roomCreateVo.getTitle())){
             result.put("status", Status.방송방생성제목금지);
             return result;
         }
