@@ -378,6 +378,7 @@ public class MypageService {
         returnMap.put("isReply", DalbitUtil.getIntMap(resultMap, "set_8"));
         returnMap.put("isStarClip", DalbitUtil.getIntMap(resultMap, "set_9"));
         returnMap.put("isMyClip", DalbitUtil.getIntMap(resultMap, "set_10"));
+        returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "set_11"));        //알림받기 방송시작 알림
         returnMap.put("alimType", DalbitUtil.getStringMap(resultMap, "alim_slct")); //알림음구분(n:무음,s:소리,v:진동)
         procedureVo.setData(returnMap);
 

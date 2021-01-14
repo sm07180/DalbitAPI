@@ -699,6 +699,7 @@ public class RoomService {
             returnMap.put("wasSpecial", memberService.getSpecialCnt(specialDjHistoryVo) > 0 ? true : false);
         }
 
+        returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1 ? true : false);
         procedureVo.setData(returnMap);
         return procedureVo;
     }

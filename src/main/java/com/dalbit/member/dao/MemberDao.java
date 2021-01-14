@@ -77,4 +77,10 @@ public interface MemberDao {
     List<P_SpecialPointListVo> getSpecialPointList(ProcedureVo procedureVo);
 
     ProcedureVo callRankSetting(ProcedureVo procedureVo);
+
+    ProcedureVo callRecvEdit(ProcedureVo procedureVo);
+
+    ProcedureVo callRecvDelete(ProcedureVo procedureVo);
+    //@Transactional(readOnly = true)
+    List<P_MemberReceiveListVo> callRecvList(ProcedureVo procedureVo);
 }

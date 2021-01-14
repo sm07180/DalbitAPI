@@ -701,4 +701,76 @@ public class MemberService {
         }
         return result;
     }
+
+
+    /**
+     * 회원 알림받기 등록/해제
+     */
+    public String callRecvEdit(P_MemberReceiveVo pMemberReceiveVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMemberReceiveVo);
+        memberDao.callRecvEdit(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.알림_등록.getMessageCode())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            Status status = null;
+            if(pMemberReceiveVo.getAlertYn() == 1){
+                status = Status.알림_등록;
+            }else{
+                status = Status.알림_해제;
+            }
+            HashMap returnMap = new HashMap();
+            returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1 ? true : false);
+            result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
+        } else if(procedureVo.getRet().equals(Status.알림_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림_회원아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 회원 알림받기 삭제
+     */
+    public String callRecvDelete(P_MemberReceiveDeleteVo pMemberReceiveDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMemberReceiveDeleteVo);
+        memberDao.callRecvDelete(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.알림회원삭제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원삭제_성공));
+        } else if(procedureVo.getRet().equals(Status.알림회원삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원삭제_회원아님));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원삭제_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 알림받기 회원 조회
+     */
+    public String callRecvList(P_MemberReceiveListVo pMemberReceiveListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMemberReceiveListVo);
+        List<P_MemberReceiveListVo> recvListVo = memberDao.callRecvList(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap specialPointOutList = new HashMap();
+            List<MemberReceiveListOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(recvListVo)) {
+                for (int i = 0; i < recvListVo.size(); i++) {
+                    outVoList.add(new MemberReceiveListOutVo(recvListVo.get(i)));
+                }
+            }
+            specialPointOutList.put("list", outVoList);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원조회_성공, specialPointOutList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원조회_실패));
+        }
+        return result;
+    }
 }

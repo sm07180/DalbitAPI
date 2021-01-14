@@ -419,4 +419,39 @@ public class MemberController {
         String result = memberService.callRankSetting(apiData);
         return result;
     }
+
+
+    /**
+     * 회원 알림받기 등록/해제
+     */
+    @PostMapping("/member/recv")
+    public String recvEdit(@Valid MemberReceiveVo memberReceiveVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MemberReceiveVo apiData = new P_MemberReceiveVo(memberReceiveVo, request);
+        String result = memberService.callRecvEdit(apiData);
+        return result;
+    }
+
+
+    /**
+     * 회원 알림받기 삭제
+     */
+    @PostMapping("/member/recv/delete")
+    public String recvDelete(@Valid MemberReceiveDeleteVo memberReceiveDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MemberReceiveDeleteVo apiData = new P_MemberReceiveDeleteVo(memberReceiveDeleteVo, request);
+        String result = memberService.callRecvDelete(apiData);
+        return result;
+    }
+
+
+    /**
+     * 알림받기 회원 조회
+     */
+    @GetMapping("/member/recv")
+    public String recvList(HttpServletRequest request) throws GlobalException{
+        P_MemberReceiveListVo apiData = new P_MemberReceiveListVo(request);
+        String result = memberService.callRecvList(apiData);
+        return result;
+    }
 }

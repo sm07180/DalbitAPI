@@ -73,4 +73,5 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private int memState;
     private String listenRoomNo;
     private int listenOpen = 1;
+    private int alertYn;
 }

@@ -70,6 +70,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private int memState;
     private String[] levelColor = new String[0];
     private String listenRoomNo;
+    private boolean isReceive;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
@@ -133,5 +134,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.specialDjCnt = target.getSpecialDjCnt();
         this.memState = target.getMemState();
         this.listenRoomNo = DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin);
+        this.isReceive = target.getAlertYn() == 1 ? true : false;
     }
 }
