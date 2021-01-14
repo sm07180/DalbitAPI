@@ -1,9 +1,12 @@
 package com.dalbit.common.vo;
 
 import com.dalbit.common.code.Code;
+import com.dalbit.mailbox.vo.procedure.P_MailBoxListVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.HashMap;
 
 @Getter
 @Setter
@@ -12,6 +15,12 @@ public class ImageVo extends BaseVo{
     private static final long serialVersionUID = 1L;
 
     public ImageVo(){}
+
+    public ImageVo(P_MailBoxListVo path, String photoServerUrl){
+        if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
+            setPath(path.toString(), photoServerUrl);
+        }
+    }
 
     public ImageVo(Object path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
@@ -33,9 +42,11 @@ public class ImageVo extends BaseVo{
 
     private String url;
     private String path;
+    private String thumb50x50;
     private String thumb62x62;
     private String thumb80x80;
     private String thumb88x88;
+    private String thumb100x100;
     private String thumb120x120;
     private String thumb150x150;
     private String thumb190x190;
@@ -52,9 +63,11 @@ public class ImageVo extends BaseVo{
     }
 
     public void setThumbs(){
+        this.thumb50x50 = url + (this.url.endsWith("webp") ? "" : "?50x50");
         this.thumb62x62 = url + (this.url.endsWith("webp") ? "" : "?62x62");
         this.thumb80x80 = url + (this.url.endsWith("webp") ? "" : "?80x80");
         this.thumb88x88 = url + (this.url.endsWith("webp") ? "" : "?88x88");
+        this.thumb100x100 = url + (this.url.endsWith("webp") ? "" : "?100x100");
         this.thumb120x120 = url + (this.url.endsWith("webp") ? "" : "?120x120");
         this.thumb150x150 = url + (this.url.endsWith("webp") ? "" : "?150x150");
         this.thumb190x190 = url + (this.url.endsWith("webp") ? "" : "?190x190");
