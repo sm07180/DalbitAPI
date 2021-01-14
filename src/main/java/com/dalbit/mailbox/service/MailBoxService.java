@@ -77,7 +77,7 @@ public class MailBoxService {
             List<MailBoxAddTargetListOutVo> outVoList = new ArrayList<>();
             if(!DalbitUtil.isEmpty(mailBoxAddTargetListVo)){
                 for (int i=0; i<mailBoxAddTargetListVo.size(); i++){
-                    outVoList.add(new MailBoxAddTargetListOutVo(mailBoxAddTargetListVo.get(i)));
+                    outVoList.add(new MailBoxAddTargetListOutVo(mailBoxAddTargetListVo.get(i), pMailBoxAddTargetListVo.getSlctType()));
                 }
 
             }

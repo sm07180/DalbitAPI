@@ -36,6 +36,7 @@ public class P_MailBoxAddTargetListVo {
     private String memSex;
     private String profileImage;
     private int giftedByeol;
+    private int giftDal;
     private int listenTime;
     private Date lastlistenDate;
 }

@@ -18,12 +18,12 @@ public class MailBoxAddTargetListOutVo {
     private String lastListenDt;
     private long lastListenTs;
 
-    public MailBoxAddTargetListOutVo(P_MailBoxAddTargetListVo target){
+    public MailBoxAddTargetListOutVo(P_MailBoxAddTargetListVo target, int slctType){
         setMemNo(target.getTarget_mem_no());
         setNickNm(target.getNickName());
         setGender(target.getMemSex());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
-        setGiftedByeol(target.getGiftedByeol());
+        setGiftedByeol(slctType == 1 ? target.getGiftedByeol() : target.getGiftDal());
         setListenTime(target.getListenTime());
         setLastListenDt(DalbitUtil.isEmpty(target.getLastlistenDate()) ? "" : DalbitUtil.getUTCFormat(target.getLastlistenDate()));
         setLastListenTs(DalbitUtil.isEmpty(target.getLastlistenDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getLastlistenDate()));
