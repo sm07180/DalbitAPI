@@ -134,4 +134,12 @@ public class MailBoxController {
         String result = mailBoxService.callMailboxImageDelete(apiData, request);
         return result;
     }
+
+    /**
+     * 우체통 신규메세지 조회
+     */
+    @GetMapping("/new")
+    public String mailboxIsNew(HttpServletRequest request){
+        return mailBoxService.callMailboxUnreadCheck(request);
+    }
 }

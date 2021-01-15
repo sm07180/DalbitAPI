@@ -273,6 +273,7 @@ public class MailBoxService {
             mailBoxMsgList.put("targetNickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
             mailBoxMsgList.put("targetGender", DalbitUtil.getStringMap(resultMap, "memSex"));
             mailBoxMsgList.put("targetProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+            mailBoxMsgList.put("isNew", DalbitUtil.getIntMap(resultMap, "unreadCnt") > 0 ? true : false);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화조회_성공, mailBoxMsgList));
         } else if (procedureVo.getRet().equals(Status.대화조회_회원아님.getMessageCode())) {
@@ -355,5 +356,28 @@ public class MailBoxService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방_이미지삭제_실패));
         }
         return result;
+    }
+
+    /**
+     * 우체통 신규메세지 조회
+     */
+    public String callMailboxUnreadCheck(HttpServletRequest request) {
+        if(DalbitUtil.isLogin(request)){
+            HashMap param = new HashMap();
+            param.put("mem_no", MemberVo.getMyMemNo(request));
+            ProcedureVo procedureVo = new ProcedureVo(param);
+            mailBoxDao.callMailboxUnreadCheck(procedureVo);
+            if("-1".equals(procedureVo.getRet())){
+                return gsonUtil.toJson(new JsonOutputVo(Status.대화방_알림조회_회원아님));
+            }else if("-9".equals(procedureVo.getRet())){
+                return gsonUtil.toJson(new JsonOutputVo(Status.대화방_알림조회_실패));
+            }else{
+                HashMap data = new HashMap();
+                data.put("isNew", "1".equals(procedureVo.getRet()));
+                return gsonUtil.toJson(new JsonOutputVo(Status.대화방_알림조회_성공, data));
+            }
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+        }
     }
 }

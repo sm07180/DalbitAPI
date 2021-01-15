@@ -24,4 +24,6 @@ public interface MailBoxDao {
     //@Transactional(readOnly = true)
     List<P_MailBoxImageListVo> callMailboxImageList(ProcedureVo procedureVo);
     ProcedureVo callMailboxImageDelete(ProcedureVo procedureVo);
+    //@Transactional(readOnly = true)
+    ProcedureVo callMailboxUnreadCheck(ProcedureVo procedureVo);
 }

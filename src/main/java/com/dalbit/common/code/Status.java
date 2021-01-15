@@ -1902,6 +1902,11 @@ public enum Status {
     대화방_이미지삭제_본인이미지아님("-5", "mailbox.chatroom.image.delete.not.me", "본인이미지 아닐 시"),
     대화방_이미지삭제_실패("C006", "mailbox.chatroom.image.delete.fail", "이미지 삭제 실패 시"),
 
+    //대화방 알림조회
+    대화방_알림조회_성공("0", "mailbox.chatroom.unread.success", "대화방 이미지 삭제 성공 시"),
+    대화방_알림조회_회원아님("-1", "mailbox.chatroom.unread.member.number.error", "요청회원번호 회원 아닐 시"),
+    대화방_알림조회_실패("C006", "mailbox.chatroom.unread.fail", "이미지 삭제 실패 시"),
+
     //환전 취소하기
     환전취소_성공("0", "exchange.cancel.success", "환전 취소 성공 시"),
     환전취소_회원아님("-1", "exchange.cancel.member.number.error", "요청회원번호 회원 아닐 시"),
