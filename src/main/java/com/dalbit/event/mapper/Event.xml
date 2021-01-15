@@ -106,7 +106,7 @@
     </select>
 
     <select id="selectKnowhowList" statementType="CALLABLE" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="com.dalbit.event.vo.KnowhowEventOutputVo">
-        CALL sp_event_photo_all_list(#{slct_type, mode=IN, jdbcType=INTEGER}), #{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{page, mode=IN, jdbcType=INTEGER}, #{records, mode=IN, jdbcType=INTEGER}, #{slct_order, mode=IN, jdbcType=INTEGER}, #{slct_platform, mode=IN, jdbcType=INTEGER}, #{totalCnt, mode=OUT, jdbcType=INTEGER}
+        CALL sp_event_photo_all_list(#{slct_type, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{page, mode=IN, jdbcType=INTEGER}, #{records, mode=IN, jdbcType=INTEGER}, #{slct_order, mode=IN, jdbcType=INTEGER}, #{slct_platform, mode=IN, jdbcType=INTEGER}, #{totalCnt, mode=OUT, jdbcType=INTEGER})
     </select>
 
     <select id="selectKnowhowDetail" statementType="CALLABLE" parameterType="com.dalbit.event.vo.KnowhowEventInputVo" resultType="com.dalbit.event.vo.KnowhowEventOutputVo">
