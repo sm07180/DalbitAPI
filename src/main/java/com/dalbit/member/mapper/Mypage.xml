@@ -268,7 +268,7 @@
     </select>
 
     <select id="selectMyPageNew" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-        CALL sp_member_mypage_new_count(
+        CALL sp_member_mypage_new_count_os(
             #{myMemNo, mode=IN, jdbcType=INTEGER}
             , #{targetMemNo, mode=IN, jdbcType=INTEGER}
             , #{fanBoard, mode=IN, jdbcType=INTEGER}
@@ -276,6 +276,7 @@
             , #{byeol, mode=IN, jdbcType=INTEGER}
             , #{notice, mode=IN, jdbcType=VARCHAR}
             , #{qna, mode=IN, jdbcType=VARCHAR}
+            , #{os, mode=IN, jdbcType=INTEGER}
         )
     </select>
 

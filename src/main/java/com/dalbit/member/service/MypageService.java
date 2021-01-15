@@ -439,6 +439,8 @@ public class MypageService {
                 status = pMemberNotifyEditVo.getSet_6() == 1 ? Status.일대일문의답변도착_ON : Status.일대일문의답변도착_OFF;
             }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_7()) && DalbitUtil.getIntMap(resultMap, "set_7") != pMemberNotifyEditVo.getSet_7()){
                 status = pMemberNotifyEditVo.getSet_7() == 1 ? Status.서비스알림_ON : Status.서비스알림_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_11()) && DalbitUtil.getIntMap(resultMap, "set_11") != pMemberNotifyEditVo.getSet_11()){
+                status = pMemberNotifyEditVo.getSet_11() == 1 ? Status.방송시작알림_ON : Status.방송시작알림_OFF;
             }else{
                 status = Status.알림설정수정_성공;
             }
@@ -1887,6 +1889,7 @@ public class MypageService {
                     }
                 }
             }
+            DeviceVo deviceVo = new DeviceVo(request);
             HashMap params = new HashMap();
             params.put("myMemNo", MemberVo.getMyMemNo(request));
             params.put("targetMemNo", DalbitUtil.isEmpty(request.getParameter("targetMemNo")) ? MemberVo.getMyMemNo(request) : request.getParameter("targetMemNo"));
@@ -1895,6 +1898,7 @@ public class MypageService {
             params.put("byoel", request.getParameter("byoel"));
             params.put("notice", notice);
             params.put("qna", qna);
+            params.put("os", deviceVo.getOs());
 
             returnMap = mypageDao.selectMyPageNew(params);
             returnMap.put("newCnt", DalbitUtil.getIntMap(returnMap, "alarm") + DalbitUtil.getIntMap(returnMap, "qna") + DalbitUtil.getIntMap(returnMap, "notice"));
