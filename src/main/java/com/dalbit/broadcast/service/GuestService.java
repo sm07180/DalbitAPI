@@ -78,7 +78,7 @@ public class GuestService {
             }
             if(retryCnt < 10){
                 session.setAttribute("guestRetryCnt", String.valueOf(retryCnt++));
-                guest(request);
+                return guest(request);
             }else{
                 return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음, null));
             }
