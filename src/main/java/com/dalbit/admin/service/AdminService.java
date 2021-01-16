@@ -1068,7 +1068,7 @@ public class AdminService {
 
         pQuestionOperateVo.setAnswer(pQuestionOperateVo.getAnswer().replaceAll("\\'","\'"));
         pQuestionOperateVo.setAnswer(pQuestionOperateVo.getAnswer().replaceAll("\n","<br>"));
-        if(outVo.getState() == 0){
+        if(outVo.getState() == 0 || outVo.getState() == 3){
             ProcedureVo procedureVo = new ProcedureVo(pQuestionOperateVo,true);
             adminDao.callServiceCenterQnaOperate(procedureVo);
 
