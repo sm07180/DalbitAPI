@@ -16,10 +16,10 @@ public interface MainDao {
     List<P_MainDjRankingVo> callMainDjRanking(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_MainMyDjVo> callMainMyDjList(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_MainRecommandVo> callMainRecommandList(P_MainRecommandVo pMainRecommandVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_MainStarVo> callMainStarList(String memNo);
 
     @Transactional(readOnly = true)
