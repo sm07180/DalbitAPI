@@ -252,15 +252,8 @@ public class CommonService {
             downloadList = new ArrayList<>();
         }
         resultMap.put("downloadList", downloadList);
-        if("real".equals(DalbitUtil.getActiveProfile())) {
-            if (DalbitUtil.isLogin(request)) { //TODO 운영최종오픈시 TRUE 변경하기
-                SearchVo searchVo = new SearchVo();
-                searchVo.setMem_no(MemberVo.getMyMemNo(request));
-                ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
-                resultMap.put("useMailBox", !DalbitUtil.isEmpty(menuList));
-            } else {
-                resultMap.put("useMailBox", false);
-            }
+        if(deviceVo.getOs() == 3){
+            resultMap.put("useMailBox", false);
         }else{
             resultMap.put("useMailBox", true);
         }

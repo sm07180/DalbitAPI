@@ -362,11 +362,11 @@ public class RoomService {
 
         st = (new Date()).getTime();
         List<RoomOutVo> outVoList = new ArrayList<>();
-        BanWordVo banWordVo = new BanWordVo();
-        String systemBanWord = commonService.banWordSelect();
+        //BanWordVo banWordVo = new BanWordVo();
+        //String systemBanWord = commonService.banWordSelect();
         DeviceVo deviceVo = new DeviceVo(request);
         for (int i=0; i<roomVoList.size(); i++){
-            if(!DalbitUtil.isEmpty(roomVoList.get(i).getNotice())){
+            /*if(!DalbitUtil.isEmpty(roomVoList.get(i).getNotice())){
                 //사이트+방송방 금지어 조회 공지사항 마스킹처리 목록에서 사용하지 않아 주석 처리
                 banWordVo.setMemNo(roomVoList.get(i).getBj_mem_no());
                 String banWord = commonService.broadcastBanWordSelect(banWordVo);
@@ -375,7 +375,7 @@ public class RoomService {
                 }else if(!DalbitUtil.isEmpty(systemBanWord)){
                     roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord, roomVoList.get(i).getNotice()));
                 }
-            }
+            }*/
             RoomOutVo roomOutVo = new RoomOutVo(roomVoList.get(i), deviceVo);
             //badgeService.setBadgeInfo(roomOutVo.getBjMemNo(), 6);
             //roomOutVo.setLiveBadgeList(badgeService.getCommonBadge());
