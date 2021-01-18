@@ -14,7 +14,7 @@ import java.util.HashMap;
 @Getter
 @Setter
 public class DeviceVo {
-    private int os;
+    private int os = 3;
     private String deviceUuid;
     private String deviceToken;
     private String appVersion;
@@ -49,46 +49,48 @@ public class DeviceVo {
             String customHeader = request.getHeader(headerName);
             if(customHeader != null && !"".equals(customHeader.trim())){
                 customHeader = URLDecoder.decode(customHeader);
-                HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
-                if(!DalbitUtil.isEmpty(headers) && !DalbitUtil.isEmpty(headers.get("os"))){
-                    if(this.os == -1){
-                        this.os = (int)DalbitUtil.getDoubleMap(headers, "os");
-                    }
-                    if(DalbitUtil.isEmpty(this.deviceUuid)){
-                        this.deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
-                    }
-                    if(DalbitUtil.isEmpty(this.deviceToken)) {
-                        this.deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
-                    }
-                    if(DalbitUtil.isEmpty(this.appVersion)) {
-                        this.appVersion = DalbitUtil.getStringMap(headers, "appVer");
-                        if(DalbitUtil.isEmpty(this.appVersion)){
-                            this.appVersion = DalbitUtil.getStringMap(headers, "appVersion");
+                try {
+                    HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
+                    if (!DalbitUtil.isEmpty(headers) && !DalbitUtil.isEmpty(headers.get("os"))) {
+                        if (this.os == -1) {
+                            this.os = (int) DalbitUtil.getDoubleMap(headers, "os");
+                        }
+                        if (DalbitUtil.isEmpty(this.deviceUuid)) {
+                            this.deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
+                        }
+                        if (DalbitUtil.isEmpty(this.deviceToken)) {
+                            this.deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
+                        }
+                        if (DalbitUtil.isEmpty(this.appVersion)) {
+                            this.appVersion = DalbitUtil.getStringMap(headers, "appVer");
+                            if (DalbitUtil.isEmpty(this.appVersion)) {
+                                this.appVersion = DalbitUtil.getStringMap(headers, "appVersion");
+                            }
+                        }
+                        if (DalbitUtil.isEmpty(this.adId)) {
+                            this.adId = DalbitUtil.getStringMap(headers, "appAdId");
+                        }
+                        if (DalbitUtil.isEmpty(this.adId)) {
+                            this.isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
+                        }
+                        if (DalbitUtil.isEmpty(this.appBuild)) {
+                            String appBulid = DalbitUtil.getStringMap(headers, "appBuild");
+                            this.appBuild = appBulid;
+                        }
+                        if (DalbitUtil.isEmpty(this.deviceManufacturer)) {
+                            this.deviceManufacturer = DalbitUtil.getStringMap(headers, "deviceManufacturer");
+                        }
+                        if (DalbitUtil.isEmpty(this.deviceModel)) {
+                            this.deviceModel = DalbitUtil.getStringMap(headers, "deviceModel");
+                        }
+                        if (DalbitUtil.isEmpty(this.sdkVersion)) {
+                            this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
+                        }
+                        if (DalbitUtil.isEmpty(this.isFirst)) {
+                            this.isFirst = DalbitUtil.getStringMap(headers, "isFirst");
                         }
                     }
-                    if(DalbitUtil.isEmpty(this.adId)) {
-                        this.adId = DalbitUtil.getStringMap(headers, "appAdId");
-                    }
-                    if(DalbitUtil.isEmpty(this.adId)) {
-                        this.isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
-                    }
-                    if(DalbitUtil.isEmpty(this.appBuild)) {
-                        String appBulid = DalbitUtil.getStringMap(headers, "appBuild");
-                        this.appBuild = appBulid;
-                    }
-                    if(DalbitUtil.isEmpty(this.deviceManufacturer)) {
-                        this.deviceManufacturer = DalbitUtil.getStringMap(headers, "deviceManufacturer");
-                    }
-                    if(DalbitUtil.isEmpty(this.deviceModel)) {
-                        this.deviceModel = DalbitUtil.getStringMap(headers, "deviceModel");
-                    }
-                    if(DalbitUtil.isEmpty(this.sdkVersion)) {
-                        this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
-                    }
-                    if(DalbitUtil.isEmpty(this.isFirst)) {
-                        this.isFirst = DalbitUtil.getStringMap(headers, "isFirst");
-                    }
-                }
+                }catch(Exception e){}
             }else{
                 // 혹시나해서 쿠키 값으로 도 확인
                 String cookieHeader = "";
@@ -97,47 +99,49 @@ public class DeviceVo {
                     cookieHeader = cookieUtil.getValue(headerName);
                 }catch(IOException e){}
                 if(!DalbitUtil.isEmpty(cookieHeader)){
-                    HashMap<String, Object> headers = new Gson().fromJson(cookieHeader, HashMap.class);
+                    try {
+                        HashMap<String, Object> headers = new Gson().fromJson(cookieHeader, HashMap.class);
 
-                    if(!DalbitUtil.isEmpty(headers.get("os")) && !DalbitUtil.isEmpty(headers.get("deviceId"))){
-                        if(this.os == -1){
-                            this.os = (int)DalbitUtil.getDoubleMap(headers, "os");
-                        }
-                        if(DalbitUtil.isEmpty(this.deviceUuid)){
-                            this.deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
-                        }
-                        if(DalbitUtil.isEmpty(this.deviceToken)) {
-                            this.deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
-                        }
-                        if(DalbitUtil.isEmpty(this.appVersion)) {
-                            this.appVersion = DalbitUtil.getStringMap(headers, "appVer");
-                            if(DalbitUtil.isEmpty(this.appVersion)){
-                                this.appVersion = DalbitUtil.getStringMap(headers, "appVersion");
+                        if (!DalbitUtil.isEmpty(headers.get("os")) && !DalbitUtil.isEmpty(headers.get("deviceId"))) {
+                            if (this.os == -1) {
+                                this.os = (int) DalbitUtil.getDoubleMap(headers, "os");
+                            }
+                            if (DalbitUtil.isEmpty(this.deviceUuid)) {
+                                this.deviceUuid = DalbitUtil.getStringMap(headers, "deviceId");
+                            }
+                            if (DalbitUtil.isEmpty(this.deviceToken)) {
+                                this.deviceToken = DalbitUtil.getStringMap(headers, "deviceToken");
+                            }
+                            if (DalbitUtil.isEmpty(this.appVersion)) {
+                                this.appVersion = DalbitUtil.getStringMap(headers, "appVer");
+                                if (DalbitUtil.isEmpty(this.appVersion)) {
+                                    this.appVersion = DalbitUtil.getStringMap(headers, "appVersion");
+                                }
+                            }
+                            if (DalbitUtil.isEmpty(this.adId)) {
+                                this.adId = DalbitUtil.getStringMap(headers, "appAdId");
+                            }
+                            if (DalbitUtil.isEmpty(this.adId)) {
+                                this.isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
+                            }
+                            if (DalbitUtil.isEmpty(this.appBuild)) {
+                                String appBulid = DalbitUtil.getStringMap(headers, "appBuild");
+                                this.appBuild = appBulid;
+                            }
+                            if (DalbitUtil.isEmpty(this.deviceManufacturer)) {
+                                this.deviceManufacturer = DalbitUtil.getStringMap(headers, "deviceManufacturer");
+                            }
+                            if (DalbitUtil.isEmpty(this.deviceModel)) {
+                                this.deviceModel = DalbitUtil.getStringMap(headers, "deviceModel");
+                            }
+                            if (DalbitUtil.isEmpty(this.sdkVersion)) {
+                                this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
+                            }
+                            if (DalbitUtil.isEmpty(this.isFirst)) {
+                                this.isFirst = DalbitUtil.getStringMap(headers, "isFirst");
                             }
                         }
-                        if(DalbitUtil.isEmpty(this.adId)) {
-                            this.adId = DalbitUtil.getStringMap(headers, "appAdId");
-                        }
-                        if(DalbitUtil.isEmpty(this.adId)) {
-                            this.isHybrid = DalbitUtil.getStringMap(headers, "isHybrid");
-                        }
-                        if(DalbitUtil.isEmpty(this.appBuild)) {
-                            String appBulid = DalbitUtil.getStringMap(headers, "appBuild");
-                            this.appBuild = appBulid;
-                        }
-                        if(DalbitUtil.isEmpty(this.deviceManufacturer)) {
-                            this.deviceManufacturer = DalbitUtil.getStringMap(headers, "deviceManufacturer");
-                        }
-                        if(DalbitUtil.isEmpty(this.deviceModel)) {
-                            this.deviceModel = DalbitUtil.getStringMap(headers, "deviceModel");
-                        }
-                        if(DalbitUtil.isEmpty(this.sdkVersion)) {
-                            this.sdkVersion = DalbitUtil.getStringMap(headers, "deviceSdkVersion");
-                        }
-                        if(DalbitUtil.isEmpty(this.isFirst)) {
-                            this.isFirst = DalbitUtil.getStringMap(headers, "isFirst");
-                        }
-                    }
+                    }catch (Exception e){}
                 }
             }
         }
@@ -150,6 +154,9 @@ public class DeviceVo {
             this.appBuild = this.appBuild.substring(0, this.appBuild.indexOf("."));
         }
         if("192.168.10.163".equals(this.ip) || "192.168.10.164".equals(this.ip)){ //소켓서버일경우 3번으로 수정
+            this.os =3;
+        }
+        if (this.os == -1) {
             this.os =3;
         }
     }
