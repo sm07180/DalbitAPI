@@ -252,11 +252,7 @@ public class CommonService {
             downloadList = new ArrayList<>();
         }
         resultMap.put("downloadList", downloadList);
-        if(deviceVo.getOs() == 3){
-            resultMap.put("useMailBox", false);
-        }else{
-            resultMap.put("useMailBox", true);
-        }
+        resultMap.put("useMailBox", true);
         return resultMap;
     }
 
