@@ -1,8 +1,11 @@
 package com.dalbit.member.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
+import com.dalbit.member.vo.AwardHonorOutVo;
+import com.dalbit.member.vo.procedure.P_AwardHonorListVo;
 import com.dalbit.member.dao.AwardDao;
 import com.dalbit.member.vo.AwardListOutVo;
 import com.dalbit.member.vo.AwardVoteResultOutVo;
@@ -110,6 +113,44 @@ public class AwardService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.투표결과조회_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.투표결과조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 어워드 명예의전당
+     */
+    public String callAwardHonorList(P_AwardHonorListVo pAwardHonorListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pAwardHonorListVo);
+        List<P_AwardHonorListVo> awardVoteResultVo = awardDao.callAwardHonorList(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap honorList = new HashMap();
+            List<AwardHonorOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(awardVoteResultVo)){
+                for (int i=0; i<awardVoteResultVo.size(); i++){
+                    outVoList.add(new AwardHonorOutVo(awardVoteResultVo.get(i)));
+                }
+            }
+            honorList.put("list", outVoList);
+            honorList.put("djMemNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
+            honorList.put("djNickNm", DalbitUtil.getStringMap(resultMap, "mem_nick"));
+            honorList.put("djProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+            honorList.put("djTitle", DalbitUtil.getStringMap(resultMap, "dj_title"));
+            honorList.put("djMsg", DalbitUtil.getStringMap(resultMap, "dj_msg"));
+            honorList.put("listenerPoint", DalbitUtil.getIntMap(resultMap, "listenerPoint"));
+            honorList.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
+            honorList.put("day", DalbitUtil.getIntMap(resultMap, "dateDiff"));
+            honorList.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+            honorList.put("joinDt", DalbitUtil.getUTCFormat(DalbitUtil.getStringMap(resultMap, "joinDate")));
+            honorList.put("joinTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getStringMap(resultMap, "joinDate")));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.명예의전당_조회_성공, honorList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.명예의전당_조회_실패));
         }
         return result;
     }

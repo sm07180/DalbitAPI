@@ -1,6 +1,8 @@
 package com.dalbit.member.controller;
 
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.procedure.P_AwardHonorListVo;
+import com.dalbit.member.vo.request.AwardHonorListVo;
 import com.dalbit.member.service.AwardService;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
@@ -55,10 +57,22 @@ public class AwardController {
      * 어워드 투표결과
      */
     @GetMapping("/result")
-    public String awardVoteResult(@Valid AwardVoteResultVo awardVoteResultVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String awardVoteResult(@Valid AwardVoteResultVo awardVoteResultVo, BindingResult bindingResult) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_AwardVoteResultVo apiData = new P_AwardVoteResultVo(awardVoteResultVo);
         String result = awardService.callAwardVoteResult(apiData);
+        return result;
+    }
+
+
+    /**
+     * 어워드 명예의전당
+     */
+    @GetMapping("/honor")
+    public String awardHonorList(@Valid AwardHonorListVo awardHonorListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_AwardHonorListVo apiData = new P_AwardHonorListVo(awardHonorListVo, request);
+        String result = awardService.callAwardHonorList(apiData);
         return result;
     }
 }

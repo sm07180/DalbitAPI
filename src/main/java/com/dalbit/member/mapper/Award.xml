@@ -13,4 +13,9 @@
     <select id="callAwardVoteResult" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_AwardVoteResultVo">
         call sp_member_dalbitaward_vote_result(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callAwardHonorList" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_AwardHonorListVo">
+        call sp_member_honor_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>
