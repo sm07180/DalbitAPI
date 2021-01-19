@@ -61,6 +61,8 @@ public class P_MainRankingPageVo extends P_ApiVo {
     private String dj_mem_no;
     private String dj_nickName;
     private int dj_goodPoint;
+    private String dj_profileImage;
+    private String dj_memSex;
     private String listenRoomNo;
     private int listenOpen;
 

@@ -40,6 +40,7 @@ public class MainRankingPageOutVo {
     private String djMemNo;
     private String djNickNm;
     private int djGoodPoint;
+    private ImageVo djProfImg;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
     private String listenRoomNo;
 
@@ -72,6 +73,8 @@ public class MainRankingPageOutVo {
         setDjMemNo(target.getDj_mem_no());
         setDjNickNm(target.getDj_nickName());
         setDjGoodPoint(target.getDj_goodPoint());
+        setDjProfImg(new ImageVo(target.getDj_profileImage(), target.getDj_memSex(), DalbitUtil.getProperty("server.photo.url")));
+        setDjNickNm(target.getDj_nickName());
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }

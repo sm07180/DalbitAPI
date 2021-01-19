@@ -202,6 +202,9 @@ public enum Status {
     서비스알림_OFF("0", "mypage.member.notify.edit.service.off.success", "서비스 알림 OFF"),
     방송시작알림_ON("0", "mypage.member.notify.edit.broadcast.start.on.success", "방송 시작 알림 ON"),
     방송시작알림_OFF("0", "mypage.member.notify.edit.broadcast.start.off.success", "방송 시작 알림 OFF"),
+    우체통알림_ON("0", "mypage.member.notify.edit.mailbox.on.success", "우체통 알림 ON"),
+    우체통알림_OFF("0", "mypage.member.notify.edit.mailbox.off.success", "우체통 알림 OFF"),
+
 
     //회원 방송방 빠른말 가져오기
     회원방송방빠른말조회_성공("0", "mypage.member.shorucut.success", "회원 방송방 빠른말 가져오기 성공 시"),
@@ -1284,6 +1287,7 @@ public enum Status {
     클립_좋아요_해제_성공("0", "clip.good.cancel.success", "좋아요 해제 시"),
     클립_좋아요_요청회원_회원아님("-1", "clip.good.member.number.error", "요청회원번호가 회원 아닐 시"),
     클립_좋아요_클립번호없음("-2", "clip.good.no.clip.number", "클립 번호가 없을 시"),
+    클립_좋아요_이미좋아요누름("-3", "clip.good.already.good", "이미 좋아요 눌렀을 시"),
     클립_좋아요_변화없음("-4", "clip.good.no.change", "좋아요 변화없을 시"),
     클립_좋아요_실패("C006", "clip.good.fail", "좋아요 실패 시"),
 
@@ -1981,6 +1985,10 @@ public enum Status {
     //알림회원조회
     알림회원조회_성공("C001", "recv.select.success", "알림회원 조회 시"),
     알림회원조회_실패("C006", "recv.select.fail", "알림회원 조회 실패 시"),
+
+    //추천DJ목록조회
+    추천DJ목록조회_성공("C001", "dj.recommend.list.select.success", "추천DJ 목록 조회 성공 시"),
+    추천DJ목록조회_실패("C006", "dj.recommend.list.select.fail", "추천DJ 목록 조회 실패 시"),
    ;
 
 
