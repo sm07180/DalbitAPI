@@ -211,10 +211,10 @@ public class WowzaService {
             return result;
         }
 
-        //String titleBanWord = commonService.titleBanWordSelect();
+        String titleBanWord = commonService.titleBanWordSelect();
         String systemBanWord = commonService.banWordSelect();
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(systemBanWord, roomCreateVo.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(titleBanWord, roomCreateVo.getTitle())){
             result.put("status", Status.방송방생성제목금지);
             return result;
         }
@@ -451,20 +451,22 @@ public class WowzaService {
 
             //애드브릭스 전달을 위한 데이터 생성
             //adbrixService("roomJoin", "1151231231312")
-            if(target.getCompleteMoon() != 1){
-                if(target.getStep() != target.getOldStep()){
-                    //보름달 체크
-                    HashMap moonCheckMap = new HashMap();
-                    moonCheckMap.put("moonStep", target.getMoonCheck().getMoonStep());
-                    moonCheckMap.put("moonStepFileNm", target.getMoonCheck().getMoonStepFileNm());
-                    moonCheckMap.put("moonStepAniFileNm", target.getMoonCheck().getMoonStepAniFileNm());
-                    moonCheckMap.put("dlgTitle", target.getMoonCheck().getDlgTitle());
-                    moonCheckMap.put("dlgText", target.getMoonCheck().getDlgText());
-                    moonCheckMap.put("aniDuration", target.getMoonCheck().getAniDuration());
-                    moonCheckMap.put("fullmoon_yn", target.getFullmoon_yn());
-                    String resultCode = actionService.moonCheckSocket(roomJoinVo.getRoomNo(), request, "roomJoin", moonCheckMap);
-                    if("error".equals(resultCode)){
-                        log.error("보름달 체크 오류");
+            if(target.getFullmoon_yn() == 1){
+                if(target.getCompleteMoon() != 1){
+                    if(target.getStep() != target.getOldStep()){
+                        //보름달 체크
+                        HashMap moonCheckMap = new HashMap();
+                        moonCheckMap.put("moonStep", target.getMoonCheck().getMoonStep());
+                        moonCheckMap.put("moonStepFileNm", target.getMoonCheck().getMoonStepFileNm());
+                        moonCheckMap.put("moonStepAniFileNm", target.getMoonCheck().getMoonStepAniFileNm());
+                        moonCheckMap.put("dlgTitle", target.getMoonCheck().getDlgTitle());
+                        moonCheckMap.put("dlgText", target.getMoonCheck().getDlgText());
+                        moonCheckMap.put("aniDuration", target.getMoonCheck().getAniDuration());
+                        moonCheckMap.put("fullmoon_yn", target.getFullmoon_yn());
+                        String resultCode = actionService.moonCheckSocket(roomJoinVo.getRoomNo(), request, "roomJoin", moonCheckMap);
+                        if("error".equals(resultCode)){
+                            log.error("보름달 체크 오류");
+                        }
                     }
                 }
             }
@@ -602,28 +604,30 @@ public class WowzaService {
             P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo();
             attendanceCheckVo.setMem_no(memNo);
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
-            //보름달 체크
+
             HashMap moonCheckMap = null;
-            P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
-            pMoonCheckVo.setRoom_no(roomNo);
-            moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
-            if(roomInfoViewVo.getCompleteMoon() == 1){
-                var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), "4"));
-                moonCheckMap.put("moonStep", 4);
-                if(!DalbitUtil.isEmpty(codeVo)){
-                    moonCheckMap.put("moonStepFileNm", codeVo.getValue());
-                    moonCheckMap.put("aniDuration", codeVo.getSortNo());
-                    var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), "4"));
-                    if(!DalbitUtil.isEmpty(aniCodeVo)) {
-                        moonCheckMap.put("moonStepAniFileNm", "");
-                        moonCheckMap.put("aniDuration", aniCodeVo.getSortNo());
+            //보름달 사용여부
+            if(roomInfoViewVo.getFullmoon_yn() == 1){
+                //보름달 체크
+                P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
+                pMoonCheckVo.setRoom_no(roomNo);
+                moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
+                if(roomInfoViewVo.getCompleteMoon() == 1){
+                    var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), "4"));
+                    moonCheckMap.put("moonStep", 4);
+                    if(!DalbitUtil.isEmpty(codeVo)){
+                        moonCheckMap.put("moonStepFileNm", codeVo.getValue());
+                        moonCheckMap.put("aniDuration", codeVo.getSortNo());
+                        var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), "4"));
+                        if(!DalbitUtil.isEmpty(aniCodeVo)) {
+                            moonCheckMap.put("moonStepAniFileNm", "");
+                            moonCheckMap.put("aniDuration", aniCodeVo.getSortNo());
+                        }
                     }
+                    moonCheckMap.put("dlgTitle", DalbitUtil.getStringMap(moonCheckMap, "dlgTitle"));
+                    moonCheckMap.put("dlgText", DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
                 }
-                moonCheckMap.put("dlgTitle", DalbitUtil.getStringMap(moonCheckMap, "dlgTitle"));
-                moonCheckMap.put("dlgText", DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
-            }
-            //보름달 사용여부 체크
-            if(roomInfoViewVo.getFullmoon_yn() == 0){
+            }else{
                 moonCheckMap.put("moonStep", 4);
             }
             return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap);

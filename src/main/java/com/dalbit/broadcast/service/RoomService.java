@@ -260,7 +260,7 @@ public class RoomService {
     public String callBroadCastRoomEdit(P_RoomEditVo pRoomEditVo, HttpServletRequest request) throws GlobalException {
 
         String systemBanWord = commonService.banWordSelect();
-        //String titleBanWord = commonService.titleBanWordSelect();
+        String titleBanWord = commonService.titleBanWordSelect();
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(pRoomEditVo.getTitle())){
@@ -268,7 +268,7 @@ public class RoomService {
         }
 
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomEditVo.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(titleBanWord, pRoomEditVo.getTitle())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
         }
 

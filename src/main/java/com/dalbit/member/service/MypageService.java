@@ -256,7 +256,7 @@ public class MypageService {
     public String callBroadBasicEdit(P_BroadBasicEditVo pBroadBasicEdit){
 
         String systemBanWord = commonService.banWordSelect();
-        //String titleBanWord = commonService.titleBanWordSelect();
+        String titleBanWord = commonService.titleBanWordSelect();
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(pBroadBasicEdit.getTitle())){
@@ -264,7 +264,7 @@ public class MypageService {
         }
 
         //금지어 체크(제목)
-        if(DalbitUtil.isStringMatchCheck(systemBanWord, pBroadBasicEdit.getTitle())){
+        if(DalbitUtil.isStringMatchCheck(titleBanWord, pBroadBasicEdit.getTitle())){
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
         }
 
