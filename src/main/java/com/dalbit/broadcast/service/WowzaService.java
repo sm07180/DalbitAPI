@@ -605,9 +605,9 @@ public class WowzaService {
             attendanceCheckVo.setMem_no(memNo);
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
-            HashMap moonCheckMap = null;
+            HashMap moonCheckMap = new HashMap();
             //보름달 사용여부
-            if(roomInfoViewVo.getFullmoon_yn() == 1){
+            //if(roomInfoViewVo.getFullmoon_yn() == 1){
                 //보름달 체크
                 P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
                 pMoonCheckVo.setRoom_no(roomNo);
@@ -627,14 +627,14 @@ public class WowzaService {
                     moonCheckMap.put("dlgTitle", DalbitUtil.getStringMap(moonCheckMap, "dlgTitle"));
                     moonCheckMap.put("dlgText", DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
                 }
-            }else{
+          /*  }else{
                 moonCheckMap.put("moonStepFileNm", "");
                 moonCheckMap.put("moonStepAniFileNm", "");
                 moonCheckMap.put("aniDuration", 0);
                 moonCheckMap.put("dlgTitle", "");
                 moonCheckMap.put("dlgText", "");
                 moonCheckMap.put("moonStep", 4);
-            }
+            }*/
             return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap);
         }
         return null;
