@@ -17,7 +17,6 @@ public interface GuestDao {
     ProcedureVo callGuestPropose(ProcedureVo procedureVo);
 
     ProcedureVo callGuestProposeCancel(ProcedureVo procedureVo);
-
     @Transactional(readOnly = true)
     List<P_GuestManagementListVo> callGuestManagementList(ProcedureVo procedureVo);
 
@@ -30,13 +29,10 @@ public interface GuestDao {
     ProcedureVo callBroadCastRoomGuestAdd(ProcedureVo procedureVo);
 
     ProcedureVo callBroadCastRoomGuestCancel(ProcedureVo procedureVo);
-
     @Transactional(readOnly = true)
     List<P_GuestListVo> selectGuestList(GuestListVo guestListVo);
-
     @Transactional(readOnly = true)
     HashMap selectGuestInfo(HashMap params);
-
     @Transactional(readOnly = true)
     List<P_GuestListVo> getGuestInfo(P_GuestListVo pGuestListVo);
 }

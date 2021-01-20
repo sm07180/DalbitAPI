@@ -26,6 +26,7 @@ public class P_MemberNotifyEditVo extends P_ApiVo {
     private Integer set_9;
     private Integer set_10;
     private Integer set_11;
+    private Integer set_12;
     private String alim_slct;   //알림타입
 
     public P_MemberNotifyEditVo() { }
@@ -43,6 +44,8 @@ public class P_MemberNotifyEditVo extends P_ApiVo {
         setSet_9(memberNotifyEditVo.getIsStarClip());
         setSet_10(memberNotifyEditVo.getIsMyClip());
         setSet_11(memberNotifyEditVo.getIsReceive());
+        setSet_11(memberNotifyEditVo.getIsReceive());
+        setSet_12(memberNotifyEditVo.getIsMailbox());
         setAlim_slct(memberNotifyEditVo.getAlimType());
     }
 

@@ -24,7 +24,6 @@ public interface UserDao {
     ProcedureVo callFanstarInsert(ProcedureVo procedureVo);
 
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
-
     @Transactional(readOnly = true)
     HashMap selectGuestStreamInfo(HashMap params);
 }

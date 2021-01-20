@@ -126,6 +126,7 @@ public class ClipController {
 
         P_ClipGiftVo apiData = new P_ClipGiftVo(clipGiftVo, request);
         String result = clipService.clipGift(apiData);
+
         return result;
     }
 

@@ -290,6 +290,7 @@ public class ActionService {
                 itemMap.put("nickNm", vo1.getMemNk());
                 itemMap.put("memNo", vo1.getMemNo());
                 itemMap.put("dalCnt", item.getByeol() * pRoomGiftVo.getItem_cnt());
+
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){

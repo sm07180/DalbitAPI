@@ -1989,7 +1989,16 @@ public enum Status {
     //추천DJ목록조회
     추천DJ목록조회_성공("C001", "dj.recommend.list.select.success", "추천DJ 목록 조회 성공 시"),
     추천DJ목록조회_실패("C006", "dj.recommend.list.select.fail", "추천DJ 목록 조회 실패 시"),
-   ;
+
+    //이미지신고
+    이미지신고_성공("0", "image.report.success", "이미지 신고 성공 시"),
+    이미지신고_요청회원아님("-1", "image.report.member.number.error", "요청회원번호 회원 아닐 시"),
+    이미지신고_대상회원아님("-2", "image.report.target.member.number.error", "대상회원번호 회원 아닐 시"),
+    이미지신고_이미신고("-3", "image.report.already", "이미 신고된 이미지"),
+    이미지신고_방번호없음("-4", "image.report.no.room.number", "방번호가 없을 시"),
+    이미지신고_이미지번호없음("-5", "image.report.no.idx", "이미지 번호 없을 시"),
+    이미지신고_실패("C006", "image.report.fail", "이미지 신고 실패 시"),
+  ;
 
 
 
