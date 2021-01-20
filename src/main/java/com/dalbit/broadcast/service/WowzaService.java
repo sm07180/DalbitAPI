@@ -628,6 +628,11 @@ public class WowzaService {
                     moonCheckMap.put("dlgText", DalbitUtil.getStringMap(moonCheckMap, "dlgText"));
                 }
             }else{
+                moonCheckMap.put("moonStepFileNm", "");
+                moonCheckMap.put("moonStepAniFileNm", "");
+                moonCheckMap.put("aniDuration", 0);
+                moonCheckMap.put("dlgTitle", "");
+                moonCheckMap.put("dlgText", "");
                 moonCheckMap.put("moonStep", 4);
             }
             return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap);
