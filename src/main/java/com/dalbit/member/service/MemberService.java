@@ -773,4 +773,30 @@ public class MemberService {
         }
         return result;
     }
+
+    /**
+     * 추천 DJ 목록 조회
+     */
+    public String callDjRecommendList(P_DjRecommendListVo pDjRecommendListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pDjRecommendListVo);
+        List<P_DjRecommendListVo> djRecommendListVo = memberDao.callDjRecommendList(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap djRecommendOutList = new HashMap();
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            List<DjRecommendListOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(djRecommendListVo)) {
+                for (int i = 0; i < djRecommendListVo.size(); i++) {
+                    outVoList.add(new DjRecommendListOutVo(djRecommendListVo.get(i)));
+                }
+            }
+            djRecommendOutList.put("list", outVoList);
+            //djRecommendOutList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.추천DJ목록조회_성공, djRecommendOutList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.추천DJ목록조회_실패));
+        }
+        return result;
+    }
 }

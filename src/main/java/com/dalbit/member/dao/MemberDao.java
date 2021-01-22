@@ -83,4 +83,6 @@ public interface MemberDao {
     ProcedureVo callRecvDelete(ProcedureVo procedureVo);
     //@Transactional(readOnly = true)
     List<P_MemberReceiveListVo> callRecvList(ProcedureVo procedureVo);
+    //@Transactional(readOnly = true)
+    List<P_DjRecommendListVo> callDjRecommendList(ProcedureVo procedureVo);
 }

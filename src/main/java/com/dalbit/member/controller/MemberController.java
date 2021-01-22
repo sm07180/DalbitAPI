@@ -454,4 +454,15 @@ public class MemberController {
         String result = memberService.callRecvList(apiData);
         return result;
     }
+
+    /**
+     * 추천 DJ 목록 조회
+     */
+    @GetMapping("/dj/recommend")
+    public String djRecommendList(@Valid DjRecommendListVo djRecommendListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_DjRecommendListVo apiData = new P_DjRecommendListVo(djRecommendListVo, request);
+        String result = memberService.callDjRecommendList(apiData);
+        return result;
+    }
 }
