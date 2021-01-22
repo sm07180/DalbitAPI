@@ -33,7 +33,7 @@ public class P_DjRecommendListVo {
     /* Output */
     private String mem_sex;
     private String mem_nick;
-    private String profileImages;
+    private String profileImage;
     private String roomNo;
     private int age_type;
     private String age_desc;

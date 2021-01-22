@@ -24,7 +24,7 @@ public class DjRecommendListOutVo {
         setMemNo(target.getMem_no());
         setNickNm(target.getMem_nick());
         setGender(target.getMem_sex());
-        setProfImg(new ImageVo(target.getProfileImages(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+        setProfImg(new ImageVo(target.getProfileImage(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
         setRoomNo(DalbitUtil.isEmpty(target.getRoomNo()) ? "" : target.getRoomNo());
         setAgeType(target.getAge_type());
         setAgeDesc(target.getAge_desc());
