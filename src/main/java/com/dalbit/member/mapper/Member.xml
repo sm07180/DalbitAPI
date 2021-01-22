@@ -79,13 +79,13 @@
         CALL sp_member_exchange_bank_add(#{mem_no, mode=IN, jdbcType=INTEGER}, #{account_no, mode=IN, jdbcType=VARCHAR}, #{account_name, mode=IN, jdbcType=VARCHAR}, #{bank_code, mode=IN, jdbcType=VARCHAR}, #{bank_name, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="callAccountEdit" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountEditVo" resultType="int">
+    <update id="callAccountEdit" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountEditVo">
         CALL sp_member_exchange_bank_edit(#{idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{account_no, mode=IN, jdbcType=VARCHAR}, #{account_name, mode=IN, jdbcType=VARCHAR}, #{bank_code, mode=IN, jdbcType=VARCHAR}, #{bank_name, mode=IN, jdbcType=VARCHAR})
-    </select>
+    </update>
 
-    <select id="callAccountDelete" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountDeleteVo" resultType="int">
+    <delete id="callAccountDelete" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountDeleteVo">
         CALL sp_member_exchange_bank_delete(#{idx, mode=IN, jdbcType=INTEGER})
-    </select>
+    </delete>
 
     <select id="callAccountListSelect" statementType="CALLABLE" parameterType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo" resultType="com.dalbit.member.vo.procedure.P_ExchangeAccountListVo">
         CALL sp_member_exchange_bank_select(#{mem_no, mode=IN, jdbcType=INTEGER})
