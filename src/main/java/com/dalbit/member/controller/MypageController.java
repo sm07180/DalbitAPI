@@ -76,6 +76,7 @@ public class MypageController {
         P_FanstarInsertVo apiData = new P_FanstarInsertVo();
         apiData.setFan_mem_no(new MemberVo().getMyMemNo(request));
         apiData.setStar_mem_no(fanstartInsertVo.getMemNo());
+        apiData.setType(fanstartInsertVo.getType());
 
         String result = mypageService.callFanstarInsert(apiData);
 
