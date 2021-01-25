@@ -38,6 +38,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -82,6 +85,25 @@ public class WowzaService {
         HashMap result = new HashMap();
         String streamName = request.getParameter("streamName");
         String action = request.getParameter("action");
+        if(DalbitUtil.isEmpty(streamName) || DalbitUtil.isEmpty(action) ){
+            StringBuffer body = new StringBuffer();
+            try {
+                BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
+                String buffer;
+                while ((buffer = input.readLine()) != null){
+                    body.append(buffer);
+                }
+            }catch(IOException e){}
+
+            if(body.length() > 0){
+                try {
+                    HashMap bodyMap = new Gson().fromJson(body.toString(), HashMap.class);
+                    streamName = DalbitUtil.getStringMap(bodyMap, "streamName");
+                    action = DalbitUtil.getStringMap(bodyMap, "action");
+                }catch(Exception e){}
+            }
+
+        }
         if(DalbitUtil.isEmpty(streamName) || DalbitUtil.isEmpty(action) || !("liveStreamStarted".equals(action) || "liveStreamEnded".equals(action))){
             result.put("status", Status.파라미터오류);
         }else{
