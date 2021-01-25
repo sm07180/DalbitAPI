@@ -8,6 +8,7 @@ import lombok.Setter;
 public class RouletteCouponHistVo {
     private int type;
     private int status;
+    private int coupon_type;
     private String mem_no;
     private String mem_nick;
     private String mem_sex;
