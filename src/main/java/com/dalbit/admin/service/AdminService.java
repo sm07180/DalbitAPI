@@ -92,10 +92,10 @@ public class AdminService {
     private String WOWZA_AUDIO_WSS_URL;
     @Value("${wowza.wss.url}")
     private String WOWZA_VIDEO_WSS_URL;
-    @Value("${wowza.server}")
+/*    @Value("${wowza.real.server}")
     private String[] WOWZA_AUDIO_SERVER;
-    @Value("${wowza.server}")
-    private String[] WOWZA_VIDEO_SERVER;
+    @Value("${wowza.real.server}")
+    private String[] WOWZA_VIDEO_SERVER;*/
     @Value("${wowza.prefix}")
     private String WOWZA_PREFIX;
 
