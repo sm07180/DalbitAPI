@@ -35,13 +35,13 @@ public interface RoomDao {
 
     void callUpdateExitTry(String roomNo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_SummaryListenerVo> callBroadcastSummaryListener(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_SummaryListenerVo> callBroadcastSummaryListenerMyStar(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_SummaryDjVo> callBroadcastSummaryDj(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
