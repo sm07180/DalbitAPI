@@ -50,7 +50,7 @@ public class AdminMemberService {
         resultMap.put("detail", detail);
         return gsonUtil.toJson(new JsonOutputVo(status, resultMap));
     }
-/**
+    /**
      * 방송관리 목록
      */
     public String broadcastList(HashMap<String, String> paramMap) {
@@ -84,7 +84,7 @@ public class AdminMemberService {
     public String clipList(HashMap<String, Object> paramMap) {
 
         paramMap.put("search_testId", 0);
-        paramMap.put("searchText", DalbitUtil.getStringMap(paramMap, "mem_no"));
+        //paramMap.put("searchText", DalbitUtil.getStringMap(paramMap, "mem_no"));
 
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<HashMap> list = adminMemberDao.callClipList(procedureVo);
@@ -109,6 +109,9 @@ public class AdminMemberService {
         return gsonUtil.toJson(new JsonOutputVo(status, resultMap));
     }
 
+    /**
+     * 1:1 문의 관리 목록
+     */
     public String questionList(HashMap<String, Object> paramMap) {
 
         paramMap.put("search_testId", 0);
@@ -134,6 +137,63 @@ public class AdminMemberService {
         HashMap resultMap = new HashMap();
         resultMap.put("list", list);
         resultMap.put("pagingInfo", pagingInfo);
+        return gsonUtil.toJson(new JsonOutputVo(status, resultMap));
+    }
+
+    /**
+     * 이미지 관리 목록
+     */
+    public String imageList(HashMap<String, Object> paramMap) {
+
+        ProcedureVo procedureVo = new ProcedureVo(paramMap);
+        ArrayList<HashMap> list = adminMemberDao.callImageList(procedureVo);
+
+        HashMap pagingInfo = new HashMap();
+
+        Status status;
+        if(procedureVo.getRet().equals(Status.데이터없음.getMessageCode())) {
+            status = Status.데이터없음;
+
+        }else if(0 < Integer.valueOf(procedureVo.getRet())){
+            pagingInfo = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            status = Status.조회;
+
+        }else{
+            status = Status.비즈니스로직오류;
+        }
+
+        HashMap resultMap = new HashMap();
+        resultMap.put("list", list);
+        resultMap.put("pagingInfo", pagingInfo);
+        return gsonUtil.toJson(new JsonOutputVo(status, resultMap));
+    }
+
+    /**
+     * 내 지갑 관리 목록
+     */
+    public String walletList(HashMap<String, Object> paramMap) {
+
+        paramMap.put("slctType", DalbitUtil.getIntMap(paramMap, "slctType"));
+
+        ProcedureVo procedureVo = new ProcedureVo(paramMap);
+        ArrayList<HashMap> list = adminMemberDao.callWalletList(procedureVo);
+
+        HashMap pagingInfo = new HashMap();
+
+        Status status;
+        if(procedureVo.getRet().equals(Status.데이터없음.getMessageCode())) {
+            status = Status.데이터없음;
+        } else if(0 < Integer.valueOf(procedureVo.getRet())) {
+            pagingInfo = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            status = Status.조회;
+        } else {
+            status = Status.비즈니스로직오류;
+        }
+
+        HashMap resultMap = new HashMap();
+        resultMap.put("list", list);
+        resultMap.put("pagingInfo", pagingInfo);
+
         return gsonUtil.toJson(new JsonOutputVo(status, resultMap));
     }
 

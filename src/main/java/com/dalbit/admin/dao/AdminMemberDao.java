@@ -17,5 +17,8 @@ public interface AdminMemberDao {
     ArrayList<HashMap> callClipList(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     ArrayList<HashMap> callQuestionList(ProcedureVo procedureVo);
-
+    @Transactional(readOnly = true)
+    ArrayList<HashMap> callImageList(ProcedureVo procedureVo);
+    @Transactional(readOnly = true)
+    ArrayList<HashMap> callWalletList(ProcedureVo procedureVo);
 }

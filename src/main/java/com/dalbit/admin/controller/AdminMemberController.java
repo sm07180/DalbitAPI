@@ -62,11 +62,29 @@ public class AdminMemberController {
     }
 
     /**
-     * 클립관리
+     * 1:1 문의 관리
      */
     @PostMapping("/question/list")
     public String questionList(@RequestParam HashMap<String, Object> paramMap) {
         String result = adminMemberService.questionList(paramMap);
+        return result;
+    }
+
+    /**
+     * 이미지 관리
+     */
+    @PostMapping("/image/list")
+    public String imageList(@RequestParam HashMap<String, Object> paramMap) {
+        String result = adminMemberService.imageList(paramMap);
+        return result;
+    }
+
+    /**
+     * 내 지갑 관리
+     */
+    @PostMapping("/wallet/list")
+    public String walletList(@RequestParam HashMap<String, Object> paramMap) {
+        String result = adminMemberService.walletList(paramMap);
         return result;
     }
 }

@@ -49,6 +49,7 @@ public interface AdminDao {
 
     // 신고 처리
     int declarationOperate(DeclarationVo declarationVo);
+    int declarationResponseOperate(DeclarationVo declarationVo);
     @Transactional(readOnly = true)
     MemberInfoVo getMemberInfo(String mem_no);
     @Transactional(readOnly = true)

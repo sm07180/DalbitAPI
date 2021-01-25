@@ -9,6 +9,7 @@ import lombok.ToString;
 @ToString
 public class DeclarationVo extends AdminBaseVo{
 
+    private int reportIdx;
     private String opName;
     private String mem_no;
     private String mem_userid;

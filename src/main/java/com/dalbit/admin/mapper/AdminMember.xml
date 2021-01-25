@@ -18,5 +18,11 @@
         call rd_admin.sp_m_admin_service_center_qna_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callImageList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="java.util.HashMap">
+        call rd_admin.sp_m_admin_member_image_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
+    <select id="callWalletList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="java.util.HashMap">
+        call rd_admin.sp_m_admin_member_wallet_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

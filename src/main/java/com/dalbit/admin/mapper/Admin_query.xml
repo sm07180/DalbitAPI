@@ -176,6 +176,18 @@
           ( #{mem_no}, #{slctType}, #{notiContents}, #{notiMemo})
     </insert>
 
+    <update id="declarationResponseOperate" parameterType="com.dalbit.admin.vo.DeclarationVo">
+        /* Admin.xml - declarationResponseOperate */
+        update rd_data.tb_member_report
+        set status = #{status}
+            , op_code = #{opCode}
+            , op_msg = #{notiMemo}
+            , platform = 'Mobile'
+            , op_name = #{opName}
+            , op_date = now()
+        where idx = #{reportIdx}
+    </update>
+
     <insert id="declarationOperate" parameterType="com.dalbit.admin.vo.DeclarationVo">
         /* Admin.xml - declarationOperate */
         insert into rd_data.tb_member_report(
@@ -271,6 +283,7 @@
             , date_format(a.expected_end_date, '%Y.%m.%d %H:%i:%S') AS expectedEndDt
             , a.os_type AS osType
             , a.image_background AS roomBgImg
+            , a.type_media AS typeMedia
             , b.bj_streamid AS bjStreamId
             , c.mem_nick AS nickNm
             , c.mem_sex AS gender

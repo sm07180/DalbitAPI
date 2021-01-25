@@ -88,10 +88,14 @@ public class AdminService {
     @Value("${server.api.url}")
     private String SERVER_API_URL;
 
-    @Value("${wowza.wss.url}")
-    private String WOWZA_WSS_URL;
-    @Value("${wowza.real.server}")
-    private String[] WOWZA_REAL_SERVER;
+    @Value("${wowza.audio.wss.url}")
+    private String WOWZA_AUDIO_WSS_URL;
+    @Value("${wowza.video.wss.url}")
+    private String WOWZA_VIDEO_WSS_URL;
+    @Value("${wowza.audio.server}")
+    private String[] WOWZA_AUDIO_SERVER;
+    @Value("${wowza.video.server}")
+    private String[] WOWZA_VIDEO_SERVER;
     @Value("${wowza.prefix}")
     private String WOWZA_PREFIX;
 
@@ -219,8 +223,8 @@ public class AdminService {
     public String selectBroadcastDetailWowza(SearchVo searchVo){
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
         if(broadInfo != null){
-            log.info("[WOWZA] Request URL : {}", WOWZA_WSS_URL );
-            broadInfo.setWsUrl(WOWZA_WSS_URL);
+            log.info("[WOWZA] Request URL : {}", "a".equals(broadInfo.getTypeMedia()) ? WOWZA_AUDIO_WSS_URL : WOWZA_VIDEO_WSS_URL );
+            broadInfo.setWsUrl("a".equals(broadInfo.getTypeMedia()) ? WOWZA_AUDIO_WSS_URL : WOWZA_VIDEO_WSS_URL);
             broadInfo.setApplicationName("edge");
             broadInfo.setStreamName(WOWZA_PREFIX + searchVo.getRoom_no() + "_opus");
         }
@@ -609,7 +613,12 @@ public class AdminService {
             declarationVo.setReported_grade(reportedInfo.getGrade());
             declarationVo.setStatus(1);
 
-            adminDao.declarationOperate(declarationVo);
+            if(0 < declarationVo.getReportIdx()){
+                adminDao.declarationResponseOperate(declarationVo);
+            }else{
+                adminDao.declarationOperate(declarationVo);
+            }
+
 
             //회원상태 변경을 위한 VO 세팅
             DeclarationVo memberDeclarationVo = new DeclarationVo();
@@ -1231,10 +1240,8 @@ public class AdminService {
 
         String result;
 
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_성공, map));
-        } else if(Status.신고목록조회_데이터없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_데이터없음));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_에러));
         }

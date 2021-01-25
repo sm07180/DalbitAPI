@@ -34,5 +34,7 @@ public class BroadcastDetailVo {
     private String mem_no;
     private String mem_nick;
 
+    private String typeMedia;
+
 
 }
