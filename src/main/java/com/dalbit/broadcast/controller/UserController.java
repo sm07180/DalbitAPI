@@ -128,6 +128,7 @@ public class UserController {
         apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
         apiData.setStar_mem_no(broadFanstartInsertVo.getMemNo());
         apiData.setRoom_no(broadFanstartInsertVo.getRoomNo());
+        apiData.setType(broadFanstartInsertVo.getType());
 
         String result = userService.callFanstarInsert(apiData, request);
 

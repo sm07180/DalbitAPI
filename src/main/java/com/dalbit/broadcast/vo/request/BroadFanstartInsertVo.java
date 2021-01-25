@@ -16,4 +16,6 @@ public class BroadFanstartInsertVo {
     @NotBlank(message = "{\"ko_KR\" : \"방번호를\"}")
     @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
     private String roomNo;
+
+    private int type; // 0:일반, 1:추천DJ
 }
