@@ -634,13 +634,19 @@ public class WowzaService {
                 P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
                 pMoonCheckVo.setRoom_no(roomNo);
                 moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
-                if(roomInfoViewVo.getCompleteMoon() == 1){
+                if(roomInfoViewVo.getCompleteMoon() > 0){
                     var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), "4"));
                     moonCheckMap.put("moonStep", 4);
                     if(!DalbitUtil.isEmpty(codeVo)){
-                        moonCheckMap.put("moonStepFileNm", codeVo.getValue());
-                        moonCheckMap.put("aniDuration", codeVo.getSortNo());
-                        var aniCodeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_애니메이션.getCode(), "4"));
+                        String code = Code.보름달_애니메이션.getCode();
+                        String value = DalbitUtil.randomMoonAniValue();
+                        if(String.valueOf(roomInfoViewVo.getCompleteMoon()).equals(Status.슈퍼문_완성.getMessageCode())){
+                            code = Code.슈퍼문_애니메이션.getCode();
+                            value = "1";
+                        }
+                        var aniCodeVo = commonService.selectCodeDefine(new CodeVo(code, value));
+                        moonCheckMap.put("moonStepFileNm", aniCodeVo.getValue());
+                        moonCheckMap.put("aniDuration", aniCodeVo.getSortNo());
                         if(!DalbitUtil.isEmpty(aniCodeVo)) {
                             moonCheckMap.put("moonStepAniFileNm", "");
                             moonCheckMap.put("aniDuration", aniCodeVo.getSortNo());
