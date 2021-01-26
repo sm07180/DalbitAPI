@@ -12,7 +12,6 @@ import com.dalbit.broadcast.vo.request.GuestListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -25,7 +24,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,21 +67,9 @@ public class GuestService {
         selParams.put("mem_no", memNo);
         selParams.put("room_no", roomNo);
         HashMap roomGuestInfo = userDao.selectGuestStreamInfo(selParams);
-        HttpSession session = request.getSession();
         if(roomGuestInfo == null){
-            String reTryCnt = (String)session.getAttribute("guestRetryCnt");
-            int retryCnt = 0;
-            if(reTryCnt != null){
-                retryCnt = Integer.parseInt(reTryCnt);
-            }
-            if(retryCnt < 10){
-                session.setAttribute("guestRetryCnt", String.valueOf(retryCnt++));
-                return guest(request);
-            }else{
-                return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음, null));
-            }
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음, null));
         }
-        session.setAttribute("guestRetryCnt", null);
 
         GuestInfoVo guestInfoVo = new GuestInfoVo();
         guestInfoVo.setMode(Integer.parseInt(mode));
