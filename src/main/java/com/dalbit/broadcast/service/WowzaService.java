@@ -474,7 +474,7 @@ public class WowzaService {
             //애드브릭스 전달을 위한 데이터 생성
             //adbrixService("roomJoin", "1151231231312")
             if(target.getFullmoon_yn() == 1){
-                if(target.getCompleteMoon() != 1){
+                if(target.getCompleteMoon() == 0){
                     if(target.getStep() != target.getOldStep()){
                         //보름달 체크
                         HashMap moonCheckMap = new HashMap();
@@ -485,6 +485,7 @@ public class WowzaService {
                         moonCheckMap.put("dlgText", target.getMoonCheck().getDlgText());
                         moonCheckMap.put("aniDuration", target.getMoonCheck().getAniDuration());
                         moonCheckMap.put("fullmoon_yn", target.getFullmoon_yn());
+
                         String resultCode = actionService.moonCheckSocket(roomJoinVo.getRoomNo(), request, "roomJoin", moonCheckMap);
                         if("error".equals(resultCode)){
                             log.error("보름달 체크 오류");
