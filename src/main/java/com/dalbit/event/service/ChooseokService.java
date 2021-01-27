@@ -39,25 +39,23 @@ public class ChooseokService {
 
         //Calendar month + 1 확인
         if("real".equals(DalbitUtil.getActiveProfile())) {
-            start.set(2020,11,24,0,0,0);
+            start.set(2021,0,28,0,0,0);
         } else {
-            start.set(2020,11,23,0,0,0);
+            start.set(2021,0,26,0,0,0);
         }
 
-        end.set(2020,11,30,23,59,59);
+        end.set(2021,1,2,23,59,59);
 
-        String state = "false";
-
+        boolean state = false;
         if(start.getTimeInMillis() <= today.getTimeInMillis() && today.getTimeInMillis() <= end.getTimeInMillis()) {
-            state = "true";
+            state = true;
         }
 
         HashMap resultMap = new HashMap();
         resultMap.put("state", state);
 
-
         String result;
-        if("true".equals(state)) {
+        if(state) {
             ProcedureVo procedureVo = new ProcedureVo(pChooseokCheckVo);
             chooseokDao.callChooseokCheck(procedureVo);
             if (Status.추석이벤트체크_참여가능.getMessageCode().equals(procedureVo.getRet())) {
