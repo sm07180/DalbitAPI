@@ -237,14 +237,13 @@ public class CommonService {
         resultMap.put("giftComboCount", giftComboCount);
 
         if(deviceVo.getOs() != 2) {
-            //int[] giftDal = {20, 50, 100, 500, 1000, 2000, 3000, 5000, 10000};
             int[] giftDal = {50, 100, 500, 1000, 2000, 3000, 5000, 10000};
             resultMap.put("giftDal", giftDal);
-            resultMap.put("giftDalDirect", true);
-            resultMap.put("giftDalMin", 10);
+            resultMap.put("giftDalDirect", false);
+            resultMap.put("giftDalMin", 50);
             int[] giftDalByRoom = {50, 100, 500, 1000, 2000, 3000, 5000, 10000};
             resultMap.put("giftDalByRoom", giftDalByRoom);
-            resultMap.put("giftDalByRoomDirect", true);
+            resultMap.put("giftDalByRoomDirect", false);
         }
         resultMap.put("itemRepeat", true);
         List<String> downloadList = commonDao.getDownloadList();
