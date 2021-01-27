@@ -18,7 +18,7 @@ public class P_MypageReportBroadVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(mypageReportBroadVo.getPage()) ? 1 : mypageReportBroadVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mypageReportBroadVo.getRecords()) ? 10 : mypageReportBroadVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setSlct_type(mypageReportBroadVo.getDateType());
         setStartDate(DalbitUtil.convertDate(mypageReportBroadVo.getStartDt(), "yyyy-MM-dd"));
         setEndDate(DalbitUtil.convertDate(mypageReportBroadVo.getEndDt(), "yyyy-MM-dd"));

@@ -17,7 +17,7 @@ public class P_FanRankingVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(fanRankingVo.getPage()) ? 1 : fanRankingVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(fanRankingVo.getRecords()) ? 10 : fanRankingVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setStar_mem_no(fanRankingVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

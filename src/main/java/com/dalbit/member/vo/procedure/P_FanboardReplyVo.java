@@ -32,7 +32,7 @@ public class P_FanboardReplyVo extends P_ApiVo {
 
     public P_FanboardReplyVo(){}
     public P_FanboardReplyVo(FanboardReplyVo fanboardReplyVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setStar_mem_no(fanboardReplyVo.getMemNo());
         setBoard_no(fanboardReplyVo.getReplyIdx());
     }

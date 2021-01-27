@@ -44,7 +44,7 @@ public class MypageController {
     @GetMapping("")
     public String memberInfo(HttpServletRequest request){
         int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, new MemberVo().getMyMemNo(request), new MemberVo().getMyMemNo(request));
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), MemberVo.getMyMemNo(request));
 
         String result = profileService.callMemberInfo(apiData, request);
 
@@ -74,7 +74,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_FanstarInsertVo apiData = new P_FanstarInsertVo();
-        apiData.setFan_mem_no(new MemberVo().getMyMemNo(request));
+        apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
         apiData.setStar_mem_no(fanstartInsertVo.getMemNo());
         apiData.setType(fanstartInsertVo.getType());
 
@@ -93,7 +93,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_FanstarDeleteVo apiData = new P_FanstarDeleteVo();
-        apiData.setFan_mem_no(new MemberVo().getMyMemNo(request));
+        apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
         apiData.setStar_mem_no(fanstarDeleteVo.getMemNo());
 
         String result = mypageService.callFanstarDelete(apiData);
@@ -109,7 +109,7 @@ public class MypageController {
     public String broadBasic(HttpServletRequest request){
 
         P_BroadBasicVo apiData = new P_BroadBasicVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.callBroadBasic(apiData);
 
@@ -126,7 +126,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BroadBasicEditVo apiData = new P_BroadBasicEditVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setSubjectType(broadBasicEditVo.getRoomType());
         apiData.setTitle(broadBasicEditVo.getTitle());
         apiData.setBackgroundImage(broadBasicEditVo.getBgImg());
@@ -166,7 +166,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_MemberBlockAddVo apiData = new P_MemberBlockAddVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setBlocked_mem_no(memberBlockAddVo.getMemNo());
 
         String result = mypageService.callBlockAdd(apiData);
@@ -184,7 +184,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_MemberBlockDelVo apiData = new P_MemberBlockDelVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setBlocked_mem_no(memberBlockDelVo.getMemNo());
 
         String result = mypageService.callMemBerBlocklDel(apiData);
@@ -199,7 +199,7 @@ public class MypageController {
     @GetMapping("/notify")
     public String memberNotify(HttpServletRequest request){
         P_MemberNotifyVo apiData = new P_MemberNotifyVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.callMemberNotify(apiData);
 
@@ -227,7 +227,7 @@ public class MypageController {
     @GetMapping("/shortcut")
     public String memberShortCut(HttpServletRequest request){
         P_MemberShortCutVo apiData = new P_MemberShortCutVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.callMemberShortCut(apiData, "", request);
 
@@ -257,7 +257,7 @@ public class MypageController {
 
         //String text = shortCutEditVo.getText().length() <= 50 ? shortCutEditVo.getText() : shortCutEditVo.getText().substring(0, 49);
 
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setOrderNo(shortCutEditVo.getOrderNo());
         apiData.setOrder(shortCutEditVo.getOrder());
         apiData.setText(shortCutEditVo.getText());
@@ -446,7 +446,7 @@ public class MypageController {
     public String getBanWrod(HttpServletRequest request){
 
         P_BanWordSelectVo apiData = new P_BanWordSelectVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.callMyapgeGetBanWord(apiData);
 
@@ -462,7 +462,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BanWordInsertVo apiData = new P_BanWordInsertVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setBanWord(banWordVo.getBanWord());
 
         String result = mypageService.callMypageInsertBanWord(apiData, request);
@@ -491,7 +491,7 @@ public class MypageController {
     public String getManager(HttpServletRequest request){
 
         P_MypageManagerVo apiData = new P_MypageManagerVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         String result = mypageService.callMypageManager(apiData);
 
         return result;
@@ -681,7 +681,7 @@ public class MypageController {
     public String newAlarm(HttpServletRequest request) throws GlobalException{
 
         P_MemberNotifyVo apiData = new P_MemberNotifyVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.callNewAlarm(apiData);
 
@@ -696,7 +696,7 @@ public class MypageController {
     public String memberShortCutAdd(HttpServletRequest request) throws GlobalException{
 
         P_MemberShortCutAddVo apiData = new P_MemberShortCutAddVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.memberShortCutAdd(apiData, request);
 
@@ -710,7 +710,7 @@ public class MypageController {
     public String memberShortCutExtend(HttpServletRequest request) throws GlobalException{
 
         P_MemberShortCutExtendVo apiData = new P_MemberShortCutExtendVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = mypageService.memberShortCutExtend(apiData, request);
 
@@ -727,7 +727,7 @@ public class MypageController {
         /*DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_MsgClickUpdateVo apiData = new P_MsgClickUpdateVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         int msgSlct;
         if("quick".equals(msgClickUpdateVo.getMsgSlct()) || "1".equals(msgClickUpdateVo.getMsgSlct())){

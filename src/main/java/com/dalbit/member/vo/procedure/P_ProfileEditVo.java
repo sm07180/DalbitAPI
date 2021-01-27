@@ -17,7 +17,7 @@ public class P_ProfileEditVo extends P_ApiVo {
 
     public P_ProfileEditVo(){}
     public P_ProfileEditVo(ProfileEditVo profileEditVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setMemSex(profileEditVo.getGender());
         setNickName(profileEditVo.getNickNm().trim().replace(" "," "));
         /*setName(profileEditVo.getName());

@@ -16,7 +16,7 @@ public class P_RoomBoosterVo extends P_ApiVo {
 
     public P_RoomBoosterVo(){}
     public P_RoomBoosterVo(BoosterVo boosterVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setRoom_no(boosterVo.getRoomNo());
         setItem_no(boosterVo.getItemNo());
         setItem_cnt(boosterVo.getItemCnt());

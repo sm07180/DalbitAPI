@@ -32,7 +32,7 @@ public class CommonServiceAop {
             + "&& !@annotation(com.dalbit.common.annotation.NoLogging)")
     public Object serviceLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
-        String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
+        String memNo = request == null ? null : MemberVo.getMyMemNo(request);
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
         log.debug("[service] [memNo : {}] - start : {}", memNo, proceedName);

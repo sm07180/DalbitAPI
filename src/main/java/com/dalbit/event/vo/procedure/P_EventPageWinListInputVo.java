@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class P_EventPageWinListInputVo extends P_ApiVo {
 
     public P_EventPageWinListInputVo(EventPageWinVo eventPageWinVo, HttpServletRequest request) {
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setEventIdx(eventPageWinVo.getEventIdx());
     }
 

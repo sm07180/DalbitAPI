@@ -30,7 +30,7 @@ public class P_ClipDeclarVo extends P_ApiVo {
 
     public P_ClipDeclarVo() { }
     public P_ClipDeclarVo(ClipDeclarVo clipDeclarVo, DeviceVo deviceVo, HttpServletRequest request) {
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setReported_mem_no(clipDeclarVo.getMemNo());
         setReason(clipDeclarVo.getReason());
         setEtc(clipDeclarVo.getCont());

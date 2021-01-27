@@ -19,7 +19,7 @@ public class P_FanboardListVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(fanboardViewVo.getPage()) ? 1 : fanboardViewVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(fanboardViewVo.getRecords()) ? 10 : fanboardViewVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setStar_mem_no(fanboardViewVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

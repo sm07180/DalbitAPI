@@ -16,7 +16,7 @@ public class P_ReadNotificationVo extends P_ApiVo {
 
     public P_ReadNotificationVo(){}
     public P_ReadNotificationVo(ReadNotificationVo readNotificationVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setNotiIdx(readNotificationVo.getNotiIdx());
     }
 

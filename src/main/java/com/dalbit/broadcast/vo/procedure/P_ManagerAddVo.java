@@ -13,7 +13,7 @@ public class P_ManagerAddVo extends P_ApiVo {
 
     public P_ManagerAddVo(){}
     public P_ManagerAddVo(ManagerAddVo managerAddVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setRoom_no(managerAddVo.getRoomNo());
         setManager_mem_no(managerAddVo.getMemNo());
         setControl_role(managerAddVo.getRole());

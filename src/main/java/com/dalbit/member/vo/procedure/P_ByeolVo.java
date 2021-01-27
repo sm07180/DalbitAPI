@@ -18,7 +18,7 @@ public class P_ByeolVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(byeolVo.getPage()) ? 1 : byeolVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(byeolVo.getRecords()) ? 10 : byeolVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setSlct_type(byeolVo.getWalletType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

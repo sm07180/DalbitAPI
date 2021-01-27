@@ -365,10 +365,10 @@ public class WowzaService {
                 socketMap.put("msg", roomInfoVo.getBjNickNm()+"님이 방송을 시작했습니다.");
 
                 P_FanNumberVo fanNumberVo = new P_FanNumberVo();
-                fanNumberVo.setMem_no(new MemberVo().getMyMemNo(request));
+                fanNumberVo.setMem_no(MemberVo.getMyMemNo(request));
                 String memNoStr = getFanMemNoList(fanNumberVo);
                 if(!DalbitUtil.isEmpty(memNoStr)){
-                    socketService.sendRoomCreate(new MemberVo().getMyMemNo(request), DalbitUtil.getProperty("socket.global.room"), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), memNoStr);
+                    socketService.sendRoomCreate(MemberVo.getMyMemNo(request), DalbitUtil.getProperty("socket.global.room"), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), memNoStr);
                 }
             }catch(Exception e){
                 log.info("Socket Service Create Exception {}", e);

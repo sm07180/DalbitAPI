@@ -13,7 +13,7 @@ public class P_ManagerDelVo extends P_ApiVo {
 
     public P_ManagerDelVo(){}
     public P_ManagerDelVo(ManagerDelVo managerDelVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setRoom_no(managerDelVo.getRoomNo());
         setManager_mem_no(managerDelVo.getMemNo());
         setManager_type(managerDelVo.getManagerType());

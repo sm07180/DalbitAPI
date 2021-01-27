@@ -187,7 +187,7 @@ public class MailBoxService {
             if(pMailBoxSendVo.getChatType() == 3){
                 SocketVo vo = socketService.getSocketVo(pMailBoxSendVo.getChat_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    socketService.chatGiftItem(pMailBoxSendVo.getChat_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getStringMap(resultMap, "target_mem_no"), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    socketService.chatGiftItem(pMailBoxSendVo.getChat_no(), MemberVo.getMyMemNo(request), DalbitUtil.getStringMap(resultMap, "target_mem_no"), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service chatGiftItem Exception {}", e);

@@ -90,7 +90,7 @@ public class ActionService {
                 if(DalbitUtil.profileCheck("real")){
                     isFirst = (DalbitUtil.getIntMap(resultMap, "firstGood") == 1);
                 }
-                socketService.sendLike(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendLike Exception {}", e);
@@ -110,7 +110,7 @@ public class ActionService {
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
                 socketMap.put("fanRank", fanRankMap.get("list"));
 
-                socketService.changeCount(pRoomGoodVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.changeCount(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
@@ -118,7 +118,7 @@ public class ActionService {
 
             if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
-                    socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGoodVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
+                    socketService.sendLevelUp(MemberVo.getMyMemNo(request), pRoomGoodVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){}
             }
@@ -291,7 +291,7 @@ public class ActionService {
                 itemMap.put("memNo", vo1.getMemNo());
                 itemMap.put("dalCnt", item.getByeol() * pRoomGiftVo.getItem_cnt());
 
-                socketService.giftItem(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(request), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service giftItem Exception {}", e);
@@ -303,7 +303,7 @@ public class ActionService {
                 //TODO - 레벨업 유무 소켓추가 추후 확인
                 //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
                 socketMap.put("fanRank", returnMap.get("fanRank"));
-                socketService.changeCount(pRoomGiftVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.changeCount(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
@@ -311,7 +311,7 @@ public class ActionService {
 
             if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
-                    socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomGiftVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
+                    socketService.sendLevelUp(MemberVo.getMyMemNo(request), pRoomGiftVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
@@ -327,7 +327,7 @@ public class ActionService {
                     log.error("sendDjLevelUp error : {}", e);
                 }
                 try{
-                    socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo, new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request));
+                    socketService.sendDjLevelUp(pRoomGiftVo.getRoom_no(), request, vo, MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
@@ -402,7 +402,7 @@ public class ActionService {
 
             SocketVo vo = socketService.getSocketVo(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.sendBooster(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendBooster Exception {}", e);
@@ -428,7 +428,7 @@ public class ActionService {
                 itemMap.put("dalCnt", item.getByeol());
                 itemMap.put("memNo", vo1.getMemNo());
 
-                socketService.giftItem(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.giftItem(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendBooster Exception {}", e);
@@ -447,7 +447,7 @@ public class ActionService {
                 returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
 
                 socketMap.put("fanRank", fanRankMap.get("list"));
-                socketService.changeCount(pRoomBoosterVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.changeCount(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
@@ -455,7 +455,7 @@ public class ActionService {
 
             if(DalbitUtil.getIntMap(resultMap, "levelUp") == 1){//레벨업 일때 소켓 발송
                 try{
-                    socketService.sendLevelUp(new MemberVo().getMyMemNo(request), pRoomBoosterVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
+                    socketService.sendLevelUp(MemberVo.getMyMemNo(request), pRoomBoosterVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);
@@ -472,7 +472,7 @@ public class ActionService {
                 }
 
                 try{
-                    socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo, new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request));
+                    socketService.sendDjLevelUp(pRoomBoosterVo.getRoom_no(), request, vo, MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request));
                     vo.resetData();
                 }catch(Exception e){
                     log.error("sendDjLevelUp error : {}", e);

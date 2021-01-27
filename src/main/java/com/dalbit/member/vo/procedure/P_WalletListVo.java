@@ -18,7 +18,7 @@ public class P_WalletListVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(walletListVo.getPage()) ? 1 : walletListVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(walletListVo.getRecords()) ? 10 : walletListVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setSlctType(walletListVo.getWalletType());
         setSlctList(walletListVo.getWalletCode());
         setPageNo(pageNo);

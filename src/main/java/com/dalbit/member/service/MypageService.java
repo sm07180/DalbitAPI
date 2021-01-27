@@ -88,7 +88,7 @@ public class MypageService {
             profImg = DalbitUtil.replacePath(profImg);
         }
         pProfileEditVo.setProfileImage(profImg);
-        HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
+        HashMap myInfo = socketService.getMyInfo(MemberVo.getMyMemNo(request));
         String result;
         if(myInfo != null){
             if(pProfileEditVo.getNickName().equals(DalbitUtil.getStringMap(myInfo, "nickName"))){
@@ -103,7 +103,7 @@ public class MypageService {
                     restService.imgDone(DalbitUtil.replaceDonePath(pProfileEditVo.getProfileImage()), pProfileEditVo.getProfImgDel(), request);
                 }
                 int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
-                P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, new MemberVo().getMyMemNo(request), new MemberVo().getMyMemNo(request));
+                P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), MemberVo.getMyMemNo(request));
                 String resultProfile = profileService.callMemberInfo(apiData, request);
                 HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
 
@@ -606,7 +606,7 @@ public class MypageService {
         String result;
         if(procedureVo.getRet().equals(Status.달선물_성공.getMessageCode())) {
             try{
-                socketService.giftDal(new MemberVo().getMyMemNo(request), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                socketService.giftDal(MemberVo.getMyMemNo(request), pRubyVo.getGifted_mem_no(), pRubyVo.getRuby(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
             }catch(Exception e){
                 log.info("Socket Service giftDal Exception {}", e);
             }
@@ -1077,13 +1077,13 @@ public class MypageService {
         if(Status.금지어저장_성공.getMessageCode().equals(procedureVo.getRet())) {
             // 진행중인 방이 있을 경우 소켓으로 금지어 업데이트 요청
             P_MemberBroadcastingCheckVo pMemberBroadcastingCheckVo = new P_MemberBroadcastingCheckVo();
-            pMemberBroadcastingCheckVo.setMem_no(new MemberVo().getMyMemNo(request));
+            pMemberBroadcastingCheckVo.setMem_no(MemberVo.getMyMemNo(request));
             ProcedureVo procedureCheckVo = new ProcedureVo(pMemberBroadcastingCheckVo);
             roomDao.callMemberBroadcastingCheck(procedureCheckVo);
             if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureCheckVo.getRet())) {
                 HashMap resultCheckMap = new Gson().fromJson(procedureCheckVo.getExt(), HashMap.class);
                 try{
-                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), new MemberVo().getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+                    socketService.banWord(DalbitUtil.getStringMap(resultCheckMap, "roomNo"), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
                 }catch(Exception e){
                     log.info("Socket Service banWord Exception {}", e);
                 }
@@ -1733,7 +1733,7 @@ public class MypageService {
         if (procedureVo.getRet().equals(Status.회원방송방빠른말추가_성공.getMessageCode())) {
 
             P_MemberShortCutVo apiData = new P_MemberShortCutVo();
-            apiData.setMem_no(new MemberVo().getMyMemNo(request));
+            apiData.setMem_no(MemberVo.getMyMemNo(request));
             result = callMemberShortCut(apiData, "add", request);
         } else if (procedureVo.getRet().equals(Status.회원방송방빠른말추가_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말추가_회원아님));
@@ -1759,7 +1759,7 @@ public class MypageService {
         if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_성공.getMessageCode())) {
 
             P_MemberShortCutVo apiData = new P_MemberShortCutVo();
-            apiData.setMem_no(new MemberVo().getMyMemNo(request));
+            apiData.setMem_no(MemberVo.getMyMemNo(request));
             result = callMemberShortCut(apiData, "extend", request);
 
         } else if (procedureVo.getRet().equals(Status.회원방송방빠른말연장_회원아님.getMessageCode())) {

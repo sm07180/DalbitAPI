@@ -824,7 +824,7 @@ public class SocketService {
         itemMap.put("nickNm", "");
         itemMap.put("memNo", "");
         itemMap.put("dalCnt", 0);
-        //String memNo = new MemberVo().getMyMemNo(request);
+        //String memNo = MemberVo.getMyMemNo(request);
         //String authToken = DalbitUtil.getAuthToken(request);
 
         log.error("Socket Start : djLlevelUp {}, {}, {}, {}", roomNo, memNo, itemMap, vo);

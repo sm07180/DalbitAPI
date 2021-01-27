@@ -30,7 +30,7 @@ public class P_MypageBlackVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(mypageBlackVo.getPage()) ? 1 : mypageBlackVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mypageBlackVo.getRecords()) ? 10 : mypageBlackVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setPageNo(pageNo);
         setPageCnt(pageCnt);
     }

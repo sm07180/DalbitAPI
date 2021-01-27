@@ -17,7 +17,7 @@ public class P_MypageBlackDelVo extends P_ApiVo {
 
     public P_MypageBlackDelVo(){}
     public P_MypageBlackDelVo(MypageBlackDelVo mypageBlackDelVo, HttpServletRequest request) {
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setBlack_mem_no(mypageBlackDelVo.getMemNo());
     }
 }

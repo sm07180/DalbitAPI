@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public class P_MypageNoticeDelVo extends P_ApiVo {
 
     public P_MypageNoticeDelVo(MypageNoticeDelVo mypageNoticeDelVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setTarget_mem_no(mypageNoticeDelVo.getMemNo());
         setNoticeIdx(mypageNoticeDelVo.getNoticeIdx());
     }

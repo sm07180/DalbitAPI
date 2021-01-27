@@ -14,7 +14,7 @@ public class P_MypageNoticeAddVo extends P_ApiVo {
     public P_MypageNoticeAddVo(MypageNoticeAddVo mypageNoticeAddVo, HttpServletRequest request){
         int topFix = (mypageNoticeAddVo.getIsTop().equals("1") || mypageNoticeAddVo.getIsTop().toUpperCase().equals("TRUE")) ? 1 : 0;
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setTarget_mem_no(mypageNoticeAddVo.getMemNo());
         setContents(mypageNoticeAddVo.getContents());
         setImagePath(mypageNoticeAddVo.getImagePath());

@@ -42,7 +42,7 @@ public class CustomerCenterController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         //로그인 체크 && 로그인이면 회원 조회
-        TokenCheckVo tokenCheckVo = DalbitUtil.isLogin(request) ? memberService.selectMemState(new MemberVo().getMyMemNo(request)) : null;
+        TokenCheckVo tokenCheckVo = DalbitUtil.isLogin(request) ? memberService.selectMemState(MemberVo.getMyMemNo(request)) : null;
 
         //회원 조회 시 결과가 없을 수도 있으므로 tokenCheckVo 한번 더 체크
         MemberVo memberVo = new MemberVo();

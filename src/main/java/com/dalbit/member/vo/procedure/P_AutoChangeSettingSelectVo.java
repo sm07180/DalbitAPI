@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 public class P_AutoChangeSettingSelectVo extends P_ApiVo {
     public P_AutoChangeSettingSelectVo(){}
     public P_AutoChangeSettingSelectVo(HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
     }
 
     private String mem_no;

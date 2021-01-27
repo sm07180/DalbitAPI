@@ -32,7 +32,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomGoodVo apiData = new P_RoomGoodVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(goodVo.getRoomNo());
 
         String result = actionService.callBroadCastRoomGood(apiData, request);
@@ -51,7 +51,7 @@ public class ActionController {
 
         P_RoomShareLinkVo apiData = new P_RoomShareLinkVo();
         apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setLinkCode(shareLinkVo.getLink());
 
         String result = actionService.callBroadCastShareLink(apiData);
@@ -91,7 +91,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomGiftVo apiData = new P_RoomGiftVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(giftVo.getRoomNo());
         apiData.setGifted_mem_no(giftVo.getMemNo());
         apiData.setItem_code(giftVo.getItemNo());

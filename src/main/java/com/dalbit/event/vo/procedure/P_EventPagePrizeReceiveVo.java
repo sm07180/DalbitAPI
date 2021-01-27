@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 public class P_EventPagePrizeReceiveVo extends P_ApiVo {
 
     public P_EventPagePrizeReceiveVo(EventPagePrizeReceiveVo eventPagePrizeReceiveVo, HttpServletRequest request) {
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setEventIdx(eventPagePrizeReceiveVo.getEventIdx());
         setPrizeIdx(eventPagePrizeReceiveVo.getPrizeIdx());
         setReceiveWay(eventPagePrizeReceiveVo.getReceiveWay());

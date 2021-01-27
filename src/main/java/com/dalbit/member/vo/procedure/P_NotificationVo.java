@@ -18,7 +18,7 @@ public class P_NotificationVo extends P_ApiVo {
 
         int pageNo = DalbitUtil.isEmpty(notificationVo.getPage()) ? 1 : notificationVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(notificationVo.getRecords()) ? 10 : notificationVo.getRecords();
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setPageNo(pageNo);
         setPageCnt(pageCnt);
 

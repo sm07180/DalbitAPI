@@ -21,7 +21,7 @@ public class P_MypageNoticeSelectVo extends P_ApiVo {
         int pageNo = DalbitUtil.isEmpty(mypageNoticeSelectVo.getPage()) ? 1 : mypageNoticeSelectVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(mypageNoticeSelectVo.getRecords()) ? 10 : mypageNoticeSelectVo.getRecords();
 
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setTarget_mem_no(mypageNoticeSelectVo.getMemNo());
         setPageNo(pageNo);
         setPageCnt(pageCnt);

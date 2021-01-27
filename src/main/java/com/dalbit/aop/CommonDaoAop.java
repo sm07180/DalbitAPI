@@ -31,7 +31,7 @@ public class CommonDaoAop {
      */
     @Around("execution(* com.dalbit.*.dao.*.*(..))")
     public Object daoLogger(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
-        String memNo = request == null ? null : new MemberVo().getMyMemNo(request);
+        String memNo = request == null ? null : MemberVo.getMyMemNo(request);
         String proceedName = proceedingJoinPoint.getSignature().getDeclaringTypeName() + "." + proceedingJoinPoint.getSignature().getName();
 
         log.debug("[dao] [memNo : {}] - start : {}", memNo, proceedName);

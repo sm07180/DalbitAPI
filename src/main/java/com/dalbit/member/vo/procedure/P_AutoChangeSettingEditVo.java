@@ -16,7 +16,7 @@ public class P_AutoChangeSettingEditVo extends P_ApiVo {
 
     public P_AutoChangeSettingEditVo(){}
     public P_AutoChangeSettingEditVo(AutoChangeSettingEditVo autoChangeSettingEditVo, HttpServletRequest request) {
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setAuto_change("1".equals(autoChangeSettingEditVo.getAutoChange()) || "TRUE".equals(autoChangeSettingEditVo.getAutoChange().toUpperCase()) ? 1 : 0);
     }
 

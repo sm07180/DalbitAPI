@@ -163,7 +163,7 @@ public class UserService {
         if(procedureVo.getRet().equals(Status.강제퇴장.getMessageCode())){
             SocketVo vo = socketService.getSocketVo(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.kickout(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
+                socketService.kickout(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomKickoutVo.getBlocked_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, bolckedMap);
                 vo.resetData();
 
                 if(isGuest){
@@ -190,7 +190,7 @@ public class UserService {
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
-                socketService.changeCount(pRoomKickoutVo.getRoom_no(), new MemberVo().getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.changeCount(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
@@ -276,7 +276,7 @@ public class UserService {
         if (procedureVo.getRet().equals(Status.매니저지정_성공.getMessageCode())) {
             SocketVo vo = socketService.getSocketVo(pManagerAddVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.changeManager(pManagerAddVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.changeManager(pManagerAddVo.getRoom_no(), MemberVo.getMyMemNo(request), pManagerAddVo.getManager_mem_no(), true, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeManager Exception {}", e);
@@ -332,7 +332,7 @@ public class UserService {
         if (procedureVo.getRet().equals(Status.매니저취소_성공.getMessageCode())) {
             SocketVo vo = socketService.getSocketVo(pManagerDelVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.changeManager(pManagerDelVo.getRoom_no(), new MemberVo().getMyMemNo(request), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                socketService.changeManager(pManagerDelVo.getRoom_no(), MemberVo.getMyMemNo(request), pManagerDelVo.getManager_mem_no(), false, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeManager Exception {}", e);
@@ -385,7 +385,7 @@ public class UserService {
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 SocketVo vo = socketService.getSocketVo(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request), vo);
+                    socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request), vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service addFan Exception {}", e);
@@ -432,7 +432,7 @@ public class UserService {
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarDeleteVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 SocketVo vo = socketService.getSocketVo(pBroadFanstarDeleteVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), new MemberVo().getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request), vo);
+                    socketService.addFan(pBroadFanstarDeleteVo.getRoom_no(), MemberVo.getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "0", DalbitUtil.isLogin(request), vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service addFan Exception {}", e);

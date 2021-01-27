@@ -21,7 +21,7 @@ public class P_FanboardDeleteVo extends P_ApiVo {
     public P_FanboardDeleteVo(){}
     public P_FanboardDeleteVo(FanboardDelVo fanboardDelVo, HttpServletRequest request){
         setStar_mem_no(fanboardDelVo.getMemNo());
-        setDelete_mem_no(new MemberVo().getMyMemNo(request));
+        setDelete_mem_no(MemberVo.getMyMemNo(request));
         setBoard_idx(fanboardDelVo.getReplyIdx());
     }
 }

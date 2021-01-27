@@ -31,7 +31,7 @@ public class P_MemberNotifyEditVo extends P_ApiVo {
 
     public P_MemberNotifyEditVo() { }
     public P_MemberNotifyEditVo(MemberNotifyEditVo memberNotifyEditVo, HttpServletRequest request) {
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setAll_ok(memberNotifyEditVo.getIsAll());
         setSet_1(memberNotifyEditVo.getIsMyStar());
         setSet_2(memberNotifyEditVo.getIsGift());

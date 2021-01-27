@@ -13,7 +13,7 @@ public class P_RubyVo extends P_ApiVo {
 
     public P_RubyVo(){}
     public P_RubyVo(RubyVo rubyVo, HttpServletRequest request){
-        setMem_no(new MemberVo().getMyMemNo(request));
+        setMem_no(MemberVo.getMyMemNo(request));
         setGifted_mem_no(rubyVo.getMemNo());
         setRuby(rubyVo.getDal());
     }

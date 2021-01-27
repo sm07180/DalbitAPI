@@ -37,7 +37,7 @@ public class ProfileController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
-        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, new MemberVo().getMyMemNo(request), profileVo.getMemNo());
+        P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), profileVo.getMemNo());
 
         String result = profileService.callMemberInfo(apiData, request);
 
@@ -140,7 +140,7 @@ public class ProfileController {
     @GetMapping("/levelup")
     public String levelUpCheck(HttpServletRequest request){
         P_LevelUpCheckVo apiData = new P_LevelUpCheckVo();
-        apiData.setMem_no(new MemberVo().getMyMemNo(request));
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
 
         String result = profileService.callMemberLevelUpCheck(apiData);
         return result;

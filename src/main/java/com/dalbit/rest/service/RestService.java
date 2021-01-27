@@ -159,7 +159,7 @@ public class RestService {
 
         }catch (Exception e){
             ArrayList messageList = new ArrayList<String>();
-            messageList.add("회원번호 : "+ new MemberVo().getMyMemNo(request));
+            messageList.add("회원번호 : "+ MemberVo.getMyMemNo(request));
             messageList.add("server_url : "+ server_url);
             messageList.add("url_path : "+ url_path);
             messageList.add("params : "+ params);
@@ -206,7 +206,7 @@ public class RestService {
                 deleteAntRoom(stream_id, request);
 
                 log.error("방송 생성 후 publish token 생성시 오류 일때 방송방 삭제");
-                log.error("회원번호 : {}", new MemberVo().getMyMemNo(request));
+                log.error("회원번호 : {}", MemberVo.getMyMemNo(request));
                 log.error("server_url : {}", server_url);
                 log.error("url_path : {}", url_path);
                 log.error("params : {}", params);

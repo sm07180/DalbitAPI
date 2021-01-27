@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 public class P_EventPageWinnerInfoFormatVo extends P_ApiVo {
     public P_EventPageWinnerInfoFormatVo() {
-        setMem_no(new MemberVo().getMyMemNo());
+        setMem_no(MemberVo.getMyMemNo());
     }
     /* Input */
     private String mem_no;                  // 요청 회원번호

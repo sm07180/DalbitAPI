@@ -432,7 +432,7 @@ public class DalbitUtil {
     }
 
     public static boolean isLogin(HttpServletRequest request) {
-        String memNo = new MemberVo().getMyMemNo(request);
+        String memNo = MemberVo.getMyMemNo(request);
         String authToken = request.getHeader("authToken");
         if(isLogin(memNo)){
             //회원번호지만 로그인 여부가 false인 경우 체크 (휴면회원 추가 체크)

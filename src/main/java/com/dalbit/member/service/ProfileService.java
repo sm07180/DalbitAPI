@@ -88,7 +88,7 @@ public class ProfileService {
                 profileInfoOutVo.setWasSpecial(memberService.getSpecialCnt(specialDjHistoryVo) > 0 ? true : false);
             }
 
-            //HashMap myInfo = socketService.getMyInfo(new MemberVo().getMyMemNo(request));
+            //HashMap myInfo = socketService.getMyInfo(MemberVo.getMyMemNo(request));
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
