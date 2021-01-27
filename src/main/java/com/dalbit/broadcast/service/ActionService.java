@@ -806,38 +806,43 @@ public class ActionService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("moonStep", DalbitUtil.getIntMap(resultMap, "step"));
-        returnMap.put("oldStep", DalbitUtil.getIntMap(resultMap, "oldStep"));
-        returnMap.put("broadcastTime", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
-        returnMap.put("totalCount", DalbitUtil.getIntMap(resultMap, "totalCount"));
-        returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
-        returnMap.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
-        returnMap.put("dlgTitle", DalbitUtil.getStringMap(resultMap, "dlgTitle"));
-        returnMap.put("dlgText", DalbitUtil.getStringMap(resultMap, "dlgText"));
-        returnMap.put("moonStepFileNm", "");
-        returnMap.put("moonStepAniFileNm", "");
-        returnMap.put("aniDuration", 0);
-        returnMap.put("fullmoon_yn", DalbitUtil.getIntMap(resultMap, "fullmoon_yn"));
+        if(Integer.parseInt(procedureVo.getRet()) >= 0){
+            returnMap.put("moonStep", DalbitUtil.getIntMap(resultMap, "step"));
+            returnMap.put("oldStep", DalbitUtil.getIntMap(resultMap, "oldStep"));
+            returnMap.put("broadcastTime", DalbitUtil.getIntMap(resultMap, "broadcastTime"));
+            returnMap.put("totalCount", DalbitUtil.getIntMap(resultMap, "totalCount"));
+            returnMap.put("giftedByeol", DalbitUtil.getIntMap(resultMap, "giftedByeol"));
+            returnMap.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
+            returnMap.put("dlgTitle", DalbitUtil.getStringMap(resultMap, "dlgTitle"));
+            returnMap.put("dlgText", DalbitUtil.getStringMap(resultMap, "dlgText"));
+            returnMap.put("moonStepFileNm", "");
+            returnMap.put("moonStepAniFileNm", "");
+            returnMap.put("aniDuration", 0);
+            returnMap.put("fullmoon_yn", DalbitUtil.getIntMap(resultMap, "fullmoon_yn"));
 
-        var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
-        if(!DalbitUtil.isEmpty(codeVo)){
-            returnMap.put("moonStepFileNm", codeVo.getValue());
-            returnMap.put("aniDuration", codeVo.getSortNo());
-            if(DalbitUtil.getIntMap(resultMap, "step") == 4){
-                String code = Code.보름달_애니메이션.getCode();
-                String value = DalbitUtil.randomMoonAniValue();
+            var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), String.valueOf(returnMap.get("moonStep"))));
+            if(!DalbitUtil.isEmpty(codeVo)){
+                returnMap.put("moonStepFileNm", codeVo.getValue());
+                returnMap.put("aniDuration", codeVo.getSortNo());
+                if(DalbitUtil.getIntMap(resultMap, "step") == 4){
+                    String code = Code.보름달_애니메이션.getCode();
+                    String value = DalbitUtil.randomMoonAniValue();
 
-                if(procedureVo.getRet().equals(Status.슈퍼문_완성.getMessageCode())){
-                    code = Code.슈퍼문_애니메이션.getCode();
-                    value = "1";
-                }
-                var aniCodeVo = commonService.selectCodeDefine(new CodeVo(code, value));
-                if(!DalbitUtil.isEmpty(aniCodeVo)) {
-                    returnMap.put("moonStepAniFileNm", aniCodeVo.getValue());
-                    returnMap.put("aniDuration", aniCodeVo.getSortNo());
+                    if(procedureVo.getRet().equals(Status.슈퍼문_완성.getMessageCode())){
+                        code = Code.슈퍼문_애니메이션.getCode();
+                        value = "1";
+                    }
+                    var aniCodeVo = commonService.selectCodeDefine(new CodeVo(code, value));
+                    if(!DalbitUtil.isEmpty(aniCodeVo)) {
+                        returnMap.put("moonStepAniFileNm", aniCodeVo.getValue());
+                        returnMap.put("aniDuration", aniCodeVo.getSortNo());
+                    }
                 }
             }
+        }else{
+            returnMap.put("fullmoon_yn", 0);
         }
+
 
         return returnMap;
     }
