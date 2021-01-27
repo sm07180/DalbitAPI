@@ -80,6 +80,7 @@ public class ActionService {
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
         returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+        returnMap.put("goodRank", DalbitUtil.getIntMap(resultMap, "goodRank"));
         procedureVo.setData(returnMap);
 
         String result;
@@ -90,7 +91,8 @@ public class ActionService {
                 if(DalbitUtil.profileCheck("real")){
                     isFirst = (DalbitUtil.getIntMap(resultMap, "firstGood") == 1);
                 }
-                socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                boolean isLoveGood = DalbitUtil.getIntMap(resultMap, "goodRank") > 0 ? true : false;
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isLoveGood, DalbitUtil.getIntMap(resultMap, "goodRank"), new DeviceVo(request));
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendLike Exception {}", e);
@@ -410,15 +412,14 @@ public class ActionService {
 
             try{
                 HashMap itemMap = new HashMap();
-                itemMap.put("itemNo", DalbitUtil.getProperty("item.code.boost"));
                 SocketVo vo1 = socketService.getSocketVo(pRoomBoosterVo.getRoom_no(), DalbitUtil.getStringMap(resultMap, "dj_mem_no"), DalbitUtil.isLogin(request));
-
-                ItemDetailVo item = commonDao.selectItem(DalbitUtil.getProperty("item.code.boost"));
-                String itemNm = item.getItemNm();
+                ItemDetailVo item = commonDao.selectItem(pRoomBoosterVo.getItem_cnt() < 10 ? DalbitUtil.getProperty("item.code.boost") : DalbitUtil.getProperty("item.code.rocket.boost"));
+                //String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
-                itemMap.put("itemNm", itemNm);
-                itemMap.put("itemCnt", 1);
-                itemMap.put("repeatCnt", 1);
+                itemMap.put("itemNo", pRoomBoosterVo.getItem_cnt() < 10 ? DalbitUtil.getProperty("item.code.boost") : DalbitUtil.getProperty("item.code.rocket.boost"));
+                itemMap.put("itemNm", "부스터");   //로켓부스터, 일반부스터 구분없이 화면에서 사용하기위해 하드코딩...
+                itemMap.put("itemCnt", pRoomBoosterVo.getItem_cnt());
+                itemMap.put("repeatCnt", pRoomBoosterVo.getItem_cnt() < 10 ? pRoomBoosterVo.getItem_cnt() : 1);
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", false);
                 itemMap.put("itemType", "boost");

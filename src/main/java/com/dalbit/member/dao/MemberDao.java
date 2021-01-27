@@ -85,4 +85,6 @@ public interface MemberDao {
     List<P_MemberReceiveListVo> callRecvList(ProcedureVo procedureVo);
     //@Transactional(readOnly = true)
     List<P_DjRecommendListVo> callDjRecommendList(ProcedureVo procedureVo);
+
+    ProcedureVo callReportImage(ProcedureVo procedureVo);
 }

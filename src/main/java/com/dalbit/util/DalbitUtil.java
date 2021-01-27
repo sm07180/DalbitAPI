@@ -13,6 +13,7 @@ import com.google.gson.Gson;
 import com.icert.comm.secu.IcertSecuManager;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -134,10 +135,15 @@ public class DalbitUtil {
     }
 
     public static boolean isEmpty(String[] arr){
-        if(arr != null && arr.length != 0){
-            return false;
+        try{
+            if(arr != null && arr.length != 0){
+                return false;
+            }
+            return 0 < arr.length ? false : true;
+        }catch (NullPointerException e){
+            return true;
         }
-        return 0 < arr.length ? false : true;
+
     }
 
     /**

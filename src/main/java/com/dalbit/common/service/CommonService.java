@@ -162,11 +162,26 @@ public class CommonService {
             }
         }
         resultMap.put("items", items);
+        //pItemVo.setItem_slct(2);
+        List particleList = new ArrayList();
+        for (int i=0; i<DalbitUtil.getProperty("item.paticle.code").split(",").length; i++){
+            particleList.add(commonDao.selectItem(DalbitUtil.getProperty("item.paticle.code").split(",")[i]));
+        }
+        resultMap.put("particles", particleList);
 
-        pItemVo.setItem_slct(2);
-        resultMap.put("particles", commonDao.selectItemList(pItemVo));
-
-        resultMap.put("boost", commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")));
+        List loveGoodList = new ArrayList();
+        for (int i=0; i<DalbitUtil.getProperty("item.love.good.code").split(",").length; i++){
+            loveGoodList.add(commonDao.selectItem(DalbitUtil.getProperty("item.love.good.code").split(",")[i]));
+        }
+        resultMap.put("loveGood", loveGoodList);
+        List boostList = new ArrayList();
+        if(!DalbitUtil.isEmpty(commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")))){
+            boostList.add(commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")).get(0));
+        }
+        if(!DalbitUtil.isEmpty(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")))){
+            boostList.add(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")).get(0));
+        }
+        resultMap.put("boost", boostList);
         resultMap.put("levelUp", commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp")));
 
         List<HashMap> itemCategories = new ArrayList<>();

@@ -455,6 +455,7 @@ public class MemberController {
         return result;
     }
 
+
     /**
      * 추천 DJ 목록 조회
      */
@@ -463,6 +464,18 @@ public class MemberController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_DjRecommendListVo apiData = new P_DjRecommendListVo(djRecommendListVo, request);
         String result = memberService.callDjRecommendList(apiData);
+        return result;
+    }
+
+
+    /**
+     * 회원 이미지 신고
+     */
+    @PostMapping("/report/image")
+    public String reportImage(@Valid ReportImageVo reportImageVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ReportImageVo apiData = new P_ReportImageVo(reportImageVo, request);
+        String result = memberService.callReportImage(apiData);
         return result;
     }
 }

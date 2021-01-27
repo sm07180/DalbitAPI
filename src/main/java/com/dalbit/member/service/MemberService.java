@@ -774,6 +774,7 @@ public class MemberService {
         return result;
     }
 
+
     /**
      * 추천 DJ 목록 조회
      */
@@ -796,6 +797,33 @@ public class MemberService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.추천DJ목록조회_성공, djRecommendOutList));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.추천DJ목록조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 회원 이미지 신고
+     */
+    public String callReportImage(P_ReportImageVo pReportImageVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pReportImageVo);
+        memberDao.callReportImage(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.이미지신고_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_성공));
+        } else if(procedureVo.getRet().equals(Status.이미지신고_요청회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_요청회원아님));
+        } else if(procedureVo.getRet().equals(Status.이미지신고_대상회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_대상회원아님));
+        } else if(procedureVo.getRet().equals(Status.이미지신고_이미신고.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_이미신고));
+        } else if(procedureVo.getRet().equals(Status.이미지신고_방번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_방번호없음));
+        } else if(procedureVo.getRet().equals(Status.이미지신고_이미지번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_이미지번호없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_실패));
         }
         return result;
     }

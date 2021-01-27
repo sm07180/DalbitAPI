@@ -19,6 +19,7 @@ public class SpecialDjRegManageVo {
     @NotBlank(message = "{\"ko_KR\" : \"월\"}")
     @NotNull(message = "{\"ko_KR\" : \"월\"}")
     private String select_month;
+    private int notice_idx;
     private String req_start_date;
     private String req_end_date;
     private String condition_start_date;

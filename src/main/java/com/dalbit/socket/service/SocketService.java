@@ -5,6 +5,7 @@ import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ItemDetailVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
@@ -488,7 +489,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void sendLike(String roomNo, String memNo, boolean isFirst, String authToken, boolean isLogin, SocketVo vo){
+    public void sendLike(String roomNo, String memNo, boolean isFirst, String authToken, boolean isLogin, SocketVo vo, boolean isLoveGood, int goodRank, DeviceVo deviceVo){
         log.info("Socket Start : sendLike {}, {}, {}, {}", roomNo, memNo, isFirst, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -505,7 +506,14 @@ public class SocketService {
                 }
             }
             if(vo != null && vo.getMemNo() != null) {
+                //String cmd = isLoveGood ? "reqLoveGood" : "reqGood";
+                if((deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) < 52) || (deviceVo.getOs() == 2 && Integer.parseInt(deviceVo.getAppBuild()) < 280)){
+                    goodRank = 0;
+                }
                 vo.setCommand("reqGood");
+                HashMap msgMap = new HashMap();
+                msgMap.put("goodRank", goodRank);
+                vo.setMessage(msgMap);
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
         }
