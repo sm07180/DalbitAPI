@@ -3,6 +3,7 @@ package com.dalbit.exception;
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -112,14 +113,15 @@ public class GlobalException extends Exception {
             if(methodName.equals("saveErrorLog")){
                return;
             }
-            log.error("messageCode : {}", status.getMessageCode());
-            log.error("messageKey : {}", status.getMessageKey());
-            log.error("desc : {}", status.getDesc());
-            log.error("methodName : {}", methodName);
-            validationMessageDetail.stream().forEach(list ->{
-               log.error("validation message : {}", list.toString());
-            });
-
+            if(!"real".equals(DalbitUtil.getActiveProfile())) {
+                log.error("messageCode : {}", status.getMessageCode());
+                log.error("messageKey : {}", status.getMessageKey());
+                log.error("desc : {}", status.getDesc());
+                log.error("methodName : {}", methodName);
+                validationMessageDetail.stream().forEach(list -> {
+                    log.error("validation message : {}", list.toString());
+                });
+            }
         }else if(status.getMessageCode().equals(Status.비즈니스로직오류.getMessageCode())){
             log.error("messageCode : {}", status.getMessageCode());
             log.error("messageKey : {}", status.getMessageKey());
