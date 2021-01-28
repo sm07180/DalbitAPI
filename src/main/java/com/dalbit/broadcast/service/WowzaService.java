@@ -34,14 +34,12 @@ import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -75,6 +73,8 @@ public class WowzaService {
     BadgeService badgeService;
     @Autowired
     ActionService actionService;
+    @Autowired
+    WowzaSocketService wowzaSocketService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -192,7 +192,7 @@ public class WowzaService {
                 if(roomCheck){
                     for(String server : WOWZA_REALSERVER) {
                         try {
-                            sendFirstEdge(server, streamName);
+                            wowzaSocketService.sendFirstEdge(server, streamName);
                         } catch (Exception e) {
                             if("local".equals(DalbitUtil.getActiveProfile())){
                                 e.printStackTrace();
@@ -715,38 +715,6 @@ public class WowzaService {
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
         return roomInfoVo;
-    }
-
-    @Async("threadTaskExecutor")
-    public void sendFirstEdge(String svrDomain, String streamName) throws Exception{
-        WowzaWebSocketClient  client = new WowzaWebSocketClient(new URI("wss://" + svrDomain + "/" + DalbitUtil.getProperty("wowza.wss.url.endpoint")));
-        client.addMessageHandler(new WowzaWebSocketClient.MessageHandler() {
-            @Override
-            public void handleMessage(String message) {
-                /*log.debug("receive WOWZA message : " + message);
-                HashMap result = new Gson().fromJson(message, HashMap.class);
-                if(result != null && result.containsKey("status") && "200".equals(((Double)result.get("status")).toString())) {
-                    //if("getOffer".equals((String))){
-
-                    //}
-                }else if(result != null && result.containsKey("status") && "504".equals(((Double)result.get("status")).toString())){
-                }else{
-                }*/
-                client.close();
-            }
-        });
-
-        HashMap message = new HashMap();
-        HashMap streamInfo = new HashMap();
-        streamInfo.put("applicationName", "edge");
-        streamInfo.put("sessionId", "");
-        streamInfo.put("streamName", streamName + "_opus");
-        message.put("command", "getOffer");
-        message.put("direction", "play");
-        message.put("streamInfo", streamInfo);
-        String sendMessage = new Gson().toJson(message);
-        client.sendMessage(sendMessage);
-        log.debug("WOWZA SEND MESSAGE : " + sendMessage);
     }
 
     public List getGuestList(String roomNo, String memNo){
