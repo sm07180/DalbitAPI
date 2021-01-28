@@ -16,14 +16,14 @@ public class ClipRecommendListOuputVo {
         setBgImg(new ImageVo(target.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
         setFileName(target.getFileName());
 //        setFilePath(target.getFilePath());
-        setFilePlay(target.getFilePlay());
+        setFilePlayTime(target.getFilePlay());
 //        setFileSize(target.getFileSize());
         setSubjectType(target.getSubjectType());
         setSubjectName(target.getSubjectName());
         setTitle(target.getTitle());
         setMemNo(target.getMemNo());
         setGender(target.getMemSex());
-        setNickNm(target.getMemNick());
+        setNickName(target.getMemNick());
         setIsLeader(target.getLeaderYn() == 0 ? false : true);
         setByeolCnt(target.getByeolCnt());
         setGoodCnt(target.getGoodCnt());
@@ -34,14 +34,14 @@ public class ClipRecommendListOuputVo {
     private ImageVo bgImg;               // 클립이미지
     private String fileName;             // 파일이름
     //    private String filePath;            // 파일경로
-    private String filePlay;             // 재생시간
+    private String filePlayTime;             // 재생시간
     //    private String fileSize;            // 파일크기
     private String subjectType;          // 주제
     private String subjectName;          // 주제명
     private String title;                // 클립제목
     private String memNo;                // 회원번호
     private String gender;               // 성별
-    private String nickNm;               // 닉네임
+    private String nickName;               // 닉네임
     private Boolean isLeader;            // 대표 여부 (0:일반 1:대표)
     private int byeolCnt;                // 받은 별 수
     private int goodCnt;                 //  받은 좋아요 수
