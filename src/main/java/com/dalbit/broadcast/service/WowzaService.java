@@ -115,9 +115,14 @@ public class WowzaService {
             String guestNo = "";
             boolean isGuest = false;
 
-            if(streamName.indexOf("_") > -1){
-                roomNo = StringUtils.split(streamName, "_")[0].toLowerCase().substring(WOWZA_PREFIX.toLowerCase().length());
-                guestNo = StringUtils.split(streamName, "_")[1];
+            if(roomNo.indexOf("_") > 1){
+                String[] tmp = StringUtils.split(roomNo, "_");
+                guestNo = tmp[0];
+                roomNo = tmp[1];
+                isGuest = true;
+            }else if(roomNo.length() > 14){
+                guestNo = roomNo.substring(14);
+                roomNo = roomNo.substring(0, 14);
                 isGuest = true;
             }
 
@@ -189,7 +194,7 @@ public class WowzaService {
                 }
 
                 //생성된 방송 WEBRTC EDGE 생성 호출
-                if(roomCheck){
+                /*if(roomCheck){
                     for(String server : WOWZA_REALSERVER) {
                         try {
                             wowzaSocketService.sendFirstEdge(server, streamName);
@@ -199,7 +204,7 @@ public class WowzaService {
                             }
                         }
                     }
-                }
+                }*/
             }else{
                 result.put("status", Status.방정보보기_실패);
             }
