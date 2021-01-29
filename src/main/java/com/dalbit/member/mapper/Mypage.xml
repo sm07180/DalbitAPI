@@ -199,7 +199,7 @@
     </select>
 
     <select id="selectSpecialDjBroadcastTime" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="long">
-        CALL sp_member_special_dj_broadcast_time(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
+        CALL sp_member_special_dj_broadcast_time(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR}, #{slct_type, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="selectSpecialDjLikeCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
@@ -276,7 +276,7 @@
             , #{byeol, mode=IN, jdbcType=INTEGER}
             , #{notice, mode=IN, jdbcType=VARCHAR}
             , #{qna, mode=IN, jdbcType=VARCHAR}
-            , #{os, mode=IN, jdbcType=INTEGER}
+            , #{os}
         )
     </select>
 
@@ -358,6 +358,10 @@
 
     <select id="callExchangeCancel" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_wallet_exchange_cancel(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callFrameList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_FrameListVo">
+        call sp_member_frame_order_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
 </mapper>

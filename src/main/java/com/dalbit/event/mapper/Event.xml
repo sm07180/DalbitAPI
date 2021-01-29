@@ -67,8 +67,8 @@
                                 , #{page, mode=IN, jdbcType=INTEGER}, #{records, mode=IN, jdbcType=INTEGER}, #{totalCnt, mode=OUT, jdbcType=INTEGER})
     </select>
 
-    <select id="insertEventMember" statementType="CALLABLE" parameterType="com.dalbit.event.vo.EventMemberVo" resultType="int">
-        CALL sp_event_member_add(#{event_idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{platform, mode=IN, jdbcType=INTEGER}, #{event_member_idx, mode=OUT, jdbcType=INTEGER}, )
+    <select id="insertEventMember" statementType="CALLABLE" parameterType="com.dalbit.event.vo.EventMemberVo" resultType="INTEGER">
+        CALL sp_event_member_add(#{event_idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{platform, mode=IN, jdbcType=INTEGER}, #{event_member_idx, mode=OUT, jdbcType=INTEGER})
     </select>
 
     <select id="callEventApply" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
@@ -79,11 +79,22 @@
         CALL sp_event_member_photo_delete(#{idx, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER}, #{del_yn, mode=IN, jdbcType=INTEGER})
     </select>
 
-    <select id="insertPhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">
-        CALL sp_event_photo_add(#{mem_no, mode=IN, jdbcType=INTEGER}, #{event_idx, mode=IN, jdbcType=INTEGER}, #{event_member_idx, mode=IN, jdbcType=INTEGER}
-                                , #{image_url, mode=IN, jdbcType=VARCHAR}, NULL, NULL
-                                , NULL, #{contents, mode=IN, jdbcType=VARCHAR}, NULL
-                                , NULL, NUL)
+    <select id="insertPhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="INTEGER">
+        CALL sp_event_photo_add(
+            #{event_idx, mode=IN, jdbcType=INTEGER}
+            , #{event_member_idx, mode=IN, jdbcType=INTEGER}
+            , #{mem_no, mode=IN, jdbcType=VARCHAR}
+            , #{mem_name, mode=IN, jdbcType=VARCHAR}
+            , #{mem_phone, mode=IN, jdbcType=VARCHAR}
+            , #{image_url, mode=IN, jdbcType=VARCHAR}
+            , #{image_url2, mode=IN, jdbcType=VARCHAR}
+            , #{image_url3, mode=IN, jdbcType=VARCHAR}
+            , #{title, mode=IN, jdbcType=VARCHAR}
+            , #{contents, mode=IN, jdbcType=VARCHAR}
+            , #{slct_device, mode=IN, jdbcType=INTEGER}
+            , #{device1, mode=IN, jdbcType=VARCHAR}
+            , #{device2, mode=IN, jdbcType=VARCHAR}
+        )
     </select>
 
     <select id="updatePhoto" statementType="CALLABLE" parameterType="com.dalbit.event.vo.PhotoEventInputVo" resultType="int">

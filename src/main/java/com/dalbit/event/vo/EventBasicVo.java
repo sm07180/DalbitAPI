@@ -11,25 +11,29 @@ import java.sql.Date;
 @ToString
 public class EventBasicVo {
 
-    private int idx;
-    private String event_title;
-    private Date start_datetime;
-    private Date end_datetime;
-    private Date view_start_datetime;
-    private Date view_end_datetime;
-    private String platform;
-    private int event_slct;
-    private int is_pop;
-    private int is_view;
-    private int is_reply;
-    private String pc_img_url;
+    private String idx;
+    private String title;
+    private int always_yn;
+    private Date start_date;
+    private Date end_date;
+    private int state;
+    private int view_yn;
+    private int prize_slct;
+    private int add_info_slct;
+    private String etc_url;
     private String pc_link_url;
-    private String mobile_img_url;
     private String mobile_link_url;
-    private String thumb_img_url;
+    private String list_img_url;
     private String desc;
+    private int prize_winner;
+    private int winner_open;
+    private Date announcement_date;
+    private String winner_contents;
+    private int fold_yn;
+    private String notice;
+    private int delete_yn;
     private Date reg_date;
-    private String op_name;
+    private String reg_op_name;
     private Date last_upd_date;
     private String last_op_name;
 }

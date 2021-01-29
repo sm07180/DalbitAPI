@@ -1049,10 +1049,17 @@ public class EventService {
         return eventBasicVo;
     }
 
+    public int eventDateCheck(EventBasicVo eventBasicVo){
+        long startDatetime = eventBasicVo.getStart_date().getTime();
+        long endDatetime = eventBasicVo.getEnd_date().getTime();
+        long currentDatetime = new Date().getTime();
+        return currentDatetime < startDatetime || endDatetime < currentDatetime ? 0 : 1;
+    }
+
     public int eventDateCheck(int idx){
         EventBasicVo eventBasicVo = eventDao.selectEventBasic(idx);
-        long startDatetime = eventBasicVo.getStart_datetime().getTime();
-        long endDatetime = eventBasicVo.getEnd_datetime().getTime();
+        long startDatetime = eventBasicVo.getStart_date().getTime();
+        long endDatetime = eventBasicVo.getEnd_date().getTime();
         long currentDatetime = new Date().getTime();
         return currentDatetime < startDatetime || endDatetime < currentDatetime ? 0 : 1;
     }

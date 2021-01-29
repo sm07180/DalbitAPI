@@ -54,11 +54,11 @@ public interface EventDao {
     @Transactional(readOnly = true)
     List<PhotoEventOutputVo> selectPhotoList(PhotoEventInputVo photoEventInputVo);
 
-    int insertEventMember(EventMemberVo eventMemberVo);
+    Integer insertEventMember(EventMemberVo eventMemberVo);
 
     ProcedureVo callEventApply(ProcedureVo procedureVo);
 
-    int insertPhoto(PhotoEventInputVo photoEventInputVo);
+    Integer insertPhoto(PhotoEventInputVo photoEventInputVo);
 
     int updatePhoto(PhotoEventInputVo photoEventInputVo);
 
