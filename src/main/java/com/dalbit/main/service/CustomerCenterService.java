@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -226,7 +227,7 @@ public class CustomerCenterService {
             int hour = Integer.valueOf(DalbitUtil.convertDateFormat(new Date(), "HH"));
 
             boolean opTimeYn = true;
-            if(hour < 9 || hour > 18) {
+            if(hour < 9 || hour >= 18) {
                 opTimeYn = false;
             }
 
