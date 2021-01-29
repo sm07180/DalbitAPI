@@ -13,6 +13,7 @@ import com.dalbit.rest.service.RestService;
 import com.dalbit.slack.service.SlackSenderService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -20,9 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -36,6 +35,8 @@ public class CustomerCenterService {
     RestService restService;
     @Autowired
     SlackSenderService slackSenderService;
+    @Autowired
+    MessageUtil messageUtil;
 
     /**
      * 고객센터 공지사항 목록 조회
@@ -217,7 +218,27 @@ public class CustomerCenterService {
             if(isDone3){
                 restService.imgDone(DalbitUtil.replaceDonePath(qnaFile3), request);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_성공));
+
+            String contents =  messageUtil.get("customer.center.qna.add.message.work");
+
+            Calendar cal = Calendar.getInstance();
+            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+            int hour = Integer.valueOf(DalbitUtil.convertDateFormat(new Date(), "HH"));
+
+            boolean opTimeYn = true;
+            if(hour < 9 || hour > 18) {
+                opTimeYn = false;
+            }
+
+            if(!opTimeYn || (dayOfWeek == 1 || dayOfWeek == 7)) {
+                contents = messageUtil.get("customer.center.qna.add.message.weekend");
+            }
+
+
+            var msgMap = new HashMap<String, String>();
+            msgMap.put("title", "1:1문의 등록이 완료되었습니다");
+            msgMap.put("contents", contents);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의작성_성공, msgMap));
 
             try{
                 var procedureResult = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
