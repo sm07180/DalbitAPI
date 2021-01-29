@@ -498,7 +498,7 @@ public class MemberService {
             apiData.setMem_no(pExchangeAccountAddVo.getMem_no());
             result = callAccountListSelect(apiData, "add");
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌등록_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌등록_이미등록됨));
         }
         return result;
     }

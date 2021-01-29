@@ -1633,6 +1633,7 @@ public enum Status {
 
     //계좌등록
     계좌등록_성공("C001", "exchange.my.account.number.add.success", "환전계좌 등록 성공 시"),
+    계좌등록_이미등록됨("-1", "exchange.my.account.number.add.already", "환전계좌 이미 등록 되었을 시"),
     계좌등록_실패("C006", "exchange.my.account.number.add.fail", "환전계좌 등록 실패 시"),
 
     //계좌수정
