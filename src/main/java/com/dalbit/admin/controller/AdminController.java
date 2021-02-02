@@ -11,6 +11,8 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.MessageInsertVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.mailbox.service.MailBoxService;
+import com.dalbit.mailbox.vo.procedure.P_MailBoxImageDeleteVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -37,6 +39,9 @@ public class AdminController {
 
     @Autowired
     ActionService actionService;
+
+    @Autowired
+    MailBoxService mailBoxService;
 
     @Autowired
     SocketService socketService;
@@ -431,5 +436,26 @@ public class AdminController {
     public String updateSetting(SettingListVo settingListVo) {
         String result = adminService.updateSetting(settingListVo);
         return result;
+    }
+
+    /**
+     * 신고 이미지삭제
+     */
+    @PostMapping("/declaretion/imageDelete")
+    public String imageDelete(HttpServletRequest request, P_MailBoxImageDeleteVo pMailBoxImageDeleteVo) {
+        String chatNo = request.getParameter("chatNo");
+
+        HashMap returnMap = new HashMap();
+        returnMap.put("chatNo", chatNo);
+        returnMap.put("targetMemNo", request.getParameter("targetMemNo"));
+        returnMap.put("msgIdx", request.getParameter("msgIdx"));
+        returnMap.put("isDelete", true);
+
+        try{
+            //이미지 삭제 소켓
+            socketService.sendChatImageDelete(chatNo, returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+        }catch(Exception e){}
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.대화방_이미지삭제_성공, returnMap));
     }
 }

@@ -364,4 +364,15 @@ public class ClipController {
         return result;
     }
 
+    /**
+     * 클립 랭킹 조회
+     */
+    @GetMapping("/rank")
+    public String clipRank(@Valid ClipRankListVo clipRankListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ClipRankListVo apiData = new P_ClipRankListVo(clipRankListVo, request);
+        String result = clipService.callClipRank(apiData);
+        return result;
+    }
+
 }

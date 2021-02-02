@@ -1246,4 +1246,47 @@ public class ClipService {
         }
         return result;
     }
+
+    /**
+     * 클립 랭킹 조회
+     */
+    public String callClipRank(P_ClipRankListVo pClipRankListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pClipRankListVo);
+        List<P_ClipRankListVo> clipRankingListVo = clipDao.callClipRank(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap clipRankingInfo = new HashMap();
+            List<ClipRankListOutVo> outVoList = new ArrayList<>();
+
+            if(!DalbitUtil.isEmpty(clipRankingListVo)){
+                for (int i=0; i<clipRankingListVo.size(); i++){
+                    outVoList.add(new ClipRankListOutVo(clipRankingListVo.get(i)));
+                }
+            }
+            ClipRankMyInfoVo clipRankMyInfoVo = new Gson().fromJson(procedureVo.getExt(), ClipRankMyInfoVo.class);
+
+            clipRankingInfo.put("myRank", clipRankMyInfoVo.getMyRank());
+            clipRankingInfo.put("myUpDown", clipRankMyInfoVo.getMyUpDown());
+            clipRankingInfo.put("myClipPoint", clipRankMyInfoVo.getMyClipPoint());
+            clipRankingInfo.put("myGiftPoint", clipRankMyInfoVo.getMyGiftPoint());
+            clipRankingInfo.put("myGoodPoint", clipRankMyInfoVo.getMyGoodPoint());
+            clipRankingInfo.put("myListenPoint", clipRankMyInfoVo.getMyListenPoint());
+            clipRankingInfo.put("subjectType", clipRankMyInfoVo.getSubjectType());
+            clipRankingInfo.put("subjectName", clipRankMyInfoVo.getSubjectName());
+            clipRankingInfo.put("title", clipRankMyInfoVo.getTitle());
+            clipRankingInfo.put("bgImg", new ImageVo(clipRankMyInfoVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
+            clipRankingInfo.put("myClipNo", clipRankMyInfoVo.getMyClipNo());
+            clipRankingInfo.put("myGender", clipRankMyInfoVo.getMyGender());
+            clipRankingInfo.put("myProfImg", new ImageVo(clipRankMyInfoVo.getMyProfileImage(), clipRankMyInfoVo.getMyGender(), DalbitUtil.getProperty("server.photo.url")));
+            clipRankingInfo.put("list", outVoList);
+            clipRankingInfo.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립랭킹조회_성공, clipRankingInfo));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립랭킹조회_실패));
+        }
+        return result;
+    }
 }

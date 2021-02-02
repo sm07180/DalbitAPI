@@ -110,4 +110,7 @@
         call sp_clip_recommend_leader_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callClipRank" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipRankListVo">
+        call sp_ranking_page_clip(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

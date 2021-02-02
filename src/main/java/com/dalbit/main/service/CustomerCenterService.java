@@ -21,7 +21,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -225,11 +224,18 @@ public class CustomerCenterService {
             Calendar cal = Calendar.getInstance();
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             int hour = Integer.valueOf(DalbitUtil.convertDateFormat(new Date(), "HH"));
+            String date = DalbitUtil.convertDateFormat(new Date(), "yyyyMMdd");
 
             boolean opTimeYn = true;
             if(hour < 9 || hour >= 18) {
                 opTimeYn = false;
             }
+
+            /* 설날 공휴일 임시 추가 */
+            if(date.equals("20210211") || date.equals("20210212")) {
+                opTimeYn = false;
+            }
+            /*===================*/
 
             if(!opTimeYn || (dayOfWeek == 1 || dayOfWeek == 7)) {
                 contents = messageUtil.get("customer.center.qna.add.message.weekend");
