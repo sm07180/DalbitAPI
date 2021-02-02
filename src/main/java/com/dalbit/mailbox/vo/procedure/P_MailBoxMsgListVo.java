@@ -49,5 +49,6 @@ public class P_MailBoxMsgListVo {
     private String addData9;
     private int readYn;
     private Date sendDate;
+    private int isExpire;
 
 }
