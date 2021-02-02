@@ -785,20 +785,20 @@ public class AdminService {
                 log.error("[모바일어드민] PUSH 발송 실패 - 강제 퇴장");
             }
         }
-        forcedOutVo.setSendNoti(sendNoti);
-        ProcedureVo procedureVo = new ProcedureVo(forcedOutVo);
-        adminDao.callForceLeave(procedureVo);
-
         //방송정보 조회
         SearchVo searchVo = new SearchVo();
         searchVo.setRoom_no(forcedOutVo.getRoom_no());
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
-
         // 재입장 불가능하도록
-        if(DalbitUtil.isEmpty(forcedOutVo.getRoomBlock()) || forcedOutVo.getRoomBlock().equals("Y") ){
-            forcedOutVo.setDj_mem_no(broadInfo.getMem_no());
-            adminDao.insertForceLeave_roomBlock(forcedOutVo);
-        }
+//        if(DalbitUtil.isEmpty(forcedOutVo.getRoomBlock()) || forcedOutVo.getRoomBlock().equals("Y") ){
+//            forcedOutVo.setDj_mem_no(broadInfo.getMem_no());
+//            adminDao.insertForceLeave_roomBlock(forcedOutVo);
+//        }
+
+        forcedOutVo.setSendNoti(sendNoti);
+        ProcedureVo procedureVo = new ProcedureVo(forcedOutVo);
+        adminDao.callForceLeave(procedureVo);
+
         String result = "";
         if(Status.생방청취자강제퇴장_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_성공));
