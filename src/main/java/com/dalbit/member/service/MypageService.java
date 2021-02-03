@@ -1861,31 +1861,31 @@ public class MypageService {
 
     public String getMyPageNew(HttpServletRequest request){
         HashMap returnMap = new HashMap();
-        if(DalbitUtil.isLogin(request)){
+        if(DalbitUtil.isLogin(request)) {
             String notice = request.getParameter("notice");
             String qna = request.getParameter("qna");
-            if(!DalbitUtil.isEmpty(notice)){
+            if (!DalbitUtil.isEmpty(notice)) {
                 String[] nos = notice.split(",");
                 List<String> tmp = new ArrayList<>();
                 notice = "";
-                for(String n : nos){
-                    if(!tmp.contains(n)){
+                for (String n : nos) {
+                    if (!tmp.contains(n)) {
                         tmp.add(n);
-                        if(!DalbitUtil.isEmpty(notice)){
+                        if (!DalbitUtil.isEmpty(notice)) {
                             notice += ",";
                         }
                         notice += n;
                     }
                 }
             }
-            if(!DalbitUtil.isEmpty(qna)){
+            if (!DalbitUtil.isEmpty(qna)) {
                 String[] nos = qna.split(",");
                 List<String> tmp = new ArrayList<>();
                 qna = "";
-                for(String n : nos){
-                    if(!tmp.contains(n)){
+                for (String n : nos) {
+                    if (!tmp.contains(n)) {
                         tmp.add(n);
-                        if(!DalbitUtil.isEmpty(qna)){
+                        if (!DalbitUtil.isEmpty(qna)) {
                             qna += ",";
                         }
                         qna += n;
@@ -1906,7 +1906,9 @@ public class MypageService {
             returnMap = mypageDao.selectMyPageNew(params);
             returnMap.put("newCnt", DalbitUtil.getIntMap(returnMap, "alarm") + DalbitUtil.getIntMap(returnMap, "qna") + DalbitUtil.getIntMap(returnMap, "notice"));
             returnMap.put("moveUrl", "");
-            if(DalbitUtil.getIntMap(returnMap, "notice") > 0){
+            if(DalbitUtil.getIntMap(returnMap, "alarm") > 0){
+                returnMap.put("moveUrl", "");
+            }else if(DalbitUtil.getIntMap(returnMap, "notice") > 0){
                 returnMap.put("moveUrl", "/customer/notice");
             }else if(DalbitUtil.getIntMap(returnMap, "qna") > 0) {
                 returnMap.put("moveUrl", "/customer/qnaList");
