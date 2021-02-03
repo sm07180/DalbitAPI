@@ -39,9 +39,9 @@ public class MailBoxService {
         List<P_MailBoxListVo> mailBoxListVo = mailBoxDao.callMailboxList(procedureVo);
 
         String result;
+        HashMap mailBoxList = new HashMap();
         if(Integer.parseInt(procedureVo.getRet()) > -1) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            HashMap mailBoxList = new HashMap();
             List<MailBoxListOutVo> outVoList = new ArrayList<>();
 
             if(!DalbitUtil.isEmpty(mailBoxListVo)){
@@ -56,6 +56,9 @@ public class MailBoxService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.우체통대화방_조회_성공, mailBoxList));
         } else if (procedureVo.getRet().equals(Status.우체통팬대화방_조회_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.우체통팬대화방_조회_회원아님));
+        } else if (procedureVo.getRet().equals(Status.우체통팬대화방_조회_레벨0.getMessageCode())) {
+            mailBoxList.put("list", new ArrayList<>());
+            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통팬대화방_조회_레벨0, mailBoxList));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.우체통팬대화방_조회_실패));
         }
@@ -106,13 +109,13 @@ public class MailBoxService {
         returnMap.put("chatNo", DalbitUtil.getStringMap(resultMap, "chat_no"));
         returnMap.put("title", DalbitUtil.getStringMap(resultMap, "title"));    //대화방제목(대상닉네임)
         returnMap.put("lastMsgIdx", DalbitUtil.getStringMap(resultMap, "lastMsgIdx"));
+        returnMap.put("isNewChat", false);
 
         String result="";
         if(Status.대화방입장_신규입장_성공.getMessageCode().equals(procedureVo.getRet())) {
             returnMap.put("isNewChat", true);
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_신규입장_성공, returnMap));
         }else if(Status.대화방입장_성공.getMessageCode().equals(procedureVo.getRet())){
-            returnMap.put("isNewChat", false);
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_성공, returnMap));
         }else if(Status.대화방입장_요청회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_요청회원아님));
@@ -122,6 +125,10 @@ public class MailBoxService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_본인안됨));
         }else if(Status.대화방입장_차단회원.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_차단회원));
+        }else if(Status.대화방입장_레벨0.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_레벨0, returnMap));
+        }else if(Status.대화방입장_대상레벨0.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_대상레벨0, returnMap));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화방입장_실패));
         }

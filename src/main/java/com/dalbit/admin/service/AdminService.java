@@ -76,26 +76,13 @@ public class AdminService {
 
     private final String menuJsonKey = "adminMenu";
 
-    @Value("${ant.expire.hour}")
-    private int ANT_EXPIRE_HOUR;
-
-    @Value("${server.ant.url}")
-    private String ANT_SERVER_URL;
-
-    @Value("${ant.app.name}")
-    private String ANT_APP_NAME;
-
     @Value("${server.api.url}")
     private String SERVER_API_URL;
 
-    @Value("${wowza.wss.url}")
+    @Value("${wowza.audio.wss.url}")
     private String WOWZA_AUDIO_WSS_URL;
-    @Value("${wowza.wss.url}")
-    private String WOWZA_VIDEO_WSS_URL;
-/*    @Value("${wowza.real.server}")
-    private String[] WOWZA_AUDIO_SERVER;
-    @Value("${wowza.real.server}")
-    private String[] WOWZA_VIDEO_SERVER;*/
+    @Value("${wowza.video.wss.url.edge}")
+    private String WOWZA_VIDEO_WSS_URL_EDGE;
     @Value("${wowza.prefix}")
     private String WOWZA_PREFIX;
 
@@ -192,39 +179,14 @@ public class AdminService {
 
     public String selectBroadcastDetail(SearchVo searchVo){
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
-        if(broadInfo != null && !DalbitUtil.isEmpty(broadInfo.getBjStreamId())){
-            Calendar cal = Calendar.getInstance();
-            cal.add(Calendar.HOUR, ANT_EXPIRE_HOUR);
-            long expire = cal.getTime().getTime() / 1000;
-            String params = "expireDate=" + expire + "&type=play";
-            OkHttpClientUtil httpUtil = new OkHttpClientUtil();
-            try{
-                String url = ANT_SERVER_URL + "/" + ANT_APP_NAME + "/rest/v2/broadcasts/" + broadInfo.getBjStreamId() + "/token?" + params;
-                log.info("[Ant] Request URL : {}", url );
-                Response res = httpUtil.sendGet(url);
-                if(res != null){
-                    String strResBody = res.body().string();
-                    if(!DalbitUtil.isEmpty(strResBody)) {
-                        HashMap tokenMap = new Gson().fromJson(strResBody, HashMap.class);
-                        if (tokenMap != null && !DalbitUtil.isEmpty(tokenMap.get("tokenId"))) {
-                            broadInfo.setBjPlayToken(DalbitUtil.getStringMap(tokenMap, "tokenId"));
-                            broadInfo.setAntUrl(DalbitUtil.getProperty("server.ant.edge.url"));
-                            broadInfo.setAntAppName(ANT_APP_NAME);
-                        }
-                    }
-                }
-            }catch(Exception e){
-                e.printStackTrace();
-            }
-        }
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
     }
 
     public String selectBroadcastDetailWowza(SearchVo searchVo){
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
         if(broadInfo != null){
-            log.info("[WOWZA] Request URL : {}", "a".equals(broadInfo.getTypeMedia()) ? WOWZA_AUDIO_WSS_URL : WOWZA_VIDEO_WSS_URL );
-            broadInfo.setWsUrl("a".equals(broadInfo.getTypeMedia()) ? WOWZA_AUDIO_WSS_URL : WOWZA_VIDEO_WSS_URL);
+            log.info("[WOWZA] Request URL : {}", "a".equals(broadInfo.getTypeMedia()) ? WOWZA_AUDIO_WSS_URL : WOWZA_VIDEO_WSS_URL_EDGE );
+            broadInfo.setWsUrl("a".equals(broadInfo.getTypeMedia()) ? WOWZA_AUDIO_WSS_URL : WOWZA_VIDEO_WSS_URL_EDGE);
             broadInfo.setApplicationName("edge");
             broadInfo.setStreamName(WOWZA_PREFIX + searchVo.getRoom_no() + "_opus");
         }

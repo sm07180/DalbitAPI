@@ -16,4 +16,13 @@ public class P_GuestListVo extends P_ApiVo {
 
     private int guest_yn;
     private int guest_propose;
+
+    private String type_media;
+
+    private int mic_state;
+    private int call_state;
+    private int video_state;
+    private int server_state;
+
+
 }

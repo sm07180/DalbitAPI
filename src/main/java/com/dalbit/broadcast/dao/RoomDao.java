@@ -54,4 +54,10 @@ public interface RoomDao {
 
     //@Transactional(readOnly = true)
     List<P_BadgeChangeListVo> changeBadge(ProcedureVo procedureVo);
+
+    ProcedureVo callBroadCastRoomStateEdit(ProcedureVo procedureVo);
+
+    ProcedureVo callRoomStateGuestEdit(ProcedureVo procedureVo);
+
+    ProcedureVo callRoomStateNormalize(ProcedureVo procedureVo);
 }

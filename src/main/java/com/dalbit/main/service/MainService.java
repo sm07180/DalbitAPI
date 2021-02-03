@@ -169,6 +169,7 @@ public class MainService {
                 outVo.isNew = recommendVoList.get(i).isNew();
                 outVo.isShining = recommendVoList.get(i).isShining();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
+                outVo.setMediaType(recommendVoList.get(i).getMediaType());
 
                 //badgeService.setBadgeInfo(recommendVoList.get(i).getMemNo(), 6);
                 List<BadgeVo> badgeList = new ArrayList<>();

@@ -262,4 +262,13 @@ public class RoomController {
         String result = roomService.getGoodHistory(apiData, request);
         return result;
     }
+
+    /**
+     * 방송방 상태 변경(수정버전)
+     */
+    @PostMapping("/state/edit")
+    public String roomStateEdit(@Valid StateEditVo stateEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return roomService.callRoomStateEdit(stateEditVo, request);
+    }
 }

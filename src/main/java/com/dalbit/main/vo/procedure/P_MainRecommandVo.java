@@ -36,4 +36,5 @@ public class P_MainRecommandVo extends P_ApiVo {
     public String fanBadgeIcon;
     public String fanBadgeStartColor;
     public String fanBadgeEndColor;
+    public String mediaType;
 }

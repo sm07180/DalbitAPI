@@ -3,6 +3,7 @@ package com.dalbit.socket.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
+import com.dalbit.broadcast.vo.request.StateEditVo;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
@@ -16,6 +17,7 @@ import com.dalbit.socket.dao.SocketDao;
 import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.RestApiUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -62,65 +64,17 @@ public class SocketService {
     ProfileDao profileDao;
 
     public void sendSocketApi(String authToken, String roomNo, String params) {
-        HttpURLConnection con = null;
-        URL url = null;
         String result = "";
-
         params = StringUtils.defaultIfEmpty(params, "").trim();
         String request_uri = "https://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + SERVER_SOCKET_URL + roomNo;
+        //로컬테스트
+        //String request_uri = "http://" + SERVER_SOCKET_IP + ":" + SERVER_SOCKET_PORT + SERVER_SOCKET_URL + roomNo;
 
         log.info("소켓 request_uri: {}", request_uri);
-        //log.error("Socket Start {}, {}, {}", roomNo, params);
 
-        try{
-            url = new URL(request_uri);
-            con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("POST");
-            con.setRequestProperty("x-custom-header", authToken);
-            if(!"".equals(params)){
-                //con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                con.setDoInput(true);
-                con.setDoOutput(true);
-                con.setUseCaches(false);
-                con.setAllowUserInteraction(true);
+        result = RestApiUtil.sendSocketPost(request_uri, authToken, roomNo, params);
 
-                DataOutputStream out = new DataOutputStream(con.getOutputStream());
-                out.write(params.getBytes("UTF-8"));
-                out.flush();
-            }
-
-            result = readStream(con.getInputStream());
-        }catch(IOException e){
-            try {
-                P_ErrorLogVo apiData = new P_ErrorLogVo();
-                apiData.setOs("API");
-                apiData.setDtype("SOCKET");
-                apiData.setCtype(roomNo);
-                String desc = "";
-                if (!DalbitUtil.isEmpty(params)) {
-                    desc = "Data : \n" + params + "\n";
-                }
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
-                if (sw != null) {
-                    desc += "Exception : \n" + sw.toString();
-                }
-                apiData.setDesc(desc);
-                commonService.saveErrorLog(apiData);
-                //log.info("Socket Rest {} error {}", request_uri, e.getMessage());
-            }catch(Exception e1){}
-            if(con != null){
-                result = readStream(con.getErrorStream());
-            }
-        }
-
-        if(!DalbitUtil.isEmpty(params) && params.indexOf("levelUp") > -1){
-            log.error("Socket Result {}, {}, {}", roomNo, params, result);
-        }else{
-            log.info("Socket Result {}, {}, {}", roomNo, params, result);
-        }
-        //return new Gson().fromJson(result, Map.class);
+        log.info("Socket Result {}, {}, {}", roomNo, params, result);
     }
 
     /**
@@ -255,21 +209,21 @@ public class SocketService {
                 String command = "reqMicOn";
                 if (state == 0) {
                     //command = "reqMediaOff";
-                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo, false);
                     return;
                 } else if (state == 3) { //통화중
                     if ((old_state == 0 || old_state == 6) && ("1".equals(isAnt) || "TRUE".equals(isAnt))) {
-                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo, false);
                     }
                     command = "reqCalling";
                 } else if (state == 2) { // 마이크 오프
                     if ((old_state == 0 || old_state == 6) && ("1".equals(isAnt) || "TRUE".equals(isAnt))) {
-                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo, false);
                     }
                     command = "reqMicOff";
                 } else {
                     if (old_state == 0 || old_state == 6) {
-                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo, false);
                         //command = "reqMediaOn";
                         return;
                     } else if (old_state == 3) {
@@ -301,10 +255,10 @@ public class SocketService {
             }
             if (vo.getMemNo() != null) {
                 if("0".equals(ant) || "FALSE".equals(ant.toUpperCase())) {
-                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo, false);
                 }else{
                     if(old_state == 0 || old_state == 3){
-                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo);
+                        bjAntConnect(roomNo, memNo, authToken, isLogin, vo, false);
                     }
                 }
                 if("0".equals(mic) || "FALSE".equals(mic.toUpperCase())) {
@@ -346,7 +300,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
+    public void bjAntConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo, boolean isGuest){
         log.info("Socket Start : bjAntConnect {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -365,7 +319,7 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void bjAntDisConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo){
+    public void bjAntDisConnect(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo, boolean isGuest){
         log.info("Socket Start : bjAntDisConnect {}, {}, {}", roomNo, memNo, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -374,7 +328,8 @@ public class SocketService {
         if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
             if(vo != null && vo.getMemNo() != null) {
                 vo.setCommand("reqBjAntDisconnect");
-                vo.setMessage("DJ의 방송상태가 원활하지 않습니다.");
+
+                vo.setMessage(isGuest ? "게스트의 방송상태가 원활하지 않습니다." : "DJ의 방송상태가 원활하지 않습니다.");
                 //vo.setMessage("" + new java.util.Date().getTime());
                 vo.setRecvDj(0);
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
@@ -425,7 +380,7 @@ public class SocketService {
                 } else if (state == 2) { // 마이크 오프
                     command = "reqMicOff";
                 } else if (state == 0) { // 미디어 오프
-                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo);
+                    bjAntDisConnect(roomNo, memNo, authToken, isLogin, vo, false);
                 }
                 vo.setCommand(command);
                 vo.setMessage(vo.getAuth() + "");
@@ -1110,6 +1065,71 @@ public class SocketService {
 
         log.info("Socket vo to Query String: {}",vo.toQueryString());
         sendSocketApi(authToken, chatNo, vo.toQueryString());
+    }
+
+
+    /**
+     *  방송방 상태변경(수정버전)
+     */
+    @Async("threadTaskExecutor")
+    public void roomStateEdit(String roomNo, String memNo, int old_state, StateEditVo stateEditVo, String authToken, boolean isLogin, SocketVo vo, boolean isGuest){
+        log.info("Socket Start : roomStateEdit {}, {}, {}, {}, {}", roomNo, memNo, old_state, stateEditVo, isLogin);
+        roomNo = roomNo == null ? "" : roomNo.trim();
+        memNo = memNo == null ? "" : memNo.trim();
+        authToken = authToken == null ? "" : authToken.trim();
+
+        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)) {
+            if (vo == null) {
+                vo = getSocketVo(roomNo, memNo, isLogin);
+            }
+            if (vo.getMemNo() != null) {
+                boolean mediaOn = "TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()) ? true : false;
+                HashMap socketMap = new HashMap();
+                socketMap.put("memNo", memNo);
+                socketMap.put("mediaState", stateEditVo.getMediaState());
+                socketMap.put("mediaOn", mediaOn);
+                socketMap.put("isGuest", isGuest);
+
+                String whoStr= isGuest ? "게스트" : "DJ";
+                String msg="";
+                if("mic".equals(stateEditVo.getMediaState())){
+                    if(mediaOn){
+                        msg = " 마이크 ON";
+                    }else{
+                        msg = " 마이크 OFF";
+                    }
+                }else if("call".equals(stateEditVo.getMediaState())){
+                    if(mediaOn){
+                        msg = "가 통화중입니다.";
+                    }else{
+                        msg = "가 통화를 종료했습니다.";
+                    }
+                }else if("video".equals(stateEditVo.getMediaState())){
+                    if(mediaOn){
+                        msg = " 영상 ON";
+                    }else{
+                        msg = " 영상 OFF";
+                    }
+                }else if("server".equals(stateEditVo.getMediaState())){
+                    if(mediaOn){
+                        whoStr = "";
+                        msg = "";
+                    }else{
+                        msg = "의 방송상태가 원활하지 않습니다.";
+                    }
+                }
+                socketMap.put("msg", whoStr+msg);
+
+                log.info("msg: {}", whoStr+msg);
+
+                vo.setCommand("reqRoomState");
+                vo.setMessage(socketMap);
+                vo.setRecvPosition("top1");
+                vo.setRecvLevel(3);
+                vo.setRecvType("system");
+                sendSocketApi(authToken, roomNo, vo.toQueryString());
+            }
+        }
     }
 
 

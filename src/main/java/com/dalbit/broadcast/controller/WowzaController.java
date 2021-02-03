@@ -29,7 +29,7 @@ public class WowzaController {
     @Autowired
     GsonUtil gsonUtil;
 
-    @PostMapping("/broadcast/hook")
+    @RequestMapping("/broadcast/hook")
     public String wowzaHook(HttpServletRequest request){
         HashMap result = wowzaService.doUpdateWowzaState(request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status")));
@@ -66,6 +66,12 @@ public class WowzaController {
     @PostMapping("/continue")
     public String doContinue(HttpServletRequest request) throws GlobalException {
         HashMap result = wowzaService.doContinueBroadcast(request);
+        return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
+    }
+
+    @PostMapping("/normalize")
+    public String doNormalize(HttpServletRequest request) throws GlobalException {
+        HashMap result = wowzaService.doUpdateStateNormalize(request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
 }

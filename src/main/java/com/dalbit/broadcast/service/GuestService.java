@@ -12,6 +12,7 @@ import com.dalbit.broadcast.vo.request.GuestListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -50,8 +52,10 @@ public class GuestService {
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
-    @Value("${wowza.real.server}")
-    String[] WOWZA_REALSERVER;
+    @Value("${wowza.audio.server}")
+    String[] WOWZA_AUDIO_SERVER;
+    @Value("${wowza.video.server}")
+    String[] WOWZA_VIDEO_SERVER;
 
 
     /**
@@ -108,16 +112,28 @@ public class GuestService {
                                     String webRtcAppName = roomInfoVo.getWebRtcAppName();       //WOWZA 앱네임 (PC)
                                     String webRtcStreamName = roomInfoVo.getWebRtcStreamName(); //WOWZA 스트림 네임 (PC)  ( DEV or REAL + room_no)
 
-                                    String gstWebRtcStreamName = WOWZA_PREFIX+roomNo+"_"+memNo; //WOWZA 스트림 네임 (PC)  ( DEV or REAL + room_no + _ + mem_no)
-                                    String gstRtmpOrigin = DalbitUtil.getProperty("wowza.rtmp.origin") + "/" + gstWebRtcStreamName;// + "_aac";
-                                    String gstRtmpEdge =  DalbitUtil.getProperty("wowza.rtmp.edge") + "/" + gstWebRtcStreamName + "_aac";
-                                    String gstWebRtcUrl = DalbitUtil.getProperty("wowza.wss.url") ;
+                                    //String gstWebRtcStreamName = WOWZA_PREFIX+roomNo+"_"+memNo; //WOWZA 스트림 네임 (PC)  ( DEV or REAL + room_no + _ + mem_no)
+                                    String gstWebRtcStreamName = WOWZA_PREFIX+roomNo+memNo; //WOWZA 스트림 네임 (PC)  ( DEV or REAL + room_no + mem_no)
+                                    String gstRtmpOrigin;
+                                    String gstRtmpEdge;
+                                    String gstWebRtcUrl;
+                                    if("a".equals(roomInfoVo.getMediaType())){
+                                        gstRtmpOrigin = DalbitUtil.getProperty("wowza.audio.rtmp.origin") + "/" + gstWebRtcStreamName;// + "_aac";
+                                        gstRtmpEdge =  DalbitUtil.getProperty("wowza.audio.rtmp.edge") + "/" + gstWebRtcStreamName + DalbitUtil.getProperty("wowza.aac");
+                                        gstWebRtcUrl = DalbitUtil.getProperty("wowza.audio.wss.url") ;
+                                    }else{
+                                        gstRtmpOrigin = DalbitUtil.getProperty("wowza.video.rtmp.origin") + "/" + gstWebRtcStreamName;// + "_aac";
+                                        gstRtmpEdge =  DalbitUtil.getProperty("wowza.video.rtmp.edge") + "/" + gstWebRtcStreamName + DalbitUtil.getProperty("wowza.aac");
+                                        gstWebRtcUrl = memNo.equals(MemberVo.getMyMemNo(request)) ? DalbitUtil.getProperty("wowza.video.wss.url.origin") : DalbitUtil.getProperty("wowza.video.wss.url.edge");
+                                    }
                                     String gstWebRtcAppName = roomInfoVo.getAuth() == 2 ? "origin" : "edge";
                                     if(memNo.equals(MemberVo.getMyMemNo(request))){ //게스트가 본인이면 origin
                                         gstWebRtcAppName = "origin";
                                     }else{ // 게스트가 본인이 아니라면 edge
                                         gstWebRtcAppName = "edge";
-                                        gstWebRtcStreamName = WOWZA_PREFIX+roomNo+"_"+memNo+"_opus";
+                                        //gstWebRtcStreamName = WOWZA_PREFIX+roomNo+"_"+memNo+DalbitUtil.getProperty("wowza.opus");
+                                        gstWebRtcStreamName = WOWZA_PREFIX+roomNo+memNo+DalbitUtil.getProperty("wowza.opus");
+
                                     }
 
                                     //게스트 지정
@@ -172,12 +188,22 @@ public class GuestService {
                         }
                     }
 
-                    String streamName = this.WOWZA_PREFIX + roomNo + "_" + guestInfoVo.getMemNo();
-                    String gstRtmpOrigin = DalbitUtil.getProperty("wowza.rtmp.origin") + "/" + streamName;// + "_aac";
-                    String gstRtmpEdge =  DalbitUtil.getProperty("wowza.rtmp.edge") + "/" + streamName + "_aac";
-                    String gstWebRtcUrl = DalbitUtil.getProperty("wowza.wss.url") ;
+                    //String streamName = this.WOWZA_PREFIX + roomNo + "_" + guestInfoVo.getMemNo();
+                    String streamName = this.WOWZA_PREFIX + roomNo + guestInfoVo.getMemNo();
+                    String gstRtmpOrigin;
+                    String gstRtmpEdge;
+                    String gstWebRtcUrl;
+                    if("a".equals(roomGuestInfo.get("type_media"))){
+                        gstRtmpOrigin = DalbitUtil.getProperty("wowza.audio.rtmp.origin") + "/" + streamName;// + "_aac";
+                        gstRtmpEdge =  DalbitUtil.getProperty("wowza.audio.rtmp.edge") + "/" + streamName + DalbitUtil.getProperty("wowza.aac");
+                        gstWebRtcUrl = DalbitUtil.getProperty("wowza.audio.wss.url") ;
+                    }else{
+                        gstRtmpOrigin = DalbitUtil.getProperty("wowza.video.rtmp.origin") + "/" + streamName;// + "_aac";
+                        gstRtmpEdge =  DalbitUtil.getProperty("wowza.video.rtmp.edge") + "/" + streamName + DalbitUtil.getProperty("wowza.aac");
+                        gstWebRtcUrl = memNo.equals(MemberVo.getMyMemNo(request)) ? DalbitUtil.getProperty("wowza.video.wss.url.origin") : DalbitUtil.getProperty("wowza.video.wss.url.edge");
+                    }
                     String gstWebRtcAppName = "edge";
-                    String gstWebRtcStreamName = streamName + "_opus";
+                    String gstWebRtcStreamName = streamName + DalbitUtil.getProperty("wowza.opus");
                     guestInfoVo.setRtmpOrigin(gstRtmpOrigin);
                     guestInfoVo.setRtmpEdge(gstRtmpEdge);
                     guestInfoVo.setWebRtcUrl(gstWebRtcUrl);

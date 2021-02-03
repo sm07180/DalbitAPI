@@ -25,6 +25,7 @@ public class RoomInfoVo {
     private long likes;
     private long rank;
     private String roomType;
+    private String mediaType;
     private String welcomMsg;
     private int entryType;
     private boolean djListenerIn;
@@ -51,6 +52,10 @@ public class RoomInfoVo {
     private int liveDjRank;
     private int os;             //bj os정보
     private int imageType;
+    private boolean isMic;
+    private boolean isCall;
+    private boolean isServer;
+    private boolean isVideo;
     /* 요청자 정보 */
     private int auth;
     private String ctrlRole;
@@ -71,7 +76,7 @@ public class RoomInfoVo {
     private String webRtcStreamName;
     private int bufferingLow = 3000;
     private int bufferingHigh = 2500;
-    private int guestBuffering = 500;
+    private int guestBuffering = 2500;
     private int chatEndInterval = 1000;
     /* 게스트 : streamName => wowza.prefix(DEV/REAL) + room_no + _ + mem_no */
     private List guests = new ArrayList();
@@ -83,6 +88,11 @@ public class RoomInfoVo {
 
     /* 보름달 단계 정보 */
     private MoonCheckInfoVo moonCheck = new MoonCheckInfoVo();
+
+    /* 영상 기본값 설정 */
+    private int videoFrameRate = 24;
+    private int videoResolution = 480;  /* 144, 288, 360, 480, 540, 720, 1080, 2160 */
+
 
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
         this.roomNo = target.getRoomNo();
@@ -110,6 +120,7 @@ public class RoomInfoVo {
         this.startTs = target.getStartTs();
         this.hasNotice = this.auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice());
         this.roomType = target.getRoomType();
+        this.mediaType = target.getMediaType();
         this.welcomMsg = target.getWelcomMsg();
         this.entryType = target.getEntryType();
         this.djListenerIn = (boolean) settingMap.get("djListenerIn");
@@ -157,9 +168,17 @@ public class RoomInfoVo {
         }
 
         this.webRtcStreamName = wowza_prefix + this.roomNo;
-        this.rtmpOrigin = DalbitUtil.getProperty("wowza.rtmp.origin") + "/" + webRtcStreamName;// + "_aac";
-        this.rtmpEdge = DalbitUtil.getProperty("wowza.rtmp.edge") + "/" + webRtcStreamName + "_aac";
-        this.webRtcUrl = DalbitUtil.getProperty("wowza.wss.url") ;
+
+        if("a".equals(target.getMediaType())){
+            this.rtmpOrigin = DalbitUtil.getProperty("wowza.audio.rtmp.origin") + "/" + webRtcStreamName;// + "_aac";
+            this.rtmpEdge = DalbitUtil.getProperty("wowza.audio.rtmp.edge") + "/" + webRtcStreamName + "_aac";
+            this.webRtcUrl = DalbitUtil.getProperty("wowza.audio.wss.url") ;
+        }else{
+            this.rtmpOrigin = DalbitUtil.getProperty("wowza.video.rtmp.origin") + "/" + webRtcStreamName;// + "_aac";
+            this.rtmpEdge = DalbitUtil.getProperty("wowza.video.rtmp.edge") + "/" + webRtcStreamName + "_aac";
+            this.webRtcUrl = this.auth == 3 ? DalbitUtil.getProperty("wowza.video.wss.url.origin") : DalbitUtil.getProperty("wowza.video.wss.url.edge");
+        }
+
         this.webRtcAppName = this.auth == 3 ? "origin" : "edge";
         if(this.auth != 3){
             this.webRtcStreamName = wowza_prefix + this.roomNo + "_opus";
@@ -167,6 +186,10 @@ public class RoomInfoVo {
 
         this.liveBadgeList = memberInfoVo.getLiveBadgeList();
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
+
+        this.bufferingHigh = "real".equals(DalbitUtil.getActiveProfile()) ? 2500 : 1500;
+        this.guestBuffering = "real".equals(DalbitUtil.getActiveProfile()) ? 1500 : 500;
+
         this.os = target.getOs();
         this.isExtend = target.getIsExtend();
         this.imageType = target.getImageType();
@@ -180,6 +203,11 @@ public class RoomInfoVo {
         moonCheck.setDlgTitle(target.getMoonCheck().getDlgTitle());
         moonCheck.setDlgText(target.getMoonCheck().getDlgText());
         moonCheck.setAniDuration(target.getMoonCheck().getAniDuration());
+
+        this.isMic = target.isMic();
+        this.isCall = target.isCall();
+        this.isVideo = target.isVideo();
+        this.isServer = target.isServer();
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){

@@ -4,6 +4,7 @@ import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -32,7 +33,7 @@ import java.util.Map;
 // chatEnd              // 방폭
 // reqMyInfo
 
-
+@Slf4j
 @Component
 public class AdminSocketUtil {
 
@@ -57,15 +58,15 @@ public class AdminSocketUtil {
 
                 message = gsonUtil.toJson(map);
                 SocketVo vo = getSocketVo(param, command, message);
-                System.out.println(vo.toQueryString());
+                log.info(vo.toQueryString());
                 socketService.sendSocketApi(authToken, DalbitUtil.getStringMap(param, "roomNo"), vo.toQueryString());
             }else if(command.equals("reqKickOut")) {
                 SocketVo vo = getSocketVo(param, command, message);
-                System.out.println(vo.toQueryString());
+                log.info(vo.toQueryString());
                 socketService.sendSocketApi(authToken, DalbitUtil.getStringMap(param, "roomNo"), vo.toQueryString());
             }else{
                 SocketVo vo = getSocketVo(param, command, message);
-                System.out.println(vo.toQueryString());
+                log.info(vo.toQueryString());
                 socketService.sendSocketApi(authToken, SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
             }
         }

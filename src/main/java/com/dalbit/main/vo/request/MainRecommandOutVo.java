@@ -25,6 +25,7 @@ public class MainRecommandOutVo {
     private String roomType;
     private String title;
     private String bannerUrl;
+    private String mediaType;
     private int listeners;
     private int likes;
     public boolean isSpecial;

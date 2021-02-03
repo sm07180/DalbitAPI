@@ -21,6 +21,8 @@ public enum Status {
     이전작업대기중("-97", "ready.to.prev.process", "동일작업 중복 호출"),
     사용자요청취소("C999", "client.abort.exception", "사용자 요청취소"),
 
+    최신버전_업데이트_필요("100", "update.need", "업데이트 필요"),
+
     //차단관련 운영메시지
     차단_이용제한("0", "block.member.restriction", "운영자에 의해 차단되어 이용제한 시"),
 
@@ -1753,6 +1755,7 @@ public enum Status {
     우체통대화방_조회_성공("C001", "mailbox.list.select.success", "대화방 리스트 조회 성공 시"),
     우체통대화방_조회_없음("0", "mailbox.list.select.no.success", "대화방 리스트 없을 시"),
     우체통팬대화방_조회_회원아님("-1", "mailbox.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    우체통팬대화방_조회_레벨0("-2", "mailbox.list.select.level.0", "본인 레벨 0"),
     우체통팬대화방_조회_실패("C006", "mailbox.list.select.fail", "대화방 리스트 조회 실패 시"),
 
     //우체통 대화방 추가대상
@@ -1768,6 +1771,8 @@ public enum Status {
     대화방입장_대상회원아님("-2", "mailbox.chatroom.enter.target.member.number.error", "대상회원번호 회원 아닐 시"),
     대화방입장_본인안됨("-3", "mailbox.chatroom.enter.me.impossible", "본인에게 입장 불가 시"),
     대화방입장_차단회원("-4", "mailbox.chatroom.enter.black", "차단회원일 경우"),
+    대화방입장_레벨0("-5", "mailbox.chatroom.enter.level.0", "본인 레벨 0"),
+    대화방입장_대상레벨0("-6", "mailbox.chatroom.enter.target.level.0", "상대방 레벨 0"),
     대화방입장_실패("C006", "mailbox.chatroom.enter.fail", "대화방 입장 실패 시"),
 
     //대화방 퇴장
@@ -1999,7 +2004,16 @@ public enum Status {
     이미지신고_방번호없음("-4", "image.report.no.room.number", "방번호가 없을 시"),
     이미지신고_이미지번호없음("-5", "image.report.no.idx", "이미지 번호 없을 시"),
     이미지신고_실패("C006", "image.report.fail", "이미지 신고 실패 시"),
-  ;
+
+    //프레임 조회
+    프레임조회_성공("C001", "mypage.frame.select.success", "프레임 조회 성공 시"),
+    프레임조회_실패("C006", "mypage.frame.select.fail", "프레임 조회 실패 시"),
+
+    //프레임 편집
+    편집_성공("0", "mypage.frame.edit.success", "프레임 편집 성공 시"),
+    편집_회원아님("-1", "mypage.frame.edit.member.number.error", "요청회원번호 회원 아닐 시"),
+    편집_실패("C006", "mypage.frame.edit.error", "프레임 편집 실패 시"),
+;
 
 
 

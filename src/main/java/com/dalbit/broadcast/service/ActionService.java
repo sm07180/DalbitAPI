@@ -428,6 +428,7 @@ public class ActionService {
                 itemMap.put("nickNm", vo1.getMemNk());
                 itemMap.put("dalCnt", item.getByeol());
                 itemMap.put("memNo", vo1.getMemNo());
+                itemMap.put("isGuest", false);
 
                 socketService.giftItem(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

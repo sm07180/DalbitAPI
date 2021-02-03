@@ -78,38 +78,42 @@ public class WowzaService {
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
-    @Value("${wowza.real.server}")
-    String[] WOWZA_REALSERVER;
+    @Value("${wowza.audio.server}")
+    String[] WOWZA_AUDIO_SERVER;
+    @Value("${wowza.video.server}")
+    String[] WOWZA_VIDEO_SERVER;
+    @Value("${wowza.aac}")
+    String WOWZA_ACC;
+    @Value("${wowza.opus}")
+    String WOWZA_OPUS;
 
     public HashMap doUpdateWowzaState(HttpServletRequest request){
-        HashMap result = new HashMap();
-        String streamName = request.getParameter("streamName");
-        String action = request.getParameter("action");
-        if(DalbitUtil.isEmpty(streamName) || DalbitUtil.isEmpty(action) ){
-            StringBuffer body = new StringBuffer();
-            try {
-                BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
-                String buffer;
-                while ((buffer = input.readLine()) != null){
-                    body.append(buffer);
-                }
-            }catch(IOException e){}
-
-            if(body.length() > 0){
-                try {
-                    HashMap bodyMap = new Gson().fromJson(body.toString(), HashMap.class);
-                    streamName = DalbitUtil.getStringMap(bodyMap, "streamName");
-                    action = DalbitUtil.getStringMap(bodyMap, "action");
-                }catch(Exception e){}
+        StringBuffer body = new StringBuffer();
+        try {
+            BufferedReader input = new BufferedReader(new InputStreamReader(request.getInputStream()));
+            String buffer;
+            while ((buffer = input.readLine()) != null){
+                body.append(buffer);
             }
+        }catch(IOException e){}
 
+        HashMap result = new HashMap();
+        String streamName = "";
+        String action = "";
+        if(body.length() > 0){
+            try {
+                HashMap bodyMap = new Gson().fromJson(body.toString(), HashMap.class);
+                streamName = DalbitUtil.getStringMap(bodyMap, "streamName");
+                action = DalbitUtil.getStringMap(bodyMap, "action");
+            }catch(Exception e){}
         }
         if(DalbitUtil.isEmpty(streamName) || DalbitUtil.isEmpty(action) || !("liveStreamStarted".equals(action) || "liveStreamEnded".equals(action))){
             result.put("status", Status.파라미터오류);
-        }else{
-            if(streamName.toLowerCase().endsWith("_opus") || streamName.toLowerCase().endsWith("_aac")){
-                streamName = StringUtils.replace(streamName.toLowerCase(), "_opus", "");
-                streamName = StringUtils.replace(streamName.toLowerCase(), "_aac", "");
+        }else {
+            log.debug("call wowza hook {}, {}", streamName, action);
+            if (streamName.toLowerCase().endsWith(WOWZA_ACC) || streamName.toLowerCase().endsWith(WOWZA_OPUS)) {
+                streamName = StringUtils.replace(streamName.toLowerCase(), WOWZA_OPUS, "");
+                streamName = StringUtils.replace(streamName.toLowerCase(), WOWZA_ACC, "");
             }
             String roomNo = streamName.toLowerCase().substring(WOWZA_PREFIX.toLowerCase().length());
             String guestNo = "";
@@ -125,41 +129,35 @@ public class WowzaService {
                 roomNo = roomNo.substring(0, 14);
                 isGuest = true;
             }
+            log.debug("call wowza hook roomNo : {}, guestNo : {}", roomNo, guestNo);
 
             RoomOutVo target = getRoomInfo(roomNo);
             boolean roomCheck = false;
             if(target != null && target.getState() != 4) {
+                if("v".equals(target.getMediaType())) {
+                    wowzaSocketService.wowzaDisconnect(target.getMediaType(), streamName, null);
+                    log.debug("======================== call video edge disconnect");
+                }
+
                 if(isGuest == true && !DalbitUtil.isEmpty(guestNo) && guestNo.equals(target.getBjMemNo())){
                     isGuest = false;
                     guestNo = "";
                 }
                 if(isGuest == false){
                     int old_state = target.getState();
-                    int new_state = -1;
-                    SocketVo vo = socketService.getSocketVo(target.getRoomNo(), target.getBjMemNo(), DalbitUtil.isLogin(request));
-                    if("liveStreamStarted".equals(action)){
-                        new_state = 1;
-                    }else{
-                        new_state = 0;
-                    }
-                    if(old_state != new_state){
+                    if(old_state == 6 && "liveStreamStarted".equals(action)){
                         P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
                         pRoomStateUpdateVo.setMem_no(target.getBjMemNo());
                         pRoomStateUpdateVo.setRoom_no(target.getRoomNo());
-                        pRoomStateUpdateVo.setState(new_state);
+                        pRoomStateUpdateVo.setState(1);
                         ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
                         roomDao.callBroadCastRoomStateUpate(procedureVo);
                     }
-                    //소켓발송
-                    try{
-                        socketService.changeRoomState(target.getRoomNo(), target.getBjMemNo(), old_state, new_state, target.getBjMemNo(), true, vo, "liveStreamStarted".equals(action) ? "1" : "0");
-                        vo.resetData();
-                    }catch(Exception e){
-                        log.info("Socket Service changeRoomState Exception {}", e);
-                    }
+
                     roomCheck = true;
                     result.put("status", Status.방송방상태변경_성공);
                 } else {
+                    //TODO 추후 게스트영상 테스트시 필요없으면 제거
                     HashMap params = new HashMap();
                     params.put("roomNo", roomNo);
                     params.put("memNo", guestNo);
@@ -171,9 +169,18 @@ public class WowzaService {
                         guestInfoVo.setMemNo(guestNo);
                         guestInfoVo.setNickNm((String) guestInfo.get("mem_nick"));
                         guestInfoVo.setProfImg(new ImageVo(guestInfo.get("image_profile"), (String)guestInfo.get("mem_sex"), DalbitUtil.getProperty("server.photo.url")));
-                        String gstRtmpOrigin = DalbitUtil.getProperty("wowza.rtmp.origin") + "/" + streamName;// + "_aac";
-                        String gstRtmpEdge =  DalbitUtil.getProperty("wowza.rtmp.edge") + "/" + streamName + "_aac";
-                        String gstWebRtcUrl = DalbitUtil.getProperty("wowza.wss.url") ;
+                        String gstRtmpOrigin;
+                        String gstRtmpEdge;
+                        String gstWebRtcUrl;
+                        if("a".equals(target.getMediaType())){
+                            gstRtmpOrigin = DalbitUtil.getProperty("wowza.audio.rtmp.origin") + "/" + streamName;// + "_aac";
+                            gstRtmpEdge =  DalbitUtil.getProperty("wowza.audio.rtmp.edge") + "/" + streamName + "_aac";
+                            gstWebRtcUrl = DalbitUtil.getProperty("wowza.audio.wss.url") ;
+                        }else{
+                            gstRtmpOrigin = DalbitUtil.getProperty("wowza.video.rtmp.origin") + "/" + streamName;// + "_aac";
+                            gstRtmpEdge =  DalbitUtil.getProperty("wowza.video.rtmp.edge") + "/" + streamName + "_aac";
+                            gstWebRtcUrl = guestNo.equals(MemberVo.getMyMemNo(request)) ? DalbitUtil.getProperty("wowza.video.wss.url.origin") : DalbitUtil.getProperty("wowza.video.wss.url.edge");
+                        }
                         String gstWebRtcAppName = "edge";
                         String gstWebRtcStreamName = streamName + "_opus";
                         guestInfoVo.setRtmpOrigin(gstRtmpOrigin);
@@ -194,8 +201,8 @@ public class WowzaService {
                 }
 
                 //생성된 방송 WEBRTC EDGE 생성 호출
-                /*if(roomCheck){
-                    for(String server : WOWZA_REALSERVER) {
+                /*if(roomCheck && "liveStreamStarted".equals(action)){
+                    for(String server : "a".equals(target.getMediaType()) ? WOWZA_AUDIO_SERVER : WOWZA_VIDEO_SERVER) {
                         try {
                             wowzaSocketService.sendFirstEdge(server, streamName);
                         } catch (Exception e) {
@@ -262,6 +269,7 @@ public class WowzaService {
         pRoomCreateVo.setNotice(roomCreateVo.getNotice());
         pRoomCreateVo.setEntryType(roomCreateVo.getEntryType());
         pRoomCreateVo.setImageType(roomCreateVo.getImageType());
+        pRoomCreateVo.setMediaType(roomCreateVo.getMediaType());
 
         DeviceVo deviceVo = new DeviceVo(request);
         pRoomCreateVo.setOs(deviceVo.getOs());
@@ -444,6 +452,29 @@ public class WowzaService {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
             RoomInfoVo roomInfoVo = getRoomInfo(target, resultMap, request);
+
+            if("v".equals(roomInfoVo.getMediaType())){
+                if(deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) < 53
+                        || deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.5.0", deviceVo.getAppVersion())){
+                    P_RoomExitVo apiData = new P_RoomExitVo();
+                    apiData.setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+                    apiData.setMem_no(MemberVo.getMyMemNo(request));
+                    apiData.setRoom_no(roomJoinVo.getRoomNo());
+                    apiData.setOs(deviceVo.getOs());
+                    apiData.setDeviceUuid(deviceVo.getDeviceUuid());
+                    apiData.setIp(deviceVo.getIp());
+                    apiData.setAppVersion(deviceVo.getAppVersion());
+                    apiData.setDeviceToken(deviceVo.getDeviceToken());
+                    apiData.setIsHybrid(deviceVo.getIsHybrid());
+                    roomService.callBroadCastRoomExit(apiData, request);
+                    ProcedureVo exitVo = new ProcedureVo(apiData);
+                    roomDao.callBroadCastRoomExit(exitVo);
+
+                    result.put("status", Status.최신버전_업데이트_필요);
+                    return result;
+                }
+            }
+
             roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), pRoomJoinVo.getMem_no()));
 
             //참여시 게스트 여부 체크
@@ -775,6 +806,22 @@ public class WowzaService {
         return result;
     }
 
+    public HashMap doUpdateStateNormalize(HttpServletRequest request) throws GlobalException {
+        P_BroadStateNormalize pBroadStateNormalize = new P_BroadStateNormalize(request);
+        ProcedureVo procedureVo = new ProcedureVo(pBroadStateNormalize);
+        roomDao.callRoomStateNormalize(procedureVo);
+
+        HashMap result = new HashMap();
+        if("0".equals(procedureVo.getRet())){
+            RoomTokenVo roomTokenVo = new RoomTokenVo();
+            roomTokenVo.setRoomNo(pBroadStateNormalize.getRoom_no());
+            result = getBroadcast(roomTokenVo, request);
+        }else{
+            result.put("status", Status.이어하기_방없음);
+        }
+
+        return result;
+    }
 
     public String getFanMemNoList(P_FanNumberVo pFanNumberVo){
         ProcedureVo procedureVo = new ProcedureVo(pFanNumberVo);

@@ -87,4 +87,16 @@
         call sp_broadcast_room_continue(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callBroadCastRoomStateEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_state_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callRoomStateGuestEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_guest_state_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callRoomStateNormalize" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_state_normalize(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

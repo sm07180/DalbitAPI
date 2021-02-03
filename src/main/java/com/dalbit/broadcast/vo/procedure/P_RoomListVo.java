@@ -58,6 +58,7 @@ public class P_RoomListVo extends P_ApiVo {
     private Object image_background;        //방배경이미지
     private String msg_welcom;              //환영메세지
     private int type_entry;                 //입장제한
+    private String type_media;
     private String notice;                  //공지사항
     private int state;                      //방상태
     private String code_link;               //방공유코드

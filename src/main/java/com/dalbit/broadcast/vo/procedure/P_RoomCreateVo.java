@@ -16,6 +16,7 @@ public class P_RoomCreateVo extends P_ApiVo {
     private String welcomMsg;               //환영메시지
     private String notice;                  //공지사항
     private Integer entryType;              //입장제한(0: 전체, 1: 팬만, 2: 20세이상)
+    private String mediaType;
     private int os;                         //OS구분
     private String guest_streamid;          //guest 스트림아이디
     private String guest_publish_tokenid;   //guest 토큰아이디

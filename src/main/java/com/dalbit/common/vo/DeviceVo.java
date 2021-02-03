@@ -14,7 +14,7 @@ import java.util.HashMap;
 @Getter
 @Setter
 public class DeviceVo {
-    private int os = 3;
+    private int os;
     private String deviceUuid;
     private String deviceToken;
     private String appVersion;
@@ -154,9 +154,6 @@ public class DeviceVo {
             this.appBuild = this.appBuild.substring(0, this.appBuild.indexOf("."));
         }
         if("192.168.10.163".equals(this.ip) || "192.168.10.164".equals(this.ip)){ //소켓서버일경우 3번으로 수정
-            this.os =3;
-        }
-        if (this.os == -1) {
             this.os =3;
         }
     }

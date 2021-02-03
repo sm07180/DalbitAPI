@@ -73,6 +73,7 @@ public class SocketController {
         mainRankingPageVo.setRecords(1);
 
         P_MainRankingPageVo apiData = new P_MainRankingPageVo(mainRankingPageVo, request);
+        apiData.setMem_no(DalbitUtil.getProperty("socket.temp.memno"));
 
         String result = mainService.mainRankingPage(request, apiData);
 

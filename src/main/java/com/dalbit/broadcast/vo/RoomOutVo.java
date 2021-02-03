@@ -22,6 +22,7 @@ public class RoomOutVo {
     private ImageVo bgImg;
     private String welcomMsg;
     private int entryType;
+    private String mediaType;
     private String notice;
     private int state;
     private String link;
@@ -77,6 +78,10 @@ public class RoomOutVo {
     private int completeMoon;
     private int fullmoon_yn;
     private List<Integer> goodMem = new ArrayList();
+    private boolean isMic;
+    private boolean isCall;
+    private boolean isServer;
+    private boolean isVideo;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -94,6 +99,7 @@ public class RoomOutVo {
         this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
         this.welcomMsg = target.getMsg_welcom();
         this.entryType = target.getType_entry();
+        this.mediaType = target.getType_media();
         this.notice = target.getNotice();
         this.state = target.getState();
         this.link = target.getCode_link();
@@ -170,6 +176,7 @@ public class RoomOutVo {
         this.bgImg = new ImageVo(target.getImage_background(), DalbitUtil.getProperty("server.photo.url"));
         this.welcomMsg = target.getMsg_welcom();
         this.entryType = target.getType_entry();
+        this.mediaType = target.getType_media();
         this.notice = target.getNotice();
         this.state = target.getState();
         this.link = target.getCode_link();
@@ -232,5 +239,9 @@ public class RoomOutVo {
         this.oldStep = DalbitUtil.getIntMap(moonCheckMap, "oldStep");
         this.completeMoon = target.getCompleteMoon();
         this.fullmoon_yn = target.getFullmoon_yn();
+        this.isMic = target.getMic_state() == 1 ? true : false;
+        this.isCall = target.getCall_state() == 1 ? true : false;
+        this.isServer = target.getServer_state() == 1 ? true : false;
+        this.isVideo = target.getVideo_state() == 1 ? true : false;
     }
 }

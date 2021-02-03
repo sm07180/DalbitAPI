@@ -21,6 +21,7 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private Object image_background;        //방배경이미지
     private String msg_welcom;              //환영메세지
     private int type_entry;                 //입장제한
+    private String type_media;
     private String notice;                  //공지사항
     private int state;                      //방상태
     private String code_link;               //방공유코드
@@ -61,4 +62,9 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private int completeMoon;
     private int imageType;
     private int fullmoon_yn;                //보름달 사용여부
+
+    private int mic_state;                  //마이크 상태
+    private int call_state;                 //전화중 상태
+    private int server_state;               //와우자 상태
+    private int video_state;               //영상 상태
 }

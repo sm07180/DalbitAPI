@@ -26,4 +26,6 @@ public interface UserDao {
     ProcedureVo callFanstarDelete(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     HashMap selectGuestStreamInfo(HashMap params);
+    @Transactional(readOnly = true)
+    HashMap selectGuestStateInfo(HashMap selParams);
 }
