@@ -191,7 +191,7 @@ public class WowzaService {
                         vo.setNotMemNo(guestNo);
 
                         try{
-                            socketService.sendGuest(guestNo, roomNo, target.getBjMemNo(), "8", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                            //socketService.sendGuest(guestNo, roomNo, target.getBjMemNo(), "8", request, DalbitUtil.getAuthToken(request), guestInfoVo);
                         }catch(Exception e){}
                         roomCheck = true;
                         result.put("status", Status.조회);
