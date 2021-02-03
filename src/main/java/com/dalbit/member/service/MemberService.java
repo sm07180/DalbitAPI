@@ -4,6 +4,7 @@ import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.vo.ProImageInitVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.RoomService;
+import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.RoomShareLinkOutVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
 import com.dalbit.common.code.Code;
@@ -429,15 +430,26 @@ public class MemberService {
                 exitData.setIsHybrid(deviceVo.getIsHybrid());
                 String authToken = DalbitUtil.getAuthToken(request);
 
-                List<String> roomList = memberDao.selectListeningRoom(memNo);
-                for(String room_no : roomList){
-                    //if(deviceVo.getOs() == 3){
-                        exitData.setRoom_no(room_no);
-                        ProcedureVo procedureVo = new ProcedureVo(exitData);
-                        roomDao.callBroadCastRoomExit(procedureVo);
-                    //}
+                List<GuestRoomInfoVo> guestRoomInfoVoList = memberDao.selectLiveListeningRoomInfo(memNo);
+                for(GuestRoomInfoVo guestRoomInfoVo : guestRoomInfoVoList){
+                    //게스트일 경우 소켓 발송 추가
+                    if(guestRoomInfoVo.getGuestYn() == 1){
+                        GuestInfoVo guestInfoVo = new GuestInfoVo();
+                        guestInfoVo.setMode(6);
+                        guestInfoVo.setMemNo(memNo);
+                        guestInfoVo.setNickNm(guestRoomInfoVo.getMemNick());
+                        guestInfoVo.setProfImg(new ImageVo(guestRoomInfoVo.getProfImg(), guestRoomInfoVo.getGender(), DalbitUtil.getProperty("server.photo.url")));
+                        try{
+                            socketService.sendGuest(memNo, guestRoomInfoVo.getRoomNo(), guestRoomInfoVo.getBjMemNo(), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                        }catch(Exception e){}
+                    }
+
+                    exitData.setRoom_no(guestRoomInfoVo.getRoomNo());
+                    ProcedureVo procedureVo = new ProcedureVo(exitData);
+                    roomDao.callBroadCastRoomExit(procedureVo);
+
                     try{
-                        socketService.chatEndRed(memNo, room_no, request, authToken);
+                        socketService.chatEndRed(memNo, guestRoomInfoVo.getRoomNo(), request, authToken);
                     }catch(Exception e){}
                 }
             }catch(Exception g1){

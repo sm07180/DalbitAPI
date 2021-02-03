@@ -6,6 +6,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.member.vo.ConnectRoomVo;
 import com.dalbit.member.vo.ExchangeSuccessVo;
+import com.dalbit.member.vo.GuestRoomInfoVo;
 import com.dalbit.member.vo.TokenCheckVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
@@ -46,7 +47,8 @@ public interface MemberDao {
     //@Transactional(readOnly = true)
     List<String> selectListeningRoom(String memNo);
 
-    //@Transactional(readOnly = true)
+    List<GuestRoomInfoVo> selectLiveListeningRoomInfo(String memNo);
+
     List<P_FanRankVo> callFanRank3(ProcedureVo procedureVo);
 
     int callProfileEditHistory(P_SelfAuthVo pSelfAuthVo);

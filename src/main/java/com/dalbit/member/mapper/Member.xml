@@ -67,6 +67,10 @@
         CALL sp_member_listening_room_select(#{value, mode=IN, jdbcType=INTEGER})
     </select>
 
+    <select id="selectLiveListeningRoomInfo" statementType="CALLABLE" parameterType="String" resultType="com.dalbit.member.vo.GuestRoomInfoVo">
+        CALL sp_member_live_listening_room_select(#{value, mode=IN, jdbcType=INTEGER})
+    </select>
+
     <select id="callFanRank3" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_FanRankVo">
         call sp_member_fanrank3(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
