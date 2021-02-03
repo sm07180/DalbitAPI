@@ -128,4 +128,8 @@
     <select id="getDownloadList" statementType="CALLABLE" resultType="java.lang.String">
         CALL sp_app_splash_download()
     </select>
+
+    <select id="getPreLoad" statementType="CALLABLE" resultType="java.lang.String">
+        CALL sp_app_splash_preload()
+    </select>
 </mapper>

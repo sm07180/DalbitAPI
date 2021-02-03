@@ -121,6 +121,7 @@ public class RoomInfoVo {
         this.hasNotice = this.auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice());
         this.roomType = target.getRoomType();
         this.mediaType = target.getMediaType();
+        this.useGuest = "a".equals(this.mediaType);
         this.welcomMsg = target.getWelcomMsg();
         this.entryType = target.getEntryType();
         this.djListenerIn = (boolean) settingMap.get("djListenerIn");

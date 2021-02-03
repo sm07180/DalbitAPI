@@ -72,4 +72,7 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     List<String> getDownloadList();
+
+    @Transactional(readOnly = true)
+    List<String> getPreLoad();
 }

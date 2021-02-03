@@ -265,7 +265,12 @@ public class CommonService {
         if(DalbitUtil.isEmpty(downloadList)){
             downloadList = new ArrayList<>();
         }
+        List<String> preLoader = commonDao.getPreLoad();
+        if(DalbitUtil.isEmpty(preLoader)){
+            preLoader = new ArrayList<>();
+        }
         resultMap.put("downloadList", downloadList);
+        resultMap.put("preLoader", preLoader);
         resultMap.put("useMailBox", true);
         return resultMap;
     }
