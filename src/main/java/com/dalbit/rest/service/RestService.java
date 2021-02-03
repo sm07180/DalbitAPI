@@ -119,7 +119,11 @@ public class RestService {
             con.setRequestMethod(method_str);
             con.setConnectTimeout(5000);
             if(method == 1 && !"".equals(params)){
-                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                if(FIREBASE_DYNAMIC_LINK_URL.equals(server_url)){
+                    con.setRequestProperty("Content-Type", "text/json; charset=UTF-8");
+                }else{
+                    con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+                }
                 //con.setDoInput(true);
                 con.setDoOutput(true);
                 con.setInstanceFollowRedirects(false);
