@@ -1905,6 +1905,12 @@ public class MypageService {
 
             returnMap = mypageDao.selectMyPageNew(params);
             returnMap.put("newCnt", DalbitUtil.getIntMap(returnMap, "alarm") + DalbitUtil.getIntMap(returnMap, "qna") + DalbitUtil.getIntMap(returnMap, "notice"));
+            returnMap.put("moveUrl", "");
+            if(DalbitUtil.getIntMap(returnMap, "notice") > 0){
+                returnMap.put("moveUrl", "/customer/notice");
+            }else if(DalbitUtil.getIntMap(returnMap, "qna") > 0) {
+                returnMap.put("moveUrl", "/customer/qnaList");
+            }
         }else{
             returnMap.put("newCnt", 0);
         }
@@ -2254,30 +2260,45 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송설정수정_성공.getMessageCode())) {
-            P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo();
-            pBroadcastSettingVo.setMem_no(pBroadcastSettingEditVo.getMem_no());
-            ProcedureVo settingVo = new ProcedureVo(pBroadcastSettingVo);
-            mypageDao.callBroadcastSettingSelect(settingVo);
-
-            HashMap resultMap = new Gson().fromJson(settingVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
-            returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
-            returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1 ? true : false);
-            returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
-            returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
-            returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
-            returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
-            returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen") == 1 ? true : false);
+            returnMap.put("giftFanReg", DalbitUtil.getIntMap(boforeMap, "giftFanReg") == 1);
+            returnMap.put("djListenerIn", DalbitUtil.getIntMap(boforeMap, "djListenerIn") == 1);
+            returnMap.put("djListenerOut", DalbitUtil.getIntMap(boforeMap, "djListenerOut") == 1);
+            returnMap.put("listenerIn", DalbitUtil.getIntMap(boforeMap, "listenerIn") == 1);
+            returnMap.put("listenerOut", DalbitUtil.getIntMap(boforeMap, "listenerOut") == 1);
+            returnMap.put("liveBadgeView", DalbitUtil.getIntMap(boforeMap, "liveBadgeView") == 1);
+            returnMap.put("listenOpen", DalbitUtil.getIntMap(boforeMap, "listenOpen") == 1);
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getGiftFanReg())){
+                returnMap.put("giftFanReg", pBroadcastSettingEditVo.getGiftFanReg() == 1);
+            }
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getDjListenerIn())){
+                returnMap.put("djListenerIn", pBroadcastSettingEditVo.getDjListenerIn() == 1);
+            }
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getDjListenerOut())){
+                returnMap.put("djListenerOut", pBroadcastSettingEditVo.getDjListenerOut() == 1);
+            }
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenerIn())){
+                returnMap.put("listenerIn", pBroadcastSettingEditVo.getListenerIn() == 1);
+            }
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenerOut())){
+                returnMap.put("listenerOut", pBroadcastSettingEditVo.getListenerOut() == 1);
+            }
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getLiveBadgeView())){
+                returnMap.put("liveBadgeView", pBroadcastSettingEditVo.getLiveBadgeView() == 1);
+            }
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenOpen())){
+                returnMap.put("listenOpen", pBroadcastSettingEditVo.getListenOpen() == 1);
+            }
 
             try{
                 HashMap socketMap = new HashMap();
-                socketMap.put("dj_listener_in", DalbitUtil.getIntMap(resultMap, "djListenerIn"));
-                socketMap.put("dj_listener_out", DalbitUtil.getIntMap(resultMap, "djListenerOut"));
-                socketMap.put("dj_fan_in", DalbitUtil.getIntMap(resultMap, "djListenerIn"));
-                socketMap.put("dj_fan_out", DalbitUtil.getIntMap(resultMap, "djListenerOut"));
-                socketMap.put("listener_in", DalbitUtil.getIntMap(resultMap, "listenerIn"));
-                socketMap.put("listener_out", DalbitUtil.getIntMap(resultMap, "listenerOut"));
-                socketMap.put("badge_view", DalbitUtil.getIntMap(resultMap, "liveBadgeView"));
+                socketMap.put("dj_listener_in", DalbitUtil.getIntMap(returnMap, "djListenerIn"));
+                socketMap.put("dj_listener_out", DalbitUtil.getIntMap(returnMap, "djListenerOut"));
+                socketMap.put("dj_fan_in", DalbitUtil.getIntMap(returnMap, "djListenerIn"));
+                socketMap.put("dj_fan_out", DalbitUtil.getIntMap(returnMap, "djListenerOut"));
+                socketMap.put("listener_in", DalbitUtil.getIntMap(returnMap, "listenerIn"));
+                socketMap.put("listener_out", DalbitUtil.getIntMap(returnMap, "listenerOut"));
+                socketMap.put("badge_view", DalbitUtil.getIntMap(returnMap, "liveBadgeView"));
                 HashMap inOutMap = new HashMap();
                 inOutMap.put("inOut", socketMap);
                 socketService.changeMemberInfo(pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
@@ -2286,19 +2307,19 @@ public class MypageService {
             Status status = null;
             if(state.equals("edit")){
                 if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getLiveBadgeView()) && pBroadcastSettingEditVo.getLiveBadgeView() != DalbitUtil.getIntMap(boforeMap, "liveBadgeView")) {
-                    if (DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1) {
+                    if (pBroadcastSettingEditVo.getLiveBadgeView() == 1) {
                         status = Status.실시간팬배지_ON;
                     } else {
                         status = Status.실시간팬배지_OFF;
                     }
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenOpen()) && pBroadcastSettingEditVo.getListenOpen() != DalbitUtil.getIntMap(boforeMap, "listenOpen")){
-                    if (DalbitUtil.getIntMap(resultMap, "listenOpen") == 1) {
+                    if (pBroadcastSettingEditVo.getListenOpen() == 1) {
                         status = Status.청취정보_ON;
                     } else {
                         status = Status.청취정보_OFF;
                     }
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getGiftFanReg()) && pBroadcastSettingEditVo.getGiftFanReg() != DalbitUtil.getIntMap(boforeMap, "giftFanReg")){
-                    if (DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1) {
+                    if (pBroadcastSettingEditVo.getGiftFanReg() == 1) {
                         status = Status.선물스타추가_ON;
                     } else {
                         status = Status.선물스타추가_OFF;

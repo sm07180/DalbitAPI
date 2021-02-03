@@ -15,6 +15,9 @@ public class BadgeVo {
     private String bgImg = "";
     private String tipMsg;
     private String explainMsg;
+    private String chatImg;
+    private int chatImgWidth;
+    private int chatImgHeight;
 
     public BadgeVo(){}
     public BadgeVo(FanBadgeVo fanBadgeVo){
@@ -28,5 +31,8 @@ public class BadgeVo {
         this.bgImg = fanBadgeVo.getBgImg();
         this.tipMsg = fanBadgeVo.getTipMsg();
         this.explainMsg = fanBadgeVo.getExplainMsg();
+        this.chatImg = fanBadgeVo.getChatImg();
+        this.chatImgWidth = fanBadgeVo.getChatImgWidth();
+        this.chatImgHeight = fanBadgeVo.getChatImgHeight();
     }
 }

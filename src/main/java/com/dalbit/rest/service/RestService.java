@@ -27,15 +27,6 @@ public class RestService {
     @Value("${server.photo.url}")
     private String photoServer;
 
-    @Value("${server.ant.url}")
-    private String antServer;
-
-    @Value("${ant.expire.hour}")
-    private int antExpire;
-
-    @Value("${ant.app.name}")
-    private String antName;
-
     @Value("${inforex.plan.memNo}")
     private String[] INFOREX_PLAN_MEMNO;
 
@@ -128,11 +119,7 @@ public class RestService {
             con.setRequestMethod(method_str);
             con.setConnectTimeout(5000);
             if(method == 1 && !"".equals(params)){
-                if(antServer.equals(server_url) || FIREBASE_DYNAMIC_LINK_URL.equals(server_url)){
-                    con.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-                }else{
-                    con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-                }
+                con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
                 //con.setDoInput(true);
                 con.setDoOutput(true);
                 con.setInstanceFollowRedirects(false);
@@ -201,16 +188,6 @@ public class RestService {
         }catch (Exception e){
             log.info("{} {} error {}", server_url, url_path, e.getMessage());
             //방송 생성 후 publish token 생성시 오류 일때 방송방 삭제
-            if(antServer.equals(server_url) && url_path.endsWith("/getToken") && params.endsWith("&type=publish")){
-                String stream_id = params.substring(3, params.indexOf("&"));
-                deleteAntRoom(stream_id, request);
-
-                log.error("방송 생성 후 publish token 생성시 오류 일때 방송방 삭제");
-                log.error("회원번호 : {}", MemberVo.getMyMemNo(request));
-                log.error("server_url : {}", server_url);
-                log.error("url_path : {}", url_path);
-                log.error("params : {}", params);
-            }
             throw new GlobalException(ErrorStatus.호출에러, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
     }
@@ -259,138 +236,6 @@ public class RestService {
         return callRest(photoServer, "/done", params, 1, request);
     }
 
-    /**
-     * Ant Media 방 생성
-     *
-     * @param roomNm : 방제목
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> antCreate(String roomNm, HttpServletRequest request) throws GlobalException {
-        HashMap<String, String> map = new HashMap<>();
-        map.put("name", roomNm);
-
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/create", new Gson().toJson(map), 1, request);
-    }
-
-    /**
-     * Ant Media 방토큰 가져오기 (publish)
-     *
-     * @param streamId : 스트리밍아이디
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> antToken(String streamId, HttpServletRequest request) throws GlobalException{
-        return antToken(streamId, "publish", request);
-    }
-
-    /**
-     * Ant Media 방토큰 가져오기
-     *
-     * @param streamId : 스트리밍아이디
-     * @param type : 타입 (publish/play)
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> antToken(String streamId, String type, HttpServletRequest request) throws GlobalException{
-        return antToken(streamId, type, request, null);
-    }
-
-    /**
-     * Ant Media 방토큰 가져오기
-     *
-     * @param streamId : 스트리밍아이디
-     * @param type : 타입 (publish/play)
-     * @param roomNo : 타입 컨퍼런스 아이디
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> antToken(String streamId, String type, HttpServletRequest request, String roomNo) throws GlobalException{
-        if (streamId == null) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("tokenId", "");
-            return map;
-        }
-        if(!"play".equals(type)){
-            type = "publish";
-        }
-        roomNo = roomNo == null ? "" : roomNo.trim();
-
-        int antE = antExpire;
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, antE);
-        //cal.add(Calendar.HOUR, 80);
-        cal.add(Calendar.MINUTE, 30);
-        long expire = cal.getTime().getTime() / 1000;
-
-        String params = "expireDate=" + expire + "&type=" + type;// + ("".equals(roomNo) ? "" : "&roomId=" + roomNo);
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/token", params, 0, request);
-    }
-
-    /**
-     * Ant Media 컨퍼런스 룸생성
-     *
-     * @param roomId : 스트리밍아이디
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> antConferenceRoom(String roomId, HttpServletRequest request) throws GlobalException{
-        if (roomId == null) {
-            Map<String, Object> map = new HashMap<>();
-            map.put("tokenId", "");
-            return map;
-        }
-
-        int antE = antExpire;
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.HOUR, antE);
-        //cal.add(Calendar.HOUR, 80);
-        cal.add(Calendar.MINUTE, 30);
-        long expire = cal.getTime().getTime() / 1000;
-
-        //String params = "startDate=0&endDate=" + expire + "&roomId=" + roomId;
-        String params = "{\"roomId\":\"" + roomId + "\", \"startDate\":0, \"endDate\":"+expire+"}";
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/conference-rooms", params, 1, request);
-    }
-
-    /**
-     * Ant Media 토큰 삭제
-     *
-     * @param streamId : 룸아이디
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> deleteAntToken(String streamId, HttpServletRequest request) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId + "/tokens", "", 2, request);
-    }
-
-    /**
-     * Ant Media 방 삭제
-     *
-     * @param streamId : 스트리밍아이디
-     * @return
-     * @throws Exception
-     */
-    @Async("threadTaskExecutor")
-    public Map<String, Object> deleteAntRoom(String streamId, HttpServletRequest request) throws GlobalException{
-        return callRest(antServer, "/" + antName + "/rest/v2/broadcasts/" + streamId, "", 2, request);
-    }
-
-
-    /**
-     * Ant Media 방/토큰 삭제
-     *
-     * @param streamId : 스트리밍아이디
-     * @return
-     * @throws Exception
-     */
-    public Map<String, Object> deleteAntAll(String streamId, HttpServletRequest request) throws GlobalException{
-        Map<String, Object> result = new HashMap<>();
-        result.put("token", deleteAntToken(streamId, request));
-        result.put("room", deleteAntRoom(streamId, request));
-        return result;
-    }
-
     public Map<String, Object> makeFirebaseDynamicLink(String room_no, String link, String nickNm, String profImg, String title, HttpServletRequest request) throws GlobalException{
         JSONObject androidInfo = new JSONObject();
         androidInfo.put("androidPackageName", APP_PACKAGE_AOS);
@@ -420,7 +265,6 @@ public class RestService {
 
         return callRest(FIREBASE_DYNAMIC_LINK_URL, "/v1/shortLinks?key=" + FIREBASE_APP_KEY, new Gson().toJson(map), 1, request);
     }
-
 
     public Map<String, Object> makeClipFirebaseDynamicLink(String cast_no, String nickNm, String backImg, String title, HttpServletRequest request) throws GlobalException{
         JSONObject androidInfo = new JSONObject();

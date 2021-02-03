@@ -90,6 +90,7 @@ public class ReplicationDatabaseConfig {
         masterHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         masterHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         masterHikariConfig.setMaxLifetime(MAX_LIFETIME);
+        masterHikariConfig.setAutoCommit(true);
 
         return new HikariDataSource(masterHikariConfig);
     }
@@ -108,6 +109,7 @@ public class ReplicationDatabaseConfig {
         slaveHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         slaveHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         slaveHikariConfig.setMaxLifetime(MAX_LIFETIME);
+        slaveHikariConfig.setAutoCommit(true);
 
         return new HikariDataSource(slaveHikariConfig);
     }

@@ -128,11 +128,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
                         joinData.setMem_no(newMemNo);
                         joinData.setRoom_no(room_no);
                         joinData.setGuest_streamid(DalbitUtil.getStringMap(resultMap,"guest_streamid"));
-                        if(!DalbitUtil.isEmpty(joinData.getGuest_streamid())){
-                            joinData.setGuest_play_tokenid((String) restService.antToken(joinData.getGuest_streamid(), "play", request).get("tokenId"));
-                        }
                         joinData.setBj_streamid(DalbitUtil.getStringMap(resultMap,"bj_streamid"));
-                        joinData.setBj_play_tokenid((String) restService.antToken(joinData.getBj_streamid(), "play", request).get("tokenId"));
                         joinData.setOs(deviceVo.getOs());
                         joinData.setDeviceUuid(deviceVo.getDeviceUuid());
                         joinData.setIp(deviceVo.getIp());

@@ -35,9 +35,6 @@ public class RestTestController {
     @ResponseBody
     public Map<String, Object> broad(HttpServletRequest request) throws Exception{
         Map<String, Object> result = new HashMap<>();
-        result.put("streamId", restService.antCreate(request.getParameter("roomNm"), request).get("streamId"));
-        result.put("pubToken", restService.antToken((String)result.get("streamId"), "publish", request).get("tokenId"));
-        result.put("playToken", restService.antToken((String)result.get("streamId"), "play", request).get("tokenId"));
 
         return result;
     }
