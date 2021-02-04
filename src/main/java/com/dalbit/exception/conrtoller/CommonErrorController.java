@@ -1,5 +1,6 @@
 package com.dalbit.exception.conrtoller;
 
+import com.dalbit.broadcast.vo.RoomInfoVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
@@ -7,6 +8,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.CookieUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -87,6 +90,9 @@ public class CommonErrorController {
         }catch (Exception e){}
 
         if(globalException.getErrorStatus() != null){
+            if(request.getRequestURL().toString().endsWith("/broad/vw/create") && globalException.getData() == null){
+                globalException.setData(new RoomInfoVo());
+            }
             return gsonUtil.toJson(new JsonOutputVo(globalException.getErrorStatus(), globalException.getData(), globalException.getValidationMessageDetail(), globalException.getMethodName()));
         }else{
             if(globalException.isCustomMessage()){
@@ -103,8 +109,16 @@ public class CommonErrorController {
                 jsonOutputVo.setMessage(msg);
                 jsonOutputVo.setMethodName(globalException.getMethodName());
                 jsonOutputVo.setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
+                if(request.getRequestURL().toString().endsWith("/broad/vw/create")){
+                    jsonOutputVo.setData(new RoomInfoVo());
+                }else{
+                    jsonOutputVo.setData("");
+                }
                 return gsonUtil.toJsonCustomMessage(jsonOutputVo);
             }else{
+                if(request.getRequestURL().toString().endsWith("/broad/vw/create") && globalException.getData() == null){
+                    globalException.setData(new RoomInfoVo());
+                }
                 return gsonUtil.toJson(new JsonOutputVo(globalException.getStatus(), globalException.getData(), globalException.getValidationMessageDetail(), globalException.getMethodName()));
             }
 
