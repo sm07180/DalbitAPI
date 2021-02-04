@@ -73,7 +73,11 @@ public enum Code {
 
     보름달_단계("moon_step", "보름달 단계"),
     보름달_애니메이션("moon_step_ani", "보름달 애니메이션"),
-    슈퍼문_애니메이션("super_moon_step_ani", "슈퍼문 애니메이션")
+    슈퍼문_애니메이션("super_moon_step_ani", "슈퍼문 애니메이션"),
+
+    //이벤트
+    출석체크이벤트_본인인증체크("event_attend_check_auth", "출석체크이벤트 본인인증체크 여부"),
+    출석체크이벤트_IP체크("event_attend_check_ip", "출석체크이벤트 IP체크 여부")
    ;
 
     final private String code;

@@ -657,10 +657,21 @@ public class EventService {
             }
         }
 
+        //본인인증 체크 여부 값 전달
+        Code code_define = Code.출석체크이벤트_본인인증체크;
+        var authCheck = commonService.selectCodeDefine(new CodeVo(code_define.getCode(), code_define.getDesc()));
+        String authCheckYn = "N";
+        if (!DalbitUtil.isEmpty(authCheck)) {
+            if("Y".equals(authCheck.getValue())) {
+                authCheckYn = "Y";
+            }
+        }
+
         var returnMap = new HashMap();
         returnMap.put("status", status);
         returnMap.put("dateList", dateList);
         returnMap.put("summary", summary);
+        returnMap.put("authCheckYn", authCheckYn);
 
         return returnMap;
     }
