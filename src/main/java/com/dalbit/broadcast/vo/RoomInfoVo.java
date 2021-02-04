@@ -15,7 +15,7 @@ public class RoomInfoVo {
     /* 방정보 */
     private String roomNo;
     private String title;
-    private ImageVo bgImg;
+    private ImageVo bgImg = new ImageVo();
     private int state;
     private String startDt;
     private long startTs;
@@ -39,10 +39,10 @@ public class RoomInfoVo {
     private String bjMemNo;
     private String bjNickNm;
     private String bjHolder;
-    private ImageVo bjProfImg;
-    private List fanBadgeList;
-    private List liveBadgeList;
-    private List fanRank;
+    private ImageVo bjProfImg = new ImageVo();
+    private List fanBadgeList = new ArrayList();
+    private List liveBadgeList = new ArrayList();
+    private List fanRank = new ArrayList();
     private boolean isRecomm;
     private boolean isPop;
     private boolean isNew;
@@ -67,7 +67,7 @@ public class RoomInfoVo {
     /* 황제팬 정보 */
     private String kingMemNo;
     private String kingNickNm;
-    private ImageVo kingProfImg;
+    private ImageVo kingProfImg = new ImageVo();
     /* WOWZA 정보 */
     private String rtmpOrigin;
     private String rtmpEdge;
@@ -93,7 +93,7 @@ public class RoomInfoVo {
     private int videoFrameRate = 24;
     private int videoResolution = 480;  /* 144, 288, 360, 480, 540, 720, 1080, 2160 */
 
-
+    public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
         this.roomNo = target.getRoomNo();
         this.title = target.getTitle();

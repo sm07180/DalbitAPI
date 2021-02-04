@@ -221,6 +221,7 @@ public class WowzaService {
 
     public HashMap doCreateBroadcast(RoomCreateVo roomCreateVo, HttpServletRequest request) throws GlobalException {
         HashMap result = new HashMap();
+        result.put("data", new RoomInfoVo());
         /* 방생성 권한 검증 */
         if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
             var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
@@ -453,6 +454,7 @@ public class WowzaService {
             RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
             RoomInfoVo roomInfoVo = getRoomInfo(target, resultMap, request);
 
+            //영상방 입장 시 버전체크
             if("v".equals(roomInfoVo.getMediaType())){
                 if(deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) < 53
                         || deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.5.0", deviceVo.getAppVersion())){
