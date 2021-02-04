@@ -2294,13 +2294,13 @@ public class MypageService {
 
             try{
                 HashMap socketMap = new HashMap();
-                socketMap.put("dj_listener_in", DalbitUtil.getIntMap(returnMap, "djListenerIn"));
-                socketMap.put("dj_listener_out", DalbitUtil.getIntMap(returnMap, "djListenerOut"));
-                socketMap.put("dj_fan_in", DalbitUtil.getIntMap(returnMap, "djListenerIn"));
-                socketMap.put("dj_fan_out", DalbitUtil.getIntMap(returnMap, "djListenerOut"));
-                socketMap.put("listener_in", DalbitUtil.getIntMap(returnMap, "listenerIn"));
-                socketMap.put("listener_out", DalbitUtil.getIntMap(returnMap, "listenerOut"));
-                socketMap.put("badge_view", DalbitUtil.getIntMap(returnMap, "liveBadgeView"));
+                socketMap.put("dj_listener_in", DalbitUtil.getBooleanMap(returnMap, "djListenerIn") ? 1 : 0);
+                socketMap.put("dj_listener_out", DalbitUtil.getBooleanMap(returnMap, "djListenerOut") ? 1 : 0);
+                socketMap.put("dj_fan_in", DalbitUtil.getBooleanMap(returnMap, "djListenerIn") ? 1 : 0);
+                socketMap.put("dj_fan_out", DalbitUtil.getBooleanMap(returnMap, "djListenerOut") ? 1 : 0);
+                socketMap.put("listener_in", DalbitUtil.getBooleanMap(returnMap, "listenerIn") ? 1 : 0);
+                socketMap.put("listener_out", DalbitUtil.getBooleanMap(returnMap, "listenerOut") ? 1 : 0);
+                socketMap.put("badge_view", DalbitUtil.getBooleanMap(returnMap, "liveBadgeView") ? 1 : 0);
                 HashMap inOutMap = new HashMap();
                 inOutMap.put("inOut", socketMap);
                 socketService.changeMemberInfo(pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
