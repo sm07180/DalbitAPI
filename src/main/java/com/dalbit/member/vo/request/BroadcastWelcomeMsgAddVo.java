@@ -11,6 +11,6 @@ import javax.validation.constraints.Size;
 public class BroadcastWelcomeMsgAddVo {
     @NotBlank(message = "{\"ko_KR\" : \"인사말을\"}")
     @NotNull(message = "{\"ko_KR\" : \"인사말을\"}")
-    @Size (message = "{\"ko_KR\" : \"인사말을\"}", max = 100)
+    @Size (message = "{\"ko_KR\" : \"인사말을\"}")
     private String welcomeMsg;
 }

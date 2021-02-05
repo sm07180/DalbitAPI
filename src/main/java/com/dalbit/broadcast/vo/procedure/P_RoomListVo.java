@@ -37,6 +37,7 @@ public class P_RoomListVo extends P_ApiVo {
         setPageNo(pageNo);
         setPageCnt(pageCnt);
         setIsWowza(DalbitUtil.isWowza(deviceVo));
+        setMediaType(roomListVo.getMediaType());
     }
 
     /* Input */
@@ -50,6 +51,7 @@ public class P_RoomListVo extends P_ApiVo {
     private int pageNo;                     //현재 페이지 번호
     private int pageCnt;                    //페이지당 리스트 개수
     private int isWowza;                   // 와우자 여
+    private String mediaType;
 
     /* Output */
     private String roomNo;                  //방번호

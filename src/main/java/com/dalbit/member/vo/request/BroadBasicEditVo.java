@@ -16,14 +16,14 @@ public class BroadBasicEditVo {
 
     @NotBlank(message = "{\"ko_KR\" : \"제목을\"}")
     @NotNull(message = "{\"ko_KR\" : \"제목을\"}")
-    @Size(message = "{\"ko_KR\" : \"제목을\"}", min = 2, max = 20)
+    @Size(message = "{\"ko_KR\" : \"제목을\"}", min = 2)
     private String title;
 
     private String bgImg;
     private String bgImgDel;
     private String bgImgRacy;
 
-    @Size(message = "{\"ko_KR\" : \"인사말을\"}", max = 100)
+    @Size(message = "{\"ko_KR\" : \"인사말을\"}")
     private String welcomMsg;
 
     private String notice;

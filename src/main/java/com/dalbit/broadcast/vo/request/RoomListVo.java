@@ -24,4 +24,5 @@ public class RoomListVo {
     @Size(message = "{\"ko_KR\" : \"검색어를\"}", max = 50)
     private String search;  //
 
+    private String mediaType;
 }
