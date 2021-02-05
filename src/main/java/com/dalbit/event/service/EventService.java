@@ -1523,7 +1523,6 @@ public class EventService {
     /**
      * 이벤트 당첨자 이름/핸드폰 번호 조회
      */
-
     public String callEventPageWinnerInfoFormat(P_EventPageWinnerInfoFormatVo pEventPageWinnerInfoFormatVo) {
         ProcedureVo procedureVo = new ProcedureVo(pEventPageWinnerInfoFormatVo);
         P_EventPageWinnerInfoFormatVo info = eventDao.callEventPageWinnerInfoFormat(procedureVo);
@@ -1622,5 +1621,47 @@ public class EventService {
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, timeEventInfo));
+    }
+
+
+    /**
+     * 오픈 기념 이벤트
+     */
+    public String callOpenEvent(P_OpenEventVo pOpenEventVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pOpenEventVo);
+        List<P_OpenEventVo> openEventVoList = eventDao.callOpenEvent(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap rankInfo = new HashMap();
+            List<OpenEventOutVo> outVoList = new ArrayList<>();
+
+            if(!DalbitUtil.isEmpty(openEventVoList)){
+                for (int i=0; i<openEventVoList.size(); i++){
+                    outVoList.add(new OpenEventOutVo(openEventVoList.get(i)));
+                }
+            }
+
+            //OpenEventExtVo openEventExtVo = new Gson().fromJson(procedureVo.getExt(), OpenEventExtVo.class);
+
+            rankInfo.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+            rankInfo.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
+            rankInfo.put("diffPoint", DalbitUtil.getIntMap(resultMap, "diffPoint"));
+            rankInfo.put("opRank", DalbitUtil.getIntMap(resultMap, "upRank"));
+            rankInfo.put("startDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "startDate")));
+            rankInfo.put("startTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "startDate")));
+            rankInfo.put("endDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "endDate")));
+            rankInfo.put("endTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "endDate")));
+            rankInfo.put("detailDesc", DalbitUtil.getStringMap(resultMap, "detailDesc"));
+            rankInfo.put("giftDesc", DalbitUtil.getStringMap(resultMap, "giftDesc"));
+            rankInfo.put("list", outVoList);
+            //openEventExtVo.setList(outVoList);
+
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.오픈이벤트조회_성공, rankInfo));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.오픈이벤트조회_실패));
+        }
+        return result;
     }
 }

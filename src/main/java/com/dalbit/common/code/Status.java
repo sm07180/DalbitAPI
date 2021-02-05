@@ -6,6 +6,7 @@ import lombok.Getter;
 public enum Status {
 
     //공통
+    생성금지("C100", "create.no", "방생성 금지"),
     공백("TEMP", "empty.success", "공백"),
     조회("C001", "read.success", "조회"),
     수정("C002", "update.success", "수정"),
@@ -2013,6 +2014,10 @@ public enum Status {
     편집_성공("0", "mypage.frame.edit.success", "프레임 편집 성공 시"),
     편집_회원아님("-1", "mypage.frame.edit.member.number.error", "요청회원번호 회원 아닐 시"),
     편집_실패("C006", "mypage.frame.edit.error", "프레임 편집 실패 시"),
+
+    //오픈이벤트
+    오픈이벤트조회_성공("C001", "open.event.select.success", "오픈이벤트 조회 성공 시"),
+    오픈이벤트조회_실패("C006", "open.event.select.fail", "오픈이벤트 조회 실패 시"),
 ;
 
 

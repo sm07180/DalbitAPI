@@ -845,7 +845,6 @@ public class ActionService {
             returnMap.put("fullmoon_yn", 0);
         }
 
-
         return returnMap;
     }
 

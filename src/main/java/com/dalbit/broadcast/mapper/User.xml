@@ -37,5 +37,4 @@
     <select id="selectGuestStateInfo" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="java.util.HashMap">
         CALL sp_broadcast_room_guest_state_info(#{room_no, mode=IN, jdbcType=INTEGER}, #{mem_no, mode=IN, jdbcType=INTEGER})
     </select>
-
 </mapper>

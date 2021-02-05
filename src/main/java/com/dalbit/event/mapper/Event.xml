@@ -3,7 +3,7 @@
 <mapper namespace="com.dalbit.event.dao.EventDao" >
 
     <select id="callEventRankingLive" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RankingLiveOutputVo">
-      call sp_event_ranking_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+      call sp_event_ranking_live_old(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="callEventRankingResult" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_RankingResultOutputVo">
@@ -200,5 +200,9 @@
 
     <select id="selectTimeEventInfo" parameterType="com.dalbit.event.vo.TimeEventVo" resultType="com.dalbit.event.vo.TimeEventVo">
         CALL sp_event_time_info()
+    </select>
+
+    <select id="callOpenEvent" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_OpenEventVo">
+        call sp_event_ranking_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 </mapper>

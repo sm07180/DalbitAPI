@@ -507,4 +507,15 @@ public class EventController {
         return result;
     }
 
+    /**
+     * 오픈 기념 이벤트
+     */
+    @GetMapping("")
+    public String openEvent(@Valid OpenEventVo openEventVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_OpenEventVo apiData = new P_OpenEventVo(openEventVo, request);
+        String result = eventService.callOpenEvent(apiData, request);
+        return result;
+    }
+
 }

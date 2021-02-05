@@ -39,6 +39,8 @@ public class WowzaController {
     public String doCreate(@Valid RoomCreateVo roomCreateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
+        //return gsonUtil.toJson(new JsonOutputVo(Status.생성금지, new RoomInfoVo()));
+
         HashMap result = wowzaService.doCreateBroadcast(roomCreateVo, request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
