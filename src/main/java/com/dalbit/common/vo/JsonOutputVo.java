@@ -25,7 +25,7 @@ public class JsonOutputVo {
 
     public JsonOutputVo(Status status, Object data){
         setStatus(status);
-        setData(data);
+        setData(DalbitUtil.isEmpty(data) ? new HashMap() : data);
         setTimestamp(DalbitUtil.setTimestampInJsonOutputVo());
     }
 

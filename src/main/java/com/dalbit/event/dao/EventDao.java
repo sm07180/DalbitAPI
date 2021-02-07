@@ -115,6 +115,7 @@ public interface EventDao {
 
     @Transactional(readOnly = true)
     TimeEventVo selectTimeEventInfo(TimeEventVo timeEventVo);
+
     @Transactional(readOnly = true)
     List<P_OpenEventVo> callOpenEvent(ProcedureVo procedureVo);
 }

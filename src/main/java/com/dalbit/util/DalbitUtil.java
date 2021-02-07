@@ -713,7 +713,7 @@ public class DalbitUtil {
                 bindingMessageList.add(message);
             }
             validationResultVo.setValidationMessageDetail(bindingMessageList);
-            throw new GlobalException(Status.벨리데이션체크, null, validationResultVo.getValidationMessageDetail(), methodName, true);
+            throw new GlobalException(Status.벨리데이션체크, null, validationResultVo == null ? new ArrayList() : validationResultVo.getValidationMessageDetail(), methodName, true);
         }
 
     }

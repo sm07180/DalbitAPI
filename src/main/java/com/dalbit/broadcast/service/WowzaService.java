@@ -109,7 +109,7 @@ public class WowzaService {
         }
         if(DalbitUtil.isEmpty(streamName) || DalbitUtil.isEmpty(action) || !("liveStreamStarted".equals(action) || "liveStreamEnded".equals(action))){
             result.put("status", Status.파라미터오류);
-        }else{
+        }else {
             log.debug("call wowza hook {}, {}", streamName, action);
             if (streamName.toLowerCase().endsWith(WOWZA_ACC) || streamName.toLowerCase().endsWith(WOWZA_OPUS)) {
                 streamName = StringUtils.replace(streamName.toLowerCase(), WOWZA_OPUS, "");

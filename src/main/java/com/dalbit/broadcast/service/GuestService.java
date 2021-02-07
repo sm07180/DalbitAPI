@@ -66,6 +66,10 @@ public class GuestService {
         String memNo = request.getParameter("memNo"); //게스트 회원번호
         String mode = request.getParameter("mode");
 
+        if(DalbitUtil.isEmpty(roomNo) || DalbitUtil.isEmpty(memNo) || DalbitUtil.isEmpty(mode)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, null));
+        }
+
         Status status = null;
         HashMap selParams = new HashMap();
         selParams.put("mem_no", memNo);
