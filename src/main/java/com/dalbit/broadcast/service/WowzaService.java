@@ -134,10 +134,10 @@ public class WowzaService {
             RoomOutVo target = getRoomInfo(roomNo);
             boolean roomCheck = false;
             if(target != null && target.getState() != 4) {
-                if("v".equals(target.getMediaType())) {
+                /*if("v".equals(target.getMediaType())) {
                     wowzaSocketService.wowzaDisconnect(target.getMediaType(), streamName, null);
                     log.debug("======================== call video edge disconnect");
-                }
+                }*/
 
                 if(isGuest == true && !DalbitUtil.isEmpty(guestNo) && guestNo.equals(target.getBjMemNo())){
                     isGuest = false;
