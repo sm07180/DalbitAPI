@@ -294,6 +294,7 @@ public enum Status {
     방송중인방존재("-2", "broadcast.room.existence", "방송중인 방이 있을 시"),
     방송생성_deviceUuid비정상("-3", "broadcast.room.deviceUuid.error", "deviceUuid 비정상일 시"),
     방송생성_20세제한("-4", "broadcast.room.limit.20age", "20세 미만 회원일 경우"),
+    방송생성_3레벨제한("-5", "broadcast.room.limit.3level", "3레벨 제한"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
 
     //방송방 참가를 위한 스트림아이디, 토큰받아오기

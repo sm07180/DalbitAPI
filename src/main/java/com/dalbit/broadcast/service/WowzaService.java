@@ -394,6 +394,8 @@ public class WowzaService {
             result.put("status", Status.방송생성_deviceUuid비정상);
         } else if (procedureVo.getRet().equals(Status.방송생성_20세제한.getMessageCode())) {
             result.put("status", Status.방송생성_20세제한);
+        } else if (procedureVo.getRet().equals(Status.방송생성_3레벨제한.getMessageCode())) {
+            result.put("status", Status.방송생성_3레벨제한);
         } else {
             result.put("status", Status.방생성실패);
         }
