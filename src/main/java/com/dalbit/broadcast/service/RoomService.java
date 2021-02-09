@@ -1413,7 +1413,7 @@ public class RoomService {
             if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
                 SocketVo vo = socketService.getSocketVo(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    socketService.roomStateEdit(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), target.getState(), stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isGuest);
+                    socketService.roomStateEdit(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isGuest, "edit");
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service roomStateEdit Exception {}", e);
@@ -1458,7 +1458,7 @@ public class RoomService {
         boolean isVideo = "1".equals(String.valueOf(guestStateInfo.get("video_state"))) ? true : false;
         boolean isServer = "1".equals(String.valueOf(guestStateInfo.get("server_state"))) ? true : false;
 
-        int oldState = Integer.parseInt(String.valueOf(guestStateInfo.get("state")));
+        //int oldState = Integer.parseInt(String.valueOf(guestStateInfo.get("state")));
 
         P_RoomGuestStateUpdateVo pRoomGuestStateUpdateVo = new P_RoomGuestStateUpdateVo();
         pRoomGuestStateUpdateVo.setMem_no(MemberVo.getMyMemNo(request));
@@ -1489,7 +1489,7 @@ public class RoomService {
         if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
             SocketVo vo = socketService.getSocketVo(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
-                socketService.roomStateEdit(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), oldState, stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, true);
+                socketService.roomStateEdit(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, true, "edit");
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service roomStateEdit Exception {}", e);

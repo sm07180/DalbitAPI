@@ -3,11 +3,9 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.GuestDao;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
+import com.dalbit.broadcast.vo.RoomMemberInfoVo;
 import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.broadcast.vo.request.GuestListVo;
-import com.dalbit.broadcast.vo.request.RoomCreateVo;
-import com.dalbit.broadcast.vo.request.RoomJoinVo;
-import com.dalbit.broadcast.vo.request.RoomTokenVo;
+import com.dalbit.broadcast.vo.request.*;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
@@ -489,12 +487,39 @@ public class WowzaService {
             }
 
             SocketVo vo = socketService.getSocketVo(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
-            if(target.getState() == 2 || target.getState() == 3 || target.getState() == 0){
+            if(!target.isMic() || target.isCall() || !target.isVideo() || !target.isServer()){
                 try{
-                    socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), target.getState(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), "join", vo);
+                    //socketService.changeRoomState(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), target.getState(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), "join", vo);
+                    StateEditVo stateEditVo = new StateEditVo();
+                    stateEditVo.setRoomNo(pRoomJoinVo.getRoom_no());
+                    String mediaState = "";
+                    String mediaOn = "";
+                    if("a".equals(target.getMediaType())){
+                        if(!target.isMic()){
+                            mediaState = "mic";
+                            mediaOn = "0";
+                        }
+                    }else{
+                        if(!target.isVideo()){
+                            mediaState = "video";
+                            mediaOn = "0";
+                        }
+                    }
+
+                    if(target.isCall()){
+                        mediaState = "call";
+                        mediaOn = "1";
+                    }else if(!target.isServer()){
+                        mediaState = "server";
+                        mediaOn = "0";
+                    }
+
+                    stateEditVo.setMediaState(mediaState);
+                    stateEditVo.setMediaOn(mediaOn);
+                    socketService.roomStateEdit(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, false, "join");
                     vo.resetData();
                 }catch(Exception e){
-                    log.info("Socket Service changeRoomState Exception {}", e);
+                    log.info("Socket Service roomStateEdit Exception {}", e);
                 }
             }
 

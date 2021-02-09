@@ -1072,8 +1072,17 @@ public class SocketService {
      *  방송방 상태변경(수정버전)
      */
     @Async("threadTaskExecutor")
-    public void roomStateEdit(String roomNo, String memNo, int old_state, StateEditVo stateEditVo, String authToken, boolean isLogin, SocketVo vo, boolean isGuest){
-        log.info("Socket Start : roomStateEdit {}, {}, {}, {}, {}", roomNo, memNo, old_state, stateEditVo, isLogin);
+    public void roomStateEdit(String roomNo, String memNo, StateEditVo stateEditVo, String authToken, boolean isLogin, SocketVo vo, boolean isGuest, String type){
+        log.info("Socket Start : roomStateEdit {}, {}, {}, {}, {}", roomNo, memNo, stateEditVo, isLogin);
+
+        if("join".equals(type)){
+            try{
+                Thread.sleep(500);
+            }catch(InterruptedException e){}
+
+            vo.setRecvMemNo(memNo);
+        }
+
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         authToken = authToken == null ? "" : authToken.trim();
