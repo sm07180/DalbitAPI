@@ -703,6 +703,7 @@ public class CommonService {
         if(request != null && request instanceof HttpServletRequest){
             DeviceVo deviceVo  = new DeviceVo(request);
             String desc = pErrorLogVo.getDesc();
+            desc = "AuthToken : " + request.getHeader(SSO_HEADER_COOKIE_NAME) + "\n" +desc;
             desc = (new Gson().toJson(deviceVo)) + "\n" +desc;
             pErrorLogVo.setDesc(desc);
         }

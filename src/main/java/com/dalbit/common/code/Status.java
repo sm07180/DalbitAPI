@@ -1533,9 +1533,12 @@ public enum Status {
     실시간팬배지_ON("0", "mypage.broadcast.setting.live.badge.on.success", "실시간 팬 배지 ON"),
     실시간팬배지_OFF("0", "mypage.broadcast.setting.live.badge.off.success", "실시간 팬 배지 OFF"),
     청취정보_ON("0", "mypage.broadcast.setting.listen.open.on.success", "청취정보공개 ON"),
+    청취정보_HALFON("0", "mypage.broadcast.setting.listen.open.half.on.success", "청취정보공개 HALF ON"),
     청취정보_OFF("0", "mypage.broadcast.setting.listen.open.off.success", "청취정보공개 OFF"),
     선물스타추가_ON("0", "mypage.broadcast.setting.gift.star.on.success", "선물시자동스타추가 ON"),
     선물스타추가_OFF("0", "mypage.broadcast.setting.gift.star.off.success", "선물시자동스타추가 OFF"),
+    우체통사용_ON("0", "mypage.broadcast.setting.mailbox.on.success", "우체통사용여부 ON"),
+    우체통사용_OFF("0", "mypage.broadcast.setting.mailbox.off.success", "우체통사용여부 OFF"),
 
     클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 
@@ -2018,6 +2021,24 @@ public enum Status {
     //오픈이벤트
     오픈이벤트조회_성공("C001", "open.event.select.success", "오픈이벤트 조회 성공 시"),
     오픈이벤트조회_실패("C006", "open.event.select.fail", "오픈이벤트 조회 실패 시"),
+
+    //프로필이미지 추가등록
+    프로필이미지_추가등록_성공("0", "profile.img.add.success", "프로필 이미지 추가등록 시"),
+    프로필이미지_추가등록_회원아님("-1", "profile.img.add.member.number.error", "요청회원번호 회원 아닐 시"),
+    프로필이미지_추가등록_이미지없음("-2", "profile.img.add.no.img", "이미지 없을 시"),
+    프로필이미지_추가등록_10개초과("-3", "profile.img.add.limit.10", "이미지 10개 초과 시"),
+    프로필이미지_추가등록_실패("C006", "profile.img.add.fail", "프로필 이미지 추가등록 실패 시"),
+
+    //프로필이미지 삭제
+    프로필이미지_삭제_성공("0", "profile.img.delete.success", "프로필 이미지 삭제 시"),
+    프로필이미지_삭제_회원아님("-1", "profile.img.delete.member.number.error", "요청회원번호 회원 아닐 시"),
+    프로필이미지_삭제_이미지없음("-2", "profile.img.delete.no.img", "이미지 없을 시"),
+    프로필이미지_삭제_실패("C006", "profile.img.delete.fail", "프로필 이미지 삭제 실패 시"),
+
+    //프로필이미지 대표지정
+    프로필이미지_대표지정_성공("0", "profile.img.leader.success", "프로필 이미지 대표지정 시"),
+    프로필이미지_대표지정_회원아님("-1", "profile.img.leader.member.number.error", "요청회원번호 회원 아닐 시"),
+    프로필이미지_대표지정_실패("C006", "profile.img.leader.fail", "프로필 이미지 대표지정 실패 시"),
 ;
 
 
