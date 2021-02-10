@@ -305,8 +305,9 @@ public class MainService {
         }
         mainMap.put("myStar", myStar);
 
-        HashMap checkMap = callEventJoinCheck(new P_JoinCheckVo(request));
-        mainMap.put("popupLevel", Integer.parseInt((String) checkMap.get("level")));
+        //HashMap checkMap = callEventJoinCheck(new P_JoinCheckVo(request));
+        //mainMap.put("popupLevel", Integer.parseInt((String) checkMap.get("level")));
+        mainMap.put("popupLevel", 0);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
     }
