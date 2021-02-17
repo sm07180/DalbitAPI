@@ -877,7 +877,7 @@ public class DalbitUtil {
      */
     public static boolean isSeconds(long start, long end) {
         long time = (end-start)/1000;
-        return (time < 300) ? true : false;
+        return time < 300;
     }
 
     /**

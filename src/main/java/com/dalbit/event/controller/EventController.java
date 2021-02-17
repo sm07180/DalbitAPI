@@ -518,4 +518,15 @@ public class EventController {
         return result;
     }
 
+    /**
+     * 일간 최고 DJ/FAN 보기
+     */
+    @GetMapping("/best")
+    public String openEventDailyBest(@Valid OpenEventVo openEventVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_OpenEventBestListVo apiData = new P_OpenEventBestListVo(openEventVo, request);
+        String result = eventService.callOpenEventDailyBest(apiData);
+        return result;
+    }
+
 }

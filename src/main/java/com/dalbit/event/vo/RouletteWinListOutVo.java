@@ -25,7 +25,7 @@ public class RouletteWinListOutVo {
     public RouletteWinListOutVo(P_RouletteWinListVo target){
         setMemNo(target.getMem_no());
         setItemNo(target.getItem_no());
-        setIsNew(target.getNew_yn() == 1 ? true : false);
+        setIsNew(target.getNew_yn() == 1);
         setNickNm(target.getNickName());
         setGender(target.getMemSex());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));

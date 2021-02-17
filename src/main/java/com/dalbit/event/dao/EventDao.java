@@ -118,4 +118,7 @@ public interface EventDao {
 
     @Transactional(readOnly = true)
     List<P_OpenEventVo> callOpenEvent(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_OpenEventBestListVo> callOpenEventDailyBest(ProcedureVo procedureVo);
 }

@@ -796,7 +796,7 @@ public class EventService {
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
         int attendance_check = DalbitUtil.getIntMap(resultMap, "attendance_check"); //0: 출석체크 완료, 1: 미완료 시간부족, 2: 미완료 시간충족
-        boolean isRoulette = DalbitUtil.getIntMap(resultMap, "couponCnt") > 0 ? true : false;   //룰렛가능 여부
+        boolean isRoulette = DalbitUtil.getIntMap(resultMap, "couponCnt") > 0;   //룰렛가능 여부
         int userEventCheck;                                                           //-1: 버튼없음, 0: 출석기본, 1: 출석애니메이션, 2:룰렛에니메이션
         String eventIconUrl;
         boolean iosAudit = false;   //ios 심사중 여부
@@ -850,7 +850,7 @@ public class EventService {
             eventIconUrl="";
         }
 
-        returnMap.put("isCheck", attendance_check == 2 ? false : true);
+        returnMap.put("isCheck", attendance_check != 2);
         returnMap.put("attendanceCheck", attendance_check);
         returnMap.put("userEventCheck", userEventCheck);
         returnMap.put("eventIconUrl", eventIconUrl);
@@ -1661,6 +1661,34 @@ public class EventService {
             result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.오픈이벤트조회_성공, rankInfo));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.오픈이벤트조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 일간 최고 DJ/FAN 보기
+     */
+    public String callOpenEventDailyBest(P_OpenEventBestListVo pOpenEventBestListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pOpenEventBestListVo);
+        List<P_OpenEventBestListVo> openEventBestListVo = eventDao.callOpenEventDailyBest(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap bestList = new HashMap();
+            List<OpenEventBestListOutVo> outVoList = new ArrayList<>();
+
+            if(!DalbitUtil.isEmpty(openEventBestListVo)){
+                for (int i=0; i<openEventBestListVo.size(); i++){
+                    outVoList.add(new OpenEventBestListOutVo(openEventBestListVo.get(i)));
+                }
+            }
+
+            bestList.put("list", outVoList);
+
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.일간최고조회_성공, bestList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.일간최고조회_실패));
         }
         return result;
     }

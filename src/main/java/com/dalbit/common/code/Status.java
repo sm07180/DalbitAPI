@@ -1623,6 +1623,17 @@ public enum Status {
     내클립조회_요청회원번호_정상아님("-1", "my.clip.select.member.numer.error", "요청회원번호가 회원 아닐 시"),
     내클립조회_실패("C006", "my.clip.select.fail", "내 클립 조회 실패 시"),
 
+    //내 클립 현황 상세 조회
+    내클립현황상세조회_성공("C001", "my.clip.detail.select.success", "내 클립 상세 조회 성공 시"),
+    내클립현황상세조회_실패("C006", "my.clip.detail.select.fail", "내 클립 상세 조회 실패 시"),
+
+    //내 클립 현황 상세 조회 시 클립 공개/비공개 설정
+    내클립현황_클립공개여부수정_성공("0", "my.clip.detail.edit.success", "내 클립 현황 공개여부 수정 성공 시"),
+    내클립현황_클립공개여부수정_회원아님("-1", "my.clip.detail.edit.member.number.error", "내 클립 현황 공개여부 수정 성공 시"),
+    내클립현황_클립공개여부수정_클립없음("-2", "my.clip.detail.edit.no.clip", "내 클립 현황 공개여부 수정 성공 시"),
+    내클립현황_클립공개여부수정_수정권한없음("-3", "my.clip.detail.edit.no.auth", "내 클립 현황 공개여부 수정 성공 시"),
+    내클립현황_클립공개여부수정_실패("C006", "my.clip.detail.edit.fail", "내 클립 현황 공개여부 수정 실패 시"),
+
     //추천 방송 검색
     추천방송검색_성공("C001", "recommand.broadcast.search.success", "추천 방송 검색 성공 시"),
     추천방송검색_결과없음("0", "recommand.broadcast.search.no.success", "결과 없을 시"),
@@ -1796,6 +1807,8 @@ public enum Status {
     대화전송_아이템타입없음("-5", "mailbox.chatroom.msg.send.item.type.no", "아이템 타입이 없을 시"),
     대화전송_달부족("-6", "mailbox.chatroom.msg.send.dal.limit", "달 부족 시"),
     대화전송_차단회원("-7", "mailbox.chatroom.msg.send.blacklist", "차단회원일 시"),
+    대화전송_본인비활성("-11", "mailbox.chatroom.msg.send.me.inactive", "본인 비활성화 시"),
+    대화전송_상대방비활성("-12", "mailbox.chatroom.msg.send.target.inactive", "상대방 비활성화 시"),
     대화전송_실패("C006", "mailbox.chatroom.msg.send.fail", "대화 전송 실패 시"),
 
     //대화읽음
@@ -2040,6 +2053,75 @@ public enum Status {
     프로필이미지_대표지정_성공("0", "profile.img.leader.success", "프로필 이미지 대표지정 시"),
     프로필이미지_대표지정_회원아님("-1", "profile.img.leader.member.number.error", "요청회원번호 회원 아닐 시"),
     프로필이미지_대표지정_실패("C006", "profile.img.leader.fail", "프로필 이미지 대표지정 실패 시"),
+
+    //미니게임 조회
+    미니게임_조회_성공("C001", "mini.game.select.success", "미니게임 조회 성공 시"),
+    미니게임_조회_회원아님("-1", "mini.game.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    미니게임_조회_해당방없음("-2", "mini.game.select.no.room", "해당 방송이 없을 시"),
+    미니게임_조회_방이종료됨("-3", "mini.game.select.end.room", "방이 종료되어 있을 시"),
+    미니게임_조회_실패("C006", "mini.game.select.fail", "미니게임 조회 실패 시"),
+
+    //일간 최고 DJ/FAN 조회
+    일간최고조회_성공("C001", "open.event.daily.best.select.success", "일간 최고 DJ/FAN 조회 성공 시"),
+    일간최고조회_실패("C006", "open.event.daily.best.select.fail", "일간 최고 DJ/FAN 조회 실패 시"),
+
+    //미니게임 등록
+    미니게임등록_성공("0", "mini.game.add.success", "미니게임 룰렛 등록 시"),
+    미니게임등록_회원아님("-1", "mini.game.add.member.number.error", "요청회원번호 회원 아닐 시"),
+    미니게임등록_방번호없음("-2", "mini.game.add.no.room", "해당 방송이 없을 시"),
+    미니게임등록_종료된방("-3", "mini.game.add.end.room", "방이 종료되어 있을 시"),
+    미니게임등록_방장아님("-4", "mini.game.add.no.bj", "방장이 아닐 시"),
+    미니게임등록_이미등록("-5", "mini.game.add.already", "미니게임 룰렛이 이미 등록되었을 시"),
+    미니게임등록_금액설정오류("-6", "mini.game.add.amount.err", "금액설정 범위 오류 시"),
+    미니게임등록_옵션개수오류("-7", "mini.game.add.option.count.err", "옵션 개수 오류 시"),
+    미니게임등록_옵션리스트오류("-8", "mini.game.add.option.list.err", "옵션 리스트 오류 시"),
+    미니게임등록_실패("C006", "mini.game.add.fail", "미니게임 룰렛 등록 실패 시"),
+
+    //미니게임 수정
+    미니게임수정_성공("0", "mini.game.edit.success", "미니게임 룰렛 수정 시"),
+    미니게임수정_회원아님("-1", "mini.game.edit.member.number.error", "요청회원번호 회원 아닐 시"),
+    미니게임수정_방번호없음("-2", "mini.game.edit.no.room", "해당 방송이 없을 시"),
+    미니게임수정_종료된방("-3", "mini.game.edit.end.room", "방이 종료되어 있을 시"),
+    미니게임수정_방장아님("-4", "mini.game.edit.no.bj", "방장이 아닐 시"),
+    미니게임수정_없음("-5", "mini.game.edit.no", "등록된 미니게임 룰렛이 없을 시"),
+    미니게임수정_금액설정오류("-6", "mini.game.edit.amount.err", "금액설정 범위 오류 시"),
+    미니게임수정_옵션개수오류("-7", "mini.game.edit.option.count.err", "옵션 개수 오류 시"),
+    미니게임수정_옵션리스트오류("-8", "mini.game.edit.option.list.err", "옵션 리스트 오류 시"),
+    미니게임수정_실패("C006", "mini.game.edit.fail", "미니게임 룰렛 수정 실패 시"),
+
+    //미니게임 조회
+    미니게임조회_성공("0", "mini.game.select.success", "미니게임 룰렛 조회 시"),
+    미니게임조회_회원아님("-1", "mini.game.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    미니게임조회_해당방없음("-2", "mini.game.select.no.room", "해당 방송이 없을 시"),
+    미니게임조회_방이종료됨("-3", "mini.game.select.end.room", "방이 종료되어 있을 시"),
+    미니게임조회_무료상태("-4", "mini.game.select.not.free", "무료상태 방장만 가능"),
+    미니게임조회_없음("-5", "mini.game.select.no", "등록된 미니게임 룰렛이 없을 시"),
+    미니게임조회_실패("C006", "mini.game.select.fail", "미니게임 룰렛 조회 실패 시"),
+
+    //미니게임 시작
+    미니게임시작_성공("0", "mini.game.start.success", "미니게임 룰렛 시작 시"),
+    미니게임시작_회원아님("-1", "mini.game.start.member.number.error", "요청회원번호 회원 아닐 시"),
+    미니게임시작_해당방없음("-2", "mini.game.start.no.room", "해당 방송이 없을 시"),
+    미니게임시작_방이종료됨("-3", "mini.game.start.end.room", "방이 종료되어 있을 시"),
+    미니게임시작_무료상태("-4", "mini.game.start.not.free", "무료상태 방장만 가능"),
+    미니게임시작_없음("-5", "mini.game.start.no", "등록된 미니게임 룰렛이 없을 시"),
+    미니게임시작_실패("C006", "mini.game.start.fail", "미니게임 룰렛 시작 실패 시"),
+
+    //미니게임 종료
+    미니게임종료_성공("0", "mini.game.end.success", "미니게임 룰렛 종료 시"),
+    미니게임종료_회원아님("-1", "mini.game.end.member.number.error", "요청회원번호 회원 아닐 시"),
+    미니게임종료_방번호없음("-2", "mini.game.end.no.room", "해당 방송이 없을 시"),
+    미니게임종료_종료된방("-3", "mini.game.end.end.room", "방이 종료되어 있을 시"),
+    미니게임종료_방장아님("-4", "mini.game.end.not.bj", "방장이 아닐 시"),
+    미니게임종료_없음("-5", "mini.game.end.no", "등록된 미니게임 룰렛이 없을 시"),
+    미니게임종료_실패("C006", "mini.game.end.fail", "미니게임 룰렛 종료 실패 시"),
+
+    //우체통 활성화 설정
+    활성화설정_성공("0", "mailbox.use.success", "활성화 설정 시"),
+    활성화설정_ON("0", "mailbox.use.on.success", "활성화"),
+    활성화설정_OFF("0", "mailbox.use.off.success", "비활성화"),
+    활성화설정_회원아님("-1", "mailbox.use.member.number.error", "요청회원번호 회원 아닐 시"),
+    활성화설정_실패("C006", "mailbox.use.fail", "활성화 설정 실패 시"),
 ;
 
 

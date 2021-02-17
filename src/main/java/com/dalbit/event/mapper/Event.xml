@@ -205,4 +205,9 @@
     <select id="callOpenEvent" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_OpenEventVo">
         call sp_event_ranking_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callOpenEventDailyBest" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_OpenEventBestListVo">
+        call sp_event_ranking_daily_best(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>
