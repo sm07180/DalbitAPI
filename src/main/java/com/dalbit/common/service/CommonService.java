@@ -150,6 +150,7 @@ public class CommonService {
         itemIsNew.put("normal", false);
         itemIsNew.put("combo", false);
         itemIsNew.put("emotion", false);
+        itemIsNew.put("text", false);
 
         if(!DalbitUtil.isEmpty(items)){
             for(int i = 0; i < items.size(); i++){
@@ -197,10 +198,15 @@ public class CommonService {
         itemCate3.put("code", "emotion");
         itemCate3.put("value", "감정");
         itemCate3.put("isNew", itemIsNew.get("emotion"));
+        HashMap itemCate4 = new HashMap();
+        itemCate4.put("code", "text");
+        itemCate4.put("value", "문자");
+        itemCate4.put("isNew", itemIsNew.get("text"));
 
         itemCategories.add(itemCate1);
         itemCategories.add(itemCate2);
         itemCategories.add(itemCate3);
+        itemCategories.add(itemCate4);
 
         resultMap.put("itemCategories", itemCategories);
 
