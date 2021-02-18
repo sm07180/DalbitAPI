@@ -220,6 +220,15 @@ public class AdminController {
     }
 
     /**
+     * 통계 > 방송정보
+     */
+    @PostMapping("/stat/broadInfo/new")
+    public String statBroadNew(HttpServletRequest request, P_StatVo pStatVo) {
+        String result = adminService.callNewBroadcastTimeNew(pStatVo);
+        return result;
+    }
+
+    /**
      * 통계 > 현재 접속자
      */
     @PostMapping("/stat/userInfoCurrent")
@@ -457,5 +466,14 @@ public class AdminController {
         }catch(Exception e){}
 
         return gsonUtil.toJson(new JsonOutputVo(Status.대화방_이미지삭제_성공, returnMap));
+    }
+
+    /**
+     * 생방송관리 > 강제종료
+     */
+    @PostMapping("/member/forceLogout")
+    public String memberForceLogout(HttpServletRequest request, @RequestParam HashMap<String, String> paramMap){
+        String result = adminService.memberForceLogout(request, paramMap);
+        return result;
     }
 }

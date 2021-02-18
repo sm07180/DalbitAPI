@@ -75,6 +75,9 @@ public interface AdminDao {
     ArrayList<P_NewBroadcastTimeOutVo> callBroadcastTotal(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
+    ArrayList<P_NewBroadcastTimeNewOutVo> callNewBroadcastTimeNew(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
     List<P_UserTotalOutDetailVo> callUserCurrentTotal(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)

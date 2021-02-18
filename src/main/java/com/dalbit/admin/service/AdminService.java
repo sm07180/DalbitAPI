@@ -28,6 +28,7 @@ import okhttp3.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -918,6 +919,22 @@ public class AdminService {
     }
 
     /**
+     * 통계 > 방송정보 new
+     */
+    public String callNewBroadcastTimeNew(P_StatVo pStatVo){
+        ProcedureVo procedureVo = new ProcedureVo(pStatVo);
+        ArrayList<P_NewBroadcastTimeNewOutVo> detailList = adminDao.callNewBroadcastTimeNew(procedureVo);
+        P_NewBroadcastTimeNewOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_NewBroadcastTimeNewOutVo.class);
+        if(Integer.parseInt(procedureVo.getRet()) <= 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
+        var result = new HashMap<String, Object>();
+        result.put("totalInfo", totalInfo);
+        result.put("detailList", detailList);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+    }
+
+    /**
      * 통계 > 현재 접속자
      */
     public String callUserCurrentTotal(P_UserCurrentInputVo pUserCurrentInputVo) {
@@ -1440,5 +1457,17 @@ public class AdminService {
             }
         }
         return result;
+    }
+
+    /**
+     * 회원 정지/탈퇴 시 강제 로그아웃 처리
+     */
+    public String memberForceLogout(HttpServletRequest request, @RequestParam HashMap<String, String> paramMap) {
+
+        //소캣 종료 처리
+        //SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
+        socketService.memberForceLogout(DalbitUtil.getStringMap(paramMap, "memNo"), DalbitUtil.getStringMap(paramMap, "message"));
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.로그아웃성공));
     }
 }

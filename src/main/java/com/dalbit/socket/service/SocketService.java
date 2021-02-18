@@ -9,7 +9,6 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ItemDetailVo;
 import com.dalbit.common.vo.ProcedureVo;
-import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.procedure.P_LevelUpCheckVo;
@@ -1163,6 +1162,27 @@ public class SocketService {
                 vo.setRecvMemNo(blackMemNo);
                 sendSocketApi(authToken, chatNo, vo.toQueryString());
             }
+        }
+    }
+
+    /**
+     * 신고/정지 시 회원 강제 로그아웃 처리
+     */
+    @Async("threadTaskExecutor")
+    public void memberForceLogout(String memNo, String notiMessage){
+        log.info("Socket Start : forceLogout {}, {}, ", memNo, notiMessage);
+
+        if(!DalbitUtil.isEmpty(memNo) && !DalbitUtil.isEmpty(notiMessage)){
+            SocketVo vo = new SocketVo();
+            vo.setMemNo(memNo);
+            vo.setCommand("reqForceLogout");
+
+            HashMap socketMap = new HashMap();
+            socketMap.put("recvMemNo", memNo);
+            socketMap.put("notiMessage", notiMessage);
+
+            vo.setMessage(socketMap);
+            sendSocketApi("", SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
         }
     }
 }
