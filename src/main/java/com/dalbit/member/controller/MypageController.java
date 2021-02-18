@@ -340,6 +340,20 @@ public class MypageController {
     }
 
     /**
+     * 마이페이지 공지사항 조회수
+     */
+    @PostMapping("/notice/read")
+    public String noticeRead(@Valid MypageNoticeReadVo mypageNoticeReadVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MypageNoticeReadVo apiData = new P_MypageNoticeReadVo(mypageNoticeReadVo, request);
+
+        String result = mypageService.callMypageNoticeRead(apiData);
+
+        return result;
+    }
+
+    /**
      * 마이페이지 공지사항 조회
      */
     @GetMapping("/notice")

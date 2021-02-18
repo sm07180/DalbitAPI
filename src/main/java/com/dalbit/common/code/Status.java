@@ -618,6 +618,14 @@ public enum Status {
     공지삭제_잘못된공지번호("-4", "mypage.notice.delete.number.error", "공지번호가 잘못된 번호일 시"),
     공지삭제_실패("C006", "mypage.notice.delete.fail", "마이페이지 공지삭제 실패 시"),
 
+    //마이페이지 공지사항 조회수
+    공지조회수_성공("0", "mypage.notice.read.success", "마이페이지 공지조회 성공 시"),
+    공지조회수_회원아님("-1", "mypage.notice.read.member.number.error", "회원번호가 회원 아닐 시"),
+    공지조회수_잘못된공지번호("-2", "mypage.notice.read.number.error", "공지번호가 잘못된 번호일 시"),
+    공지조회수_작성자_조회("-3", "mypage.notice.read.writer.error", "공지 작성자 조회 시"),
+    공지조회수_이미조회("-4", "mypage.notice.read.already.error", "공지 중복 조회 시"),
+    공지조회수_실패("C006", "mypage.notice.read.fail", "마이페이지 공지 조회 실패 시"),
+
     //마이페이지 공지사항 조회
     공지조회_성공("C001", "mypage.notice.select.success", "마이페이지 공지조회 성공 시"),
     공지조회_없음("0", "mypage.notice.select.no.success", "공지사항 없을 시"),

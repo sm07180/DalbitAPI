@@ -666,7 +666,6 @@ public class MypageService {
         return result;
     }
 
-
     /**
      * 마이페이지 공지사항 등록
      */
@@ -746,7 +745,6 @@ public class MypageService {
         return result;
     }
 
-
     /**
      * 마이페이지 공지사항 삭제
      */
@@ -772,6 +770,30 @@ public class MypageService {
         return result;
     }
 
+    /**
+     * 마이페이지 공지사항 조회
+     */
+    public String callMypageNoticeRead(P_MypageNoticeReadVo pMypageNoticeDelVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMypageNoticeDelVo);
+        mypageDao.callMypageNoticeRead(procedureVo);
+
+        String result;
+        if(procedureVo.getRet().equals(Status.공지조회수_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회수_성공));
+        }else if(procedureVo.getRet().equals(Status.공지조회수_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회수_회원아님));
+        }else if(procedureVo.getRet().equals(Status.공지조회수_잘못된공지번호.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회수_잘못된공지번호));
+        }else if(procedureVo.getRet().equals(Status.공지조회수_작성자_조회.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회수_작성자_조회));
+        }else if(procedureVo.getRet().equals(Status.공지조회수_이미조회.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회수_이미조회));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회수_실패));
+        }
+
+        return result;
+    }
 
     /**
      * 마이페이지 공지사항 조회

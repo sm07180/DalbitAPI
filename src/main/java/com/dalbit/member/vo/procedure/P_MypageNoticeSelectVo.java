@@ -47,5 +47,5 @@ public class P_MypageNoticeSelectVo extends P_ApiVo {
 
     // 2020.11.10 강다인. 댓글 추가
     private int replyCnt;
-
+    private int readCnt;
 }

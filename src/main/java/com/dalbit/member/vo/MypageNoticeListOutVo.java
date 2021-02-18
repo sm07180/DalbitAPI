@@ -21,6 +21,7 @@ public class MypageNoticeListOutVo {
 
     // 2020.11.10 강다인. 댓글 추가
     private int replyCnt;
+    private int readCnt;
 
     public MypageNoticeListOutVo(P_MypageNoticeSelectVo target) {
         setNoticeIdx(target.getNoticeIdx());
@@ -33,5 +34,6 @@ public class MypageNoticeListOutVo {
         setImagePath(target.getImagePath());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setReplyCnt(target.getReplyCnt());
+        setReadCnt(target.getReadCnt());
     }
 }
