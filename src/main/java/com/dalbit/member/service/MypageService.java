@@ -769,7 +769,6 @@ public class MypageService {
 
         return result;
     }
-
     /**
      * 마이페이지 공지사항 조회
      */
@@ -794,6 +793,7 @@ public class MypageService {
 
         return result;
     }
+
 
     /**
      * 마이페이지 공지사항 조회
@@ -1883,31 +1883,31 @@ public class MypageService {
 
     public String getMyPageNew(HttpServletRequest request){
         HashMap returnMap = new HashMap();
-        if(DalbitUtil.isLogin(request)) {
+        if(DalbitUtil.isLogin(request)){
             String notice = request.getParameter("notice");
             String qna = request.getParameter("qna");
-            if (!DalbitUtil.isEmpty(notice)) {
+            if(!DalbitUtil.isEmpty(notice)){
                 String[] nos = notice.split(",");
                 List<String> tmp = new ArrayList<>();
                 notice = "";
-                for (String n : nos) {
-                    if (!tmp.contains(n)) {
+                for(String n : nos){
+                    if(!tmp.contains(n)){
                         tmp.add(n);
-                        if (!DalbitUtil.isEmpty(notice)) {
+                        if(!DalbitUtil.isEmpty(notice)){
                             notice += ",";
                         }
                         notice += n;
                     }
                 }
             }
-            if (!DalbitUtil.isEmpty(qna)) {
+            if(!DalbitUtil.isEmpty(qna)){
                 String[] nos = qna.split(",");
                 List<String> tmp = new ArrayList<>();
                 qna = "";
-                for (String n : nos) {
-                    if (!tmp.contains(n)) {
+                for(String n : nos){
+                    if(!tmp.contains(n)){
                         tmp.add(n);
-                        if (!DalbitUtil.isEmpty(qna)) {
+                        if(!DalbitUtil.isEmpty(qna)){
                             qna += ",";
                         }
                         qna += n;
@@ -1928,7 +1928,7 @@ public class MypageService {
             returnMap = mypageDao.selectMyPageNew(params);
             returnMap.put("newCnt", DalbitUtil.getIntMap(returnMap, "alarm") + DalbitUtil.getIntMap(returnMap, "qna") + DalbitUtil.getIntMap(returnMap, "notice"));
             returnMap.put("moveUrl", "");
-            if(DalbitUtil.getIntMap(returnMap, "alarm") > 0){
+            if(DalbitUtil.getIntMap(returnMap, "alarm") > 0) {
                 returnMap.put("moveUrl", "");
             }else if(DalbitUtil.getIntMap(returnMap, "notice") > 0){
                 returnMap.put("moveUrl", "/customer/notice");
@@ -2249,13 +2249,13 @@ public class MypageService {
 
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
-            returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
-            returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1 ? true : false);
-            returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
-            returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
-            returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
-            returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
-            returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen") == 1 ? true : false);
+            returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1);
+            returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1);
+            returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1);
+            returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1);
+            returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1);
+            returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1);
+            returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen"));
             returnMap.put("isSpecial", isSpecial);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
@@ -2291,7 +2291,8 @@ public class MypageService {
             returnMap.put("listenerIn", DalbitUtil.getIntMap(boforeMap, "listenerIn") == 1);
             returnMap.put("listenerOut", DalbitUtil.getIntMap(boforeMap, "listenerOut") == 1);
             returnMap.put("liveBadgeView", DalbitUtil.getIntMap(boforeMap, "liveBadgeView") == 1);
-            returnMap.put("listenOpen", DalbitUtil.getIntMap(boforeMap, "listenOpen") == 1);
+            returnMap.put("listenOpen", DalbitUtil.getIntMap(boforeMap, "listenOpen"));
+
             if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getGiftFanReg())){
                 returnMap.put("giftFanReg", pBroadcastSettingEditVo.getGiftFanReg() == 1);
             }
@@ -2311,7 +2312,7 @@ public class MypageService {
                 returnMap.put("liveBadgeView", pBroadcastSettingEditVo.getLiveBadgeView() == 1);
             }
             if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenOpen())){
-                returnMap.put("listenOpen", pBroadcastSettingEditVo.getListenOpen() == 1);
+                returnMap.put("listenOpen", pBroadcastSettingEditVo.getListenOpen());
             }
 
             try{
@@ -2339,8 +2340,10 @@ public class MypageService {
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenOpen()) && pBroadcastSettingEditVo.getListenOpen() != DalbitUtil.getIntMap(boforeMap, "listenOpen")){
                     if (pBroadcastSettingEditVo.getListenOpen() == 1) {
                         status = Status.청취정보_ON;
-                    } else {
+                    } else if (pBroadcastSettingEditVo.getListenOpen() == 2) {
                         status = Status.청취정보_OFF;
+                    } else {
+                        status = Status.청취정보_HALFON;
                     }
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getGiftFanReg()) && pBroadcastSettingEditVo.getGiftFanReg() != DalbitUtil.getIntMap(boforeMap, "giftFanReg")){
                     if (pBroadcastSettingEditVo.getGiftFanReg() == 1) {
@@ -2371,12 +2374,12 @@ public class MypageService {
         mypageDao.callBroadcastSettingSelect(procedureVo);
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1 ? true : false);
-        returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1 ? true : false);
-        returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1 ? true : false);
-        returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1 ? true : false);
-        returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1 ? true : false);
-        returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1 ? true : false);
+        returnMap.put("giftFanReg", DalbitUtil.getIntMap(resultMap, "giftFanReg") == 1);
+        returnMap.put("djListenerIn", DalbitUtil.getIntMap(resultMap, "djListenerIn") == 1);
+        returnMap.put("djListenerOut", DalbitUtil.getIntMap(resultMap, "djListenerOut") == 1);
+        returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1);
+        returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1);
+        returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1);
 
         return returnMap;
     }
