@@ -130,10 +130,10 @@ public class RoomOutVo {
         this.gstGender = target.getGuest_memSex();
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());
         this.gstProfImg = new ImageVo(target.getGuest_profileImage(), target.getGuest_memSex(), DalbitUtil.getProperty("server.photo.url"));
-        this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
-        this.isPop = (target.getBadge_popular() == 1) ? true : false;
-        this.isNew = (target.getBadge_newdj() == 1 ? true : false);
-        this.isSpecial = (target.getBadge_special() == 1 ? true : false);
+        this.isRecomm = target.getBadge_recomm() == 1;
+        this.isPop = target.getBadge_popular() == 1;
+        this.isNew = target.getBadge_newdj() == 1;
+        this.isSpecial = target.getBadge_special() > 0;
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
         this.os = target.getOs_type();
@@ -165,7 +165,7 @@ public class RoomOutVo {
         if(target.getGoodMem3() == 1){
             this.goodMem.add(3);
         }
-        this.isGoodMem = (target.getGoodMem() + target.getGoodMem2() + target.getGoodMem3()) > 0 ? true : false;
+        this.isGoodMem = (target.getGoodMem() + target.getGoodMem2() + target.getGoodMem3()) > 0;
         this.isShining = target.isShining();
     }
 
@@ -196,9 +196,9 @@ public class RoomOutVo {
         this.gstGender = target.getGuest_memSex();
         this.gstAge = DalbitUtil.ageCalculation(target.getGuest_birthYear());
         this.gstProfImg = new ImageVo(target.getGuest_profileImage(), target.getGuest_memSex(), DalbitUtil.getProperty("server.photo.url"));
-        this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
-        this.isPop = (target.getBadge_popular() == 1) ? true : false;
-        this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.isRecomm = target.getBadge_recomm() == 1;
+        this.isPop = target.getBadge_popular() == 1;
+        this.isNew = target.getBadge_newdj() == 1;
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
 
@@ -212,12 +212,12 @@ public class RoomOutVo {
 
         this.bjLevel = target.getBj_level();
         this.gstLevel = target.getGuest_level();
-        this.isSpecial = (target.getBadge_special() == 1 ? true : false);
+        this.isSpecial = target.getBadge_special() > 0;
         //TODO 출석체크이벤트 종료 시 구분 처리 필요
         this.isAttendCheck = (Boolean) attendanceCheckMap.get("isCheck");
         this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/event/attend_event?webview=new";
 
-        this.isFreeze = (target.getFreezeMsg() == 0) ? false : true;
+        this.isFreeze = target.getFreezeMsg() > 0;
         this.liveDjRank = target.getLiveDjRank() > 100 ? 0 : target.getLiveDjRank();
         /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
@@ -225,7 +225,7 @@ public class RoomOutVo {
 
         this.os = target.getOs();
         this.freezeMsg = target.getFreezeMsg();
-        this.isExtend = target.getExtendCnt() > 0 ? true : false;
+        this.isExtend = target.getExtendCnt() > 0;
         this.imageType = target.getImageType();
 
         moonCheck.setMoonStep(DalbitUtil.getIntMap(moonCheckMap, "moonStep"));
@@ -239,9 +239,9 @@ public class RoomOutVo {
         this.oldStep = DalbitUtil.getIntMap(moonCheckMap, "oldStep");
         this.completeMoon = target.getCompleteMoon();
         this.fullmoon_yn = target.getFullmoon_yn();
-        this.isMic = target.getMic_state() == 1 ? true : false;
-        this.isCall = target.getCall_state() == 1 ? true : false;
-        this.isServer = target.getServer_state() == 1 ? true : false;
-        this.isVideo = target.getVideo_state() == 1 ? true : false;
+        this.isMic = target.getMic_state() == 1;
+        this.isCall = target.getCall_state() == 1;
+        this.isServer = target.getServer_state() == 1;
+        this.isVideo = target.getVideo_state() == 1;
     }
 }

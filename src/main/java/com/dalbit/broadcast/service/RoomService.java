@@ -119,7 +119,7 @@ public class RoomService {
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
-            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
             SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             if (isBj) {
@@ -154,7 +154,7 @@ public class RoomService {
                         socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                         socketMap.put("fanRank", returnMap.get("fanRank"));
                         //TODO - 레벨업 유무 소켓추가 추후 확인
-                        // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+                        // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
                         socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                         vo.resetData();
                     }
@@ -369,23 +369,9 @@ public class RoomService {
 
         st = (new Date()).getTime();
         List<RoomOutVo> outVoList = new ArrayList<>();
-        //BanWordVo banWordVo = new BanWordVo();
-        //String systemBanWord = commonService.banWordSelect();
         DeviceVo deviceVo = new DeviceVo(request);
         for (int i=0; i<roomVoList.size(); i++){
-            /*if(!DalbitUtil.isEmpty(roomVoList.get(i).getNotice())){
-                //사이트+방송방 금지어 조회 공지사항 마스킹처리 목록에서 사용하지 않아 주석 처리
-                banWordVo.setMemNo(roomVoList.get(i).getBj_mem_no());
-                String banWord = commonService.broadcastBanWordSelect(banWordVo);
-                if(!DalbitUtil.isEmpty(banWord)){
-                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, roomVoList.get(i).getNotice()));
-                }else if(!DalbitUtil.isEmpty(systemBanWord)){
-                    roomVoList.get(i).setNotice(DalbitUtil.replaceMaskString(systemBanWord, roomVoList.get(i).getNotice()));
-                }
-            }*/
             RoomOutVo roomOutVo = new RoomOutVo(roomVoList.get(i), deviceVo);
-            //badgeService.setBadgeInfo(roomOutVo.getBjMemNo(), 6);
-            //roomOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             outVoList.add(roomOutVo);
         }
         log.debug("set list time {} ms", ((new Date()).getTime() - st));
@@ -393,7 +379,7 @@ public class RoomService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         roomList.put("list", procedureOutputVo.getOutputBox());
         roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
-        //roomList.put("isGreenMoon", DalbitUtil.getIntMap(resultMap, "greenMoon") == 1 ? true : false);
+        //roomList.put("isGreenMoon", DalbitUtil.getIntMap(resultMap, "greenMoon") == 1);
         roomList.put("isGreenMoon", false);
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
@@ -659,7 +645,7 @@ public class RoomService {
         returnMap.put("expRate", DalbitUtil.getExpRate(DalbitUtil.getIntMap(resultMap, "exp"), DalbitUtil.getIntMap(resultMap, "expBegin"), DalbitUtil.getIntMap(resultMap, "expNext")));
         returnMap.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCount"));
         returnMap.put("starCnt", DalbitUtil.getIntMap(resultMap, "starCount"));
-        returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+        returnMap.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0);
         returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
         returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
         returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
@@ -685,14 +671,14 @@ public class RoomService {
         returnMap.put("cupidNickNm", DalbitUtil.getStringMap(resultMap, "cupidNickNm"));
         returnMap.put("cupidProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "cupidProfileImage"), DalbitUtil.getStringMap(resultMap, "cupidMemSex"), DalbitUtil.getProperty("server.photo.url")));
         if(DalbitUtil.getIntMap(resultMap, "auth") == 0 || DalbitUtil.getIntMap(resultMap, "auth") == 1){
-            returnMap.put("isNewListener", DalbitUtil.getIntMap(resultMap, "new_badge") == 0 ? false : true);
+            returnMap.put("isNewListener", DalbitUtil.getIntMap(resultMap, "new_badge") > 0);
         }else{
             returnMap.put("isNewListener", false);
         }
 
         returnMap.put("liveDjRank", DalbitUtil.getIntMap(resultMap, "liveDjRank"));
         returnMap.put("liveFanRank", DalbitUtil.getIntMap(resultMap, "liveFanRank"));
-        returnMap.put("isGuest", DalbitUtil.getIntMap(resultMap, "isGuest") == 1 ? true : false);
+        returnMap.put("isGuest", DalbitUtil.getIntMap(resultMap, "isGuest") == 1);
         returnMap.put("managerType", DalbitUtil.getIntMap(resultMap, "managerType"));
         returnMap.put("likeTotCnt", DalbitUtil.getIntMap(resultMap, "receivedGoodTotal"));
         returnMap.put("specialDjCnt", DalbitUtil.getIntMap(resultMap, "specialDjCnt"));
@@ -703,10 +689,10 @@ public class RoomService {
         }else{
             SpecialDjHistoryVo specialDjHistoryVo = new SpecialDjHistoryVo();
             specialDjHistoryVo.setMemNo(pRoomMemberInfoVo.getTarget_mem_no());
-            returnMap.put("wasSpecial", memberService.getSpecialCnt(specialDjHistoryVo) > 0 ? true : false);
+            returnMap.put("wasSpecial", memberService.getSpecialCnt(specialDjHistoryVo) > 0);
         }
 
-        returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1 ? true : false);
+        returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1);
         procedureVo.setData(returnMap);
         return procedureVo;
     }
@@ -1453,10 +1439,10 @@ public class RoomService {
         selParams.put("mem_no", MemberVo.getMyMemNo(request));
         selParams.put("room_no", stateEditVo.getRoomNo());
         HashMap guestStateInfo = userDao.selectGuestStateInfo(selParams);
-        boolean isMic = "1".equals(String.valueOf(guestStateInfo.get("mic_state"))) ? true : false;
-        boolean isCall = "1".equals(String.valueOf(guestStateInfo.get("call_state"))) ? true : false;
-        boolean isVideo = "1".equals(String.valueOf(guestStateInfo.get("video_state"))) ? true : false;
-        boolean isServer = "1".equals(String.valueOf(guestStateInfo.get("server_state"))) ? true : false;
+        boolean isMic = "1".equals(String.valueOf(guestStateInfo.get("mic_state")));
+        boolean isCall = "1".equals(String.valueOf(guestStateInfo.get("call_state")));
+        boolean isVideo = "1".equals(String.valueOf(guestStateInfo.get("video_state")));
+        boolean isServer = "1".equals(String.valueOf(guestStateInfo.get("server_state")));
 
         //int oldState = Integer.parseInt(String.valueOf(guestStateInfo.get("state")));
 

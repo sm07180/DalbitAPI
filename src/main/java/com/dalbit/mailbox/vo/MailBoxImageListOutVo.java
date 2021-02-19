@@ -22,7 +22,7 @@ public class MailBoxImageListOutVo {
         setMemNo(target.getMemNo());
         setMemNickNm(target.getMemNick());
         setImageInfo(new ImageVo(target.getImageUrl(), DalbitUtil.getProperty("server.photo.url")));
-        setIsDelete(target.getIsDelete() == 1 ? true : false);
+        setIsDelete(target.getIsDelete() == 1);
         setSendDt(DalbitUtil.getUTCFormat(target.getMsgDate()));
         setSendTs(DalbitUtil.getUTCTimeStamp(target.getMsgDate()));
     }

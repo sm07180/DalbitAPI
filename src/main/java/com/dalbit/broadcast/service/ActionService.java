@@ -91,7 +91,7 @@ public class ActionService {
                 if(DalbitUtil.profileCheck("real")){
                     isFirst = (DalbitUtil.getIntMap(resultMap, "firstGood") == 1);
                 }
-                boolean isLoveGood = DalbitUtil.getIntMap(resultMap, "goodRank") > 0 ? true : false;
+                boolean isLoveGood = DalbitUtil.getIntMap(resultMap, "goodRank") > 0;
                 socketService.sendLike(pRoomGoodVo.getRoom_no(), MemberVo.getMyMemNo(request), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isLoveGood, DalbitUtil.getIntMap(resultMap, "goodRank"), new DeviceVo(request));
                 vo.resetData();
             }catch(Exception e){
@@ -261,7 +261,7 @@ public class ActionService {
             returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
             returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
             HashMap fanRankMap = commonService.getKingFanRankList(pRoomGiftVo.getRoom_no());
             returnMap.put("fanRank", fanRankMap.get("list"));
@@ -303,7 +303,7 @@ public class ActionService {
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(returnMap, "rank"));
                 //TODO - 레벨업 유무 소켓추가 추후 확인
-                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+                //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
                 socketMap.put("fanRank", returnMap.get("fanRank"));
                 socketService.changeCount(pRoomGiftVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
@@ -396,7 +396,7 @@ public class ActionService {
             returnMap.put("rank", rank);
             returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
             returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
-            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
@@ -575,7 +575,7 @@ public class ActionService {
         String result;
         if(Status.얼리기_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            boolean isFreeze = DalbitUtil.getIntMap(resultMap, "freezeMsg") == 1 ? true : false;
+            boolean isFreeze = DalbitUtil.getIntMap(resultMap, "freezeMsg") == 1;
             returnMap.put("isFreeze", isFreeze);
             try{
                 returnMap.put("msg", isFreeze ? messageUtil.get(Status.얼리기_성공.getMessageKey()) : messageUtil.get(Status.얼리기_해제.getMessageKey()));

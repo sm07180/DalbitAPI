@@ -142,4 +142,15 @@ public class MailBoxController {
     public String mailboxIsNew(HttpServletRequest request){
         return mailBoxService.callMailboxUnreadCheck(request);
     }
+
+    /**
+     * 우체통 활성화 설정
+     */
+    @PostMapping("/use")
+    public String mailBoxIsUse(@Valid MailBoxIsUseVo mailBoxIsUseVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MailBoxIsUseVo apiData = new P_MailBoxIsUseVo(mailBoxIsUseVo, request);
+        String result = mailBoxService.callMailBoxIsUse(apiData, request);
+        return result;
+    }
 }

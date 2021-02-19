@@ -144,7 +144,7 @@ public class AwardService {
             honorList.put("listenerPoint", DalbitUtil.getIntMap(resultMap, "listenerPoint"));
             honorList.put("goodPoint", DalbitUtil.getIntMap(resultMap, "goodPoint"));
             honorList.put("day", DalbitUtil.getIntMap(resultMap, "dateDiff"));
-            honorList.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0 ? true : false);
+            honorList.put("isFan", DalbitUtil.getIntMap(resultMap, "enableFan") == 0);
             honorList.put("joinDt", DalbitUtil.getUTCFormat(DalbitUtil.getStringMap(resultMap, "joinDate")));
             honorList.put("joinTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getStringMap(resultMap, "joinDate")));
 

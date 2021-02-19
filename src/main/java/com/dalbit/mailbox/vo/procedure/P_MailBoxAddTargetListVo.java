@@ -39,4 +39,5 @@ public class P_MailBoxAddTargetListVo {
     private int giftDal;
     private int listenTime;
     private Date lastlistenDate;
+    private int mailboxOnOff;
 }

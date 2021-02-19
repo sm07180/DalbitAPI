@@ -51,6 +51,7 @@ public class MailBoxService {
             }
 
             mailBoxList.put("list", outVoList);
+            mailBoxList.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
             mailBoxList.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.우체통대화방_조회_성공, mailBoxList));
@@ -185,7 +186,7 @@ public class MailBoxService {
             }
             returnMap.put("imageInfo", pMailBoxSendVo.getChatType() != 3 ? new ImageVo(DalbitUtil.getStringMap(resultMap, "addData1"), DalbitUtil.getProperty("server.photo.url")) : new ImageVo());
             returnMap.put("itemInfo", new ItemInfoVo(resultMap));
-            returnMap.put("isRead", DalbitUtil.getIntMap(resultMap, "readYn") == 1 ? true : false);
+            returnMap.put("isRead", DalbitUtil.getIntMap(resultMap, "readYn") == 1);
             returnMap.put("targetMemNo", DalbitUtil.getStringMap(resultMap, "target_mem_no"));
             returnMap.put("sendDt", DalbitUtil.getUTCFormat(DalbitUtil.getStringMap(resultMap, "sendDate")));
             returnMap.put("sendTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getStringMap(resultMap, "sendDate")));
@@ -217,6 +218,10 @@ public class MailBoxService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화전송_달부족));
         }else if(Status.대화전송_차단회원.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화전송_차단회원));
+        }else if(Status.대화전송_본인비활성.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.대화전송_본인비활성));
+        }else if(Status.대화전송_상대방비활성.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.대화전송_상대방비활성));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화전송_실패));
         }
@@ -280,7 +285,9 @@ public class MailBoxService {
             mailBoxMsgList.put("targetNickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
             mailBoxMsgList.put("targetGender", DalbitUtil.getStringMap(resultMap, "memSex"));
             mailBoxMsgList.put("targetProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
-            mailBoxMsgList.put("isNew", DalbitUtil.getIntMap(resultMap, "unreadCnt") > 0 ? true : false);
+            mailBoxMsgList.put("isNew", DalbitUtil.getIntMap(resultMap, "unreadCnt") > 0);
+            mailBoxMsgList.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
+            mailBoxMsgList.put("targetIsMailboxOn", DalbitUtil.getIntMap(resultMap, "target_mailboxOnOff") == 1);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.대화조회_성공, mailBoxMsgList));
         } else if (procedureVo.getRet().equals(Status.대화조회_회원아님.getMessageCode())) {
@@ -341,7 +348,7 @@ public class MailBoxService {
             returnMap.put("chatNo", DalbitUtil.getStringMap(resultMap, "chat_no"));
             returnMap.put("targetMemNo", DalbitUtil.getStringMap(resultMap, "target_mem_no"));
             returnMap.put("msgIdx", DalbitUtil.getStringMap(resultMap, "msgIdx"));
-            returnMap.put("isDelete", "y".equals(DalbitUtil.getStringMap(resultMap, "addData2").toLowerCase()) ? true : false );
+            returnMap.put("isDelete", "y".equals(DalbitUtil.getStringMap(resultMap, "addData2").toLowerCase()));
 
             try{
                 //이미지 삭제 소켓
@@ -387,4 +394,32 @@ public class MailBoxService {
             return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
         }
     }
+
+    /**
+     * 우체통 활성화 설정
+     */
+    public String callMailBoxIsUse(P_MailBoxIsUseVo pMailBoxIsUseVo, HttpServletRequest request) {
+        ProcedureVo procedureVo = new ProcedureVo(pMailBoxIsUseVo);
+        mailBoxDao.callMailBoxIsUse(procedureVo);
+
+        String result="";
+        if(Status.활성화설정_성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap returnMap = new HashMap();
+            returnMap.put("isMailboxOn", pMailBoxIsUseVo.getMailboxOnOff() == 1);
+
+            if(pMailBoxIsUseVo.getMailboxOnOff() == 1){
+                result = gsonUtil.toJson(new JsonOutputVo(Status.활성화설정_ON, returnMap));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.활성화설정_OFF, returnMap));
+            }
+        }else if(Status.활성화설정_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.활성화설정_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.활성화설정_실패));
+        }
+        return result;
+    }
+
+
+
 }

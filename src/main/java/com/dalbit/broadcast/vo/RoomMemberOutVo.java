@@ -47,16 +47,16 @@ public class RoomMemberOutVo{
         this.ctrlRole = target.getControlRole();
         this.joinDt = DalbitUtil.getUTCFormat(target.getJoin_date());
         this.joinTs = DalbitUtil.getUTCTimeStamp(target.getJoin_date());
-        this.isFan = target.getEnableFan() == 0 ? true : false;
+        this.isFan = target.getEnableFan() == 0;
         this.byeolCnt = target.getGift_gold();
-        this.isNewListener = this.auth == 0 ? (target.getNewBadge() == 1 ? true : false) : false;
-        this.isSpecial = target.getSpecialBadge() == 1 ? true : false;
+        this.isNewListener = this.auth == 0 ? target.getNewBadge() == 1 : false;
+        this.isSpecial = target.getSpecialBadge() > 0;
         this.liveFanRank = target.getLiveFanRank();
         /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }*/
         this.goodCnt = target.getGoodCnt();
-        this.isGuest = target.getIsGuest() == 1 ? true : false;
+        this.isGuest = target.getIsGuest() == 1;
         this.managerType = target.getManagerType();
     }
 }

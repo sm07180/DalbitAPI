@@ -2130,6 +2130,11 @@ public enum Status {
     활성화설정_OFF("0", "mailbox.use.off.success", "비활성화"),
     활성화설정_회원아님("-1", "mailbox.use.member.number.error", "요청회원번호 회원 아닐 시"),
     활성화설정_실패("C006", "mailbox.use.fail", "활성화 설정 실패 시"),
+
+    //스페셜리그 조회
+    스페셜리그_조회_성공("C001", "special.league.select.success", "스페셜리그 조회 시"),
+    스페셜리그_조회_기수오버("-2", "special.league.select.round.over", "현재보다 큰 기수 조회 시"),
+    스페셜리그_조회_실패("C006", "special.league.select.fail", "스페셜리그 조회 실패 시"),
 ;
 
 

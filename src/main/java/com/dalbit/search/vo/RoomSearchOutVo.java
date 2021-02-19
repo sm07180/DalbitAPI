@@ -28,9 +28,9 @@ public class RoomSearchOutVo {
         setTitle(target.getTitle());
         setEntryCnt(target.getCount_entry());
         setLikeCnt(target.getCount_good());
-        setIsRecomm(target.getBadge_recomm() == 1 ? true : false);
-        setIsPop(target.getBadge_popular() == 1 ? true : false);
-        setIsNew(target.getBadge_newdj() == 1 ? true : false);
+        setIsRecomm(target.getBadge_recomm() == 1);
+        setIsPop(target.getBadge_popular() == 1);
+        setIsNew(target.getBadge_newdj() == 1);
         setMemNo(target.getMem_no());
         setNickNm(target.getMem_nick());
         setMemId(target.getMem_id());

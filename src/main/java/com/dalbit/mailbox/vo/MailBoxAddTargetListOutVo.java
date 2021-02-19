@@ -17,6 +17,7 @@ public class MailBoxAddTargetListOutVo {
     private int listenTime;
     private String lastListenDt;
     private long lastListenTs;
+    private Boolean isMailboxOn;
 
     public MailBoxAddTargetListOutVo(P_MailBoxAddTargetListVo target, int slctType){
         setMemNo(target.getTarget_mem_no());
@@ -27,6 +28,6 @@ public class MailBoxAddTargetListOutVo {
         setListenTime(target.getListenTime());
         setLastListenDt(DalbitUtil.isEmpty(target.getLastlistenDate()) ? "" : DalbitUtil.getUTCFormat(target.getLastlistenDate()));
         setLastListenTs(DalbitUtil.isEmpty(target.getLastlistenDate()) ? 0 : DalbitUtil.getUTCTimeStamp(target.getLastlistenDate()));
-
+        setIsMailboxOn(target.getMailboxOnOff() == 1);
     }
 }

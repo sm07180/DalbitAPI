@@ -38,15 +38,15 @@ public class RoomGoodHistoryOutVo {
         setAuth(target.getAuth());
         setJoinDt(DalbitUtil.getUTCFormat(target.getJoin_date()));
         setJoinTs(DalbitUtil.getUTCTimeStamp(target.getJoin_date()));
-        setIsFan(target.getEnableFan() == 0 ? true : false);
-        setIsNewListener(this.auth == 0 ? (target.getNewBadge() == 1 ? true : false) : false);
-        setIsSpecial(target.getSpecialBadge() == 1 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
+        setIsNewListener(this.auth == 0 ? target.getNewBadge() > 0 : false);
+        setIsSpecial(target.getSpecialBadge() > 0);
         setLiveFanRank(target.getLiveFanRank());
         /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }*/
         setGoodCnt(target.getGoodCnt());
-        setIsJoin(target.getState() == 0 ? true : false);
+        setIsJoin(target.getState() == 0);
     }
 
 }

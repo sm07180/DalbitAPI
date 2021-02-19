@@ -234,7 +234,7 @@ public class CommonService {
             }
 
             if(deviceVo.getOs() == 1){ // AOS 심사중 여부
-                resultMap.put("isAosCheck", "real".equals(DalbitUtil.getActiveProfile()) ? true : false);
+                resultMap.put("isAosCheck", "real".equals(DalbitUtil.getActiveProfile()));
             }
 
             //TODO - 추후 삭제

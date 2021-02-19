@@ -72,6 +72,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private String listenRoomNo;
     private boolean isReceive;
 
+    private boolean isMailboxOn;
+
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
         setProfileInfoOutVo(target, target_mem_no, mem_no, fanRank, false);
@@ -115,12 +117,12 @@ public class ProfileInfoOutVo extends BaseVo {
         }
         this.grade = target.getGrade();
         this.fanRank = fanRank;
-        this.isRecomm = (target.getBadge_recomm() == 1) ? true : false;
-        this.isPop = (target.getBadge_popular() == 1) ? true : false;
-        this.isNew = (target.getBadge_newdj() == 1 ? true : false);
+        this.isRecomm = target.getBadge_recomm() == 1;
+        this.isPop = target.getBadge_popular() == 1;
+        this.isNew = target.getBadge_newdj() == 1;
 
-        this.isNewListener = (target.getBadge_new() == 1 ? true : false);
-        this.isSpecial = (target.getBadge_specialdj() == 1 ? true : false);
+        this.isNewListener = target.getBadge_new() == 1;
+        this.isSpecial = (target.getBadge_specialdj() > 0);
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
         this.likeTotCnt = target.getReceivedGoodTotal();
@@ -134,6 +136,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.specialDjCnt = target.getSpecialDjCnt();
         this.memState = target.getMemState();
         this.listenRoomNo = DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin);
-        this.isReceive = target.getAlertYn() == 1 ? true : false;
+        this.isReceive = target.getAlertYn() == 1;
+        this.isMailboxOn = target.getMailboxOnOff() == 1;
     }
 }

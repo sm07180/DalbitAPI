@@ -85,7 +85,7 @@ public class ProfileService {
             }else{
                 SpecialDjHistoryVo specialDjHistoryVo = new SpecialDjHistoryVo();
                 specialDjHistoryVo.setMemNo(pProfileInfo.getTarget_mem_no());
-                profileInfoOutVo.setWasSpecial(memberService.getSpecialCnt(specialDjHistoryVo) > 0 ? true : false);
+                profileInfoOutVo.setWasSpecial(memberService.getSpecialCnt(specialDjHistoryVo) > 0);
             }
 
             //HashMap myInfo = socketService.getMyInfo(MemberVo.getMyMemNo(request));
@@ -116,14 +116,14 @@ public class ProfileService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         HashMap returnMap = new HashMap();
-        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
         String result;
         if(Status.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
 
             HashMap socketMap = new HashMap();
             //TODO - 레벨업 유무 소켓추가 추후 확인
-            //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+            //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공, returnMap));
         }else if (Status.팬보드_댓글달기실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_스타회원번호_회원아님));

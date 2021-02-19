@@ -46,7 +46,7 @@ public class MailBoxMsgListOutVo {
         }
         setImageInfo("y".equals(target.getAddData2().toLowerCase()) || target.getIsExpire() == 1 ? new ImageVo() : new ImageVo(target.getAddData1(), DalbitUtil.getProperty("server.photo.url")));
         setItemInfo(target.getChatType() == 3 ? new ItemInfoVo(target) : new ItemInfoVo());
-        setIsRead(target.getReadYn() == 1 ? true : false);
+        setIsRead(target.getReadYn() == 1);
         setSendDt(DalbitUtil.getUTCFormat(target.getSendDate()));
         setSendTs(DalbitUtil.getUTCTimeStamp(target.getSendDate()));
         setProfImg(new ImageVo(DalbitUtil.getStringMap(targetMap, "profileImage"), DalbitUtil.getStringMap(targetMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));

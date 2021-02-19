@@ -704,7 +704,7 @@ public class MemberService {
                 status = Status.랭킹미반영;
             }
             HashMap returnMap = new HashMap();
-            returnMap.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1 ? true : false);
+            returnMap.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1);
             result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
         } else if(procedureVo.getRet().equals(Status.랭킹반영설정_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹반영설정_회원아님));
@@ -732,7 +732,7 @@ public class MemberService {
                 status = Status.알림_해제;
             }
             HashMap returnMap = new HashMap();
-            returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1 ? true : false);
+            returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1);
             result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
         } else if(procedureVo.getRet().equals(Status.알림_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.알림_회원아님));
@@ -812,7 +812,6 @@ public class MemberService {
         }
         return result;
     }
-
 
     /**
      * 회원 이미지 신고

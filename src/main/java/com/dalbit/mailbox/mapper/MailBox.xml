@@ -41,4 +41,9 @@
     <select id="callMailboxUnreadCheck" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_mailbox_check_unread(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callMailBoxIsUse" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_mailbox_member_onoff(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
 </mapper>

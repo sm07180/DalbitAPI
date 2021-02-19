@@ -37,7 +37,7 @@ public class RoomGiftHistoryOutVo {
         this.itemCode = target.getItem_code();
         this.itemNm = target.getItem_name();
         this.gold = target.getGold();
-        this.isSecret = (target.getSecret() == 1) ? true : false;
+        this.isSecret = target.getSecret() == 1;
         this.giftTs = DalbitUtil.getUTCTimeStamp(target.getGiftDate());
         this.giftDt = DalbitUtil.getUTCFormat(target.getGiftDate());
         this.liveFanRank = target.getLiveFanRank();
