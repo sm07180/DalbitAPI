@@ -693,6 +693,8 @@ public class RoomService {
         }
 
         returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1);
+
+        returnMap.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
         procedureVo.setData(returnMap);
         return procedureVo;
     }
