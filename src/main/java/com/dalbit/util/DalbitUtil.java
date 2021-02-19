@@ -1649,12 +1649,14 @@ public class DalbitUtil {
     }
 
     public static String getListenRoomNo(String roomNo, int listenOpen, boolean isAdmin){
-        if(isAdmin){
-            return roomNo;
-        }
         if(!isEmpty(roomNo)){
-            if(listenOpen == 1){
+            if(isAdmin){
                 return roomNo;
+            }
+            if(listenOpen == 1) {
+                return roomNo;
+            }else if(listenOpen == 2){
+                return "";
             }else{
                 return "A000000000";
             }
