@@ -1537,6 +1537,9 @@ public class MypageService {
 
         //스페셜DJ 조건 확인
         SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
+        if(DalbitUtil.isEmpty(getSpecialDjRegManageVo)){
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_없음_종료));
+        }
 
         SpecialDjConditionSearchVo specialDjConditionSearchVo = new SpecialDjConditionSearchVo();
         specialDjConditionSearchVo.setMem_no(mem_no);
