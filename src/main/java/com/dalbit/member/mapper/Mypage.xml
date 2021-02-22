@@ -174,11 +174,11 @@
         CALL sp_member_byeol_count(#{mem_no, mode=IN, jdbcType=VARCHAR})
     </select>
 
-    <select id="selectExistsSpecialReq" statementType="CALLABLE" parameterType="String" resultType="int">
+    <select id="selectExistsSpecialReq" statementType="CALLABLE" parameterType="String" resultType="java.util.HashMap">
         CALL sp_member_special_dj_request_check(#{value, mode=IN, jdbcType=VARCHAR}, NULL)
     </select>
 
-    <select id="selectExistsPhoneSpecialReq" statementType="CALLABLE" parameterType="String" resultType="int">
+    <select id="selectExistsPhoneSpecialReq" statementType="CALLABLE" parameterType="String" resultType="java.util.HashMap">
         CALL sp_member_special_dj_request_check(NULL, #{value, mode=IN, jdbcType=VARCHAR})
     </select>
 
@@ -232,6 +232,10 @@
 
     <select id="selectListenerCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         CALL sp_member_special_dj_listener_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectStarCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
+        CALL sp_member_special_dj_star_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
     </select>
 
     <select id="memberShortCutAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

@@ -30,6 +30,10 @@ public class SpecialDjRegManageVo {
     private int condition_data2;
     private int condition_code3;
     private int condition_data3;
+    private int condition_code4;
+    private int condition_data4;
+    private int best_code;
+    private int best_data;
     private int is_view;
     private int platform;
 

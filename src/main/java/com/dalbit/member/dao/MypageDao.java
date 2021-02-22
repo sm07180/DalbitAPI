@@ -99,10 +99,10 @@ public interface MypageDao {
     long selectMyByeolCnt(String mem_no);
 
     //@Transactional(readOnly = true)
-    int selectExistsSpecialReq(String mem_no);
+    HashMap selectExistsSpecialReq(String mem_no);
 
     //@Transactional(readOnly = true)
-    int selectExistsPhoneSpecialReq(String mem_no);
+    HashMap selectExistsPhoneSpecialReq(String mem_no);
 
     void insertSpecialReq(P_SpecialDjReq pSpecialDjReq);
 
@@ -129,6 +129,8 @@ public interface MypageDao {
 
     //@Transactional(readOnly = true)
     int selectListenerCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
+
+    int selectStarCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
 
     //@Transactional(readOnly = true)
     List<LevelVo> selectLevel();
