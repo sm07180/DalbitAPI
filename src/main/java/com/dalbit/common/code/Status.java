@@ -1347,6 +1347,7 @@ public enum Status {
     클립_댓글등록_성공("0", "clip.reply.add.success", "클립 댓글등록 성공 시"),
     클립_댓글등록_회원아님("-1", "clip.reply.add.member.number.error", "요청회원번호가 회원 아닐 시"),
     클립_댓글등록_클립없음("-2", "clip.reply.add.no.clip", "클립 없을 시"),
+    클립_댓글등록_차단회원("-3", "clip.reply.add.black.list", "차단회원일 경우"),
     클립_댓글등록_실패("C006", "clip.reply.add.fail", "클립 댓글등록 실패 시"),
 
     //클립 댓글수정

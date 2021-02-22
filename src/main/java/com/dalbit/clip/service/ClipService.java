@@ -699,6 +699,8 @@ public class ClipService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_회원아님));
         }else if(Status.클립_댓글등록_클립없음.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_클립없음));
+        }else if(Status.클립_댓글등록_차단회원.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_차단회원));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_댓글등록_실패));
         }
