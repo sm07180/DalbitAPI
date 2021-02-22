@@ -1301,6 +1301,7 @@ public enum Status {
     클립_좋아요_클립번호없음("-2", "clip.good.no.clip.number", "클립 번호가 없을 시"),
     클립_좋아요_이미좋아요누름("-3", "clip.good.already.good", "이미 좋아요 눌렀을 시"),
     클립_좋아요_변화없음("-4", "clip.good.no.change", "좋아요 변화없을 시"),
+    클립_좋아요_차단회원("-5", "clip.good.black.list", "차단회원일 경우"),
     클립_좋아요_실패("C006", "clip.good.fail", "좋아요 실패 시"),
 
     //클립 선물랭킹 TOP3

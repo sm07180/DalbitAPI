@@ -480,7 +480,7 @@ public class ClipService {
         HashMap returnMap = new HashMap();
         returnMap.put("goodCnt", DalbitUtil.getIntMap(resultMap, "good_cnt"));
         //Status status = pClipGoodVo.getGood() == 1 ? Status.클립_좋아요_성공 : Status.클립_좋아요_해제_성공;
-        returnMap.put("isGood", pClipGoodVo.getGood() == 1 ? true : false);
+        returnMap.put("isGood", pClipGoodVo.getGood() == 1);
         if(Status.클립_좋아요_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_좋아요_성공, returnMap));
         }else if(Status.클립_좋아요_요청회원_회원아님.getMessageCode().equals(procedureVo.getRet())){
@@ -490,6 +490,8 @@ public class ClipService {
         }else if (Status.클립_좋아요_이미좋아요누름.getMessageCode().equals(procedureVo.getRet())) {
             returnMap.put("isGood", true);
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_좋아요_이미좋아요누름, returnMap));
+        }else if(Status.클립_좋아요_차단회원.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.클립_좋아요_차단회원));
         }else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립_좋아요_실패));
         }
