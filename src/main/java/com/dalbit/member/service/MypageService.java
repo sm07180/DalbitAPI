@@ -1920,39 +1920,43 @@ public class MypageService {
             String qna = request.getParameter("qna");
             if(!DalbitUtil.isEmpty(notice)){
                 String[] nos = notice.split(",");
-                List<String> tmp = new ArrayList<>();
-                notice = "";
+                List<Long> tmp = new ArrayList<>();
+
                 for(String n : nos){
-                    if(!tmp.contains(n)){
-                        tmp.add(n);
-                        if(!DalbitUtil.isEmpty(notice)){
-                            notice += ",";
-                        }
-                        notice += n;
+                    if(!tmp.contains(Long.valueOf(n))){
+                        tmp.add(Long.valueOf(n));
                     }
+                }
+                if(tmp.size() > 50){
+                    tmp.sort(null);
+                    notice = StringUtils.join(tmp.subList(tmp.size() - 50, tmp.size()), ",");
+                }else{
+                    notice = StringUtils.join(tmp, ",");
                 }
             }
             if(!DalbitUtil.isEmpty(qna)){
                 String[] nos = qna.split(",");
-                List<String> tmp = new ArrayList<>();
-                qna = "";
+                List<Long> tmp = new ArrayList<>();
                 for(String n : nos){
-                    if(!tmp.contains(n)){
-                        tmp.add(n);
-                        if(!DalbitUtil.isEmpty(qna)){
-                            qna += ",";
-                        }
-                        qna += n;
+                    if(!tmp.contains(Long.valueOf(n))){
+                        tmp.add(Long.valueOf(n));
                     }
                 }
+                if(tmp.size() > 50){
+                    tmp.sort(null);
+                    qna = StringUtils.join(tmp.subList(tmp.size() - 50, tmp.size()), ",");
+                }else{
+                    qna = StringUtils.join(tmp, ",");
+                }
             }
+
             DeviceVo deviceVo = new DeviceVo(request);
             HashMap params = new HashMap();
             params.put("myMemNo", MemberVo.getMyMemNo(request));
             params.put("targetMemNo", DalbitUtil.isEmpty(request.getParameter("targetMemNo")) ? MemberVo.getMyMemNo(request) : request.getParameter("targetMemNo"));
             params.put("fanBoard", request.getParameter("fanBoard"));
             params.put("dal", request.getParameter("dal"));
-            params.put("byoel", request.getParameter("byoel"));
+            params.put("byeol", request.getParameter("byeol"));
             params.put("notice", notice);
             params.put("qna", qna);
             params.put("os", deviceVo.getOs());
