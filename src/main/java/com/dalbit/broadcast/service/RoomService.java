@@ -419,7 +419,7 @@ public class RoomService {
             //보름달 체크
             P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
             pMoonCheckVo.setRoom_no(pRoomInfoViewVo.getRoom_no());
-            HashMap moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
+            HashMap moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo, request);
             procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap));
         }
 

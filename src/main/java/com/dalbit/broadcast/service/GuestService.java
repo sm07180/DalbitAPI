@@ -107,7 +107,7 @@ public class GuestService {
 
                                 if(status.equals(Status.게스트초대수락_성공)){
                                     //게스트 지정을 위한 방송방 정보 조회
-                                    RoomOutVo roomOutVo = wowzaService.getRoomInfo(roomNo, memNo, DalbitUtil.isLogin(request) ? 1 : 0);
+                                    RoomOutVo roomOutVo = wowzaService.getRoomInfo(roomNo, memNo, DalbitUtil.isLogin(request) ? 1 : 0, request);
                                     RoomInfoVo roomInfoVo = wowzaService.getRoomInfo(roomOutVo, request);
 
                                     String rtmpOrigin = roomInfoVo.getRtmpOrigin();             //WOWZA RMTP ORIGIN URL (NATIVE)

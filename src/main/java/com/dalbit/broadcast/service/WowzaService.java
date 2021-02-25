@@ -129,7 +129,7 @@ public class WowzaService {
             }
             log.debug("call wowza hook roomNo : {}, guestNo : {}", roomNo, guestNo);
 
-            RoomOutVo target = getRoomInfo(roomNo);
+            RoomOutVo target = getRoomInfo(roomNo, request);
             boolean roomCheck = false;
             if(target != null && target.getState() != 4) {
                 /*if("v".equals(target.getMediaType())) {
@@ -301,7 +301,7 @@ public class WowzaService {
             if(isDone){
                 restService.imgDone(DalbitUtil.replaceDonePath(pRoomCreateVo.getBackgroundImage()), request);
             }
-            RoomOutVo target = getRoomInfo(roomNo, pRoomCreateVo.getMem_no(), 1);
+            RoomOutVo target = getRoomInfo(roomNo, pRoomCreateVo.getMem_no(), 1, request);
             RoomMemberInfoVo memberInfoVo = new RoomMemberInfoVo();
             memberInfoVo.setRank(DalbitUtil.getIntMap(resultMap, "rank"));
             memberInfoVo.setAuth(3);
@@ -451,7 +451,7 @@ public class WowzaService {
 
         if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin());
+            RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin(), request);
             RoomInfoVo roomInfoVo = getRoomInfo(target, resultMap, request);
 
             //영상방 입장 시 버전체크
@@ -611,7 +611,7 @@ public class WowzaService {
 
     public HashMap getBroadcast(RoomTokenVo roomTokenVo, HttpServletRequest request) throws GlobalException{
         HashMap result = new HashMap();
-        RoomOutVo target = getRoomInfo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+        RoomOutVo target = getRoomInfo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), request);
         if(target != null){
             if(target.getState() == 4){
                 result.put("status", Status.방정보보기_해당방없음);
@@ -671,15 +671,15 @@ public class WowzaService {
         return result;
     }
 
-    public RoomOutVo getRoomInfo(String roomNo){
-        return getRoomInfo(roomNo, "0", 99);
+    public RoomOutVo getRoomInfo(String roomNo, HttpServletRequest request){
+        return getRoomInfo(roomNo, "0", 99, request);
     }
 
-    public RoomOutVo getRoomInfo(String roomNo, String memNo, boolean isLogin) {
-        return getRoomInfo(roomNo, memNo, (isLogin ? 1 : 0));
+    public RoomOutVo getRoomInfo(String roomNo, String memNo, boolean isLogin, HttpServletRequest request) {
+        return getRoomInfo(roomNo, memNo, (isLogin ? 1 : 0), request);
     }
 
-    public RoomOutVo getRoomInfo(String roomNo, String memNo, int isLogin) {
+    public RoomOutVo getRoomInfo(String roomNo, String memNo, int isLogin, HttpServletRequest request) {
         P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
         pRoomInfoViewVo.setMemLogin(isLogin);
         pRoomInfoViewVo.setMem_no(memNo);
@@ -699,7 +699,7 @@ public class WowzaService {
                 //보름달 체크
                 P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
                 pMoonCheckVo.setRoom_no(roomNo);
-                moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo);
+                moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo, request);
                 if(roomInfoViewVo.getCompleteMoon() > 0){
                     var codeVo = commonService.selectCodeDefine(new CodeVo(Code.보름달_단계.getCode(), "4"));
                     moonCheckMap.put("moonStep", 4);

@@ -79,7 +79,7 @@ public class ActionService {
         HashMap returnMap = new HashMap();
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
-        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
         returnMap.put("goodRank", DalbitUtil.getIntMap(resultMap, "goodRank"));
         procedureVo.setData(returnMap);
 
@@ -802,7 +802,7 @@ public class ActionService {
     /**
      * 보름달 띄우기 체크
      */
-    public HashMap callMoonCheckMap(P_MoonCheckVo pMoonCheckVo) {
+    public HashMap callMoonCheckMap(P_MoonCheckVo pMoonCheckVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pMoonCheckVo);
         actionDao.callMoonCheck(procedureVo);
 
@@ -839,6 +839,11 @@ public class ActionService {
                         returnMap.put("moonStepAniFileNm", aniCodeVo.getValue());
                         returnMap.put("aniDuration", aniCodeVo.getSortNo());
                     }
+
+                    String resultCode = moonCheckSocket(pMoonCheckVo.getRoom_no(), request, "", returnMap);
+                    if("error".equals(resultCode)){
+                        log.error("보름달 체크 오류");
+                    }
                 }
             }
         }else{
@@ -862,7 +867,7 @@ public class ActionService {
         P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
         pMoonCheckVo.setRoom_no(roomNo);
         if(checkMap == null){
-            checkMap = callMoonCheckMap(pMoonCheckVo);
+            checkMap = callMoonCheckMap(pMoonCheckVo, request);
         }
         try{ //보름달 체크
             if(DalbitUtil.getIntMap(checkMap, "fullmoon_yn") == 1){
