@@ -22,6 +22,7 @@ public class ClipListOutVo {
     private int os;                     //1: aos, 2: ios, 3: pc
     private Boolean isNew;              //신입뱃지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
+    private int badgeSpecial;
     private String memNo;               //클립 등록 회원번호
     private String nickName;            //닉네임
     private String gender;              //성별
@@ -41,8 +42,9 @@ public class ClipListOutVo {
         setTotal(target.getTotal());
         setFilePlayTime(target.getFilePlayTime());
         setOs(target.getOs_type());
-        setIsNew(target.getBadge_newdj() == 1 ? true : false);
-        setIsSpecial(target.getBadge_special() == 1 ? true : false);
+        setIsNew(target.getBadge_newdj() == 1);
+        setIsSpecial(target.getBadge_special() > 0);
+        setBadgeSpecial(target.getBadge_special());
         setMemNo(target.getMem_no());
         setNickName(target.getNickName());
         setGender(target.getMemSex());

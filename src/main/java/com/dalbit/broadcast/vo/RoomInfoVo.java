@@ -47,6 +47,7 @@ public class RoomInfoVo {
     private boolean isPop;
     private boolean isNew;
     private boolean isSpecial;
+    private int badgeSpecial;
     private boolean isAttendCheck;  //출석체크 여부
     private String isAttendUrl;  //출석체크 이벤트 URL
     private int liveDjRank;
@@ -116,6 +117,7 @@ public class RoomInfoVo {
         this.isPop = target.getIsPop();
         this.isNew = target.getIsNew();
         this.isSpecial = target.getIsSpecial();
+        this.badgeSpecial = target.getBadgeSpecial();
         this.startDt = target.getStartDt();
         this.startTs = target.getStartTs();
         this.hasNotice = this.auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice());

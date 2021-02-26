@@ -29,6 +29,7 @@ public class RoomMemberOutVo{
     private int byeolCnt;
     private boolean isNewListener;
     private boolean isSpecial;
+    private int badgeSpecial;
     private int liveFanRank;
     private List<BadgeVo> liveBadgeList = new ArrayList<>();
     private List<BadgeVo> commonBadgeList = new ArrayList<>();
@@ -51,6 +52,7 @@ public class RoomMemberOutVo{
         this.byeolCnt = target.getGift_gold();
         this.isNewListener = this.auth == 0 ? target.getNewBadge() == 1 : false;
         this.isSpecial = target.getSpecialBadge() > 0;
+        this.badgeSpecial = target.getSpecialBadge();
         this.liveFanRank = target.getLiveFanRank();
         /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));

@@ -26,6 +26,7 @@ public class MainTimeRankingPageOutVo {
     private String grade;
     private int exp;
     private boolean isSpecial;
+    private int badgeSpecial;
     private int djPoint;
     private int listenerPoint;
     private int goodPoint;
@@ -53,7 +54,8 @@ public class MainTimeRankingPageOutVo {
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setLevel(target.getLevel());
         setGrade(target.getGrade());
-        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.isSpecial = target.getSpecialdj_badge() > 0;
+        this.badgeSpecial = target.getSpecialdj_badge();
         setDjPoint(target.getDjPoint());
         setListenerPoint(target.getListenerPoint());
         setListenPoint(target.getListenPoint());

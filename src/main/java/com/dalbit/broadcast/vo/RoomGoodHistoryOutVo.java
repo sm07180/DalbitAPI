@@ -24,6 +24,7 @@ public class RoomGoodHistoryOutVo {
     private Boolean isFan;
     private Boolean isNewListener;
     private Boolean isSpecial;
+    private int badgeSpecial;
     private int liveFanRank;
     private List<BadgeVo> liveBadgeList = new ArrayList<>();
     private List<BadgeVo> commonBadgeList = new ArrayList<>();
@@ -41,6 +42,7 @@ public class RoomGoodHistoryOutVo {
         setIsFan(target.getEnableFan() == 0);
         setIsNewListener(this.auth == 0 ? target.getNewBadge() > 0 : false);
         setIsSpecial(target.getSpecialBadge() > 0);
+        setBadgeSpecial(target.getSpecialBadge());
         setLiveFanRank(target.getLiveFanRank());
         /*if(!DalbitUtil.isEmpty(target.getLiveBadgeText())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));

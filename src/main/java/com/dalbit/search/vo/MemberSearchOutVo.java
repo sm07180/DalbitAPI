@@ -16,6 +16,7 @@ public class MemberSearchOutVo {
     private String roomNo;
     private boolean isNew;
     private boolean isSpecial;
+    private int badgeSpecial;
     private long fanCnt;
 
     public MemberSearchOutVo(P_MemberSearchVo target) {
@@ -23,7 +24,8 @@ public class MemberSearchOutVo {
         setNickNm(target.getMem_nick());
         setProfImg(new ImageVo(target.getImage_profile(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
         isNew = target.getNewdj_badge() == 1;
-        isSpecial = target.getSpecialdj_badge() == 1;
+        isSpecial = target.getSpecialdj_badge() > 0;
+        badgeSpecial = target.getSpecialdj_badge();
         setFanCnt(target.getFan_count());
         setGender(target.getMem_sex());
     }

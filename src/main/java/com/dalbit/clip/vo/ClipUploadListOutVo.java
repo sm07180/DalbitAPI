@@ -23,6 +23,7 @@ public class ClipUploadListOutVo {
     private String filePlayTime;        //재생시간
     private Boolean isNew;              //신입뱃지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
+    private int badgeSpecial;
 
     public ClipUploadListOutVo(P_ClipUploadListVo target){
         setClipNo(target.getCast_no());
@@ -37,7 +38,8 @@ public class ClipUploadListOutVo {
         setReplyCnt(target.getReplyCnt());
         setGender(target.getMemSex());
         setFilePlayTime(target.getFilePlayTime());
-        setIsNew(target.getBadge_newdj() == 1 ? true : false);
-        setIsSpecial(target.getBadge_special() == 1 ? true : false);
+        setIsNew(target.getBadge_newdj() == 1);
+        setIsSpecial(target.getBadge_special() > 0);
+        setBadgeSpecial(target.getBadge_special());
     }
 }

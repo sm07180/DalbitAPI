@@ -29,6 +29,7 @@ public class MainRecommandOutVo {
     private int listeners;
     private int likes;
     public boolean isSpecial;
+    public int badgeSpecial;
     public boolean isAdmin = false;
     public boolean isNew = false;
     public boolean isShining = false;

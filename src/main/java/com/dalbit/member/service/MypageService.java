@@ -2280,8 +2280,8 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송설정조회_성공.getMessageCode())) {
-            Integer special_badge = mypageDao.selectIsSpecial(pBroadcastSettingVo.getMem_no());
-            boolean isSpecial = special_badge != null && special_badge == 1;
+            int specialdj_badge = mypageDao.selectIsSpecial(pBroadcastSettingVo.getMem_no());
+            boolean isSpecial = specialdj_badge > 0;
 
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
@@ -2293,6 +2293,7 @@ public class MypageService {
             returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1);
             returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen"));
             returnMap.put("isSpecial", isSpecial);
+            returnMap.put("specialBadge", specialdj_badge);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.방송설정조회_회원아님.getMessageCode())) {

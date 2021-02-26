@@ -23,6 +23,7 @@ public class P_MainRecommandVo extends P_ApiVo {
     private int likes;
     private String bannerUrl;
     public boolean isSpecial;
+    public int badgeSpecial;
     public boolean isAdmin = false;
     public boolean isNew = false;
     public int isWowza;

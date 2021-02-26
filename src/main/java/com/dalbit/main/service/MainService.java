@@ -165,6 +165,7 @@ public class MainService {
                 outVo.setListeners(recommendVoList.get(i).getListeners());
                 outVo.setLikes(recommendVoList.get(i).getLikes());
                 outVo.isSpecial = recommendVoList.get(i).isSpecial();
+                outVo.badgeSpecial = recommendVoList.get(i).getBadgeSpecial();
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
                 outVo.isNew = recommendVoList.get(i).isNew();
                 outVo.isShining = recommendVoList.get(i).isShining();
@@ -213,6 +214,7 @@ public class MainService {
                         outVoB.setListeners(0);
                         outVoB.setLikes(0);
                         outVoB.isSpecial = false;
+                        outVoB.badgeSpecial = 0;
                         outVoB.isAdmin = false;
                         recommend.add(outVoB);
                     }
@@ -240,6 +242,7 @@ public class MainService {
                     outVo.setListeners(0);
                     outVo.setLikes(0);
                     outVo.isSpecial = false;
+                    outVo.badgeSpecial = 0;
                     outVo.isAdmin = false;
                     recommend.add(outVo);
                 }
@@ -264,6 +267,7 @@ public class MainService {
                 outVo.setListeners(0);
                 outVo.setLikes(0);
                 outVo.isSpecial = false;
+                outVo.badgeSpecial = 0;
                 outVo.isAdmin = false;
                 recommend.add(outVo);
             }

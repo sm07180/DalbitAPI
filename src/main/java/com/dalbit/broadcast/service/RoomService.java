@@ -655,7 +655,8 @@ public class RoomService {
         pFanRankVo.setMem_no(pRoomMemberInfoVo.getTarget_mem_no());
         returnMap.put("fanRank", memberService.fanRank3(pFanRankVo));
         returnMap.put("isNew", DalbitUtil.getIntMap(resultMap, "newdj_badge") == 1);
-        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1);
+        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge") > 0);
+        returnMap.put("badgeSpecial", DalbitUtil.getIntMap(resultMap, "specialdj_badge"));
         FanBadgeVo fanBadgeVo = new FanBadgeVo(DalbitUtil.getStringMap(resultMap, "fanBadgeText"), DalbitUtil.getStringMap(resultMap, "fanBadgeIcon"), DalbitUtil.getStringMap(resultMap, "fanBadgeStartColor"), DalbitUtil.getStringMap(resultMap, "fanBadgeEndColor"));
         if(DalbitUtil.isEmpty(fanBadgeVo.getText())){
             returnMap.put("fanBadge", "");
@@ -808,6 +809,7 @@ public class RoomService {
                     returnMap.put("isRecomm", target.getIsRecomm());
                     returnMap.put("isPop", target.getIsPop());
                     returnMap.put("isSpecial", target.getIsSpecial());
+                    returnMap.put("badgeSpecial", target.getBadgeSpecial());
                     returnMap.put("isNew", target.getIsNew());
                     returnMap.put("startDt", target.getStartDt());
                     returnMap.put("startTs", target.getStartTs());
@@ -1020,6 +1022,7 @@ public class RoomService {
                 returnMap.put("isPop", target.getIsPop());
                 returnMap.put("isNew", target.getIsNew());
                 returnMap.put("isSpecial", target.getIsSpecial());
+                returnMap.put("badgeSpecial", target.getBadgeSpecial());
                 returnMap.put("startDt", target.getStartDt());
                 returnMap.put("startTs", target.getStartTs());
                 returnMap.put("auth", auth);

@@ -17,6 +17,7 @@ public class ClipMainLatestListOutVo {
     private String gender;
     private Boolean isNew;
     private Boolean isSpecial;
+    private int badgeSpecial;
     private int playCnt;
     private int goodCnt;
     private int replyCnt;
@@ -29,8 +30,9 @@ public class ClipMainLatestListOutVo {
         setSubjectType(target.getSubject_type());
         setFilePlayTime(target.getFilePlayTime());
         setGender(target.getMemSex());
-        setIsNew(target.getBadge_newdj() == 1 ? true : false);
-        setIsSpecial(target.getBadge_special() == 1 ? true : false);
+        setIsNew(target.getBadge_newdj() == 1);
+        setIsSpecial(target.getBadge_special() > 0);
+        setBadgeSpecial(target.getBadge_special());
         setPlayCnt(target.getCount_play());
         setGoodCnt(target.getCount_good());
         setReplyCnt(target.getReplyCnt());

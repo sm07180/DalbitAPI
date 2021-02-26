@@ -58,6 +58,7 @@ public class RoomOutVo {
     private Boolean isPop;
     private Boolean isNew;
     private Boolean isSpecial;
+    private int badgeSpecial;
     private Boolean isAttendCheck;
     private String isAttendUrl;
     private int os;
@@ -134,6 +135,7 @@ public class RoomOutVo {
         this.isPop = target.getBadge_popular() == 1;
         this.isNew = target.getBadge_newdj() == 1;
         this.isSpecial = target.getBadge_special() > 0;
+        this.badgeSpecial = target.getBadge_special();
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
         this.os = target.getOs_type();
@@ -213,6 +215,7 @@ public class RoomOutVo {
         this.bjLevel = target.getBj_level();
         this.gstLevel = target.getGuest_level();
         this.isSpecial = target.getBadge_special() > 0;
+        this.badgeSpecial = target.getBadge_special();
         //TODO 출석체크이벤트 종료 시 구분 처리 필요
         this.isAttendCheck = (Boolean) attendanceCheckMap.get("isCheck");
         this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/event/attend_event?webview=new";

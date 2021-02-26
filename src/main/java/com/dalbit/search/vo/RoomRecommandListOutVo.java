@@ -22,6 +22,7 @@ public class RoomRecommandListOutVo {
     private String startDt;
     private long startTs;
     private Boolean isSpecial;
+    private int badgeSpecial;
     private int imageType;
 
     public RoomRecommandListOutVo(){}
@@ -31,7 +32,7 @@ public class RoomRecommandListOutVo {
         this.title = target.getTitle();
         this.nickNm = target.getNickName();
         DeviceVo deviceVo = new DeviceVo(request);
-        if(target.getBadge_special() == 1 && target.getImageType() == 1){    //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
+        if(target.getBadge_special() > 0 && target.getImageType() == 1){    //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
             if(deviceVo != null && target.getImage_background().toString().toLowerCase().endsWith(".gif")){
                 if(deviceVo.getOs() == 2 && DalbitUtil.versionCompare("14.0", deviceVo.getSdkVersion())){
                     this.bgImg = new ImageVo(target.getBj_profileImage(), target.getBj_memSex(), DalbitUtil.getProperty("server.photo.url"));
@@ -48,7 +49,8 @@ public class RoomRecommandListOutVo {
         this.entryCnt = target.getCount_entry();
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
-        this.isSpecial = target.getBadge_special() == 1 ? true : false;
+        this.isSpecial = target.getBadge_special() > 0;
+        this.badgeSpecial = target.getBadge_special();
         this.imageType = target.getImageType();
 
     }

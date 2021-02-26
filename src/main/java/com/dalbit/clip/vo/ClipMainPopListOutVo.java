@@ -17,6 +17,7 @@ public class ClipMainPopListOutVo {
     private String filePlayTime;        //재생시간
     private Boolean isNew;              //신입뱃지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
+    private int badgeSpecial;
     private String gender;              //성별
     private int replyCnt;               //클립 댓글 수
     private int goodCnt;                //좋아요 수
@@ -29,8 +30,9 @@ public class ClipMainPopListOutVo {
         setSubjectType(target.getSubject_type());
         setTitle(target.getTitle());
         setFilePlayTime(target.getFilePlayTime());
-        setIsNew(target.getBadge_newdj() == 1 ? true : false);
-        setIsSpecial(target.getBadge_special() == 1 ? true : false);
+        setIsNew(target.getBadge_newdj() == 1);
+        setIsSpecial(target.getBadge_special() > 0);
+        setBadgeSpecial(target.getBadge_special());
         setGender(target.getMemSex());
         setReplyCnt(target.getReplyCnt());
         setGoodCnt(target.getCount_good());

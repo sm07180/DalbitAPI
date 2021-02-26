@@ -31,6 +31,7 @@ public class MainDjRankingOutVo {
     private int gift;
     private int dj;
     private boolean isSpecial;
+    private int badgeSpecial;
     private String holder;
     private String roomNo;
     private String listenRoomNo;
@@ -53,7 +54,8 @@ public class MainDjRankingOutVo {
         setFan(target.getFanCount());
         setGift(target.getGiftCount());
         setDj(target.getDjCount());
-        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.isSpecial = target.getSpecialdj_badge() > 0;
+        this.badgeSpecial = target.getSpecialdj_badge();
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         setRoomNo(target.getRoomNo());
     }
@@ -68,7 +70,8 @@ public class MainDjRankingOutVo {
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         setLevel(target.getLevel());
         setGrade(target.getGrade());
-        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.isSpecial = target.getSpecialdj_badge() > 0;
+        this.badgeSpecial = target.getSpecialdj_badge();
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         setRoomNo(target.getRoomNo());
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){

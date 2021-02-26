@@ -25,6 +25,7 @@ public class MainRankingPageOutVo {
     private String grade;
     private int exp;
     private boolean isSpecial;
+    private int badgeSpecial;
     private int djPoint;
     private int listenerPoint;
     private int goodPoint;
@@ -56,7 +57,8 @@ public class MainRankingPageOutVo {
         setLevel(target.getLevel());
         setGrade(target.getGrade());
         setExp(target.getExp());
-        this.isSpecial = target.getSpecialdj_badge() == 1;
+        this.isSpecial = target.getSpecialdj_badge() > 0;
+        this.badgeSpecial = target.getSpecialdj_badge();
         setDjPoint(target.getDjPoint());
         setListenerPoint(target.getListenerPoint());
         setListenPoint(target.getListenPoint());

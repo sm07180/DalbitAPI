@@ -288,7 +288,8 @@ public class ClipService {
         returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
         returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
         returnMap.put("regCnt", DalbitUtil.getIntMap(resultMap, "regCnt"));
-        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") == 1 ? true : false);
+        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") > 0);
+        returnMap.put("badgeSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge"));
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
@@ -1093,7 +1094,8 @@ public class ClipService {
         returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
         returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
         returnMap.put("regCnt", DalbitUtil.getIntMap(resultMap, "regCnt"));
-        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") == 1 ? true : false);
+        returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") > 0);
+        returnMap.put("badgeSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge"));
         returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("gender", DalbitUtil.getStringMap(resultMap, "memSex"));
