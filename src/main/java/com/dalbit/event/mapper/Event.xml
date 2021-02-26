@@ -210,4 +210,15 @@
         call sp_event_ranking_daily_best(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callChampionshipSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_ChampionshipVo">
+        call sp_event_ranking_live_week(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callChampionshipPointSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.event.vo.procedure.P_ChampionshipPointVo">
+        call sp_event_ranking_live_week_status(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callChampionshipGift" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_event_ranking_live_week_reward(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

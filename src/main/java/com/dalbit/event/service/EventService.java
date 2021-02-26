@@ -1692,4 +1692,113 @@ public class EventService {
         }
         return result;
     }
+
+    /**
+     * 챔피언십 조회
+     */
+    public String callChampionshipSelect(P_ChampionshipVo pChampionshipVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pChampionshipVo);
+        List<P_ChampionshipVo> championshipList = eventDao.callChampionshipSelect(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap rankInfo = new HashMap();
+            List<ChampionshipOutVo> outVoList = new ArrayList<>();
+
+            if(!DalbitUtil.isEmpty(championshipList)){
+                for (int i=0; i<championshipList.size(); i++){
+                    outVoList.add(new ChampionshipOutVo(championshipList.get(i)));
+                }
+            }
+
+            rankInfo.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+            rankInfo.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
+            rankInfo.put("diffPoint", DalbitUtil.getIntMap(resultMap, "diffPoint"));
+            rankInfo.put("opRank", DalbitUtil.getIntMap(resultMap, "upRank"));
+            rankInfo.put("startDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "startDate")));
+            rankInfo.put("startTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "startDate")));
+            rankInfo.put("endDt", DalbitUtil.getUTCFormat(DalbitUtil.getDateMap(resultMap, "endDate")));
+            rankInfo.put("endTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getDateMap(resultMap, "endDate")));
+            rankInfo.put("detailDesc", DalbitUtil.getStringMap(resultMap, "detailDesc"));
+            rankInfo.put("giftDesc", DalbitUtil.getStringMap(resultMap, "giftDesc"));
+            rankInfo.put("topBgImg", DalbitUtil.getStringMap(resultMap, "topBgImg"));
+            rankInfo.put("djBgImg", DalbitUtil.getStringMap(resultMap, "djBgImg"));
+            rankInfo.put("fanBgImg", DalbitUtil.getStringMap(resultMap, "fanBgImg"));
+            rankInfo.put("nowEventNo", DalbitUtil.getIntMap(resultMap, "now_event_no"));
+            rankInfo.put("list", outVoList);
+
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.챔피언십조회_성공, rankInfo));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.챔피언십조회_실패));
+        }
+        return result;
+    }
+
+    /**
+     * 챔피언십 승점 현황 조회
+     */
+    public String callChampionshipPointSelect(P_ChampionshipPointVo pChampionshipPointVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pChampionshipPointVo);
+        List<P_ChampionshipPointVo> championshipPointList = eventDao.callChampionshipPointSelect(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap rankInfo = new HashMap();
+            List<ChampionshipPointOutVo> outVoList = new ArrayList<>();
+
+            if(!DalbitUtil.isEmpty(championshipPointList)){
+                for (int i=0; i<championshipPointList.size(); i++){
+                    outVoList.add(new ChampionshipPointOutVo(championshipPointList.get(i)));
+                }
+            }
+
+            rankInfo.put("myWinPoint1", DalbitUtil.getIntMap(resultMap, "winPoint1"));
+            rankInfo.put("myWinPoint2", DalbitUtil.getIntMap(resultMap, "winPoint2"));
+            rankInfo.put("myWinPoint3", DalbitUtil.getIntMap(resultMap, "winPoint3"));
+            rankInfo.put("myWinPoint4", DalbitUtil.getIntMap(resultMap, "winPoint4"));
+            rankInfo.put("myWinPoint5", DalbitUtil.getIntMap(resultMap, "winPoint5"));
+            rankInfo.put("totalWinPoint", DalbitUtil.getIntMap(resultMap, "total_winPoint"));
+            rankInfo.put("myRank1", DalbitUtil.getIntMap(resultMap, "rank1"));
+            rankInfo.put("myRank2", DalbitUtil.getIntMap(resultMap, "rank2"));
+            rankInfo.put("myRank3", DalbitUtil.getIntMap(resultMap, "rank3"));
+            rankInfo.put("myRank4", DalbitUtil.getIntMap(resultMap, "rank4"));
+            rankInfo.put("myRank5", DalbitUtil.getIntMap(resultMap, "rank5"));
+            rankInfo.put("totalRank", DalbitUtil.getIntMap(resultMap, "total_rank"));
+            rankInfo.put("nowEventNo", DalbitUtil.getIntMap(resultMap, "now_event_no"));
+            rankInfo.put("pointDesc", DalbitUtil.getStringMap(resultMap, "pointDesc"));
+
+            rankInfo.put("list", outVoList);
+
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.챔피언십_승점조회_성공, rankInfo));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.챔피언십_승점조회_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 챔피언십 선물받기(부스터)
+     */
+    public String callChampionshipGift(P_ChampionshipGiftVo pChampionshipGiftVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pChampionshipGiftVo);
+        eventDao.callChampionshipGift(procedureVo);
+
+        String result;
+        if(Status.선물받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_성공));
+        } else if (Status.선물받기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_회원아님));
+        } else if (Status.선물받기_이미받음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_이미받음));
+        } else if (Status.선물받기_10점안됨.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_10점안됨));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_실패));
+        }
+
+        return result;
+    }
 }

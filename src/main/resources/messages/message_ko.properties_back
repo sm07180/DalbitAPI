@@ -15,8 +15,7 @@ request.custom.header.error=통신 오류가 발생했습니다.\\n고객센터�
 
 # Status.enum
 # common
-empty.success=
-need.login=해당 서비스를 이용하기 위해\\n로그인을 해주세요.
+need.login=로그인이 필요합니다.
 need.login.success=로그인이 필요합니다.
 login.success=로그인하였습니다.
 admin.login.success=관리자로 로그인하였습니다.
@@ -42,9 +41,6 @@ no.data=데이터가 없습니다.
 validation.error=벨리데이션 체크 오류입니다.
 string.error=사용이 금지된 특수문자가 포함되어 있습니다.\\n다시 작성해 주세요.
 
-#block
-block.member.restriction=운영정책 위반사항에 따라 계정 이용이 제한되었습니다.\\n상세 내용은 [고객센터>1:1문의]를 통해 확인해 주세요.
-
 # phone sms
 sms.number.request.success=인증번호 요청 성공하였습니다.
 sms.number.check.success=인증 성공하였습니다.
@@ -63,7 +59,7 @@ self.auth.request.fail=본인인증 요청이 실패했습니다.\\n잠시 후 �
 self.auth.response.success=본인인증 확인 성공하였습니다.
 self.auth.response.check.error=비정상적인 접근입니다.\\n본인인증을 다시 실행해주세요.
 self.auth.response.fail=본인인증 확인이 실패했습니다.\\n잠시 후 다시 시도해주세요.
-self.auth.12age.limit=서비스 이용 가능한 나이가 아닙니다.\\n달빛라이브는 12세 이상부터 이용가능합니다.
+self.auth.12age.limit=12세 미만 이용불가합니다.
 self.auth.20age.limit=법정대리인 20세 미만 동의불가합니다.
 
 # member certification (DB save)
@@ -109,8 +105,7 @@ broadcast.room.end=종료된 방송입니다.
 broadcast.room.join.already=다른 기기에서 이미 참가 되어있습니다.\\n다시 입장하시겠습니까?
 broadcast.room.join.no=팬만 입장할 수 있는 방송입니다.
 broadcast.room.join.no.age=20세 이상만 입장할 수 있는 방송입니다.
-#broadcast.room.join.kickout.timelimit=강제퇴장으로 방송에서 퇴장당했습니다.\\n강제퇴장 시 24시간이 지난 후 입장 가능합니다.
-broadcast.room.join.kickout.timelimit=강제퇴장된 방송입니다.\\nDJ의 다음 방송부터 입장 가능합니다.
+broadcast.room.join.kickout.timelimit=강제퇴장으로 방송에서 퇴장당했습니다.\\n강제퇴장 시 24시간이 지난 후 입장 가능합니다.
 broadcast.room.join.fail=방송 입장을 실패했습니다.\\n잠시 후 다시 시도해 주세요.
 #broadcast.room.join.already.live.dj=다른 기기에서 방송 중인 방송은 입장할 수 없습니다.
 broadcast.room.join.already.live.dj=본인이 방송 중인 방은 청취자로 입장 할 수 없습니다.\\n방송하기를 클릭해주세요.
@@ -251,7 +246,6 @@ member.insert.fanstar.success=팬 등록 성공하였습니다.
 member.insert.fan.no=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 member.insert.star.number.strange=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 member.insert.fan.already=팬 등록이 되어있는 회원입니다.
-member.insert.fan.not.me=본인을 팬으로 등록할 수 없습니다.
 member.insert.fanstar.fail=팬 등록을 실패했습니다.\\n잠시 후 다시 시도해주세요.
 
 # member fan delete
@@ -426,10 +420,6 @@ broadcast.room.story.del.index.error=사연 삭제 오류가 발생했습니다.
 broadcast.room.story.del.fail=사연 삭제에 실패했습니다.\\n잠시 후 다시 시도해주세요.
 
 # broadcast gift
-broadcast.room.gift.dj.secret.success=DJ에게 몰래 선물을 보냈습니다.
-broadcast.room.gift.guest.secret.success=게스트에게 몰래 선물을 보냈습니다.
-broadcast.room.gift.dj.success=DJ에게 선물을 보냈습니다.
-broadcast.room.gift.guest.success=게스트에게 선물을 보냈습니다.
 broadcast.room.gift.success=선물하기 성공하였습니다.
 broadcast.room.gift.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.gift.no.room=방송 정보를 불러올 수 없습니다.\\n다시 시도해주세요.
@@ -461,7 +451,6 @@ broadcast.room.live.rank.member.join.no=해당 방송에 없는 회원입니다.
 broadcast.room.live.rank.info.fail=아이템 사용 오류입니다.\\n잠시 후 다시 시도해주세요.
 
 # broadcast manager add
-broadcast.room.fix.manager.add.success=해당 회원이 고정 매니저로 지정되었습니다.
 broadcast.room.manager.add.success=해당 회원이 매니저로 지정되었습니다.
 broadcast.room.manager.add.member.no=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.manager.add.no.room=방송 정보를 불러올 수 없습니다.\\n다시 시도해주세요.
@@ -471,14 +460,10 @@ broadcast.room.manager.add.member.not.bj=DJ만 매니저 지정이 가능합니�
 broadcast.room.manager.add.member.not.join.id=해당 방송에 없는 회원입니다.\\n회원정보를 확인해주세요.
 broadcast.room.manager.add.error=이미 매니저로 지정된 회원입니다.
 broadcast.room.manager.add.limit=방송 매니저는 최대 5명까지만 가능합니다.
-broadcast.room.fix.manager.add.limit=고정 매니저는 최대 5명까지만 가능합니다.
-broadcast.room.fix.manager.add.already=이미 고정 매니저로 지정된 회원입니다.
-broadcast.room.manager.add.type.error=매니저 구분타입 오류입니다.
 broadcast.room.manager.add.admin=운영자는 매니저로 지정할 수 없습니다.
 broadcast.room.manager.add.fail=매니저 지정에 실패했습니다.\\n잠시 후 다시 시도해주세요.
 
 # broadcast manager del
-broadcast.room.fix.manager.del.success=해당 회원을 고정 매니저 해제했습니다.
 broadcast.room.manager.del.success=해당 회원을 매니저 해제했습니다.
 broadcast.room.manager.del.member.no=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.manager.del.no.room=방송 정보를 불러올 수 없습니다.\\n다시 시도해주세요.
@@ -487,7 +472,6 @@ broadcast.room.manager.del.member.join.no=해당 방송에 없는 회원입니�
 broadcast.room.manager.del.member.not.bj=DJ만 매니저 해제가 가능합니다.\\n회원정보를 확인해주세요.
 broadcast.room.manager.del.member.not.join.id=해당 방송에 없는 회원입니다.\\n회원정보를 확인해주세요.
 broadcast.room.manager.del.no=매니저가 아닌 회원을 매니저 해제할 수 없습니다.
-broadcast.room.manager.del.type.error=매니저 구분타입 오류입니다.
 broadcast.room.manager.del.fail=매니저 해제에 실패했습니다.\\n잠시 후 다시 시도해주세요.
 
 # broadcast stream id select
@@ -831,7 +815,6 @@ event.attendance.bonus.fail.already=이미 참여완료 했어요!
 event.attendance.bonus.no.auth=참여 대상이 아닙니다.
 
 system.config.broadcast.block=지금은 방송방 생성/참여를 하실 수 없습니다.
-system.config.clip.block=지금은 클립 업로드/듣기를 하실 수 없습니다.
 
 #event rising live
 event.rising.live.success=라이징이벤트 실시간 순위 조회에 성공하였습니다.
@@ -1060,86 +1043,85 @@ gifticon.win.list.select.member.number.error=회원정보를 불러올 수 없�
 gifticon.win.list.select.fail=에러가 발생하였습니다.
 
 # guest propose
-guest.propose.success=게스트 참여 신청을 완료했습니다.
+guest.propose.success=게스트 신청이 완료되었습니다.
 guest.propose.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.propose.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.propose.end.room.number=종료된 방송입니다.
-guest.propose.no.room.member=방송에 존재하지 않는 회원입니다.
-guest.propose.no.state=게스트 신청이 불가능한 상태힙니다.\\n잠시 후 다시 시도해주세요.
-guest.propose.already=이미 게스트 신청을 하셨습니다.
-guest.propose.already.invite.success=게스트 초대를 받았습니다.\\n초대를 수락해주세요.
-guest.propose.fail=알 수 없는 오류가 발생했습니다.\\n잠시 후 다시 시도해주세요.
+guest.propose.no.room.number=방 번호가 없습니다.
+guest.propose.end.room.number=종료된 방 번호입니다.
+guest.propose.no.room.member=방 청취자 아닙니다.
+guest.propose.no.state=신청 불가 상태입니다.
+guest.propose.already=이미 신청중입니다.
+guest.propose.fail=에러가 발생하였습니다.
 
 # guest propose cancel
-guest.propose.cancel.success=게스트 참여 신청을 취소했습니다.
+guest.propose.cancel.success=게스트 신청 취소 성공하였습니다.
 guest.propose.cancel.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.propose.cancel.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.propose.cancel.end.room.number=종료된 방송입니다.
-guest.propose.cancel.no.room.member=방송에 존재하지 않는 회원입니다.
-guest.propose.cancel.no.state=게스트 신청 취소가 불가능한 상태힙니다.\\n잠시 후 다시 시도해주세요.
-guest.propose.cancel.no.propose.state=먼저 게스트 신청을 해야 취소가 가능합니다.
-guest.propose.cancel.fail=알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+guest.propose.cancel.no.room.number=방 번호가 없습니다.
+guest.propose.cancel.end.room.number=종료된 방 번호입니다.
+guest.propose.cancel.no.room.member=방 청취자 아닙니다.
+guest.propose.cancel.no.state=취소 불가 상태입니다.
+guest.propose.cancel.no.propose.state=신청 상태가 아닙니다.
+guest.propose.cancel.fail=에러가 발생하였습니다.
 
 # guest management select
 guest.management.select.success=게스트 관리 조회 성공하였습니다.
-guest.management.select.no.success=리스트 정보가 없습니다.
+guest.management.select.no=게스트 리스트 없습니다.
 guest.management.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.management.select.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.management.select.end.room.number=종료된 방송입니다.
-guest.management.select.no.room.member=방송에 존재하지 않는 회원입니다.
-guest.management.select.no.auth=게스트 관리 권한이 없습니다.
-guest.management.select.fail=알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+guest.management.select.no.room.number=방 번호가 없습니다.
+guest.management.select.end.room.number=종료된 방 번호입니다.
+guest.management.select.no.room.member=방송방에 존재하지 않는 사용자입니다.
+guest.management.select.no.auth=조회 권한 없습니다.
+guest.management.select.fail=에러가 발생하였습니다.
 
 # guest invite
 guest.invite.success=게스트 초대 요청을 보냈습니다.
 guest.invite.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 guest.invite.object.member.number.error=초대 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.invite.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.invite.end.room.number=종료된 방송입니다.
-guest.invite.room.join.no=방송에 존재하지 않는 회원입니다.
+guest.invite.no.room.number=방 번호가 없습니다.
+guest.invite.end.room.number=종료된 방 번호입니다.
+guest.invite.room.join.no=방송방에 존재하지 않는 사용자입니다.
 guest.invite.no.auth=초대 권한이 없습니다.
-guest.invite.object.room.join.no=방송방 퇴장 시 게스트 초대가 불가능합니다.
-guest.invite.impossible=해당 회원은 초대가 불가능합니다.\\n다른 회원을 초대하세요.
-guest.invite.already=이미 초대한 회원입니다.
+guest.invite.object.room.join.no=초대 대상이 방에 없습니다.
+guest.invite.impossible=초대대상 초대불가 상태입니다.
+guest.invite.already=이미 초대중입니다.
 guest.invite.already.guest=이미 방송 중인 게스트가 있습니다.\\n게스트 연결종료 후 게스트를 초대해주세요.
 guest.invite.another.member.inviting=초대 중인 게스트가 있습니다.\\n초대취소 후 다시 초대해주세요.
-guest.invite.fail=알 수 없는 오류가 발생했습니다.\\n잠시 후 다시 시도해주세요.
+guest.invite.fail=에러가 발생하였습니다.
 
 # guest invite cancel
-guest.invite.cancel.success=게스트 초대를 취소했습니다.
+guest.invite.cancel.success=게스트 초대 취소 성공하였습니다.
 guest.invite.cancel.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 guest.invite.cancel.object.member.number.error=초대 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.invite.cancel.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.invite.cancel.end.room.number=종료된 방송입니다.
-guest.invite.cancel.room.join.no=방송에 존재하지 않는 회원입니다.
+guest.invite.cancel.no.room.number=방 번호가 없습니다.
+guest.invite.cancel.end.room.number=종료된 방 번호입니다.
+guest.invite.cancel.room.join.no=요청회원이 방에 없습니다.
 guest.invite.cancel.no.auth=초대 취소 권한이 없습니다.
-guest.invite.cancel.object.room.join.no=방송방에 없는 회원은 게스트 초대취소할 수 없습니다.
-guest.invite.cancel.impossible=초대 취소가 불가능합니다.\\n잠시 후 다시 시도해 주세요.
-guest.invite.cancel.no.inviting=초대하지 않은 회원입니다.
-guest.invite.cancel.fail=알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+guest.invite.cancel.object.room.join.no=초대 대상이 방에 없습니다.
+guest.invite.cancel.impossible=초대 대상 초대 취소불가 상태입니다.
+guest.invite.cancel.no.inviting=초대 대상 초대중이 아닙니다.
+guest.invite.cancel.fail=에러가 발생하였습니다.
 
 # guest invite ok
 guest.invite.ok.success=게스트 초대 수락 성공하였습니다.
 guest.invite.ok.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.invite.ok.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.invite.ok.end.room.number=종료된 방송입니다.
-guest.invite.ok.room.join.no=방송에 존재하지 않는 회원입니다.
-guest.invite.ok.impossible=초대 수락이 불가능합니다. 잠시 후 다시 시도해 주세요.
+guest.invite.ok.no.room.number=방 번호가 없습니다.
+guest.invite.ok.end.room.number=종료된 방 번호입니다.
+guest.invite.ok.room.join.no=요청회원이 방에 없습니다.
+guest.invite.ok.impossible=초대 수락불가 상태입니다.
 guest.invite.no.inviting=DJ님이 게스트 초대를 취소하셨습니다.
-guest.invite.ok.fail=알 수 없는 오류가 발생했습니다. 잠시 후 다시 시도해주세요.
+guest.invite.ok.fail=에러가 발생하였습니다.
 
 # guest invite refuse
 guest.invite.refuse.success=게스트 초대를 거절했습니다.
 guest.invite.refuse.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.invite.refuse.object.member.number.error=게스트 초대를 거절한 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-guest.invite.refuse.no.room.number=방송방 정보를 찾을 수 없습니다.
-guest.invite.refuse.end.room.number=종료된 방송입니다.
-guest.invite.refuse.room.join.no=방송에 존재하지 않는 회원입니다.
+guest.invite.refuse.object.member.number.error=거절 회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
+guest.invite.refuse.no.room.number=방 번호가 없습니다.
+guest.invite.refuse.end.room.number=종료된 방 번호입니다.
+guest.invite.refuse.room.join.no=요청회원이 방에 없습니다.
 guest.invite.refuse.no.auth=거절 취소 권한이 없습니다.
 guest.invite.refuse.object.room.join.no=거절 대상이 방에 없습니다.
-guest.invite.refuse.impossible=해당 회원이 초대 거절이 불가능한 상태입니다.
-guest.invite.refuse.no.inviting=해당 회원을 초대하지 않았습니다.
-guest.invite.refuse.fail=알 수 없는 오류가 발생했습니다.\\n잠시 후 다시 시도해주세요.
+guest.invite.refuse.impossible=대상 거절 불가상태입니다.
+guest.invite.refuse.no.inviting=대상 초대중 아닙니다.
+guest.invite.refuse.fail=에러가 발생하였습니다.
 
 # emoticon select
 emoticon.select.success=이모티콘 조회 성공하였습니다.
@@ -1150,8 +1132,8 @@ emoticon.category.select.no=카테고리가 없습니다.
 
 # guest list select
 guest.select.success=게스트 리스트 조회 성공하였습니다.
-guest.select.no=리스트 정보가 없습니다.
-guest.select.fail=알 수 없는 오류가 발생했습니다.\\n잠시 후 다시 시도해주세요.
+guest.select.no=게스트 리스트 없습니다.
+guest.select.fail=에러가 발생하였습니다.
 
 # main ranking select
 main.ranking.select.success=랭킹 조회 성공하였습니다.
@@ -1219,7 +1201,6 @@ clip.gift.rank.top3.select.no.success=받은 선물이 없습니다.
 clip.gift.rank.top3.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
 # clip gift ranking
-# clip gift ranking
 clip.gift.rank.select.success=클립 선물랭킹 조회 성공하였습니다.
 clip.gift.rank.select.no.success=받은 선물이 없습니다.
 clip.gift.rank.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
@@ -1246,7 +1227,6 @@ clip.delete.no.clip=클립이 존재하지 않습니다.
 clip.delete.member.number.clip.member.number.unmatch=본인이 등록한 클립이 아닙니다.
 clip.delete.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
-# clip reply list select
 # clip reply list select
 clip.reply.list.select.success=댓글이 조회되었습니다.
 clip.reply.list.select.no.success=등록된 댓글이 없습니다.
@@ -1276,7 +1256,6 @@ clip.reply.delete.no.reply.idx=댓글이 존재하지 않습니다.
 clip.reply.delete.not.writer=댓글 작성자가 아닙니다.
 clip.reply.delete.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
 
-# clip upload list select
 # clip upload list select
 clip.upload.list.select.success=등록한 클립 목록이 조회되었습니다.
 clip.upload.list.select.no.success=등록된 클립이 없습니다.
@@ -1344,22 +1323,22 @@ event.page.win.list.success=이벤트 당첨자 목록을 조회하였습니다.
 
 event.page.win.result.success=이벤트 당첨 결과를 조회하였습니다.
 
-event.prize.receive.choice.prize.success=경품 받기를 선택하셨습니다.
-event.prize.receive.choice.dal.success=달로 받기를 선택하셨습니다.
-event.prize.receive.choice.already.choice=이미 수령방법을 선택하셨습니다.
-event.prize.receive.choice.receiveWay.error=경품 수령 방법을 잘못 입력하였습니다.
-event.prize.receive.choice.already.deposit=수령방법 변경이 불가능합니다. 고객센터로 문의해주세요.
+event.prize.receive.choice.prize.success=경품 수령(경품 받기)에 성공하였습니다.
+event.prize.receive.choice.dal.success=경품 수령(달로 받기)에 성공하였습니다.
+event.prize.receive.choice.already.choice=이미 경품을 선택하였습니다.
+event.prize.receive.choice.receiveWay.error=이벤트 경품 수령 방법을 잘못 입력하였습니다.
+event.prize.receive.choice.already.deposit=경품 입금 확인이 되었기 때문에 수정이 불가능합니다.
 
-event.winner.add.info.select.success=수령 정보 조회에 성공하였습니다.
+event.winner.add.info.select.success=이벤트 당첨자 등록정보 조회에 성공하였습니다.
 
-event.winner.add.info.insert.success=수령 정보 등록을 완료했습니다.
-event.winner.add.info.edit.success=수령 정보를 수정했습니다.
-event.winner.add.info.edit.already.deposit=수령방법 변경이 불가능합니다. 고객센터로 문의해주세요.
+event.winner.add.info.insert.success=이벤트 당첨자 정보 등록에 성공하였습니다.
+event.winner.add.info.edit.success=이벤트 당첨자 정보 수정에 성공하였습니다.
+event.winner.add.info.edit.already.deposit=경품 입금 확인이 되었기 때문에 수정이 불가능합니다.
 
 event.page.no.eventIdx=해당 이벤트 번호가 존재하지 않습니다.
 event.page.no.prizeIdx=해당 경품 번호가 존재하지 않습니다.
-event.page.not.complete=아직 당첨자 발표가 되지 않았습니다.
-event.page.not.winner=아쉽지만 당첨되지 않으셨네요. 다음 이벤트를 기대해주세요.
+event.page.not.complete=이벤트 당첨자 선정이 완료되지 않았습니다.
+event.page.not.winner=해당 이벤트의 당첨자가 아닙니다.
 event.page.not.member=회원번호가 존재하지 않습니다.
 
 
@@ -1371,7 +1350,7 @@ member.good.list.object.member.number.error=회원정보를 불러올 수 없습
 member.good.list.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast title add
-mypage.broadcast.title.add.success=방송 제목이 등록되었습니다.
+mypage.broadcast.title.add.success=방송제목 추가 성공하였습니다.
 mypage.broadcast.title.add.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.add.limit3=방송제목 추가 최대 3개입니다.
 mypage.broadcast.title.add.fail=에러가 발생하였습니다.
@@ -1381,43 +1360,43 @@ event.good.success=추천되었습니다.
 event.good.cancel.success=추천 취소되었습니다.
 
 # mypage broadcast title edit
-mypage.broadcast.title.edit.success=방송 제목이 수정되었습니다.
+mypage.broadcast.title.edit.success=방송제목 수정 성공하였습니다.
 mypage.broadcast.title.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.edit.no.order.number=방송제목 수정번호 없습니다.
 mypage.broadcast.title.edit.fail=에러가 발생하였습니다.
 
 # mypage broadcast title select
-mypage.broadcast.title.select.success=방송 제목을 가져왔습니다.
+mypage.broadcast.title.select.success=방송제목 조회 성공하였습니다.
 mypage.broadcast.title.select.no.success=방송제목 조회 없습니다.
 mypage.broadcast.title.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast title delete
-mypage.broadcast.title.delete.success=방송 제목이 삭제되었습니다.
+mypage.broadcast.title.delete.success=방송제목 삭제 성공하였습니다.
 mypage.broadcast.title.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.title.delete.no.order.number=방송제목 삭제번호 없습니다.
 mypage.broadcast.title.delete.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg add
-mypage.broadcast.welcome.msg.add.success=인사말이 등록되었습니다.
+mypage.broadcast.welcome.msg.add.success=인사말 추가 성공하였습니다.
 mypage.broadcast.welcome.msg.add.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.add.limit3=인사말 추가 최대 3개입니다.
 mypage.broadcast.welcome.msg.add.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg edit
-mypage.broadcast.welcome.msg.edit.success=인사말이 수정되었습니다.
+mypage.broadcast.welcome.msg.edit.success=인사말 수정 성공하였습니다.
 mypage.broadcast.welcome.msg.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.edit.no.order.number=인사말 수정번호 없습니다.
 mypage.broadcast.welcome.msg.edit.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg select
-mypage.broadcast.welcome.msg.select.success=인사말을 가져왔습니다.
+mypage.broadcast.welcome.msg.select.success=인사말 조회 성공하였습니다.
 mypage.broadcast.welcome.msg.select.no.success=인사말 조회 없습니다.
 mypage.broadcast.welcome.msg.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.select.fail=에러가 발생하였습니다.
 
 # mypage broadcast welcome msg delete
-mypage.broadcast.welcome.msg.delete.success=인사말이 삭제되었습니다.
+mypage.broadcast.welcome.msg.delete.success=인사말 삭제 성공하였습니다.
 mypage.broadcast.welcome.msg.delete.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.welcome.msg.delete.no.order.number=인사말 삭제 번호없습니다.
 mypage.broadcast.welcome.msg.delete.fail=에러가 발생하였습니다.
@@ -1428,253 +1407,18 @@ mypage.broadcast.setting.member.number.error=회원정보를 불러올 수 없�
 mypage.broadcast.setting.fail=에러가 발생하였습니다.
 
 # mypage broadcast setting edit
-mypage.broadcast.setting.edit.success=입, 퇴장 메시지 노출 조건이 변경되었습니다.
+mypage.broadcast.setting.edit.success=방송설정 수정 성공하였습니다.
 mypage.broadcast.setting.edit.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 mypage.broadcast.setting.edit.error=에러가 발생하였습니다.
 
 # clip play time limit
-clip.exceed.play.time.limit.10min=파일 재생시간이 10분을 초과하였습니다.\\n최대 10분 재생시간의 파일까지 첨부 가능합니다.
+clip.exceed.play.time.limit.5min=파일 재생시간이 5분을 초과하였습니다.\\n최대 5분 재생시간의 파일까지 첨부 가능합니다.
 
 # broadcast room chat freeze
 broadcast.room.freeze.success=얼리기 성공하였습니다.
-broadcast.room.freeze.true.success=얼리기 성공하였습니다.
-broadcast.room.freeze.false.success=얼리기 해제하였습니다.
 broadcast.room.freeze.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.freeze.no.room.number=방송 정보를 불러올 수 없습니다.\\n다시 시도해주세요.
 broadcast.room.freeze.end.room=종료된 방송입니다.
 broadcast.room.freeze.member.not.in.room=방에 참여중이지 않습니다.
 broadcast.room.freeze.impossible=얼리기 불가 상태입니다.
 broadcast.room.freeze.fail=얼리기 실패하였습니다.
-
-# mypage broad storymypage.broadcast.setting.edit.success
-mypage.broad.story.list.select.success=방송방 사연이 조회되었습니다.
-mypage.broad.story.list.select.no.success=등록된 방송방이 없습니다.
-mypage.broad.story.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-mypage.broad.story.list.select.fail=오류가 발생되었습니다.\\n다시 시도해주세요.
-
-# mypage wallet popup select
-mypage.wallet.history.popup.select.success=내지갑 건수 조회하였습니다.
-mypage.wallet.history.popup.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-mypage.wallet.history.popup.select.fail=에러가 발생하였습니다.
-
-# mypage wallet list select
-mypage.wallet.list.select.success=내지갑 내역조회하였습니다.
-mypage.wallet.list.select.no=사용내역이 없습니다.
-mypage.wallet.list.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-mypage.wallet.list.select.fail=에러가 발생하였습니다.
-
-# Broadcasting or Listening End Summary
-broad.summary.success=요약정보 조회하였습니다.
-broad.summary.no.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-broad.summary.no.room=방정보를 찾을 수 없습니다.
-broad.summary.fail=에러가 발생하였습니다.
-
-# broadcast good history
-broadcast.good.history.select.success=좋아요 내역을 조회하였습니다.
-broadcast.good.history.no.success=좋아요 내역이 없습니다.
-broadcast.good.history.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-broadcast.good.history.select.no.room=종료된 방송입니다.
-broadcast.good.history.select.not.join.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-broadcast.good.history.select.no.auth=좋아요 내역조회 권한이 없습니다.
-broadcast.good.history.select.fail=에러가 발생하였습니다.
-
-# event chooseok check
-event.chooseok.check.ok.success=추석이벤트 참여가능합니다.
-event.chooseok.check.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.chooseok.check.already=이미 추석이벤트 보상달을 \\n지급받았습니다.
-event.chooseok.check.fail=에러가 발생하였습니다.
-event.chooseok.check.invalid.date=이벤트 기간이 아닙니다.
-
-# event chooseok free dal
-event.chooseok.free.dal.success=추석 이벤트 무료 달이 지급되었습니다.
-event.chooseok.free.dal.level.not.enough=추석 선물은 5레벨 이상부터 \\n받을 수 있습니다.
-event.chooseok.free.dal.end=무료 달 지급 이벤트가 종료되었습니다.
-event.chooseok.free.dal.fail=에러가 발생하였습니다.
-
-# event chooseok purchase dal select
-event.chooseok.purchaseDal.select.success=구매 달을 조회하였습니다.
-event.chooseok.purchaseDal.select.fail=에러가 발생하였습니다.
-
-# event chooseok purchase dal bonus
-event.chooseok.purchaseDal.bonus.success=보너스 달이 지급되었습니다.
-event.chooseok.purchaseDal.bonus.not.yet=추가 보너스는 \\n10월 5일(월요일)에 받을 수 있습니다.
-event.chooseok.purchaseDal.bonus.end=보너스 달 지급 이벤트가 종료되었습니다.
-event.chooseok.purchaseDal.bonus.dal.not.enough=조건 미달로 보너스를 받을 수 없습니다.
-event.chooseok.purchaseDal.already=이미 보너스가 지급되었습니다.
-event.chooseok.purchaseDal.bonus.fail=에러가 발생하였습니다.
-
-# my clip
-my.clip.select.success=내 클립현황 조회하였습니다.
-my.clip.select.member.numer.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-my.clip.select.fail=에러가 발생하였습니다.
-
-#추천 방송 검색
-recommand.broadcast.search.success=추천 방송리스트 조회하였습니다.
-recommand.broadcast.search.no.success=추천 방송리스트가 없습니다.
-recommand.broadcast.search.fail=에러가 발생하였습니다.
-
-# clip play confirm
-clip.play.confirm.success=재생확인 성공하였습니다.
-clip.play.confirm.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.play.confirm.clip.number.no=클립번호 오류입니다.
-clip.play.confirm.play.idx.no=재생확인번호 오류입니다.
-clip.play.confirm.number.unmatch=클립번호와 재생확인번호가 불일치 합니다.
-clip.play.confirm.already=이미 재생확인되었습니다.
-clip.play.confirm.60sec.limit=60초 미만입니다.
-clip.play.confirm.fail=에러가 발생하였습니다.
-
-# 계좌등록
-exchange.my.account.number.add.success=선택하신 계좌정보 등록이 완료되었습니다.
-exchange.my.account.number.add.fail=에러가 발생하였습니다.
-
-# 계좌수정
-exchange.my.account.number.edit.success=선택하신 계좌정보 수정이 완료되었습니다.
-exchange.my.account.number.edit.fail=에러가 발생하였습니다.
-
-# 계좌삭제
-exchange.my.account.number.delete.success=선택하신 계좌정보 삭제가 완료되었습니다.
-exchange.my.account.number.delete.fail=에러가 발생하였습니다.
-
-# 계좌조회
-exchange.my.account.number.select.success=계좌정보 조회하였습니다.
-exchange.my.account.number.select.no=회원님께서는 최초 환전을 신청한 회원으로 「최근 계좌」 정보가 없습니다.
-
-# 응모권조회(룰렛이벤트)
-event.roulette.coupon.select.success=응모권 조회하였습니다
-event.roulette.coupon.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.coupon.select.fail=에러가 발생하였습니다.
-
-# 룰렛 스타트
-event.roulette.start.success=응모 성공하였습니다.
-event.roulette.start.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.start.coupon.limit=응모권이 부족합니다.
-event.roulette.start.fail=에러가 발생하였습니다.
-
-# 전화번호 입력(룰렛이벤트)
-event.roulette.input.phone.success=입력 성공하였습니다
-event.roulette.input.phone.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.input.phone.no.prize=당첨내역이 없습니다.
-event.roulette.input.phone.error=전화번호 자리수를 확인해주세요.
-event.roulette.input.phone.fail=에러가 발생하였습니다.
-
-# 참여 이력 조회(룰렛이벤트)
-event.roulette.apply.select.success=참여 이력 조회하였습니다.
-event.roulette.apply.select.no=참여 이력 없습니다.
-event.roulette.apply.selectmember.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.apply.select.fail=에러가 발생하였습니다.
-
-# 당첨자 조회(룰렛이벤트)
-event.roulette.win.select.success=당첨자 조회하였습니다.
-event.roulette.win.select.no=당첨자가 없습니다.
-event.roulette.win.select.fail=에러가 발생하였습니다.
-
-# 계좌 수정 & 삭제 불가
-exchange.my.account.number.edit.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n수정을 할 수 없습니다.
-exchange.my.account.number.delete.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n삭제가 불가합니다.
-
-# broadcast good history
-broadcast.good.history.select.success=좋아요 내역을 조회하였습니다.
-broadcast.good.history.no.success=좋아요 내역이 없습니다.
-broadcast.good.history.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-broadcast.good.history.select.no.room=종료된 방송입니다.
-broadcast.good.history.select.not.join.member=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-broadcast.good.history.select.no.auth=좋아요 내역조회 권한이 없습니다.
-broadcast.good.history.select.fail=에러가 발생하였습니다.
-
-# event chooseok check
-event.chooseok.check.ok.success=추석이벤트 참여가능합니다.
-event.chooseok.check.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.chooseok.check.already=이미 추석이벤트 보상달을 \\n지급받았습니다.
-event.chooseok.check.fail=에러가 발생하였습니다.
-event.chooseok.check.invalid.date=이벤트 기간이 아닙니다.
-
-# event chooseok free dal
-event.chooseok.free.dal.success=추석 이벤트 무료 달이 지급되었습니다.
-event.chooseok.free.dal.level.not.enough=추석 선물은 5레벨 이상부터 \\n받을 수 있습니다.
-event.chooseok.free.dal.end=무료 달 지급 이벤트가 종료되었습니다.
-event.chooseok.free.dal.fail=에러가 발생하였습니다.
-
-# event chooseok purchase dal select
-event.chooseok.purchaseDal.select.success=구매 달을 조회하였습니다.
-event.chooseok.purchaseDal.select.fail=에러가 발생하였습니다.
-
-# event chooseok purchase dal bonus
-event.chooseok.purchaseDal.bonus.success=보너스 달이 지급되었습니다.
-event.chooseok.purchaseDal.bonus.not.yet=추가 보너스는 \\n10월 5일(월요일)에 받을 수 있습니다.
-event.chooseok.purchaseDal.bonus.end=보너스 달 지급 이벤트가 종료되었습니다.
-event.chooseok.purchaseDal.bonus.dal.not.enough=조건 미달로 보너스를 받을 수 없습니다.
-event.chooseok.purchaseDal.already=이미 보너스가 지급되었습니다.
-event.chooseok.purchaseDal.bonus.fail=에러가 발생하였습니다.
-
-# my clip
-my.clip.select.success=내 클립현황 조회하였습니다.
-my.clip.select.member.numer.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-my.clip.select.fail=에러가 발생하였습니다.
-
-#추천 방송 검색
-recommand.broadcast.search.success=추천 방송리스트 조회하였습니다.
-recommand.broadcast.search.no.success=추천 방송리스트가 없습니다.
-recommand.broadcast.search.fail=에러가 발생하였습니다.
-
-# clip play confirm
-clip.play.confirm.success=재생확인 성공하였습니다.
-clip.play.confirm.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-clip.play.confirm.clip.number.no=클립번호 오류입니다.
-clip.play.confirm.play.idx.no=재생확인번호 오류입니다.
-clip.play.confirm.number.unmatch=클립번호와 재생확인번호가 불일치 합니다.
-clip.play.confirm.already=이미 재생확인되었습니다.
-clip.play.confirm.60sec.limit=60초 미만입니다.
-clip.play.confirm.fail=에러가 발생하였습니다.
-
-# 계좌등록
-exchange.my.account.number.add.success=선택하신 계좌정보 등록이 완료되었습니다.
-exchange.my.account.number.add.fail=에러가 발생하였습니다.
-
-# 계좌수정
-exchange.my.account.number.edit.success=선택하신 계좌정보 수정이 완료되었습니다.
-exchange.my.account.number.edit.fail=에러가 발생하였습니다.
-
-# 계좌삭제
-exchange.my.account.number.delete.success=선택하신 계좌정보 삭제가 완료되었습니다.
-exchange.my.account.number.delete.fail=에러가 발생하였습니다.
-
-# 계좌조회
-exchange.my.account.number.select.success=계좌정보 조회하였습니다.
-exchange.my.account.number.select.no=회원님께서는 최초 환전을 신청한 회원으로 「최근 계좌」 정보가 없습니다.
-
-# 응모권조회(룰렛이벤트)
-event.roulette.coupon.select.success=응모권 조회하였습니다
-event.roulette.coupon.select.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.coupon.select.fail=에러가 발생하였습니다.
-
-# 룰렛 스타트
-event.roulette.start.success=응모 성공하였습니다.
-event.roulette.start.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.start.coupon.limit=응모권이 부족합니다.
-event.roulette.start.fail=에러가 발생하였습니다.
-
-# 전화번호 입력(룰렛이벤트)
-event.roulette.input.phone.success=입력 성공하였습니다
-event.roulette.input.phone.member.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.input.phone.no.prize=당첨내역이 없습니다.
-event.roulette.input.phone.error=전화번호 자리수를 확인해주세요.
-event.roulette.input.phone.fail=에러가 발생하였습니다.
-
-# 참여 이력 조회(룰렛이벤트)
-event.roulette.apply.select.success=참여 이력 조회하였습니다.
-event.roulette.apply.select.no=참여 이력 없습니다.
-event.roulette.apply.selectmember.number.error=회원정보를 불러올 수 없습니다.\\n다시 시도해주세요.
-event.roulette.apply.select.fail=에러가 발생하였습니다.
-
-# 당첨자 조회(룰렛이벤트)
-event.roulette.win.select.success=당첨자 조회하였습니다.
-event.roulette.win.select.no=당첨자가 없습니다.
-event.roulette.win.select.fail=에러가 발생하였습니다.
-
-# 계좌 수정 & 삭제 불가
-exchange.my.account.number.edit.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n수정을 할 수 없습니다.
-exchange.my.account.number.delete.impossible=선택하신 계좌정보는\\n회원정보가 포함된\\n환전신청 또는 승인 정보로\\n삭제가 불가합니다.
-
-# 스페셜DJ 선정 이력 조회
-special.dj.selection.select.success=스페셜DJ 선정 이력 조회 성공하였습니다.
-special.dj.selection.select.no.success=스페셜DJ 선정 이력이 없습니다.

@@ -2137,6 +2137,21 @@ public enum Status {
     스페셜리그_조회_성공("C001", "special.league.select.success", "스페셜리그 조회 시"),
     스페셜리그_조회_기수오버("-2", "special.league.select.round.over", "현재보다 큰 기수 조회 시"),
     스페셜리그_조회_실패("C006", "special.league.select.fail", "스페셜리그 조회 실패 시"),
+
+    //챔피언십 조회
+    챔피언십조회_성공("C001", "championship.event.select.success", "챔피언십 조회 성공 시"),
+    챔피언십조회_실패("C006", "championship.event.select.fail", "챔피언십 조회 실패 시"),
+
+    //챔피언십 승점 조회
+    챔피언십_승점조회_성공("C001", "championship.point.event.select.success", "챔피언십 승점조회 성공 시"),
+    챔피언십_승점조회_실패("C006", "championship.point.event.select.fail", "챔피언십 승점조회 실패 시"),
+
+    //챔피언십 선물받기
+    선물받기_성공("0", "championship.gift.success", "선물받기 성공 시"),
+    선물받기_회원아님("-1", "championship.gift.member.number.error", "요청회원번호 회원 아닐 시"),
+    선물받기_이미받음("-2", "championship.gift.already", "이미 받은 경우"),
+    선물받기_10점안됨("-3", "championship.gift.10point.limit", "10점 미만인 경우"),
+    선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시"),
 ;
 
 

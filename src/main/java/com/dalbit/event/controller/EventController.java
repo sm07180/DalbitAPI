@@ -528,4 +528,36 @@ public class EventController {
         return result;
     }
 
+    /**
+     * 챔피언십 조회
+     */
+    @GetMapping("/championship")
+    public String championshipSelect(@Valid ChampionshipVo championshipVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ChampionshipVo apiData = new P_ChampionshipVo(championshipVo, request);
+        String result = eventService.callChampionshipSelect(apiData);
+        return result;
+    }
+
+    /**
+     * 챔피언십 승점 현황 조회
+     */
+    @GetMapping("/championship/point")
+    public String championshipPointSelect(@Valid ChampionshipPointVo championshipPointVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ChampionshipPointVo apiData = new P_ChampionshipPointVo(championshipPointVo, request);
+        String result = eventService.callChampionshipPointSelect(apiData);
+        return result;
+    }
+
+    /**
+     * 챔피언십 선물받기(부스터)
+     */
+    @PostMapping("/championship/gift")
+    public String championshipGift(HttpServletRequest request){
+        P_ChampionshipGiftVo apiData = new P_ChampionshipGiftVo(request);
+        String result = eventService.callChampionshipGift(apiData);
+        return result;
+    }
+
 }
