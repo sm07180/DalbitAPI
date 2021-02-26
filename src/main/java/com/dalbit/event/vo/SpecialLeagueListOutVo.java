@@ -18,6 +18,7 @@ public class SpecialLeagueListOutVo {
     private int giftPoint;
     private int listenerPoint;
     private int goodPoint;
+    private String fanPoint;
     private int totalPoint;
 
     public SpecialLeagueListOutVo(P_SpecialLeagueVo target){
@@ -30,6 +31,7 @@ public class SpecialLeagueListOutVo {
         setGiftPoint(target.getGiftPoint());
         setListenerPoint(target.getListenerPoint());
         setGoodPoint(target.getGoodPoint());
+        setFanPoint(target.getFanPoint());
         setTotalPoint(target.getTotalPoint());
     }
 

@@ -295,6 +295,7 @@ public enum Status {
     방송생성_deviceUuid비정상("-3", "broadcast.room.deviceUuid.error", "deviceUuid 비정상일 시"),
     방송생성_20세제한("-4", "broadcast.room.limit.20age", "20세 미만 회원일 경우"),
     방송생성_3레벨제한("-5", "broadcast.room.limit.3level", "3레벨 제한"),
+    방송생성_20세본인인증("-6", "broadcast.room.no.certification", "20세이상 방생성 시 본인인증 안한경우"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
 
     //방송방 참가를 위한 스트림아이디, 토큰받아오기
@@ -317,6 +318,7 @@ public enum Status {
     방송참여_블랙리스트("-11", "broadcast.room.join.blacklist", "블랙리스트에 등록되어 있을 시"),
     방송참여_비회원IP중복("-12", "broadcast.room.join.ano.ip.duplicate", "비회원 IP 동일방 중복 있을 시"),
     방송참여_차단회원입장불가("-13", "broadcast.room.black.list.join.no", "차단회원 입장 불가 시"),
+    방송참여_20세본인인증안함("-14", "broadcast.room.join.no.certification", "20세이상 방 입장시 본인인증 안한 경우"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
     방송방조인따라가기비공개("-999", "broadcast.room.join.not.allow.fallow", "일반회원 참여시 따라가기 비공개일 경우"),
 
@@ -2088,7 +2090,8 @@ public enum Status {
     미니게임등록_실패("C006", "mini.game.add.fail", "미니게임 룰렛 등록 실패 시"),
 
     //미니게임 수정
-    미니게임수정_성공("0", "mini.game.edit.success", "미니게임 룰렛 수정 시"),
+    미니게임수정_성공("0", "mini.game.edit.success", "미니게임 수정 시"),
+    미니게임수정_룰렛("0", "mini.game.edit.roulette.success", "미니게임 룰렛 수정 시"),
     미니게임수정_회원아님("-1", "mini.game.edit.member.number.error", "요청회원번호 회원 아닐 시"),
     미니게임수정_방번호없음("-2", "mini.game.edit.no.room", "해당 방송이 없을 시"),
     미니게임수정_종료된방("-3", "mini.game.edit.end.room", "방이 종료되어 있을 시"),
@@ -2109,13 +2112,17 @@ public enum Status {
     미니게임조회_실패("C006", "mini.game.select.fail", "미니게임 룰렛 조회 실패 시"),
 
     //미니게임 시작
-    미니게임시작_성공("0", "mini.game.start.success", "미니게임 룰렛 시작 시"),
+    미니게임시작_성공("0", "mini.game.start.success", "미니게임 시작 시"),
     미니게임시작_회원아님("-1", "mini.game.start.member.number.error", "요청회원번호 회원 아닐 시"),
     미니게임시작_해당방없음("-2", "mini.game.start.no.room", "해당 방송이 없을 시"),
     미니게임시작_방이종료됨("-3", "mini.game.start.end.room", "방이 종료되어 있을 시"),
-    미니게임시작_무료상태("-4", "mini.game.start.not.free", "무료상태 방장만 가능"),
-    미니게임시작_없음("-5", "mini.game.start.no", "등록된 미니게임 룰렛이 없을 시"),
-    미니게임시작_실패("C006", "mini.game.start.fail", "미니게임 룰렛 시작 실패 시"),
+    미니게임시작_청취자아님("-4", "mini.game.start.not.in.member", "해당방에 청취중이 아닐 시"),
+    미니게임시작_없음("-5", "mini.game.start.no", "등록된 미니게임이 없을 시"),
+    미니게임시작_무료상태("-6", "mini.game.start.not.free", "무료상태 방장만 가능"),
+    미니게임시작_수정버전오류("-7", "mini.game.start.version.mismatch", "수정버전과 일치하지 않을 경우"),
+    미니게임시작_보유달부족("-8", "mini.game.start.dal.limit", "보유 달 부족 시"),
+    미니게임시작_진행중("-11", "mini.game.start.ing", "미니게임 진행중"),
+    미니게임시작_실패("C006", "mini.game.start.fail", "미니게임 시작 실패 시"),
 
     //미니게임 종료
     미니게임종료_성공("0", "mini.game.end.success", "미니게임 룰렛 종료 시"),

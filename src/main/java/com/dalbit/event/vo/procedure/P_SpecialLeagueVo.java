@@ -31,6 +31,7 @@ public class P_SpecialLeagueVo {
     private int giftPoint;
     private int listenerPoint;
     private int goodPoint;
+    private String fanPoint;
     private int totalPoint;
 
 }

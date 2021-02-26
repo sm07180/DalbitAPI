@@ -1693,6 +1693,47 @@ public class EventService {
         return result;
     }
 
+
+    /**
+     * 스페셜 리그 조회
+     */
+    public String callSpecialLeague(P_SpecialLeagueVo pSpecialLeagueVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pSpecialLeagueVo);
+        List<P_SpecialLeagueVo> specialLeagueVoList = eventDao.callSpecialLeague(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap specialLeague = new HashMap();
+            List<SpecialLeagueListOutVo> outVoList = new ArrayList<>();
+
+            if(!DalbitUtil.isEmpty(specialLeagueVoList)){
+                for (int i=0; i<specialLeagueVoList.size(); i++){
+                    outVoList.add(new SpecialLeagueListOutVo(specialLeagueVoList.get(i)));
+                }
+            }
+
+            specialLeague.put("list", outVoList);
+            specialLeague.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
+            specialLeague.put("myUpDown", DalbitUtil.getStringMap(resultMap, "myUpDown"));
+            specialLeague.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
+            specialLeague.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
+            specialLeague.put("myGoodPoint", DalbitUtil.getIntMap(resultMap, "myGoodPoint"));
+            specialLeague.put("myFanPoint", DalbitUtil.getStringMap(resultMap, "myFanPoint"));
+            specialLeague.put("myTotalPoint", DalbitUtil.getIntMap(resultMap, "myTotalPoint"));
+            specialLeague.put("nowRoundNo", DalbitUtil.getIntMap(resultMap, "nowRoundNo"));
+            specialLeague.put("isSpecial", DalbitUtil.getIntMap(resultMap, "isSpecial") == 1);
+
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.스페셜리그_조회_성공, specialLeague));
+        } else if (Status.스페셜리그_조회_기수오버.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜리그_조회_기수오버));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜리그_조회_실패));
+        }
+        return result;
+    }
+
+
     /**
      * 챔피언십 조회
      */

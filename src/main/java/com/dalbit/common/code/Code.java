@@ -77,7 +77,10 @@ public enum Code {
 
     //이벤트
     출석체크이벤트_본인인증체크("event_attend_check_auth", "출석체크이벤트 본인인증체크 여부"),
-    출석체크이벤트_IP체크("event_attend_check_ip", "출석체크이벤트 IP체크 여부")
+    출석체크이벤트_IP체크("event_attend_check_ip", "출석체크이벤트 IP체크 여부"),
+
+    //미니게임 활성 여부
+    미니게임_활성여부("mini_game", "미니게임 활성여부"), //N이면 참여가능, Y이면 참여불가 (시스템 점검 전에 값을 바꿔 유입을 막는다)
    ;
 
     final private String code;

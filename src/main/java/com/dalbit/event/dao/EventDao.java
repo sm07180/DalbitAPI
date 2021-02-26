@@ -122,8 +122,13 @@ public interface EventDao {
     @Transactional(readOnly = true)
     List<P_OpenEventBestListVo> callOpenEventDailyBest(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
+    List<P_SpecialLeagueVo> callSpecialLeague(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
     List<P_ChampionshipVo> callChampionshipSelect(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_ChampionshipPointVo> callChampionshipPointSelect(ProcedureVo procedureVo);
 
     ProcedureVo callChampionshipGift(ProcedureVo procedureVo);

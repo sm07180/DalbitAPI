@@ -529,6 +529,17 @@ public class EventController {
     }
 
     /**
+     * 스페셜 리그 조회
+     */
+    @GetMapping("/special")
+    public String specialLeague(@Valid SpecialLeagueVo specialLeagueVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_SpecialLeagueVo apiData = new P_SpecialLeagueVo(specialLeagueVo, request);
+        String result = eventService.callSpecialLeague(apiData);
+        return result;
+    }
+
+    /**
      * 챔피언십 조회
      */
     @GetMapping("/championship")
