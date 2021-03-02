@@ -131,7 +131,7 @@ public class RoomService {
                 }
             } else {
 
-                HashMap fanRankMap = commonService.getKingFanRankList(pRoomExitVo.getRoom_no());
+                HashMap fanRankMap = commonService.getKingFanRankList(pRoomExitVo.getRoom_no(), request);
                 returnMap.put("fanRank", fanRankMap.get("list"));
                 returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
                 returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
@@ -544,7 +544,7 @@ public class RoomService {
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
 
-                HashMap fanRankMap = commonService.getKingFanRankList(pRoomLiveRankInfoVo.getRoom_no());
+                HashMap fanRankMap = commonService.getKingFanRankList(pRoomLiveRankInfoVo.getRoom_no(), request);
                 socketMap.put("fanRank", fanRankMap.get("list"));
                 socketMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
                 socketMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
@@ -818,7 +818,7 @@ public class RoomService {
 
                     returnMap.put("useBoost", existsBoostByRoom(pRoomStreamVo.getRoom_no(), pRoomStreamVo.getMem_no()));    //부스터 사용여부
 
-                    HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
+                    HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no(), request);
                     returnMap.put("fanRank", fanRankMap.get("list"));
                     returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
                     returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
@@ -1072,7 +1072,7 @@ public class RoomService {
                         returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
                         returnMap.put("rank", DalbitUtil.getIntMap(resultUpdateMap, "rank"));
 
-                        HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
+                        HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no(), request);
                         returnMap.put("fanRank", fanRankMap.get("list"));
                         returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
                         returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
@@ -1115,7 +1115,7 @@ public class RoomService {
 
                         returnMap.put("likes", DalbitUtil.getIntMap(resultCountMap, "good"));
                         returnMap.put("rank", DalbitUtil.getIntMap(resultCountMap, "rank"));
-                        HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no());
+                        HashMap fanRankMap = commonService.getKingFanRankList(pRoomStreamVo.getRoom_no(), request);
                         returnMap.put("fanRank", fanRankMap.get("list"));
                         returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
                         returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));

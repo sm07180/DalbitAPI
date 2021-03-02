@@ -499,9 +499,9 @@ public class CommonService {
     /**
      * 방송방 황제 & 팬랭킹 1,2,3위 가져오기
      */
-    public HashMap getKingFanRankList(String roomNo) {
+    public HashMap getKingFanRankList(String roomNo, HttpServletRequest request) {
 
-        P_KingFanRankListVo apiData = new P_KingFanRankListVo(roomNo);
+        P_KingFanRankListVo apiData = new P_KingFanRankListVo(roomNo, request);
         ProcedureVo procedureVo = new ProcedureVo(apiData);
         List<P_KingFanRankListVo> kingFanRankListVo = commonDao.callBroadCastRoomRank3(procedureVo);
 

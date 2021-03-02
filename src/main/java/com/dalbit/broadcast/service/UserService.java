@@ -151,7 +151,7 @@ public class UserService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap returnMap = new HashMap();
-        HashMap fanRankMap = commonService.getKingFanRankList(pRoomKickoutVo.getRoom_no());
+        HashMap fanRankMap = commonService.getKingFanRankList(pRoomKickoutVo.getRoom_no(), request);
         returnMap.put("fanRank", fanRankMap.get("list"));
         returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
         returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));

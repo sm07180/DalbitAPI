@@ -312,7 +312,7 @@ public class WowzaService {
             memberInfoVo.setLikes(DalbitUtil.getIntMap(resultMap, "good"));
             memberInfoVo.setRemainTime(DalbitUtil.getLongMap(resultMap, "remainTime"));
             memberInfoVo.setUseBoost(DalbitUtil.getIntMap(resultMap, "booster") > 0);
-            HashMap fanRankMap = commonService.getKingFanRankList(roomNo);
+            HashMap fanRankMap = commonService.getKingFanRankList(roomNo, request);
             memberInfoVo.setFanRank((List)fanRankMap.get("list"));
             try{
                 memberInfoVo.setKingMember((String)fanRankMap.get("kingMemNo"), (String)fanRankMap.get("kingNickNm"), (ImageVo) fanRankMap.get("kingProfImg"));
@@ -751,7 +751,7 @@ public class WowzaService {
         }
         memberInfoVo.setHashStory(false);
         memberInfoVo.setUseBoost(roomService.existsBoostByRoom(target.getRoomNo(), memNo));
-        HashMap fanRankMap = commonService.getKingFanRankList(target.getRoomNo());
+        HashMap fanRankMap = commonService.getKingFanRankList(target.getRoomNo(), request);
         memberInfoVo.setFanRank((List)fanRankMap.get("list"));
         try{
             memberInfoVo.setKingMember((String)fanRankMap.get("kingMemNo"), (String)fanRankMap.get("kingNickNm"), (ImageVo) fanRankMap.get("kingProfImg"));
