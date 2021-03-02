@@ -328,6 +328,7 @@ public enum Status {
     방송나가기_해당방이없음("-2", "broadcast.room.no", "해당 방이 없을 시"),
     방송나가기_종료된방송("-3", "broadcast.room.end", "종료된 방송일 시"),
     방송나가기_방참가자아님("-4", "broadcast.room.join.member.no", "방송 참가자 아닐 시"),
+    방송나가기_DB_LOCK("-9", "broadcast.room.join.deadlock", "DB DEAD LOCK"),
     방송나가기실패("C006", "broadcast.out.fail", "방송 나가기 실패 시"),
 
     //방송정보수정

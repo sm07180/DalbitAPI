@@ -116,8 +116,8 @@ public class RoomService {
         log.info(" ### 프로시저 호출결과 ###");
 
         String result;
+        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
-            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
@@ -244,7 +244,87 @@ public class RoomService {
                     }
 
                 }
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+
+                //DB LOCK 걸렸을 경우 나가기 재시도 (서비스 그대로 호출 시 -> 무한루프(세션X, 서비스호출 시 카운트 불가))
+                if (DalbitUtil.getStringMap(resultMap, "desc").indexOf("Deadlock") > -1) {
+                    roomDao.callBroadCastRoomExit(procedureVo);
+                    if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
+                        returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
+                        SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                        if (isBj) {
+                            try {
+                                socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 3, DalbitUtil.isLogin(request), vo);
+                                vo.resetData();
+                            } catch (Exception e) {
+                                log.info("Socket Service changeCount Exception {}", e);
+                            }
+                        } else {
+                            HashMap fanRankMap = commonService.getKingFanRankList(pRoomExitVo.getRoom_no(), request);
+                            returnMap.put("fanRank", fanRankMap.get("list"));
+                            returnMap.put("kingMemNo", fanRankMap.get("kingMemNo"));
+                            returnMap.put("kingNickNm", fanRankMap.get("kingNickNm"));
+                            returnMap.put("kingGender", fanRankMap.get("kingGender"));
+                            returnMap.put("kingAge", fanRankMap.get("kingAge"));
+                            returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
+
+                            try {
+                                if (!"0".equals(request.getParameter("isSocket"))) {
+                                    socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 1, DalbitUtil.isLogin(request), vo);
+                                    vo.resetData();
+                                }
+                            } catch (Exception e) {
+                                log.info("Socket Service changeCount Exception {}", e);
+                            }
+                            try {
+                                if (resultMap.containsKey("good")) {
+                                    HashMap socketMap = new HashMap();
+                                    socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
+                                    socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                                    socketMap.put("fanRank", returnMap.get("fanRank"));
+                                    socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                                    vo.resetData();
+                                }
+                            } catch (Exception e) {
+                                log.info("Socket Service changeCount Exception {}", e);
+                            }
+
+                            //게스트 퇴장일 경우 소켓 추가
+                            if(isGuest){
+                                Status status = null;
+                                HashMap selParams = new HashMap();
+                                selParams.put("mem_no", pRoomExitVo.getMem_no());
+                                selParams.put("room_no", pRoomExitVo.getRoom_no());
+                                HashMap roomGuestInfo = userDao.selectGuestStreamInfo(selParams);
+
+                                GuestInfoVo guestInfoVo = new GuestInfoVo();
+                                guestInfoVo.setMode(6);
+                                guestInfoVo.setMemNo(pRoomExitVo.getMem_no());
+                                guestInfoVo.setNickNm(nickNm);
+                                guestInfoVo.setProfImg(new ImageVo(roomGuestInfo.get("image_profile"), (String)roomGuestInfo.get("mem_sex"), DalbitUtil.getProperty("server.photo.url")));
+
+                                //소켓통신
+                                if(status == null || "success".equals(status.getResult())){
+                                    try{
+                                        socketService.sendGuest(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), DalbitUtil.getStringMap(roomGuestInfo, "dj_mem_no"), "6", request, DalbitUtil.getAuthToken(request), guestInfoVo);
+                                    }catch(Exception e){}
+                                }
+
+                            }
+
+                        }
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
+                    } else if(procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())){
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
+                    } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+                        roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님));
+                    } else {
+                        roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패));
+                    }
+                }else{
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+                }
             }
         }
         return result;
