@@ -11,9 +11,10 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
 import com.google.gson.Gson;
 import com.icert.comm.secu.IcertSecuManager;
+import com.opentok.*;
+import com.opentok.exception.OpenTokException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -1664,4 +1665,44 @@ public class DalbitUtil {
         return "";
     }
 
+    public static OpenTokVo getOpenTok(){
+        return getOpenTok(null);
+    }
+
+    public static OpenTokVo getOpenTok(String sessionId){
+        OpenTok openTok = null;
+        OpenTokVo openTokVo = new OpenTokVo();
+        int apiKey = Integer.parseInt(getProperty("open.tok.app.key"));
+        String apiSecret = getProperty("open.tok.app.secret");
+        //int expireHour = 2;
+        try{
+            openTok = new OpenTok(apiKey, apiSecret);
+            if(isEmpty(sessionId)){
+                Session session = openTok.createSession(new SessionProperties.Builder()
+                        .mediaMode(MediaMode.RELAYED)
+                        .archiveMode(ArchiveMode.MANUAL)
+                        .build()
+                );
+                openTokVo.setApiKey(String.valueOf(session.getApiKey()));
+                openTokVo.setSessionId(session.getSessionId());
+                openTokVo.setToken(session.generateToken(new TokenOptions.Builder()
+                        //.expireTime((System.currentTimeMillis() / 1000L) + (expireHour * 60 * 60))
+                        .build()
+                ));
+            }else{
+                openTokVo.setApiKey(String.valueOf(apiKey));
+                openTokVo.setSessionId(sessionId);
+                openTokVo.setToken(openTok.generateToken(sessionId, new TokenOptions.Builder()
+                        //.expireTime((System.currentTimeMillis() / 1000L) + (expireHour * 60 * 60))
+                        .build()
+                ));
+            }
+        }catch(OpenTokException e){
+        }finally {
+            if(openTok != null){
+                openTok.close();
+            }
+        }
+        return openTokVo;
+    }
 }

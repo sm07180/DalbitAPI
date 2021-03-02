@@ -31,8 +31,8 @@ public class LoginUtil {
                 securityContext.setAuthentication(authentication);
 
                 HttpSession session = request.getSession(true);
-                session.setAttribute(DalbitUtil.getProperty("spring.security.session.name"), securityContext);
-                session.setAttribute(DalbitUtil.getProperty("spring.session.memberInfo.key"), securityUserVo.getMemberVo());
+                //session.setAttribute(DalbitUtil.getProperty("spring.security.session.name"), securityContext);
+                //session.setAttribute(DalbitUtil.getProperty("spring.session.memberInfo.key"), securityUserVo.getMemberVo());
             }
         }
     }

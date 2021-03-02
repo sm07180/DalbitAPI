@@ -23,8 +23,8 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
     @Autowired
     private HttpSession httpSession;
 
-    @Value("${spring.session.memberInfo.key}")
-    String SPRING_SESSION_MEMBERINFO_KEY;
+    //@Value("${spring.session.memberInfo.key}")
+    //String SPRING_SESSION_MEMBERINFO_KEY;
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException{
@@ -33,7 +33,7 @@ public class AuthenticationProviderImpl implements AuthenticationProvider {
 
         SecurityUserVo securityUserVo = (SecurityUserVo)userDetailsService.loadUserByUsername();
 
-        httpSession.setAttribute(SPRING_SESSION_MEMBERINFO_KEY, securityUserVo.getMemberVo());
+        //httpSession.setAttribute(SPRING_SESSION_MEMBERINFO_KEY, securityUserVo.getMemberVo());
 
         return new UsernamePasswordAuthenticationToken(
                 securityUserVo.getMemberVo().getMemNo()
