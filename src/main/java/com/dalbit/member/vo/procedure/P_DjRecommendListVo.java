@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.DjRecommendListVo;
 import com.dalbit.util.DalbitUtil;
@@ -10,7 +11,7 @@ import lombok.ToString;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter @ToString
-public class P_DjRecommendListVo {
+public class P_DjRecommendListVo extends P_ApiVo {
     public P_DjRecommendListVo(){}
     public P_DjRecommendListVo(DjRecommendListVo djRecommendListVo, HttpServletRequest request){
         //int pageNo = DalbitUtil.isEmpty(djRecommendListVo.getPage()) ? 1 : djRecommendListVo.getPage();

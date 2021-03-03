@@ -1,14 +1,12 @@
 package com.dalbit.member.vo.procedure;
 
-import com.dalbit.member.vo.MemberVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.request.AwardVoteResultVo;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.servlet.http.HttpServletRequest;
-
 @Getter @Setter
-public class P_AwardVoteResultVo {
+public class P_AwardVoteResultVo extends P_ApiVo {
     public P_AwardVoteResultVo(){}
     public P_AwardVoteResultVo(AwardVoteResultVo awardVoteResultVo){
         setSlctType(awardVoteResultVo.getSlctType());

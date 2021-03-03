@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.MemberRankSettingVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter @ToString
-public class P_MemberRankSettingVo {
+public class P_MemberRankSettingVo extends P_ApiVo {
     public P_MemberRankSettingVo(){}
     public P_MemberRankSettingVo(MemberRankSettingVo memberRankSettingVo, HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));

@@ -1,5 +1,6 @@
 package com.dalbit.mailbox.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.mailbox.vo.request.MailBoxEnterVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter @ToString
-public class P_MailBoxEnterVo {
+public class P_MailBoxEnterVo extends P_ApiVo {
     public P_MailBoxEnterVo(){}
     public P_MailBoxEnterVo(MailBoxEnterVo mailBoxEnterVo, HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));

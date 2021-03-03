@@ -279,13 +279,13 @@ public class ClipService {
         returnMap.put("filePlay", DalbitUtil.getStringMap(resultMap, "file_play"));
         returnMap.put("codeLink", DalbitUtil.getStringMap(resultMap, "code_link"));
         returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "mem_nick"));
-        returnMap.put("isGood", DalbitUtil.getIntMap(resultMap, "good") == 1 ? true : false);
+        returnMap.put("isGood", DalbitUtil.getIntMap(resultMap, "good") == 1);
         returnMap.put("playCnt", DalbitUtil.getIntMap(resultMap, "playCnt"));
         returnMap.put("goodCnt", DalbitUtil.getIntMap(resultMap, "goodCnt"));
         returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
         returnMap.put("entryType", DalbitUtil.getIntMap(resultMap, "entryType"));
         returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
-        returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
+        returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0));
         returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
         returnMap.put("regCnt", DalbitUtil.getIntMap(resultMap, "regCnt"));
         returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") > 0);
@@ -429,7 +429,7 @@ public class ClipService {
             returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
             returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));
             returnMap.put("expNext", DalbitUtil.getIntMap(resultMap, "expNext"));
-            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1 ? true : false);
+            returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
             returnMap.put("dalCnt", DalbitUtil.getIntMap(resultMap, "ruby"));
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "gold"));
             returnMap.put("giftCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
@@ -880,7 +880,7 @@ public class ClipService {
 
         boolean playlist = false;
         if(!DalbitUtil.isEmpty(request.getParameter("playlist"))){
-            playlist = ("true".equals(request.getParameter("playlist").toLowerCase()) || Integer.parseInt(request.getParameter("playlist")) == 1)  ? true : false;
+            playlist = ("true".equals(request.getParameter("playlist").toLowerCase()) || Integer.parseInt(request.getParameter("playlist")) == 1);
         }
 
         //리스트 셔플
@@ -1009,8 +1009,6 @@ public class ClipService {
         return result;
     }
 
-
-
     public HashMap clipGiftRankTop3PlayCall(P_ClipGiftRankTop3Vo pClipGiftRank3Vo) {
         ProcedureVo procedureVo = new ProcedureVo(pClipGiftRank3Vo);
         List<P_ClipGiftRankTop3Vo> clipGiftRankTop3VoList = clipDao.callClipGiftRankTop3List(procedureVo);
@@ -1085,13 +1083,13 @@ public class ClipService {
         returnMap.put("filePlay", DalbitUtil.getStringMap(resultMap, "file_play"));
         returnMap.put("codeLink", DalbitUtil.getStringMap(resultMap, "code_link"));
         returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "mem_nick"));
-        returnMap.put("isGood", DalbitUtil.getIntMap(resultMap, "good") == 1 ? true : false);
+        returnMap.put("isGood", DalbitUtil.getIntMap(resultMap, "good") == 1);
         returnMap.put("playCnt", DalbitUtil.getIntMap(resultMap, "playCnt"));
         returnMap.put("goodCnt", DalbitUtil.getIntMap(resultMap, "goodCnt"));
         returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "giftCnt"));
         returnMap.put("entryType", DalbitUtil.getIntMap(resultMap, "entryType"));
         returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
-        returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0) ? true : false);
+        returnMap.put("isFan", (DalbitUtil.isLogin(request) && DalbitUtil.getIntMap(resultMap, "enableFan") == 0));
         returnMap.put("replyCnt", DalbitUtil.getIntMap(resultMap, "boardCnt"));
         returnMap.put("regCnt", DalbitUtil.getIntMap(resultMap, "regCnt"));
         returnMap.put("isSpecial", DalbitUtil.getIntMap(resultMap, "specialBadge") > 0);
@@ -1124,7 +1122,7 @@ public class ClipService {
         }
         returnMap.put("playlistOpen", playlistOpen);
         returnMap.put("replyOpen", true);
-        returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
+        returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()));
         returnMap.put("goodCntOpen", true);
         returnMap.put("byeolCntOpen", true);
         returnMap.put("replyCntOpen", true);
@@ -1253,6 +1251,7 @@ public class ClipService {
         return result;
     }
 
+
     /**
      * 클립 랭킹 조회
      */
@@ -1293,6 +1292,58 @@ public class ClipService {
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.클립랭킹조회_실패));
         }
+        return result;
+    }
+
+    /**
+     * 내 클립 현황 (상세) 조회
+     */
+    public String callMyClipDetail(P_MyClipDetailListVo pMyClipDetailListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMyClipDetailListVo);
+        List<P_MyClipDetailListVo> myClipDetailList = clipDao.callMyClipDetail(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap myClipDetail = new HashMap();
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            List<MyClipDetailListOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(myClipDetailList)) {
+                for(int i=0; i<myClipDetailList.size(); i++) {
+                    outVoList.add(new MyClipDetailListOutVo(myClipDetailList.get(i)));
+                }
+            }
+            myClipDetail.put("list", outVoList);
+            myClipDetail.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황상세조회_성공, myClipDetail));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황상세조회_실패));
+        }
+        return result;
+    }
+
+    /**
+     * 내 클립 현황 상세 조회 시 공개/비공개 설정
+     */
+    public String callMyClipDetailEdit(P_MyClipDetailEditVo pMyClipDetailEditVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMyClipDetailEditVo);
+        clipDao.callMyClipDetailEdit(procedureVo);
+
+        String result;
+        if(Status.내클립현황_클립공개여부수정_성공.getMessageCode().equals(procedureVo.getRet())) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("openType", DalbitUtil.getIntMap(resultMap, "openType"));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_성공, returnMap));
+        } else if(Status.내클립현황_클립공개여부수정_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_회원아님));
+        } else if(Status.내클립현황_클립공개여부수정_클립없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_클립없음));
+        } else if(Status.내클립현황_클립공개여부수정_수정권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_수정권한없음));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_실패));
+        }
+
         return result;
     }
 }

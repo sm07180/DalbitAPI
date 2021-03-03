@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter
-public class P_MemberReceiveListVo {
+public class P_MemberReceiveListVo extends P_ApiVo {
     public P_MemberReceiveListVo(){}
     public P_MemberReceiveListVo(HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));

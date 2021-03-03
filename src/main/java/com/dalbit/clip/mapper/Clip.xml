@@ -113,4 +113,12 @@
     <select id="callClipRank" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_ClipRankListVo">
         call sp_ranking_page_clip(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id="callMyClipDetail" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.clip.vo.procedure.P_MyClipDetailListVo">
+        call sp_member_cast_myclip(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMyClipDetailEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_member_cast_myclip_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

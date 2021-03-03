@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.SpecialLeagueVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_SpecialLeagueVo {
+public class P_SpecialLeagueVo extends P_ApiVo {
     public P_SpecialLeagueVo(){}
     public P_SpecialLeagueVo(SpecialLeagueVo specialLeagueVo, HttpServletRequest request){
         setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);

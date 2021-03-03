@@ -1,6 +1,7 @@
 package com.dalbit.member.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.ReportImageVo;
 import com.dalbit.util.DalbitUtil;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 
 @Getter @Setter @ToString
-public class P_ReportImageVo {
+public class P_ReportImageVo extends P_ApiVo {
     public P_ReportImageVo(){}
     public P_ReportImageVo(ReportImageVo reportImageVo, HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));

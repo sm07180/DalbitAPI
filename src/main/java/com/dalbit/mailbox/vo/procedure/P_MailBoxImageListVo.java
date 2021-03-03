@@ -1,5 +1,6 @@
 package com.dalbit.mailbox.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.mailbox.vo.request.MailBoxImageListVo;
 import com.dalbit.mailbox.vo.request.MailBoxMsgListVo;
 import com.dalbit.member.vo.MemberVo;
@@ -12,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter @ToString
-public class P_MailBoxImageListVo {
+public class P_MailBoxImageListVo extends P_ApiVo {
 
     public P_MailBoxImageListVo(){}
     public P_MailBoxImageListVo(MailBoxImageListVo mailBoxImageListVo, HttpServletRequest request){

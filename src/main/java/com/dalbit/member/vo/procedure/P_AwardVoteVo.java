@@ -1,5 +1,6 @@
 package com.dalbit.member.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.request.AwardVoteVo;
 import com.dalbit.util.DalbitUtil;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_AwardVoteVo {
+public class P_AwardVoteVo extends P_ApiVo {
     public P_AwardVoteVo(){}
     public P_AwardVoteVo(AwardVoteVo awardVoteVo, HttpServletRequest request){
         setRevoteYn(!DalbitUtil.isEmpty(awardVoteVo.getIsRevote()) ? (("true".equals(awardVoteVo.getIsRevote().toLowerCase()) || "1".equals(awardVoteVo.getIsRevote())) ? 1 : 0) : 0);

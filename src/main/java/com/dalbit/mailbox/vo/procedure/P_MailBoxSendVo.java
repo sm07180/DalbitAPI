@@ -1,6 +1,7 @@
 package com.dalbit.mailbox.vo.procedure;
 
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.mailbox.vo.request.MailBoxSendVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
@@ -9,7 +10,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_MailBoxSendVo {
+public class P_MailBoxSendVo extends P_ApiVo {
 
     public P_MailBoxSendVo(){}
     public P_MailBoxSendVo(MailBoxSendVo mailBoxSendVo, HttpServletRequest request){

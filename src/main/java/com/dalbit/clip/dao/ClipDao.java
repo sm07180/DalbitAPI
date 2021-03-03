@@ -76,4 +76,9 @@ public interface ClipDao {
     List<P_ClipRecommendLeaderListVo> callClipRecommendLeaderList(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_ClipRankListVo> callClipRank(ProcedureVo procedureVo);
+
+    @Transactional(readOnly = true)
+    List<P_MyClipDetailListVo> callMyClipDetail(ProcedureVo procedureVo);
+
+    ProcedureVo callMyClipDetailEdit(ProcedureVo procedureVo);
 }

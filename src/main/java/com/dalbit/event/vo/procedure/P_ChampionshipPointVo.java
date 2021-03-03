@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.ChampionshipPointVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
@@ -8,7 +9,7 @@ import lombok.Setter;
 import javax.servlet.http.HttpServletRequest;
 
 @Getter @Setter
-public class P_ChampionshipPointVo {
+public class P_ChampionshipPointVo extends P_ApiVo {
     public P_ChampionshipPointVo(){}
     public P_ChampionshipPointVo(ChampionshipPointVo championshipPointVo, HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));

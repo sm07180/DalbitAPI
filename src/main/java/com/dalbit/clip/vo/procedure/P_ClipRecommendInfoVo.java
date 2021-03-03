@@ -1,10 +1,11 @@
 package com.dalbit.clip.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class P_ClipRecommendInfoVo {
+public class P_ClipRecommendInfoVo extends P_ApiVo {
 
     private String recDate;         // 날짜
     private String castNo;          // 클립번호

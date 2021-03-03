@@ -150,7 +150,6 @@ public class ClipController {
     @GetMapping("/gift/rank/top3")
     public String clipRankTop3(@Valid ClipGiftRankTop3Vo clipGiftRankTop3Vo, BindingResult bindingResult) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getClassName());
-
         P_ClipGiftRankTop3Vo apiData = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
         String result = clipService.clipGiftRankTop3(apiData);
         return result;
@@ -372,6 +371,28 @@ public class ClipController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_ClipRankListVo apiData = new P_ClipRankListVo(clipRankListVo, request);
         String result = clipService.callClipRank(apiData);
+        return result;
+    }
+
+    /**
+     * 내 클립 현황 상세 조회
+     */
+    @GetMapping("/myclip/detail")
+    public String myClipDetail(@Valid MyClipDetailVo myClipDetailVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MyClipDetailListVo apiData = new P_MyClipDetailListVo(myClipDetailVo, request);
+        String result = clipService.callMyClipDetail(apiData);
+        return result;
+    }
+
+    /**
+     * 내 클립 현황 상세 조회 시 공개/비공개 설정
+     */
+    @PostMapping("/myclip/edit")
+    public String myClipEdit(@Valid MyClipDetailEditVo myClipDetailEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MyClipDetailEditVo apiData = new P_MyClipDetailEditVo(myClipDetailEditVo, request);
+        String result = clipService.callMyClipDetailEdit(apiData);
         return result;
     }
 

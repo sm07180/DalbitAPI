@@ -1,5 +1,6 @@
 package com.dalbit.event.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.event.vo.request.OpenEventVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
@@ -10,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Getter @Setter @ToString
-public class P_OpenEventBestListVo {
+public class P_OpenEventBestListVo extends P_ApiVo {
     public P_OpenEventBestListVo(){}
     public P_OpenEventBestListVo(OpenEventVo openEventVo, HttpServletRequest request){
         setMem_no(MemberVo.getMyMemNo(request));
