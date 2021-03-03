@@ -358,7 +358,7 @@ public class MainService {
         if(pMainFanRankingVo.getSlct_type() == 0){
             mainFanRankingList.put("time",resultMap.get("rankingDate"));
         }
-        mainFanRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
+        mainFanRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1"));
         mainFanRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainFanRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainFanRankingList.put("myGiftPoint", DalbitUtil.getIntMap(resultMap, "myGiftPoint"));
@@ -423,7 +423,7 @@ public class MainService {
         if(pMainDjRankingVo.getSlct_type() == 0){
             mainDjRankingList.put("time",resultMap.get("rankingDate"));
         }
-        mainDjRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
+        mainDjRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1"));
         mainDjRankingList.put("myRank", DalbitUtil.getIntMap(resultMap, "myRank"));
         mainDjRankingList.put("myPoint", DalbitUtil.getIntMap(resultMap, "myPoint"));
         mainDjRankingList.put("myListenerPoint", DalbitUtil.getIntMap(resultMap, "myListenerPoint"));
@@ -644,7 +644,7 @@ public class MainService {
         } else {
             mainRankingList.put("time", "");
         }
-        mainRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") ? true : false);
+        mainRankingList.put("isReward", DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1"));
         mainRankingList.put("rewardRank", DalbitUtil.getIntMap(resultMap, "rewardRank"));
         if(DalbitUtil.getStringMap(resultMap, "rewardGo").equals("1") && 1 == pMainRankingPageVo.getRanking_slct() && 1 == pMainRankingPageVo.getSlct_type()){
             int rank = DalbitUtil.getIntMap(resultMap, "rewardRank");
@@ -664,7 +664,7 @@ public class MainService {
         mainRankingList.put("myDjMemNo", DalbitUtil.getStringMap(resultMap, "myDj"));
         mainRankingList.put("myDjNickNm", DalbitUtil.getStringMap(resultMap, "myDjNickName"));
         mainRankingList.put("myDjGoodPoint", DalbitUtil.getIntMap(resultMap, "myDjGoodPoint"));
-        mainRankingList.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1 ? true : false);
+        mainRankingList.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1);
 
         List<FanBadgeVo> liveBadgeList = new ArrayList<>();
         if(!DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeText")) && !DalbitUtil.isEmpty(DalbitUtil.getStringMap(resultMap, "myLiveBadgeIcon"))){

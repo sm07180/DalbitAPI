@@ -35,7 +35,7 @@ public class GuestListOutVo {
         this.gstStartDt = DalbitUtil.isEmpty(target.getGuestStartDate()) ? "" :DalbitUtil.getUTCFormat(target.getGuestStartDate());
         this.gstStartTs = DalbitUtil.isEmpty(target.getGuestStartDate()) ? 0 :DalbitUtil.getUTCTimeStamp(target.getGuestStartDate());
         this.gstProposeState = target.getGuest_propose();
-        this.isFan = target.getIsFan()  == 1 ? true : false;
+        this.isFan = target.getIsFan()  == 1;
 
         //게스트 시작시간 (현재시간 - 시작시간 (초단위))
         if(!DalbitUtil.isEmpty(target.getGuestStartDate())){

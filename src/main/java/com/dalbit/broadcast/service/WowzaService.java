@@ -73,6 +73,8 @@ public class WowzaService {
     ActionService actionService;
     @Autowired
     WowzaSocketService wowzaSocketService;
+    @Autowired
+    MiniGameService miniGameService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -360,7 +362,7 @@ public class WowzaService {
             HashMap attendanceCheckMap = eventService.callAttendanceCheckMap(isLogin, attendanceCheckVo);
 
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo);
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, null);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -729,7 +731,15 @@ public class WowzaService {
                 moonCheckMap.put("dlgText", "");
                 moonCheckMap.put("moonStep", 4);
             }
-            return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap);
+
+            boolean isMiniGame = false;
+            var minigame = commonService.selectCodeDefine(new CodeVo(Code.미니게임_활성여부.getCode(), Code.미니게임_활성여부.getDesc()));
+            if(!DalbitUtil.isEmpty(minigame)){
+                if("1".equals(minigame.getValue())){
+                    isMiniGame = true;
+                }
+            }
+            return new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap, isMiniGame);
         }
         return null;
     }
@@ -775,10 +785,18 @@ public class WowzaService {
             memberInfoVo.setRandomMsgList(getBehaviorRandomMsgList(apiData));
         }
 
-        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request));
+        //룰렛 등록상태 조회
+        P_MiniGameVo pMiniGameVo = new P_MiniGameVo();
+        pMiniGameVo.setRoom_no(target.getRoomNo());
+        pMiniGameVo.setMem_no(memNo);
+        pMiniGameVo.setGame_no(1);
+        HashMap miniGameMap = miniGameService.getMiniGame(pMiniGameVo);
+
+        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+
         return roomInfoVo;
     }
 

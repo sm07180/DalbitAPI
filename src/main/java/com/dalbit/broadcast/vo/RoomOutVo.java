@@ -83,6 +83,7 @@ public class RoomOutVo {
     private boolean isCall;
     private boolean isServer;
     private boolean isVideo;
+    private boolean isMinigame;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -171,7 +172,7 @@ public class RoomOutVo {
         this.isShining = target.isShining();
     }
 
-    public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap, HashMap moonCheckMap) {
+    public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap, HashMap moonCheckMap, boolean isMiniGame) {
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
         this.title = target.getTitle();
@@ -246,5 +247,6 @@ public class RoomOutVo {
         this.isCall = target.getCall_state() == 1;
         this.isServer = target.getServer_state() == 1;
         this.isVideo = target.getVideo_state() == 1;
+        this.isMinigame = isMiniGame;
     }
 }

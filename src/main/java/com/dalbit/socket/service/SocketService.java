@@ -26,9 +26,9 @@ import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
 
@@ -1091,7 +1091,7 @@ public class SocketService {
                 vo = getSocketVo(roomNo, memNo, isLogin);
             }
             if (vo.getMemNo() != null) {
-                boolean mediaOn = "TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()) ? true : false;
+                boolean mediaOn = "TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn());
                 HashMap socketMap = new HashMap();
                 socketMap.put("memNo", memNo);
                 socketMap.put("mediaState", stateEditVo.getMediaState());
@@ -1185,5 +1185,67 @@ public class SocketService {
             sendSocketApi("", SERVER_SOCKET_GLOBAL_ROOM, vo.toQueryString());
         }
     }
-}
 
+    /**
+     *  미니게임 등록 & 수정
+     */
+    @Async("threadTaskExecutor")
+    public void miniGameSend(String roomNo, HashMap message, String authToken, boolean isLogin, String state) {
+        log.info("Socket Start : miniGameSend {}, {}", message, isLogin);
+        authToken = authToken == null ? "" : authToken.trim();
+
+        HashMap miniGameMap = new HashMap();
+        miniGameMap.put("clientCommand", "add".equals(state) ? "reqMiniGameAdd" : "reqMiniGameEdit");
+        miniGameMap.put("data", message);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(miniGameMap);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
+    }
+
+    /**
+     *  미니게임 시작
+     */
+    @Async("threadTaskExecutor")
+    public void miniGameStart(String roomNo, HashMap message, String authToken, boolean isLogin) {
+        log.info("Socket Start : miniGameStart {}, {}", message, isLogin);
+        authToken = authToken == null ? "" : authToken.trim();
+
+        HashMap miniGameMap = new HashMap();
+        miniGameMap.put("clientCommand", "reqMiniGameStart");
+        miniGameMap.put("data", message);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(miniGameMap);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
+    }
+
+    /**
+     *  미니게임 종료
+     */
+    @Async("threadTaskExecutor")
+    public void miniGameEnd(String roomNo, HashMap message, String authToken, boolean isLogin) {
+        log.info("Socket Start : miniGameEnd {}, {}", message, isLogin);
+        authToken = authToken == null ? "" : authToken.trim();
+
+        HashMap miniGameMap = new HashMap();
+        miniGameMap.put("clientCommand", "reqMiniGameEnd");
+        miniGameMap.put("data", message);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(miniGameMap);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
+    }
+}

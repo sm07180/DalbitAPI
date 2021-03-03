@@ -27,7 +27,7 @@ public class MypageNoticeListOutVo {
         setNoticeIdx(target.getNoticeIdx());
         setTitle(target.getTitle());
         setContents(target.getContents());
-        setTop(target.getTopFix() == 1 ? true : false);
+        setTop(target.getTopFix() == 1);
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
         setNickNm(target.getNickName());

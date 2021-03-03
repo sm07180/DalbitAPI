@@ -18,7 +18,7 @@ public class ClipRecommendInfoVo {
         setClipNo(target.getCastNo());
         setClipMemNo(target.getCastMemNo());
         setRegCnt(target.getRegCnt());
-        setIsFan(target.getEnableFan() == 0 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
         setTitleMsg(target.getTitleMsg());
         setByeolCnt(target.getByeolCnt());
         setGoodCnt(target.getGoodCnt());

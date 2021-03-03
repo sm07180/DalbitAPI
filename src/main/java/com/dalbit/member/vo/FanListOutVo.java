@@ -20,6 +20,6 @@ public class FanListOutVo {
         setMemNo(target.getMem_no());
         setNickNm(target.getNickName());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
-        setIsFan(target.getEnableFan() == 0 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
     }
 }

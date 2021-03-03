@@ -24,7 +24,7 @@ public class ClipRecommendListOuputVo {
         setMemNo(target.getMemNo());
         setGender(target.getMemSex());
         setNickName(target.getMemNick());
-        setIsLeader(target.getLeaderYn() == 0 ? false : true);
+        setIsLeader(target.getLeaderYn() > 0);
         setByeolCnt(target.getByeolCnt());
         setGoodCnt(target.getGoodCnt());
         setReplyCnt(target.getReplyCnt());

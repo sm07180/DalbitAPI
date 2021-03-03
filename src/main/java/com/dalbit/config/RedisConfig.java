@@ -24,7 +24,7 @@ public class RedisConfig {
     @Value("${spring.redis.database}")
     private int redisDB;
     @Value("${spring.redis.database.socket}")
-    private int redisDBSocket = 0;
+    private int redisDBSocket;
 
     @Bean
     public RedisConnectionFactory redisConnectionFactory(){
@@ -51,7 +51,7 @@ public class RedisConfig {
         redisStandaloneConfiguration.setHostName(redisHost);
         redisStandaloneConfiguration.setPort(redisPort);
         redisStandaloneConfiguration.setPassword(redisPwd);
-        redisStandaloneConfiguration.setDatabase(0);
+        redisStandaloneConfiguration.setDatabase(redisDBSocket);
         return new LettuceConnectionFactory(redisStandaloneConfiguration);
     }
 
@@ -60,7 +60,7 @@ public class RedisConfig {
         RedisTemplate<byte[], byte[]> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactorySocket());
         redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setValueSerializer(new StringRedisSerializer());
         return redisTemplate;
     }
 }

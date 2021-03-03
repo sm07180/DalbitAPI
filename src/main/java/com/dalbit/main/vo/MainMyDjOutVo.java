@@ -49,9 +49,9 @@ public class MainMyDjOutVo {
         setByeolCnt(target.getCount_gold());
         setStartDt(DalbitUtil.getUTCFormat(target.getStart_date()));
         setStartTs(DalbitUtil.getUTCTimeStamp(target.getStart_date()));
-        setIsRecomm(target.getBadge_recomm() == 1 ? true : false);
-        setIsPop(target.getBadge_popular() == 1 ? true : false);
-        setIsNew(target.getBadge_newdj() == 1 ? true : false);
+        setIsRecomm(target.getBadge_recomm() == 1);
+        setIsPop(target.getBadge_popular() == 1);
+        setIsNew(target.getBadge_newdj() == 1);
         setAirtime(target.getAirtime());
         setBjMemNo(target.getBj_mem_no());
         setBjNickNm(target.getBj_nickName());

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.broadcast.dao.MiniGameDao" >
+
+    <select id="callMiniGameList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.broadcast.vo.procedure.P_MiniGameListVo">
+      call sp_broadcast_room_minigame_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMiniGameAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_minigame_new(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMiniGameEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_minigame_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMiniGameSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_minigame_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMiniGameStart" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_minigame_go(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callMiniGameEnd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_minigame_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+
+</mapper>

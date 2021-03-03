@@ -1,5 +1,6 @@
 package com.dalbit.admin.vo.procedure;
 
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -7,7 +8,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class P_NewBroadcastTimeNewOutVo {
+public class P_NewBroadcastTimeNewOutVo extends P_ApiVo {
 
     private String the_date;
     private String the_hr;

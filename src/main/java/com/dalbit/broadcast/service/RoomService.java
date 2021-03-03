@@ -33,6 +33,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -500,7 +501,15 @@ public class RoomService {
             P_MoonCheckVo pMoonCheckVo = new P_MoonCheckVo();
             pMoonCheckVo.setRoom_no(pRoomInfoViewVo.getRoom_no());
             HashMap moonCheckMap = actionService.callMoonCheckMap(pMoonCheckVo, request);
-            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap));
+
+            boolean isMiniGame = false;
+            var minigame = commonService.selectCodeDefine(new CodeVo(Code.미니게임_활성여부.getCode(), Code.미니게임_활성여부.getDesc()));
+            if(!DalbitUtil.isEmpty(minigame)){
+                if("1".equals(minigame.getValue())){
+                    isMiniGame = true;
+                }
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, new RoomOutVo(roomInfoViewVo, attendanceCheckMap, moonCheckMap, isMiniGame));
         }
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
@@ -764,8 +773,7 @@ public class RoomService {
         returnMap.put("likeTotCnt", DalbitUtil.getIntMap(resultMap, "receivedGoodTotal"));
         returnMap.put("specialDjCnt", DalbitUtil.getIntMap(resultMap, "specialDjCnt"));
 
-
-        if(DalbitUtil.getIntMap(resultMap, "specialdj_badge") == 1){
+        if(DalbitUtil.getIntMap(resultMap, "specialdj_badge") > 0){
             returnMap.put("wasSpecial", false);
         }else{
             SpecialDjHistoryVo specialDjHistoryVo = new SpecialDjHistoryVo();

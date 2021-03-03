@@ -105,6 +105,10 @@
       call sp_member_badge_list(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
     </select>
 
+    <select id="callMemberBadgeListServer" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.FanBadgeVo">
+        call sp_member_badge_list_server(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER}, #{timeDay, mode=IN, jdbcType=INTEGER}, #{djRank, mode=IN, jdbcType=INTEGER}, #{fanRank, mode=IN, jdbcType=INTEGER})
+    </select>
+
     <select id="callMemberBadgeFrame" statementType="CALLABLE" parameterType="java.util.HashMap" resultType="com.dalbit.common.vo.BadgeFrameVo">
       call sp_member_badge_frame(#{mem_no, mode=IN, jdbcType=INTEGER}, #{type, mode=IN, jdbcType=INTEGER})
     </select>

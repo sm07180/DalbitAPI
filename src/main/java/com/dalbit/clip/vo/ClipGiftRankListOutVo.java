@@ -21,7 +21,7 @@ public class ClipGiftRankListOutVo {
         setNickName(target.getNickName());
         setGender(target.getMemSex());
         setProfImg(new ImageVo(target.getProfileImage(), getGender(), DalbitUtil.getProperty("server.photo.url")));
-        setIsFan(target.getEnableFan() == 0 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
         setGiftDal(target.getGiftDal());
     }
 }

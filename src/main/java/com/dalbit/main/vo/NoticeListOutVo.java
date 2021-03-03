@@ -21,7 +21,7 @@ public class NoticeListOutVo {
         setNoticeIdx(target.getNoticeIdx());
         setNoticeType(target.getSlctType());
         setTitle(target.getTitle());
-        setTop(target.getTopFix() == 1 ? true : false);
+        setTop(target.getTopFix() == 1);
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
         this.isNew = target.getIsNew() == 1;

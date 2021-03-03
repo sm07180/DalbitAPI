@@ -21,7 +21,7 @@ public class FanRankingOutVo {
         setMemNo(target.getMem_no());
         setNickNm(target.getNickName());
         setProfImg(new ImageVo(target.getProfileImage(), target.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
-        setIsFan(target.getEnableFan() == 0 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
         setGiftDal(DalbitUtil.isEmpty(target.getGiftDal()) ? 0 : target.getGiftDal());
         setGiftedByeol(DalbitUtil.isEmpty(target.getGiftedByeol()) ? 0 : target.getGiftedByeol());
     }

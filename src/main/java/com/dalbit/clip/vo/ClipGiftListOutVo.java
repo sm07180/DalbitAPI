@@ -30,6 +30,6 @@ public class ClipGiftListOutVo {
         setGiftByeol(target.getByeol());
         setGiftDt(DalbitUtil.getUTCFormat(target.getGiftDate()));
         setGiftTs(DalbitUtil.getUTCTimeStamp(target.getGiftDate()));
-        setIsFan(target.getEnableFan() == 0 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
     }
 }

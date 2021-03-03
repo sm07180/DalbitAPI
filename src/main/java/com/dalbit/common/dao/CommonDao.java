@@ -58,6 +58,8 @@ public interface CommonDao {
     @Transactional(readOnly = true)
     List<FanBadgeVo> callMemberBadgeList(HashMap param);
 
+    List<FanBadgeVo> callMemberBadgeListServer(HashMap param);
+
     @Transactional(readOnly = true)
     BadgeFrameVo callMemberBadgeFrame(HashMap param);
 

@@ -94,8 +94,11 @@ public class RoomInfoVo {
     private int videoFrameRate = 24;
     private int videoResolution = 480;  /* 144, 288, 360, 480, 540, 720, 1080, 2160 */
 
+    private List miniGameList = new ArrayList();
+    private boolean isMinigame;
+
     public RoomInfoVo(){}
-    public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo){
+    public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap){
         this.roomNo = target.getRoomNo();
         this.title = target.getTitle();
         this.bgImg = target.getBgImg();
@@ -211,6 +214,13 @@ public class RoomInfoVo {
         this.isCall = target.isCall();
         this.isVideo = target.isVideo();
         this.isServer = target.isServer();
+
+        if(!DalbitUtil.isEmpty(miniGameMap)){
+            miniGameList.add(miniGameMap);
+        }
+
+        this.isMinigame = target.isMinigame();
+
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){

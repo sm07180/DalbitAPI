@@ -1,6 +1,7 @@
 package com.dalbit.main.vo.procedure;
 
 import com.dalbit.common.vo.ImageVo;
+import com.dalbit.common.vo.P_ApiVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 
 @Getter
 @Setter
-public class P_MarketingVo {
+public class P_MarketingVo extends P_ApiVo {
     private String idx;
     private String noticeIdx;
 
