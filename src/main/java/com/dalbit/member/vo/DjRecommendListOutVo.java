@@ -24,13 +24,19 @@ public class DjRecommendListOutVo {
         setMemNo(target.getMem_no());
         setNickNm(target.getMem_nick());
         setGender(target.getMem_sex());
-        setProfImg(new ImageVo(target.getProfileImage(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+
+        if(DalbitUtil.isEmpty(target.getProfileImage()) || !(target.getProfileImage().startsWith("http://") || target.getProfileImage().startsWith("https://"))){
+            setProfImg(new ImageVo(target.getProfileImage(), target.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+        }else{
+            setProfImg(new ImageVo(target.getProfileImage()));
+        }
+
         setRoomNo(DalbitUtil.isEmpty(target.getRoomNo()) ? "" : target.getRoomNo());
         setAgeType(target.getAge_type());
         setAgeDesc(target.getAge_desc());
         setTitle(target.getTitle());
         setDesc(target.getDesc());
-        setIsFan(target.getEnableFan() == 0 ? true : false);
+        setIsFan(target.getEnableFan() == 0);
     }
 
 }

@@ -16,6 +16,13 @@ public class ImageVo extends BaseVo{
 
     public ImageVo(){}
 
+    public ImageVo(String url){
+        if(!DalbitUtil.isEmpty(url)){
+            this.url = url;
+            setThumbs();
+        }
+    }
+
     public ImageVo(P_MailBoxListVo path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
             setPath(path.toString(), photoServerUrl);
@@ -55,9 +62,10 @@ public class ImageVo extends BaseVo{
     private String thumb700x700;
 
     public void setPath(String path, String photoServerUrl){
-        if(path != null){
+        if(!DalbitUtil.isEmpty(path)){
             this.path = path;
             this.url = photoServerUrl + this.path;
+
             setThumbs();
         }
     }
