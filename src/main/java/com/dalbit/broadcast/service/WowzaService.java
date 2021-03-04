@@ -788,7 +788,7 @@ public class WowzaService {
         //룰렛 등록상태 조회
         P_MiniGameVo pMiniGameVo = new P_MiniGameVo();
         pMiniGameVo.setRoom_no(target.getRoomNo());
-        pMiniGameVo.setMem_no(target.getBjMemNo());
+        pMiniGameVo.setMem_no(memNo);
         pMiniGameVo.setGame_no(1);
         HashMap miniGameMap = miniGameService.getMiniGame(pMiniGameVo);
 
