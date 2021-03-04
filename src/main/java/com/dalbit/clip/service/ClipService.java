@@ -11,6 +11,8 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.main.service.MainService;
+import com.dalbit.main.vo.BannerVo;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
@@ -50,6 +52,8 @@ public class ClipService {
     CommonDao commonDao;
     @Autowired
     IPUtil ipUtil;
+    @Autowired
+    MainService mainService;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -298,26 +302,10 @@ public class ClipService {
         returnMap.put("playIdx", DalbitUtil.getIntMap(resultMap, "playIdx"));
 
         DeviceVo deviceVo = new DeviceVo(request);
-        boolean playlistOpen = false;
-        if(
-            !"real".equals(DalbitUtil.getActiveProfile())
-            ||
-            (
-                "real".equals(DalbitUtil.getActiveProfile())
-                && (
-                    (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) > 38)
-                    ||
-                    (deviceVo.getOs() == 2 && DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.2"))
-                    ||
-                    (deviceVo.getOs() == 3)
-                )
-            )
-        ){
-            playlistOpen = true;
-        }
+        boolean playlistOpen = true;
         returnMap.put("playlistOpen", playlistOpen);
         returnMap.put("replyOpen", true);
-        returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()) ? true : false);
+        returnMap.put("playCntOpen", DalbitUtil.getStringMap(resultMap, "cast_mem_no").equals(pClipPlayVo.getMem_no()));
         returnMap.put("goodCntOpen", true);
         returnMap.put("byeolCntOpen", true);
         returnMap.put("replyCntOpen", true);
@@ -336,6 +324,21 @@ public class ClipService {
         returnMap.put("eventUrl", DalbitUtil.getProperty("server.mobile.url") + "/event/clip_gift_event?webview=new");
         returnMap.put("coverTitle", DalbitUtil.getStringMap(resultMap, "coverTitle"));
         returnMap.put("coverSinger", DalbitUtil.getStringMap(resultMap, "coverSinger"));
+
+        //텍스트 배너 설정
+        List<HashMap> banners = new ArrayList<>();
+        List<BannerVo> bannerList = mainService.selectBanner("16", request);
+        if(!DalbitUtil.isEmpty(bannerList)){
+            for(BannerVo bannerVo : bannerList){
+                if(!DalbitUtil.isEmpty(bannerVo.getContents())){
+                    HashMap<String, String> bannerItem = new HashMap<>();
+                    bannerItem.put("text", bannerVo.getContents());
+                    bannerItem.put("link", bannerVo.getLinkUrl());
+                    banners.add(bannerItem);
+                }
+            }
+        }
+        returnMap.put("banners", banners);
 
         ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
         clipGiftRankTop3Vo.setClipNo(pClipPlayVo.getCast_no());
@@ -1167,6 +1170,7 @@ public class ClipService {
             returnMap.put("playCnt", DalbitUtil.getIntMap(resultMap, "playCnt"));
             returnMap.put("goodCnt", DalbitUtil.getIntMap(resultMap, "goodCnt"));
             returnMap.put("byeolCnt", DalbitUtil.getIntMap(resultMap, "byeolCnt"));
+            returnMap.put("isReg", DalbitUtil.getIntMap(resultMap, "regYn") == 1);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.내클립조회_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.내클립조회_요청회원번호_정상아님.getMessageCode())) {

@@ -480,9 +480,13 @@ public class MainService {
         return result;
     }
 
-
     public String selectBanner(HttpServletRequest request){
         String position = request.getParameter("position");
+        List<BannerVo> bannerList = selectBanner(position, request);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));
+    }
+
+    public List<BannerVo> selectBanner(String position, HttpServletRequest request){
         List<BannerVo> bannerList =null;
 
         //if("|0|1|3|4|5|6|7|8|9|10|11|12|13|".indexOf("|" + position + "|") > -1){
@@ -512,7 +516,7 @@ public class MainService {
             bannerList = mainDao.selectBanner(pBannerVo);
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));
+        return bannerList == null ? new ArrayList() : bannerList;
     }
 
 
@@ -533,7 +537,7 @@ public class MainService {
         mainRewardPopupVo.put("endColor", DalbitUtil.getStringMap(resultMap, "endColor"));
         mainRewardPopupVo.put("rewardDal", DalbitUtil.getIntMap(resultMap, "reward_dal"));
         mainRewardPopupVo.put("rewardExp", DalbitUtil.getIntMap(resultMap, "reward_exp"));
-        mainRewardPopupVo.put("isRandomBox", DalbitUtil.getStringMap(resultMap, "exp_random_box").equals("1") ? true : false);
+        mainRewardPopupVo.put("isRandomBox", DalbitUtil.getStringMap(resultMap, "exp_random_box").equals("1"));
 
         String result;
         if(procedureVo.getRet().equals(Status.랭킹보상팝업조회_성공.getMessageCode())) {
