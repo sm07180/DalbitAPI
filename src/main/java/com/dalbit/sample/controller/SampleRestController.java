@@ -116,6 +116,7 @@ public class SampleRestController {
         }
 
         result.put("session", DalbitUtil.isEmpty(session.getAttribute("session")) ? "" : session.getAttribute("session"));
+        result.put("sessionId", session.getId());
         result.put("param", request.getParameter("session"));
         result.put("isMake", isMake);
 
