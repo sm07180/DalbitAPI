@@ -14,9 +14,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -101,5 +103,22 @@ public class SampleRestController {
     public String roleCheck(){
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+    }
+
+    @GetMapping("/session/test")
+    public String sessionTest(HttpServletRequest request){
+        HttpSession session = request.getSession(true);
+        HashMap result = new HashMap();
+        boolean isMake = false;
+        if(!DalbitUtil.isEmpty(request.getParameter("session"))){
+            isMake = true;
+            session.setAttribute("session", request.getParameter("session"));
+        }
+
+        result.put("session", DalbitUtil.isEmpty(session.getAttribute("session")) ? "" : session.getAttribute("session"));
+        result.put("param", request.getParameter("session"));
+        result.put("isMake", isMake);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
     }
 }

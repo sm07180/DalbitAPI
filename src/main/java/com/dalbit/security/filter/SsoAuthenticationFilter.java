@@ -67,6 +67,9 @@ public class SsoAuthenticationFilter implements Filter {
         , "/broad/share", "/clip/share"
         , "/broad/moon/check"
         , "/socket/dbCheck/bySocket"
+        , "/tnk/aos/callback", "/tnk/ios/callback"
+        , "/mailbox/chat/openTok"
+        , "/rest/sample/session/test"
     };
 
     @Override
