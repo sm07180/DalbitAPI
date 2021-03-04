@@ -13,8 +13,6 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -23,7 +21,6 @@ import java.util.List;
 
 @Slf4j
 @Service
-@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 public class MiniGameService {
 
     @Autowired
