@@ -33,5 +33,6 @@ public class P_RouletteApplyListVo extends P_ApiVo {
     private int itemNo;
     private Date applyDate;
     private String phoneNum;
+    private String itemName;
 
 }

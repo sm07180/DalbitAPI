@@ -18,11 +18,13 @@ public class RouletteApplyListOutVo {
     private String phone;
     private String applyDt;
     private long applyTs;
+    private String itemName;
 
     public RouletteApplyListOutVo(P_RouletteApplyListVo target){
         setItemNo(target.getItemNo());
         setPhone(target.getPhoneNum());
         setApplyDt(DalbitUtil.getUTCFormat(target.getApplyDate()));
         setApplyTs(DalbitUtil.getUTCTimeStamp(target.getApplyDate()));
+        setItemName(target.getItemName());
     }
 }
