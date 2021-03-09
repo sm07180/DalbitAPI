@@ -64,6 +64,7 @@ public class P_RoomListVo extends P_ApiVo {
     private String notice;                  //공지사항
     private int state;                      //방상태
     private String code_link;               //방공유코드
+    private int count_fan;                  //신규팬수
     private int count_entry;                //참여자수
     private int count_good;                 //좋아요수
     private int count_gold;                 //선물받은 별수

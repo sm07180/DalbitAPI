@@ -534,6 +534,7 @@ public class WowzaService {
                 socketMap.put("likes", roomInfoVo.getLikes());
                 socketMap.put("rank", roomInfoVo.getRank());
                 socketMap.put("fanRank", roomInfoVo.getFanRank());
+                socketMap.put("newFanCnt", roomInfoVo.getNewFanCnt());
                 socketService.changeCount(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){

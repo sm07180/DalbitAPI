@@ -35,6 +35,7 @@ public class RoomInfoVo {
     private boolean liveBadgeView;
     private boolean isFreeze;
     private boolean isExtend;
+    private int newFanCnt;
     /* DJ정보 */
     private String bjMemNo;
     private String bjNickNm;
@@ -220,6 +221,7 @@ public class RoomInfoVo {
         }
 
         this.isMinigame = target.isMinigame();
+        this.newFanCnt = target.getNewFanCnt();
 
     }
 

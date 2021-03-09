@@ -26,6 +26,7 @@ public class RoomOutVo {
     private String notice;
     private int state;
     private String link;
+    private int newFanCnt;
     private int entryCnt;
     private int likeCnt;
     private int boostCnt;
@@ -170,6 +171,7 @@ public class RoomOutVo {
         }
         this.isGoodMem = (target.getGoodMem() + target.getGoodMem2() + target.getGoodMem3()) > 0;
         this.isShining = target.isShining();
+        this.newFanCnt = target.getCount_fan();
     }
 
     public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap, HashMap moonCheckMap, boolean isMiniGame) {
@@ -248,5 +250,6 @@ public class RoomOutVo {
         this.isServer = target.getServer_state() == 1;
         this.isVideo = target.getVideo_state() == 1;
         this.isMinigame = isMiniGame;
+        this.newFanCnt = target.getCount_fan();
     }
 }

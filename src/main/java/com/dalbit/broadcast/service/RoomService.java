@@ -159,6 +159,7 @@ public class RoomService {
                         socketMap.put("fanRank", returnMap.get("fanRank"));
                         //TODO - 레벨업 유무 소켓추가 추후 확인
                         // socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
+                        socketMap.put("newFanCnt", DalbitUtil.getIntMap(resultMap, "newFanCnt"));
                         socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                         vo.resetData();
                     }
@@ -285,6 +286,7 @@ public class RoomService {
                                     socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                                     socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                                     socketMap.put("fanRank", returnMap.get("fanRank"));
+                                    socketMap.put("newFanCnt", DalbitUtil.getIntMap(resultMap, "newFanCnt"));
                                     socketService.changeCount(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                                     vo.resetData();
                                 }
@@ -644,6 +646,7 @@ public class RoomService {
                 socketMap.put("kingAge", fanRankMap.get("kingAge"));
                 socketMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
 
+                socketMap.put("newFanCnt", DalbitUtil.getIntMap(resultMap, "newFanCnt"));
                 socketService.changeCount(pRoomLiveRankInfoVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){

@@ -67,4 +67,5 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private int call_state;                 //전화중 상태
     private int server_state;               //와우자 상태
     private int video_state;               //영상 상태
+    private int count_fan;                  //신규팬수
 }

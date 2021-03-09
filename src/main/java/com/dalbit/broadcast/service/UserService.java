@@ -189,6 +189,7 @@ public class UserService {
                 socketMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
                 socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                 socketMap.put("fanRank", returnMap.get("fanRank"));
+                socketMap.put("newFanCnt", DalbitUtil.getIntMap(resultMap, "newFanCnt"));
                 socketService.changeCount(pRoomKickoutVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -384,6 +385,17 @@ public class UserService {
             if(!DalbitUtil.isEmpty(roomInfoVo.getBj_mem_no()) && pBroadFanstarInsertVo.getStar_mem_no().equals(roomInfoVo.getBj_mem_no())){
                 SocketVo vo = socketService.getSocketVo(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
+                    HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                    if(DalbitUtil.getIntMap(resultMap, "newFanCnt") > 0){
+                        HashMap fanRankMap = commonService.getKingFanRankList(pBroadFanstarInsertVo.getRoom_no(), request);
+                        HashMap socketMap = new HashMap();
+                        socketMap.put("likes", roomInfoVo.getCount_good());
+                        socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
+                        socketMap.put("fanRank", fanRankMap.get("list"));
+                        socketMap.put("newFanCnt", DalbitUtil.getIntMap(resultMap, "newFanCnt"));
+                        socketService.changeCount(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    }
+
                     socketService.addFan(pBroadFanstarInsertVo.getRoom_no(), MemberVo.getMyMemNo(request), roomInfoVo.getBj_mem_no(), DalbitUtil.getAuthToken(request), "1", DalbitUtil.isLogin(request), vo);
                     vo.resetData();
                 }catch(Exception e){
