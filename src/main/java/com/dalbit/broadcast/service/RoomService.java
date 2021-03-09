@@ -16,9 +16,9 @@ import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.main.vo.procedure.P_MainRecommandVo;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
+import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_BroadcastSettingEditVo;
 import com.dalbit.member.vo.procedure.P_BroadcastSettingVo;
@@ -80,6 +80,9 @@ public class RoomService {
     CommonDao commonDao;
     @Autowired
     BadgeService badgeService;
+    @Autowired
+    ProfileService profileService;
+
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -783,7 +786,12 @@ public class RoomService {
 
         returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1);
 
+        //프로필 복수등록된 리스트
+        HashMap imgListMap = profileService.callProfImgList(pRoomMemberInfoVo.getTarget_mem_no());
+        returnMap.put("profImgList", imgListMap.get("list"));
+
         returnMap.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
+
         procedureVo.setData(returnMap);
         return procedureVo;
     }
@@ -1532,10 +1540,16 @@ public class RoomService {
         selParams.put("mem_no", MemberVo.getMyMemNo(request));
         selParams.put("room_no", stateEditVo.getRoomNo());
         HashMap guestStateInfo = userDao.selectGuestStateInfo(selParams);
-        boolean isMic = "1".equals(String.valueOf(guestStateInfo.get("mic_state")));
-        boolean isCall = "1".equals(String.valueOf(guestStateInfo.get("call_state")));
-        boolean isVideo = "1".equals(String.valueOf(guestStateInfo.get("video_state")));
-        boolean isServer = "1".equals(String.valueOf(guestStateInfo.get("server_state")));
+        boolean isMic = true;
+        boolean isCall = false;
+        boolean isVideo = true;
+        boolean isServer = true;
+        if(!DalbitUtil.isEmpty(guestStateInfo)){
+            isMic = "1".equals(String.valueOf(guestStateInfo.get("mic_state")));
+            isCall = "1".equals(String.valueOf(guestStateInfo.get("call_state")));
+            isVideo = "1".equals(String.valueOf(guestStateInfo.get("video_state")));
+            isServer = "1".equals(String.valueOf(guestStateInfo.get("server_state")));
+        }
 
         //int oldState = Integer.parseInt(String.valueOf(guestStateInfo.get("state")));
 

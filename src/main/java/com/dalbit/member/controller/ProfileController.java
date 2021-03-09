@@ -267,5 +267,38 @@ public class ProfileController {
         String result = profileService.callStarMemoSave(apiData);
         return result;
     }
+
+    /**
+     * 프로필 이미지 추가등록
+     */
+    @PostMapping("/add/img")
+    public String profileImgAdd(@Valid ProfileImgAddVo profileImgAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ProfileImgAddVo apiData = new P_ProfileImgAddVo(profileImgAddVo, request);
+        String result = profileService.callProfileImgAdd(apiData, request);
+        return result;
+    }
+
+    /**
+     * 프로필 이미지 삭제
+     */
+    @PostMapping("/delete/img")
+    public String profileImgDelete(@Valid ProfileImgDeleteVo profileImgDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ProfileImgDeleteVo apiData = new P_ProfileImgDeleteVo(profileImgDeleteVo, request);
+        String result = profileService.callProfileImgDelete(apiData);
+        return result;
+    }
+
+    /**
+     * 프로필 이미지 대표지정
+     */
+    @PostMapping("/leader/img")
+    public String profileImgLeader(@Valid ProfileImgLeaderVo profileImgLeaderVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_ProfileImgLeaderVo apiData = new P_ProfileImgLeaderVo(profileImgLeaderVo, request);
+        String result = profileService.callProfileImgLeader(apiData);
+        return result;
+    }
 }
 

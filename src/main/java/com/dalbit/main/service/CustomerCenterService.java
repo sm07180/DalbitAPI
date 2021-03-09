@@ -268,7 +268,6 @@ public class CustomerCenterService {
 
     }
 
-
     /**
      * 고객센터 나의 문의목록 조회
      */

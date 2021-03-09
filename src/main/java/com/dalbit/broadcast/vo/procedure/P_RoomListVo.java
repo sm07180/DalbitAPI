@@ -89,7 +89,7 @@ public class P_RoomListVo extends P_ApiVo {
     private String guest_streamid;         //guest 스트림아이디
     private String guest_publish_tokenid;  //guest 토큰아이디
     private String guest_play_tokenid;     //guest play토큰
-    private int is_wowza;                   // 와우자여
+    private int is_wowza;                  // 와우자여
 
     private int badge_recomm;                   //추천뱃지
     private int badge_popular;                  //인기뱃지

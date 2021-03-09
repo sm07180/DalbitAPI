@@ -68,4 +68,20 @@
     <select id="selectStarRanking" parameterType="P_StarRankingVo" resultType="P_StarRankingVo">
         CALL sp_member_star_rank(#{selfMemNo, mode=IN, jdbcType=INTEGER}, #{targetMemNo, mode=IN, jdbcType=INTEGER})
     </select>
+
+    <select id="callProfileImgAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        CALL sp_member_profile_album_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callProfileImgDelete" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        CALL sp_member_profile_album_delete(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callProfileImgLeader" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        CALL sp_member_profile_album_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id="callProfImgList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_ProfileImgListVo">
+        call sp_member_profile_album_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

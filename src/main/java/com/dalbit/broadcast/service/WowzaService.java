@@ -121,8 +121,8 @@ public class WowzaService {
 
             if(roomNo.indexOf("_") > 1){
                 String[] tmp = StringUtils.split(roomNo, "_");
-                guestNo = tmp[0];
-                roomNo = tmp[1];
+                guestNo = tmp[1];
+                roomNo = tmp[0];
                 isGuest = true;
             }else if(roomNo.length() > 14){
                 guestNo = roomNo.substring(14);
@@ -132,7 +132,7 @@ public class WowzaService {
             log.debug("call wowza hook roomNo : {}, guestNo : {}", roomNo, guestNo);
 
             RoomOutVo target = getRoomInfo(roomNo, request);
-            boolean roomCheck = false;
+            //boolean roomCheck = false;
             if(target != null && target.getState() != 4) {
                 /*if("v".equals(target.getMediaType())) {
                     wowzaSocketService.wowzaDisconnect(target.getMediaType(), streamName, null);
@@ -154,7 +154,7 @@ public class WowzaService {
                         roomDao.callBroadCastRoomStateUpate(procedureVo);
                     }
 
-                    roomCheck = true;
+                    //roomCheck = true;
                     result.put("status", Status.방송방상태변경_성공);
                 } else {
                     //TODO 추후 게스트영상 테스트시 필요없으면 제거
@@ -163,7 +163,7 @@ public class WowzaService {
                     params.put("memNo", guestNo);
                     HashMap guestInfo = guestDao.selectGuestInfo(params);
                     if(!DalbitUtil.isEmpty(guestInfo)){
-                        SocketVo vo = socketService.getSocketVo(target.getRoomNo(), guestNo, true);
+                        /*SocketVo vo = socketService.getSocketVo(target.getRoomNo(), guestNo, true);
                         GuestInfoVo guestInfoVo = new GuestInfoVo();
                         guestInfoVo.setMode(8);
                         guestInfoVo.setMemNo(guestNo);
@@ -193,7 +193,7 @@ public class WowzaService {
                         try{
                             //socketService.sendGuest(guestNo, roomNo, target.getBjMemNo(), "8", request, DalbitUtil.getAuthToken(request), guestInfoVo);
                         }catch(Exception e){}
-                        roomCheck = true;
+                        roomCheck = true;*/
                         result.put("status", Status.조회);
                     }else{
                         result.put("status", Status.데이터없음);
@@ -398,6 +398,8 @@ public class WowzaService {
             result.put("status", Status.방송생성_20세제한);
         } else if (procedureVo.getRet().equals(Status.방송생성_3레벨제한.getMessageCode())) {
             result.put("status", Status.방송생성_3레벨제한);
+        } else if (procedureVo.getRet().equals(Status.방송생성_20세본인인증.getMessageCode())) {
+            result.put("status", Status.방송생성_20세본인인증);
         } else {
             result.put("status", Status.방생성실패);
         }
@@ -605,6 +607,10 @@ public class WowzaService {
             result.put("status", Status.방송참여_비회원IP중복);
         } else if (procedureVo.getRet().equals(Status.방송참여_차단회원입장불가.getMessageCode())) {
             result.put("status", Status.방송참여_차단회원입장불가);
+        } else if (procedureVo.getRet().equals(Status.방송참여_20세본인인증안함.getMessageCode())) {
+            result.put("status", Status.방송참여_20세본인인증안함);
+        } else if (procedureVo.getRet().equals(Status.비회원_재진입.getMessageCode())) {
+            result.put("status", Status.비회원_재진입);
         } else {
             result.put("status", Status.방참가실패);
         }

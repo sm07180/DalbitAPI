@@ -70,7 +70,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         return securityUserVo;
     }
 
-
     public UserDetails loadUserByUsername() throws CustomUsernameNotFoundException{
 
         HashMap map = DalbitUtil.getParameterMap(request);

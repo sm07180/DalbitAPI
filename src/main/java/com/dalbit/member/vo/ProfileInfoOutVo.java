@@ -72,7 +72,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private String[] levelColor = new String[0];
     private String listenRoomNo;
     private boolean isReceive;
-
+    List profImgList;
     private boolean isMailboxOn;
 
     public ProfileInfoOutVo(){}

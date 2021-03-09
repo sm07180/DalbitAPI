@@ -48,4 +48,12 @@ public interface ProfileDao {
     P_StarMemoVo callStarMemo(ProcedureVo procedureVo);
 
     ProcedureVo callStarMemoSave(ProcedureVo procedureVo);
+
+    ProcedureVo callProfileImgAdd(ProcedureVo procedureVo);
+
+    ProcedureVo callProfileImgDelete(ProcedureVo procedureVo);
+
+    ProcedureVo callProfileImgLeader(ProcedureVo procedureVo);
+
+    List<P_ProfileImgListVo> callProfImgList(ProcedureVo procedureVo);
 }

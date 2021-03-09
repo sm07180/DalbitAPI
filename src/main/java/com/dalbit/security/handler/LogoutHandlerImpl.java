@@ -63,7 +63,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
 
         HashMap broadcastingInfo = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         String state = DalbitUtil.getStringMap(broadcastingInfo, "state");
-        boolean isBroadcast = state.equals(Code.방송중체크_방송중.getCode()) ? true : false;
+        boolean isBroadcast = state.equals(Code.방송중체크_방송중.getCode());
 
         if(DalbitUtil.isLogin(request) && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
             DeviceVo deviceVo = new DeviceVo(request);

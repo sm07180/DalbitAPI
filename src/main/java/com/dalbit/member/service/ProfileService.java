@@ -6,13 +6,16 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.SpecialDjHistoryVo;
+import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +48,11 @@ public class ProfileService {
     @Autowired
     BadgeService badgeService;
     @Autowired
+    JwtUtil jwtUtil;
+    @Autowired
     AdminService adminService;
+    @Autowired
+    RestService restService;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -92,6 +99,14 @@ public class ProfileService {
             profileInfoOutVo.setProfMsg(DalbitUtil.replaceMaskString(commonService.banWordSelect(), profileInfoOutVo.getProfMsg()));
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
+
+
+            HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no());
+            profileInfoOutVo.setProfImgList((List) imgListMap.get("list"));
+
+            //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo));
+            //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo)); => 추가되지않고 수정 됨
+
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));
 
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
@@ -619,4 +634,89 @@ public class ProfileService {
         return result;
     }
 
+
+    /**
+     * 프로필 이미지 추가등록
+     */
+    public String callProfileImgAdd(P_ProfileImgAddVo pProfileImgAddVo, HttpServletRequest request) throws GlobalException {
+
+        String profImg = DalbitUtil.replacePath(pProfileImgAddVo.getProfileImage());
+        pProfileImgAddVo.setProfileImage(profImg);
+        ProcedureVo procedureVo = new ProcedureVo(pProfileImgAddVo);
+        profileDao.callProfileImgAdd(procedureVo);
+
+        String result;
+        if(Status.프로필이미지_추가등록_성공.getMessageCode().equals(procedureVo.getRet())){
+            restService.imgDone(DalbitUtil.replaceDonePath(profImg), request);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_성공));
+        } else if (procedureVo.getRet().equals(Status.프로필이미지_추가등록_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_회원아님));
+        } else if (procedureVo.getRet().equals(Status.프로필이미지_추가등록_이미지없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_이미지없음));
+        } else if (procedureVo.getRet().equals(Status.프로필이미지_추가등록_10개초과.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_10개초과));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 프로필 이미지 삭제
+     */
+    public String callProfileImgDelete(P_ProfileImgDeleteVo pProfileImgDeleteVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pProfileImgDeleteVo);
+        profileDao.callProfileImgDelete(procedureVo);
+
+        String result;
+        if(Status.프로필이미지_삭제_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_성공));
+        } else if (procedureVo.getRet().equals(Status.프로필이미지_삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_회원아님));
+        } else if (procedureVo.getRet().equals(Status.프로필이미지_삭제_이미지없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_이미지없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_실패));
+        }
+        return result;
+    }
+
+
+    /**
+     * 프로필 이미지 대표지정
+     */
+    public String callProfileImgLeader(P_ProfileImgLeaderVo pProfileImgLeaderVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pProfileImgLeaderVo);
+        profileDao.callProfileImgLeader(procedureVo);
+
+        String result;
+        if(Status.프로필이미지_대표지정_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_대표지정_성공));
+        } else if (procedureVo.getRet().equals(Status.프로필이미지_대표지정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_대표지정_회원아님));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_대표지정_실패));
+        }
+        return result;
+    }
+
+    public HashMap callProfImgList(String memNo){
+        P_ProfileImgListVo pProfileImgListVo = new P_ProfileImgListVo(memNo);
+        ProcedureVo procedureVo = new ProcedureVo(pProfileImgListVo);
+        List<P_ProfileImgListVo> profImgListVo = profileDao.callProfImgList(procedureVo);
+
+        HashMap imgListMap = new HashMap();
+        imgListMap.put("list", new ArrayList<>());
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            List<ProfileImgListOutVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(profImgListVo)){
+                for (int i=0; i<profImgListVo.size(); i++){
+                    outVoList.add(new ProfileImgListOutVo(profImgListVo.get(i)));
+                }
+            }
+            imgListMap.put("list", outVoList);
+        }
+        return imgListMap;
+    }
 }

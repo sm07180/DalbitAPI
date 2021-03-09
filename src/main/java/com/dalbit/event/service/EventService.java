@@ -1069,6 +1069,9 @@ public class EventService {
 
     public int eventDateCheck(int idx){
         EventBasicVo eventBasicVo = eventDao.selectEventBasic(idx);
+        if(eventBasicVo == null || eventBasicVo.getStart_date() == null || eventBasicVo.getEnd_date() == null) {
+            return 0;
+        }
         long startDatetime = eventBasicVo.getStart_date().getTime();
         long endDatetime = eventBasicVo.getEnd_date().getTime();
         long currentDatetime = new Date().getTime();

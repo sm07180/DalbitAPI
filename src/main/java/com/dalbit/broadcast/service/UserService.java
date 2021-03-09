@@ -74,8 +74,7 @@ public class UserService {
             ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo);
             HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
             roomMemberList.put("totalMemCnt", DalbitUtil.getIntMap(resultMap, "totalCnt"));
-            //roomMemberList.put("noMemCnt", DalbitUtil.getIntMap(resultMap, "noMemCnt"));
-            roomMemberList.put("noMemCnt", 0);
+            roomMemberList.put("noMemCnt", DalbitUtil.getIntMap(resultMap, "noMemCnt"));
             roomMemberList.put("list", new ArrayList<>());
             DeviceVo deviceVo = new DeviceVo(request);
             if(deviceVo.getOs() == 2){

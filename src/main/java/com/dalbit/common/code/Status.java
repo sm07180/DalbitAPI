@@ -320,6 +320,7 @@ public enum Status {
     방송참여_차단회원입장불가("-13", "broadcast.room.black.list.join.no", "차단회원 입장 불가 시"),
     방송참여_20세본인인증안함("-14", "broadcast.room.join.no.certification", "20세이상 방 입장시 본인인증 안한 경우"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
+    비회원_재진입("-99", "broadcast.room.join.anonymous.twice", "비회원이 방송방에 2번 이상 들어왔을 시"),
     방송방조인따라가기비공개("-999", "broadcast.room.join.not.allow.fallow", "일반회원 참여시 따라가기 비공개일 경우"),
 
     //방송나가기

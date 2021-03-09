@@ -32,6 +32,6 @@ public class MypageReportListenListOutVo {
         setListenTime(target.getListentime());
         setGiftDalCnt(target.getGift_ruby());
         setByeolCnt(target.getGold());
-        setIsGuest(target.getGuest() == 1 ? true : false);
+        setIsGuest(target.getGuest() == 1);
     }
 }
