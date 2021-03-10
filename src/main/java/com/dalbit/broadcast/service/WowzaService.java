@@ -411,7 +411,10 @@ public class WowzaService {
         HashMap result = new HashMap();
         DeviceVo deviceVo = new DeviceVo(request);
         //비회원 참여 불가 ( PC 체크 )
-        if(deviceVo.getOs() == 3 && !DalbitUtil.isLogin(request)){
+        if(deviceVo.getOs() == 3 && !DalbitUtil.isLogin(request)) {
+            result.put("status", Status.로그인필요);
+            return result;
+        }else if((deviceVo.getOs() == 1 || deviceVo.getOs() == 2) && DalbitUtil.versionCompare("1.5.7", deviceVo.getAppVersion()) && !DalbitUtil.isLogin(request)){
             result.put("status", Status.로그인필요);
             return result;
         }
