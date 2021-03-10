@@ -409,8 +409,9 @@ public class WowzaService {
     public HashMap doJoinBroadcast(RoomJoinVo roomJoinVo, HttpServletRequest request) throws GlobalException{
 
         HashMap result = new HashMap();
-        //비회원 참여 불가
-        if(!DalbitUtil.isLogin(request)){
+        DeviceVo deviceVo = new DeviceVo(request);
+        //비회원 참여 불가 ( PC 체크 )
+        if(deviceVo.getOs() == 3 && !DalbitUtil.isLogin(request)){
             result.put("status", Status.로그인필요);
             return result;
         }
@@ -442,7 +443,7 @@ public class WowzaService {
         }else{
             pRoomJoinVo.setShadow(0);
         }
-        DeviceVo deviceVo = new DeviceVo(request);
+
         pRoomJoinVo.setOs(deviceVo.getOs());
         pRoomJoinVo.setDeviceUuid(deviceVo.getDeviceUuid());
         pRoomJoinVo.setIp(deviceVo.getIp());
@@ -795,7 +796,7 @@ public class WowzaService {
         //룰렛 등록상태 조회
         P_MiniGameVo pMiniGameVo = new P_MiniGameVo();
         pMiniGameVo.setRoom_no(target.getRoomNo());
-        pMiniGameVo.setMem_no(memNo);
+        pMiniGameVo.setMem_no(target.getBjMemNo());
         pMiniGameVo.setGame_no(1);
         HashMap miniGameMap = miniGameService.getMiniGame(pMiniGameVo);
 
