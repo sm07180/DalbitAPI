@@ -97,7 +97,7 @@ public class RoomInfoVo {
 
     private List miniGameList = new ArrayList();
     private boolean isMinigame;
-    private int nonMemberTime = 30;
+    private int nonMemberTime = 60;
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap){
