@@ -26,10 +26,10 @@ public class P_RoomListVo extends P_ApiVo {
         setSubjectType(roomListVo.getRoomType());
         setSlctType(roomListVo.getSearchType());
         setSearch(roomListVo.getSearch());
-
+        setDjType(DalbitUtil.isEmpty(roomListVo.getDjType()) ? 0 : roomListVo.getDjType());
         if(!DalbitUtil.isEmpty(roomListVo.getGender())){
             if(roomListVo.getGender().equals("d")){
-                setDjType("1");
+                setDjType(1);
             } else {
                 setGender(roomListVo.getGender());
             }
@@ -47,7 +47,7 @@ public class P_RoomListVo extends P_ApiVo {
     private String subjectType;             //방주제, 리스트 우선순위 설정
     private String search;                  //검색어
     private String gender;                  //DJ성별
-    private String djType;                  //신입구분
+    private int djType;                     //신입구분
     private int pageNo;                     //현재 페이지 번호
     private int pageCnt;                    //페이지당 리스트 개수
     private int isWowza;                   // 와우자 여

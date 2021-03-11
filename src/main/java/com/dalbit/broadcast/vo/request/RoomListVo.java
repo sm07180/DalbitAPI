@@ -25,4 +25,6 @@ public class RoomListVo {
     private String search;  //
 
     private String mediaType;
+
+    private Integer djType;
 }
