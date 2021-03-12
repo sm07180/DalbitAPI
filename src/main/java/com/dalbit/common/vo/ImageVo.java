@@ -6,7 +6,7 @@ import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
+import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
@@ -47,6 +47,18 @@ public class ImageVo extends BaseVo{
         }
     }
 
+    public ImageVo(Object path, String gender, String photoServerUrl, HttpServletRequest request){
+        if(DalbitUtil.isEmpty(path) || DalbitUtil.isEmpty(path.toString())){
+            if(!DalbitUtil.isEmpty(gender)) {
+                this.path = Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + "_200327.jpg";
+                this.url = photoServerUrl + Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + gender + "_200327.jpg";
+                setThumbs();
+            }
+        }else{
+            setPath(path.toString(), photoServerUrl, request);
+        }
+    }
+
     private String url;
     private String path;
     private String thumb50x50;
@@ -67,6 +79,19 @@ public class ImageVo extends BaseVo{
             this.url = photoServerUrl + this.path;
 
             setThumbs();
+        }
+    }
+
+    public void setPath(String path, String photoServerUrl, HttpServletRequest request){
+        if(!DalbitUtil.isEmpty(path)){
+            this.path = path;
+            DeviceVo deviceVo = new DeviceVo(request);
+            this.url = photoServerUrl + this.path;
+            setThumbs();
+
+            if(deviceVo.getOs() != 3 && !"Y".equals(deviceVo.getIsHybrid())){
+                this.url = photoServerUrl + this.path+"?700x700";
+            }
         }
     }
 

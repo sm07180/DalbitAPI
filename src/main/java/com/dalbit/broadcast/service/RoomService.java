@@ -790,7 +790,7 @@ public class RoomService {
         returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1);
 
         //프로필 복수등록된 리스트
-        HashMap imgListMap = profileService.callProfImgList(pRoomMemberInfoVo.getTarget_mem_no());
+        HashMap imgListMap = profileService.callProfImgList(pRoomMemberInfoVo.getTarget_mem_no(), request);
         returnMap.put("profImgList", imgListMap.get("list"));
 
         returnMap.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);

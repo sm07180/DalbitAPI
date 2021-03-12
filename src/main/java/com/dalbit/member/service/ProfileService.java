@@ -101,7 +101,7 @@ public class ProfileService {
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
 
 
-            HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no());
+            HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no(), request);
             profileInfoOutVo.setProfImgList((List) imgListMap.get("list"));
 
             //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo));
@@ -701,7 +701,7 @@ public class ProfileService {
         return result;
     }
 
-    public HashMap callProfImgList(String memNo){
+    public HashMap callProfImgList(String memNo, HttpServletRequest request){
         P_ProfileImgListVo pProfileImgListVo = new P_ProfileImgListVo(memNo);
         ProcedureVo procedureVo = new ProcedureVo(pProfileImgListVo);
         List<P_ProfileImgListVo> profImgListVo = profileDao.callProfImgList(procedureVo);
@@ -712,7 +712,7 @@ public class ProfileService {
             List<ProfileImgListOutVo> outVoList = new ArrayList<>();
             if(!DalbitUtil.isEmpty(profImgListVo)){
                 for (int i=0; i<profImgListVo.size(); i++){
-                    outVoList.add(new ProfileImgListOutVo(profImgListVo.get(i)));
+                    outVoList.add(new ProfileImgListOutVo(profImgListVo.get(i), request));
                 }
             }
             imgListMap.put("list", outVoList);
