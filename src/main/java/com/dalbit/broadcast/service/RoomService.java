@@ -1312,6 +1312,7 @@ public class RoomService {
             data.put("listenTime", DalbitUtil.getIntMap(returnMap, "listentime"));
             data.put("bgImg", new ImageVo(DalbitUtil.getStringMap(returnMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
             data.put("isFan", DalbitUtil.getIntMap(returnMap, "fan") > 0);
+            data.put("bannerImgUrl", DalbitUtil.getStringMap(returnMap, "bannerImgUrl"));
             if(!DalbitUtil.isEmpty(recommList)){
                 for(P_SummaryListenerVo items : recommList){
                     recommends.add(new SummaryListenerOutVo(items, DalbitUtil.getProperty("server.photo.url")));
