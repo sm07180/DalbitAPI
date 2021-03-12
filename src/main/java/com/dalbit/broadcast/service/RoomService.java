@@ -1362,6 +1362,7 @@ public class RoomService {
             data.put("fanCnt", DalbitUtil.getIntMap(resultMap, "fanCnt"));
             data.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
             data.put("bgImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "image_background"), DalbitUtil.getProperty("server.photo.url")));
+            data.put("bannerImgUrl", DalbitUtil.getStringMap(resultMap, "bannerImgUrl"));
             List<SummaryDjOutVo> list = new ArrayList<>();
             for(P_SummaryDjVo item : resultSet){
                 list.add(new SummaryDjOutVo(item, DalbitUtil.getProperty("server.photo.url")));
