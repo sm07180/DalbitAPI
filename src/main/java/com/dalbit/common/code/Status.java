@@ -881,6 +881,7 @@ public enum Status {
     방송방수정제목금지("C005", "broadcast.edit.title.ban.word", "방송방 수정 제목 금지어 포함 시"),
     방송방수정인사말금지("C005", "broadcast.edit.welcome.msg.ban.word", "방송방 수정 인사말 금지어 포함 시"),
     클립등록제목금지("C005", "clip.add.title.ban.word", "클립 생성 제목 금지어 포함 시"),
+    미니게임생성_옵션금지("C005", "mini.game.add.option.ban.word", "미니게임 옵션 금지어 포함 시"),
 
     //알림 읽음처리
     알림읽음_성공("0", "member.notification.read.success", "알림 읽음 성공 시"),

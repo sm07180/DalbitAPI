@@ -4,6 +4,8 @@ import com.dalbit.broadcast.dao.MiniGameDao;
 import com.dalbit.broadcast.vo.MiniGameListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.BanWordVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.socket.service.SocketService;
@@ -31,6 +33,9 @@ public class MiniGameService {
 
     @Autowired
     SocketService socketService;
+
+    @Autowired
+    CommonService commonService;
 
 
     /**
@@ -69,10 +74,21 @@ public class MiniGameService {
      * 미니게임 등록
      */
     public String callMiniGameAdd(P_MiniGameAddVo pMiniGameAddVo, HttpServletRequest request) {
+
+        String result="";
+        String systemBanWord = commonService.banWordSelect();
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(pMiniGameAddVo.getMem_no());
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+        //사이트+방송방 금지어 체크(옵션항목)
+        if(DalbitUtil.isStringMatchCheck(systemBanWord+"|"+banWord, pMiniGameAddVo.getOptList())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임생성_옵션금지));
+            return result;
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(pMiniGameAddVo);
         miniGameDao.callMiniGameAdd(procedureVo);
 
-        String result="";
         if(Status.미니게임등록_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
