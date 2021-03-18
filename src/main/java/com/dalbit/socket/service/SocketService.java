@@ -718,7 +718,7 @@ public class SocketService {
 
     @Async("threadTaskExecutor")
     public void roomChangeTime(String roomNo, String memNo, String extendedTime, String authToken, boolean isLogin, SocketVo vo) {
-        log.info("Socket Start : changeMemberInfo {}, {}, {}, {}, {}", roomNo, memNo, extendedTime, isLogin);
+        log.info("Socket Start : roomChangeTime {}, {}, {}, {}, {}", roomNo, memNo, extendedTime, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
         extendedTime = extendedTime == null ? "" : extendedTime.trim();

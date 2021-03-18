@@ -518,15 +518,20 @@ public class ActionService {
      * 방송 시간 연장
      */
     public String callroomExtendTime(P_ExtendTimeVo pExtendTimeVo, HttpServletRequest request) {
+
+        log.error("방송 시간 연장 start - pExtendTimeVo: {}, {}", pExtendTimeVo.getRoom_no(), pExtendTimeVo.getMem_no());
         ProcedureVo procedureVo = new ProcedureVo(pExtendTimeVo);
         actionDao.callroomExtendTime(procedureVo);
 
+        log.error("ret: {}, {}", procedureVo.getRet(), pExtendTimeVo.getMem_no());
         String result;
         if(Status.시간연장성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             SocketVo vo = socketService.getSocketVo(pExtendTimeVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
+                log.error("reqRoomChangeTime start - extendEndDate: {}", DalbitUtil.getStringMap(resultMap, "extendEndDate"));
                 socketService.roomChangeTime(pExtendTimeVo.getRoom_no(), pExtendTimeVo.getMem_no(), DalbitUtil.getStringMap(resultMap, "extendEndDate"), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                log.error("reqRoomChangeTime end");
                 vo.resetData();
             }catch(Exception e){}
             result = gsonUtil.toJson(new JsonOutputVo(Status.시간연장성공));
