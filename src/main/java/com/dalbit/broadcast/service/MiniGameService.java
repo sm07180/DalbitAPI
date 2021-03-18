@@ -140,10 +140,21 @@ public class MiniGameService {
      * 미니게임 수정
      */
     public String callMiniGameEdit(P_MiniGameEditVo pMiniGameEditVo, HttpServletRequest request) {
+
+        String result="";
+        String systemBanWord = commonService.banWordSelect();
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(pMiniGameEditVo.getMem_no());
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+        //사이트+방송방 금지어 체크(옵션항목)
+        if(DalbitUtil.isStringMatchCheck(systemBanWord+"|"+banWord, pMiniGameEditVo.getOptList())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임생성_옵션금지));
+            return result;
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(pMiniGameEditVo);
         miniGameDao.callMiniGameEdit(procedureVo);
 
-        String result="";
         if(Status.미니게임수정_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
