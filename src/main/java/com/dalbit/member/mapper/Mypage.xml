@@ -203,7 +203,7 @@
     </select>
 
     <select id="selectSpecialDjBroadcastTime" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="long">
-        CALL sp_member_special_dj_broadcast_time(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR}, #{slct_type, mode=IN, jdbcType=INTEGER})
+        CALL sp_member_special_dj_broadcast_time(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR}, #{slct_type, mode=IN, jdbcType=INTEGER}, #{airtime_type, mode=IN, jdbcType=INTEGER})
     </select>
 
     <select id="selectSpecialDjLikeCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
@@ -236,6 +236,14 @@
 
     <select id="selectStarCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
         CALL sp_member_special_dj_star_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectBroadDateCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
+        CALL sp_member_special_dj_broad_date_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+    <select id="selectNewFanCnt" statementType="CALLABLE" parameterType="com.dalbit.member.vo.SpecialDjConditionSearchVo" resultType="int">
+        CALL sp_member_special_dj_new_fan_count(#{mem_no, mode=IN, jdbcType=INTEGER}, #{condition_start_date, mode=IN, jdbcType=VARCHAR}, #{condition_end_date, mode=IN, jdbcType=VARCHAR})
     </select>
 
     <select id="memberShortCutAdd" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">

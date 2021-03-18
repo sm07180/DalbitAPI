@@ -519,15 +519,6 @@
         where mem_no = #{mem_no}
     </select>
 
-    <select id="selectRecentIdIp" parameterType="com.dalbit.admin.vo.DeclarationVo" resultType="com.dalbit.admin.vo.DeclarationVo">
-      /* Admin.xml - selectRecentIdIp */
-          select device_uuid, ip
-          from rd_data.tb_member_session_history
-          where mem_no = #{reported_mem_no}
-          order by last_upd_date desc
-          limit 1
-    </select>
-
     <insert id="insertBlock" parameterType="com.dalbit.admin.vo.DeclarationVo">
         /* Admin.xml - insertBlockHistory */
         insert into

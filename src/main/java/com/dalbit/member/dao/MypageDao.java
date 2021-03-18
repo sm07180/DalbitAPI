@@ -132,6 +132,10 @@ public interface MypageDao {
 
     int selectStarCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
 
+    int selectBroadDateCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
+
+    int selectNewFanCnt(SpecialDjConditionSearchVo specialDjConditionSearchVo);
+
     @Transactional(readOnly = true)
     List<LevelVo> selectLevel();
 

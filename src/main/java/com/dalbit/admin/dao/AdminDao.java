@@ -121,8 +121,6 @@ public interface AdminDao {
 
     @Transactional(readOnly = true)
     String selectAdminName(String mem_no);
-    @Transactional(readOnly = true)
-    DeclarationVo selectRecentIdIp(DeclarationVo declarationVo);
 
     int insertBlock(DeclarationVo declarationVo);
 

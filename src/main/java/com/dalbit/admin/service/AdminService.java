@@ -1,6 +1,7 @@
 package com.dalbit.admin.service;
 
 import com.dalbit.admin.dao.AdminDao;
+import com.dalbit.admin.dao.AdminMemberDao;
 import com.dalbit.admin.util.AdminSocketUtil;
 import com.dalbit.admin.vo.*;
 import com.dalbit.admin.vo.procedure.*;
@@ -47,6 +48,8 @@ public class AdminService {
     AdminDao adminDao;
     @Autowired
     RoomDao roomDao;
+    @Autowired
+    AdminMemberDao adminMemberDao;
 
     @Autowired
     MessageUtil messageUtil;
@@ -461,7 +464,7 @@ public class AdminService {
             try{
 
                 //소켓통신에 필요한 회원정보 조회
-                MemberInfoVo memberInfo = adminDao.getMemberInfo(nickTextInitVo.getMem_no());
+                MemberInfoVo memberInfo = adminMemberDao.callMemberDetail(new ProcedureVo(new MemberInfoVo(nickTextInitVo.getMem_no())));
 
                 // option
                 HashMap<String, Object> param = new HashMap<>();
@@ -558,10 +561,15 @@ public class AdminService {
         try {
             declarationVo.setOpName(selectAdminName(MemberVo.getMyMemNo(request)));
 
-            MemberInfoVo myInfo = getMemberInfo(MemberVo.getMyMemNo(request));
-            log.info(myInfo.getMem_no());
-            MemberInfoVo reportedInfo = getMemberInfo(declarationVo.getReported_mem_no());
-            log.info(reportedInfo.getGrade());
+            var myProcedureVo = new ProcedureVo(new MemberInfoVo(MemberVo.getMyMemNo(request)));
+            adminMemberDao.callMemberDetail(myProcedureVo);
+            MemberInfoVo myInfo = new Gson().fromJson(myProcedureVo.getExt(), MemberInfoVo.class);
+            log.info("myInfo : {}", myInfo);
+
+            var reportedProcedureVo = new ProcedureVo(new MemberInfoVo(declarationVo.getReported_mem_no()));
+            adminMemberDao.callMemberDetail(reportedProcedureVo);
+            MemberInfoVo reportedInfo = new Gson().fromJson(reportedProcedureVo.getExt(), MemberInfoVo.class);
+            log.info("reportedInfo : {}", reportedInfo);
 
             // 신고자
             declarationVo.setMem_no(myInfo.getMem_no());
@@ -612,37 +620,60 @@ public class AdminService {
             adminDao.updateState(memberDeclarationVo);
 
 
-            //디바이스id, ip 차단
+            // 경고를 제외한 정지, 탈퇴 시 방송강제종료, 청취강제종료 후 처리 되도록
+            if(memberDeclarationVo.getOpCode() > 2) {
 
-            if(declarationVo.getUuid_block() == 1 || declarationVo.getIp_block() == 1) {
-                DeclarationVo getRecentInfo = adminDao.selectRecentIdIp(declarationVo);
-                //declarationVo.setBlock_text(adminDao.selectRecentIdIp(declarationVo).getBlock_text());
+                //uuid 차단 등록
+                if (!DalbitUtil.isEmpty(reportedInfo.getDevice_uuid()) && declarationVo.getUuid_block() == 1) {
+                    declarationVo.setBlock_type(1);
+                    declarationVo.setBlock_text(reportedInfo.getDevice_uuid());
+                    adminDao.insertBlock(declarationVo);
 
-                if(!DalbitUtil.isEmpty(getRecentInfo)){
-                    
-                    //uuid 차단 등록
-                    if(!"".equals(DalbitUtil.isEmpty(getRecentInfo.getDevice_uuid()) && declarationVo.getUuid_block() == 1)){
-                        declarationVo.setBlock_type(1);
-                        declarationVo.setBlock_text(getRecentInfo.getDevice_uuid());
-                        adminDao.insertBlock(declarationVo);
-
-                        declarationVo.setEdit_contents("deviceUuid 차단 등록 : " + declarationVo.getBlock_text());
-                        declarationVo.setEdit_type(0);
-                        adminDao.insertBlockHistory(declarationVo);
-                    }
-
-                    //ip 차단 등록
-                    if(DalbitUtil.isEmpty(getRecentInfo.getIp()) && declarationVo.getIp_block() == 1){
-                        declarationVo.setBlock_type(2);
-                        declarationVo.setBlock_text(getRecentInfo.getIp());
-                        adminDao.insertBlock(declarationVo);
-
-                        declarationVo.setEdit_contents("ip 차단 등록 : " + declarationVo.getBlock_text());
-                        declarationVo.setEdit_type(0);
-                        adminDao.insertBlockHistory(declarationVo);
-                    }
+                    declarationVo.setEdit_contents("deviceUuid 차단 등록 : " + declarationVo.getBlock_text());
+                    declarationVo.setEdit_type(0);
+                    adminDao.insertBlockHistory(declarationVo);
                 }
+
+                //ip 차단 등록
+                if(!DalbitUtil.isEmpty(reportedInfo.getIp()) && declarationVo.getIp_block() == 1){
+                    declarationVo.setBlock_type(2);
+                    declarationVo.setBlock_text(reportedInfo.getIp());
+                    adminDao.insertBlock(declarationVo);
+
+                    declarationVo.setEdit_contents("ip 차단 등록 : " + declarationVo.getBlock_text());
+                    declarationVo.setEdit_type(0);
+                    adminDao.insertBlockHistory(declarationVo);
+                }
+
+                //회원번호 차단 등록
+                if(!DalbitUtil.isEmpty(reportedInfo.getMem_no()) && declarationVo.getMemNo_block() == 1){
+                    declarationVo.setBlock_type(3);
+                    declarationVo.setBlock_text(reportedInfo.getMem_no());
+                    adminDao.insertBlock(declarationVo);
+
+                    declarationVo.setEdit_contents("회원번호 차단 등록 : " + declarationVo.getBlock_text());
+                    declarationVo.setEdit_type(0);
+                    adminDao.insertBlockHistory(declarationVo);
+                }
+
+                //휴대폰번호 차단 등록
+                if(!DalbitUtil.isEmpty(reportedInfo.getMem_phone()) && declarationVo.getPhone_block() == 1){
+                    declarationVo.setBlock_type(4);
+                    declarationVo.setBlock_text(reportedInfo.getMem_phone());
+                    adminDao.insertBlock(declarationVo);
+
+                    declarationVo.setEdit_contents("휴대폰번호 차단 등록 : " + declarationVo.getBlock_text());
+                    declarationVo.setEdit_type(0);
+                    adminDao.insertBlockHistory(declarationVo);
+                }
+
+                var hashMap = new HashMap();
+                hashMap.put("mem_no", declarationVo.getMem_no());
+                hashMap.put("message", declarationVo.getNotiMemo());
+                memberForceLogout(request, hashMap);
+
             }
+
             //rd_data.tb_member_notification에 insert
             NotiInsertVo notiInsertVo = new NotiInsertVo();
             if(!DalbitUtil.isEmpty(declarationVo.getNotificationYn()) && declarationVo.getNotificationYn().equals("Y")) {
@@ -1470,4 +1501,5 @@ public class AdminService {
 
         return gsonUtil.toJson(new JsonOutputVo(Status.로그아웃성공));
     }
+
 }

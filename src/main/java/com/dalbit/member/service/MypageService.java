@@ -1573,10 +1573,20 @@ public class MypageService {
             conditionList.add(conditionData4);
         }else{
             //Best dj 조건 체크
-            specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getBest_code());
-            specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getBest_data());
-            HashMap bestConditionData = checkSpecialDjCondition(specialDjConditionSearchVo);
-            conditionList.add(bestConditionData);
+            specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getBest_code1());
+            specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getBest_data1());
+            HashMap bestConditionData1 = checkSpecialDjCondition(specialDjConditionSearchVo);
+            conditionList.add(bestConditionData1);
+
+            specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getBest_code2());
+            specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getBest_data2());
+            HashMap bestConditionData2 = checkSpecialDjCondition(specialDjConditionSearchVo);
+            conditionList.add(bestConditionData2);
+
+            specialDjConditionSearchVo.setCondition_code(getSpecialDjRegManageVo.getBest_code3());
+            specialDjConditionSearchVo.setCondition_data(getSpecialDjRegManageVo.getBest_data3());
+            HashMap bestConditionData3 = checkSpecialDjCondition(specialDjConditionSearchVo);
+            conditionList.add(bestConditionData3);
         }
 
         specialDjCondition.setConditionList(conditionList);
@@ -1616,6 +1626,9 @@ public class MypageService {
          * 5 : 팬 수
          * 6 : 누적 청취자 수
          * 7 : 받은 별 수
+         * 8 : 누적 방송시간(팬 방송 제외)
+         * 9 : 누적 방송일 수
+         * 10 : 신규 팬 등록 수
          */
         if(code == 1){
             //누적방송시간 체크(기간)
@@ -1663,6 +1676,27 @@ public class MypageService {
             resultMap.put("condition", listenCnt < value ? 0 : 1);
             resultMap.put("title", "누적 받은 별");
             resultMap.put("value", "최소 " + value + "개 이상");
+
+        }else if(code == 8){
+            //누적 방송시간(팬 방송 제외)
+            long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjConditionSearchVo);
+            resultMap.put("condition", broadcastAirtime < value ? 0 : 1);
+            resultMap.put("title", "누적방송시간");
+            resultMap.put("value", "최소 " + value + "시간 방송");
+
+        }else if(code == 9){
+            //누적 방송일 수
+            int listenCnt = mypageDao.selectBroadDateCnt(specialDjConditionSearchVo);
+            resultMap.put("condition", listenCnt < value ? 0 : 1);
+            resultMap.put("title", "누적 방송일 수");
+            resultMap.put("value", "최소 " + value + "일 이상");
+
+        }else if(code == 10){
+            //신규 팬 등록 수
+            int listenCnt = mypageDao.selectNewFanCnt(specialDjConditionSearchVo);
+            resultMap.put("condition", listenCnt < value ? 0 : 1);
+            resultMap.put("title", "신규 팬 등록 수");
+            resultMap.put("value", "최소 " + value + "명 이상");
         }
 
         return resultMap;
