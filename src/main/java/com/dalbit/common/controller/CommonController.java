@@ -12,9 +12,7 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.util.CookieUtil;
-import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
+import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +53,16 @@ public class CommonController {
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
-        HashMap resultMap = commonService.getCodeCache("splash", request);
+        HashMap resultMap = new HashMap();
+
+        DeviceVo deviceVo = new DeviceVo(request);
+        if(!DalbitUtil.isEmpty(deviceVo) && (deviceVo.getOs() == 1 && DalbitUtil.versionCompare("1.5.8", deviceVo.getAppVersion()))
+                || (deviceVo.getOs() == 2 && DalbitUtil.versionCompare("1.5.9", deviceVo.getAppVersion()))){
+            resultMap = commonService.getCodeCache("splash", request);
+        }else{
+            resultMap = commonService.getCodeCache2("splash", request);
+        }
+
         return gsonUtil.toJson(new JsonOutputVo(조회, commonService.getItemVersion(resultMap, request)));
     }
 

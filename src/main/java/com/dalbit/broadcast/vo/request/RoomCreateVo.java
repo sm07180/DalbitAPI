@@ -8,10 +8,10 @@ import javax.validation.constraints.*;
 @Getter @Setter
 public class RoomCreateVo {
 
-    @NotBlank(message = "{\"ko_KR\" : \"주제를\"}")
+    /*@NotBlank(message = "{\"ko_KR\" : \"주제를\"}")
     @NotNull(message = "{\"ko_KR\" : \"주제를\"}")
-    @Size(message = "{\"ko_KR\" : \"주제를\"}", min = 2, max = 2)
-    private String roomType;
+    @Size(message = "{\"ko_KR\" : \"주제를\"}", min = 2, max = 2)*/
+    private String roomType = "00";
 
     @NotBlank(message = "{\"ko_KR\" : \"제목을\"}")
     @NotNull(message = "{\"ko_KR\" : \"제목을\"}")

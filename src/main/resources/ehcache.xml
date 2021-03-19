@@ -14,4 +14,14 @@
            memoryStoreEvictionPolicy="LFU"
            transactionalMode="off">
     </cache>
+
+    <cache name="codeCache2"
+           maxElementsInMemory="10000"
+           eternal="false"
+           overflowToDisk="false"
+           timeToLiveSeconds="30000"
+           timeToIdleSeconds="0"
+           memoryStoreEvictionPolicy="LFU"
+           transactionalMode="off">
+    </cache>
 </ehcache>

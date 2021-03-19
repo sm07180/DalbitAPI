@@ -1364,6 +1364,7 @@ public class DalbitUtil {
         data = StringUtils.replace(data, "\\\\t", "\\t");
         data = StringUtils.replace(data, "\\\\/", "\\/");
         data = StringUtils.replace(data, "\\\\'", "\\'");
+        data = StringUtils.replace(data, "\\u003d", "=");
         //data = StringUtils.replace(data, "\\\\\"", "\\\"");
         return data;
     }

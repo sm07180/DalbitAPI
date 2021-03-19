@@ -116,6 +116,13 @@ public class CommonService {
         return resultMap;
     }
 
+    @Cacheable(cacheNames = "codeCache2", key = "#code")
+    public HashMap getCodeCache2(String code, HttpServletRequest request) {
+        HashMap resultMap = callCodeDefineSelect2();
+
+        return resultMap;
+    }
+
     public HashMap getItemVersion(HashMap resultMap, HttpServletRequest request){
         return getItemVersion(resultMap, request, null);
     }
@@ -182,6 +189,7 @@ public class CommonService {
         if(!DalbitUtil.isEmpty(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")))){
             boostList.add(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")).get(0));
         }
+
         resultMap.put("boost", boostList);
 
         //추가적립 애니메이션 > 아이템관리에 등록 후 레벨업에 추가.[G9997, G9998]
@@ -445,6 +453,22 @@ public class CommonService {
         result.put("memGubun", setData(data, "mem_slct"));
         result.put("osGubun", setData(data, "os_type"));
         result.put("roomType", setData(data, "subject_type"));
+        result.put("roomState", setData(data, "broadcast_state"));
+        result.put("roomRight", setData(data, "broadcast_auth"));
+        result.put("declarReason", setData(data, "report_reason"));
+        result.put("clipType", setData(data, "clip_type"));
+        result.put("exchangeBankCode", setData(data, "exchange_bank_code"));
+
+        return result;
+    }
+
+    public HashMap callCodeDefineSelect2(){
+        List<Map> data = commonDao.callCodeDefineSelect();
+
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("memGubun", setData(data, "mem_slct"));
+        result.put("osGubun", setData(data, "os_type"));
+        result.put("roomType", new ArrayList());
         result.put("roomState", setData(data, "broadcast_state"));
         result.put("roomRight", setData(data, "broadcast_auth"));
         result.put("declarReason", setData(data, "report_reason"));
