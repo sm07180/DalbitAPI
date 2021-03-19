@@ -183,7 +183,17 @@ public class CommonService {
             boostList.add(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")).get(0));
         }
         resultMap.put("boost", boostList);
-        resultMap.put("levelUp", commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp")));
+
+        //추가적립 애니메이션 > 아이템관리에 등록 후 레벨업에 추가.[G9997, G9998]
+        List levelUpList = commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp"));
+        ItemVo item_G9997 = commonDao.selectBooster("G9997").get(0);
+        item_G9997.setVisibility(false);
+        levelUpList.add(item_G9997);
+
+        ItemVo item_G9998 = commonDao.selectBooster("G9998").get(0);
+        item_G9998.setVisibility(false);
+        levelUpList.add(item_G9998);
+        resultMap.put("levelUp", levelUpList);
 
         List<HashMap> itemCategories = new ArrayList<>();
         HashMap itemCate1 = new HashMap();
