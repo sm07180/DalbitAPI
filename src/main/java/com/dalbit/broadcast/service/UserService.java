@@ -389,7 +389,7 @@ public class UserService {
                     if(DalbitUtil.getIntMap(resultMap, "newFanCnt") > 0){
                         HashMap fanRankMap = commonService.getKingFanRankList(pBroadFanstarInsertVo.getRoom_no(), request);
                         HashMap socketMap = new HashMap();
-                        socketMap.put("likes", roomInfoVo.getCount_good());
+                        socketMap.put("likes",  DalbitUtil.getIntMap(resultMap, "countGood"));
                         socketMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
                         socketMap.put("fanRank", fanRankMap.get("list"));
                         socketMap.put("newFanCnt", DalbitUtil.getIntMap(resultMap, "newFanCnt"));
