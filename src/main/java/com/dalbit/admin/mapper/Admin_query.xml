@@ -21,6 +21,7 @@
             and mem_no = #{mem_no}
             and menu.is_use = 1
             and menu.mobile_yn = 'Y'
+            and test.relation = 1
         order by menu.order_no asc
     </select>
 
