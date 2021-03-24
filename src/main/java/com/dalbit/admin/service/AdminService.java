@@ -1012,6 +1012,26 @@ public class AdminService {
     }
 
     /**
+     * 아이템 총계
+     */
+    public String callItemInfo(P_StatVo StatVo){
+
+        //return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultList));
+        ProcedureVo procedureVo = new ProcedureVo(StatVo);
+        ArrayList<P_ItemTotalOutDetailVo> detailList = adminDao.callItemTotal(procedureVo);
+        P_ItemTotalOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_ItemTotalOutVo.class);
+
+        if(Integer.parseInt(procedureVo.getRet()) <= 0){
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
+
+        var result = new HashMap<String, Object>();
+        result.put("totalInfo", totalInfo);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, totalInfo));
+    }
+
+    /**
      * 1:1 문의 목록 조회
      */
     public String callQuestionList(P_QuestionListInputVo pQuestionListInputVo) {

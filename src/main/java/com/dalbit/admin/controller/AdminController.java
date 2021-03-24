@@ -255,6 +255,12 @@ public class AdminController {
         return result;
     }
 
+    @PostMapping("/stat/itemInfo")
+    public String itemInfo(HttpServletRequest request, P_StatVo pStatVo){
+        String result = adminService.callItemInfo(pStatVo);
+        return result;
+    }
+
     /**
      * 1:1 문의 목록 조회
      */

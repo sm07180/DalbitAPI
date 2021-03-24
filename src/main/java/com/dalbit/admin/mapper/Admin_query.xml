@@ -64,11 +64,6 @@
         limit #{searchStart}, #{searchEnd}
     </select>
 
-    <select id="callBroadcastRoomExit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
-        /* Admin.xml - callBroadcastRoomExit */
-        call rd_data.sp_broadcast_room_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <update id="updateBroadcastMemberExit" parameterType="com.dalbit.admin.vo.procedure.P_RoomForceExitInputVo">
         /* Admin.xml - updateBroadcastMemberExit */
         update rd_data.tb_broadcast_room_member
@@ -358,11 +353,6 @@
             and room_no = #{room_no}
     </select>
 
-    <select id="callForceLeave" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
-        /* Admin.xml - callForceLeave */
-        call rd_admin.sp_admin_broadcast_room_member_forced_leave(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <insert id="insertForceLeave_roomBlock" parameterType="com.dalbit.admin.vo.ForcedOutVo">
         /* Admin.xml - insertForceLeave_roomBlock */
         INSERT INTO rd_data.tb_broadcast_room_block( mem_no, blocked_mem_no,room_no, last_upd_date) VALUES ( #{dj_mem_no}, #{mem_no},#{room_no}, NOW() );
@@ -416,46 +406,6 @@
                 order by a.state asc, a.last_upd_date desc
     </select>
 
-    <select id="callBroadcastTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_NewBroadcastTimeOutVo">
-        /* Admin.xml - callBroadcastTotal */
-        call rd_admin.sp_admin_stat_broadcast_time(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callNewBroadcastTimeNew" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_NewBroadcastTimeNewOutVo">
-        /* Admin.xml - callNewBroadcastTimeNew */
-        call rd_admin.sp_admin_stat_broadcast_time_new(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callUserCurrentTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_UserTotalOutDetailVo">
-        /* Admin.xml - callUserTotal */
-        call rd_admin.sp_admin_connect_stat_current_connect(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callPayInfo" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_PayInfoOutVo">
-        /* Admin.xml - callPayInfo */
-        call rd_admin.sp_admin_stat_member_payment_live(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callLoginTotal" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_LoginTotalOutDetailVo">
-        /* Admin.xml - callLoginGender */
-        call rd_admin.sp_admin_connect_stat_login_total(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callLoginAge" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_LoginAgeOutDetailVo">
-        /* Admin.xml - callLoginAge */
-        call rd_admin.sp_admin_connect_stat_login_age(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callQuestionList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionListOutputVo">
-        /* Admin.xml - callQuestionList */
-        call rd_admin.sp_admin_service_center_qna_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callServiceCenterQnaDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_QuestionDetailOutputVo">
-        /* Admin.xml - callServiceCenterQnaDetail */
-        call rd_admin.sp_admin_service_center_qna_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <select id="selectFaqSubList" parameterType="com.dalbit.admin.vo.FaqVo" resultType="com.dalbit.admin.vo.FaqVo">
         /* Admin.xml - selectFaqSubList */
         select *
@@ -471,11 +421,6 @@
           where idx = #{qnaIdx}
     </select>
 
-    <select id="callServiceCenterQnaOperate" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
-        /* Admin.xml - callServiceCenterQnaOperate */
-        call rd_admin.sp_admin_service_center_qna_operate(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <update id="updateServiceCenterQnaUpdate" parameterType="com.dalbit.admin.vo.procedure.P_QuestionOperateVo">
         /* Admin.xml - updateServiceCenterQnaUpdate */
         update rd_data.tb_service_center_qna_v25
@@ -484,16 +429,6 @@
             ,op_name=#{opName}
         where idx = #{qnaIdx}
     </update>
-
-    <select id="callServiceCenterReportList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_DeclarationListOutputVo">
-        /* Admin.xml - callServiceCenterReportList */
-        call rd_admin.sp_admin_service_center_report_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callServiceCenterReportDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_DeclarationDetailOutputVo">
-        /* Admin.xml - callServiceCenterReportDetail */
-        call rd_admin.sp_admin_service_center_report_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
 
     <select id="selectUserProfile" parameterType="com.dalbit.admin.vo.LiveChatProfileVo" resultType="com.dalbit.admin.vo.LiveChatProfileVo">
         /* Admin.xml - selectUserProfile */
@@ -506,11 +441,6 @@
             inner join rd_data.tb_member_profile pro
           where bas.mem_no = pro.mem_no
           and bas.mem_no = #{mem_no}
-    </select>
-
-    <select id="callMemberEditHistory" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_MemberEditHistOutputVo">
-        /* Admin.xml - callMemberEditHistory */
-        call rd_admin.sp_admin_member_all_info_edit_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="selectAdminName" parameterType="java.lang.String" resultType="java.lang.String">
@@ -671,18 +601,6 @@
         WHERE idx = #{idx}
     </update>
 
-    <select id="callClipHistoryList" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipHistoryVo">
-        call rd_admin.sp_admin_clip_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callClipDetail" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipDetailVo">
-        call rd_admin.sp_admin_clip_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callClipEdit" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.ClipAdminEditVo">
-        call rd_admin.sp_admin_clip_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
     <select id="selectReplyList" parameterType="com.dalbit.admin.vo.ClipHistoryReplyVo" resultType="com.dalbit.admin.vo.ClipHistoryReplyVo">
         /* Admin.xml - selectReplyList */
         SELECT
@@ -756,14 +674,6 @@
         and start_date > DATE_SUB(now(), INTERVAL 7 DAY)
         order by start_date desc
         limit 5;
-    </select>
-
-    <select id="callMemAdminMemoAdd" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
-        call rd_admin.sp_admin_op_memo_add(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
-    </select>
-
-    <select id="callBroadcastInfo" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.admin.vo.procedure.P_BroadcastDetailOutputVo">
-        call rd_admin.sp_admin_broadcast_info_detail(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
     <select id="selectSettingList" parameterType="com.dalbit.admin.vo.SettingListVo" resultType="com.dalbit.admin.vo.SettingListVo">
