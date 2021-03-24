@@ -11,6 +11,7 @@ import com.dalbit.search.vo.request.SearchVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +23,7 @@ import javax.validation.Valid;
 @Slf4j
 @RestController
 @RequestMapping("/search")
+@Scope("prototype")
 public class SearchController {
 
     @Autowired

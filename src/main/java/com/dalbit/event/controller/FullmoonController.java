@@ -2,6 +2,7 @@ package com.dalbit.event.controller;
 
 import com.dalbit.event.service.FullmoonService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,6 +10,7 @@ import java.util.HashMap;
 
 @RestController
 @RequestMapping("/event/fullmoon")
+@Scope("prototype")
 public class FullmoonController {
 
     @Autowired

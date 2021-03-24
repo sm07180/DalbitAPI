@@ -17,6 +17,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.internal.connection.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/mypage")
+@Scope("prototype")
 public class MypageController {
 
     @Autowired

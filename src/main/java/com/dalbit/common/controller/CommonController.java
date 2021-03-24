@@ -16,6 +16,7 @@ import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +37,7 @@ import static com.dalbit.common.code.Status.조회;
 
 @Slf4j
 @RestController
+@Scope("prototype")
 public class CommonController {
 
     @Autowired

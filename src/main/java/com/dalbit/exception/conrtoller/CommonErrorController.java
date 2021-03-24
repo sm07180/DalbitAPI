@@ -14,6 +14,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,6 +29,7 @@ import java.util.HashMap;
 @Slf4j
 @ControllerAdvice
 @RestController
+@Scope("prototype")
 public class CommonErrorController {
 
     @Autowired

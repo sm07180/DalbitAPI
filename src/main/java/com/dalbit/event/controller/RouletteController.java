@@ -12,6 +12,7 @@ import com.dalbit.event.vo.request.RouletteWinVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.util.DalbitUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +24,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/event/roulette")
+@Scope("prototype")
 public class RouletteController {
 
     @Autowired

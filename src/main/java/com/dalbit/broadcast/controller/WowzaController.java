@@ -11,6 +11,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +24,7 @@ import java.util.HashMap;
 @Slf4j
 @RestController
 @RequestMapping("/broad/vw")
+@Scope("prototype")
 public class WowzaController {
     @Autowired
     WowzaService wowzaService;
