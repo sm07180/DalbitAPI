@@ -71,6 +71,7 @@ public class ImageVo extends BaseVo{
     private String thumb190x190;
     private String thumb292x292;
     private String thumb336x336;
+    private String thumb500x500;
     private String thumb700x700;
 
     public void setPath(String path, String photoServerUrl){
@@ -90,7 +91,7 @@ public class ImageVo extends BaseVo{
             setThumbs();
 
             if(deviceVo.getOs() != 3 && !"Y".equals(deviceVo.getIsHybrid())){
-                this.url = photoServerUrl + this.path+"?700x700";
+                this.thumb700x700 = url + (this.url.endsWith("webp") ? "" : "?500x500");
             }
         }
     }
@@ -106,6 +107,7 @@ public class ImageVo extends BaseVo{
         this.thumb190x190 = url + (this.url.endsWith("webp") ? "" : "?190x190");
         this.thumb292x292 = url + (this.url.endsWith("webp") ? "" : "?292x292");
         this.thumb336x336 = url + (this.url.endsWith("webp") ? "" : "?336x336");
+        this.thumb500x500 = url + (this.url.endsWith("webp") ? "" : "?500x500");
         this.thumb700x700 = url + (this.url.endsWith("webp") ? "" : "?700x700");
     }
 }
