@@ -99,6 +99,9 @@ public class RoomInfoVo {
     private boolean isMinigame;
     private int nonMemberTime = 60;
 
+    /* 필터/메이크업 */
+    private boolean useFilter = false;
+
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap){
         this.roomNo = target.getRoomNo();
@@ -224,6 +227,9 @@ public class RoomInfoVo {
         this.isMinigame = target.isMinigame();
         this.newFanCnt = target.getNewFanCnt();
 
+        if("v".equals(this.mediaType) && this.auth ==  3){
+            this.useFilter = true;
+        }
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){
