@@ -17,6 +17,7 @@ public class RoomInfoVo {
     private String title;
     private ImageVo bgImg = new ImageVo();
     private int state;
+    private int entryCnt = 0;
     private String startDt;
     private long startTs;
     private boolean hasNotice;
@@ -111,6 +112,7 @@ public class RoomInfoVo {
         this.bjMemNo = target.getBjMemNo();
         this.bjNickNm = target.getBjNickNm();
         this.bjProfImg = target.getBjProfImg();
+        this.entryCnt = target.getEntryCnt();
         if("real".equals(DalbitUtil.getActiveProfile()) && (
             (deviceVo.getOs() == 1 && Integer.parseInt(deviceVo.getAppBuild()) < 41)
             ||
