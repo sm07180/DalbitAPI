@@ -651,6 +651,23 @@ public class CommonService {
         return result;
     }
 
+    public String getServerInstance(HttpServletRequest request){
+        String result = request.getLocalAddr();
+        if(DalbitUtil.isEmpty(result)){
+            return "";
+        }
+        result = result.substring(result.length() - 3);
+        String rootDir = request.getSession().getServletContext().getRealPath("/");
+        if(rootDir.endsWith("/") || rootDir.endsWith("\\")){
+            rootDir = rootDir.substring(0, rootDir.length() - 1);
+        }
+        String instance = rootDir.substring(rootDir.length() - 1);
+        if(!Pattern.matches("\\d", instance)){
+            instance = "1";
+        }
+        result += "_" + instance;
+        return result;
+    }
 
     /**
      * 휴대폰 인증번호 요청
@@ -742,12 +759,14 @@ public class CommonService {
     public String saveErrorLog(P_ErrorLogVo pErrorLogVo){
         return saveErrorLog(pErrorLogVo, null);
     }
+
     public String saveErrorLog(P_ErrorLogVo pErrorLogVo, HttpServletRequest request){
         if(request != null && request instanceof HttpServletRequest){
+            String desc = "Server : " + getServerInstance(request) + "\n";
             DeviceVo deviceVo  = new DeviceVo(request);
-            String desc = pErrorLogVo.getDesc();
-            desc = "AuthToken : " + request.getHeader(SSO_HEADER_COOKIE_NAME) + "\n" +desc;
-            desc = (new Gson().toJson(deviceVo)) + "\n" +desc;
+            desc += "AuthToken : " + request.getHeader(SSO_HEADER_COOKIE_NAME) + "\n";
+            desc += (new Gson().toJson(deviceVo)) + "\n";
+            desc += pErrorLogVo.getDesc();
             pErrorLogVo.setDesc(desc);
         }
         ProcedureVo procedureVo = new ProcedureVo(pErrorLogVo);
