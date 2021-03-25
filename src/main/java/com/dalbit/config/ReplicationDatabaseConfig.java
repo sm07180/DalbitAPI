@@ -91,6 +91,7 @@ public class ReplicationDatabaseConfig {
         masterHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         masterHikariConfig.setMaxLifetime(MAX_LIFETIME);
         masterHikariConfig.setAutoCommit(true);
+        masterHikariConfig.setPoolName("hikari-master");
 
         return new HikariDataSource(masterHikariConfig);
     }
@@ -110,6 +111,7 @@ public class ReplicationDatabaseConfig {
         slaveHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         slaveHikariConfig.setMaxLifetime(MAX_LIFETIME);
         slaveHikariConfig.setAutoCommit(true);
+        slaveHikariConfig.setPoolName("hikari-slave");
 
         return new HikariDataSource(slaveHikariConfig);
     }
@@ -127,6 +129,7 @@ public class ReplicationDatabaseConfig {
         emailHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         emailHikariConfig.setMaxLifetime(MAX_LIFETIME);
         emailHikariConfig.setConnectionTestQuery("select 1");
+        emailHikariConfig.setPoolName("hikari-email");
 
         return new HikariDataSource(emailHikariConfig);
     }
