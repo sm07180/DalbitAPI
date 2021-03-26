@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface UserDao {
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     List<P_RoomMemberListVo> callBroadCastRoomMemberList(ProcedureVo procedureVo);
 
     ProcedureVo callBroadCastRoomKickout(ProcedureVo procedureVo);

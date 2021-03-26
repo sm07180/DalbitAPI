@@ -15,7 +15,7 @@ public interface ContentDao {
         ProcedureVo callBroadCastRoomNoticeEdit(ProcedureVo procedureVo);
         ProcedureVo callBroadCastRoomNoticeDelete(ProcedureVo procedureVo);
         ProcedureVo callInsertStory(ProcedureVo procedureVo);
-        @Transactional(readOnly = true)
+        //@Transactional(readOnly = true)
         List<P_RoomStoryListVo> callGetStory(ProcedureVo procedureVo);
         ProcedureVo callDeletetStory(ProcedureVo procedureVo);
 }

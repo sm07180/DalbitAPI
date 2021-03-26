@@ -6,6 +6,7 @@ import com.google.gson.GsonBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.context.annotation.Scope;
 
 /**
  * Procedure 조회를 위한 VO
@@ -13,6 +14,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
+@Scope("prototype")
 public class ProcedureVo {
 
     public ProcedureVo(){}

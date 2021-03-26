@@ -17,7 +17,7 @@ public interface ActionDao {
     ProcedureVo callBroadCastRoomBooster(ProcedureVo procedureVo);
     ProcedureVo callroomExtendTime(ProcedureVo procedureVo);
     ProcedureVo callRoomFreeze(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+    //@Transactional(readOnly = true)
     ProcedureVo callMoon(ProcedureVo procedureVo);
     ProcedureVo callMoonCheck(ProcedureVo procedureVo);
 }
