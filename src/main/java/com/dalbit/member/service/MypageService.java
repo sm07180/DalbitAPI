@@ -2314,7 +2314,8 @@ public class MypageService {
 
         String result;
         if(procedureVo.getRet().equals(Status.방송설정조회_성공.getMessageCode())) {
-            int specialdj_badge = mypageDao.selectIsSpecial(pBroadcastSettingVo.getMem_no());
+            Integer specialCnt = mypageDao.selectIsSpecial(pBroadcastSettingVo.getMem_no());
+            int specialdj_badge = specialCnt == null ? 0 : specialCnt.intValue();
             boolean isSpecial = specialdj_badge > 0;
 
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
