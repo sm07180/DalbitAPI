@@ -105,6 +105,7 @@ public enum Status {
     //비밀번호변경
     비밀번호변경실패_회원아님("0", "member.change.password.fail", "비밀번호 변경 실패 - 회원이 아닌경우"),
     비밀번호변경성공("1", "member.change.password.success", "비밀번호 변경 성공 시"),
+    비밀번호변경_인증요청_회원아님("2", "member.change.password.sms.request.fail", "비밀번호 변경 인증요청 실패 - 회원이 아닌경우"),
     비밀번호변경오류("C006", "member.change.password.error", "비밀번호 변경 오류 시"),
 
     //프로필편집

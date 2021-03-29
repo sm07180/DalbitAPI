@@ -162,7 +162,7 @@ public class CommonController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
             // 비회원이 패스워드 변경을 요청한 경우
             } else if(DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
+                result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경_인증요청_회원아님));
             // 예외
             } else {
                 try {
