@@ -5,6 +5,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.context.annotation.Scope;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.HashMap;
  */
 @Getter
 @Setter
+@Scope("prototype")
 public class JsonOutputVo {
 
     public JsonOutputVo(){}

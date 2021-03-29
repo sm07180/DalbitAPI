@@ -6,6 +6,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.context.annotation.Scope;
 
 import java.util.HashMap;
 
@@ -34,7 +35,7 @@ import java.util.HashMap;
  * fanBadgeStartColor : 뱃지 bg 시작값
  * fanBadgeEndColor : 뱃지 bg 종료값
  */
-@Setter @Getter @ToString
+@Setter @Getter @ToString @Scope("prototype")
 public class SocketVo {
     private String command;
     private String message = "";
