@@ -11,6 +11,9 @@ import java.util.List;
 @Repository
 public interface MainDao {
     @Transactional(readOnly = true)
+    List<?> callMainAll(P_BannerVo pBannerVo);
+
+    @Transactional(readOnly = true)
     List<P_MainFanRankingVo> callMainFanRanking(ProcedureVo procedureVo);
     @Transactional(readOnly = true)
     List<P_MainDjRankingVo> callMainDjRanking(ProcedureVo procedureVo);

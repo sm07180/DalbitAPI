@@ -12,6 +12,7 @@ import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -67,56 +68,27 @@ public class MainService {
                 platform += "_";
             }
         }
-        int isWowza = DalbitUtil.isWowza(deviceVo);
 
-        //상위 추천 데이터 조회
-        P_MainRecommandVo pMainRecommandVo = new P_MainRecommandVo();
-        pMainRecommandVo.setParamPlanMemNo(DalbitUtil.getProperty("inforex.plan.memNo"));
-        pMainRecommandVo.setParamMemNo(memNo);
-        pMainRecommandVo.setParamPlatform(platform);
-        pMainRecommandVo.setParamIsWowza(isWowza);
-        List<P_MainRecommandVo> recommendVoList = mainDao.callMainRecommandList(pMainRecommandVo);
-
-        Calendar yesterday = Calendar.getInstance();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
-        String today_str = sdf.format(yesterday.getTime());
-
-        //DJ랭킹 조회
-        P_MainTimeRankingPageVo pMainRankingPageVo = new P_MainTimeRankingPageVo();
-        pMainRankingPageVo.setMemLogin(0);
-        pMainRankingPageVo.setMem_no(MemberVo.getMyMemNo(request));
-        pMainRankingPageVo.setRanking_slct(1);
-        pMainRankingPageVo.setPageNo(1);
-        pMainRankingPageVo.setPageCnt(10);
-        pMainRankingPageVo.setRank_date(DalbitUtil.getDate("yyyy-MM-dd HH:mm:ss"));
-        ProcedureVo procedureVo = new ProcedureVo(pMainRankingPageVo);
-        List<P_MainTimeRankingPageVo> mainRankingPageVoList = mainDao.callMainTimeRankingPage(procedureVo);
-
-        //Fan랭킹 조회
-        P_MainRankingPageVo pMainFanRankingPageVo = new P_MainRankingPageVo();
-        pMainFanRankingPageVo.setSlct_type(1);
-        pMainFanRankingPageVo.setRanking_slct(2);
-        pMainFanRankingPageVo.setPageNo(1);
-        pMainFanRankingPageVo.setPageCnt(10);
-        pMainFanRankingPageVo.setMemLogin(0);
-        pMainFanRankingPageVo.setMem_no(memNo);
-        pMainFanRankingPageVo.setRankingDate(today_str);
-        ProcedureVo procedureRankingVo = new ProcedureVo(pMainFanRankingPageVo);
-        List<P_MainRankingPageVo> mainFanRankingVoList = mainDao.callMainRankingPage(procedureRankingVo);
-
-        //마이스타
-        List<P_MainStarVo> starVoList = null;
-        if(isLogin == 1){
-            starVoList = mainDao.callMainStarList(memNo);
-        }
-
-        //배너
         P_BannerVo pBannerVo = new P_BannerVo();
         pBannerVo.setParamPlatform(platform);
         pBannerVo.setParamMemNo(memNo);
         pBannerVo.setParamDevice("" + deviceVo.getOs());
-        pBannerVo.setParamPosition("1");
-        List<BannerVo> bannerList = mainDao.selectBanner(pBannerVo);
+
+        List<P_MainRecommandVo> recommendVoList = new ArrayList<>();
+        List<BannerVo> bannerList = new ArrayList<>();
+        List<P_MainTimeRankingPageVo> mainRankingPageVoList = new ArrayList<>();
+        List<P_MainRankingPageVo> mainFanRankingVoList = new ArrayList<>();
+        List<P_MainStarVo> starVoList = new ArrayList<>();
+        List<?> resultSets = mainDao.callMainAll(pBannerVo);
+        if(!DalbitUtil.isEmpty(resultSets)){
+            recommendVoList = DBUtil.getList(resultSets, 0, P_MainRecommandVo.class);
+            bannerList = DBUtil.getList(resultSets, 1, BannerVo.class);
+            mainRankingPageVoList = DBUtil.getList(resultSets, 2, P_MainTimeRankingPageVo.class);
+            mainFanRankingVoList = DBUtil.getList(resultSets, 3, P_MainRankingPageVo.class);
+            if(DalbitUtil.isLogin(request)){
+                starVoList = DBUtil.getList(resultSets, 4, P_MainStarVo.class);
+            }
+        }
 
         HashMap mainMap = new HashMap();
 
