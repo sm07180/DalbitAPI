@@ -31,7 +31,6 @@ public interface ProfileDao {
     @Transactional(readOnly = true)
     List<P_FanListVo> callFanList(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
     List<P_FanListNewVo> callFanListNew(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
@@ -41,7 +40,6 @@ public interface ProfileDao {
 
     ProcedureVo callFanEdit(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
     List<P_StarListNewVo> callStarListNew(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
