@@ -14,6 +14,7 @@ import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.procedure.P_LevelUpCheckVo;
 import com.dalbit.socket.dao.SocketDao;
 import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
+import com.dalbit.socket.vo.SocketOutVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.RestApiUtil;
@@ -739,6 +740,12 @@ public class SocketService {
         return null;
     }
 
+    public SocketVo getSocketObjectVo(String roomNo, String memNo, boolean isLogin){
+        try{
+            return new SocketVo(memNo, getUserInfo(roomNo, memNo), isLogin);
+        }catch(Exception e){}
+        return null;
+    }
 
     public HashMap getUserInfo(String roomNo, String memNo, boolean isLogin){
         P_RoomMemberInfoSelectVo pRoomMemberInfoVo = new P_RoomMemberInfoSelectVo();
@@ -751,6 +758,15 @@ public class SocketService {
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         }catch(Exception e){}
         return null;
+    }
+
+    public SocketOutVo getUserInfo(String roomNo, String memNo){
+        P_RoomMemberInfoSelectVo pRoomMemberInfoVo = new P_RoomMemberInfoSelectVo();
+        pRoomMemberInfoVo.setMem_no(memNo);
+        pRoomMemberInfoVo.setRoom_no(roomNo);
+
+        ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
+        return socketDao.callBroadcastMemberInfoObject(procedureVo);
     }
 
     public HashMap getMyInfo(String memNo){

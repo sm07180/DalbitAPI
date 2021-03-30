@@ -5,4 +5,8 @@
     <select id = "callBroadcastMemberInfo" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="ProcedureVo">
         call sp_broadcast_room_member_info_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <select id = "callBroadcastMemberInfoObject" statementType = "CALLABLE" parameterType = "ProcedureVo" resultType="com.dalbit.socket.vo.SocketOutVo">
+        call sp_broadcast_room_member_info_select_object(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

@@ -99,6 +99,33 @@ public class SocketVo {
         }
     }
 
+    public SocketVo(String memNo, SocketOutVo memInfo, boolean isLogin){
+        if(memInfo != null){
+            this.memNo = memNo;
+            this.auth = memInfo.getAuth();
+            this.fan = this.auth == 3 ? 0 : (memInfo.getIsFan() == 0 ? 1 : 0);
+            this.authName = "";
+            if(this.auth == 3){
+                this.authName = "DJ";
+            }else if(this.auth == 2){
+                this.authName = "게스트";
+            }else if(this.auth == 1){
+                this.authName = "매니저";
+            }
+            ImageVo img = new ImageVo(memInfo.getImage_profile(), memInfo.getMem_sex(), DalbitUtil.getProperty("server.photo.url"));
+            this.memImg = img.getThumb120x120();
+            this.login = isLogin ? 1 : 0;
+            this.ctrlRole = memInfo.getControl();
+            this.memNk = memInfo.getMem_nick();
+            this.fanBadgeText = "";
+            this.fanBadgeIcon = "";
+            this.fanBadgeStartColor = "";
+            this.fanBadgeEndColor = "";
+            this.newDj = memInfo.getNewdj_badge();
+            this.newListener = memInfo.getNew_badge();
+        }
+    }
+
     public void setMessage(String message){
         this.message = message == null ? "" : message.trim();
     }

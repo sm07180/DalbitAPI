@@ -927,6 +927,13 @@ public enum Status {
     이벤트_이미참여("-2", "event.join.already", "이미 이벤트에 참여한 경우"),
     이벤트_진행중인이벤트없음("-3", "event.current.not.exist", "진행중인 이벤트가 없는경우"),
 
+    이벤트_잘못된경품번호("-3", "event.gift.not.found", "이벤트 경품번호를 입력한 경우"),
+    이벤트_응모권수량부족("-4", "event.coupon.not.enough", "응모권 갯수가 부족한 경우"),
+
+    이벤트_방송시간부족("-2", "event.broadcast.time.not.enough", "방송시간이 조건에 미달된 경우"),
+    이벤트_참여성공("0", "event.apply.reward.success", "이벤트 참여 완료"),
+
+
     //////////////////////////
     //모바일 관리자
     /////////////////////////
@@ -1141,6 +1148,17 @@ public enum Status {
     휴대폰입력_입력종료시간지남("-4", "event.attendance.phone.input.limit.time", "입력종료시간 지났을 시"),
     휴대폰입력_이미입력된번호("-5", "event.attendance.phone.input.already", "이미 입력된 번호일 시"),
     휴대폰입력_실패("C006", "event.attendance.phone.input.fail", "휴대폰 입력 저장 실패 시"),
+
+    //출석체크
+    출석체크예약체크_팝업노출("0", "read.success", "자동출석체크 예약팝업 띄우기"),
+    출석체크예약_회원아님("-1", "event.attendance.check.member.number.error", "회원정보를 찾을 수 없을 때"),
+    출석체크예약체크_이미팝업띄움("-2", "read.success", "하루 1번 노출 정책으로 이미 팝업을 띄운경우"),
+
+    출석체크예약_예약성공("1", "event.attendance.checkIn.reserve.success", "출석체크예약 성공"),
+    출석체크예약_보상받음("0", "event.attendance.checkIn.success", "출석체크보상 받기 성공"),
+    출석체크예약_이미보상받음("-2", "event.attendance.checkIn.fail.already", "출석체크보상을 이미 받은경우"),
+    출석체크예약_동일기기중복불가("-5", "event.attendance.checkIn.fail.device.check", "출석체크 시 UUID 중복된 경우"),
+    출석체크예약_동일아이피중복불가("-6", "event.attendance.checkIn.fail.ip.check", "출석체크 시 IP가 중복된 경우"),
 
     //기프티콘 당첨자리스트 조회
     기프티콘_당첨자리스트조회("C001", "gifticon.win.list.select.success", "기프티콘 당첨자 조회 성공 시"),
@@ -2163,6 +2181,90 @@ public enum Status {
     선물받기_이미받음("-2", "championship.gift.already", "이미 받은 경우"),
     선물받기_10점안됨("-3", "championship.gift.10point.limit", "10점 미만인 경우"),
     선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시"),
+
+    //영상대화 방송설정 블랙리스트 등록
+    영상대화_차단등록_성공("0", "mypage.video.blacklist.add.success", "블랙리스트 등록 성공 시"),
+    영상대화_차단등록_요청회원번호_회원아님("-1", "mypage.video.blacklist.add.member.number.error", "요청회원번호가 회원 아닐 시"),
+    영상대화_차단등록_대상회원번호_회원아님("-2", "mypage.video.blacklist.add.number.error", "블랙리스트 회원번호가 회원 아닐 시"),
+    영상대화_차단등록_이미블랙등록("-3", "mypage.video.blacklist.add.already.add", "이미 블랙리스트 등록 되어있을 시"),
+    영상대화_차단등록_본인등록안됨("-4", "mypage.video.blacklist.add.impossible.add", "본인을 블랙리스트로 등록하려고 할떄"),
+    영상대화_차단등록_회원차단상태("-5", "mypage.video.blacklist.add.member.black.already", "이미 전체 회원차단 시"),
+    영상대화_차단등록_실패("C006", "mypage.video.blacklist.add.fail", "블랙리스트 등록 실패 시"),
+
+    //영상대화 수신설정 조회하기
+    영상대화_설정조회_성공("0", "mypage.member.video.select.success", "영상대화 설정 조회 성공 시"),
+    영상대화_설정조회_회원아님("-1", "mypage.member.video.select.member.number.error", "회원아닐 시"),
+    영상대화_설정조회오류("C006", "mypage.member.video.select.error", "영상대화 설정 조회 오류 시"),
+
+    //영상대화 수신설정 수정
+    영상대화_수신설정수정_성공("0", "mypage.video.setting.edit.success", "영상대화 수신설정 수정 성공 시"),
+    영상대화_알림무음("0", "mypage.member.video.edit.all.silent.success", "알림 모드 무음"),
+    영상대화_알림소리("0", "mypage.member.video.edit.all.sound.success", "알림 모드 소리"),
+    영상대화_알림진동("0", "mypage.member.video.edit.all.vibration.success", "알림 모드 진동"),
+    영상대화_수신설정수정_회원아님("-1", "mypage.member.video.edit.memer.number.error", "요청회원번호가 회원 아닐 시"),
+    영상대화_수신설정수정_오류("C006", "mypage.video.setting.edit.fail", "영상대화 수신설정 수정 실패 시"),
+
+    //영상대화 차감기준
+    차감기준조회_성공("0", "chat.video.condition.select.success", "영상대화 차감기준 조회 성공 시"),
+    차감기준조회_회원아님("-1", "chat.video.condition.select.member.number.error", "요청회원번호가 회원 아닐 시"),
+    차감기준조회_실패("C006", "chat.video.condition.select.fail", "영상대화 차감기준 조회 실패 시"),
+
+    //영상대화
+    영상대화_취소("3", "chat.video.cancel.success", "영상대화 취소 시"),
+    영상대화_거절("4", "chat.video.refuse.success", "영상대화 거절 시"),
+    영상대화_일시정지("5", "chat.video.pause.success", "영상대화 일시정지 시"),
+    영상대화_무응답("8", "chat.video.no.response.success", "영상대화 무응답 시"),
+    영상대화_차단("9", "chat.video.cut.success", "영상대화 차단 시"),
+
+    //영상대화 신청
+    영상대화_신청("0", "chat.video.apply.success", "영상대화 신청 시"),
+    영상대화_신청_회원아님("-1", "chat.video.apply.member.number.error", "회원아닐 시"),
+    영상대화_신청_상대정지("-2", "chat.video.apply.target.member.stop", "상대방이 정지회원 시"),
+    영상대화_신청_차단회원("-3", "chat.video.apply.black", "본인이 차단 시"),
+    영상대화_신청_상대가차단("-4", "chat.video.apply.target.black", "상대방이 차단했을 시"),
+    영상대화_신청_우체통비활성("-5", "chat.video.apply.mailbox.off", "우체통 비활성 시"),
+    영상대화_신청_우체통상대비활성("-6", "chat.video.apply.target.mailbox.off", "상대가 우체통 비활성 시"),
+    영상대화_신청_수신거부("-7", "chat.video.apply.target.response.refuse", "수신거부 상태"),
+    영상대화_신청_시간수신거부("-8", "chat.video.apply.target.response.time.refuse", "시간 수신거부 상태"),
+    영상대화_신청_상대가수신거부("-9", "chat.video.apply.target.refuse", "상대가 수신거부 상태"),
+    영상대화_신청_상대_시간수신거부("-10", "chat.video.apply.target.time.refuse", "상대가 시간 수신거부 상태"),
+    영상대화_신청_방송참여중("-11", "chat.video.apply.room.join", "방송 참여중 상태"),
+    영상대화_신청_상대_방송참여중("-12", "chat.video.apply.target.room.join", "상대가 방송 참여중 상태"),
+    영상대화_신청_대화중("-13", "chat.video.apply.already", "영상 대화중"),
+    영상대화_신청_상대_대화중("-14", "chat.video.apply.target.already", "상대가 영상 대화중"),
+    영상대화_신청_달부족("-15", "chat.video.apply.dal.limit", "달 부족 시"),
+    영상대화_실패("C006", "chat.video.apply.fail", "영상대화 신청 실패 시"),
+
+    //영상대화 수락
+    영상대화_수락("0", "chat.video.ok.success", "영상대화 수락 시"),
+    영상대화_수락_실패("C006", "chat.video.ok.fail", "영상대화 수락 실패 시"),
+
+    //영상대화 연결
+    영상대화_연결("0", "chat.video.connect.success", "영상대화 연결 시"),
+    영상대화_연결_실패("C006", "chat.video.connect.fail", "영상대화 연결 실패 시"),
+
+    //영상대화 종료
+    영상대화_종료("0", "chat.video.end.success", "영상대화 종료 시"),
+    영상대화_종료_실패("C006", "chat.video.end.fail", "영상대화 종료 실패 시"),
+
+    //퀘스트 목록 조회
+    퀘스트목록조회_성공("0", "event.quest.list.select.success", "퀘스트 목록 조회 성공 시"),
+    퀘스트목록조회_회원아님("-1", "event.quest.list.select.member.number.error", "퀘스트 목록 조회 회원 아닐 시"),
+    퀘스트목록조회_실패("C006", "event.quest.list.select.fail", "퀘스트 목록 조회 실패 시"),
+
+    // 퀘스트 보상받기
+    퀘스트보상_성공("0", "event.quest.reward.success", "퀘스트 보상 성공 시"),
+    퀘스트보상_회원아님("-1", "event.quest.reward.select.member.number.error", "퀘스트 보상 회원 아닐 시"),
+    퀘스트보상_조건미달("-2", "event.quest.reward.auth.under", "퀘스트 보상 조건 미달 시"),
+    퀘스트보상_이미받음("-3", "event.quest.reward.error", "퀘스트 보상 이미 받은 보상 시"),
+    퀘스트보상_번호없음("-4", "event.quest.reward.no.search", "퀘스트 보상 번호 없을 시"),
+    퀘스트보상_실패("C006", "event.quest.reward.fail", "퀘스트 보상 실패 시"),
+
+    // TNK 콜백
+    TNK_성공("0", "tnk.callback.success", "TNK 무료충전 성공 시"),
+    TNK_회원아님("-1", "tnk.callback.member.number.error", "TNK 무료충전 회원 아닐 시"),
+    TNK_이미받음("-2", "tnk.callback.already", "TNK 무료충전 이미 받은 보상 시"),
+    TNK_실패("C006", "tnk.callback.fail", "TNK 무료충전 보상 실패 시"),
 ;
 
 

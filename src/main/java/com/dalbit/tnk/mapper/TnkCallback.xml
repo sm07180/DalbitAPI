@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.tnk.dao.TnkCallbackDao" >
+
+    <select id = "callTnkCallback" statementType = "CALLABLE" parameterType = "ProcedureVo">
+        call sp_member_free_charge(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
+    <select id = "callTnkConfirm" statementType = "CALLABLE" parameterType = "ProcedureVo">
+        call sp_member_free_charge_confirm(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+</mapper>

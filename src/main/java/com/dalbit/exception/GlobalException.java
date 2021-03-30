@@ -25,7 +25,7 @@ public class GlobalException extends Exception {
     private String messageKey;
     private ErrorStatus errorStatus;
     private Status status;
-    private Object data;
+    private Object data = "";
     private String methodName;
     private boolean isCustomMessage = false;
 
