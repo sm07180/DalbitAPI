@@ -1,35 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration scan="true" scanPeriod="3 seconds">
+    <property name="SERVER_LOG_CALL" value="%d{yyyy/MM/dd HH:mm:ss.SSS} | %X{ACCESS_IP} | ${LOG_LEVEL_PATTERN:-%5p} | %msg%n"/>
 
-    <!-- 로컬에선 FILE을 만들지 않고 console 로그만 찍는다. -->
-    <!-- console 로그 -->
     <appender name="console" class="ch.qos.logback.core.ConsoleAppender">
         <layout>
-            <pattern>
-                %d{HH:mm:ss.SSS} [%thread] %-5level %logger{32} - %msg%n
-            </pattern>
+            <pattern>${SERVER_LOG_CALL}</pattern>
         </layout>
     </appender>
 
-    <logger name="org.springframework" additivity="false" level="INFO">
-        <appender-ref ref="console" />
-    </logger>
-    <logger name="com.dalbit" additivity="false" level="DEBUG">
-        <appender-ref ref="console" />
-    </logger>
-
-    <logger name="jdbc" level="OFF" />
     <logger name="jdbc.sqlonly" level="INFO" />
-    <logger name="jdbc.sqltiming" level="OFF" />
-    <logger name="jdbc.audit" level="OFF" />
-    <logger name="jdbc.resultset" level="OFF" />
-    <logger name="jdbc.resultsettable" level="INFO" />
-    <logger name="jdbc.connection" level="WARN" />
-    <logger name="log4jdbc.log4j2" level="OFF" />
-    <logger name="io.lettuce" level="WARN" />
-    <logger name="com.zaxxer.hikari" level="WARN" />
 
-    <root level="DEBUG">
+    <root level="warn">
         <appender-ref ref="console"/>
     </root>
 
