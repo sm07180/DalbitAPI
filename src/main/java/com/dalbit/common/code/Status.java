@@ -2265,6 +2265,24 @@ public enum Status {
     TNK_회원아님("-1", "tnk.callback.member.number.error", "TNK 무료충전 회원 아닐 시"),
     TNK_이미받음("-2", "tnk.callback.already", "TNK 무료충전 이미 받은 보상 시"),
     TNK_실패("C006", "tnk.callback.fail", "TNK 무료충전 보상 실패 시"),
+
+    // 1주년 이벤트 콜백
+    댓글목록조회_성공("0", "one.year.event.list.success", "1주년 이벤트 댓글목록조회 성공 시"),
+    댓글목록조회_실패("C006", "one.year.event.list.fail", "1주년 이벤트 댓글목록조회 실패 시"),
+    댓글등록_성공("0", "one.year.event.tail.upload.success", "1주년 이벤트 댓글 등록 성공 시"),
+    댓글등록_실패("C006", "one.year.event.tail.upload.fail", "1주년 이벤트 댓글 등록 실패 시"),
+    댓글수정_성공("0", "one.year.event.tail.update.success", "1주년 이벤트 댓글 수정 성공 시"),
+    댓글수정_실패("C006", "one.year.event.tail.update.fail", "1주년 이벤트 댓글 수정 실패 시"),
+    댓글삭제_성공("0", "one.year.event.tail.delete.success", "1주년 이벤트 댓글 삭제 성공 시"),
+    댓글삭제_실패("C006", "one.year.event.tail.delete.fail", "1주년 이벤트 댓글 삭제 실패 시"),
+    달지급조회_성공("0", "one.year.event.dal.check.success", "1주년 이벤트 달 지급 조회 성공 시"),
+    달지급조회_이미받음("-1", "one.year.event.dal.check.already", "1주년 이벤트 달 지급 조회 이미 받았을 시"),
+    달지급조회_레벨안됨("-2", "one.year.event.dal.check.low", "1주년 이벤트 달 지급 조회 레벨 안될 시"),
+    달지급조회_실패("C006", "one.year.event.dal.check.fail", "1주년 이벤트 달 지급 조회 실패 시"),
+    달지급처리및로그기록_성공("0", "one.year.event.ins.dal.log.success", "1주년 이벤트 달 지급 처리 및 로그기록 성공 시"),
+    달지급처리및로그기록_이미받음("-1", "one.year.event.ins.dal.log.already", "1주년 이벤트 달 지급 처리 및 로그기록 이미 받았을 시"),
+    달지급처리및로그기록_레벨안됨("-2", "one.year.event.ins.dal.log.low", "1주년 이벤트 달 지급 처리 및 로그기록 레벨 안될 시"),
+    달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
 ;
 
 

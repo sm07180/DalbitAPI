@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="ResultMap">
+	<!-- 공통 리절트맵 설정용 xml -->
+	<resultMap type="Integer" id="integer"/>
+	<resultMap type="java.util.Map" id="map"/>
+	<resultMap type="java.util.LinkedHashMap" id="linkedHashMap"/>
+	<resultMap type="String" id="string"/>
+</mapper>

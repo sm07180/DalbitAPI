@@ -87,5 +87,9 @@
 		<typeAlias type="com.dalbit.socket.vo.P_RoomMemberInfoSelectVo" alias="P_RoomMemberInfoSelectVo" />
 	</typeAliases>
 
+	<mappers>
+		<mapper resource="./mapper/ResultMap.xml" />
+		<package name="mappers"/>
+	</mappers>
 </configuration>
 
