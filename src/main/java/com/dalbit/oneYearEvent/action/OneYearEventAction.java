@@ -54,7 +54,7 @@ public class OneYearEventAction {
         TokenCheckVo tokenCheckVo = DalbitUtil.isLogin(request) ? memberService.selectMemState(MemberVo.getMyMemNo(request)) : null;
 
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
-            tailVO.setTailMemNo(tokenCheckVo.getMem_no());
+            setMemTokenInfo(tailVO, request, tokenCheckVo);
         } else {
             return gsonUtil.toJson(new JsonOutputVo(Status.댓글등록_실패));
         }
@@ -68,6 +68,13 @@ public class OneYearEventAction {
         }
     }
 
+    private void setMemTokenInfo (OneYearTailVO tailVO, HttpServletRequest request, TokenCheckVo tokenCheckVo) {
+        tailVO.setTailMemNo(tokenCheckVo.getMem_no());
+        tailVO.setTailMemId(tokenCheckVo.getMem_id());
+        tailVO.setTailMemSex(tokenCheckVo.getMem_sex());
+        tailVO.setTailMemIp(request.getRemoteAddr());
+    }
+
     @PostMapping("/tail/upd")
     public String updateTail(@Valid OneYearTailVO tailVO, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -76,7 +83,7 @@ public class OneYearEventAction {
         TokenCheckVo tokenCheckVo = DalbitUtil.isLogin(request) ? memberService.selectMemState(MemberVo.getMyMemNo(request)) : null;
 
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
-            tailVO.setTailMemNo(tokenCheckVo.getMem_no());
+            setMemTokenInfo(tailVO, request, tokenCheckVo);
         } else {
             return gsonUtil.toJson(new JsonOutputVo(Status.댓글수정_실패));
         }
