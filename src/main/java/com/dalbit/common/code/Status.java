@@ -2270,8 +2270,10 @@ public enum Status {
     댓글목록조회_성공("0", "one.year.event.list.success", "1주년 이벤트 댓글목록조회 성공 시"),
     댓글목록조회_실패("C006", "one.year.event.list.fail", "1주년 이벤트 댓글목록조회 실패 시"),
     댓글등록_성공("0", "one.year.event.tail.upload.success", "1주년 이벤트 댓글 등록 성공 시"),
+    댓글등록_금지어("C005", "one.year.event.tail.ban.word", "댓글등록 금지어 포함 시"),
     댓글등록_실패("C006", "one.year.event.tail.upload.fail", "1주년 이벤트 댓글 등록 실패 시"),
     댓글수정_성공("0", "one.year.event.tail.update.success", "1주년 이벤트 댓글 수정 성공 시"),
+    댓글수정_금지어("C005", "one.year.event.tail.ban.word", "댓글등록 금지어 포함 시"),
     댓글수정_실패("C006", "one.year.event.tail.update.fail", "1주년 이벤트 댓글 수정 실패 시"),
     댓글삭제_성공("0", "one.year.event.tail.delete.success", "1주년 이벤트 댓글 삭제 성공 시"),
     댓글삭제_실패("C006", "one.year.event.tail.delete.fail", "1주년 이벤트 댓글 삭제 실패 시"),
@@ -2283,6 +2285,7 @@ public enum Status {
     달지급처리및로그기록_이미받음("-1", "one.year.event.ins.dal.log.already", "1주년 이벤트 달 지급 처리 및 로그기록 이미 받았을 시"),
     달지급처리및로그기록_레벨안됨("-2", "one.year.event.ins.dal.log.low", "1주년 이벤트 달 지급 처리 및 로그기록 레벨 안될 시"),
     달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
+
 ;
 
 

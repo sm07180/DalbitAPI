@@ -1,6 +1,7 @@
 package com.dalbit.oneYearEvent.action;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
@@ -29,6 +30,7 @@ public class OneYearEventAction {
     @Autowired OneYearEventService oneYearEventService;
     @Autowired GsonUtil gsonUtil;
     @Autowired MemberService memberService;
+    @Autowired CommonService commonService;
 
     @PostMapping("/tail/list")
     public String getTailList(@Valid OneYearTailVO tailVO, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -59,6 +61,11 @@ public class OneYearEventAction {
             return gsonUtil.toJson(new JsonOutputVo(Status.댓글등록_실패));
         }
 
+        // 금지어 체크
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), tailVO.getTailConts())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+        }
+
         int result = oneYearEventService.insertTail(tailVO);
 
         if (result > 0) {
@@ -86,6 +93,11 @@ public class OneYearEventAction {
             setMemTokenInfo(tailVO, request, tokenCheckVo);
         } else {
             return gsonUtil.toJson(new JsonOutputVo(Status.댓글수정_실패));
+        }
+
+        // 금지어 체크
+        if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), tailVO.getTailConts())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
         }
 
         int result = oneYearEventService.updateTail(tailVO);
