@@ -63,7 +63,7 @@ public class OneYearEventAction {
 
         // 금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), tailVO.getTailConts())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글등록_금지어));
         }
 
         int result = oneYearEventService.insertTail(tailVO);
@@ -97,7 +97,7 @@ public class OneYearEventAction {
 
         // 금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), tailVO.getTailConts())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글등록_금지어));
         }
 
         int result = oneYearEventService.updateTail(tailVO);
