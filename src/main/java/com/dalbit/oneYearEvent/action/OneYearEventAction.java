@@ -153,9 +153,9 @@ public class OneYearEventAction {
         } else if (result == -2) {
             return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_레벨안됨, result));
         } else if (result == -3) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_인증안됨));
+            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_인증안됨, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_실패, result));
         }
     }
 
@@ -182,9 +182,9 @@ public class OneYearEventAction {
         } else if (sReturn == -2) {
             return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_레벨안됨, result));
         } else if (sReturn == -3) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_인증안됨));
+            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_인증안됨, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_실패, result));
         }
     }
 }
