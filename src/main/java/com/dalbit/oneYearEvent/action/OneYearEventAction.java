@@ -42,7 +42,7 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             tailVO.setMemNo(tokenCheckVo.getMem_no());
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글목록조회_실패));
+            tailVO.setMemNo("0");
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.댓글목록조회_성공, oneYearEventService.getTailList(tailVO)));
