@@ -141,10 +141,10 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             dalVO.setMemNo(tokenCheckVo.getMem_no());
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_실패, 0));
         }
 
-        int result = oneYearEventService.dalRcvCheck(dalVO);
+        int result = dalVO.getMemLevel() < 5 ? -2 : oneYearEventService.dalRcvCheck(dalVO);
 
         if (result == 1) {
             return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_성공, result));
@@ -169,7 +169,7 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             dalVO.setMemNo(tokenCheckVo.getMem_no());
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_실패, 0));
         }
 
         Map<String, Object> result = oneYearEventService.dalInsAndLogIns(dalVO);
