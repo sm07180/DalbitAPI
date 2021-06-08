@@ -2279,10 +2279,12 @@ public enum Status {
     달지급조회_성공("0", "one.year.event.dal.check.success", "1주년 이벤트 달 지급 조회 성공 시"),
     달지급조회_이미받음("-1", "one.year.event.dal.check.already", "1주년 이벤트 달 지급 조회 이미 받았을 시"),
     달지급조회_레벨안됨("-2", "one.year.event.dal.check.low", "1주년 이벤트 달 지급 조회 레벨 안될 시"),
+    달지급조회_인증안됨("-3", "one.year.event.dal.check.auth", "1주년 이벤트 달 지급 조회 인증 안될 시"),
     달지급조회_실패("C006", "one.year.event.dal.check.fail", "1주년 이벤트 달 지급 조회 실패 시"),
     달지급처리및로그기록_성공("0", "one.year.event.ins.dal.log.success", "1주년 이벤트 달 지급 처리 및 로그기록 성공 시"),
     달지급처리및로그기록_이미받음("-1", "one.year.event.ins.dal.log.already", "1주년 이벤트 달 지급 처리 및 로그기록 이미 받았을 시"),
     달지급처리및로그기록_레벨안됨("-2", "one.year.event.ins.dal.log.low", "1주년 이벤트 달 지급 처리 및 로그기록 레벨 안될 시"),
+    달지급처리및로그기록_인증안됨("-3", "one.year.event.ins.dal.log.auth", "1주년 이벤트 달 지급 처리 및 로그기록 인증 안될 시"),
     달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
 
 ;
