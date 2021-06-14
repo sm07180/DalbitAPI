@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public interface SmsProc {
 
     @Select("CALL rd_data.p_hpMsg_send(#{msgSlct}, #{sendPhone}, #{sendMemNo}, #{rcvPhone}, #{rcvMemId}, " +
-            "#{titleConts}, #{msgBody}, #{atchFile}, #{rsrvDt}, #{tranSlct}, #{retVal})")
+            "#{titleConts}, #{msgBody}, #{atchFile}, #{rsrvDt}, #{tranSlct})")
     int sendSms(SmsProcVO smsProcVO);
 
 }
