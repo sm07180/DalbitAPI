@@ -66,7 +66,7 @@ public class SmsService {
         }
 
         smsProcVO.setSendPhone(DalbitUtil.getProperty("sms.send.phone.no"));
-        smsProcVO.setMsgSlct("M");
+        smsProcVO.setMsgSlct("L");
         smsProcVO.setRcvPhone(smsVo.getPhoneNo());
         smsProcVO.setTitleConts(smsVo.getSubject());
 
@@ -74,6 +74,8 @@ public class SmsService {
         if("local".equals(DalbitUtil.getActiveProfile())){
             String cont = "[내부개발] " + smsVo.getMsgBody();
             smsProcVO.setMsgBody(cont);
+        } else {
+            smsProcVO.setMsgBody(smsVo.getMsgBody());
         }
 
         smsProcVO.setRsrvDt(smsVo.getSend_time());
