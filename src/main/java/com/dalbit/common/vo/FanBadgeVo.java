@@ -30,6 +30,7 @@ public class FanBadgeVo {
     private String chatImg;
     private int chatImgWidth;
     private int chatImgHeight;
+    private int badgeCnt;
 
     public FanBadgeVo(String text, String icon, String startColor, String endColor){
         this.text = text;
@@ -98,6 +99,31 @@ public class FanBadgeVo {
         this.chatImg = DalbitUtil.isEmpty(chatImg) ? "" : chatImg;
         this.chatImgWidth = chatImgWidth;
         this.chatImgHeight = chatImgHeight;
+    }
+
+    public FanBadgeVo(String text, String icon, String startColor, String endColor, String textColor, String borderColor, float bgAlpha, String bgImg, String frameTop, String frameChat, String frameAni, String tipMsg, String explainMsg, String enterAni, String enterBgImg, String msgBorderSrtColor, String msgBorderEndColor, String chatImg, int chatImgWidth, int chatImgHeight, int badgeCnt){
+        this.text = text;
+        this.icon = icon;
+        this.startColor = startColor;
+        this.endColor = endColor;
+        this.frameTop = frameTop;
+        this.frameChat = frameChat;
+        this.frameAni = frameAni;
+        this.tipMsg = tipMsg;
+        this.explainMsg = explainMsg;
+        this.enterAni = enterAni;
+        this.enterBgImg = enterBgImg;
+        this.msgBorderSrtColor = msgBorderSrtColor;
+        this.msgBorderEndColor = msgBorderEndColor;
+
+        this.textColor = textColor;
+        this.borderColor = borderColor;
+        this.bgAlpha = bgAlpha;
+        this.bgImg = bgImg;
+        this.chatImg = DalbitUtil.isEmpty(chatImg) ? "" : chatImg;
+        this.chatImgWidth = chatImgWidth;
+        this.chatImgHeight = chatImgHeight;
+        this.badgeCnt = badgeCnt;
     }
 
     public FanBadgeVo(String text, String icon, String startColor, String endColor, String image, String imageSmall, String frameTop, String frameChat, String frameAni, String tipMsg, String explainMsg, String enterAni, String enterBgImg, String msgBorderSrtColor, String msgBorderEndColor){
