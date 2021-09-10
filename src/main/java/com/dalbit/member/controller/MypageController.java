@@ -85,6 +85,26 @@ public class MypageController {
         return result;
     }
 
+    /**
+     * 추천 DJ 다중 팬 등록
+     */
+    @PostMapping("/multi/fan")
+    public String fanstarMultiInsert(@Valid FanstarMultiInsertVo fanstarMultiInsertVo, BindingResult bindingResult, HttpServletRequest request)throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_FanstarInsertVo apiData = new P_FanstarInsertVo();
+        apiData.setFan_mem_no(MemberVo.getMyMemNo(request));
+        apiData.setType(1);
+        String result = "";
+
+        for(int i=0; i<fanstarMultiInsertVo.getMemNoList().length; i++) {
+            apiData.setStar_mem_no(fanstarMultiInsertVo.getMemNoList()[i]);
+            result = mypageService.callFanstarInsert(apiData); // 맨 마지막 결과만..
+        }
+
+        return result;
+    }
 
     /**
      * 팬 해제

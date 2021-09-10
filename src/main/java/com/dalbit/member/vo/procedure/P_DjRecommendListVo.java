@@ -42,5 +42,6 @@ public class P_DjRecommendListVo extends P_ApiVo {
     private String desc;
     private int enableFan;
 
+    private String dj_keyword;
 
 }

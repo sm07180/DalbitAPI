@@ -19,6 +19,9 @@ public class DjRecommendListOutVo {
     private String title;
     private String desc;
     private Boolean isFan;
+    private String dj_keyword;
+    private int tot_listener_cnt;
+    private int tot_clip_play_cnt;
 
     public DjRecommendListOutVo(P_DjRecommendListVo target){
         setMemNo(target.getMem_no());
@@ -37,6 +40,7 @@ public class DjRecommendListOutVo {
         setTitle(target.getTitle());
         setDesc(target.getDesc());
         setIsFan(target.getEnableFan() == 0);
+        setDj_keyword(target.getDj_keyword());
     }
 
 }
