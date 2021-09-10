@@ -41,6 +41,8 @@ public class DjRecommendListOutVo {
         setDesc(target.getDesc());
         setIsFan(target.getEnableFan() == 0);
         setDj_keyword(target.getDj_keyword());
+        setTot_listener_cnt(target.getTot_listener_cnt());
+        setTot_clip_play_cnt(target.getTot_clip_play_cnt());
     }
 
 }

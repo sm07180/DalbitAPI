@@ -43,5 +43,6 @@ public class P_DjRecommendListVo extends P_ApiVo {
     private int enableFan;
 
     private String dj_keyword;
-
+    private int tot_listener_cnt;
+    private int tot_clip_play_cnt;
 }
