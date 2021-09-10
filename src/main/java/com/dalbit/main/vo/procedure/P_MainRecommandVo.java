@@ -28,6 +28,7 @@ public class P_MainRecommandVo extends P_ApiVo {
     public boolean isNew = false;
     public int isWowza;
     public boolean isShining = false;
+    public boolean isConDj = false;
 
     public String liveBadgeText;
     public String liveBadgeIcon;
