@@ -141,6 +141,7 @@ public class MainService {
                 outVo.isAdmin = recommendVoList.get(i).isAdmin();
                 outVo.isNew = recommendVoList.get(i).isNew();
                 outVo.isShining = recommendVoList.get(i).isShining();
+                outVo.isConDj = recommendVoList.get(i).isConDj();
                 outVo.setIsWowza(recommendVoList.get(i).getIsWowza());
                 outVo.setMediaType(recommendVoList.get(i).getMediaType());
 
