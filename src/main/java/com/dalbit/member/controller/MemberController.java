@@ -7,6 +7,8 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.main.vo.procedure.P_SpecialHistoryVo;
+import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
@@ -35,6 +37,7 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -484,5 +487,14 @@ public class MemberController {
         P_ReportImageVo apiData = new P_ReportImageVo(reportImageVo, request);
         String result = memberService.callReportImage(apiData);
         return result;
+    }
+
+    /**
+     * 베스트 DJ들의 팬랭킹 (1,2,3위) 리스트
+     */
+    @GetMapping("/dj/best/fan/rank/list")
+    public List djBestFanRankList(@Valid SpecialHistoryVo specialHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return memberService.callDjBestFanRankList(specialHistoryVo, request);
     }
 }

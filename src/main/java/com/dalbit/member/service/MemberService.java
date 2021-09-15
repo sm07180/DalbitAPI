@@ -13,6 +13,10 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.main.dao.MainDao;
+import com.dalbit.main.service.MainService;
+import com.dalbit.main.vo.procedure.P_SpecialHistoryVo;
+import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
@@ -38,6 +42,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 @Slf4j
@@ -61,6 +67,9 @@ public class MemberService {
 
     @Autowired
     AdminDao adminDao;
+
+    @Autowired MainDao mainDao;
+    @Autowired MemberService memberService;
 
     @Value("${server.photo.url}")
     private String SERVER_PHOTO_URL;
@@ -836,6 +845,41 @@ public class MemberService {
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_실패));
         }
+        return result;
+    }
+
+    /**
+     * 베스트 DJ들의 팬랭킹 (1,2,3위) 리스트
+     * 랭킹 - 명예의전당 - 스페셜DJ 리스트에서 베스트 DJ를 찾은 후 팬랭킹 리스트를 조회하여 리턴해준다
+     */
+    public List callDjBestFanRankList(SpecialHistoryVo specialHistoryVo, HttpServletRequest request) {
+        LocalDate now = LocalDate.now();
+        String year = now.getYear() + "";
+        int monthValue = now.getMonthValue();
+        String month = "";
+        if(monthValue < 10) {
+            month += "0" + monthValue;
+        }else {
+            month = monthValue + "";
+        }
+
+        specialHistoryVo.setYy(year);
+        specialHistoryVo.setMm(month);
+
+        P_SpecialHistoryVo pSpecialHistoryVo = new P_SpecialHistoryVo(specialHistoryVo, request);
+        ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
+        List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjHistory(procedureVo);
+
+        P_FanRankVo pFanRankVo = new P_FanRankVo();
+        List result = new ArrayList();
+
+        for(P_SpecialHistoryVo vo: specialDjList) {
+            if(vo.getSpecial_cnt() >= 6) {
+                pFanRankVo.setMem_no(vo.getMem_no());
+                result.add(memberService.fanRank3(pFanRankVo));
+            }
+        }
+
         return result;
     }
 }
