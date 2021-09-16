@@ -2287,6 +2287,10 @@ public enum Status {
     달지급처리및로그기록_인증안됨("-3", "one.year.event.ins.dal.log.auth", "1주년 이벤트 달 지급 처리 및 로그기록 인증 안될 시"),
     달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
 
+     // 베스트DJ들 팬랭킹 조회
+    베스트DJ팬랭킹조회_성공("0", "one.year.event.list.success", "베스트DJ들 팬랭킹 조회 성공 시"),
+    베스트DJ팬랭킹조회_실패("C006", "one.year.event.list.fail", "베스트DJ들 팬랭킹 조회 실패 시"),
+
 ;
 
 

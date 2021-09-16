@@ -852,7 +852,7 @@ public class MemberService {
      * 베스트 DJ들의 팬랭킹 (1,2,3위) 리스트
      * 랭킹 - 명예의전당 - 스페셜DJ 리스트에서 베스트 DJ를 찾은 후 팬랭킹 리스트를 조회하여 리턴해준다
      */
-    public List callDjBestFanRankList(SpecialHistoryVo specialHistoryVo, HttpServletRequest request) {
+    public String callDjBestFanRankList(SpecialHistoryVo specialHistoryVo, HttpServletRequest request) {
         LocalDate now = LocalDate.now();
         String year = now.getYear() + "";
         int monthValue = now.getMonthValue();
@@ -870,20 +870,27 @@ public class MemberService {
         ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
         List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjHistory(procedureVo);
 
-        List<Object> result = new ArrayList<>();
+        String result;
 
-        for(P_SpecialHistoryVo vo: specialDjList) {
-            if(vo.getSpecial_cnt() >= 6) {
-                P_FanRankVo pFanRankVo = new P_FanRankVo();
-                String bestDjMemNo;
-                HashMap unitData = new HashMap();
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            List<Object> resultList = new ArrayList<>();
 
-                bestDjMemNo = vo.getMem_no();
-                pFanRankVo.setMem_no(bestDjMemNo);
-                unitData.put("bestDjMemNo", bestDjMemNo);
-                unitData.put("fanRankList", memberService.fanRank3(pFanRankVo));
-                result.add(unitData);
+            for(P_SpecialHistoryVo vo: specialDjList) {
+                if(vo.getSpecial_cnt() >= 6) {
+                    P_FanRankVo pFanRankVo = new P_FanRankVo();
+                    String bestDjMemNo;
+                    HashMap unitData = new HashMap();
+
+                    bestDjMemNo = vo.getMem_no();
+                    pFanRankVo.setMem_no(bestDjMemNo);
+                    unitData.put("bestDjMemNo", bestDjMemNo);
+                    unitData.put("fanRankList", memberService.fanRank3(pFanRankVo));
+                    resultList.add(unitData);
+                }
             }
+            result = gsonUtil.toJson(new JsonOutputVo(Status.베스트DJ팬랭킹조회_성공, resultList));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.베스트DJ팬랭킹조회_실패));
         }
 
         return result;

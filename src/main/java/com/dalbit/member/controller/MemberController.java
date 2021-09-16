@@ -493,7 +493,7 @@ public class MemberController {
      * 베스트 DJ들의 팬랭킹 (1,2,3위) 리스트
      */
     @GetMapping("/dj/best/fan/rank/list")
-    public List djBestFanRankList(@Valid SpecialHistoryVo specialHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String djBestFanRankList(@Valid SpecialHistoryVo specialHistoryVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return memberService.callDjBestFanRankList(specialHistoryVo, request);
     }
