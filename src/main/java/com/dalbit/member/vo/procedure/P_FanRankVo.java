@@ -12,4 +12,6 @@ public class P_FanRankVo extends P_ApiVo {
     private String memSex;
     private int age;
     private String profileImage;
+
+    private String bestDjMemNo;
 }

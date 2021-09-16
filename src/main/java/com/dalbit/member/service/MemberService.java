@@ -870,13 +870,19 @@ public class MemberService {
         ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
         List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjHistory(procedureVo);
 
-        P_FanRankVo pFanRankVo = new P_FanRankVo();
-        List result = new ArrayList();
+        List<Object> result = new ArrayList<>();
 
         for(P_SpecialHistoryVo vo: specialDjList) {
             if(vo.getSpecial_cnt() >= 6) {
-                pFanRankVo.setMem_no(vo.getMem_no());
-                result.add(memberService.fanRank3(pFanRankVo));
+                P_FanRankVo pFanRankVo = new P_FanRankVo();
+                String bestDjMemNo;
+                HashMap unitData = new HashMap();
+
+                bestDjMemNo = vo.getMem_no();
+                pFanRankVo.setMem_no(bestDjMemNo);
+                unitData.put("bestDjMemNo", bestDjMemNo);
+                unitData.put("fanRankList", memberService.fanRank3(pFanRankVo));
+                result.add(unitData);
             }
         }
 
