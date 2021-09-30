@@ -172,4 +172,6 @@ public interface AdminDao {
     ArrayList<SettingListVo> selectSettingList(SettingListVo settingListVo);
 
     int updateSetting(SettingListVo settingListVo);
+
+    int broadcastHide(P_RoomHideInputVo p_roomHideInputVo);
 }

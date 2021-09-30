@@ -801,6 +801,12 @@ google.login.blank.token=구글 로그인 토큰이 없습니다.
 google.login.invalid.token=구글 토큰 인증에 실패하였습니다.
 google.login.error=구글인증을 실패하였습니다.\\n다시 시도해주세요.
 
+#facebook login
+facebook.login.success=페이스북인증성공하였습니다.
+facebook.login.blank.token=페이스북 로그인 토큰이 없습니다.
+facebook.login.invalid.token=페이스북 토큰 인증에 실패하였습니다.
+facebook.login.error=페이스북인증을 실패하였습니다.\\n다시 시도해주세요.
+
 #attendance event
 event.attendance.check.fail.no.member=요청하신 회원번호는 잘못된 회원번호 입니다.
 
@@ -1422,3 +1428,11 @@ broadcast.room.freeze.end.room=종료된 방송입니다.
 broadcast.room.freeze.member.not.in.room=방에 참여중이지 않습니다.
 broadcast.room.freeze.impossible=얼리기 불가 상태입니다.
 broadcast.room.freeze.fail=얼리기 실패하였습니다.
+
+# best dj fan rank list
+best.fan.rank.list.success=베스트 DJ 리스트를 조회하였습니다.
+best.fan.rank.list.fail=베스트 DJ 리스트 조회를 실패하였습니다.
+
+# broadcast room hide
+admin.broadcast.hide.success=숨김 또는 해제 하였습니다.
+admin.broadcast.hide.fail=숨김 또는 해제 실패하였습니다.

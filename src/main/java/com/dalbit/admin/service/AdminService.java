@@ -257,6 +257,42 @@ public class AdminService {
     }
 
     /**
+     * 생방송관리 > 숨김
+     */
+    public String broadcastHide(P_RoomHideInputVo p_roomHideInputVo){
+        int hide = adminDao.broadcastHide(p_roomHideInputVo);
+        String ediContents = "";
+        if (p_roomHideInputVo.getHide() == 1) {
+            ediContents = "방송방 제목 : " + p_roomHideInputVo.getTitle() + " > [방송방 숨김]";
+        }else {
+            ediContents = "방송방 제목 : " + p_roomHideInputVo.getTitle() + " > [방송방 숨김 해제]";
+        }
+
+        ProImageInitVo proImageInitVo = new ProImageInitVo();
+        proImageInitVo.setMem_no(p_roomHideInputVo.getMem_no());
+        proImageInitVo.setEdit_contents(ediContents);
+        proImageInitVo.setOp_name(MemberVo.getMyMemNo());
+        proImageInitVo.setType(0);
+        adminDao.insertProfileHistory(proImageInitVo);
+
+        BroImageInitVo broImageInitVo = new BroImageInitVo();
+        broImageInitVo.setRoom_no(p_roomHideInputVo.getRoom_no());
+        broImageInitVo.setEdit_contents(ediContents);
+        broImageInitVo.setOp_name(MemberVo.getMyMemNo());
+
+        adminDao.insertBroadHistory(broImageInitVo);
+
+        String result;
+        if(hide > 0){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방_숨김_해제_성공));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방_숨김_해제_실패));
+        }
+
+        return result;
+    }
+
+    /**
      * - 이미지관리 > 프로필 이미지 조회
      * - 텍스트관리 > 닉네임 조회
      */
