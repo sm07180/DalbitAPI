@@ -2300,6 +2300,14 @@ public enum Status {
     //회원 방송방 숨김 처리
     회원방송방_숨김_해제_성공("0", "admin.broadcast.hide.success", "회원방송방 숨김 또는 해제 성공 시"),
     회원방송방_숨김_해제_실패("-1", "admin.broadcast.hide.fail", "회원방송방 숨김 또는 해제 실패 시"),
+
+    // 룰렛 당첨내역 조회
+    룰렛당첨내역_조회_성공("0", "mini.game.win.list.success", "미니게임 룰렛 당첨내역 조회 성공"),
+    룰렛당첨내역_조회_회원아님("-1", "mini.game.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    룰렛당첨내역_조회_해당방없음("-2", "mini.game.select.no.room", "해당 방송이 없을 시"),
+    룰렛당첨내역_조회_방이종료됨("-3", "mini.game.select.end.room", "방이 종료되어 있을 시"),
+    룰렛당첨내역_조회_방장다름("-4", "mini.game.win.list.diffDj", "요청 회원이 방장이 아닐 시"),
+    룰렛당첨내역_조회_실패("-5", "mini.game.win.list.fail", "미니게임 룰렛 당첨내역 조회 실패"),
 ;
 
 

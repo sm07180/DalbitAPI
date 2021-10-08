@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.dao;
 
 import com.dalbit.broadcast.vo.procedure.P_MiniGameListVo;
+import com.dalbit.broadcast.vo.procedure.P_MiniGameWinListVo;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
 
@@ -19,4 +20,8 @@ public interface MiniGameDao {
     ProcedureVo callMiniGameStart(ProcedureVo procedureVo);
 
     ProcedureVo callMiniGameEnd(ProcedureVo procedureVo);
+
+    List<P_MiniGameWinListVo> callRouletteWinList(ProcedureVo procedureVo);
+
+    ProcedureVo callMiniGameSetSelect(ProcedureVo procedureVo);
 }

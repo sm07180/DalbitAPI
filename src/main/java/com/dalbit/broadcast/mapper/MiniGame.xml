@@ -26,5 +26,11 @@
         call sp_broadcast_room_minigame_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callRouletteWinList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.broadcast.vo.procedure.P_MiniGameWinListVo">
+        call sp_broadcast_room_minigame_mem_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
+    <select id="callMiniGameSetSelect" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
+        call sp_broadcast_room_minigame_set_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 </mapper>

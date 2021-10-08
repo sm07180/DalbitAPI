@@ -21,6 +21,7 @@ public class P_MiniGameEditVo extends P_ApiVo {
         setPayAmt(miniGameEditVo.getPayAmt());
         setOptCnt(miniGameEditVo.getOptCnt());
         setOptList(miniGameEditVo.getOptList());
+        setAutoYn(miniGameEditVo.getAutoYn());
     }
 
     private String mem_no;
@@ -30,4 +31,5 @@ public class P_MiniGameEditVo extends P_ApiVo {
     private int payAmt;
     private int optCnt;
     private String optList;
+    private String autoYn;
 }

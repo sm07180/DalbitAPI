@@ -1436,3 +1436,8 @@ best.fan.rank.list.fail=베스트 DJ 리스트 조회를 실패하였습니다.
 # broadcast room hide
 admin.broadcast.hide.success=숨김 또는 해제 하였습니다.
 admin.broadcast.hide.fail=숨김 또는 해제 실패하였습니다.
+
+# minigame roulette win list
+mini.game.win.list.success=룰렛 당첨 리스트 조회하였습니다.
+mini.game.win.list.diffDj=DJ가 아닙니다.
+mini.game.win.list.fail=룰렛 당첨 리스트 조회 실패하였습니다.
