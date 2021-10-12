@@ -38,5 +38,6 @@ public class P_MemberSearchVo extends P_ApiVo {
     private int newdj_badge;
     private int specialdj_badge;
     private long fan_count;
+    private int isConDj;
 
 }

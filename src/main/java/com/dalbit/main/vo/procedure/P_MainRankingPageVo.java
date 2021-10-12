@@ -65,6 +65,7 @@ public class P_MainRankingPageVo extends P_ApiVo {
     private String dj_memSex;
     private String listenRoomNo;
     private int listenOpen;
+    private int isConDj;
 
     private String liveBadgeText;
     private String liveBadgeIcon;

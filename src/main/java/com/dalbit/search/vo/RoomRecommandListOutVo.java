@@ -24,6 +24,7 @@ public class RoomRecommandListOutVo {
     private Boolean isSpecial;
     private int badgeSpecial;
     private int imageType;
+    private Boolean isConDj;
 
     public RoomRecommandListOutVo(){}
     public RoomRecommandListOutVo(P_RoomRecommandListVo target, HttpServletRequest request){
@@ -50,6 +51,7 @@ public class RoomRecommandListOutVo {
         this.startDt = DalbitUtil.getUTCFormat(target.getStart_date());
         this.startTs = DalbitUtil.getUTCTimeStamp(target.getStart_date());
         this.isSpecial = target.getBadge_special() > 0;
+        this.isConDj = target.getIsConDj() > 0;
         this.badgeSpecial = target.getBadge_special();
         this.imageType = target.getImageType();
 

@@ -26,6 +26,7 @@ public class MainTimeRankingPageOutVo {
     private String grade;
     private int exp;
     private boolean isSpecial;
+    private boolean isConDj;
     private int badgeSpecial;
     private int djPoint;
     private int listenerPoint;
@@ -55,6 +56,7 @@ public class MainTimeRankingPageOutVo {
         setLevel(target.getLevel());
         setGrade(target.getGrade());
         this.isSpecial = target.getSpecialdj_badge() > 0;
+        this.isConDj = target.getIsConDj() > 0;
         this.badgeSpecial = target.getSpecialdj_badge();
         setDjPoint(target.getDjPoint());
         setListenerPoint(target.getListenerPoint());

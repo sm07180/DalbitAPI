@@ -44,6 +44,7 @@ public class MainRankingPageOutVo {
     private ImageVo djProfImg;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
     private String listenRoomNo;
+    private Boolean isConDj;
 
     public MainRankingPageOutVo(){}
     public MainRankingPageOutVo(P_MainRankingPageVo target, boolean isAdmin) {
@@ -58,6 +59,7 @@ public class MainRankingPageOutVo {
         setGrade(target.getGrade());
         setExp(target.getExp());
         this.isSpecial = target.getSpecialdj_badge() > 0;
+        this.isConDj = target.getIsConDj() > 0;
         this.badgeSpecial = target.getSpecialdj_badge();
         setDjPoint(target.getDjPoint());
         setListenerPoint(target.getListenerPoint());

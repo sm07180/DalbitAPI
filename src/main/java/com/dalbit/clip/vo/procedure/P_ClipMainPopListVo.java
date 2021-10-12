@@ -37,5 +37,6 @@ public class P_ClipMainPopListVo extends P_ApiVo {
     private int badge_special;
     private int badge_newdj;
     private int count_play;
+    private int isConDj;
 
 }

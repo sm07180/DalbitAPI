@@ -41,4 +41,5 @@ public class P_RoomRecommandListVo extends P_ApiVo {
     private int imageType;
     private String bj_profileImage;
     private String bj_memSex;
+    private int isConDj;
 }
