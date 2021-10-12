@@ -87,7 +87,7 @@ public class MiniGameController {
     /**
      * 미니게임 이용 내역(당첨 내역)
      */
-    @PostMapping("/win/list")
+    @GetMapping("/win/list")
     public String getRouletteWinList(@Valid MiniGameWinListVo miniGameWinListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_MiniGameWinListVo apiData = new P_MiniGameWinListVo(miniGameWinListVo);

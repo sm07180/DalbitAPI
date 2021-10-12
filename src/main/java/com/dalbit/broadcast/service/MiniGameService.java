@@ -107,6 +107,7 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             try{
                 socketService.miniGameSend(pMiniGameAddVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), "add");
@@ -171,6 +172,8 @@ public class MiniGameService {
             }
             returnMap.put("optList", optionList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
+
             Status status = Status.미니게임수정_성공;
             if(pMiniGameEditVo.getGame_no() == 1){
                 returnMap.put("msg", "DJ가 룰렛 설정을 변경하였습니다.");
@@ -233,6 +236,7 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.미니게임조회_회원아님.getMessageCode())) {
@@ -279,6 +283,7 @@ public class MiniGameService {
             returnMap.put("winNo", DalbitUtil.getIntMap(resultMap, "winNo"));
             returnMap.put("winOpt", DalbitUtil.getStringMap(resultMap, "winOpt"));
             returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "nickName"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             try{
                 socketService.miniGameStart(pMiniGameStartVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
@@ -370,6 +375,8 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
+
             return returnMap;
         }else{
             return null;
@@ -435,6 +442,7 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.미니게임조회_회원아님.getMessageCode())) {

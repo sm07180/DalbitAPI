@@ -25,4 +25,6 @@ public class P_MiniGameStartVo extends P_ApiVo {
     private int game_no;
     private int roulette_no;
     private int versionIdx;
+
+    private String autoYn;
 }
