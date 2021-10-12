@@ -39,10 +39,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -75,6 +74,9 @@ public class CommonService {
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
+
+    @Value("${social.facebook.app.ver}")
+    private String FACEBOOK_APP_VER;
 
 
     /**
@@ -921,6 +923,107 @@ public class CommonService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_오류));
 
         }
+        return result;
+    }
+
+    private String readStream(InputStream stream){
+        StringBuffer pageContents = new StringBuffer();
+        try {
+            InputStreamReader reader = new InputStreamReader(stream, "UTF-8");
+            BufferedReader buff = new BufferedReader(reader);
+
+            String pageContentsR = "";
+            while((pageContentsR = buff.readLine()) != null){
+                pageContents.append(pageContentsR);
+                pageContents.append("\r\n");
+            }
+            reader.close();
+            buff.close();
+
+        }catch (Exception e){ }
+
+        return pageContents.toString();
+    }
+
+    public void setStateSession(HttpServletRequest request){
+        String pStateS = request.getParameter("state");
+        HashMap pStateMap = new Gson().fromJson(pStateS, HashMap.class);
+        setStateSession(request, pStateMap);
+    }
+
+    public void setStateSession(HttpServletRequest request, HashMap stateMap){
+        request.setAttribute("SocialState", stateMap);
+    }
+
+    public String connectFacebookNative(HttpServletRequest request) {
+        String result = "";
+        HashMap resultMap = new HashMap();
+        String access_token = request.getParameter("accessToken");
+        if(DalbitUtil.isEmpty(access_token)){
+            result = "blank token";
+        }else {
+            StringBuffer urlString = new StringBuffer();
+            urlString.append("https://graph.facebook.com/");
+            urlString.append(FACEBOOK_APP_VER);
+            urlString.append("/me?fields=id,name,first_name,last_name,middle_name,picture&access_token=");
+            urlString.append(access_token);
+
+            try{
+                URL url = new URL(urlString.toString());
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                String first = readStream(con.getInputStream());
+
+                HashMap facebookInfo = new Gson().fromJson(first, HashMap.class);
+                if(!DalbitUtil.isEmpty(facebookInfo)){
+                    resultMap.put("memType", "f");
+                    resultMap.put("memId", DalbitUtil.getStringMap(facebookInfo, "id"));
+                    resultMap.put("email", "");
+                    if(!DalbitUtil.isEmpty(facebookInfo.get("email"))){
+                        resultMap.put("email", DalbitUtil.getStringMap(facebookInfo, "email"));
+                    }
+                    String name = DalbitUtil.getStringMap(facebookInfo, "first_name");
+                    if(!DalbitUtil.isEmpty(facebookInfo.get("middle_name"))){
+                        name += " ";
+                        name += DalbitUtil.getStringMap(facebookInfo, "middle_name");
+                    }
+                    name += " ";
+                    name += DalbitUtil.getStringMap(facebookInfo, "last_name");
+                    resultMap.put("name", name);
+                    resultMap.put("nickNm", name);
+                    resultMap.put("gender", "n");
+
+                    resultMap.put("profImgUrl", "");
+                    if(!DalbitUtil.isEmpty(facebookInfo.get("picture"))){
+                        HashMap picture = new Gson().fromJson(new Gson().toJson(facebookInfo.get("picture")), HashMap.class);
+                        if(!DalbitUtil.isEmpty(picture.get("data"))){
+                            HashMap pictureData = new Gson().fromJson(new Gson().toJson(picture.get("data")), HashMap.class);
+                            if(!DalbitUtil.isEmpty(pictureData.get("url"))){
+                                resultMap.put("profImgUrl", DalbitUtil.getStringMap(pictureData, "url"));
+                            }
+                        }
+                    }
+
+                    result = "success";
+                }else {
+                    result = "invalid token";
+                }
+            }catch(Exception e) {
+                log.info("============= facebook connected error : {}", e.getMessage());
+            }
+        }
+
+        setStateSession(request);
+
+        if("success".equals(result)) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_성공, resultMap));
+        }else if("invalid token".equals(result)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_토큰인증실패));
+        }else if("blank token".equals(result)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_토큰없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_오류));
+        }
+
         return result;
     }
 

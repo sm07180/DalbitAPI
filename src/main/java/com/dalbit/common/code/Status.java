@@ -895,6 +895,12 @@ public enum Status {
     구글로그인_토큰인증실패("-2", "google.login.invalid.token", "인증실패"),
     구글로그인_오류("C006", "google.login.error", "오류"),
 
+    //페이스북 로그인
+    페이스북로그인_성공("0", "facebook.login.success", "성공"),
+    페이스북로그인_토큰없음("-1", "facebook.login.blank.token", "토큰없음"),
+    페이스북로그인_토큰인증실패("-2", "facebook.login.invalid.token", "인증실패"),
+    페이스북로그인_오류("C006", "facebook.login.error", "오류"),
+
     출석체크이벤트_상태조회_실패_회원아님("-1", "event.attendance.check.fail.no.member", "요청 회원번호가 없음"),
     출석체크이벤트_상태조회_실패("C006", "business.error", "비즈니스 에러"),
     출석체크이벤트_상태조회_성공("0", "read.success", "성공"),
@@ -2288,9 +2294,12 @@ public enum Status {
     달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
 
      // 베스트DJ들 팬랭킹 조회
-    베스트DJ팬랭킹조회_성공("0", "one.year.event.list.success", "베스트DJ들 팬랭킹 조회 성공 시"),
-    베스트DJ팬랭킹조회_실패("C006", "one.year.event.list.fail", "베스트DJ들 팬랭킹 조회 실패 시"),
+    베스트DJ팬랭킹조회_성공("0", "best.fan.rank.list.success", "베스트DJ들 팬랭킹 조회 성공 시"),
+    베스트DJ팬랭킹조회_실패("C006", "best.fan.rank.list.fail", "베스트DJ들 팬랭킹 조회 실패 시"),
 
+    //회원 방송방 숨김 처리
+    회원방송방_숨김_해제_성공("0", "admin.broadcast.hide.success", "회원방송방 숨김 또는 해제 성공 시"),
+    회원방송방_숨김_해제_실패("-1", "admin.broadcast.hide.fail", "회원방송방 숨김 또는 해제 실패 시"),
 ;
 
 

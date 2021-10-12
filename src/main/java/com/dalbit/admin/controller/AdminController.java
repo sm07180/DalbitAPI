@@ -109,6 +109,15 @@ public class AdminController {
     }
 
     /**
+     * 생방송관리 > 숨김
+     */
+    @PostMapping("/broadcast/hide")
+    public String broadcastHide(HttpServletRequest request, P_RoomHideInputVo p_roomHideInputVo){
+        String result = adminService.broadcastHide(p_roomHideInputVo);
+        return result;
+    }
+
+    /**
      * - 이미지관리 > 프로필 이미지 조회
      * - 텍스트관리 > 닉네임 조회
      */

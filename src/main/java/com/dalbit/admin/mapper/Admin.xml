@@ -10,6 +10,17 @@
         call rd_data.sp_broadcast_room_exit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <update id="broadcastHide" parameterType="com.dalbit.admin.vo.procedure.P_RoomHideInputVo">
+        /* M_Member.xml - callMemberBroadCastHide */
+        update rd_data.tb_broadcast_room
+        set hide = #{hide}
+        where mem_no = #{mem_no}
+        and state !=4
+        <if test='room_no != "" and room_no != null'>
+            and room_no = #{room_no}
+        </if>
+    </update>
+
     <select id="callForceLeave" statementType="CALLABLE" parameterType="com.dalbit.common.vo.ProcedureVo" resultType="com.dalbit.common.vo.ProcedureVo">
         call rd_admin.sp_admin_broadcast_room_member_forced_leave(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
