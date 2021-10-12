@@ -98,6 +98,7 @@ public class P_RoomListVo extends P_ApiVo {
     private int badge_special;                  //스페셜뱃지
     private int os_type;
     private int totalCnt;
+    private int isConDj;                    //컨텐츠뱃지
 
     private int liveDjRank;                 //실시간 DJ 순위
     private String liveBadgeText;
@@ -119,4 +120,5 @@ public class P_RoomListVo extends P_ApiVo {
     private int goodMem2;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
     private int goodMem3;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
     private boolean isShining = false;
+
 }

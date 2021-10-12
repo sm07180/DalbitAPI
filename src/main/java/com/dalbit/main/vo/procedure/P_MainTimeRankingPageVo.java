@@ -46,6 +46,7 @@ public class P_MainTimeRankingPageVo extends P_ApiVo {
     private int level;
     private String grade;
     private int specialdj_badge;
+    private int isConDj;
     private int djPoint;
     private int listenerPoint;
     private int goodPoint;

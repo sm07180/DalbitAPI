@@ -18,6 +18,7 @@ public class MemberSearchOutVo {
     private boolean isSpecial;
     private int badgeSpecial;
     private long fanCnt;
+    private boolean isConDj;
 
     public MemberSearchOutVo(P_MemberSearchVo target) {
         setMemNo(target.getMem_no());
@@ -28,5 +29,6 @@ public class MemberSearchOutVo {
         badgeSpecial = target.getSpecialdj_badge();
         setFanCnt(target.getFan_count());
         setGender(target.getMem_sex());
+        isConDj = target.getIsConDj() > 0;
     }
 }
