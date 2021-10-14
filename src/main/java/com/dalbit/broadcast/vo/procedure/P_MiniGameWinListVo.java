@@ -1,15 +1,18 @@
 package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.MiniGameWinListVo;
+import com.dalbit.member.vo.MemberVo;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Getter
 @Setter
 public class P_MiniGameWinListVo {
     public P_MiniGameWinListVo(){}
-    public P_MiniGameWinListVo(MiniGameWinListVo miniGameWinListVo){
-        setMem_no(miniGameWinListVo.getMemNo());
+    public P_MiniGameWinListVo(MiniGameWinListVo miniGameWinListVo, HttpServletRequest request){
+        setMem_no(MemberVo.getMyMemNo());
         setRoom_no(miniGameWinListVo.getRoomNo());
     }
 
