@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 public class P_MiniGameWinListVo {
     public P_MiniGameWinListVo(){}
     public P_MiniGameWinListVo(MiniGameWinListVo miniGameWinListVo, HttpServletRequest request){
-        setMem_no(MemberVo.getMyMemNo());
+        setMem_no(MemberVo.getMyMemNo(request));
         setRoom_no(miniGameWinListVo.getRoomNo());
     }
 
