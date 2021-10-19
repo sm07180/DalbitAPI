@@ -1683,7 +1683,7 @@ public class MypageService {
                 resultMap.put("value", "최소 " + value + "개 이상");
                 break;
 //            case 8:
-                //누적 방송시간(팬 방송 제외)
+            //누적 방송시간(팬 방송 제외)
 //                long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjConditionSearchVo);
 //                resultMap.put("condition", broadcastAirtime < value ? 0 : 1);
 //                resultMap.put("title", "누적방송시간");
