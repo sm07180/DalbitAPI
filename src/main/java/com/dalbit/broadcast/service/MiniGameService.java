@@ -3,9 +3,11 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.MiniGameDao;
 import com.dalbit.broadcast.vo.MiniGameListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.MiniGameWinListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.BanWordVo;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.socket.service.SocketService;
@@ -105,6 +107,7 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             try{
                 socketService.miniGameSend(pMiniGameAddVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), "add");
@@ -169,6 +172,8 @@ public class MiniGameService {
             }
             returnMap.put("optList", optionList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
+
             Status status = Status.미니게임수정_성공;
             if(pMiniGameEditVo.getGame_no() == 1){
                 returnMap.put("msg", "DJ가 룰렛 설정을 변경하였습니다.");
@@ -231,6 +236,7 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_성공, returnMap));
         } else if (procedureVo.getRet().equals(Status.미니게임조회_회원아님.getMessageCode())) {
@@ -277,6 +283,7 @@ public class MiniGameService {
             returnMap.put("winNo", DalbitUtil.getIntMap(resultMap, "winNo"));
             returnMap.put("winOpt", DalbitUtil.getStringMap(resultMap, "winOpt"));
             returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "nickName"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
 
             try{
                 socketService.miniGameStart(pMiniGameStartVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
@@ -368,9 +375,89 @@ public class MiniGameService {
 
             returnMap.put("optList", optList);
             returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
+
             return returnMap;
         }else{
             return null;
         }
+    }
+
+    /**
+     * 룰렛 당첨내역 리스트
+     */
+    public String getRouletteWinList(P_MiniGameWinListVo pMiniGameWinListVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMiniGameWinListVo);
+        List<P_MiniGameWinListVo> winList = miniGameDao.callRouletteWinList(procedureVo);
+        String result="";
+
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+            List<MiniGameWinListVo> outVoList = new ArrayList<>();
+            if(!DalbitUtil.isEmpty(winList)){
+                for(P_MiniGameWinListVo vo: winList) {
+                    vo.setImage_profile(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+                    outVoList.add(new MiniGameWinListVo(vo));
+                }
+            }
+            resultMap.put("list", outVoList);
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.룰렛당첨내역_조회_성공, resultMap));
+        }else if(Status.룰렛당첨내역_조회_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.룰렛당첨내역_조회_회원아님));
+        }else if(Status.룰렛당첨내역_조회_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.룰렛당첨내역_조회_해당방없음));
+        }else if(Status.룰렛당첨내역_조회_방이종료됨.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.룰렛당첨내역_조회_방이종료됨));
+        }else if(Status.룰렛당첨내역_조회_방장다름.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.룰렛당첨내역_조회_방장다름));
+        }else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.룰렛당첨내역_조회_실패));
+        }
+        return result;
+    }
+
+    /**
+     * 저장된 미니게임 설정 불러오기
+     */
+    public String callMiniGameSetSelect(P_MiniGameVo pMiniGameVo) {
+        ProcedureVo procedureVo = new ProcedureVo(pMiniGameVo);
+        miniGameDao.callMiniGameSetSelect(procedureVo);
+
+        String result;
+        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+            HashMap returnMap = new HashMap();
+            returnMap.put("rouletteNo", DalbitUtil.getIntMap(resultMap, "roulette_no"));
+            returnMap.put("gameNo", DalbitUtil.getIntMap(resultMap, "gameNo"));
+            returnMap.put("isFree", DalbitUtil.getIntMap(resultMap, "payYn") == 0);
+            returnMap.put("payAmt", DalbitUtil.getIntMap(resultMap, "payAmt"));
+            returnMap.put("optCnt", DalbitUtil.getIntMap(resultMap, "optCnt"));
+
+            List optList = new ArrayList();
+            for(int i=1; i<=DalbitUtil.getIntMap(resultMap, "optCnt"); i++) {
+                optList.add(DalbitUtil.getStringMap(resultMap, "opt"+i));
+            }
+
+            returnMap.put("optList", optList);
+            returnMap.put("versionIdx", DalbitUtil.getIntMap(resultMap, "versionIdx"));
+            returnMap.put("autoYn", DalbitUtil.getStringMap(resultMap, "autoYn"));
+
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_성공, returnMap));
+        } else if (procedureVo.getRet().equals(Status.미니게임조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_회원아님));
+        } else if (procedureVo.getRet().equals(Status.미니게임조회_해당방없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_해당방없음));
+        } else if (procedureVo.getRet().equals(Status.미니게임조회_방이종료됨.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_방이종료됨));
+        } else if (procedureVo.getRet().equals(Status.미니게임조회_무료상태.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_무료상태));
+        } else if (procedureVo.getRet().equals(Status.미니게임조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_없음));
+        }else{
+            result = gsonUtil.toJson(new JsonOutputVo(Status.미니게임조회_실패));
+        }
+        return result;
     }
 }

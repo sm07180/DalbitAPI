@@ -22,4 +22,5 @@ public class P_MiniGameVo extends P_ApiVo {
     private String mem_no;
     private String room_no;
     private int game_no;
+    private String autoYn;
 }

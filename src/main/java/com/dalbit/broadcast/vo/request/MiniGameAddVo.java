@@ -26,4 +26,6 @@ public class MiniGameAddVo {
     @NotNull(message = "{\"ko_KR\" : \"미니게임 번호를\"}")
     private Integer gameNo;
 
+    private String autoYn;
+
 }

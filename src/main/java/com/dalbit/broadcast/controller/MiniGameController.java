@@ -84,4 +84,23 @@ public class MiniGameController {
         return miniGameService.callMiniGameEnd(apiData, request);
     }
 
+    /**
+     * 미니게임 이용 내역(당첨 내역)
+     */
+    @GetMapping("/win/list")
+    public String getRouletteWinList(@Valid MiniGameWinListVo miniGameWinListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MiniGameWinListVo apiData = new P_MiniGameWinListVo(miniGameWinListVo, request);
+        return miniGameService.getRouletteWinList(apiData);
+    }
+
+    /**
+     * 저장된 미니게임 설정 불러오기
+     */
+    @GetMapping("/history/select")
+    public String miniGameSetSelect(@Valid MiniGameVo miniGameVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        P_MiniGameVo apiData = new P_MiniGameVo(miniGameVo, request);
+        return miniGameService.callMiniGameSetSelect(apiData);
+    }
 }
