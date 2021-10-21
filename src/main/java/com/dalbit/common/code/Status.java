@@ -46,7 +46,7 @@ public enum Status {
     본인인증확인("0", "self.auth.response.success", "본인인증 확인 성공 시"),
     본인인증검증_비정상접근("-1", "self.auth.response.check.error", "본인인증 비정상적인 접근 시"),
     본인인증실패("C006", "self.auth.response.fail", "본인인증 확인 실패 시"),
-    본인인증12세미만("C007", "self.auth.12age.limit", "12세 미만 회원일 시"),
+    본인인증14세미만("C007", "self.auth.14age.limit", "14세 미만 회원일 시"),
     보호자인증20세미만("C008", "self.auth.20age.limit", "보호자 20세 미만일 시"),
 
     //본인인증(DB저장)
@@ -2297,7 +2297,7 @@ public enum Status {
     베스트DJ팬랭킹조회_성공("0", "best.fan.rank.list.success", "베스트DJ들 팬랭킹 조회 성공 시"),
     베스트DJ팬랭킹조회_실패("C006", "best.fan.rank.list.fail", "베스트DJ들 팬랭킹 조회 실패 시"),
 
-    //회원 방송방 숨김 처리
+    // 회원 방송방 숨김 처리
     회원방송방_숨김_해제_성공("0", "admin.broadcast.hide.success", "회원방송방 숨김 또는 해제 성공 시"),
     회원방송방_숨김_해제_실패("-1", "admin.broadcast.hide.fail", "회원방송방 숨김 또는 해제 실패 시"),
 ;

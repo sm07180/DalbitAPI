@@ -2,6 +2,8 @@ package com.dalbit.member.controller;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ResMessage;
+import com.dalbit.common.vo.ResVO;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
@@ -301,6 +303,23 @@ public class ProfileController {
         P_ProfileImgLeaderVo apiData = new P_ProfileImgLeaderVo(profileImgLeaderVo, request);
         String result = profileService.callProfileImgLeader(apiData);
         return result;
+    }
+
+    /**
+     * 1일 1회 본인인증 가능 여부
+     */
+    @GetMapping("/certification/check")
+    public ResVO callCertificationChkSel(HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), profileService.callCertificationChkSel(memNo));
+        } catch (Exception e) {
+            log.error("ProfileController / callCertificationChkSel => {}", e);
+            resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+        }
+
+        return resVO;
     }
 }
 

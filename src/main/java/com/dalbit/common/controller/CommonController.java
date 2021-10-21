@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.ParseException;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import static com.dalbit.common.code.Status.조회;
@@ -301,6 +302,25 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
     }
 
+    private int birthToAmericanAge(int birthYear, int birthMonth, int birthDay) {
+        Calendar cal = Calendar.getInstance();
+        int nowYear = cal.get(Calendar.YEAR);
+        int nowMonth = cal.get(Calendar.MONTH) + 1;
+        int nowDay = cal.get(Calendar.DAY_OF_MONTH);
+        int monthAndDay = Integer.parseInt(nowMonth + "" + nowDay);
+
+        int birthMonthAndDay = Integer.parseInt(birthMonth + "" + birthDay);
+        int yearDiff = nowYear - birthYear;
+        int monthAndDayDiff = monthAndDay - birthMonthAndDay;
+        int manAge = yearDiff;
+
+        if(monthAndDayDiff < 0) {
+            manAge--;
+        }
+
+        return manAge;
+    }
+
     /**
      * 본인인증 확인
      */
@@ -329,11 +349,17 @@ public class CommonController {
             apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
             apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
 
+            int manAge = birthToAmericanAge(
+                Integer.parseInt(apiData.getBirthYear()),
+                Integer.parseInt(apiData.getBirthMonth()),
+                Integer.parseInt(apiData.getBirthDay())
+            );
+
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
 
-                //12세 미만 이용불가
-                if(Integer.parseInt(apiData.getBirthYear()) > 2009){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.본인인증12세미만, apiData));
+                // 만 14세 미만 이용불가
+                if(manAge < 14){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.본인인증14세미만, apiData));
                 }
 
                 log.info("##### 본인인증 DB저장 #####");
@@ -342,8 +368,8 @@ public class CommonController {
                 result = commonService.callMemberCertification(apiData);
             } else {
 
-                //20세 미만 이용불가
-                if(Integer.parseInt(apiData.getBirthYear()) > 2001){
+                // 만 19세 미만 이용불가
+                if(manAge < 19){
                     return gsonUtil.toJson(new JsonOutputVo(Status.보호자인증20세미만, apiData));
                 }
 

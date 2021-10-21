@@ -59,7 +59,7 @@ self.auth.request.fail=본인인증 요청이 실패했습니다.\\n잠시 후 �
 self.auth.response.success=본인인증 확인 성공하였습니다.
 self.auth.response.check.error=비정상적인 접근입니다.\\n본인인증을 다시 실행해주세요.
 self.auth.response.fail=본인인증 확인이 실패했습니다.\\n잠시 후 다시 시도해주세요.
-self.auth.12age.limit=12세 미만 이용불가합니다.
+self.auth.14age.limit=14세 미만 이용불가합니다.
 self.auth.20age.limit=법정대리인 20세 미만 동의불가합니다.
 
 # member certification (DB save)

@@ -719,4 +719,11 @@ public class ProfileService {
         }
         return imgListMap;
     }
+
+    /**
+     * 1일 1회 본인인증 가능 여부 (new 프로시져)
+     */
+    public String callCertificationChkSel(String memNo) {
+        return profileDao.callCertificationChkSel(memNo);
+    }
 }

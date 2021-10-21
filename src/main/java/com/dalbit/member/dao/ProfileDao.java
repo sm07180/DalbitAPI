@@ -54,4 +54,6 @@ public interface ProfileDao {
     ProcedureVo callProfileImgLeader(ProcedureVo procedureVo);
 
     List<P_ProfileImgListVo> callProfImgList(ProcedureVo procedureVo);
+
+    String callCertificationChkSel(String memNo); // new 프로시져
 }

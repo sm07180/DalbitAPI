@@ -84,4 +84,9 @@
     <select id="callProfImgList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.member.vo.procedure.P_ProfileImgListVo">
         call sp_member_profile_album_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+
+    <!-- new 프로시져 -->
+    <select id="callCertificationChkSel" statementType="CALLABLE" parameterType="String" resultType="String">
+        call sp_member_certification_chk_sel(#{memNo})
+    </select>
 </mapper>
