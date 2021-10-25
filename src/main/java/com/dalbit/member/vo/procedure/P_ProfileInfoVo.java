@@ -75,4 +75,5 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private int listenOpen = 1;
     private int alertYn;
     private int mailboxOnOff;
+    private String memJoinYn; // 21.10.25 이전 가입자 (o, n)
 }

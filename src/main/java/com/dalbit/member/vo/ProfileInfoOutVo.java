@@ -74,6 +74,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private boolean isReceive;
     List profImgList;
     private boolean isMailboxOn;
+    private String memJoinYn;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
@@ -140,5 +141,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.listenRoomNo = DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin);
         this.isReceive = target.getAlertYn() == 1;
         this.isMailboxOn = target.getMailboxOnOff() == 1;
+        this.memJoinYn = target.getMemJoinYn();
     }
 }
