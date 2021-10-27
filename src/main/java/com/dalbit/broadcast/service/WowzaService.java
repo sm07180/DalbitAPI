@@ -220,9 +220,9 @@ public class WowzaService {
     }
 
     private HashMap getRouletteData(HttpServletRequest request, String roomNo, int isLogin) {
-        RoomOutVo target = getRoomInfo(roomNo, MemberVo.getMyMemNo(request), isLogin, request);
-        //룰렛 등록상태 조회
+        RoomOutVo target = getRoomInfo(roomNo, MemberVo.getMyMemNo(request), 1, request);
         if(target != null) {
+            //룰렛 등록상태 조회
             P_MiniGameVo pMiniGameVo = new P_MiniGameVo();
             pMiniGameVo.setRoom_no(target.getRoomNo());
             pMiniGameVo.setMem_no(target.getBjMemNo());
