@@ -219,14 +219,18 @@ public class WowzaService {
         return result;
     }
 
-    private HashMap getRouletteData(HttpServletRequest request, String roomNo) {
-        RoomOutVo target = getRoomInfo(roomNo, MemberVo.getMyMemNo(request), 1, request);
+    private HashMap getRouletteData(HttpServletRequest request, String roomNo, int isLogin) {
+        RoomOutVo target = getRoomInfo(roomNo, MemberVo.getMyMemNo(request), isLogin, request);
         //룰렛 등록상태 조회
-        P_MiniGameVo pMiniGameVo = new P_MiniGameVo();
-        pMiniGameVo.setRoom_no(target.getRoomNo());
-        pMiniGameVo.setMem_no(target.getBjMemNo());
-        pMiniGameVo.setGame_no(1);
-        return miniGameService.getMiniGame(pMiniGameVo);
+        if(target != null) {
+            P_MiniGameVo pMiniGameVo = new P_MiniGameVo();
+            pMiniGameVo.setRoom_no(target.getRoomNo());
+            pMiniGameVo.setMem_no(target.getBjMemNo());
+            pMiniGameVo.setGame_no(1);
+            return miniGameService.getMiniGame(pMiniGameVo);
+        }
+
+        return null;
     }
 
     public HashMap doCreateBroadcast(RoomCreateVo roomCreateVo, HttpServletRequest request) throws GlobalException {
@@ -378,7 +382,7 @@ public class WowzaService {
             int os = DalbitUtil.getIntMap(headers,"os");
             HashMap miniGameList = null;
             if(os != 3) {
-                miniGameList = getRouletteData(request, roomNo);
+                miniGameList = getRouletteData(request, roomNo, isLogin);
             }
 
             result.put("status", Status.방송생성);
@@ -817,7 +821,7 @@ public class WowzaService {
         }
 
         //룰렛 등록상태 조회
-        HashMap miniGameMap = getRouletteData(request, target.getRoomNo());
+        HashMap miniGameMap = getRouletteData(request, target.getRoomNo(), isLogin);
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
