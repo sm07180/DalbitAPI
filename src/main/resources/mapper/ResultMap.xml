@@ -8,4 +8,11 @@
 	<resultMap type="java.util.Map" id="map"/>
 	<resultMap type="java.util.LinkedHashMap" id="linkedHashMap"/>
 	<resultMap type="String" id="string"/>
+
+    <!-- 11월 이벤트 종합(팬) -->
+    <resultMap id="NovemberFanListOutVo1" type="com.dalbit.event.vo.NovemberFanListOutVo1" />
+    <resultMap id="NovemberFanListOutVo2" type="com.dalbit.event.vo.NovemberFanListOutVo2" />
+    <!-- 11월 이벤트 회차별(팬) -->
+    <resultMap id="NovemberFanWeekListOutVo1" type="com.dalbit.event.vo.NovemberFanWeekListOutVo1" />
+    <resultMap id="NovemberFanWeekListOutVo2" type="com.dalbit.event.vo.NovemberFanWeekListOutVo2" />
 </mapper>

@@ -10,7 +10,9 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.event.dao.EventDao;
+import com.dalbit.event.proc.Event;
 import com.dalbit.event.vo.*;
+import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.Apply004Vo;
 import com.dalbit.event.vo.request.ApplyVo;
@@ -19,11 +21,13 @@ import com.dalbit.event.vo.request.EventGoodVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +53,8 @@ public class EventService {
     CommonService commonService;
     @Autowired
     RestService restService;
+
+    @Autowired Event event;
 
     public String event200608Term(){
         List<HashMap> eventTerm = new ArrayList<>();
@@ -1844,5 +1850,74 @@ public class EventService {
         }
 
         return result;
+    }
+
+    /**
+     * 11월 이벤트 팬 부분 경품 응모 등록
+     */
+    public Map<String, Object> eventFanCouponIns(NovemberFanCouponInsInputVo novemberFanCouponInsInputVo) {
+        Map<String, Object> result = new HashMap<>();
+        int insRes = event.eventFanCouponIns(novemberFanCouponInsInputVo);
+        if(insRes == 1) {
+            result = eventFanList(novemberFanCouponInsInputVo.getMemNo());
+        }
+
+        result.put("couponInsRes", insRes);
+        return result;
+    }
+
+    /**
+     * 11월 이벤트 종합 경품 이벤트(팬)
+     */
+    public Map<String, Object> eventFanList(String memNo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.eventFanList(memNo);
+        List<NovemberFanListOutVo2> itemInfo = DBUtil.getList(objList, 1, NovemberFanListOutVo2.class);
+
+        result.put("summaryInfo", DBUtil.getData(objList, 0, NovemberFanListOutVo1.class));
+        result.put("itemInfo", itemInfo);
+
+        return result;
+    }
+
+    /**
+     * 11월 이벤트 회차별 추첨 이벤트(팬)
+     */
+    public Map<String, Object> eventFanWeekList(String memNo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.eventFanWeekList(memNo);
+        List<NovemberFanWeekListOutVo2> itemInfo = DBUtil.getList(objList, 1, NovemberFanWeekListOutVo2.class);
+        int myRoundCouponCnt = DBUtil.getData(objList, 0, NovemberFanWeekListOutVo1.class).getFan_week_use_coupon_cnt();
+        int myRoundConditionStatus = 0;
+
+        for(NovemberFanWeekListOutVo2 vo : itemInfo) {
+            if(vo.getCon_ins_cnt() <= myRoundCouponCnt) {
+                vo.setPresentConditionImg("https://image.dalbitlive.com/event/raffle/td-success.png"); // 참여 성공
+                myRoundConditionStatus++;
+            }else {
+                vo.setPresentConditionImg("https://image.dalbitlive.com/event/raffle/td-lack.png"); // 횟수 부족
+                vo.setFan_week_gift_cnt(0);
+            }
+        }
+
+        result.put("myRoundConditionStatus", myRoundConditionStatus);
+        result.put("roundDuration", getRoundDuration(itemInfo.get(0).getEvt_no()));
+        result.put("myRoundCouponCnt", myRoundCouponCnt);
+        result.put("itemInfo", itemInfo);
+
+        return result;
+    }
+
+    private String getRoundDuration(String round) {
+        String duration = "";
+        switch (round) {
+            case "1": duration = "11/10(수)~11/16(화), 발표 : 11/17(수)"; break;
+            case "2": duration = "11/17(수)~11/23(화), 발표 : 11/24(수)"; break;
+            case "3": duration = "11/24(수)~11/30(화), 발표 : 12/01(수)"; break;
+            case "4": duration = "12/01(수)~12/07(화), 발표 : 12/08(수)"; break;
+            default:
+        }
+
+        return duration;
     }
 }
