@@ -15,4 +15,8 @@
     <!-- 11월 이벤트 회차별(팬) -->
     <resultMap id="NovemberFanWeekListOutVo1" type="com.dalbit.event.vo.NovemberFanWeekListOutVo1" />
     <resultMap id="NovemberFanWeekListOutVo2" type="com.dalbit.event.vo.NovemberFanWeekListOutVo2" />
+    <!-- 11월 이벤트 (Dj) -->
+    <resultMap id="NovemberDjListOutVo1" type="com.dalbit.event.vo.NovemberDjListOutVo1" />
+    <resultMap id="NovemberDjListOutVo2" type="com.dalbit.event.vo.NovemberDjListOutVo2" />
+    <resultMap id="NovemberDjListOutVo3" type="com.dalbit.event.vo.NovemberDjListOutVo3" />
 </mapper>
