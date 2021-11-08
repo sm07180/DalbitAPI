@@ -313,7 +313,7 @@ public class ProfileController {
         ResVO resVO = new ResVO();
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), profileService.callCertificationChkSel(memNo));
+            resVO.setSuccessResVO(profileService.callCertificationChkSel(memNo));
         } catch (Exception e) {
             log.error("ProfileController / callCertificationChkSel => {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);

@@ -3,16 +3,21 @@ package com.dalbit.event.controller;
 import com.dalbit.common.code.EventCode;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ResMessage;
+import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.KnowhowEventInputVo;
 import com.dalbit.event.vo.PhotoEventInputVo;
 import com.dalbit.event.vo.TimeEventVo;
+import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
@@ -21,10 +26,12 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/event")
 @Scope("prototype")
+@Slf4j
 public class EventController {
 
     @Autowired
@@ -573,4 +580,101 @@ public class EventController {
         return result;
     }
 
+    /**
+     * 11월 이벤트 팬 부분 경품 응모 등록
+     */
+    @PostMapping("/raffle/enter")
+    public ResVO novemberEventFanCouponIns(@Valid NovemberFanCouponInsInputVo novemberFanCouponInsInputVo, HttpServletRequest request){
+        ResVO resVO = new ResVO();
+        novemberFanCouponInsInputVo.setMemNo(MemberVo.getMyMemNo(request));
+        try {
+            Map<String, Object> res = eventService.novemberEventFanCouponIns(novemberFanCouponInsInputVo); // 응모 결과 + 갱신할 데이터
+            int insRes = (Integer) res.get("couponInsRes"); // 응모 결과
+            switch (insRes) {
+                case 1: resVO.setSuccessResVO(res); break;
+                case -1: resVO.setResVO(ResMessage.C30001.getCode(), ResMessage.C30001.getCodeNM(), res); break;
+                case -2: resVO.setResVO(ResMessage.C30002.getCode(), ResMessage.C30002.getCodeNM(), res); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / eventFanCouponIns => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**
+     * 11월 이벤트 종합 경품 이벤트(팬)
+     */
+    @GetMapping("/raffle/fan/total/list")
+    public ResVO novemberEventFanList(HttpServletRequest request){
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            resVO.setSuccessResVO(eventService.novemberEventFanList(memNo));
+        } catch (Exception e) {
+            log.error("EventController / eventFanList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**
+     * 11월 이벤트 회차별 추첨 이벤트(팬)
+     */
+    @GetMapping("/raffle/fan/round/list")
+    public ResVO novemberEventFanWeekList(HttpServletRequest request){
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            resVO.setSuccessResVO(eventService.novemberEventFanWeekList(memNo));
+        } catch (Exception e) {
+            log.error("EventController / eventFanWeekList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**
+     * 11월 이벤트 메인(DJ)
+     */
+    @GetMapping("/raffle/dj/main/list")
+    public ResVO novemberEventDjList(HttpServletRequest request){
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            resVO.setSuccessResVO(eventService.novemberEventDjList(memNo));
+        } catch (Exception e) {
+            log.error("EventController / novemberEventDjList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**
+     * 아이템 지급[서비스]
+     */
+    @PostMapping("/raffle/dj/ins/item")
+    public ResVO eventItemIns(@Valid ItemInsVo itemInsVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            itemInsVo.setMemNo(memNo);
+            int insRes = eventService.eventItemIns(itemInsVo);
+            switch (insRes) {
+                case 1: resVO.setSuccessResVO(insRes); break;
+                case -1: resVO.setResVO(ResMessage.C50001.getCode(), ResMessage.C50001.getCodeNM(), insRes); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / eventItemIns => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
 }

@@ -10,7 +10,9 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.event.dao.EventDao;
+import com.dalbit.event.proc.Event;
 import com.dalbit.event.vo.*;
+import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.Apply004Vo;
 import com.dalbit.event.vo.request.ApplyVo;
@@ -19,11 +21,13 @@ import com.dalbit.event.vo.request.EventGoodVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
+import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,6 +53,8 @@ public class EventService {
     CommonService commonService;
     @Autowired
     RestService restService;
+
+    @Autowired Event event;
 
     public String event200608Term(){
         List<HashMap> eventTerm = new ArrayList<>();
@@ -1844,5 +1850,140 @@ public class EventService {
         }
 
         return result;
+    }
+
+    /**
+     * 11월 이벤트 팬 부분 경품 응모 등록
+     */
+    public Map<String, Object> novemberEventFanCouponIns(NovemberFanCouponInsInputVo novemberFanCouponInsInputVo) {
+        Map<String, Object> result = new HashMap<>();
+        int insRes = event.novemberEventFanCouponIns(novemberFanCouponInsInputVo);
+        if(insRes == 1) {
+            result = novemberEventFanList(novemberFanCouponInsInputVo.getMemNo());
+        }
+
+        result.put("couponInsRes", insRes);
+        return result;
+    }
+
+    /**
+     * 11월 이벤트 종합 경품 이벤트(팬)
+     */
+    public Map<String, Object> novemberEventFanList(String memNo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.novemberEventFanList(memNo);
+        List<NovemberFanListOutVo2> itemInfo = DBUtil.getList(objList, 1, NovemberFanListOutVo2.class);
+
+        result.put("summaryInfo", DBUtil.getData(objList, 0, NovemberFanListOutVo1.class));
+        result.put("itemInfo", itemInfo);
+
+        return result;
+    }
+
+    /**
+     * 11월 이벤트 회차별 추첨 이벤트(팬)
+     */
+    public Map<String, Object> novemberEventFanWeekList(String memNo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.novemberEventFanWeekList(memNo);
+        List<NovemberFanWeekListOutVo2> itemInfo = DBUtil.getList(objList, 1, NovemberFanWeekListOutVo2.class);
+        int myRoundCouponCnt = DBUtil.getData(objList, 0, NovemberFanWeekListOutVo1.class).getFan_week_use_coupon_cnt();
+        int myRoundConditionStatus = 0;
+
+        for(NovemberFanWeekListOutVo2 vo : itemInfo) {
+            if(vo.getCon_ins_cnt() <= myRoundCouponCnt) {
+                vo.setPresentConditionImg("https://image.dalbitlive.com/event/raffle/td-success.png"); // 참여 성공
+                myRoundConditionStatus++;
+            }else {
+                vo.setPresentConditionImg("https://image.dalbitlive.com/event/raffle/td-lack.png"); // 횟수 부족
+                vo.setFan_week_gift_cnt(0);
+            }
+        }
+
+        result.put("myRoundConditionStatus", myRoundConditionStatus);
+        result.put("roundDuration", getRoundDuration(itemInfo.get(0).getEvt_no()));
+        result.put("myRoundCouponCnt", myRoundCouponCnt);
+        result.put("itemInfo", itemInfo);
+
+        return result;
+    }
+
+    private String getRoundDuration(String round) {
+        String duration = "";
+        switch (round) {
+            case "1": duration = "11/10(수)~11/16(화), 발표 : 11/17(수)"; break;
+            case "2": duration = "11/17(수)~11/23(화), 발표 : 11/24(수)"; break;
+            case "3": duration = "11/24(수)~11/30(화), 발표 : 12/01(수)"; break;
+            case "4": duration = "12/01(수)~12/07(화), 발표 : 12/08(수)"; break;
+            default:
+        }
+
+        return duration;
+    }
+
+    /**
+     * 11월 이벤트 메인(DJ)
+     */
+    public Map<String, Object> novemberEventDjList(String memNo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.novemberEventDjList(memNo);
+        NovemberDjListOutVo1 djEventUserInfo = DBUtil.getData(objList, 0, NovemberDjListOutVo1.class);
+        NovemberDjListOutVo2 djEventItemInfo1 = DBUtil.getData(objList, 1, NovemberDjListOutVo2.class);
+        List<NovemberDjListOutVo3> djEventItemInfo2 = DBUtil.getList(objList, 2, NovemberDjListOutVo3.class);
+
+        /* 내가 받을 수 있는 경품을 찾는다 */
+        int myRcvDalCnt = djEventUserInfo.getRcv_dal_cnt();
+        int myBroadPlayTime = djEventUserInfo.getPlay_time();
+        Map<String, String> findMyPresent = myPresentConditionCheck(djEventItemInfo2, myRcvDalCnt, myBroadPlayTime);
+
+        result.put("myPresentName", findMyPresent.get("myPresentName"));
+        result.put("myBroadTimeConditionYn", findMyPresent.get("myBroadTimeConditionYn"));
+        result.put("djEventUserInfo", djEventUserInfo);
+        result.put("djEventItemInfo1", djEventItemInfo1);
+        result.put("djEventItemInfo2", djEventItemInfo2);
+
+        return result;
+    }
+
+    private Map<String, String> myPresentConditionCheck(List<NovemberDjListOutVo3> data, int myRcvDalCnt, int myBroadPlayTime) {
+        Map<String, String> result = new HashMap<>();
+        int prevPresentPrice = 0;
+        String myPresentName = "";
+        String myBroadTimeConditionYn = "n";
+
+        for(NovemberDjListOutVo3 vo : data) {
+            if(myRcvDalCnt >= vo.getDj_gift_dal_cnt()) {
+                if(myBroadPlayTime >= vo.getDj_gift_play_time()) {
+                    myPresentName = vo.getDj_gift_name();
+                    myBroadTimeConditionYn = "y";
+                    prevPresentPrice = vo.getDj_gift_price();
+                }else {
+                    if(vo.getDj_gift_price() / 2 < prevPresentPrice) {
+                        myBroadTimeConditionYn = "y";
+                    }else {
+                        myPresentName = vo.getDj_gift_name();
+                        myBroadTimeConditionYn = "n";
+                    }
+                }
+            }else {
+                break;
+            }
+        }
+
+        if(!StringUtils.isEmpty(myPresentName) && StringUtils.equals(myBroadTimeConditionYn, "n")) {
+            myPresentName += " (50%)";
+        }
+
+        result.put("myPresentName", myPresentName);
+        result.put("myBroadTimeConditionYn", myBroadTimeConditionYn);
+
+        return result;
+    }
+
+    /**
+     * 아이템 지급[서비스]
+     */
+    public int eventItemIns(ItemInsVo itemInsVo) {
+        return event.eventItemIns(itemInsVo);
     }
 }

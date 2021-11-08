@@ -13,4 +13,16 @@ public class ResVO {
         this.message = message;
         this.data = data;
     }
+
+    public void setSuccessResVO (Object data) {
+        this.code = ResMessage.C00000.getCode();
+        this.message = ResMessage.C00000.getCodeNM();
+        this.data = data;
+    }
+
+    public void setFailResVO () {
+        this.code = ResMessage.C99999.getCode();
+        this.message = ResMessage.C99999.getCodeNM();
+        this.data = null;
+    }
 }
