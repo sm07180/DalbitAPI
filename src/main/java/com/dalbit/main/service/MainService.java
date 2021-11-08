@@ -739,9 +739,7 @@ public class MainService {
             int l = (marketing.getLevel() - 1) / 10;
             if(!DalbitUtil.isEmpty(marketing.getMemNo1())){
                 marketing.setHolder(StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", marketing.getLevel()+ ""));
-                if(l > 4) {
-                    marketing.setHolderBg(StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + ""));
-                }
+                marketing.setHolderBg(DalbitUtil.getLevelFrameBg(marketing.getLevel()));
                 marketing.setLevelColor(DalbitUtil.getProperty("level.color." + l).split(","));
 
                 var member = new HashMap<>();

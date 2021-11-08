@@ -1706,4 +1706,18 @@ public class DalbitUtil {
         }
         return openTokVo;
     }
+
+    public static String getLevelFrameBg(int level) {
+        String result = "";
+        if(level <= 100) {
+            int l = (level - 1) / 10;
+            if(l > 4){
+                result = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + "");
+            }
+        }else {
+            int l = (level - 101) / 3;
+            result = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg2"),"[level]", l + "");
+        }
+        return result;
+    }
 }

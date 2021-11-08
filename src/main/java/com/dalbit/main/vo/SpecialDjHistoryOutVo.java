@@ -34,9 +34,7 @@ public class SpecialDjHistoryOutVo {
         this.level = pSpecialHistoryVo.getLevel();
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         int l = (this.level - 1) / 10;
-        if(l > 4){
-            this.holderBg = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + "");
-        }
+        this.holderBg = DalbitUtil.getLevelFrameBg(this.level);
         this.levelColor = DalbitUtil.getProperty("level.color." + l).split(",");
         this.specialCnt = pSpecialHistoryVo.getSpecial_cnt();
         this.goodCnt = pSpecialHistoryVo.getGood_cnt();

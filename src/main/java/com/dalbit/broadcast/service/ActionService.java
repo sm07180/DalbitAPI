@@ -283,7 +283,8 @@ public class ActionService {
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
                 itemMap.put("itemCnt", isDirect ? 1 : pRoomGiftVo.getItem_cnt());
-                itemMap.put("repeatCnt", isDirect ? directItemCnt : (DalbitUtil.isEmpty(item.getSoundFileUrl()) ? pRoomGiftVo.getItem_cnt() : pRoomGiftVo.getItem_cnt() * 2));
+                //itemMap.put("repeatCnt", isDirect ? directItemCnt : (DalbitUtil.isEmpty(item.getSoundFileUrl()) ? pRoomGiftVo.getItem_cnt() : pRoomGiftVo.getItem_cnt() * 2));
+                itemMap.put("repeatCnt", 1);
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
                 itemMap.put("itemType", isDirect ? "direct" : "items");

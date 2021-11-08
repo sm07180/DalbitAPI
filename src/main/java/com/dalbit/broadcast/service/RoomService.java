@@ -716,6 +716,7 @@ public class RoomService {
         log.info("프로시저 응답 데이타: {}", resultMap);
         log.info(" ### 프로시저 호출결과 ###");
 
+        int level = DalbitUtil.getIntMap(resultMap, "level");
         HashMap returnMap = new HashMap();
         returnMap.put("memNo", pRoomMemberInfoVo.getTarget_mem_no());
         returnMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
@@ -724,15 +725,13 @@ public class RoomService {
         returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
         returnMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         returnMap.put("profMsg", DalbitUtil.getStringMap(resultMap, "profileMsg"));
-        returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", DalbitUtil.getIntMap(resultMap, "level") + ""));
+        returnMap.put("holder", StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", level + ""));
         returnMap.put("holderBg", "");
         returnMap.put("profileBg", "");
-        int l = (DalbitUtil.getIntMap(resultMap, "level") - 1) / 10;
-        if(l > 4){
-            returnMap.put("holderBg", StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + ""));
-        }
+        int l = (level - 1) / 10;
+        returnMap.put("holderBg", DalbitUtil.getLevelFrameBg(level));
         returnMap.put("levelColor", DalbitUtil.getProperty("level.color."+l).split(","));
-        returnMap.put("level", DalbitUtil.getIntMap(resultMap, "level"));
+        returnMap.put("level", level);
         returnMap.put("grade", DalbitUtil.getStringMap(resultMap, "grade"));
         returnMap.put("exp", DalbitUtil.getIntMap(resultMap, "exp"));
         returnMap.put("expBegin", DalbitUtil.getIntMap(resultMap, "expBegin"));

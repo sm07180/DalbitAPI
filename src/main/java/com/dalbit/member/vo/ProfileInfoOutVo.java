@@ -98,9 +98,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.roomNo = target.getRoom_no();
         this.holder = StringUtils.replace(DalbitUtil.getProperty("level.frame"),"[level]", this.level + "");
         int l = (this.level - 1) / 10;
-        if(l > 4){
-            this.holderBg = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + "");
-        }
+        this.holderBg = DalbitUtil.getLevelFrameBg(this.level);
         this.levelColor = DalbitUtil.getProperty("level.color."+l).split(",");
         if(target_mem_no.equals(mem_no)){
             this.exp = target.getExp();
