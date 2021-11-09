@@ -1961,7 +1961,9 @@ public class EventService {
                     if(vo.getDj_gift_price() / 2 < prevPresentPrice) {
                         myBroadTimeConditionYn = "y";
                     }else {
-                        myPresentName = vo.getDj_gift_name();
+                        if(!StringUtils.equals(vo.getDj_gift_no(), "6")) {
+                            myPresentName = vo.getDj_gift_name();
+                        }
                         myBroadTimeConditionYn = "n";
                     }
                 }

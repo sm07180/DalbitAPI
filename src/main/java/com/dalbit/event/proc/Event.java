@@ -17,7 +17,7 @@ public interface Event {
     * @작성일   : 2021-11-02
     * @작성자   : 박성민
     * @param   : memNo: 회원번호, fanGiftNo: 경품번호, couponCnt: 응모권수
-    * @return  : -2: 사용쿠폰수 부족, -1경품번호 없음, 0:에러, 1:정상
+    * @return  : -3: 이벤트 종료, -2: 사용쿠폰수 부족, -1경품번호 없음, 0:에러, 1:정상
     **********************************************************************************************/
     @Select("CALL rd_data.p_event_november_fan_coupon_ins(#{memNo}, #{fanGiftNo}, #{couponCnt})")
     int novemberEventFanCouponIns(NovemberFanCouponInsInputVo param);
@@ -118,7 +118,7 @@ public interface Event {
     * ,itemCnt 		BIGINT		-- 아이템 수
     * ,opName 	VARCHAR(50)	 -- 처리내용
     * @return
-    * s_return		INT		--  -1회원 및 아이템수  없음, 0:에러, 1:정상
+    * s_return		INT		--  -3: 이벤트 종료, -1회원 및 아이템수 없음, 0:에러, 1:정상
     **********************************************************************************************/
     @Select("CALL rd_data.p_item_ins(#{memNo}, #{itemType}, #{itemState}, #{itemCnt}, #{opName})")
     int eventItemIns(ItemInsVo param);

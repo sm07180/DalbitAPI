@@ -594,6 +594,7 @@ public class EventController {
                 case 1: resVO.setSuccessResVO(res); break;
                 case -1: resVO.setResVO(ResMessage.C30001.getCode(), ResMessage.C30001.getCodeNM(), res); break;
                 case -2: resVO.setResVO(ResMessage.C30002.getCode(), ResMessage.C30002.getCodeNM(), res); break;
+                case -3: resVO.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), res); break;
                 default: resVO.setFailResVO();
             }
         } catch (Exception e) {
@@ -668,6 +669,7 @@ public class EventController {
             switch (insRes) {
                 case 1: resVO.setSuccessResVO(insRes); break;
                 case -1: resVO.setResVO(ResMessage.C50001.getCode(), ResMessage.C50001.getCodeNM(), insRes); break;
+                case -3: resVO.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), insRes); break;
                 default: resVO.setFailResVO();
             }
         } catch (Exception e) {
