@@ -441,8 +441,8 @@ public class ClipService {
             returnMap.put("itemCnt", isDirect ? 1 : pClipGiftVo.getItem_cnt());
             returnMap.put("itemNo", item_code);
             returnMap.put("itemType", isDirect ? "direct" : "items");
-            //returnMap.put("repeatCnt", isDirect ? directItemCnt : (DalbitUtil.isEmpty(item.getSoundFileUrl()) ? pClipGiftVo.getItem_cnt() : pClipGiftVo.getItem_cnt() * 2));
-            returnMap.put("repeatCnt", isDirect ? directItemCnt : pClipGiftVo.getItem_cnt());
+            returnMap.put("repeatCnt", isDirect ? directItemCnt : (DalbitUtil.isEmpty(item.getSoundFileUrl()) ? pClipGiftVo.getItem_cnt() : pClipGiftVo.getItem_cnt() * 2));
+//            returnMap.put("repeatCnt", isDirect ? directItemCnt : pClipGiftVo.getItem_cnt());
             ClipGiftRankTop3Vo clipGiftRankTop3Vo = new ClipGiftRankTop3Vo();
             clipGiftRankTop3Vo.setClipNo(pClipGiftVo.getCast_no());
             P_ClipGiftRankTop3Vo pClipGiftRankTop3Vo = new P_ClipGiftRankTop3Vo(clipGiftRankTop3Vo);
