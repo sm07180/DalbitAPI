@@ -807,6 +807,10 @@ facebook.login.blank.token=페이스북 로그인 토큰이 없습니다.
 facebook.login.invalid.token=페이스북 토큰 인증에 실패하였습니다.
 facebook.login.error=페이스북인증을 실패하였습니다.\\n다시 시도해주세요.
 
+#social login
+social.login.success=소셜로그인 성공하였습니다.
+social.login.success=소셜로그인 실패하였습니다.
+
 #attendance event
 event.attendance.check.fail.no.member=요청하신 회원번호는 잘못된 회원번호 입니다.
 

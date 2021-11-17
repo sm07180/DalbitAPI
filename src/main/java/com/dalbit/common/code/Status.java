@@ -901,6 +901,10 @@ public enum Status {
     페이스북로그인_토큰인증실패("-2", "facebook.login.invalid.token", "인증실패"),
     페이스북로그인_오류("C006", "facebook.login.error", "오류"),
 
+    // 소셜 로그인
+    소셜로그인_성공("0", "social.login.success", "성공"),
+    소셜로그인_오류("C006", "social.login.error", "오류"),
+
     출석체크이벤트_상태조회_실패_회원아님("-1", "event.attendance.check.fail.no.member", "요청 회원번호가 없음"),
     출석체크이벤트_상태조회_실패("C006", "business.error", "비즈니스 에러"),
     출석체크이벤트_상태조회_성공("0", "read.success", "성공"),

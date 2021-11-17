@@ -18,9 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -454,6 +452,31 @@ public class CommonController {
     @PostMapping("/social/facebook/callback")
     public String pushAddFacebook(HttpServletRequest request){
         return commonService.connectFacebookNative(request);
+    }
+
+    @RequestMapping(value = "/social/{type:kakao|naver|facebook|google|apple}/callback", method = RequestMethod.GET)
+    public String socialCommon(@PathVariable String type, HttpServletRequest request) {
+        String result = "";
+        try {
+            switch (type) {
+                case "google":
+                    result = commonService.connectGoogleNative(request);
+                    break;
+                case "facebook":
+                    result = commonService.connectFacebookNative(request);
+                    break;
+                case "naver":
+                    result = commonService.connectNaverNative(request);
+                    break;
+                case "kakao":
+                    result = commonService.connectKakaoNative(request);
+                    break;
+                default:
+            }
+        } catch (Exception e) {
+            log.error("CommonController / socialCommon / type: " + type + e);
+        }
+        return result;
     }
 
     /**
