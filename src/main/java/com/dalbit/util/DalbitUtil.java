@@ -1715,8 +1715,7 @@ public class DalbitUtil {
                 result = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg"),"[level]", l + "");
             }
         }else {
-            int l = (level - 101) / 3;
-            result = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg2"),"[level]", l + "");
+            result = StringUtils.replace(DalbitUtil.getProperty("level.frame.bg2"),"[level]", level + "");
         }
         return result;
     }
