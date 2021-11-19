@@ -1,7 +1,8 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.TTSService;
-import com.dalbit.broadcast.vo.TTSVo;
+import com.dalbit.broadcast.vo.TTSCallbackVo;
+import com.dalbit.broadcast.vo.TTSSpeakVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +19,14 @@ public class TTSController {
     @Autowired TTSService ttsService;
 
     @GetMapping("/tts")
-    public void ttsConnection(/*@Valid TTSVo ttsVo*/) {
-        TTSVo tempVo = new TTSVo();
+    public void ttsConnection(/*@Valid TTSSpeakVo ttsSpeakVo*/) {
+        TTSSpeakVo tempVo = new TTSSpeakVo();
         tempVo.setText("tts 테스트입니다.");
         ttsService.ttsConnection(tempVo);
     }
 
     @PostMapping("/tts/callback")
-    public String ttsCallback() {
-        return ttsService.ttsCallback();
+    public String ttsCallback(@Valid TTSCallbackVo ttsCallbackVo) {
+        return ttsService.ttsCallback(ttsCallbackVo);
     }
 }

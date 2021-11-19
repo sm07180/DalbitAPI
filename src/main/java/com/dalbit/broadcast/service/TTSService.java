@@ -1,21 +1,22 @@
 package com.dalbit.broadcast.service;
 
-import com.dalbit.broadcast.vo.TTSVo;
+import com.dalbit.broadcast.vo.TTSCallbackVo;
+import com.dalbit.broadcast.vo.TTSSpeakVo;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
+import net.minidev.json.JSONObject;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Slf4j
@@ -26,18 +27,24 @@ public class TTSService {
     @Value("${tts.account.token}") private String TTS_ACCOUNT_TOKEN;
     @Value("${tts.api.host}") private String TTS_API_HOST;
 
-    public void ttsConnection(TTSVo ttsVo) {
+    public void ttsConnection(TTSSpeakVo ttsVo) {
         JsonElement ttsInfo = getTTSInfo();
         String callbackUrl = ttsInfo.getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString();
-        log.warn("callbackUrl zz : {}", callbackUrl);
+        log.warn("callbackUrl 11 : {}", callbackUrl);
         if(StringUtils.isEmpty(callbackUrl)) {
-            insCallbackUrl();
+            callbackUrl = insCallbackUrl().toString().replaceAll("\"", "");
+            log.warn("callbackUrl 22 : {}", callbackUrl);
         }
         String[] actorIdArr = findActor();
         ttsVo.setActor_id(actorIdArr[0]);
 
-//        String speakUrl = ttsSpeak(ttsVo).getAsJsonObject().get("result").getAsJsonObject().get("speak_url").toString();
-        log.warn("speak_url : {}", ttsSpeak(ttsVo));
+        JsonElement speakResult = ttsSpeak(ttsVo).getAsJsonObject().get("result").getAsJsonObject();
+        String speakUrl = speakResult.getAsJsonObject().get("speak_url").toString().replaceAll("\"", "");
+        String playId = speakResult.getAsJsonObject().get("play_id").toString().replaceAll("\"", "");
+        log.warn("speak_url : {}", speakUrl);
+        log.warn("playId : {}", playId);
+
+        log.warn("makeVoice : {} ", makeVoice(speakUrl));
     }
 
     /**********************************************************************************************
@@ -48,10 +55,7 @@ public class TTSService {
     **********************************************************************************************/
     private JsonElement getTTSInfo() {
         String connUrl = TTS_API_HOST + "/api/me";
-        JsonElement result = null;
-        result = ttsApiCall(connUrl, "getUserInfo");
-
-        return result;
+        return ttsApiCall(connUrl, "getUserInfo");
     }
 
     /**********************************************************************************************
@@ -63,11 +67,10 @@ public class TTSService {
     private JsonElement insCallbackUrl() {
         String connUrl = TTS_API_HOST + "/api/me/callback-url";
         String callbackUrl = "https://devm-parksm.dalbitlive.com:463/tts/callback";
-        Map<String, Object> params = new LinkedHashMap<>();
+        JSONObject params = new JSONObject();
         params.put("callback_url", callbackUrl);
-        JsonElement result = ttsApiCall(connUrl, "PUT", params, "insCallbackUrl");
 
-        return result;
+        return ttsApiCall(connUrl, "PUT", params, "insCallbackUrl");
     }
 
     /**********************************************************************************************
@@ -84,7 +87,7 @@ public class TTSService {
         String[] result = new String[actorArray.getAsJsonArray().size()];
         int index = 0;
         for(JsonElement vo : actorArray.getAsJsonArray()) {
-            result[index++] = vo.getAsJsonObject().get("actor_id").toString();
+            result[index++] = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
             log.warn("actor_id : {}", vo.getAsJsonObject().get("actor_id"));
         }
 
@@ -99,17 +102,25 @@ public class TTSService {
     * xapi_hd (true/ false): true면 음질이 높아진다 (default: false)
     * xapi_audio_format: "mp3"로 set하면 mp3 포맷으로 파일을 받는다 (default: wav)
     **********************************************************************************************/
-    public JsonElement ttsSpeak(TTSVo ttsVo) {
+    public JsonElement ttsSpeak(TTSSpeakVo ttsVo) {
         String connUrl = TTS_API_HOST + "/api/speak";
-        Map<String, Object> params = new LinkedHashMap<>();
+        JSONObject params = new JSONObject();
         params.put("text", ttsVo.getText());
         params.put("lang", ttsVo.getLang());
         params.put("actor_id", ttsVo.getActor_id());
         params.put("max_seconds", ttsVo.getMax_seconds());
 
-        JsonElement result = ttsApiCall(connUrl, "POST", params, "ttsSpeak");
+        return ttsApiCall(connUrl, "POST", params, "ttsSpeak");
+    }
 
-        return result;
+    /**********************************************************************************************
+     * @Method 설명 : 음성 파일 얻기
+     * @작성일   : 2021-11-18
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    public JsonElement makeVoice(String speakUrl) {
+        return ttsApiCall(speakUrl,"makeVoice");
     }
 
     /**********************************************************************************************
@@ -118,8 +129,10 @@ public class TTSService {
     * @작성자   : 박성민
     * @변경이력  :
     **********************************************************************************************/
-    public String ttsCallback() {
-        log.warn("hihi");
+    public String ttsCallback(TTSCallbackVo ttsCallbackVo) {
+        log.warn("hihi 1 : {}", ttsCallbackVo.getAudio_url_no_redirect());
+        log.warn("hihi 2 : {}", ttsCallbackVo.getPlay_id());
+        log.warn("hihi 3 : {}", ttsCallbackVo.getSpeak_url());
         return "";
     }
 
@@ -182,19 +195,12 @@ public class TTSService {
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
-//            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
-            StringBuilder postData = new StringBuilder();
-            for(Map.Entry<String, Object> param : params.entrySet()) {
-                if(postData.length() != 0) postData.append("&");
-                postData.append(URLEncoder.encode(param.getKey(), "UTF-8"));
-                postData.append("=");
-                postData.append(URLEncoder.encode(String.valueOf(param.getValue()), "UTF-8"));
+            if(params != null) {
+                BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+                bw.write(params.toString());
+                bw.flush();
+                bw.close();
             }
-            byte[] postDataBytes = postData.toString().getBytes(StandardCharsets.UTF_8);
-            conn.getOutputStream().write(postDataBytes);
-//            bw.write(postDataBytes);
-//            bw.flush();
-//            bw.close();
 
             int responseCode = conn.getResponseCode();
             String connSuccessYn = getResponseCodeHandler(responseCode, callBy);

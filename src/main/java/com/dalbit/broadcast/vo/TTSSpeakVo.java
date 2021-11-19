@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TTSVo {
+public class TTSSpeakVo {
     private String text;
     private String lang = "auto";
     private String actor_id;
