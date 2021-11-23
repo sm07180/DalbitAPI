@@ -1027,6 +1027,123 @@ public class CommonService {
         return result;
     }
 
+    public String connectNaverNative(HttpServletRequest request) {
+        String result = "";
+        String access_token = request.getParameter("accessToken");
+        if(DalbitUtil.isEmpty(access_token)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+        }else {
+            StringBuffer urlString = new StringBuffer();
+            urlString.append("https://openapi.naver.com/v1/nid/me");
+
+            try{
+                URL url = new URL(urlString.toString());
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestProperty("Authorization", "Bearer " + access_token);
+                String first = readStream(con.getInputStream());
+
+                HashMap naverRootInfo = new Gson().fromJson(first, HashMap.class);
+                if(!DalbitUtil.isEmpty(naverRootInfo)){
+                    HashMap naverInfo = new Gson().fromJson(new Gson().toJson(naverRootInfo.get("response")), HashMap.class);
+                    if(!DalbitUtil.isEmpty(naverInfo)){
+                        HashMap resultMap = new HashMap();
+                        resultMap.put("memType", "n");
+                        resultMap.put("memId", DalbitUtil.getStringMap(naverInfo, "id"));
+                        resultMap.put("nickNm", "");
+                        if(!DalbitUtil.isEmpty(naverInfo.get("nickname"))){
+                            resultMap.put("nickNm", DalbitUtil.getStringMap(naverInfo, "nickname"));
+                        }
+                        resultMap.put("name", "");
+                        if(!DalbitUtil.isEmpty(naverInfo.get("name"))){
+                            resultMap.put("name", DalbitUtil.getStringMap(naverInfo, "name"));
+                        }
+                        resultMap.put("email", "n");
+                        if(!DalbitUtil.isEmpty(naverInfo.get("email"))){
+                            resultMap.put("email", DalbitUtil.getStringMap(naverInfo, "email"));
+                        }
+
+                        resultMap.put("gender", "");
+                        if(!DalbitUtil.isEmpty(naverInfo.get("gender"))){
+                            resultMap.put("gender", DalbitUtil.getStringMap(naverInfo, "gender").toLowerCase());
+                        }
+
+                        resultMap.put("profImgUrl", "");
+                        if(!DalbitUtil.isEmpty(naverInfo.get("profile_image"))){
+                            resultMap.put("profImgUrl", DalbitUtil.getStringMap(naverInfo, "profile_image"));
+                        }
+
+                        result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_성공, resultMap));
+                    }
+                }
+            }catch(Exception e) {
+                log.error("============= naver connected error : {}", e.getMessage());
+                result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+            }
+        }
+
+        setStateSession(request);
+
+        return result;
+    }
+
+    public String connectKakaoNative(HttpServletRequest request) {
+        String result = "";
+        String access_token = request.getParameter("accessToken");
+        if(DalbitUtil.isEmpty(access_token)){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+        }else {
+            StringBuffer urlString = new StringBuffer();
+            urlString.append("https://kapi.kakao.com/v2/user/me");
+
+            try{
+                URL url = new URL(urlString.toString());
+                HttpURLConnection con = (HttpURLConnection) url.openConnection();
+                con.setRequestProperty("Authorization", "Bearer " + access_token);
+                String first = readStream(con.getInputStream());
+
+                HashMap kakaoRootInfo = new Gson().fromJson(first, HashMap.class);
+                if(!DalbitUtil.isEmpty(kakaoRootInfo)){
+                    if(!DalbitUtil.isEmpty(kakaoRootInfo.get("id")) && !DalbitUtil.isEmpty(kakaoRootInfo.get("kakao_account"))){
+                        HashMap kakaoAcntInfo = new Gson().fromJson(new Gson().toJson(kakaoRootInfo.get("kakao_account")), HashMap.class);
+                        if(!DalbitUtil.isEmpty(kakaoAcntInfo) && !DalbitUtil.isEmpty(kakaoAcntInfo.get("profile"))){
+                            HashMap kakaoProfInfo = new Gson().fromJson(new Gson().toJson(kakaoAcntInfo.get("profile")), HashMap.class);
+                            if(!DalbitUtil.isEmpty(kakaoProfInfo)){
+                                HashMap resultMap = new HashMap();
+                                resultMap.put("memType", "k");
+                                resultMap.put("memId", DalbitUtil.getStringMap(kakaoRootInfo, "id"));
+                                resultMap.put("nickNm", "");
+                                resultMap.put("name", "");
+                                if(!DalbitUtil.isEmpty(kakaoProfInfo.get("nickname"))){
+                                    resultMap.put("nickNm", DalbitUtil.getStringMap(kakaoProfInfo, "nickname"));
+                                }
+                                resultMap.put("email", "");
+                                if(!DalbitUtil.isEmpty(kakaoAcntInfo.get("email"))){
+                                    resultMap.put("email", DalbitUtil.getStringMap(kakaoAcntInfo, "email"));
+                                }
+                                resultMap.put("gender", "n");
+                                if(!DalbitUtil.isEmpty(kakaoAcntInfo.get("gender"))){
+                                    resultMap.put("gender", DalbitUtil.getStringMap(kakaoAcntInfo, "gender").toLowerCase().substring(0, 1));
+                                }
+                                resultMap.put("profImgUrl", "");
+                                if(!DalbitUtil.isEmpty(kakaoProfInfo.get("profile_image_url"))){
+                                    resultMap.put("profImgUrl", DalbitUtil.getStringMap(kakaoProfInfo, "profile_image_url"));
+                                }
+
+                                result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_성공, resultMap));
+                            }
+                        }
+                    }
+                }
+            }catch(Exception e) {
+                log.error("============= kakao connected error : {}", e.getMessage());
+                result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+            }
+        }
+
+        setStateSession(request);
+        return result;
+    }
+
     /**
      * 공통코드 조회
      * @param codeVo
