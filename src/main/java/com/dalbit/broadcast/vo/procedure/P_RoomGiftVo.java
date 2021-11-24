@@ -17,6 +17,6 @@ public class P_RoomGiftVo extends P_ApiVo {
     private Integer item_cnt;       //아이템 개수
     private String secret;          //몰래보내기 여부
 
-    private String ttsText;         // tts 음성 내용
-    private String actorId;         // 배우 id
+    private String ttsText = "";         // tts 음성 내용
+    private String actorId = "";         // 배우 id
 }
