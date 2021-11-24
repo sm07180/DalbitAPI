@@ -220,15 +220,35 @@ public class ActionService {
         return result;
     }
 
+    private boolean actorCheck(String actorId) {
+        boolean actorIdReg = false;
+        String[] findActorIds = ttsService.findActorIds();
+
+        for(int i=0; i<findActorIds.length; i++) {
+            if(StringUtils.equals(findActorIds[i], actorId)) {
+                actorIdReg = true;
+                break;
+            }
+        }
+
+        return actorIdReg;
+    }
+
     /**
      * 방송방 선물하기
      */
     public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
+        String result;
         String ttsText = pRoomGiftVo.getTtsText();
+        String actorId = pRoomGiftVo.getActorId();
 
         if(!StringUtils.isEmpty(ttsText)) {
             // 금지어 체크(시스템 + 방송?)
 
+            // actor 체크
+            if(!actorCheck(actorId)) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_성우없음));
+            }
         }
 
         String item_code = pRoomGiftVo.getItem_code();
@@ -255,7 +275,6 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
         actionDao.callBroadCastRoomGift(procedureVo);
 
-        String result;
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -306,7 +325,7 @@ public class ActionService {
                 itemMap.put("dalCnt", item.getByeol() * pRoomGiftVo.getItem_cnt());
                 // tts 정보
                 itemMap.put("ttsText", ttsText);
-                itemMap.put("actorId", pRoomGiftVo.getActorId());
+                itemMap.put("actorId", actorId);
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

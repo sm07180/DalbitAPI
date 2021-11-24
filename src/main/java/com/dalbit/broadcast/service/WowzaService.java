@@ -389,11 +389,11 @@ public class WowzaService {
             }
 
             // tts 성우 리스트
-//            JsonElement ttsActors = ttsService.findActor();
-//            log.warn("ttsActors : {}", ttsActors);
+            JsonElement ttsActors = ttsService.findActor();
+            log.warn("ttsActors : {}", ttsActors);
 
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, null);
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -831,10 +831,10 @@ public class WowzaService {
         HashMap miniGameMap = getRouletteData(request, target.getRoomNo(), isLogin);
 
         // tts 성우 리스트
-//        JsonElement ttsActors = ttsService.findActor();
-//        log.warn("ttsActors : {}", ttsActors);
+        JsonElement ttsActors = ttsService.findActor();
+        log.warn("ttsActors : {}", ttsActors);
 
-        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, null);
+        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());

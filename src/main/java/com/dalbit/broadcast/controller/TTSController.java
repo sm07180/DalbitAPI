@@ -5,11 +5,9 @@ import com.dalbit.broadcast.vo.TTSCallbackVo;
 import com.dalbit.broadcast.vo.TTSSpeakVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Slf4j
@@ -26,7 +24,8 @@ public class TTSController {
     }
 
     @PostMapping("/tts/callback")
-    public String ttsCallback(@Valid TTSCallbackVo ttsCallbackVo) {
+    public String ttsCallback(@RequestBody TTSCallbackVo ttsCallbackVo, HttpServletRequest request) {
+        log.warn("ip : {}", request.getRemoteAddr());
         return ttsService.ttsCallback(ttsCallbackVo);
     }
 }

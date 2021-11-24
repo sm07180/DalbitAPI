@@ -26,7 +26,7 @@ public class TTSService {
     @Value("${tts.account.pw}") private String TTS_ACCOUNT_PW;
     @Value("${tts.account.token}") private String TTS_ACCOUNT_TOKEN;
     @Value("${tts.api.host}") private String TTS_API_HOST;
-    String callbackUrl = "https://devapi.dalbitlive.com/broad/tts/callback";
+    String callbackUrl = "https://devapi.dalbitlive.com:463/broad/tts/callback";
 
     public void ttsConnection(TTSSpeakVo ttsVo) {
         JsonElement ttsInfo = getTTSInfo();
@@ -36,7 +36,7 @@ public class TTSService {
             getCallbackUrl = insCallbackUrl().getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
             log.warn("callbackUrl 22 : {}", getCallbackUrl);
         }
-        String[] actorIdArr = findActor();
+        String[] actorIdArr = tempFindActor();
         ttsVo.setActorId(actorIdArr[0]);
 
         JsonElement speakResult = ttsSpeak(ttsVo).getAsJsonObject().get("result").getAsJsonObject();
@@ -80,7 +80,37 @@ public class TTSService {
     * @작성자   : 박성민
     * @변경이력  :
     **********************************************************************************************/
-    public String[] findActor() {
+    public String[] tempFindActor() {
+        String connUrl = TTS_API_HOST + "/api/actor";
+        JsonElement callApiRes = ttsApiCall(connUrl, "findActor");
+        JsonElement actorArray = callApiRes.getAsJsonObject().get("result").getAsJsonArray();
+
+        String[] result = new String[actorArray.getAsJsonArray().size()];
+        int index = 0;
+        for(JsonElement vo : actorArray.getAsJsonArray()) {
+            result[index++] = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
+            log.warn("actor_id : {}", vo.getAsJsonObject().get("actor_id"));
+        }
+
+        return result;
+    }
+
+    public JsonElement findActor() {
+        String connUrl = TTS_API_HOST + "/api/actor";
+        JsonElement callApiRes = ttsApiCall(connUrl, "findActor");
+        JsonElement actorArray = callApiRes.getAsJsonObject().get("result").getAsJsonArray();
+
+        /*String[] result = new String[actorArray.getAsJsonArray().size()];
+        int index = 0;
+        for(JsonElement vo : actorArray.getAsJsonArray()) {
+            result[index++] = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
+            log.warn("actor_id : {}", vo.getAsJsonObject().get("actor_id"));
+        }*/
+
+        return actorArray;
+    }
+
+    public String[] findActorIds() {
         String connUrl = TTS_API_HOST + "/api/actor";
         JsonElement callApiRes = ttsApiCall(connUrl, "findActor");
         JsonElement actorArray = callApiRes.getAsJsonObject().get("result").getAsJsonArray();

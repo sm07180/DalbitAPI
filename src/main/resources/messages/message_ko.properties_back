@@ -429,6 +429,7 @@ broadcast.room.gift.member.no=회원정보를 불러올 수 없습니다.\\n다�
 broadcast.room.gift.member.error=선물할 수 없는 대상입니다.\\n다시 확인하시고 선물해주세요.
 broadcast.room.gift.item.number.no=선물을 선택해주세요.
 broadcast.room.gift.limit.dal=달이 부족합니다.\\n부족한 달을 충전해주세요.
+broadcast.room.gift.tts.noActor=성우를 찾을 수 없습니다.
 broadcast.room.gift.fail=선물하기를 실패했습니다.\\n잠시 후 다시 시도해주세요.
 
 # broadcast booster
