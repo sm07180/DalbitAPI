@@ -27,4 +27,7 @@ public class GiftVo {
     @NotBlank(message = "{\"ko_KR\" : \"비밀 선물 여부를\"}")
     @NotNull(message = "{\"ko_KR\" : \"비밀 선물 여부를\"}")
     private String isSecret;
+
+    private String ttsText; // tts 내용
+    private String actorId;    // tts 배우 id
 }

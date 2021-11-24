@@ -6,8 +6,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TTSSpeakVo {
-    private String text;
+    public TTSSpeakVo() {}
+    public TTSSpeakVo(String ttsText, String actorId) {
+        this.ttsText = ttsText;
+        this.actorId = actorId;
+    }
+
+    private String ttsText = "";
     private String lang = "auto";
-    private String actor_id;
-    private int max_seconds = 10;
+    private String actorId = "";
+    private int maxSeconds = 15;
 }

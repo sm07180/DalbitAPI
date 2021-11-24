@@ -21,7 +21,7 @@ public class TTSController {
     @GetMapping("/tts")
     public void ttsConnection(/*@Valid TTSSpeakVo ttsSpeakVo*/) {
         TTSSpeakVo tempVo = new TTSSpeakVo();
-        tempVo.setText("tts 테스트입니다.");
+        tempVo.setTtsText("tts 테스트입니다.");
         ttsService.ttsConnection(tempVo);
     }
 

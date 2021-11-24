@@ -26,17 +26,18 @@ public class TTSService {
     @Value("${tts.account.pw}") private String TTS_ACCOUNT_PW;
     @Value("${tts.account.token}") private String TTS_ACCOUNT_TOKEN;
     @Value("${tts.api.host}") private String TTS_API_HOST;
+    String callbackUrl = "https://devapi.dalbitlive.com/broad/tts/callback";
 
     public void ttsConnection(TTSSpeakVo ttsVo) {
         JsonElement ttsInfo = getTTSInfo();
-        String callbackUrl = ttsInfo.getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString();
-        log.warn("callbackUrl 11 : {}", callbackUrl);
-        if(StringUtils.isEmpty(callbackUrl)) {
-            callbackUrl = insCallbackUrl().toString().replaceAll("\"", "");
-            log.warn("callbackUrl 22 : {}", callbackUrl);
+        String getCallbackUrl = ttsInfo.getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
+        log.warn("callbackUrl 11 : {}", getCallbackUrl);
+        if(!StringUtils.equals(callbackUrl, getCallbackUrl)) {
+            getCallbackUrl = insCallbackUrl().getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
+            log.warn("callbackUrl 22 : {}", getCallbackUrl);
         }
         String[] actorIdArr = findActor();
-        ttsVo.setActor_id(actorIdArr[0]);
+        ttsVo.setActorId(actorIdArr[0]);
 
         JsonElement speakResult = ttsSpeak(ttsVo).getAsJsonObject().get("result").getAsJsonObject();
         String speakUrl = speakResult.getAsJsonObject().get("speak_url").toString().replaceAll("\"", "");
@@ -44,7 +45,7 @@ public class TTSService {
         log.warn("speak_url : {}", speakUrl);
         log.warn("playId : {}", playId);
 
-        log.warn("makeVoice : {} ", makeVoice(speakUrl));
+//        JsonElement voice = makeVoice(speakUrl);
     }
 
     /**********************************************************************************************
@@ -66,7 +67,7 @@ public class TTSService {
     **********************************************************************************************/
     private JsonElement insCallbackUrl() {
         String connUrl = TTS_API_HOST + "/api/me/callback-url";
-        String callbackUrl = "https://devm-parksm.dalbitlive.com:463/tts/callback";
+
         JSONObject params = new JSONObject();
         params.put("callback_url", callbackUrl);
 
@@ -79,7 +80,7 @@ public class TTSService {
     * @작성자   : 박성민
     * @변경이력  :
     **********************************************************************************************/
-    private String[] findActor() {
+    public String[] findActor() {
         String connUrl = TTS_API_HOST + "/api/actor";
         JsonElement callApiRes = ttsApiCall(connUrl, "findActor");
         JsonElement actorArray = callApiRes.getAsJsonObject().get("result").getAsJsonArray();
@@ -98,17 +99,17 @@ public class TTSService {
     * @Method 설명 : tts 요청
     * @작성일   : 2021-11-11
     * @작성자   : 박성민
-    * @설명    :
+    * @param    : ttsText(30자), actorId
     * xapi_hd (true/ false): true면 음질이 높아진다 (default: false)
     * xapi_audio_format: "mp3"로 set하면 mp3 포맷으로 파일을 받는다 (default: wav)
     **********************************************************************************************/
     public JsonElement ttsSpeak(TTSSpeakVo ttsVo) {
         String connUrl = TTS_API_HOST + "/api/speak";
         JSONObject params = new JSONObject();
-        params.put("text", ttsVo.getText());
+        params.put("text", ttsVo.getTtsText());
         params.put("lang", ttsVo.getLang());
-        params.put("actor_id", ttsVo.getActor_id());
-        params.put("max_seconds", ttsVo.getMax_seconds());
+        params.put("actor_id", ttsVo.getActorId());
+        params.put("max_seconds", ttsVo.getMaxSeconds());
 
         return ttsApiCall(connUrl, "POST", params, "ttsSpeak");
     }

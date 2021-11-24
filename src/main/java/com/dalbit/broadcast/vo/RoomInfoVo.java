@@ -2,6 +2,7 @@ package com.dalbit.broadcast.vo;
 
 import com.dalbit.common.vo.*;
 import com.dalbit.util.DalbitUtil;
+import com.google.gson.JsonElement;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.commons.lang3.StringUtils;
@@ -100,11 +101,14 @@ public class RoomInfoVo {
     private boolean isMinigame;
     private int nonMemberTime = 60;
 
+    private JsonElement ttsActors;
+
     /* 필터/메이크업 */
     private boolean useFilter = false;
 
     public RoomInfoVo(){}
-    public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap, HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap){
+    public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
+                      HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, JsonElement ttsActors){
         this.roomNo = target.getRoomNo();
         this.title = target.getTitle();
         this.bgImg = target.getBgImg();
@@ -232,6 +236,8 @@ public class RoomInfoVo {
         if("v".equals(this.mediaType) && this.auth ==  3){
             this.useFilter = true;
         }
+
+        this.ttsActors = ttsActors;
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){
