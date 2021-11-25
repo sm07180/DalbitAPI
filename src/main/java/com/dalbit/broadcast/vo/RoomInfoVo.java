@@ -10,6 +10,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Getter @Setter
 public class RoomInfoVo {
@@ -101,14 +102,14 @@ public class RoomInfoVo {
     private boolean isMinigame;
     private int nonMemberTime = 60;
 
-    private JsonElement ttsActors;
+    private ArrayList<Map<String, String>> ttsActors;
 
     /* 필터/메이크업 */
     private boolean useFilter = false;
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
-                      HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, JsonElement ttsActors){
+                      HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors){
         this.roomNo = target.getRoomNo();
         this.title = target.getTitle();
         this.bgImg = target.getBgImg();
@@ -237,7 +238,9 @@ public class RoomInfoVo {
             this.useFilter = true;
         }
 
-        this.ttsActors = ttsActors;
+        if(ttsActors != null) {
+            this.ttsActors = ttsActors;
+        }
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){

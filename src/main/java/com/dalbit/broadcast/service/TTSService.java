@@ -17,6 +17,8 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -26,24 +28,24 @@ public class TTSService {
     @Value("${tts.account.pw}") private String TTS_ACCOUNT_PW;
     @Value("${tts.account.token}") private String TTS_ACCOUNT_TOKEN;
     @Value("${tts.api.host}") private String TTS_API_HOST;
-    String callbackUrl = "https://devapi.dalbitlive.com:463/broad/tts/callback";
+    String callbackUrl = "https://devm-parksm.dalbitlive.com:463/broad/tts/callback";
 
     public void ttsConnection(TTSSpeakVo ttsVo) {
-        JsonElement ttsInfo = getTTSInfo();
-        String getCallbackUrl = ttsInfo.getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
-        log.warn("callbackUrl 11 : {}", getCallbackUrl);
-        if(!StringUtils.equals(callbackUrl, getCallbackUrl)) {
-            getCallbackUrl = insCallbackUrl().getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
-            log.warn("callbackUrl 22 : {}", getCallbackUrl);
-        }
-        String[] actorIdArr = tempFindActor();
-        ttsVo.setActorId(actorIdArr[0]);
-
-        JsonElement speakResult = ttsSpeak(ttsVo).getAsJsonObject().get("result").getAsJsonObject();
-        String speakUrl = speakResult.getAsJsonObject().get("speak_url").toString().replaceAll("\"", "");
-        String playId = speakResult.getAsJsonObject().get("play_id").toString().replaceAll("\"", "");
-        log.warn("speak_url : {}", speakUrl);
-        log.warn("playId : {}", playId);
+//        JsonElement ttsInfo = getTTSInfo();
+//        String getCallbackUrl = ttsInfo.getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
+//        log.warn("callbackUrl 11 : {}", getCallbackUrl);
+//        if(!StringUtils.equals(callbackUrl, getCallbackUrl)) {
+//            getCallbackUrl = insCallbackUrl().getAsJsonObject().get("result").getAsJsonObject().get("callback_url").toString().replaceAll("\"", "");
+//            log.warn("callbackUrl 22 : {}", getCallbackUrl);
+//        }
+//        String[] actorIdArr = tempFindActor();
+//        ttsVo.setActorId(actorIdArr[0]);
+//
+//        JsonElement speakResult = ttsSpeak(ttsVo).getAsJsonObject().get("result").getAsJsonObject();
+//        String speakUrl = speakResult.getAsJsonObject().get("speak_url").toString().replaceAll("\"", "");
+//        String playId = speakResult.getAsJsonObject().get("play_id").toString().replaceAll("\"", "");
+//        log.warn("speak_url : {}", speakUrl);
+//        log.warn("playId : {}", playId);
 
 //        JsonElement voice = makeVoice(speakUrl);
     }
@@ -89,25 +91,27 @@ public class TTSService {
         int index = 0;
         for(JsonElement vo : actorArray.getAsJsonArray()) {
             result[index++] = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
-            log.warn("actor_id : {}", vo.getAsJsonObject().get("actor_id"));
         }
 
         return result;
     }
 
-    public JsonElement findActor() {
+    public ArrayList<Map<String, String>> findActor() {
         String connUrl = TTS_API_HOST + "/api/actor";
         JsonElement callApiRes = ttsApiCall(connUrl, "findActor");
         JsonElement actorArray = callApiRes.getAsJsonObject().get("result").getAsJsonArray();
 
-        /*String[] result = new String[actorArray.getAsJsonArray().size()];
-        int index = 0;
+        ArrayList<Map<String, String>> result = new ArrayList<>();
         for(JsonElement vo : actorArray.getAsJsonArray()) {
-            result[index++] = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
-            log.warn("actor_id : {}", vo.getAsJsonObject().get("actor_id"));
-        }*/
+            Map<String, String> data = new HashMap<>();
+            if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
+                data.put("actorId", vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", ""));
+                data.put("actorName", vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", ""));
+                result.add(data);
+            }
+        }
 
-        return actorArray;
+        return result;
     }
 
     public String[] findActorIds() {
@@ -119,7 +123,6 @@ public class TTSService {
         int index = 0;
         for(JsonElement vo : actorArray.getAsJsonArray()) {
             result[index++] = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
-            log.warn("actor_id : {}", vo.getAsJsonObject().get("actor_id"));
         }
 
         return result;

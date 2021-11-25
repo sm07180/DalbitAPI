@@ -42,6 +42,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -388,12 +389,8 @@ public class WowzaService {
                 miniGameList = getRouletteData(request, roomNo, isLogin);
             }
 
-            // tts 성우 리스트
-            JsonElement ttsActors = ttsService.findActor();
-            log.warn("ttsActors : {}", ttsActors);
-
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors);
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, null);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -831,7 +828,7 @@ public class WowzaService {
         HashMap miniGameMap = getRouletteData(request, target.getRoomNo(), isLogin);
 
         // tts 성우 리스트
-        JsonElement ttsActors = ttsService.findActor();
+        ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
         log.warn("ttsActors : {}", ttsActors);
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors);
