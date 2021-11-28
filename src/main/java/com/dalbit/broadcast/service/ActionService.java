@@ -234,6 +234,24 @@ public class ActionService {
         return actorIdReg;
     }
 
+    private boolean hasBanWord(String roomNo, String word) {
+        // 금지어 체크(시스템 + 방송?)
+        BanWordVo banWordVo = new BanWordVo();
+        String systemBanWord = commonService.banWordSelect();
+        banWordVo.setRoomNo(roomNo);
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+
+        if(DalbitUtil.isStringMatchCheck(banWord, word)){
+            return true;
+        }
+
+        if(DalbitUtil.isStringMatchCheck(systemBanWord, word)){
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * 방송방 선물하기
      */
@@ -243,11 +261,13 @@ public class ActionService {
         String actorId = pRoomGiftVo.getActorId();
 
         if(!StringUtils.isEmpty(ttsText)) {
-            // 금지어 체크(시스템 + 방송?)
-
             // actor 체크
             if(!actorCheck(actorId)) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_성우없음));
+            }
+
+            if(hasBanWord(pRoomGiftVo.getRoom_no(), ttsText)) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_금지어있음));
             }
         }
 

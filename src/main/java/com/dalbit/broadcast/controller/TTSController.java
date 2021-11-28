@@ -3,6 +3,7 @@ package com.dalbit.broadcast.controller;
 import com.dalbit.broadcast.service.TTSService;
 import com.dalbit.broadcast.vo.TTSCallbackVo;
 import com.dalbit.broadcast.vo.TTSSpeakVo;
+import com.dalbit.common.vo.ResVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -27,5 +28,18 @@ public class TTSController {
     public String ttsCallback(@RequestBody TTSCallbackVo ttsCallbackVo, HttpServletRequest request) {
         log.warn("ip : {}", request.getRemoteAddr());
         return ttsService.ttsCallback(ttsCallbackVo);
+    }
+
+    @GetMapping("/tts/actor/list")
+    public ResVO getActorList() {
+        ResVO resVO = new ResVO();
+        try {
+            resVO.setSuccessResVO(ttsService.findActor());
+        } catch (Exception e) {
+            resVO.setFailResVO();
+            log.error("TTSController getActorList => {}", e);
+        }
+
+        return resVO;
     }
 }

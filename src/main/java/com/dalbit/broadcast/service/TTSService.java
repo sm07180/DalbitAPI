@@ -28,7 +28,7 @@ public class TTSService {
     @Value("${tts.account.pw}") private String TTS_ACCOUNT_PW;
     @Value("${tts.account.token}") private String TTS_ACCOUNT_TOKEN;
     @Value("${tts.api.host}") private String TTS_API_HOST;
-    String callbackUrl = "https://devm-parksm.dalbitlive.com:463/broad/tts/callback";
+    String callbackUrl = "http://devm-parksm.dalbitlive.com:8080/broad/tts/callback";
 
     public void ttsConnection(TTSSpeakVo ttsVo) {
 //        JsonElement ttsInfo = getTTSInfo();
@@ -104,7 +104,7 @@ public class TTSService {
         int idx = 0;
         ArrayList<Map<String, String>> result = new ArrayList<>();
         for(JsonElement vo : actorArray.getAsJsonArray()) {
-            if(result.size() <= 4) {
+            if(result.size() <= 3) {
                 Map<String, String> data = new HashMap<>();
                 if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
                     data.put("idx", idx++ + "");
@@ -207,8 +207,6 @@ public class TTSService {
             log.error("TTSService / " + callBy + " ===> {}", e);
         }
 
-        log.warn(callBy + " : {}", result.toString());
-
         return result;
     }
 
@@ -257,8 +255,6 @@ public class TTSService {
         } catch (Exception e) {
             log.error("TTSService / " + callBy + " ===> {}", e);
         }
-
-        log.warn(callBy + " : {}", result.toString());
 
         return result;
     }
