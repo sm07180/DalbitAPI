@@ -241,11 +241,11 @@ public class ActionService {
         banWordVo.setRoomNo(roomNo);
         String banWord = commonService.broadcastBanWordSelect(banWordVo);
 
-        if(DalbitUtil.isStringMatchCheck(banWord, word)){
+        if(!StringUtils.isEmpty(banWord) && DalbitUtil.isStringMatchCheck(banWord, word)){
             return true;
         }
 
-        if(DalbitUtil.isStringMatchCheck(systemBanWord, word)){
+        if(!StringUtils.isEmpty(systemBanWord) && DalbitUtil.isStringMatchCheck(systemBanWord, word)){
             return true;
         }
 
