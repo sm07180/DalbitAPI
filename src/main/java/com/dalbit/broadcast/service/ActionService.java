@@ -234,22 +234,26 @@ public class ActionService {
         return actorIdReg;
     }
 
-    private boolean hasBanWord(String roomNo, String word) {
-        // 금지어 체크(시스템 + 방송?)
+    private String banWordMasking(String roomNo, String word) {
+        // 금지어 체크(시스템 + 방송)
         BanWordVo banWordVo = new BanWordVo();
         String systemBanWord = commonService.banWordSelect();
         banWordVo.setRoomNo(roomNo);
         String banWord = commonService.broadcastBanWordSelect(banWordVo);
 
-        if(!StringUtils.isEmpty(banWord) && DalbitUtil.isStringMatchCheck(banWord, word)){
-            return true;
+        if(!DalbitUtil.isEmpty(banWord)){
+            word = DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, word);
+        }
+        if(!DalbitUtil.isEmpty(systemBanWord)){
+            word = DalbitUtil.replaceMaskString(systemBanWord, word);
         }
 
-        if(!StringUtils.isEmpty(systemBanWord) && DalbitUtil.isStringMatchCheck(systemBanWord, word)){
-            return true;
-        }
+        return word;
+    }
 
-        return false;
+    // TTS 치환 가능한 문자를 포함했는지
+    private boolean hasTTSPermutationWord(String word) {
+        return word.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]+.*");
     }
 
     /**
@@ -257,7 +261,7 @@ public class ActionService {
      */
     public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
         String result;
-        String ttsText = pRoomGiftVo.getTtsText();
+        String ttsText = pRoomGiftVo.getTtsText().trim();
         String actorId = pRoomGiftVo.getActorId();
 
         if(!StringUtils.isEmpty(ttsText)) {
@@ -266,9 +270,11 @@ public class ActionService {
                 return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_성우없음));
             }
 
-            if(hasBanWord(pRoomGiftVo.getRoom_no(), ttsText)) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_금지어있음));
+            if(!hasTTSPermutationWord(ttsText)) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_변환가능문자없음));
             }
+
+            ttsText = banWordMasking(pRoomGiftVo.getRoom_no(), ttsText); // 금지어 *로 마스킹 처리
         }
 
         String item_code = pRoomGiftVo.getItem_code();

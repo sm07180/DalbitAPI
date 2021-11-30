@@ -13,12 +13,12 @@ public class SpecialDjConditionSearchVo {
     private String condition_start_date;
     private String condition_end_date;
 
-    private int airtime_type = 0; //0:전체,  1:팬방송제외
+    private int airtime_type = 1; //0:팬방송제외,  1:전체
 
     public void setCondition_code(int condition_code) {
         //8번은 팬방송 제외
         if(condition_code == 8){
-            setAirtime_type(1);
+            setAirtime_type(0);
         }
         this.condition_code = condition_code;
     }
