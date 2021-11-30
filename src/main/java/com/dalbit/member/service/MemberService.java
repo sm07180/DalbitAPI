@@ -802,6 +802,7 @@ public class MemberService {
     public String callDjRecommendList(P_DjRecommendListVo pDjRecommendListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pDjRecommendListVo);
         List<P_DjRecommendListVo> djRecommendListVo = memberDao.callDjRecommendList(procedureVo);
+        Collections.shuffle(djRecommendListVo);
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > -1) {
