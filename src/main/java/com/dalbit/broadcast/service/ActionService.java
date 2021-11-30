@@ -263,20 +263,24 @@ public class ActionService {
         String result;
         String ttsText = pRoomGiftVo.getTtsText();
         String actorId = pRoomGiftVo.getActorId();
+        String sendItemSuccessMsg = "님에게 선물을 보냈습니다."; // 일반 || tts
 
         if(ttsText != null) ttsText = ttsText.trim();
 
+        // tts 아이템
         if(!StringUtils.isEmpty(ttsText)) {
             // actor 체크
             if(!actorCheck(actorId)) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_성우없음));
             }
 
+            ttsText = banWordMasking(pRoomGiftVo.getRoom_no(), ttsText); // 금지어 *로 마스킹 처리
+
             if(!hasTTSPermutationWord(ttsText)) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_변환가능문자없음));
             }
 
-            ttsText = banWordMasking(pRoomGiftVo.getRoom_no(), ttsText); // 금지어 *로 마스킹 처리
+            sendItemSuccessMsg += "\n잠시 후 목소리가 재생됩니다.";
         }
 
         String item_code = pRoomGiftVo.getItem_code();
@@ -354,6 +358,7 @@ public class ActionService {
                 // tts 정보
                 itemMap.put("ttsText", ttsText);
                 itemMap.put("actorId", actorId);
+                returnMap.put("message", itemMap.get("nickNm") + sendItemSuccessMsg);
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
