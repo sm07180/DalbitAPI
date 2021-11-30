@@ -261,8 +261,10 @@ public class ActionService {
      */
     public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
         String result;
-        String ttsText = pRoomGiftVo.getTtsText().trim();
+        String ttsText = pRoomGiftVo.getTtsText();
         String actorId = pRoomGiftVo.getActorId();
+
+        if(ttsText != null) ttsText = ttsText.trim();
 
         if(!StringUtils.isEmpty(ttsText)) {
             // actor 체크
