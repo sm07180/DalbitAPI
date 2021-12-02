@@ -19,4 +19,6 @@
     <resultMap id="NovemberDjListOutVo1" type="com.dalbit.event.vo.NovemberDjListOutVo1" />
     <resultMap id="NovemberDjListOutVo2" type="com.dalbit.event.vo.NovemberDjListOutVo2" />
     <resultMap id="NovemberDjListOutVo3" type="com.dalbit.event.vo.NovemberDjListOutVo3" />
+    <!-- 깐부 신청 리스트 -->
+    <resultMap id="GganbuMemReqListOutputVo" type="com.dalbit.event.vo.GganbuMemReqListOutputVo" />
 </mapper>

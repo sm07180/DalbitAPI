@@ -17,9 +17,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -104,16 +102,22 @@ public class TTSService {
         int idx = 0;
         ArrayList<Map<String, String>> result = new ArrayList<>();
         for(JsonElement vo : actorArray.getAsJsonArray()) {
-            if(result.size() <= 3) {
-                Map<String, String> data = new HashMap<>();
-                if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
-                    data.put("idx", idx++ + "");
-                    data.put("actorId", vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", ""));
-                    data.put("actorName", vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", ""));
-                    result.add(data);
-                }
+            Map<String, String> data = new HashMap<>();
+            if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
+                data.put("idx", idx++ + "");
+                data.put("actorId", vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", ""));
+                data.put("actorName", vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", ""));
+                result.add(data);
             }
         }
+
+        // actorName 오름차순 정렬
+        Collections.sort(result, new Comparator<Map<String, String>>() {
+            @Override
+            public int compare(Map<String, String> o1, Map<String, String> o2) {
+                return o1.get("actorName").compareTo(o2.get("actorName"));
+            }
+        });
 
         return result;
     }
