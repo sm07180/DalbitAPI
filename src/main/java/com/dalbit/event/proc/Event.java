@@ -1,6 +1,5 @@
 package com.dalbit.event.proc;
 
-import com.dalbit.event.vo.GganbuRoundInfoOutputVo;
 import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.request.*;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-import java.util.Map;
 
 @Component
 @Repository

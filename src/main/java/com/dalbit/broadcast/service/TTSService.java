@@ -104,7 +104,6 @@ public class TTSService {
         for(JsonElement vo : actorArray.getAsJsonArray()) {
             Map<String, String> data = new HashMap<>();
             if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
-                data.put("idx", idx++ + "");
                 data.put("actorId", vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", ""));
                 data.put("actorName", vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", ""));
                 result.add(data);
@@ -118,6 +117,10 @@ public class TTSService {
                 return o1.get("actorName").compareTo(o2.get("actorName"));
             }
         });
+
+        for(int i=0; i<result.size(); i++) {
+            result.get(i).put("idx", i + "");
+        }
 
         return result;
     }
