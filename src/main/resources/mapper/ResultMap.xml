@@ -21,4 +21,16 @@
     <resultMap id="NovemberDjListOutVo3" type="com.dalbit.event.vo.NovemberDjListOutVo3" />
     <!-- 깐부 신청 리스트 -->
     <resultMap id="GganbuMemReqListOutputVo" type="com.dalbit.event.vo.GganbuMemReqListOutputVo" />
+    <!-- 깐부 구슬 리포트 -->
+    <resultMap id="GganbuMarbleLogListVo" type="com.dalbit.event.vo.GganbuMarbleLogListVo" />
+    <!-- 깐부 구슬 주머니 리포트 -->
+    <resultMap id="GganbuMarblePocketLogListVo" type="com.dalbit.event.vo.GganbuMarblePocketLogListVo" />
+    <!-- 깐부 랭킹리스트 -->
+    <resultMap id="GganbuRankListVo" type="com.dalbit.event.vo.GganbuRankListVo" />
+    <!-- 깐부 배팅 리스트 -->
+    <resultMap id="GganbuBettingLogListVo" type="com.dalbit.event.vo.GganbuBettingLogListVo" />
+    <!-- 깐부 나의 배팅 내역 -->
+    <resultMap id="GganbuMyBettingLogSelVo" type="com.dalbit.event.vo.GganbuMyBettingLogSelVo" />
+    <!-- 깐부 찾기 -->
+    <resultMap id="GganbuMemberSearchVo" type="com.dalbit.event.vo.GganbuMemberSearchVo" />
 </mapper>

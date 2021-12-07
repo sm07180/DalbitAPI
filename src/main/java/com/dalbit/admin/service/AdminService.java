@@ -14,6 +14,8 @@ import com.dalbit.common.service.EmailService;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
+import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.GganbuMemViewStatInsVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
@@ -77,6 +79,8 @@ public class AdminService {
 
     @Autowired
     GuestService guestService;
+
+    @Autowired EventService eventService;
 
     private final String menuJsonKey = "adminMenu";
 
@@ -252,6 +256,9 @@ public class AdminService {
         //소캣 종료 처리
         SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
         socketService.chatEnd(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true), 3, DalbitUtil.isLogin(request), vo);
+
+        // 방송 시간에 따른 구슬 추가
+        eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no());
 
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
     }
