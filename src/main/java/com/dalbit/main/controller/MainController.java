@@ -9,16 +9,18 @@ import com.dalbit.main.vo.request.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -196,5 +198,19 @@ public class MainController {
         String result = mainService.mainTimeRankingPage(request, apiData);
 
         return result;
+    }
+
+    /**
+     * 내부서버 리스트
+     */
+    @GetMapping("/main/ip/{os}")
+    @ResponseBody
+    public Map<String, Object> getInnerServerList(HttpServletRequest request, @PathVariable("os") String os) {
+        try {
+            return mainService.getInnerServerList(request, os);
+        } catch (Exception e) {
+            log.error("파일명 : MainController.java / 메소드명 : getInnerServerList ===> {}", e);
+            return null;
+        }
     }
 }
