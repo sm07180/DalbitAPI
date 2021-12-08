@@ -828,7 +828,12 @@ public class EventController {
 
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            result = drawService.getDrawWinningInfo(memNo);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawWinningInfo(memNo);
+            }
         } catch (Exception e) {
             log.error("EventController / getDrawTicketCnt => {}", e);
             result.setFailResVO();
@@ -849,7 +854,12 @@ public class EventController {
 
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            result = drawService.getDrawTicketCnt(memNo);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawTicketCnt(memNo);
+            }
         } catch (Exception e) {
             log.error("EventController / getDrawTicketCnt => {}", e);
             result.setFailResVO();
@@ -870,7 +880,12 @@ public class EventController {
 
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            result = drawService.getDrawListInfo(memNo);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawListInfo(memNo);
+            }
         } catch (Exception e) {
             log.error("EventController / getDrawListInfo => {}", e);
             result.setFailResVO();
@@ -891,7 +906,14 @@ public class EventController {
 
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            result = drawService.putDrawSelect(param, memNo);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else if (!param.containsKey("selectList")){
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else {
+                result = drawService.putDrawSelect(param, memNo);
+            }
         } catch (Exception e) {
             log.error("EventController / getDrawTicketCnt => {}", e);
             result.setFailResVO();
