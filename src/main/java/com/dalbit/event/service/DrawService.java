@@ -153,7 +153,7 @@ public class DrawService {
                 outInfo.put("failCnt", failCnt);
                 outInfo.put("resultInfo", resultInfo);
                 if (failCnt > 0) {
-                    result.setResVO(ResMessage.C30004.getCode(), ResMessage.C30004.getCodeNM(), outInfo);
+                    result.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), outInfo);
                 } else {
                     result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), outInfo);
                 }
