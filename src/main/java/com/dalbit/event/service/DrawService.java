@@ -122,11 +122,17 @@ public class DrawService {
                 winningInfo.setGiftInfo(drawEvent.getDrawWinningInfo(memNo));
                 winningInfo.calRemainInfo(); // 남은 당첨 개수 계산
 
+                // 사용할 수 있는 응모권 개수(남은 경품 개수) Check
+                if (winningInfo.getTotalRemain().equals(0)) {
+                    result.setResVO(ResMessage.C30102.getCode(), ResMessage.C30102.getCodeNM(), null);
+                    return result;
+                }
+
                 // 저장할 결과 데이터 공간 확보
                 for (int i = 0; i < winningInfo.getGiftInfo().size(); i++) {
                     resultInfo.add(new DrawGiftVO());
                 }
-                
+
                 // 뽑기 로직 시작
                 for (int i = 0; i < selectList.length; i++) {
                     Integer temp = getRandomNumber(winningInfo.getTotalRemain());
@@ -153,7 +159,7 @@ public class DrawService {
                 outInfo.put("failCnt", failCnt);
                 outInfo.put("resultInfo", resultInfo);
                 if (failCnt > 0) {
-                    result.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), outInfo);
+                    result.setResVO(ResMessage.C30101.getCode(), ResMessage.C30101.getCodeNM(), outInfo);
                 } else {
                     result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), outInfo);
                 }
