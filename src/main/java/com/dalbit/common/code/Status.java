@@ -488,6 +488,8 @@ public enum Status {
     선물하기_없는대상("-6", "broadcast.room.gift.member.error", "선물할 수 없는 대상 시"),
     선물하기_아이템번호없음("-7", "broadcast.room.gift.item.number.no", "선택된 아이템이 없을 시"),
     선물하기_달부족("-8", "broadcast.room.gift.limit.dal", "달이 부족할 시"),
+    선물하기_TTS_성우없음("-9", "broadcast.room.gift.tts.noActor", "요청하는 성우가 없을 시"),
+    선물하기_TTS_변환가능문자없음("-10", "broadcast.room.gift.tts.change.fail", "변환 가능 문자가 없을 시"),
     선물하기_실패("C006", "broadcast.room.gift.fail", "선물하기 실패 시"),
 
     //방송방 부스터

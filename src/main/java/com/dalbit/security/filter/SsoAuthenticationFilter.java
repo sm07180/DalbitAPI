@@ -70,6 +70,8 @@ public class SsoAuthenticationFilter implements Filter {
         , "/tnk/aos/callback", "/tnk/ios/callback"
         , "/mailbox/chat/openTok"
         , "/rest/sample/session/test"
+        , "/broad/tts"
+        , "/broad/tts/callback"
     };
 
     @Override

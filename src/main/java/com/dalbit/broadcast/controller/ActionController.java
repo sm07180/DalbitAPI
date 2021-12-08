@@ -99,6 +99,8 @@ public class ActionController {
         apiData.setItem_code(giftVo.getItemNo());
         apiData.setItem_cnt(giftVo.getItemCnt());
         apiData.setSecret("1".equals(giftVo.getIsSecret()) || "TRUE".equals(giftVo.getIsSecret().toUpperCase()) ? "1" : "0");
+        apiData.setTtsText(giftVo.getTtsText());
+        apiData.setActorId(giftVo.getActorId());
 
         String result = actionService.callBroadCastRoomGift(apiData, request);
 

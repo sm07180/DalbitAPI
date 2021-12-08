@@ -27,6 +27,7 @@ import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
@@ -41,6 +42,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -75,6 +77,8 @@ public class WowzaService {
     WowzaSocketService wowzaSocketService;
     @Autowired
     MiniGameService miniGameService;
+
+    @Autowired TTSService ttsService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -386,7 +390,7 @@ public class WowzaService {
             }
 
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList);
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, null);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -823,7 +827,11 @@ public class WowzaService {
         //룰렛 등록상태 조회
         HashMap miniGameMap = getRouletteData(request, target.getRoomNo(), isLogin);
 
-        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap);
+        // tts 성우 리스트
+        ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+        log.warn("ttsActors : {}", ttsActors);
+
+        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());

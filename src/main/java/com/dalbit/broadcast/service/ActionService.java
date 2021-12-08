@@ -3,6 +3,7 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.ActionDao;
 import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.RoomShareLinkOutVo;
+import com.dalbit.broadcast.vo.TTSSpeakVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -22,6 +23,7 @@ import com.dalbit.util.MessageUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -54,6 +56,8 @@ public class ActionService {
     ProfileDao profileDao;
     @Autowired
     MessageUtil messageUtil;
+
+    @Autowired TTSService ttsService;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -216,10 +220,69 @@ public class ActionService {
         return result;
     }
 
+    private boolean actorCheck(String actorId) {
+        boolean actorIdReg = false;
+        String[] findActorIds = ttsService.findActorIds();
+
+        for(int i=0; i<findActorIds.length; i++) {
+            if(StringUtils.equals(findActorIds[i], actorId)) {
+                actorIdReg = true;
+                break;
+            }
+        }
+
+        return actorIdReg;
+    }
+
+    private String banWordMasking(String roomNo, String word) {
+        // 금지어 체크(시스템 + 방송)
+        BanWordVo banWordVo = new BanWordVo();
+        String systemBanWord = commonService.banWordSelect();
+        banWordVo.setRoomNo(roomNo);
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+
+        if(!DalbitUtil.isEmpty(banWord)){
+            word = DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, word);
+        }
+        if(!DalbitUtil.isEmpty(systemBanWord)){
+            word = DalbitUtil.replaceMaskString(systemBanWord, word);
+        }
+
+        return word;
+    }
+
+    // TTS 치환 가능한 문자를 포함했는지
+    private boolean hasTTSPermutationWord(String word) {
+        return word.matches(".*[ㄱ-ㅎㅏ-ㅣ가-힣a-zA-Z0-9]+.*");
+    }
+
     /**
      * 방송방 선물하기
      */
     public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
+        String result;
+        String ttsText = pRoomGiftVo.getTtsText();
+        String actorId = pRoomGiftVo.getActorId();
+        String sendItemSuccessMsg = "님에게 선물을 보냈습니다."; // 일반 || tts
+
+        if(ttsText != null) ttsText = ttsText.trim();
+
+        // tts 아이템
+        if(!StringUtils.isEmpty(ttsText)) {
+            // actor 체크
+            if(!actorCheck(actorId)) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_성우없음));
+            }
+
+            ttsText = banWordMasking(pRoomGiftVo.getRoom_no(), ttsText); // 금지어 *로 마스킹 처리
+
+            if(!hasTTSPermutationWord(ttsText)) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_변환가능문자없음));
+            }
+
+            sendItemSuccessMsg += "\n잠시 후 목소리가 재생됩니다.";
+        }
+
         String item_code = pRoomGiftVo.getItem_code();
         boolean isDirect = false;
         int directItemCnt = 1;
@@ -244,7 +307,6 @@ public class ActionService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGiftVo);
         actionDao.callBroadCastRoomGift(procedureVo);
 
-        String result;
         if(Status.선물하기성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -293,6 +355,10 @@ public class ActionService {
                 itemMap.put("nickNm", vo1.getMemNk());
                 itemMap.put("memNo", vo1.getMemNo());
                 itemMap.put("dalCnt", item.getByeol() * pRoomGiftVo.getItem_cnt());
+                // tts 정보
+                itemMap.put("ttsText", ttsText);
+                itemMap.put("actorId", actorId);
+                returnMap.put("message", itemMap.get("nickNm") + sendItemSuccessMsg);
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

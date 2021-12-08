@@ -14,10 +14,7 @@ import com.dalbit.event.proc.Event;
 import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
-import com.dalbit.event.vo.request.Apply004Vo;
-import com.dalbit.event.vo.request.ApplyVo;
-import com.dalbit.event.vo.request.CheckVo;
-import com.dalbit.event.vo.request.EventGoodVo;
+import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
@@ -1988,4 +1985,55 @@ public class EventService {
     public int eventItemIns(ItemInsVo itemInsVo) {
         return event.eventItemIns(itemInsVo);
     }
+
+    /* 깐부 이벤트~~~ */
+    /**
+     * 깐부 이벤트 회차 정보
+     */
+    public GganbuRoundInfoOutputVo getGganbuRoundInfo() {
+        GganbuRoundInfoReqVo getData = event.getGganbuRoundInfo();
+        return new GganbuRoundInfoOutputVo(
+            getData.getGganbu_no(),
+            getData.getStart_date(),
+            getData.getEnd_date(),
+            getData.getIns_date()
+        );
+    }
+
+    /**
+     * 깐부 신청
+     */
+    public int gganbuMemReqIns(GganbuMemReqInsVo gganbuMemReqInsVo) {
+        return event.gganbuMemReqIns(gganbuMemReqInsVo);
+    }
+
+    /**
+     * 깐부 신청 취소
+     */
+    public int gganbuMemReqCancel(GganbuMemReqCancelVo gganbuMemReqCancelVo) {
+        return event.gganbuMemReqCancel(gganbuMemReqCancelVo);
+    }
+
+    /**
+     * 깐부 신청 리스트
+     */
+    public Map<String, Object> gganbuMemReqList(GganbuMemReqListInputVo gganbuMemReqListInputVo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.gganbuMemReqList(gganbuMemReqListInputVo);
+        int listCnt = DBUtil.getData(objList, 0, Integer.class);
+        List<GganbuMemReqListOutputVo> list = DBUtil.getList(objList, 1, GganbuMemReqListOutputVo.class);
+        result.put("listCnt", listCnt);
+        result.put("list", list);
+
+        return result;
+    }
+
+    /**
+     * 깐부 신청 수락
+     */
+    public int gganbuMemIns(GganbuMemInsVo gganbuMemInsVo) {
+        return event.gganbuMemIns(gganbuMemInsVo);
+    }
+
+    /* 깐부 이벤트 끝~~~ */
 }

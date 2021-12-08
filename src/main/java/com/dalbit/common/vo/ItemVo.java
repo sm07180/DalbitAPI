@@ -29,4 +29,6 @@ public class ItemVo {
     private boolean visibility = true;
     private boolean isNew;
     private int sortNo;
+
+    private String ttsUseYn;
 }

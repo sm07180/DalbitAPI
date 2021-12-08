@@ -684,6 +684,138 @@ public class EventController {
         return resVO;
     }
 
+    /* 깐부 이벤트~~~ */
+    /**********************************************************************************************
+    * @Method 설명 : 깐부 이벤트 회차번호
+    * @작성일   : 2021-12-01
+    * @작성자   : 박성민
+    * @변경이력  :
+    **********************************************************************************************/
+    @GetMapping("/gganbu/round/info")
+    public ResVO getGganbuRoundInfo() {
+        ResVO resVO = new ResVO();
+        try {
+            resVO.setSuccessResVO(eventService.getGganbuRoundInfo());
+        } catch (Exception e) {
+            log.error("EventController / gganbuRoundInfo => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/req/ins")
+    public ResVO gganbuMemReqIns(@Valid GganbuMemReqInsVo gganbuMemReqInsVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemReqInsVo.setMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemReqIns(gganbuMemReqInsVo);
+            switch (result) {
+                case -7: resVO.setResVO(ResMessage.C30010.getCode(), ResMessage.C30010.getCodeNM(), result); break;
+                case -6: resVO.setResVO(ResMessage.C30011.getCode(), ResMessage.C30011.getCodeNM(), result); break;
+                case -5: resVO.setResVO(ResMessage.C30012.getCode(), ResMessage.C30012.getCodeNM(), result); break;
+                case -4: resVO.setResVO(ResMessage.C30004.getCode(), ResMessage.C30004.getCodeNM(), result); break;
+                case -3: resVO.setResVO(ResMessage.C30005.getCode(), ResMessage.C30005.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30006.getCode(), ResMessage.C30006.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuRoundInfo => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청 취소
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/req/cancel")
+    public ResVO gganbuMemReqCancel(@Valid GganbuMemReqCancelVo gganbuMemReqCancelVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemReqCancelVo.setPtrMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemReqCancel(gganbuMemReqCancelVo);
+            switch (result) {
+                case -3: resVO.setResVO(ResMessage.C30008.getCode(), ResMessage.C30008.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30009.getCode(), ResMessage.C30009.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemReqCancel => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청 리스트
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/list")
+    public ResVO gganbuMemReqList(@Valid GganbuMemReqListInputVo gganbuMemReqListInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemReqListInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMemReqList(gganbuMemReqListInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemReqList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청 수락
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/ins")
+    public ResVO gganbuMemIns(@Valid GganbuMemInsVo gganbuMemInsVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemInsVo.setPtrMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemIns(gganbuMemInsVo);
+            switch (result) {
+                case -5: resVO.setResVO(ResMessage.C30008.getCode(), ResMessage.C30008.getCodeNM(), result); break;
+                case -4:
+                case -3: resVO.setResVO(ResMessage.C30004.getCode(), ResMessage.C30004.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30006.getCode(), ResMessage.C30006.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemIns => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /* 깐부 이벤트 끝 ~~~ */
+
     /**********************************************************************************************
      * @Method 설명 : 추억의 뽑기(이벤트) 당첨내역 조회
      * @작성일 : 2021-12-06
