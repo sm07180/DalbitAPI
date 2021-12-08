@@ -8,17 +8,17 @@ public class ServerListVO {
     private String host = "";   //호스트 주소
     private String api = "";    //api 서버 주소
     private String photo = "";  //photo 서버 주소
-    private String socket = ""; //소켓 서버 주소
+    private String socketURL = ""; //소켓 서버 주소
 
     public ServerListVO(){}
 
-    //모바일용
-    public ServerListVO(String name, String host, String api, String photo, String socket){
+    //모바일용~
+    public ServerListVO(String name, String host, String api, String photo, String socketURL){
         this.name = name;
         this.host = host;
         this.api = api;
         this.photo = photo;
-        this.socket = socket;
+        this.socketURL = socketURL;
     }
 
     //웹용
