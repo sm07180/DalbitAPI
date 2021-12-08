@@ -19,4 +19,7 @@
     <resultMap id="NovemberDjListOutVo1" type="com.dalbit.event.vo.NovemberDjListOutVo1" />
     <resultMap id="NovemberDjListOutVo2" type="com.dalbit.event.vo.NovemberDjListOutVo2" />
     <resultMap id="NovemberDjListOutVo3" type="com.dalbit.event.vo.NovemberDjListOutVo3" />
+    <!-- 추억의 뽑기 이벤트 -->
+    <resultMap id="DrawGiftVo" type="com.dalbit.event.vo.DrawGiftVO"/>
+    <resultMap id="DrawListVo" type="com.dalbit.event.vo.DrawListVO"/>
 </mapper>
