@@ -2314,6 +2314,10 @@ public enum Status {
     룰렛당첨내역_조회_방이종료됨("-3", "mini.game.select.end.room", "방이 종료되어 있을 시"),
     룰렛당첨내역_조회_방장다름("-4", "mini.game.win.list.diffDj", "요청 회원이 방장이 아닐 시"),
     룰렛당첨내역_조회_실패("-5", "mini.game.win.list.fail", "미니게임 룰렛 당첨내역 조회 실패"),
+
+    //앱 보안 로그 저장
+    앱보안_로그저장_성공("0", "app.security.log.save.success", "앱 보안 로그 저장 성공 시"),
+    앱보안_로그저장_실패("C006", "app.security.log.save.fail", "앱 보안 로그 저장 실패 시"),
 ;
 
 

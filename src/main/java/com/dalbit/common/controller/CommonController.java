@@ -421,23 +421,23 @@ public class CommonController {
     @PostMapping("/error/security/log")
     public String saveAppErrorLog(@RequestBody AppErrorLogVO appErrorLogVO, HttpServletRequest request, HttpServletResponse response){
         DalbitUtil.setHeader(request, response);
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_성공));
+        String result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_성공));
         try {
             if (StringUtils.equals(appErrorLogVO.getUid(), null)) {
                 appErrorLogVO.setUid("null");
             }
             if (StringUtils.equals(appErrorLogVO.getReason(), null)) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_실패));
+                result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_실패));
                 appErrorLogVO.setReason("null");
             }
             String errorMsg = "UID : \"" + appErrorLogVO.getUid() + "\" / Reason : \"" + appErrorLogVO.getReason() + "\"";
-            log.error( "app security log Success => " + errorMsg);
+            log.error( "app security log Success => {}", errorMsg);
 
             return result;
         } catch (Exception e) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_실패));
             String errorMsg = "UID : \"" + appErrorLogVO.getUid() + "\"/ Reason : \"" + appErrorLogVO.getReason() + "\"";
-            log.error("app security log error Fail => " + errorMsg + "\n"+ e);
+            log.error("app security log error Fail => {} {}", errorMsg, e);
 
             return result;
         }
