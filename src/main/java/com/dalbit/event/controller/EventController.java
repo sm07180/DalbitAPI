@@ -11,7 +11,6 @@ import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.KnowhowEventInputVo;
 import com.dalbit.event.vo.PhotoEventInputVo;
 import com.dalbit.event.vo.TimeEventVo;
-import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
@@ -582,82 +581,6 @@ public class EventController {
         P_ChampionshipGiftVo apiData = new P_ChampionshipGiftVo(request);
         String result = eventService.callChampionshipGift(apiData);
         return result;
-    }
-
-    /**
-     * 11월 이벤트 팬 부분 경품 응모 등록
-     */
-    @PostMapping("/raffle/enter")
-    public ResVO novemberEventFanCouponIns(@Valid NovemberFanCouponInsInputVo novemberFanCouponInsInputVo, HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        novemberFanCouponInsInputVo.setMemNo(MemberVo.getMyMemNo(request));
-        try {
-            Map<String, Object> res = eventService.novemberEventFanCouponIns(novemberFanCouponInsInputVo); // 응모 결과 + 갱신할 데이터
-            int insRes = (Integer) res.get("couponInsRes"); // 응모 결과
-            switch (insRes) {
-                case 1: resVO.setSuccessResVO(res); break;
-                case -1: resVO.setResVO(ResMessage.C30001.getCode(), ResMessage.C30001.getCodeNM(), res); break;
-                case -2: resVO.setResVO(ResMessage.C30002.getCode(), ResMessage.C30002.getCodeNM(), res); break;
-                case -3: resVO.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), res); break;
-                default: resVO.setFailResVO();
-            }
-        } catch (Exception e) {
-            log.error("EventController / eventFanCouponIns => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 종합 경품 이벤트(팬)
-     */
-    @GetMapping("/raffle/fan/total/list")
-    public ResVO novemberEventFanList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventFanList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / eventFanList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 회차별 추첨 이벤트(팬)
-     */
-    @GetMapping("/raffle/fan/round/list")
-    public ResVO novemberEventFanWeekList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventFanWeekList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / eventFanWeekList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 메인(DJ)
-     */
-    @GetMapping("/raffle/dj/main/list")
-    public ResVO novemberEventDjList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventDjList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / novemberEventDjList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
     }
 
     /**
