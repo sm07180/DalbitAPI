@@ -33,4 +33,6 @@
     <resultMap id="GganbuMyBettingLogSelVo" type="com.dalbit.event.vo.GganbuMyBettingLogSelVo" />
     <!-- 깐부 찾기 -->
     <resultMap id="GganbuMemberSearchVo" type="com.dalbit.event.vo.GganbuMemberSearchVo" />
+    <!-- 깐부 내 팬 -->
+    <resultMap id="GganbuFanListVo" type="com.dalbit.event.vo.GganbuFanListVo" />
 </mapper>

@@ -195,7 +195,13 @@ public class RoomService {
             }
 
             // 방송 시간에 따른 구슬 추가
-            eventService.gganbuMemViewStatIns(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no());
+            String marbleInsType;
+            if(isBj) {
+                marbleInsType = "r";
+            }else {
+                marbleInsType = "v";
+            }
+            eventService.gganbuMemViewStatIns(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), marbleInsType);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
         }else{

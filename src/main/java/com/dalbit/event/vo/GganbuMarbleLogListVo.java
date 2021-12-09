@@ -1,5 +1,6 @@
 package com.dalbit.event.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +18,8 @@ public class GganbuMarbleLogListVo {
     private String violet_marble; // 보라구슬수
     private String room_no; // 룸번호
     private String ins_date; // 등록일자
+
+    private String image_profile;
+    private String mem_sex;
+    private ImageVo mem_profile;
 }

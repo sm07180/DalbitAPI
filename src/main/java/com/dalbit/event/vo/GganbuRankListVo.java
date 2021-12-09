@@ -26,4 +26,6 @@ public class GganbuRankListVo {
     private Date upd_date; // 수정일자
 
     private int my_rank_no; // 나의 랭킹
+    private String[] mem_level_color;
+    private String[] ptr_mem_level_color;
 }

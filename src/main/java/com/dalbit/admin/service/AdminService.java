@@ -28,6 +28,7 @@ import lombok.var;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -258,7 +259,13 @@ public class AdminService {
         socketService.chatEnd(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true), 3, DalbitUtil.isLogin(request), vo);
 
         // 방송 시간에 따른 구슬 추가
-        eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no());
+        String marbleInsType;
+        if(StringUtils.equals(broadcastDetail.getDj_mem_no(), pRoomForceExitInputVo.getMem_no())) {
+            marbleInsType = "r";
+        }else {
+            marbleInsType = "c";
+        }
+        eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no(), marbleInsType);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
     }

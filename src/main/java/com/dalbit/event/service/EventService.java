@@ -2073,7 +2073,7 @@ public class EventService {
     /**
      * 깐부 방송시간 집계 등록 (방송 종료시 호출)
      */
-    public void gganbuMemViewStatIns(String memNo, String roomNo) {
+    public void gganbuMemViewStatIns(String memNo, String roomNo, String marbleInsType) {
         GganbuMemViewStatInsVo viewStatVo = event.gganbuMemViewStatIns(memNo);
 
         if(viewStatVo.getS_return() == 1) {
@@ -2096,7 +2096,7 @@ public class EventService {
             }
 
             GganbuMemMarbleInsInputVo marbleInsVo = new GganbuMemMarbleInsInputVo(
-                memNo, "r", roomNo, rMarbleCnt, yMarbleCnt, bMarbleCnt, pMarbleCnt
+                memNo, marbleInsType, roomNo, rMarbleCnt, yMarbleCnt, bMarbleCnt, pMarbleCnt
             );
 
             gganbuMemMarbleIns(marbleInsVo); // 획득한 구슬 ins
@@ -2176,6 +2176,10 @@ public class EventService {
         List<Object> objList = event.gganbuMemMarbleLogList(gganbuMemMarbleLogListInputVo);
         int listCnt = DBUtil.getData(objList, 0, Integer.class);
         List<GganbuMarbleLogListVo> list = DBUtil.getList(objList, 1, GganbuMarbleLogListVo.class);
+        for(GganbuMarbleLogListVo vo : list) {
+            vo.setMem_profile(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+        }
+
         result.put("listCnt", listCnt);
         result.put("list", list);
 
@@ -2190,17 +2194,13 @@ public class EventService {
         GganbuRoundInfoOutputVo gganbuRoundInfo = getGganbuRoundInfo(); // 깐부 회차정보
         String gganbuNo = gganbuRoundInfo.getGganbuNo();
         int gganbuState = gganbuMemChk(new GganbuMemChkVo(gganbuNo, memNo));
+
         // 깐부 랭킹리스트
         GganbuRankListInputVo gganbuRankListInputVo = new GganbuRankListInputVo();
         gganbuRankListInputVo.setGganbuNo(gganbuNo);
         gganbuRankListInputVo.setPageNo(1);
         gganbuRankListInputVo.setPagePerCnt(50);
-        List<Object> rankObjList = event.gganbuRankList(gganbuRankListInputVo);
-        int listCnt = DBUtil.getData(rankObjList, 0, Integer.class);
-        List<GganbuRankListVo> list = DBUtil.getList(rankObjList, 1, GganbuRankListVo.class);
-
-        result.put("rankListCnt", listCnt);
-        result.put("rankList", list);
+        result.put("rankList", gganbuRankList(gganbuRankListInputVo));
 
         if(gganbuState == 1) { // 깐부 있음
             // 깐부 정보
@@ -2266,7 +2266,7 @@ public class EventService {
     /**
      * 구슬 주머니 획득(구슬교환)
      */
-    public Integer gganbuMarbleExchange(String memNo) {
+    public int gganbuMarbleExchange(String memNo) {
         return event.gganbuMarbleExchange(memNo);
     }
 
@@ -2274,24 +2274,7 @@ public class EventService {
      * 구슬 주머니 오픈
      */
     public int gganbuMarblePocketOpenIns(GganbuMarblePocketOpenInsVo gganbuMarblePocketOpenInsVo) {
-        int pocketScore = getPocketScore(gganbuMarblePocketOpenInsVo.getAverageLevel());
-        gganbuMarblePocketOpenInsVo.setMarblePocketPt(pocketScore);
         return event.gganbuMarblePocketOpenIns(gganbuMarblePocketOpenInsVo);
-    }
-
-    private int getPocketScore(int averageLevel) {
-        int score;
-        if(averageLevel < 30) {
-            score = ThreadLocalRandom.current().nextInt(70, 101); // 70~100
-        }else if(averageLevel < 50) {
-            score = ThreadLocalRandom.current().nextInt(40, 71); // 40~70
-        }else if(averageLevel < 70) {
-            score = ThreadLocalRandom.current().nextInt(30, 51); // 30~50
-        }else {
-            score = ThreadLocalRandom.current().nextInt(10, 31); // 10~30
-        }
-
-        return score;
     }
 
     /**
@@ -2317,6 +2300,13 @@ public class EventService {
         List<Object> objList = event.gganbuRankList(gganbuRankListInputVo);
         int listCnt = DBUtil.getData(objList, 0, Integer.class);
         List<GganbuRankListVo> list = DBUtil.getList(objList, 1, GganbuRankListVo.class);
+        for(GganbuRankListVo vo : list) {
+            int memL = (vo.getMem_level() - 1) / 10;
+            vo.setMem_level_color(DalbitUtil.getProperty("level.color." + memL).split(","));
+
+            int ptrMemL = (vo.getPtr_mem_level() - 1) / 10;
+            vo.setPtr_mem_level_color(DalbitUtil.getProperty("level.color." + ptrMemL).split(","));
+        }
 
         result.put("listCnt", listCnt);
         result.put("list", list);
@@ -2411,5 +2401,40 @@ public class EventService {
         return result;
     }
 
+    /**
+     *  깐부 구슬 주머니 페이지
+     */
+    public Map<String, Object> gganbuPocketPage(GganbuPocketPageInputVo gganbuPocketPageInputVo) {
+        Map<String, Object> result = new HashMap<>();
+        String gganbuNo = gganbuPocketPageInputVo.getGganbuNo();
+        String memNo = gganbuPocketPageInputVo.getMemNo();
+
+        // 주머니 리포트
+        result.put("pocketReport", gganbuMarblePocketLogList(new GganbuMarblePocketLogListInputVo(gganbuNo, memNo)));
+
+        // 깐부 정보
+        result.put("gganbuMemSel", gganbuMemSel(new GganbuMemSelInputVo(gganbuNo, memNo)));
+
+        return result;
+    }
+
+    /**
+     *  깐부 찾기 (나의 팬)
+     */
+    public Map<String, Object> gganbuFanList(GganbuFanListVo gganbuFanListVo) {
+        Map<String, Object> result = new HashMap<>();
+        List<Object> objList = event.gganbuFanList(gganbuFanListVo);
+        int listCnt = DBUtil.getData(objList, 0, Integer.class);
+        List<GganbuFanListVo> list = DBUtil.getList(objList, 1, GganbuFanListVo.class);
+        for(GganbuFanListVo vo : list) {
+            vo.setFanMemProfile(new ImageVo(vo.getProfileImage(), vo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+            vo.setAverageLevel((gganbuFanListVo.getMemLevel() + vo.getLevel()) / 2);
+        }
+
+        result.put("listCnt", listCnt);
+        result.put("list", list);
+
+        return result;
+    }
     /* 깐부 이벤트 끝~~~ */
 }

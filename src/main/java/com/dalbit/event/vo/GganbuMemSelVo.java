@@ -42,4 +42,9 @@ public class GganbuMemSelVo {
     private ImageVo ptr_mem_profile;
     private String mem_sex;
     private String ptr_mem_sex;
+    private int exc_red_marble; // 주머니 교환용 티켓
+    private int exc_yellow_marble; // 주머니 교환용 티켓
+    private int exc_blue_marble; // 주머니 교환용 티켓
+    private int exc_violet_marble; // 주머니 교환용 티켓
+
 }

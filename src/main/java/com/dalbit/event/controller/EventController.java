@@ -6,10 +6,7 @@ import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.service.EventService;
-import com.dalbit.event.vo.ItemInsVo;
-import com.dalbit.event.vo.KnowhowEventInputVo;
-import com.dalbit.event.vo.PhotoEventInputVo;
-import com.dalbit.event.vo.TimeEventVo;
+import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
@@ -742,7 +739,7 @@ public class EventController {
     public ResVO gganbuMemReqCancel(@Valid GganbuMemReqCancelVo gganbuMemReqCancelVo, HttpServletRequest request) {
         ResVO resVO = new ResVO();
         try {
-            gganbuMemReqCancelVo.setPtrMemNo(MemberVo.getMyMemNo(request));
+            gganbuMemReqCancelVo.setMemNo(MemberVo.getMyMemNo(request));
             int result = eventService.gganbuMemReqCancel(gganbuMemReqCancelVo);
             switch (result) {
                 case -3: resVO.setResVO(ResMessage.C30008.getCode(), ResMessage.C30008.getCodeNM(), result); break;
@@ -870,6 +867,7 @@ public class EventController {
             GganbuMemMarbleInsInputVo result = eventService.gganbuMemMarbleIns(gganbuMemMarbleInsInputVo);
 
             switch (result.getS_return()) {
+                case -6: resVO.setResVO(ResMessage.C30018.getCode(), ResMessage.C30018.getCodeNM(), result); break;
                 case -5: resVO.setResVO(ResMessage.C30017.getCode(), ResMessage.C30017.getCodeNM(), result); break;
                 case -4: resVO.setResVO(ResMessage.C30016.getCode(), ResMessage.C30016.getCodeNM(), result); break;
                 case -3: resVO.setResVO(ResMessage.C30014.getCode(), ResMessage.C30014.getCodeNM(), result); break;
@@ -958,18 +956,14 @@ public class EventController {
         ResVO resVO = new ResVO();
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            Integer result = eventService.gganbuMarbleExchange(memNo);
-            if(result == null) {
-                resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result);
-            }else {
-                switch (result) {
-                    case -3: resVO.setResVO(ResMessage.C30015.getCode(), ResMessage.C30015.getCodeNM(), result); break;
-                    case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
-                    case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
-                    case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
-                    case 1: resVO.setSuccessResVO(result); break;
-                    default: resVO.setFailResVO();
-                }
+            int result = eventService.gganbuMarbleExchange(memNo);
+            switch (result) {
+                case -3: resVO.setResVO(ResMessage.C30015.getCode(), ResMessage.C30015.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
             }
         } catch (Exception e) {
             log.error("EventController / gganbuMarbleExchange => {}", e);
@@ -1143,6 +1137,46 @@ public class EventController {
             resVO.setSuccessResVO(eventService.gganbuMemberSearch(gganbuMemberSearchInputVo));
         } catch (Exception e) {
             log.error("EventController / gganbuMemberSearch => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 구슬 주머니 페이지
+     * @작성일   : 2021-12-08
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/pocket/page")
+    public ResVO gganbuPocketPage(@Valid GganbuPocketPageInputVo gganbuPocketPageInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuPocketPageInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuPocketPage(gganbuPocketPageInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuPocketPage => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 찾기 (나의 팬)
+     * @작성일   : 2021-12-08
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/search/fan")
+    public ResVO gganbuFanList(@Valid GganbuFanListVo gganbuFanListVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuFanListVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuFanList(gganbuFanListVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuFanList => {}", e);
             resVO.setFailResVO();
         }
 

@@ -11,4 +11,5 @@ public class GganbuRankListInputVo {
     private int pagePerCnt;
 
     private String memNo;
+    private int yRankNo;
 }

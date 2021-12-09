@@ -285,7 +285,7 @@ public interface Event {
      * @작성자   : 박성민
      * @param  :
      *   memNo - 회원번호
-     *   insSlct - 획득구분 [r:방송, c:달충전, e:교환, b:배팅]
+     *   insSlct - 획득구분 [r:방송, v:청취, c:달충전, e:교환, b:배팅]
      *   roomNo - 룸번호[획득구분 r에서 사용]
      *   rMarbleCnt - 빨강구슬 획득수
      *   yMarbleCnt - 노랑구슬 획득수
@@ -294,7 +294,7 @@ public interface Event {
      *   winSlct - 배팅시 승패여부 [w: 승, l: 패]
      *   bettingSlct - 배팅 구분[a:홀, b:짝]
      * @return
-     *   s_return: -5: 하루 2회, -4: 배팅구슬 부족, -3: 이미 지급됨, -2: 신청자 이미깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
+     *   s_return: -6: 배팅 개수 초과, -5: 하루 2회, -4: 배팅구슬 부족, -3: 이미 지급됨, -2: 신청자 이미깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_marble_ins(#{memNo}, #{insSlct}, #{roomNo}, #{rMarbleCnt}, #{yMarbleCnt}, #{bMarbleCnt}, #{vMarbleCnt}, #{winSlct}, #{bettingSlct})")
     int gganbuMemMarbleIns(GganbuMemMarbleInsInputVo param);
@@ -353,7 +353,7 @@ public interface Event {
      *   s_return: -3: 구슬개수 부족, -2: 신청자 이미깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_marble_exchange(#{memNo})")
-    Integer gganbuMarbleExchange(String memNo);
+    int gganbuMarbleExchange(String memNo);
 
     /**********************************************************************************************
      * @Method 설명 : 구슬 주머니 오픈
@@ -590,6 +590,21 @@ public interface Event {
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_betting_chk(#{gganbuNo}, #{memNo})")
     int gganbuMemBettingChk(GganbuMemBettingChkVo param);
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 찾기 (나의 팬)
+     * @작성일   : 2021-12-08
+     * @작성자   : 박성민
+     * @param  :
+     *   memNo - 회원번호
+     *   ptrMemNo - 검색자 회원번호
+     *   ordSlct - 정렬순서
+     *   pageNo
+     *   pagePerCnt
+     **********************************************************************************************/
+    @ResultMap({"ResultMap.integer", "ResultMap.GganbuFanListVo"})
+    @Select("CALL rd_data.p_evt_gganbu_member_fan_list(#{memNo}, #{ptrMemNo}, #{ordSlct}, #{pageNo}, #{pagePerCnt})")
+    List<Object> gganbuFanList(GganbuFanListVo param);
 
     /* 깐부 이벤트 끝~~~ */
 }
