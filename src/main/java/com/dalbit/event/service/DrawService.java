@@ -117,15 +117,23 @@ public class DrawService {
                 result.setFailResVO();
             } else {
                 List<DrawGiftVO> resultInfo = new ArrayList<>();
+                List<String> successList = new ArrayList<>(); // 성공 위치 배열
                 Integer failCnt = 0;
                 DrawWinningVO winningInfo = new DrawWinningVO(); // 당첨 내역 DB에서 조회
                 winningInfo.setGiftInfo(drawEvent.getDrawWinningInfo(memNo));
                 winningInfo.calRemainInfo(); // 남은 당첨 개수 계산
+                int selectLength = selectList.length;
 
                 // 사용할 수 있는 응모권 개수(남은 경품 개수) Check
                 if (winningInfo.getTotalRemain().equals(0)) {
                     result.setResVO(ResMessage.C30102.getCode(), ResMessage.C30102.getCodeNM(), null);
                     return result;
+                }
+
+                // 입력한 뽑기 시도 회수보다 남은 응모권 개수
+                if (winningInfo.getTotalRemain() < selectList.length) {
+                    selectLength = winningInfo.getTotalRemain();
+                    failCnt = selectList.length - winningInfo.getTotalRemain();
                 }
 
                 // 저장할 결과 데이터 공간 확보
@@ -134,7 +142,7 @@ public class DrawService {
                 }
 
                 // 뽑기 로직 시작
-                for (int i = 0; i < selectList.length; i++) {
+                for (int i = 0; i < selectLength; i++) {
                     Integer temp = getRandomNumber(winningInfo.getTotalRemain());
                     DrawTempResultVO tpResult = winningInfo.getResult(temp);
 
@@ -145,6 +153,7 @@ public class DrawService {
                         Integer insertRs = drawEvent.putDrawSelect(memNo, tpResult.getBbopgi_gift_no(), Integer.parseInt(selectList[i]));
 
                         if (insertRs == 1) {
+                            successList.add(selectList[i]);
                             resultInfo.get(targetNo).setBbopgi_gift_no(tpResult.getBbopgi_gift_no());
                             resultInfo.get(targetNo).setBbopgi_gift_name(tpResult.getBbopgi_gift_name());
                             resultInfo.get(targetNo).setTemp_result_cnt(resultInfo.get(targetNo).getTemp_result_cnt() + 1);
@@ -156,6 +165,7 @@ public class DrawService {
                     }
                 }
 
+                outInfo.put("successList", successList);
                 outInfo.put("failCnt", failCnt);
                 outInfo.put("resultInfo", resultInfo);
                 if (failCnt > 0) {
