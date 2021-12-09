@@ -419,7 +419,7 @@ public class CommonController {
      * 앱 보안 - 에러 로그 저장
      */
     @PostMapping("/error/security/log")
-    public String saveAppErrorLog(@RequestBody AppErrorLogVO appErrorLogVO, HttpServletRequest request, HttpServletResponse response){
+    public String saveAppErrorLog(@Valid AppErrorLogVO appErrorLogVO, HttpServletRequest request, HttpServletResponse response){
         DalbitUtil.setHeader(request, response);
         String result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_성공));
         try {
