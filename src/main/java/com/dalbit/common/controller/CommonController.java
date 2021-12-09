@@ -430,7 +430,7 @@ public class CommonController {
                 result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_실패));
                 appErrorLogVO.setReason("null");
             }
-            String errorMsg = "UID : \"" + appErrorLogVO.getUid() + "\"/ Reason : \"" + appErrorLogVO.getReason() + "\"";
+            String errorMsg = "UID : \"" + appErrorLogVO.getUid() + "\" / Reason : \"" + appErrorLogVO.getReason() + "\"";
             log.error( "app security log Success => " + errorMsg);
 
             return result;
