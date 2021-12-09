@@ -5,6 +5,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
+import com.dalbit.event.service.DrawService;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.KnowhowEventInputVo;
@@ -39,6 +40,9 @@ public class EventController {
 
     @Autowired
     private GsonUtil gsonUtil;
+
+    @Autowired
+    private DrawService drawService;
 
     @GetMapping("/ranking/term")
     public String event200608Term() {
@@ -811,4 +815,110 @@ public class EventController {
     }
 
     /* 깐부 이벤트 끝 ~~~ */
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 당첨내역 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/winningInfo")
+    public ResVO getDrawWinningInfo(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawWinningInfo(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 응모권 개수 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/ticketCnt")
+    public ResVO getDrawTicketCnt(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawTicketCnt(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 뽑기 리스트 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/listInfo")
+    public ResVO getDrawListInfo(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawListInfo(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawListInfo => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 뽑기 시도
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @PostMapping("/draw/select")
+    public ResVO putDrawSelect(@RequestParam Map<String, Object> param, HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else if (!param.containsKey("selectList")){
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else {
+                result = drawService.putDrawSelect(param, memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
 }

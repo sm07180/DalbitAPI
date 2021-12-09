@@ -21,4 +21,7 @@
     <resultMap id="NovemberDjListOutVo3" type="com.dalbit.event.vo.NovemberDjListOutVo3" />
     <!-- 깐부 신청 리스트 -->
     <resultMap id="GganbuMemReqListOutputVo" type="com.dalbit.event.vo.GganbuMemReqListOutputVo" />
+    <!-- 추억의 뽑기 이벤트 -->
+    <resultMap id="DrawGiftVo" type="com.dalbit.event.vo.DrawGiftVO"/>
+    <resultMap id="DrawListVo" type="com.dalbit.event.vo.DrawListVO"/>
 </mapper>
