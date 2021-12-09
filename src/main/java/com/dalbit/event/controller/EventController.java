@@ -5,12 +5,12 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
+import com.dalbit.event.service.DrawService;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.KnowhowEventInputVo;
 import com.dalbit.event.vo.PhotoEventInputVo;
 import com.dalbit.event.vo.TimeEventVo;
-import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
@@ -39,6 +39,9 @@ public class EventController {
 
     @Autowired
     private GsonUtil gsonUtil;
+
+    @Autowired
+    private DrawService drawService;
 
     @GetMapping("/ranking/term")
     public String event200608Term() {
@@ -581,82 +584,6 @@ public class EventController {
     }
 
     /**
-     * 11월 이벤트 팬 부분 경품 응모 등록
-     */
-    @PostMapping("/raffle/enter")
-    public ResVO novemberEventFanCouponIns(@Valid NovemberFanCouponInsInputVo novemberFanCouponInsInputVo, HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        novemberFanCouponInsInputVo.setMemNo(MemberVo.getMyMemNo(request));
-        try {
-            Map<String, Object> res = eventService.novemberEventFanCouponIns(novemberFanCouponInsInputVo); // 응모 결과 + 갱신할 데이터
-            int insRes = (Integer) res.get("couponInsRes"); // 응모 결과
-            switch (insRes) {
-                case 1: resVO.setSuccessResVO(res); break;
-                case -1: resVO.setResVO(ResMessage.C30001.getCode(), ResMessage.C30001.getCodeNM(), res); break;
-                case -2: resVO.setResVO(ResMessage.C30002.getCode(), ResMessage.C30002.getCodeNM(), res); break;
-                case -3: resVO.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), res); break;
-                default: resVO.setFailResVO();
-            }
-        } catch (Exception e) {
-            log.error("EventController / eventFanCouponIns => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 종합 경품 이벤트(팬)
-     */
-    @GetMapping("/raffle/fan/total/list")
-    public ResVO novemberEventFanList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventFanList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / eventFanList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 회차별 추첨 이벤트(팬)
-     */
-    @GetMapping("/raffle/fan/round/list")
-    public ResVO novemberEventFanWeekList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventFanWeekList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / eventFanWeekList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 메인(DJ)
-     */
-    @GetMapping("/raffle/dj/main/list")
-    public ResVO novemberEventDjList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventDjList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / novemberEventDjList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
      * 아이템 지급[서비스]
      */
     @PostMapping("/raffle/dj/ins/item")
@@ -811,4 +738,110 @@ public class EventController {
     }
 
     /* 깐부 이벤트 끝 ~~~ */
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 당첨내역 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/winningInfo")
+    public ResVO getDrawWinningInfo(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawWinningInfo(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 응모권 개수 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/ticketCnt")
+    public ResVO getDrawTicketCnt(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawTicketCnt(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 뽑기 리스트 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/listInfo")
+    public ResVO getDrawListInfo(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawListInfo(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawListInfo => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 뽑기 시도
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @PostMapping("/draw/select")
+    public ResVO putDrawSelect(@RequestParam Map<String, Object> param, HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else if (!param.containsKey("selectList")){
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else {
+                result = drawService.putDrawSelect(param, memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
 }
