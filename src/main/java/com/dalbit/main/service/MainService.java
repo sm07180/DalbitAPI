@@ -912,7 +912,7 @@ public class MainService {
                 list.add(new ServerListVO("박용훈", "https://devm-parkyh.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
                 list.add(new ServerListVO("박지송", "https://devm-parkjs.dalbitlive.com", "https://devm-parkjs.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
                 list.add(new ServerListVO("박지호", "https://devm-jhpark.dalbitlive.com", "https://devm-jhpark.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
-                list.add(new ServerListVO("송영호", "https://devm-parkyh.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("송영호", "https://devm-pogus55.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
                 list.add(new ServerListVO("이승재", "https://devm-nonp2.dalbitlive.com", "https://devm-nonp2.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
                 list.add(new ServerListVO("이정혁", "https://devm-jhlee.dalbitlive.com", "https://devm-jhlee.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
 
@@ -931,7 +931,7 @@ public class MainService {
                 list.add(new ServerListVO("박용훈", "https://devwww-parkyh.dalbitlive.com"));
                 list.add(new ServerListVO("박지송", "https://devwww-parkjs.dalbitlive.com"));
                 list.add(new ServerListVO("박지호", "https://devwww-jhpark.dalbitlive.com"));
-                list.add(new ServerListVO("송영호", "https://devwww-parkyh.dalbitlive.com"));
+                list.add(new ServerListVO("송영호", "https://devwww-pogus55.dalbitlive.com"));
                 list.add(new ServerListVO("이승재", "https://devwww-nonp2.dalbitlive.com"));
                 list.add(new ServerListVO("이정혁", "https://devwww-jhlee.dalbitlive.com"));
 
