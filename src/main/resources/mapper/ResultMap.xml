@@ -35,4 +35,7 @@
     <resultMap id="GganbuMemberSearchVo" type="com.dalbit.event.vo.GganbuMemberSearchVo" />
     <!-- 깐부 내 팬 -->
     <resultMap id="GganbuFanListVo" type="com.dalbit.event.vo.GganbuFanListVo" />
+    <!-- 추억의 뽑기 이벤트 -->
+    <resultMap id="DrawGiftVo" type="com.dalbit.event.vo.DrawGiftVO"/>
+    <resultMap id="DrawListVo" type="com.dalbit.event.vo.DrawListVO"/>
 </mapper>
