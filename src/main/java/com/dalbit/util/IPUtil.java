@@ -19,6 +19,9 @@ public class IPUtil {
     @Value("${api.connect.ip}")
     private String API_CONNECT_IP;
 
+    //접근 가능 IP 목록 new
+    @Value("${inner.connect.ip}")
+    public String INNER_CONNECT_IP;
 
     /**
      * 요청 IP 가져오기
@@ -55,22 +58,8 @@ public class IPUtil {
         return ip;
     }
 
-
-
-    /**
-     * IP 유효성 검사
-     * - 192.168.123.1
-     * - 192.145.162.1-10
-     * - 192.156.*.*
-     */
-    public List<String> validationIP() {
-        String[] ipArray = API_CONNECT_IP.split(",");
-        
-        //없을 경우 ... 나중에 보기
-        if(DalbitUtil.isEmpty(ipArray)){
-            return null;
-        }
-
+    //공통으로 사용하는 아이피 체크
+    public List<String> getValidationIP(String[] ipArray){
         List<String> result = new ArrayList<String>();
 
         // ex.) 192.168.0.1
@@ -116,8 +105,22 @@ public class IPUtil {
         return result;
     }
 
+    /**
+     * IP 유효성 검사
+     * - 192.168.123.1
+     * - 192.145.162.1-10
+     * - 192.156.*.*
+     */
+    public List<String> validationIP() {
+        String[] ipArray = API_CONNECT_IP.split(",");
+        
+        //없을 경우 ... 나중에 보기
+        if(DalbitUtil.isEmpty(ipArray)){
+            return null;
+        }
 
-
+        return getValidationIP(ipArray);
+    }
 
     /**
      * 내부 IP 체크
@@ -156,4 +159,41 @@ public class IPUtil {
         return true;
     }
 
+    /**
+     * 사내 IP 체크 (new)
+     */
+    public boolean validationInnerIP(String requestIP) {
+        String[] ipArray = INNER_CONNECT_IP.split(",");
+
+        if(DalbitUtil.isEmpty(ipArray)){
+            return false;
+        }
+        //아이피 유효성 검증
+        List<String> connectIpList = getValidationIP(ipArray);
+
+        if(connectIpList == null || connectIpList.isEmpty()){
+            return false;
+        }
+
+        if(connectIpList.indexOf(requestIP) < 0){
+            String[] arrayReqIP = requestIP.split("\\.");
+
+            for(int i = 0; i < arrayReqIP.length; i++){
+                Iterator<String> ip = connectIpList.iterator();
+                while (ip.hasNext()){
+                    String[] arrayConIP = ip.next().split("\\.");
+
+                    if(arrayConIP[i].equals("*") || arrayReqIP[i].equals(arrayConIP[i])){
+                        break;
+                    }
+
+                    if(!ip.hasNext()){
+                        return false;
+                    }
+                }
+            }
+        }
+
+        return true;
+    }
 }

@@ -12,9 +12,11 @@ import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
@@ -33,6 +35,8 @@ public class MainService {
 
     @Autowired
     GsonUtil gsonUtil;
+    @Autowired
+    IPUtil ipUtil;
     @Autowired
     MainDao mainDao;
     @Autowired
@@ -877,4 +881,66 @@ public class MainService {
         }
         return result;
     }
+
+    /**
+     * 내부 서버 이동 리스트
+     * @param request
+     * @param os
+     * @return
+     * {list: [], innerChk: String}
+     */
+    public Map<String, Object> getInnerServerList(HttpServletRequest request, String os){
+        Map<String, Object> result = new HashMap<>();
+        List<ServerListVO> list = new ArrayList<>();
+
+        String realWebRtcSocketURI = "https://sv.dalbitlive.com:8000/socketcluster/";
+        String devWebRtcSocketURI = "https://devsv1.dalbitlive.com:8000/socketcluster/";
+        String clientIP = ipUtil.getClientIP(request);
+        result.put("innerChk", clientIP);
+
+        if (ipUtil.validationInnerIP(clientIP)) {
+            if (StringUtils.equals(os, "mob")) {//mobile
+                list.add(new ServerListVO("실서버", "https://m.dalbitlive.com", "https://api.dalbitlive.com/", "https://photo.dalbitlive.com/", realWebRtcSocketURI));
+                list.add(new ServerListVO("개발서버", "https://devm.dalbitlive.com", "https://devapi.dalbitlive.com/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("내부서버", "https://devm2.dalbitlive.com", "https://devapi2.dalbitlive.com/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("강알찬", "https://devm-aaasss86.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("김훈", "https://devm-ironynet.dalbitlive.com", "https://devm-ironynet.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("김현진", "https://devm-khj.dalbitlive.com", "https://devm-khj.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("김효빈", "https://devm-khb.dalbitlive.com", "https://devm-khb.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("문형진", "https://devm-moon.dalbitlive.com", "https://devm-moon.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("박성민", "https://devm-parksm.dalbitlive.com", "https://devm-parksm.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("박용훈", "https://devm-parkyh.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("박지송", "https://devm-parkjs.dalbitlive.com", "https://devm-parkjs.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("박지호", "https://devm-jhpark.dalbitlive.com", "https://devm-jhpark.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("송영호", "https://devm-pogus55.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("이승재", "https://devm-nonp2.dalbitlive.com", "https://devm-nonp2.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+                list.add(new ServerListVO("이정혁", "https://devm-jhlee.dalbitlive.com", "https://devm-jhlee.dalbitlive.com:463/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
+
+                result.put("list", list);
+                return result;
+            } else if (StringUtils.equals(os, "web")) {// web
+                list.add(new ServerListVO("실서버", "https://www.dalbitlive.com"));
+                list.add(new ServerListVO("개발서버", "https://devwww.dalbitlive.com"));
+                list.add(new ServerListVO("내부서버", "https://devwww2.dalbitlive.com"));
+                list.add(new ServerListVO("강알찬", "https://devwww-aaasss86.dalbitlive.com"));
+                list.add(new ServerListVO("김훈", "https://devwww-ironynet.dalbitlive.com"));
+                list.add(new ServerListVO("김현진", "https://devwww-khj.dalbitlive.com"));
+                list.add(new ServerListVO("김효빈", "https://devwww-khb.dalbitlive.com"));
+                list.add(new ServerListVO("문형진", "https://devwww-moon.dalbitlive.com"));
+                list.add(new ServerListVO("박성민", "https://devwww-parksm.dalbitlive.com"));
+                list.add(new ServerListVO("박용훈", "https://devwww-parkyh.dalbitlive.com"));
+                list.add(new ServerListVO("박지송", "https://devwww-parkjs.dalbitlive.com"));
+                list.add(new ServerListVO("박지호", "https://devwww-jhpark.dalbitlive.com"));
+                list.add(new ServerListVO("송영호", "https://devwww-pogus55.dalbitlive.com"));
+                list.add(new ServerListVO("이승재", "https://devwww-nonp2.dalbitlive.com"));
+                list.add(new ServerListVO("이정혁", "https://devwww-jhlee.dalbitlive.com"));
+
+                result.put("list", list);
+                return result;
+            }
+        }
+
+        return result;
+    }
+
 }
