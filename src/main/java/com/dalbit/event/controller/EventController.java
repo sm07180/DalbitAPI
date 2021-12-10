@@ -949,7 +949,7 @@ public class EventController {
      * @Method 설명 : 구슬 주머니 획득(구슬교환)
      * @작성일   : 2021-12-06
      * @작성자   : 박성민
-     * @변경이력  :
+     * @변경이력  : 자동지급으로 인해 안씀
      **********************************************************************************************/
     @PostMapping("/gganbu/pocket/get")
     public ResVO gganbuMarbleExchange(HttpServletRequest request) {
@@ -984,13 +984,17 @@ public class EventController {
         ResVO resVO = new ResVO();
         try {
             gganbuMarblePocketOpenInsVo.setMemNo(MemberVo.getMyMemNo(request));
-            int result = eventService.gganbuMarblePocketOpenIns(gganbuMarblePocketOpenInsVo);
-            switch (result) {
-                case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
-                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
-                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
-                case 1: resVO.setSuccessResVO(result); break;
-                default: resVO.setFailResVO();
+            Integer result = eventService.gganbuMarblePocketOpenIns(gganbuMarblePocketOpenInsVo);
+            if(result == null) {
+                resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result);
+            }else {
+                switch (result) {
+                    case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
+                    case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                    case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                    case 1: resVO.setSuccessResVO(result); break;
+                    default: resVO.setFailResVO();
+                }
             }
         } catch (Exception e) {
             log.error("EventController / gganbuMarblePocketOpenIns => {}", e);

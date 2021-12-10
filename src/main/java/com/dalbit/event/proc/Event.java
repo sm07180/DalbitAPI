@@ -315,7 +315,7 @@ public interface Event {
      *     gganbu_no - 회차번호
      *     mem_no - 회원번호 (신청자)
      *     mem_nick - 회원대화명 (신청자)
-     *     ins_slct - 구슬 획득/사용 위치 구분 [r:방송, c:달충전, e:교환, b:배팅]
+     *     ins_slct - 구슬 획득/사용 위치 구분 [r:방송, v:청취, c:달충전, e:교환, b:배팅]
      *     chng_slct - 획득/사용 구분[s:획득, u:사용]
      *     red_marble - 빨강구슬수
      *     yellow_marble - 노랑구슬수
@@ -366,7 +366,7 @@ public interface Event {
      *   s_return: -3: 구슬주머니 없음, -2: 신청자 이미깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_marble_pocket_open_ins(#{memNo}, #{marblePocketPt})")
-    int gganbuMarblePocketOpenIns(GganbuMarblePocketOpenInsVo param);
+    Integer gganbuMarblePocketOpenIns(GganbuMarblePocketOpenInsVo param);
 
     /**********************************************************************************************
      * @Method 설명 : 깐부 구슬 주머니 리포트
@@ -375,6 +375,7 @@ public interface Event {
      * @param  :
      *   gganbuNo - 회차번호
      *   memNo - 회원번호
+     *   tabSlct - 탭구분[r: 주머니 받은내역, p: 점수내역]
      *   pageNo
      *   pagePerCnt
      * @return
@@ -386,9 +387,13 @@ public interface Event {
      *     mem_nick - 회원대화명(신청자)
      *     marble_pocket_pt - 구슬주머니 점수
      *     ins_date - 등록일자
+     *     chng_slct - [s: 획득, u: 사용]
+     *     ins_slct - 구슬주머니 획득구분[e:구슬교환, u: 1만개 사용누적, s:1만개 선물 누적]
+     *     marble_pocket_cnt - 주머니 수
+     *     exc_marble_cnt - 교환 구슬 수
      **********************************************************************************************/
     @ResultMap({"ResultMap.integer", "ResultMap.GganbuMarblePocketLogListVo"})
-    @Select("CALL rd_data.p_evt_gganbu_mem_marble_pocket_log_list(#{gganbuNo}, #{memNo}, #{pageNo}, #{pagePerCnt})")
+    @Select("CALL rd_data.p_evt_gganbu_mem_marble_pocket_log_list(#{gganbuNo}, #{memNo}, #{tabSlct}, #{pageNo}, #{pagePerCnt})")
     List<Object> gganbuMarblePocketLogList(GganbuMarblePocketLogListInputVo param);
 
     /**********************************************************************************************

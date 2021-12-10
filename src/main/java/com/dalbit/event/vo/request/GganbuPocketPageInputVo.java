@@ -8,9 +8,9 @@ import lombok.Setter;
 public class GganbuPocketPageInputVo {
     public GganbuPocketPageInputVo() {}
     public GganbuPocketPageInputVo(String gganbuNo, String memNo) {
-        this.gganbuNo = gganbuNo;
+//        this.gganbuNo = gganbuNo;
         this.memNo = memNo;
     }
-    private String gganbuNo;
+//    private String gganbuNo;
     private String memNo;
 }
