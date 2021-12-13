@@ -1992,7 +1992,7 @@ public class EventService {
             return gganbuMemMarbleIns(marbleInsVo); // 획득한 구슬 ins
         }
 
-        return null;
+        return new GganbuMemMarbleInsInputVo();
     }
 
     // 방송 종료시 구슬 종류 얻기 (1: 빨강(40%), 2: 노랑(35%), 3: 파랑(15%), 4: 보라(10%))
