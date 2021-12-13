@@ -190,16 +190,16 @@ public interface Event {
      * @작성자   : 박성민
      * @param  :
      *   memNo - 회원번호
-     *   insSlct - 획득구분 [r:방송, v:청취, c:달충전, e:교환, b:배팅]
+     *   insSlct - 획득구분 [r:방송, v:청취, c:달충전, e:교환, b:베팅]
      *   roomNo - 룸번호[획득구분 r에서 사용]
      *   rMarbleCnt - 빨강구슬 획득수
      *   yMarbleCnt - 노랑구슬 획득수
      *   bMarbleCnt - 파랑구슬 획득수
      *   vMarbleCnt - 보라구슬 획득수
-     *   winSlct - 배팅시 승패여부 [w: 승, l: 패]
-     *   bettingSlct - 배팅 구분[a:홀, b:짝]
+     *   winSlct - 베팅시 승패여부 [w: 승, l: 패]
+     *   bettingSlct - 베팅 구분[a:홀, b:짝]
      * @return
-     *   s_return: -6: 배팅 개수 초과, -5: 하루 2회, -4: 배팅구슬 부족, -3: 이미 지급됨, -2: 신청자 이미깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
+     *   s_return: -6: 베팅 개수 초과, -5: 하루 2회, -4: 베팅구슬 부족, -3: 이미 지급됨, -2: 신청자 이미깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_marble_ins(#{memNo}, #{insSlct}, #{roomNo}, #{rMarbleCnt}, #{yMarbleCnt}, #{bMarbleCnt}, #{vMarbleCnt}, #{winSlct}, #{bettingSlct})")
     int gganbuMemMarbleIns(GganbuMemMarbleInsInputVo param);
@@ -220,7 +220,7 @@ public interface Event {
      *     gganbu_no - 회차번호
      *     mem_no - 회원번호 (신청자)
      *     mem_nick - 회원대화명 (신청자)
-     *     ins_slct - 구슬 획득/사용 위치 구분 [r:방송, v:청취, c:달충전, e:교환, b:배팅]
+     *     ins_slct - 구슬 획득/사용 위치 구분 [r:방송, v:청취, c:달충전, e:교환, b:베팅]
      *     chng_slct - 획득/사용 구분[s:획득, u:사용]
      *     red_marble - 빨강구슬수
      *     yellow_marble - 노랑구슬수
@@ -245,7 +245,7 @@ public interface Event {
      * @return
      *   s_return: -2: 신청자 깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
-    @Select("CALL rd_data.p_evt_gganbu_mem_marble_pocket_stat_ins(#{memNo}, #{roomNo}, #{insSlct}, #{dalCnt})")
+    @Select("CALL rd_data.p_evt_gganbu_mem_marble_pocket_stat_ins(#{memNo}, #{ptrMemNo}, #{roomNo}, #{dalCnt})")
     int gganbuMarblePocketStatIns(GganbuMarbleExchangeInputVo param);
 
     /**********************************************************************************************
@@ -368,7 +368,7 @@ public interface Event {
     GganbuRankListVo gganbuMyRankList(GganbuRankListInputVo param);
 
     /**********************************************************************************************
-     * @Method 설명 : 깐부 배팅 리스트
+     * @Method 설명 : 깐부 베팅 리스트
      * @작성일   : 2021-12-06
      * @작성자   : 박성민
      * @param  :
@@ -394,7 +394,7 @@ public interface Event {
     List<Object> gganbuBettingLogList(GganbuBettingLogListInputVo param);
 
     /**********************************************************************************************
-     * @Method 설명 : 깐부 나의 배팅 내역
+     * @Method 설명 : 깐부 나의 베팅 내역
      * @작성일   : 2021-12-06
      * @작성자   : 박성민
      * @param  :
@@ -413,10 +413,10 @@ public interface Event {
      *     mem_level - 회원레벨 (신청자)
      *     mem_state - 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...) (신청자)
      *     win_slct - 승패여부[w:승, l:패]
-     *     red_marble - 배팅 빨간구슬
-     *     yellow_marble - 배팅 노란구슬
-     *     blue_marble - 배팅 파란구슬
-     *     violet_marble - 배팅 보라구슬
+     *     red_marble - 베팅 빨간구슬
+     *     yellow_marble - 베팅 노란구슬
+     *     blue_marble - 베팅 파란구슬
+     *     violet_marble - 베팅 보라구슬
      *     ins_date - 등록일자
      **********************************************************************************************/
     @ResultMap({"ResultMap.integer", "ResultMap.GganbuMyBettingLogSelVo"})
@@ -431,8 +431,8 @@ public interface Event {
      *   gganbuNo - 회차번호
      * @return
      *  gganbu_no - 회차번호
-     *  betting_slct - 배팅구분 [a:홀, b:짝]
-     *  betting_cnt - 배팅수
+     *  betting_slct - 베팅구분 [a:홀, b:짝]
+     *  betting_cnt - 베팅수
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_betting_stat_sel(#{gganbuNo})")
     List<GganbuBettingStatSelVo> gganbuBettingStatSel(String gganbuNo);
@@ -489,14 +489,14 @@ public interface Event {
     List<Object> gganbuMemberSearch(GganbuMemberSearchInputVo param);
 
     /**********************************************************************************************
-     * @Method 설명 : 깐부 배팅수 체크
+     * @Method 설명 : 깐부 베팅수 체크
      * @작성일   : 2021-12-07
      * @작성자   : 박성민
      * @param  :
      *   gganbuNo - 회차번호
      *   memNo - 회원버호(신청자)
      * @return
-     *  s_return: -1: 배팅2회완료, 0:에러, 1:정상
+     *  s_return: -1: 베팅2회완료, 0:에러, 1:정상
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_betting_chk(#{gganbuNo}, #{memNo})")
     int gganbuMemBettingChk(GganbuMemBettingChkVo param);

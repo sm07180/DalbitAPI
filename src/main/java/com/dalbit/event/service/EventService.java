@@ -1963,7 +1963,7 @@ public class EventService {
     /**
      * 깐부 방송시간 집계 등록 (방송 종료시 호출)
      */
-    public void gganbuMemViewStatIns(String memNo, String roomNo, String marbleInsType) {
+    public GganbuMemMarbleInsInputVo gganbuMemViewStatIns(String memNo, String roomNo, String marbleInsType) {
         GganbuMemViewStatInsVo viewStatVo = event.gganbuMemViewStatIns(memNo);
 
         if(viewStatVo.getS_return() == 1) {
@@ -1989,8 +1989,10 @@ public class EventService {
                 memNo, marbleInsType, roomNo, rMarbleCnt, yMarbleCnt, bMarbleCnt, pMarbleCnt
             );
 
-            gganbuMemMarbleIns(marbleInsVo); // 획득한 구슬 ins
+            return gganbuMemMarbleIns(marbleInsVo); // 획득한 구슬 ins
         }
+
+        return null;
     }
 
     // 방송 종료시 구슬 종류 얻기 (1: 빨강(40%), 2: 노랑(35%), 3: 파랑(15%), 4: 보라(10%))
@@ -2134,7 +2136,7 @@ public class EventService {
     }
 
     /**
-     * 깐부 구슬 배팅 페이지
+     * 깐부 구슬 베팅 페이지
      */
     public Map<String, Object> gganbuMarbleBetting(GganbuMarbleBettingPageInputVo gganbuMarbleBettingPageInputVo) {
         Map<String, Object> result = new HashMap<>();
@@ -2145,12 +2147,12 @@ public class EventService {
         // 깐부 이벤트 회차
         result.put("gganbuNo", gganbuNo);
 
-        //배팅 리스트
+        //베팅 리스트
         GganbuBettingLogListInputVo gganbuBettingLogListInputVo = new GganbuBettingLogListInputVo(gganbuNo, memNo, 1, 50);
         result.put("bettingListInfo", gganbuBettingLogList(gganbuBettingLogListInputVo));
         result.put("myBettingListInfo", gganbuMyBettingLogSel(gganbuBettingLogListInputVo));
 
-        // 배팅수 체크
+        // 베팅수 체크
         GganbuMemBettingChkVo gganbuMemBettingChkVo = new GganbuMemBettingChkVo(gganbuNo, memNo);
         int bettingChk = event.gganbuMemBettingChk(gganbuMemBettingChkVo);
         if(bettingChk == -1) {
@@ -2237,7 +2239,7 @@ public class EventService {
     }
 
     /**
-     * 깐부 배팅 리스트
+     * 깐부 베팅 리스트
      */
     public Map<String, Object> gganbuBettingLogList(GganbuBettingLogListInputVo bettingLogListInputVo) {
         bettingLogListInputVo.setGganbuNo(gganbuNoCheck(bettingLogListInputVo.getGganbuNo()));
@@ -2269,7 +2271,7 @@ public class EventService {
     }
 
     /**
-     * 깐부 나의 배팅 내역
+     * 깐부 나의 베팅 내역
      */
     public Map<String, Object> gganbuMyBettingLogSel(GganbuBettingLogListInputVo bettingLogListInputVo) {
         bettingLogListInputVo.setGganbuNo(gganbuNoCheck(bettingLogListInputVo.getGganbuNo()));
@@ -2316,6 +2318,14 @@ public class EventService {
      */
     public Map<String, Object> gganbuMemberSearch(GganbuMemberSearchInputVo gganbuMemberSearchInputVo) {
         Map<String, Object> result = new HashMap<>();
+        String getText = gganbuMemberSearchInputVo.getSearchText();
+        if(StringUtils.isEmpty(getText) || getText.length() < 2) {
+            String[] emptyArr = {};
+            result.put("listCnt", 0);
+            result.put("list", emptyArr);
+            return result;
+        }
+
         List<Object> objList = event.gganbuMemberSearch(gganbuMemberSearchInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
         if(listCnt == null) return result;

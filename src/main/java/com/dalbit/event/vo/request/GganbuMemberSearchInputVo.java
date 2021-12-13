@@ -7,8 +7,8 @@ import lombok.Setter;
 @Setter
 public class GganbuMemberSearchInputVo {
     private String memNo;
-    private String searchText;
+    private String searchText = "";
     private int pageNo = 1;
     private int pagePerCnt = 50;
-    private int myLevel;
+    private int myLevel = 0;
 }

@@ -239,10 +239,6 @@ public class AdminService {
             adminDao.callMemAdminMemoAdd(adminMemoProcedure);
         }
 
-        //회원 나가기 처리
-        adminDao.updateBroadcastMemberExit(pRoomForceExitInputVo);
-
-
         //시작시간 가져오기
         P_MemberBroadcastInputVo pMemberBroadcastInputVo = new P_MemberBroadcastInputVo();
         pMemberBroadcastInputVo.setRoom_no(pRoomForceExitInputVo.getRoom_no());
@@ -250,13 +246,6 @@ public class AdminService {
         adminDao.callBroadcastInfo(broadcastInfo);
 
         P_BroadcastDetailOutputVo broadcastDetail = new Gson().fromJson(broadcastInfo.getExt(), P_BroadcastDetailOutputVo.class);
-
-        //방 종료 처리
-        adminDao.updateBroadcastExit(new BroadcastExitVo(pRoomForceExitInputVo.getRoom_no(), broadcastDetail.getStartDate()));
-
-        //소캣 종료 처리
-        SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
-        socketService.chatEnd(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true), 3, DalbitUtil.isLogin(request), vo);
 
         // 방송 시간에 따른 구슬 추가
         String marbleInsType;
@@ -266,6 +255,16 @@ public class AdminService {
             marbleInsType = "c";
         }
         eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no(), marbleInsType);
+
+        //회원 나가기 처리
+        adminDao.updateBroadcastMemberExit(pRoomForceExitInputVo);
+
+        //방 종료 처리
+        adminDao.updateBroadcastExit(new BroadcastExitVo(pRoomForceExitInputVo.getRoom_no(), broadcastDetail.getStartDate()));
+
+        //소캣 종료 처리
+        SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
+        socketService.chatEnd(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true), 3, DalbitUtil.isLogin(request), vo);
 
         return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
     }
