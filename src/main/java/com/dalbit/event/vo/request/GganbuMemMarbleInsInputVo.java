@@ -25,8 +25,11 @@ public class GganbuMemMarbleInsInputVo {
     private int vMarbleCnt = 0; // 보라구슬 획득수
 
     private int marbleCnt = 0; // 획득한 구슬 개수
-    private String winSlct; // 배팅시 승패여부 [w: 승, l: 패]
-    private String bettingSlct; // 배팅 구분[a:홀, b:짝]
+    private String winSlct = ""; // 배팅시 승패여부 [w: 승, l: 패]
+    private String bettingSlct = ""; // 배팅 구분[a:홀, b:짝]
+
+    private int pocketCnt = 0; // 구슬 주머니 개수
+    private String isBjYn = "";
 
     private int s_return = 0;
 }

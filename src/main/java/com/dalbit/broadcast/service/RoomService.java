@@ -115,13 +115,7 @@ public class RoomService {
 
         HashMap returnMap = new HashMap();
         // 방송 시간에 따른 구슬 추가
-        String marbleInsType;
-        if(isBj) {
-            marbleInsType = "r";
-        }else {
-            marbleInsType = "v";
-        }
-        returnMap.put("getMarbleInfo", eventService.gganbuMemViewStatIns(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), marbleInsType));
+        returnMap.put("getMarbleInfo", eventService.gganbuMemViewStatIns(pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no(), isBj));
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
         roomDao.callBroadCastRoomExit(procedureVo);

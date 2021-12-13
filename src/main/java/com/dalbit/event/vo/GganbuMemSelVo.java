@@ -47,4 +47,7 @@ public class GganbuMemSelVo {
     private int exc_blue_marble; // 주머니 교환용 티켓
     private int exc_violet_marble; // 주머니 교환용 티켓
 
+    private int marble_pt; // 구슬점수
+    private int tot_marble_pocket_pt; // 합산 점수
+
 }

@@ -28,4 +28,7 @@ public class GganbuRankListVo {
     private int my_rank_no; // 나의 랭킹
     private String[] mem_level_color;
     private String[] ptr_mem_level_color;
+
+    private int marble_pt; // 구슬점수
+    private int tot_marble_pocket_pt; // 합산 점수
 }

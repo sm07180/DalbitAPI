@@ -248,13 +248,8 @@ public class AdminService {
         P_BroadcastDetailOutputVo broadcastDetail = new Gson().fromJson(broadcastInfo.getExt(), P_BroadcastDetailOutputVo.class);
 
         // 방송 시간에 따른 구슬 추가
-        String marbleInsType;
-        if(StringUtils.equals(broadcastDetail.getDj_mem_no(), pRoomForceExitInputVo.getMem_no())) {
-            marbleInsType = "r";
-        }else {
-            marbleInsType = "c";
-        }
-        eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no(), marbleInsType);
+        boolean isBj = StringUtils.equals(broadcastDetail.getDj_mem_no(), pRoomForceExitInputVo.getMem_no());
+        eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no(), isBj);
 
         //회원 나가기 처리
         adminDao.updateBroadcastMemberExit(pRoomForceExitInputVo);

@@ -167,6 +167,8 @@ public interface Event {
      *   marble_pocket_pt - 획득한 구슬주머니 점수
      *   ins_date - 등록일자
      *   upd_date - 수정일자
+     *   marble_pt - 구슬점수
+     *   tot_marble_pocket_pt - 합산점수
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_sel(#{gganbuNo}, #{memNo})")
     GganbuMemSelVo gganbuMemSel(GganbuMemSelInputVo param);
@@ -329,6 +331,8 @@ public interface Event {
      *     marble_pocket_pt - 구슬주머니 점수
      *     ins_date - 등록일자
      *     upd_date - 수정일자
+     *     marble_pt - 구슬점수
+     *     tot_marble_pocket_pt - 합산점수
      **********************************************************************************************/
     @ResultMap({"ResultMap.integer", "ResultMap.GganbuRankListVo"})
     @Select("CALL rd_data.p_evt_gganbu_rank_list(#{gganbuNo}, #{pageNo}, #{pagePerCnt})")
@@ -363,6 +367,8 @@ public interface Event {
      *     marble_pocket_pt - 구슬주머니 점수
      *     ins_date - 등록일자
      *     upd_date - 수정일자
+     *     marble_pt - 구슬점수
+     *     tot_marble_pocket_pt - 합산점수
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_rank_my_sel(#{gganbuNo}, #{memNo})")
     GganbuRankListVo gganbuMyRankList(GganbuRankListInputVo param);

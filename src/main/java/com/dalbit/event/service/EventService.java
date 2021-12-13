@@ -1963,10 +1963,11 @@ public class EventService {
     /**
      * 깐부 방송시간 집계 등록 (방송 종료시 호출)
      */
-    public GganbuMemMarbleInsInputVo gganbuMemViewStatIns(String memNo, String roomNo, String marbleInsType) {
+    public GganbuMemMarbleInsInputVo gganbuMemViewStatIns(String memNo, String roomNo, boolean isBj) {
         GganbuMemViewStatInsVo viewStatVo = event.gganbuMemViewStatIns(memNo);
 
         if(viewStatVo.getS_return() == 1) {
+            String marbleInsType;
             int rMarbleCnt = 0;
             int yMarbleCnt = 0;
             int bMarbleCnt = 0;
@@ -1985,9 +1986,16 @@ public class EventService {
                 }
             }
 
+            if(isBj) {
+                marbleInsType = "r";
+            }else {
+                marbleInsType = "v";
+            }
+
             GganbuMemMarbleInsInputVo marbleInsVo = new GganbuMemMarbleInsInputVo(
                 memNo, marbleInsType, roomNo, rMarbleCnt, yMarbleCnt, bMarbleCnt, pMarbleCnt
             );
+            marbleInsVo.setIsBjYn(isBj ? "y" : "n");
 
             return gganbuMemMarbleIns(marbleInsVo); // 획득한 구슬 ins
         }
@@ -2015,12 +2023,12 @@ public class EventService {
 
     private int[] getMarble(int marbleCnt) {
         int[] result = {0, 0, 0, 0};
-        int randomValue = ThreadLocalRandom.current().nextInt(1, 101); // 1~100 난수
         int rArea = 25;
         int yArea = rArea + 25;
         int bArea = yArea + 25;
 
         for(int i=0; i<marbleCnt; i++) {
+            int randomValue = ThreadLocalRandom.current().nextInt(1, 101); // 1~100 난수
             if(randomValue <= rArea) {
                 result[0]++;
             }else if(randomValue <= yArea) {
@@ -2057,12 +2065,15 @@ public class EventService {
         int s_return = event.gganbuMemMarbleIns(gganbuMemMarbleInsInputVo);
         gganbuMemMarbleInsInputVo.setS_return(s_return);
 
-        int escapeVal = 0;
+        int pocketCnt = 0;
         while(true) {
-            if(gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) == -3) break;
-            escapeVal++;
-            if(escapeVal > 100) break;
+            if(gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) == 1) {
+                pocketCnt++;
+            }else {
+                break;
+            }
         }
+        gganbuMemMarbleInsInputVo.setPocketCnt(pocketCnt);
 
         return gganbuMemMarbleInsInputVo;
     }
