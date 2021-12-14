@@ -1897,8 +1897,8 @@ public class EventService {
         try {
             P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
             pPushInsertVo.setMem_nos(gganbuMemReqInsVo.getPtrMemNo());
-            pPushInsertVo.setSlct_push("53");
-            pPushInsertVo.setPush_slct("53");
+            pPushInsertVo.setSlct_push("64");
+            pPushInsertVo.setPush_slct("64");
             pPushInsertVo.setSend_title("깐부 신청");
             pPushInsertVo.setSend_cont("[" + gganbuMemReqInsVo.getMemNick() + "]님이 깐부 신청을 했습니다.");
             pPushInsertVo.setEtc_contents("깐부 신청");
@@ -1951,8 +1951,8 @@ public class EventService {
         try {
             P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
             pPushInsertVo.setMem_nos(gganbuMemInsVo.getPtrMemNo());
-            pPushInsertVo.setSlct_push("53");
-            pPushInsertVo.setPush_slct("53");
+            pPushInsertVo.setSlct_push("64");
+            pPushInsertVo.setPush_slct("64");
             pPushInsertVo.setSend_title("깐부 신청 수락");
             pPushInsertVo.setSend_cont("[" + gganbuMemInsVo.getMemNick() + "]님이 깐부를 수락했습니다. 깐부게임을 시작해보세요.");
             pPushInsertVo.setEtc_contents("깐부 신청 수락");
