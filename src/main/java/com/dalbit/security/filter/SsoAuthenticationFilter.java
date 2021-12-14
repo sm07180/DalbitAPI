@@ -72,7 +72,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/rest/sample/session/test"
         , "/broad/tts"
         , "/broad/tts/callback"
-        , "/error/security/log"
+        , "/security/log"
     };
 
     @Override
