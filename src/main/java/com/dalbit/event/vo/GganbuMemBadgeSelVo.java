@@ -6,5 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GganbuMemBadgeSelVo {
-    private int pocket_cnt = 0; // 뱃지수
+    private int s_pocketCnt = 0; // 뱃지수
+    private int s_reqCnt = 0; // 깐부 신청 뱃지
 }

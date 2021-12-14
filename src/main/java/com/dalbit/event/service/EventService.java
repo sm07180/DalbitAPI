@@ -7,8 +7,10 @@ import com.dalbit.common.code.Code;
 import com.dalbit.common.code.EventCode;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
+import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.event.dao.EventDao;
 import com.dalbit.event.proc.Event;
 import com.dalbit.event.vo.*;
@@ -52,6 +54,7 @@ public class EventService {
     RestService restService;
 
     @Autowired Event event;
+    @Autowired PushService pushService;
 
     public String event200608Term(){
         List<HashMap> eventTerm = new ArrayList<>();
@@ -1889,6 +1892,23 @@ public class EventService {
      */
     public int gganbuMemReqIns(GganbuMemReqInsVo gganbuMemReqInsVo) {
         gganbuMemReqInsVo.setGganbuNo(gganbuNoCheck(gganbuMemReqInsVo.getGganbuNo()));
+
+        //PUSH 발송
+        try {
+            P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+            pPushInsertVo.setMem_nos(gganbuMemReqInsVo.getPtrMemNo());
+            pPushInsertVo.setSlct_push("52");
+            pPushInsertVo.setPush_slct("52");
+            pPushInsertVo.setSend_title("깐부 신청");
+            pPushInsertVo.setSend_cont("[" + gganbuMemReqInsVo.getMemNick() + "]님이 깐부 신청을 했습니다.");
+            pPushInsertVo.setEtc_contents("깐부 신청");
+            pPushInsertVo.setImage_type("101");
+
+            pushService.sendPushReqOK(pPushInsertVo);
+        } catch (Exception e) {
+            log.error("PUSH 발송 실패");
+        }
+
         return event.gganbuMemReqIns(gganbuMemReqInsVo);
     }
 
@@ -1927,6 +1947,21 @@ public class EventService {
      */
     public int gganbuMemIns(GganbuMemInsVo gganbuMemInsVo) {
         gganbuMemInsVo.setGganbuNo(gganbuNoCheck(gganbuMemInsVo.getGganbuNo()));
+        //PUSH 발송
+        try {
+            P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
+            pPushInsertVo.setMem_nos(gganbuMemInsVo.getPtrMemNo());
+            pPushInsertVo.setSlct_push("52");
+            pPushInsertVo.setPush_slct("52");
+            pPushInsertVo.setSend_title("깐부 신청 수락");
+            pPushInsertVo.setSend_cont("[" + gganbuMemInsVo.getMemNick() + "]님이 깐부를 수락했습니다. 깐부게임을 시작해보세요.");
+            pPushInsertVo.setEtc_contents("깐부 신청 수락");
+            pPushInsertVo.setImage_type("101");
+
+            pushService.sendPushReqOK(pPushInsertVo);
+        } catch (Exception e) {
+            log.error("PUSH 발송 실패");
+        }
         return event.gganbuMemIns(gganbuMemInsVo);
     }
 
@@ -2115,6 +2150,11 @@ public class EventService {
         gganbuRankListInputVo.setPagePerCnt(50);
         result.put("rankList", gganbuRankList(gganbuRankListInputVo));
 
+        // 구슬주머니 new 뱃지
+        GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo = new GganbuMemBadgeUpdVo(gganbuNo, memNo);
+        GganbuMemBadgeSelVo gganbuMemBadgeSelVo = event.gganbuMemBadgeSel(gganbuMemBadgeUpdVo);
+        result.put("badgeCnt", gganbuMemBadgeSelVo);
+
         if(gganbuState == 1) { // 깐부 있음
             // 깐부 정보
             GganbuMemSelVo gganbuInfo = gganbuMemSel(new GganbuMemSelInputVo(gganbuNo, memNo));
@@ -2129,15 +2169,6 @@ public class EventService {
             myRankList.setPtr_mem_level_color(DalbitUtil.getProperty("level.color." + ptrMemL).split(","));
 
             result.put("myRankInfo", myRankList);
-
-            // 구슬주머니 new 뱃지
-            GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo = new GganbuMemBadgeUpdVo(gganbuNo, memNo);
-            GganbuMemBadgeSelVo gganbuMemBadgeSelVo = event.gganbuMemBadgeSel(gganbuMemBadgeUpdVo);
-            int badgeCnt = 0;
-            if(gganbuMemBadgeSelVo != null) {
-                badgeCnt = gganbuMemBadgeSelVo.getPocket_cnt();
-            }
-            result.put("badgeCnt", badgeCnt);
         }
 
         result.put("gganbuState", gganbuState);

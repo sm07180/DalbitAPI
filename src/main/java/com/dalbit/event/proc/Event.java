@@ -450,6 +450,7 @@ public interface Event {
      * @param  :
      *   gganbuNo - 회차번호
      *   memNo - 회원버호(신청자)
+     *   badgeSlct - 뱃지구분 [p:주머니, r: 깐부신청]
      * @return
      *  s_return: -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
@@ -465,6 +466,7 @@ public interface Event {
      *   memNo - 회원버호(신청자)
      * @return
      *  pocket_cnt - 뱃지수
+     *  req_cnt - 깐부 신청 뱃지
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_badge_sel(#{gganbuNo}, #{memNo})")
     GganbuMemBadgeSelVo gganbuMemBadgeSel(GganbuMemBadgeUpdVo param);
