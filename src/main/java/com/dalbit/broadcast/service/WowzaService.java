@@ -390,17 +390,15 @@ public class WowzaService {
             }
 
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, null);
+            // tts 성우 리스트
+            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             result.put("data", roomInfoVo);
-
-            // tts 성우 리스트
-            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
-            result.put("ttsActors", ttsActors);
 
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
             try{
