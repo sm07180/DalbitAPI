@@ -2001,7 +2001,7 @@ public class EventService {
     public GganbuMemMarbleInsInputVo gganbuMemViewStatIns(String memNo, String roomNo, boolean isBj) {
         GganbuMemViewStatInsVo viewStatVo = event.gganbuMemViewStatIns(memNo);
 
-        if(viewStatVo.getS_return() == 1) {
+        if(viewStatVo != null && viewStatVo.getS_return() == 1) {
             String marbleInsType;
             int rMarbleCnt = 0;
             int yMarbleCnt = 0;
