@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -1210,6 +1211,13 @@ public class EventController {
 
         try {
             String memNo = MemberVo.getMyMemNo(request);
+            LocalDateTime today = LocalDateTime.now();
+            LocalDateTime endDay = LocalDateTime.parse("2021-12-17T00:00:00.000");
+
+            if (!today.isBefore(endDay)) {
+                result.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), null);
+                return result;
+            }
 
             if (memNo == null) {
                 result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
