@@ -60,6 +60,10 @@
         call sp_specialDj_history(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
 
+    <select id="callSpecialDjBestDjHistory" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_SpecialHistoryVo">
+        call sp_specialDj_bestDj(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
+
     <select id="callMarketingList" statementType="CALLABLE" parameterType="ProcedureVo" resultType="com.dalbit.main.vo.procedure.P_MarketingVo">
         call sp_service_center_marketing_list(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
