@@ -57,6 +57,7 @@ public class P_pushInsertVo extends BaseVo {
        61 : 운영자 선물 수신
        62 : 환전 완료
        63 : 환전 불가
+       64 : 깐부 신청 / 수락
 
        92 : 운영자(회원 + 비회원)
        93 : 운영자(회원)
