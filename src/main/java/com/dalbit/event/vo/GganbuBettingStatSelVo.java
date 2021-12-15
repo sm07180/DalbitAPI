@@ -6,9 +6,13 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GganbuBettingStatSelVo {
-    private String gganbu_no;
-    private String betting_slct;
-    private int betting_cnt;
+    private String s_aGganbuNo;
+
     private String oddWinProbability;
     private String evenWinProbability;
+
+    private String s_aBettingSlct = "a"; // 홀
+    private String s_bBettingSlct = "b"; // 짝
+    private int s_aBettingCnt;
+    private int s_bBettingCnt;
 }

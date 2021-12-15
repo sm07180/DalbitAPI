@@ -12,6 +12,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.GganbuPocketStatInsVo;
 import com.dalbit.event.vo.request.GganbuMarbleExchangeInputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
@@ -369,7 +370,8 @@ public class ActionService {
                     pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(),
                     pRoomGiftVo.getRoom_no(), item.getByeol() * pRoomGiftVo.getItem_cnt()
                 );
-                eventService.gganbuMarblePocketStatIns(gganbuInputVo);
+                GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
+                returnMap.put("gganbuPocketCnt", statIns);
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

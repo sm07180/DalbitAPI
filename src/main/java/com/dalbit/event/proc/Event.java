@@ -248,7 +248,7 @@ public interface Event {
      *   s_return: -2: 신청자 깐부없음, -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_marble_pocket_stat_ins(#{memNo}, #{ptrMemNo}, #{roomNo}, #{dalCnt})")
-    int gganbuMarblePocketStatIns(GganbuMarbleExchangeInputVo param);
+    GganbuPocketStatInsVo gganbuMarblePocketStatIns(GganbuMarbleExchangeInputVo param);
 
     /**********************************************************************************************
      * @Method 설명 : 깐부 구슬 주머니 획득(구슬 교환)
@@ -441,7 +441,7 @@ public interface Event {
      *  betting_cnt - 베팅수
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_betting_stat_sel(#{gganbuNo})")
-    List<GganbuBettingStatSelVo> gganbuBettingStatSel(String gganbuNo);
+    GganbuBettingStatSelVo gganbuBettingStatSel(String gganbuNo);
 
     /**********************************************************************************************
      * @Method 설명 : 깐부 뱃지 초기화
@@ -454,7 +454,7 @@ public interface Event {
      * @return
      *  s_return: -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
-    @Select("CALL rd_data.p_evt_gganbu_mem_badge_upd(#{gganbuNo}, #{memNo})")
+    @Select("CALL rd_data.p_evt_gganbu_mem_badge_upd(#{gganbuNo}, #{memNo}, #{badgeSlct})")
     int gganbuMemBadgeUpd(GganbuMemBadgeUpdVo param);
 
     /**********************************************************************************************

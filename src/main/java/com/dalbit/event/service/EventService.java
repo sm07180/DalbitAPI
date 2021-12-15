@@ -1950,7 +1950,7 @@ public class EventService {
         //PUSH 발송
         try {
             P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
-            pPushInsertVo.setMem_nos(gganbuMemInsVo.getPtrMemNo());
+            pPushInsertVo.setMem_nos(gganbuMemInsVo.getMemNo());
             pPushInsertVo.setSlct_push("64");
             pPushInsertVo.setPush_slct("64");
             pPushInsertVo.setSend_title("깐부 신청 수락");
@@ -2210,7 +2210,7 @@ public class EventService {
      * 구슬 주머니 획득(구슬교환)
      * memNo, ptrMemNo, roomNo, dalCnt
      */
-    public int gganbuMarblePocketStatIns(GganbuMarbleExchangeInputVo gganbuMarbleExchangeInputVo) {
+    public GganbuPocketStatInsVo gganbuMarblePocketStatIns(GganbuMarbleExchangeInputVo gganbuMarbleExchangeInputVo) {
         return event.gganbuMarblePocketStatIns(gganbuMarbleExchangeInputVo);
     }
 
@@ -2333,17 +2333,24 @@ public class EventService {
     /**
      * 깐부 투표자 집계
      */
-    public List<GganbuBettingStatSelVo> gganbuBettingStatSel(String gganbuNo) {
+    public GganbuBettingStatSelVo gganbuBettingStatSel(String gganbuNo) {
         gganbuNo = gganbuNoCheck(gganbuNo);
-        List<GganbuBettingStatSelVo> result = event.gganbuBettingStatSel(gganbuNo);
-        double oddBettingCnt = result.get(0).getBetting_cnt();
-        double evenBettingCnt = result.get(1).getBetting_cnt();
-        double oddProbability = (oddBettingCnt / (oddBettingCnt + evenBettingCnt)) * 100;
-        double evenProbability = (evenBettingCnt / (oddBettingCnt + evenBettingCnt)) * 100;
-        String oddWinProbability = String.format("%.1f", oddProbability);
-        String evenWinProbability = String.format("%.1f", evenProbability);
-        result.get(0).setOddWinProbability(oddWinProbability);
-        result.get(1).setEvenWinProbability(evenWinProbability);
+        GganbuBettingStatSelVo result = event.gganbuBettingStatSel(gganbuNo);
+        double oddBettingCnt = result.getS_aBettingCnt();
+        double evenBettingCnt = result.getS_bBettingCnt();
+        double oddAddEven = oddBettingCnt + evenBettingCnt;
+        double oddProbability = 0;
+        double evenProbability = 0;
+        String oddWinProbability = "0";
+        String evenWinProbability = "0";
+        if(oddAddEven > 0) {
+            oddProbability = (oddBettingCnt / oddAddEven) * 100;
+            evenProbability = (evenBettingCnt / oddAddEven) * 100;
+            oddWinProbability = String.format("%.1f", oddProbability);
+            evenWinProbability = String.format("%.1f", evenProbability);
+        }
+        result.setOddWinProbability(oddWinProbability);
+        result.setEvenWinProbability(evenWinProbability);
 
         return result;
     }
