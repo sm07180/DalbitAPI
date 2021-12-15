@@ -398,6 +398,10 @@ public class WowzaService {
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             result.put("data", roomInfoVo);
 
+            // tts 성우 리스트
+            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+            result.put("ttsActors", ttsActors);
+
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
             try{
                 HashMap socketMap = new HashMap();
@@ -599,6 +603,10 @@ public class WowzaService {
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
+            // tts 성우 리스트
+            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+            result.put("ttsActors", ttsActors);
+
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
             result.put("status", Status.방송참여_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송참여_해당방이없음.getMessageCode())) {
@@ -829,7 +837,6 @@ public class WowzaService {
 
         // tts 성우 리스트
         ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
-        log.warn("ttsActors : {}", ttsActors);
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
