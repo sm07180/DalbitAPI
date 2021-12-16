@@ -5,12 +5,13 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
+import com.dalbit.event.service.DrawService;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.KnowhowEventInputVo;
 import com.dalbit.event.vo.PhotoEventInputVo;
 import com.dalbit.event.vo.TimeEventVo;
-import com.dalbit.event.vo.inputVo.NovemberFanCouponInsInputVo;
 import com.dalbit.event.vo.procedure.*;
 import com.dalbit.event.vo.request.*;
 import com.dalbit.exception.GlobalException;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,6 +41,9 @@ public class EventController {
 
     @Autowired
     private GsonUtil gsonUtil;
+
+    @Autowired
+    private DrawService drawService;
 
     @GetMapping("/ranking/term")
     public String event200608Term() {
@@ -581,82 +586,6 @@ public class EventController {
     }
 
     /**
-     * 11월 이벤트 팬 부분 경품 응모 등록
-     */
-    @PostMapping("/raffle/enter")
-    public ResVO novemberEventFanCouponIns(@Valid NovemberFanCouponInsInputVo novemberFanCouponInsInputVo, HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        novemberFanCouponInsInputVo.setMemNo(MemberVo.getMyMemNo(request));
-        try {
-            Map<String, Object> res = eventService.novemberEventFanCouponIns(novemberFanCouponInsInputVo); // 응모 결과 + 갱신할 데이터
-            int insRes = (Integer) res.get("couponInsRes"); // 응모 결과
-            switch (insRes) {
-                case 1: resVO.setSuccessResVO(res); break;
-                case -1: resVO.setResVO(ResMessage.C30001.getCode(), ResMessage.C30001.getCodeNM(), res); break;
-                case -2: resVO.setResVO(ResMessage.C30002.getCode(), ResMessage.C30002.getCodeNM(), res); break;
-                case -3: resVO.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), res); break;
-                default: resVO.setFailResVO();
-            }
-        } catch (Exception e) {
-            log.error("EventController / eventFanCouponIns => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 종합 경품 이벤트(팬)
-     */
-    @GetMapping("/raffle/fan/total/list")
-    public ResVO novemberEventFanList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventFanList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / eventFanList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 회차별 추첨 이벤트(팬)
-     */
-    @GetMapping("/raffle/fan/round/list")
-    public ResVO novemberEventFanWeekList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventFanWeekList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / eventFanWeekList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
-     * 11월 이벤트 메인(DJ)
-     */
-    @GetMapping("/raffle/dj/main/list")
-    public ResVO novemberEventDjList(HttpServletRequest request){
-        ResVO resVO = new ResVO();
-        try {
-            String memNo = MemberVo.getMyMemNo(request);
-            resVO.setSuccessResVO(eventService.novemberEventDjList(memNo));
-        } catch (Exception e) {
-            log.error("EventController / novemberEventDjList => {}", e);
-            resVO.setFailResVO();
-        }
-
-        return resVO;
-    }
-
-    /**
      * 아이템 지급[서비스]
      */
     @PostMapping("/raffle/dj/ins/item")
@@ -678,5 +607,630 @@ public class EventController {
         }
 
         return resVO;
+    }
+
+    /* 깐부 이벤트~~~ */
+    /**********************************************************************************************
+    * @Method 설명 : 깐부 이벤트 회차번호
+    * @작성일   : 2021-12-01
+    * @작성자   : 박성민
+    * @변경이력  :
+    **********************************************************************************************/
+    @GetMapping("/gganbu/round/info")
+    public ResVO getGganbuRoundInfo() {
+        ResVO resVO = new ResVO();
+        try {
+            resVO.setSuccessResVO(eventService.getGganbuRoundInfo());
+        } catch (Exception e) {
+            log.error("EventController / gganbuRoundInfo => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/req/ins")
+    public ResVO gganbuMemReqIns(@Valid GganbuMemReqInsVo gganbuMemReqInsVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemReqInsVo.setMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemReqIns(gganbuMemReqInsVo);
+            switch (result) {
+                case -7: resVO.setResVO(ResMessage.C30010.getCode(), ResMessage.C30010.getCodeNM(), result); break;
+                case -6: resVO.setResVO(ResMessage.C30011.getCode(), ResMessage.C30011.getCodeNM(), result); break;
+                case -5: resVO.setResVO(ResMessage.C30012.getCode(), ResMessage.C30012.getCodeNM(), result); break;
+                case -4: resVO.setResVO(ResMessage.C30004.getCode(), ResMessage.C30004.getCodeNM(), result); break;
+                case -3: resVO.setResVO(ResMessage.C30005.getCode(), ResMessage.C30005.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30006.getCode(), ResMessage.C30006.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuRoundInfo => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청 취소
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/req/cancel")
+    public ResVO gganbuMemReqCancel(@Valid GganbuMemReqCancelVo gganbuMemReqCancelVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemReqCancelVo.setMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemReqCancel(gganbuMemReqCancelVo);
+            switch (result) {
+                case -3: resVO.setResVO(ResMessage.C30008.getCode(), ResMessage.C30008.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30009.getCode(), ResMessage.C30009.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemReqCancel => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청 리스트
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/list")
+    public ResVO gganbuMemReqList(@Valid GganbuMemReqListInputVo gganbuMemReqListInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemReqListInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMemReqList(gganbuMemReqListInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemReqList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 신청 수락
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/ins")
+    public ResVO gganbuMemIns(@Valid GganbuMemInsVo gganbuMemInsVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemInsVo.setPtrMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemIns(gganbuMemInsVo);
+            switch (result) {
+                case -5: resVO.setResVO(ResMessage.C30008.getCode(), ResMessage.C30008.getCodeNM(), result); break;
+                case -4:
+                case -3: resVO.setResVO(ResMessage.C30004.getCode(), ResMessage.C30004.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30006.getCode(), ResMessage.C30006.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemIns => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 여부 체크
+     * @작성일   : 2021-12-02
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/chk")
+    public ResVO gganbuMemChk(@Valid GganbuMemChkVo gganbuMemChkVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemChkVo.setMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemChk(gganbuMemChkVo);
+            switch (result) {
+                case -1: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemChk => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 정보
+     * @작성일   : 2021-12-02
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/relationship/sel")
+    public ResVO gganbuMemSel(@Valid GganbuMemSelInputVo gganbuMemSelInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemSelInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMemSel(gganbuMemSelInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemSel => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 구슬 획득
+     * @작성일   : 2021-12-02
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/marble/ins")
+    public ResVO gganbuMemMarbleIns(@Valid GganbuMemMarbleInsInputVo gganbuMemMarbleInsInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemMarbleInsInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            GganbuMemMarbleInsInputVo result = eventService.gganbuMemMarbleIns(gganbuMemMarbleInsInputVo);
+
+            switch (result.getS_return()) {
+                case -6: resVO.setResVO(ResMessage.C30018.getCode(), ResMessage.C30018.getCodeNM(), result); break;
+                case -5: resVO.setResVO(ResMessage.C30017.getCode(), ResMessage.C30017.getCodeNM(), result); break;
+                case -4: resVO.setResVO(ResMessage.C30016.getCode(), ResMessage.C30016.getCodeNM(), result); break;
+                case -3: resVO.setResVO(ResMessage.C30014.getCode(), ResMessage.C30014.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemMarbleIns => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 구슬 리포트
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/report/list")
+    public ResVO gganbuMemMarbleLogList(@Valid GganbuMemMarbleLogListInputVo gganbuMemMarbleInsInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemMarbleInsInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMemMarbleLogList(gganbuMemMarbleInsInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemMarbleLogList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 구슬모으기 페이지
+     * @작성일   : 2021-12-01
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/marble/gather")
+    public ResVO gganbuMarbleGather(HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            resVO.setSuccessResVO(eventService.gganbuMarbleGather(memNo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMarbleGather => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 구슬 베팅 페이지
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/marble/betting")
+    public ResVO gganbuMarbleBetting(@Valid GganbuMarbleBettingPageInputVo gganbuMarbleBettingPageInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMarbleBettingPageInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMarbleBetting(gganbuMarbleBettingPageInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMarbleBetting => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 구슬 주머니 획득(구슬교환)
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  : 자동지급으로 인해 안씀
+     **********************************************************************************************/
+    @PostMapping("/gganbu/pocket/get")
+    public ResVO gganbuMarbleExchange(HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            int result = eventService.gganbuMarbleExchange(memNo);
+            switch (result) {
+                case -3: resVO.setResVO(ResMessage.C30015.getCode(), ResMessage.C30015.getCodeNM(), result); break;
+                case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMarbleExchange => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 구슬 주머니 오픈
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/pocket/open")
+    public ResVO gganbuMarblePocketOpenIns(@Valid GganbuMarblePocketOpenInsVo gganbuMarblePocketOpenInsVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMarblePocketOpenInsVo.setMemNo(MemberVo.getMyMemNo(request));
+            Integer result = eventService.gganbuMarblePocketOpenIns(gganbuMarblePocketOpenInsVo);
+            if(result == null) {
+                resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result);
+            }else {
+                switch (result) {
+                    case -2: resVO.setResVO(ResMessage.C30013.getCode(), ResMessage.C30013.getCodeNM(), result); break;
+                    case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                    case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                    case 1: resVO.setSuccessResVO(result); break;
+                    default: resVO.setFailResVO();
+                }
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMarblePocketOpenIns => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 구슬 주머니 리포트
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/pocket/report/list")
+    public ResVO gganbuMarblePocketLogList(@Valid GganbuMarblePocketLogListInputVo gganbuMarblePocketLogListInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMarblePocketLogListInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMarblePocketLogList(gganbuMarblePocketLogListInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMarblePocketLogList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 랭킹 리스트
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/rank/list")
+    public ResVO gganbuRankList(@Valid GganbuRankListInputVo gganbuRankListInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            resVO.setSuccessResVO(eventService.gganbuRankList(gganbuRankListInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuRankList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 베팅 리스트
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/betting/list")
+    public ResVO gganbuBettingLogList(@Valid GganbuBettingLogListInputVo bettingLogListInputVo) {
+        ResVO resVO = new ResVO();
+        try {
+            resVO.setSuccessResVO(eventService.gganbuBettingLogList(bettingLogListInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuBettingLogList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 나의 베팅 내역
+     * @작성일   : 2021-12-06
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/my/betting/list")
+    public ResVO gganbuMyBettingLogSel(@Valid GganbuBettingLogListInputVo bettingLogListInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            bettingLogListInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMyBettingLogSel(bettingLogListInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMyBettingLogSel => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 투표자 집계
+     * @작성일   : 2021-12-07
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/betting/stat/sel")
+    public ResVO gganbuBettingStatSel(String gganbuNo) {
+        ResVO resVO = new ResVO();
+        try {
+            resVO.setSuccessResVO(eventService.gganbuBettingStatSel(gganbuNo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuBettingStatSel => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 뱃지 초기화
+     * @작성일   : 2021-12-07
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/gganbu/badge/upd")
+    public ResVO gganbuMemBadgeUpd(@Valid GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemBadgeUpdVo.setMemNo(MemberVo.getMyMemNo(request));
+            int result = eventService.gganbuMemBadgeUpd(gganbuMemBadgeUpdVo);
+            switch (result) {
+                case -1: resVO.setResVO(ResMessage.C30007.getCode(), ResMessage.C30007.getCodeNM(), result); break;
+                case 0: resVO.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), result); break;
+                case 1: resVO.setSuccessResVO(result); break;
+                default: resVO.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemBadgeUpd => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 찾기
+     * @작성일   : 2021-12-07
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/member/search")
+    public ResVO gganbuMemberSearch(@Valid GganbuMemberSearchInputVo gganbuMemberSearchInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuMemberSearchInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuMemberSearch(gganbuMemberSearchInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuMemberSearch => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 구슬 주머니 페이지
+     * @작성일   : 2021-12-08
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/pocket/page")
+    public ResVO gganbuPocketPage(@Valid GganbuPocketPageInputVo gganbuPocketPageInputVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuPocketPageInputVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuPocketPage(gganbuPocketPageInputVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuPocketPage => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 깐부 찾기 (나의 팬)
+     * @작성일   : 2021-12-08
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/gganbu/search/fan")
+    public ResVO gganbuFanList(@Valid GganbuFanListVo gganbuFanListVo, HttpServletRequest request) {
+        ResVO resVO = new ResVO();
+        try {
+            gganbuFanListVo.setMemNo(MemberVo.getMyMemNo(request));
+            resVO.setSuccessResVO(eventService.gganbuFanList(gganbuFanListVo));
+        } catch (Exception e) {
+            log.error("EventController / gganbuFanList => {}", e);
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
+
+    /* 깐부 이벤트 끝 ~~~ */
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 당첨내역 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/winningInfo")
+    public ResVO getDrawWinningInfo(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawWinningInfo(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 응모권 개수 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/ticketCnt")
+    public ResVO getDrawTicketCnt(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawTicketCnt(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 뽑기 리스트 조회
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @GetMapping("/draw/listInfo")
+    public ResVO getDrawListInfo(HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = drawService.getDrawListInfo(memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawListInfo => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 추억의 뽑기(이벤트) 뽑기 시도
+     * @작성일 : 2021-12-06
+     * @작성자 : 이정혁
+     * @변경이력 :
+     **********************************************************************************************/
+    @PostMapping("/draw/select")
+    public ResVO putDrawSelect(@RequestParam Map<String, Object> param, HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            LocalDateTime today = LocalDateTime.now();
+            LocalDateTime endDay = LocalDateTime.parse("2021-12-17T00:00:00.000");
+
+            if (!today.isBefore(endDay)) {
+                result.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), null);
+                return result;
+            }
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else if (!param.containsKey("selectList")){
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else {
+                result = drawService.putDrawSelect(param, memNo);
+            }
+        } catch (Exception e) {
+            log.error("EventController / getDrawTicketCnt => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
     }
 }

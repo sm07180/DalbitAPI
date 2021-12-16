@@ -802,6 +802,7 @@ public class MemberService {
     public String callDjRecommendList(P_DjRecommendListVo pDjRecommendListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pDjRecommendListVo);
         List<P_DjRecommendListVo> djRecommendListVo = memberDao.callDjRecommendList(procedureVo);
+        Collections.shuffle(djRecommendListVo);
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > -1) {
@@ -868,7 +869,7 @@ public class MemberService {
 
         P_SpecialHistoryVo pSpecialHistoryVo = new P_SpecialHistoryVo(specialHistoryVo, request);
         ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
-        List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjHistory(procedureVo);
+        List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjBestDjHistory(procedureVo);
 
         String result;
 

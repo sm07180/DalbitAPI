@@ -11,6 +11,9 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
+import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.GganbuPocketStatInsVo;
+import com.dalbit.event.vo.request.GganbuMarbleExchangeInputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.MemberVo;
@@ -58,6 +61,8 @@ public class ActionService {
     MessageUtil messageUtil;
 
     @Autowired TTSService ttsService;
+
+    @Autowired EventService eventService;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -261,20 +266,26 @@ public class ActionService {
      */
     public String callBroadCastRoomGift(P_RoomGiftVo pRoomGiftVo, HttpServletRequest request) {
         String result;
-        String ttsText = pRoomGiftVo.getTtsText().trim();
+        String ttsText = pRoomGiftVo.getTtsText();
         String actorId = pRoomGiftVo.getActorId();
+        String sendItemSuccessMsg = "님에게 선물을 보냈습니다."; // 일반 || tts
 
+        if(ttsText != null) ttsText = ttsText.trim();
+
+        // tts 아이템
         if(!StringUtils.isEmpty(ttsText)) {
             // actor 체크
             if(!actorCheck(actorId)) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_성우없음));
             }
 
+            ttsText = banWordMasking(pRoomGiftVo.getRoom_no(), ttsText); // 금지어 *로 마스킹 처리
+
             if(!hasTTSPermutationWord(ttsText)) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.선물하기_TTS_변환가능문자없음));
             }
 
-            ttsText = banWordMasking(pRoomGiftVo.getRoom_no(), ttsText); // 금지어 *로 마스킹 처리
+            sendItemSuccessMsg += "\n잠시 후 목소리가 재생됩니다.";
         }
 
         String item_code = pRoomGiftVo.getItem_code();
@@ -352,6 +363,15 @@ public class ActionService {
                 // tts 정보
                 itemMap.put("ttsText", ttsText);
                 itemMap.put("actorId", actorId);
+                returnMap.put("message", itemMap.get("nickNm") + sendItemSuccessMsg);
+
+                // 깐부 이벤트
+                GganbuMarbleExchangeInputVo gganbuInputVo = new GganbuMarbleExchangeInputVo(
+                    pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(),
+                    pRoomGiftVo.getRoom_no(), item.getByeol() * pRoomGiftVo.getItem_cnt()
+                );
+                GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
+                returnMap.put("gganbuPocketCnt", statIns);
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

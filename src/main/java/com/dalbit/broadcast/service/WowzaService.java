@@ -829,7 +829,6 @@ public class WowzaService {
 
         // tts 성우 리스트
         ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
-        log.warn("ttsActors : {}", ttsActors);
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);

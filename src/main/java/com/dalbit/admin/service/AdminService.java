@@ -14,6 +14,8 @@ import com.dalbit.common.service.EmailService;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
+import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.GganbuMemViewStatInsVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
@@ -26,6 +28,7 @@ import lombok.var;
 import okhttp3.FormBody;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -77,6 +80,8 @@ public class AdminService {
 
     @Autowired
     GuestService guestService;
+
+    @Autowired EventService eventService;
 
     private final String menuJsonKey = "adminMenu";
 
@@ -234,10 +239,6 @@ public class AdminService {
             adminDao.callMemAdminMemoAdd(adminMemoProcedure);
         }
 
-        //회원 나가기 처리
-        adminDao.updateBroadcastMemberExit(pRoomForceExitInputVo);
-
-
         //시작시간 가져오기
         P_MemberBroadcastInputVo pMemberBroadcastInputVo = new P_MemberBroadcastInputVo();
         pMemberBroadcastInputVo.setRoom_no(pRoomForceExitInputVo.getRoom_no());
@@ -245,6 +246,13 @@ public class AdminService {
         adminDao.callBroadcastInfo(broadcastInfo);
 
         P_BroadcastDetailOutputVo broadcastDetail = new Gson().fromJson(broadcastInfo.getExt(), P_BroadcastDetailOutputVo.class);
+
+        // 방송 시간에 따른 구슬 추가
+        boolean isBj = StringUtils.equals(broadcastDetail.getDj_mem_no(), pRoomForceExitInputVo.getMem_no());
+        eventService.gganbuMemViewStatIns(MemberVo.getMyMemNo(request), pRoomForceExitInputVo.getRoom_no(), isBj);
+
+        //회원 나가기 처리
+        adminDao.updateBroadcastMemberExit(pRoomForceExitInputVo);
 
         //방 종료 처리
         adminDao.updateBroadcastExit(new BroadcastExitVo(pRoomForceExitInputVo.getRoom_no(), broadcastDetail.getStartDate()));
