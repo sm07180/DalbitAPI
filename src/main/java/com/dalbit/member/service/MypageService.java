@@ -1631,13 +1631,21 @@ public class MypageService {
          * 10 : 신규 팬 등록 수
          */
 
+        long broadcastAirtime;
         switch (code) {
             case 1:
-            case 8:
                 //누적방송시간 체크(기간)
-                long broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjConditionSearchVo);
+                broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjConditionSearchVo);
                 resultMap.put("condition", broadcastAirtime < value ? 0 : 1);
                 resultMap.put("title", "누적방송시간");
+                resultMap.put("value", "최소 " + value + "시간 방송");
+                break;
+            case 8:
+                //누적방송시간(팬 방송 제외) 체크(기간)
+                broadcastAirtime = mypageDao.selectSpecialDjBroadcastTime(specialDjConditionSearchVo);
+                resultMap.put("condition", broadcastAirtime < value ? 0 : 1);
+                resultMap.put("title", "누적방송시간");
+                resultMap.put("subtitle", "(팬 방송 제외)");
                 resultMap.put("value", "최소 " + value + "시간 방송");
                 break;
             case 2:
