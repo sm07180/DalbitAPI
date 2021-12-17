@@ -1,11 +1,14 @@
 package com.dalbit.event.service;
 
+import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.proc.LikeTreeEvent;
 import com.dalbit.event.vo.LikeTreeStoryVO;
 import com.dalbit.util.DBUtil;
+import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,7 @@ import java.util.Map;
 public class LikeTreeService {
     @Autowired
     LikeTreeEvent likeTreeEvent;
+    @Autowired CommonService commonService;
 
     /**********************************************************************************************
      * @Method 설명 : 좋아요 트리 사연 장식리스트
@@ -119,6 +123,32 @@ public class LikeTreeService {
         return result;
     }
 
+    /**
+     *  좋아요 트리 사연 내용 valid
+     */
+    private ResVO storyValidationCheck(String story) {
+        ResVO resVO = new ResVO();
+        int STORY_MAX_LENGTH = 100;
+        String systemBanWord = commonService.banWordSelect();
+
+        try {
+            if(story == null || story.trim().length() == 0) { // 0자
+                resVO.setResVO(ResMessage.C30211.getCode(), ResMessage.C30211.getCodeNM(), null);
+            }else if(story.length() > STORY_MAX_LENGTH) { // max 초과
+                resVO.setResVO(ResMessage.C30212.getCode(), ResMessage.C30212.getCodeNM(), null);
+            }else if(DalbitUtil.isStringMatchCheck(systemBanWord, story)){ //금지어 체크
+                resVO.setResVO(ResMessage.C30213.getCode(), ResMessage.C30213.getCodeNM(), null);
+            }else {
+                resVO.setSuccessResVO(null);
+            }
+        } catch (Exception e) {
+            log.error("storyValidationCheck error ===> {}", e);
+            resVO.setResVO(ResMessage.C30210.getCode(), ResMessage.C30210.getCodeNM(), null);
+        }
+
+        return resVO;
+    }
+
     /**********************************************************************************************
      * @Method 설명 : 좋아요 트리 사연 등록
      * @작성일 : 2021-12-17
@@ -131,12 +161,19 @@ public class LikeTreeService {
         ResVO result = new ResVO();
 
         try {
-            Integer resultInfo = likeTreeEvent.likeTreeStoryIns(param);
+            String storyConts = String.valueOf(param.get("storyConts"));
+            ResVO validCheck = storyValidationCheck(storyConts);
 
-            if (resultInfo == 1) {
-                result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
-            } else {
-                result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+            if(!StringUtils.equals(validCheck.getCode(), "00000")) { // 사연 내용 유효성 체크
+                result = validCheck;
+            }else { // 정상
+                Integer resultInfo = likeTreeEvent.likeTreeStoryIns(param);
+
+                if (resultInfo == 1) {
+                    result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
+                } else {
+                    result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+                }
             }
         } catch (Exception e) {
             log.error("LikeTreeService / likeTreeStoryIns => {}", e);
@@ -157,12 +194,19 @@ public class LikeTreeService {
         ResVO result = new ResVO();
 
         try {
-            Integer resultInfo = likeTreeEvent.likeTreeStoryUpd(param);
+            String storyConts = String.valueOf(param.get("storyConts"));
+            ResVO validCheck = storyValidationCheck(storyConts);
 
-            if (resultInfo == 1) {
-                result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
-            } else {
-                result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+            if(!StringUtils.equals(validCheck.getCode(), "00000")) { // 사연 내용 유효성 체크
+                result = validCheck;
+            }else { // 정상
+                Integer resultInfo = likeTreeEvent.likeTreeStoryUpd(param);
+
+                if (resultInfo == 1) {
+                    result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
+                } else {
+                    result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+                }
             }
         } catch (Exception e) {
             log.error("LikeTreeService / likeTreeStoryUpd => {}", e);
@@ -183,12 +227,18 @@ public class LikeTreeService {
         ResVO result = new ResVO();
 
         try {
-            Integer resultInfo = likeTreeEvent.likeTreeStoryDel(param);
+            if(param.get("storyNo") == null) { // 사연번호 없음
+                result.setResVO(ResMessage.C30215.getCode(), ResMessage.C30215.getCodeNM(), null);
+            }else { // 정상
+                Integer resultInfo = likeTreeEvent.likeTreeStoryDel(param);
 
-            if (resultInfo == 1) {
-                result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
-            } else {
-                result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+                if (resultInfo == 1) {
+                    result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
+                } else if(resultInfo == -1) {
+                    result.setResVO(ResMessage.C30214.getCode(), ResMessage.C30214.getCodeNM(), resultInfo);
+                } else {
+                    result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+                }
             }
         } catch (Exception e) {
             log.error("LikeTreeService / likeTreeStoryDel => {}", e);
@@ -252,6 +302,34 @@ public class LikeTreeService {
             log.error("LikeTreeService / getLikeTreeRankList => {}", e);
             result.setFailResVO();
         }
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 좋아요 트리 이벤트 보상 지급
+     * @작성일 : 2021-12-17
+     * @작성자 : 박성민
+     * @변경이력 :
+     * @Parameter : memNo, memPhone
+     * @Return : -3:100점 미만 , -2:본인 미인증, -1:이미 인증받은 번호로 달 받음 , 0: 에러, 1:정상
+     **********************************************************************************************/
+    public ResVO getLikeTreeRewardIns(Map<String, Object> param) {
+        ResVO result = new ResVO();
+        try {
+            Integer getData = likeTreeEvent.getLikeTreeRewardIns(param);
+
+            switch (getData) {
+                case -3: result.setResVO(ResMessage.C30216.getCode(), ResMessage.C30216.getCodeNM(), null); break;
+                case -2: result.setResVO(ResMessage.C30217.getCode(), ResMessage.C30217.getCodeNM(), null); break;
+                case -1: result.setResVO(ResMessage.C30218.getCode(), ResMessage.C30218.getCodeNM(), null); break;
+                case 1: result.setSuccessResVO(result); break;
+                default: result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+            }
+        } catch (Exception e) {
+            log.error("LikeTreeService / getLikeTreeRewardIns => {}", e);
+            result.setFailResVO();
+        }
+
         return result;
     }
 }
