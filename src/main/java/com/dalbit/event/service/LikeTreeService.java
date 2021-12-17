@@ -72,7 +72,7 @@ public class LikeTreeService {
 
             for (int i = 0; i < 3; i++) {
                 LikeTreeStoryVO temp = DBUtil.getData(data, (i + 1), LikeTreeStoryVO.class);
-                if (temp != null) {
+                if (temp != null && temp.getAutoNo() != 0) {
                     list.add(temp);
                 }
             }

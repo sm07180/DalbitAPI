@@ -34,7 +34,7 @@ public interface LikeTreeEvent {
      * @Return :
      **********************************************************************************************/ 
     @ResultMap({"ResultMap.integer", "ResultMap.StoryVo1", "ResultMap.StoryVo2", "ResultMap.StoryVo3"})
-    @Select("CALL rd_data.p_evt_like_tree_decoration_list()")
+    @Select("CALL rd_data.p_evt_like_tree_list()")
     List<Object> getLikeTreeMainList();
 
     /**********************************************************************************************
