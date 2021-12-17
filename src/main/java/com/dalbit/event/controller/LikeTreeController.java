@@ -220,4 +220,29 @@ public class LikeTreeController {
         }
         return result;
     }
+
+    /**********************************************************************************************
+     * @Method 설명 : 좋아요 트리 이벤트 보상 지급
+     * @작성일 : 2021-12-17
+     * @작성자 : 박성민
+     * @변경이력 :
+     * @Parameter : memNo, memPhone
+     * @Return : -3:100점 미만 , -2:본인 미인증, -1:이미 인증받은 번호로 달 받음 , 0: 에러, 1:정상
+     **********************************************************************************************/
+    @GetMapping("")
+    public ResVO getLikeTreeRewardIns(Map<String, Object> param, HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            param.put("memNo", memNo);
+
+            result = likeTreeService.getLikeTreeRewardIns(param);
+        } catch (Exception e) {
+            log.error("LikeTreeController / getLikeTreeRewardIns => {}", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
 }

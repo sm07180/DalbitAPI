@@ -1,6 +1,6 @@
 package com.dalbit.event.proc;
 
-import com.dalbit.event.vo.LikeTreeStoryVO;
+import com.dalbit.event.vo.LikeTreeRewardInsVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
@@ -105,4 +105,14 @@ public interface LikeTreeEvent {
     @Select("CALL rd_data.p_evt_like_tree_seq_mem_rank_list(#{seqNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getLikeTreeRankList(@Param(value = "seqNo") Integer seqNo, @Param(value = "pageNo") Integer pageNo, @Param(value = "pagePerCnt") Integer pagePerCnt);
 
+    /**********************************************************************************************
+     * @Method 설명 : 좋아요 트리 이벤트 보상 지급
+     * @작성일 : 2021-12-17
+     * @작성자 : 박성민
+     * @변경이력 :
+     * @Parameter : memNo, memPhone
+     * @Return : -3:100점 미만 , -2:본인 미인증, -1:이미 인증받은 번호로 달 받음 , 0: 에러, 1:정상
+     **********************************************************************************************/
+    @Select("CALL p_evt_like_tree_reward_ins(#{memNo}, #{memPhone})")
+    LikeTreeRewardInsVo getLikeTreeRewardIns(Map<String, Object> param);
 }
