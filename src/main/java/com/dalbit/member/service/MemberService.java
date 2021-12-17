@@ -869,7 +869,7 @@ public class MemberService {
 
         P_SpecialHistoryVo pSpecialHistoryVo = new P_SpecialHistoryVo(specialHistoryVo, request);
         ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
-        List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjHistory(procedureVo);
+        List<P_SpecialHistoryVo> specialDjList = mainDao.callSpecialDjBestDjHistory(procedureVo);
 
         String result;
 
