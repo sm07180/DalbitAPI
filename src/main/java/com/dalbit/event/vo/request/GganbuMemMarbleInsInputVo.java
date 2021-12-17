@@ -16,8 +16,8 @@ public class GganbuMemMarbleInsInputVo {
         this.bMarbleCnt = bMarbleCnt;
         this.vMarbleCnt = vMarbleCnt;
     }
-    private String memNo; // 회원번호
-    private String insSlct; // 획득구분 [r:방송, v:청취, c:달충전, e:교환, b:배팅]
+    private String memNo = ""; // 회원번호
+    private String insSlct = ""; // 획득구분 [r:방송, v:청취, c:달충전, e:교환, b:배팅]
     private String roomNo = "0"; // 룸번호[획득구분 r에서 사용]
     private int rMarbleCnt = 0; // 빨강구슬 획득수
     private int yMarbleCnt = 0; // 노랑구슬 획득수
