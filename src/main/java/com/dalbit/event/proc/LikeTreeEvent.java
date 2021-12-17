@@ -1,6 +1,6 @@
 package com.dalbit.event.proc;
 
-import com.dalbit.event.vo.LikeTreeStoryVO;
+import com.dalbit.event.vo.LikeTreeRewardInsVo;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
@@ -114,5 +114,5 @@ public interface LikeTreeEvent {
      * @Return : -3:100점 미만 , -2:본인 미인증, -1:이미 인증받은 번호로 달 받음 , 0: 에러, 1:정상
      **********************************************************************************************/
     @Select("CALL p_evt_like_tree_reward_ins(#{memNo}, #{memPhone})")
-    Integer getLikeTreeRewardIns(Map<String, Object> param);
+    LikeTreeRewardInsVo getLikeTreeRewardIns(Map<String, Object> param);
 }
