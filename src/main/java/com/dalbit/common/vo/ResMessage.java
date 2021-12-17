@@ -47,6 +47,7 @@ public enum ResMessage {
     // 아이템 지급
     C50001("50001", "회원 및 아이템 수 없음"),
 
+    C99994("99994", "No Data"),
     C99995("99995","Invalid cookie"),
     C99996("99996","File Does Not Exist"),
     C99997("99997","DB Server Error"),

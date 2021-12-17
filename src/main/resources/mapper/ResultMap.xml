@@ -28,4 +28,10 @@
     <!-- 추억의 뽑기 이벤트 -->
     <resultMap id="DrawGiftVo" type="com.dalbit.event.vo.DrawGiftVO"/>
     <resultMap id="DrawListVo" type="com.dalbit.event.vo.DrawListVO"/>
+    <!-- 좋아요 트리 이벤트 -->
+    <resultMap id="StoryListVo" type="com.dalbit.event.vo.LikeTreeStoryVO"/>
+    <resultMap id="StoryVo1" type="com.dalbit.event.vo.LikeTreeStoryVO"/>
+    <resultMap id="StoryVo2" type="com.dalbit.event.vo.LikeTreeStoryVO"/>
+    <resultMap id="StoryVo3" type="com.dalbit.event.vo.LikeTreeStoryVO"/>
+
 </mapper>
