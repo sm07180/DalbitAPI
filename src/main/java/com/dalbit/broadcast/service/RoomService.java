@@ -15,6 +15,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
+import com.dalbit.event.vo.request.GganbuMemMarbleInsInputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
@@ -112,6 +113,10 @@ public class RoomService {
             return gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
         }
 
+        HashMap returnMap = new HashMap();
+        // 방송 시간에 따른 구슬 추가
+        returnMap.put("getMarbleInfo", new GganbuMemMarbleInsInputVo());
+
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
         roomDao.callBroadCastRoomExit(procedureVo);
 
@@ -122,7 +127,6 @@ public class RoomService {
         String result;
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
-            HashMap returnMap = new HashMap();
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
             SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
@@ -196,7 +200,6 @@ public class RoomService {
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
         }else{
-            HashMap returnMap = new HashMap();
             returnMap.put("isLevelUp", false);
             if (isBj) {
                 if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {

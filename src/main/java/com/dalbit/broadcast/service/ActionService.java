@@ -11,6 +11,9 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
+import com.dalbit.event.service.EventService;
+import com.dalbit.event.vo.GganbuPocketStatInsVo;
+import com.dalbit.event.vo.request.GganbuMarbleExchangeInputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.MemberVo;
@@ -58,6 +61,8 @@ public class ActionService {
     MessageUtil messageUtil;
 
     @Autowired TTSService ttsService;
+
+    @Autowired EventService eventService;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -359,6 +364,14 @@ public class ActionService {
                 itemMap.put("ttsText", ttsText);
                 itemMap.put("actorId", actorId);
                 returnMap.put("message", itemMap.get("nickNm") + sendItemSuccessMsg);
+
+                // 깐부 이벤트
+                GganbuMarbleExchangeInputVo gganbuInputVo = new GganbuMarbleExchangeInputVo(
+                    pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(),
+                    pRoomGiftVo.getRoom_no(), item.getByeol() * pRoomGiftVo.getItem_cnt()
+                );
+                GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
+                returnMap.put("gganbuPocketCnt", statIns);
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
