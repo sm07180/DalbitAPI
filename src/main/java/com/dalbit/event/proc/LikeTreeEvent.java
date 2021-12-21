@@ -1,9 +1,12 @@
 package com.dalbit.event.proc;
 
+import com.dalbit.event.vo.LikeTreeRankingVO;
 import com.dalbit.event.vo.LikeTreeRewardInsVo;
+import com.dalbit.event.vo.LikeTreeStoryVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
@@ -22,7 +25,7 @@ public interface LikeTreeEvent {
      * @Return :
      **********************************************************************************************/
     @ResultMap({"ResultMap.integer", "ResultMap.StoryListVo"})
-    @Select("CALL rd_data.p_evt_like_tree_decoration_list(#{seqNo}), #{pageNo}, #{pagePerCnt})")
+    @Select("CALL rd_data.p_evt_like_tree_decoration_list(#{seqNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getLikeTreeDecoList(@Param(value = "seqNo") Integer seqNo, @Param(value = "pageNo") Integer pageNo, @Param(value = "pagePerCnt") Integer pagePerCnt);
 
     /**********************************************************************************************
@@ -33,9 +36,9 @@ public interface LikeTreeEvent {
      * @Parameter :
      * @Return :
      **********************************************************************************************/ 
-    @ResultMap({"ResultMap.integer", "ResultMap.StoryVo1", "ResultMap.StoryVo2", "ResultMap.StoryVo3"})
-    @Select("CALL rd_data.p_evt_like_tree_list()")
-    List<Object> getLikeTreeMainList();
+    @ResultMap({"ResultMap.string", "ResultMap.integer", "ResultMap.StoryVo1", "ResultMap.StoryVo2", "ResultMap.StoryVo3"})
+    @Select("CALL rd_data.p_evt_like_tree_list(#{memNo})")
+    List<Object> getLikeTreeMainList(@Param(value = "memNo") String memNo);
 
     /**********************************************************************************************
      * @Method 설명 : 좋아요 트리 사연 리스트
@@ -101,9 +104,12 @@ public interface LikeTreeEvent {
      * @Parameter :
      * @Return :
      **********************************************************************************************/
-    @ResultMap({"ResultMap.integer", "ResultMap.StoryListVo"})
+    @ResultMap({"ResultMap.integer", "ResultMap.RankListVo"})
     @Select("CALL rd_data.p_evt_like_tree_seq_mem_rank_list(#{seqNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getLikeTreeRankList(@Param(value = "seqNo") Integer seqNo, @Param(value = "pageNo") Integer pageNo, @Param(value = "pagePerCnt") Integer pagePerCnt);
+
+    @Select("CALL rd_data.p_evt_like_tree_seq_mem_rank_sel(#{seqNo}, #{memNo})")
+    LikeTreeRankingVO getLikeTreeRankUserInfo(@Param(value = "seqNo") Integer seqNo, @Param(value = "memNo") String memNo);
 
     /**********************************************************************************************
      * @Method 설명 : 좋아요 트리 이벤트 보상 지급

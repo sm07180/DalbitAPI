@@ -17,11 +17,45 @@ public class LikeTreeStoryVO {
     private Date updDate; //    DATETIME  -- 수정일자
     private Date decorationDate; //  DATETIME  -- 장식 등록일자
 
+    // 프론트에서 comment 컴포넌트 쓰게 하기 위한 데이터처리(underscope 킹받네 ㅡㅡ)
+    private Integer tail_no = 0;
+    private String image_profile = "";
+    private String mem_nick = "";
+    private String tail_mem_no = "";
+    private Date ins_date;
+
+    public Integer getTail_no() {
+        return tail_no;
+    }
+
+    public String getImage_profile() {
+        return image_profile;
+    }
+
+    public String getMem_nick() {
+        return mem_nick;
+    }
+
+    public String getTail_mem_no() {
+        return tail_mem_no;
+    }
+
+    public Date getIns_date() {
+        return ins_date;
+    }
+
+    public String getTail_conts() {
+        return tail_conts;
+    }
+
+    private String tail_conts = "";
+
     public Integer getAutoNo() {
         return autoNo;
     }
 
     public void setAuto_No(Integer auto_no) {
+        this.autoNo = tail_no;
         this.autoNo = auto_no;
     }
 
@@ -38,6 +72,7 @@ public class LikeTreeStoryVO {
     }
 
     public void setStory_Conts(String story_conts) {
+        this.tail_conts = story_conts;
         this.storyConts = story_conts;
     }
 
@@ -46,6 +81,7 @@ public class LikeTreeStoryVO {
     }
 
     public void setMem_No(String mem_no) {
+        this.tail_mem_no = mem_no;
         this.memNo = mem_no;
     }
 
@@ -62,6 +98,7 @@ public class LikeTreeStoryVO {
     }
 
     public void setMem_Nick(String mem_nick) {
+        this.mem_nick = mem_nick;
         this.memNick = mem_nick;
     }
 
@@ -78,6 +115,7 @@ public class LikeTreeStoryVO {
     }
 
     public void setImage_Profile(String image_profile) {
+        this.image_profile = image_profile;
         this.imageProfile = image_profile;
     }
 
@@ -102,6 +140,7 @@ public class LikeTreeStoryVO {
     }
 
     public void setIns_Date(Date ins_date) {
+        this.ins_date = ins_date;
         this.insDate = ins_date;
     }
 

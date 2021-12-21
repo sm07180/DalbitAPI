@@ -31,7 +31,9 @@ public class LikeTreeController {
      * @Return :
      **********************************************************************************************/
     @GetMapping("/decoList")
-    public ResVO getLikeTreeDecoList(@RequestParam(value = "memNo") Integer seqNo, @RequestParam(value = "pageNo") Integer pageNo, @RequestParam(value = "pagePerCnt") Integer pagePerCnt) {
+    public ResVO getLikeTreeDecoList(@RequestParam(value = "seqNo") Integer seqNo,
+                                     @RequestParam(value = "pageNo") Integer pageNo,
+                                     @RequestParam(value = "pagePerCnt") Integer pagePerCnt) {
         ResVO result = new ResVO();
 
         try {
@@ -53,10 +55,16 @@ public class LikeTreeController {
      * @Return :
      **********************************************************************************************/
     @GetMapping("/mainList")
-    public ResVO getLikeTreeMainList() {
+    public ResVO getLikeTreeMainList(HttpServletRequest request) {
         ResVO result = new ResVO();
         try {
-            result = likeTreeService.getLikeTreeMainList();
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                result = likeTreeService.getLikeTreeMainList(memNo);
+            }
         } catch (Exception e) {
             log.error("LikeTreeController / getLikeTreeMainList => {}", e);
             result.setFailResVO();
@@ -216,6 +224,20 @@ public class LikeTreeController {
             result = likeTreeService.getLikeTreeRankList(seqNo, pageNo, pagePerCnt);
         } catch (Exception e) {
             log.error("LikeTreeController / getLikeTreeRankList => {}", e);
+            result.setFailResVO();
+        }
+        return result;
+    }
+
+    @GetMapping("/rankUserInfo")
+    public ResVO getLikeTreeRankUserInfo(@RequestParam(value = "seqNo", defaultValue = "1") Integer seqNo,
+                                     @RequestParam(value = "memNo") String memNo) {
+        ResVO result = new ResVO();
+
+        try {
+            result = likeTreeService.getLikeTreeRankUserInfo(seqNo, memNo);
+        } catch (Exception e) {
+            log.error("LikeTreeController / getLikeTreeRankUserInfo => {}", e);
             result.setFailResVO();
         }
         return result;

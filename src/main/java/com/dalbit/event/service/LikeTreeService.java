@@ -4,6 +4,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.proc.LikeTreeEvent;
+import com.dalbit.event.vo.LikeTreeRankingVO;
 import com.dalbit.event.vo.LikeTreeRewardInsVo;
 import com.dalbit.event.vo.LikeTreeStoryVO;
 import com.dalbit.util.DBUtil;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -65,14 +67,17 @@ public class LikeTreeService {
      * @Parameter :
      * @Return :
      **********************************************************************************************/
-    public ResVO getLikeTreeMainList() {
+    public ResVO getLikeTreeMainList(String memNo) {
         ResVO result = new ResVO();
         Map<String, Object> resultInfo = new HashMap<>();
+        LocalDateTime today = LocalDateTime.now();
+        LocalDateTime endDay = LocalDateTime.parse("2022-01-28T00:00:00.000");
 
         try {
 
-            List<Object> data = likeTreeEvent.getLikeTreeMainList();
-            Integer totScoreCnt = DBUtil.getData(data, 0, Integer.class);
+            List<Object> data = likeTreeEvent.getLikeTreeMainList(memNo);
+            String stepYn = DBUtil.getData(data, 0, String.class);
+            Integer totScoreCnt = DBUtil.getData(data, 1, Integer.class);
             List<LikeTreeStoryVO> list = new ArrayList<>();
 
             for (int i = 0; i < 3; i++) {
@@ -82,6 +87,12 @@ public class LikeTreeService {
                 }
             }
 
+            // 이벤트 단계 설정, check 선물 받았는지 확인하는 프로시저 필요함
+            if (!today.isBefore(endDay)) {
+                resultInfo.put("step", ("n".equals(stepYn) ? 3 : 2)); // 2 - 보상 안받음, 3 - 보상 받음 
+            }
+
+            resultInfo.put("step", 1); // 1 - 보상 수령 기간 아님
             resultInfo.put("totScoreCnt", totScoreCnt);
             resultInfo.put("list", list);
 
@@ -130,9 +141,9 @@ public class LikeTreeService {
     private ResVO storyValidationCheck(String story) {
         ResVO resVO = new ResVO();
         int STORY_MAX_LENGTH = 100;
-        String systemBanWord = commonService.banWordSelect();
 
         try {
+            String systemBanWord = commonService.banWordSelect();
             if(story == null || story.trim().length() == 0) { // 0자
                 resVO.setResVO(ResMessage.C30211.getCode(), ResMessage.C30211.getCodeNM(), null);
             }else if(story.length() > STORY_MAX_LENGTH) { // max 초과
@@ -290,12 +301,40 @@ public class LikeTreeService {
         try {
             List<Object> data = likeTreeEvent.getLikeTreeRankList(seqNo, pageNo, pagePerCnt);
             Integer cnt = DBUtil.getData(data, 0, Integer.class);
-            List<LikeTreeStoryVO> list = DBUtil.getList(data, 1, LikeTreeStoryVO.class);
+            List<LikeTreeRankingVO> list = DBUtil.getList(data, 1, LikeTreeRankingVO.class);
 
-            if (cnt > 0) {
+            if (cnt != null && cnt > 0) {
                 resultInfo.put("cnt", cnt);
+                for (int i = 1; i <= list.size(); i++) {
+                    list.get(i - 1).setRankNo((pageNo - 1) * pagePerCnt + i);
+                }
                 resultInfo.put("list", list);
                 result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
+            } else {
+                result.setResVO(ResMessage.C99994.getCode(), ResMessage.C99994.getCodeNM(), null);
+            }
+        } catch (Exception e) {
+            log.error("LikeTreeService / getLikeTreeRankList => {}", e);
+            result.setFailResVO();
+        }
+        return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 좋아요 트리 회원의 랭킹 정보
+     * @작성일 : 2021-12-20
+     * @작성자 : 이정혁
+     * @변경이력 :
+     * @Parameter :
+     * @Return :
+     **********************************************************************************************/ 
+    public ResVO getLikeTreeRankUserInfo(Integer seqNo, String memNo) {
+        ResVO result = new ResVO();
+        
+        try {
+            LikeTreeRankingVO data = likeTreeEvent.getLikeTreeRankUserInfo(seqNo, memNo);
+            if (data != null && data.getMemNo().equals(memNo)) {
+                result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), data);
             } else {
                 result.setResVO(ResMessage.C99994.getCode(), ResMessage.C99994.getCodeNM(), null);
             }
