@@ -361,7 +361,7 @@ public class LikeTreeService {
             switch (getData.getS_return()) {
                 case -3: result.setResVO(ResMessage.C30216.getCode(), ResMessage.C30216.getCodeNM(), null); break;
                 case -2: result.setResVO(ResMessage.C30217.getCode(), ResMessage.C30217.getCodeNM(), null); break;
-                case -1: result.setResVO(ResMessage.C30218.getCode(), ResMessage.C30218.getCodeNM(), getData); break;
+                case -1: result.setResVO(ResMessage.C30218.getCode(), ResMessage.C30218.getCodeNM() + "\n[" + getData.getS_aMemNick() + "]", getData); break;
                 case 1: result.setSuccessResVO(getData); break;
                 default: result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
             }

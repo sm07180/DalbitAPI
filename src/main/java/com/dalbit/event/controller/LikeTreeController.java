@@ -251,8 +251,8 @@ public class LikeTreeController {
      * @Parameter : memNo, memPhone
      * @Return : -3:100점 미만 , -2:본인 미인증, -1:이미 인증받은 번호로 달 받음 , 0: 에러, 1:정상
      **********************************************************************************************/
-    @GetMapping("")
-    public ResVO getLikeTreeRewardIns(Map<String, Object> param, HttpServletRequest request) {
+    @PostMapping("/reward/ins")
+    public ResVO getLikeTreeRewardIns(@RequestParam Map<String, Object> param, HttpServletRequest request) {
         ResVO result = new ResVO();
 
         try {
