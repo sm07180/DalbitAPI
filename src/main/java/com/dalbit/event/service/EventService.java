@@ -2086,6 +2086,15 @@ public class EventService {
      *  추가 -> insSlct가 b일때 winSlct 넣어준다
     */
     public GganbuMemMarbleInsInputVo gganbuMemMarbleIns(GganbuMemMarbleInsInputVo gganbuMemMarbleInsInputVo) {
+        // 구슬 -> 주머니 교환
+        int escape = 0;
+        while(escape < 100) {
+            if(gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) != 1) {
+                break;
+            }
+            escape++;
+        }
+
         // 확률에 따라 구슬을 지급한다
         if(StringUtils.equals(gganbuMemMarbleInsInputVo.getInsSlct(), "c") ||
             StringUtils.equals(gganbuMemMarbleInsInputVo.getInsSlct(), "e")
@@ -2169,6 +2178,15 @@ public class EventService {
             myRankList.setPtr_mem_level_color(DalbitUtil.getProperty("level.color." + ptrMemL).split(","));
 
             result.put("myRankInfo", myRankList);
+
+            // 구슬 -> 주머니 교환
+            int escape = 0;
+            while(escape < 100) {
+                if(gganbuMarbleExchange(memNo) != 1) {
+                    break;
+                }
+                escape++;
+            }
         }
 
         result.put("gganbuState", gganbuState);
@@ -2201,6 +2219,15 @@ public class EventService {
             result.put("bettingYn", "n");
         }else {
             result.put("bettingYn", "y");
+        }
+
+        // 구슬 -> 주머니 교환
+        int escape = 0;
+        while(escape < 100) {
+            if(gganbuMarbleExchange(memNo) != 1) {
+                break;
+            }
+            escape++;
         }
 
         return result;

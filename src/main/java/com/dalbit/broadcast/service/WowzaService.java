@@ -390,7 +390,9 @@ public class WowzaService {
             }
 
             result.put("status", Status.방송생성);
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, null);
+            // tts 성우 리스트
+            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -599,6 +601,10 @@ public class WowzaService {
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
+            // tts 성우 리스트
+            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+            result.put("ttsActors", ttsActors);
+
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
             result.put("status", Status.방송참여_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송참여_해당방이없음.getMessageCode())) {
