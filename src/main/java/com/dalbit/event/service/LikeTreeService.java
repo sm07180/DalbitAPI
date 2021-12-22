@@ -90,9 +90,10 @@ public class LikeTreeService {
             // 이벤트 단계 설정, check 선물 받았는지 확인하는 프로시저 필요함
             if (!today.isBefore(endDay)) {
                 resultInfo.put("step", ("n".equals(stepYn) ? 3 : 2)); // 2 - 보상 안받음, 3 - 보상 받음 
+            } else {
+                resultInfo.put("step", 1); // 1 - 보상 수령 기간 아님
             }
 
-            resultInfo.put("step", 1); // 1 - 보상 수령 기간 아님
             resultInfo.put("totScoreCnt", totScoreCnt);
             resultInfo.put("list", list);
 
