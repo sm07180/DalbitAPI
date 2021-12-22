@@ -81,7 +81,7 @@ public class LikeTreeService {
             List<LikeTreeStoryVO> list = new ArrayList<>();
 
             for (int i = 0; i < 3; i++) {
-                LikeTreeStoryVO temp = DBUtil.getData(data, (i + 1), LikeTreeStoryVO.class);
+                LikeTreeStoryVO temp = DBUtil.getData(data, (i + 2), LikeTreeStoryVO.class);
                 if (temp != null && temp.getAutoNo() != 0) {
                     list.add(temp);
                 }
@@ -124,6 +124,7 @@ public class LikeTreeService {
             if (cnt > 0) {
                 resultInfo.put("cnt", cnt);
                 resultInfo.put("list", list);
+                resultInfo.put("totalPage", (int)Math.ceil((double)cnt/pagePerCnt));
                 result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
             } else {
                 result.setResVO(ResMessage.C99994.getCode(), ResMessage.C99994.getCodeNM(), null);

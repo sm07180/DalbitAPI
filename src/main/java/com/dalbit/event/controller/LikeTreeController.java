@@ -165,6 +165,13 @@ public class LikeTreeController {
         try {
             String memNo = MemberVo.getMyMemNo(request);
 
+            if (!param.containsKey("delChrgrName")) {
+                param.put("delChrgrName", "");
+                param.put("delSlct", 1);
+            } else {
+                param.put("delSlct", 2);
+            }
+
             if (memNo == null) {
                 result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
             } else {

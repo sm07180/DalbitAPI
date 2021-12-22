@@ -13,16 +13,16 @@ public class LikeTreeStoryVO {
     private String imageProfile = ""; //  VARCHAR  -- 프로필
     private Integer memLevel = 0; //  BIGINT    -- 레벨
     private Integer memState = 0; //  BIGINT    -- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
-    private Date insDate; //    DATETIME  -- 등록일자
-    private Date updDate; //    DATETIME  -- 수정일자
-    private Date decorationDate; //  DATETIME  -- 장식 등록일자
+    private String insDate; //    DATETIME  -- 등록일자
+    private String updDate; //    DATETIME  -- 수정일자
+    private String decorationDate; //  DATETIME  -- 장식 등록일자
 
     // 프론트에서 comment 컴포넌트 쓰게 하기 위한 데이터처리(underscope 킹받네 ㅡㅡ)
     private Integer tail_no = 0;
     private String image_profile = "";
     private String mem_nick = "";
     private String tail_mem_no = "";
-    private Date ins_date;
+    private String ins_date;
 
     public Integer getTail_no() {
         return tail_no;
@@ -40,7 +40,7 @@ public class LikeTreeStoryVO {
         return tail_mem_no;
     }
 
-    public Date getIns_date() {
+    public String getIns_date() {
         return ins_date;
     }
 
@@ -55,7 +55,7 @@ public class LikeTreeStoryVO {
     }
 
     public void setAuto_No(Integer auto_no) {
-        this.autoNo = tail_no;
+        this.tail_no = auto_no;
         this.autoNo = auto_no;
     }
 
@@ -135,28 +135,28 @@ public class LikeTreeStoryVO {
         this.memState = mem_state;
     }
 
-    public Date getInsDate() {
+    public String getInsDate() {
         return insDate;
     }
 
-    public void setIns_Date(Date ins_date) {
+    public void setIns_Date(String ins_date) {
         this.ins_date = ins_date;
         this.insDate = ins_date;
     }
 
-    public Date getUpdDate() {
+    public String getUpdDate() {
         return updDate;
     }
 
-    public void setUpd_Date(Date upd_date) {
+    public void setUpd_Date(String upd_date) {
         this.updDate = upd_date;
     }
 
-    public Date getDecorationDate() {
+    public String getDecorationDate() {
         return decorationDate;
     }
 
-    public void setDecoration_Date(Date decoration_date) {
+    public void setDecoration_Date(String decoration_date) {
         this.decorationDate = decoration_date;
     }
 }

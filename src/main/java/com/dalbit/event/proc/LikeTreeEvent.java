@@ -79,7 +79,7 @@ public interface LikeTreeEvent {
      * @작성일 : 2021-12-17
      * @작성자 : 이정혁
      * @변경이력 :
-     * @Parameter :
+     * @Parameter : storyNo BIGINT-- 사연등록번호, delChrgrName VARCHAR(40)	-- 삭제 관리자명, delSlct BIGINT-- 탈퇴사유[1:본인탈퇴 2:관리자 삭제]
      * @Return :
      **********************************************************************************************/ 
     @Select("CALL rd_data.p_evt_like_tree_mem_story_del(#{storyNo}, #{delChrgrName}, #{delSlct})")
