@@ -71,7 +71,7 @@ public class LikeTreeService {
         ResVO result = new ResVO();
         Map<String, Object> resultInfo = new HashMap<>();
         LocalDateTime today = LocalDateTime.now();
-        LocalDateTime endDay = LocalDateTime.parse("2022-01-28T00:00:00.000");
+        LocalDateTime endDay = LocalDateTime.parse("2022-01-22T14:30:00.000");
 
         try {
 
