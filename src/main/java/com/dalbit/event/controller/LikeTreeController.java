@@ -263,8 +263,10 @@ public class LikeTreeController {
         try {
             String memNo = MemberVo.getMyMemNo(request);
             LocalDateTime today = LocalDateTime.now();
-            LocalDateTime startDay = LocalDateTime.parse("2022-01-07T00:00:00.000");
-            LocalDateTime endDay = LocalDateTime.parse("2022-01-09T00:00:00.000");
+            LocalDateTime startDay = LocalDateTime.parse("2021-12-23T15:00:00.000");
+            LocalDateTime endDay = LocalDateTime.parse("2021-12-23T17:59:00.000");
+            /*LocalDateTime startDay = LocalDateTime.parse("2022-01-07T00:00:00.000");
+            LocalDateTime endDay = LocalDateTime.parse("2022-01-09T00:00:00.000");*/
 
 
             // 이벤트 보상 기간 체크
