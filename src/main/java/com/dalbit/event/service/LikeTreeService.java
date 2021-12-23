@@ -97,10 +97,10 @@ public class LikeTreeService {
             // 이미지 단계 설정
             if (totScoreCnt >= 150000) {
                 resultInfo.put("imgStep", 3);
-            } else if (totScoreCnt >= 100000) {
+            } else if (totScoreCnt >= 70000) {
                 resultInfo.put("imgStep", 2);
             } else {
-                resultInfo.put("imgStep", 2);
+                resultInfo.put("imgStep", 1);
             }
 
             resultInfo.put("totScoreCnt", totScoreCnt);

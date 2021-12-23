@@ -10,6 +10,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -261,9 +262,23 @@ public class LikeTreeController {
 
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            param.put("memNo", memNo);
+            LocalDateTime today = LocalDateTime.now();
+            LocalDateTime startDay = LocalDateTime.parse("2022-01-07T00:00:00.000");
+            LocalDateTime endDay = LocalDateTime.parse("2022-01-09T00:00:00.000");
 
-            result = likeTreeService.getLikeTreeRewardIns(param);
+
+            // 이벤트 보상 기간 체크
+            if (!(startDay.isBefore(today) && endDay.isAfter(today))) {
+                result.setResVO(ResMessage.C30003.getCode(), ResMessage.C30003.getCodeNM(), null);
+                return result;
+            }
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else {
+                param.put("memNo", memNo);
+                result = likeTreeService.getLikeTreeRewardIns(param);
+            }
         } catch (Exception e) {
             log.error("LikeTreeController / getLikeTreeRewardIns => {}", e);
             result.setFailResVO();
