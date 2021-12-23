@@ -4,6 +4,7 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.proc.LikeTreeEvent;
+import com.dalbit.event.vo.LikeTreeGiftVO;
 import com.dalbit.event.vo.LikeTreeRankingVO;
 import com.dalbit.event.vo.LikeTreeRewardInsVo;
 import com.dalbit.event.vo.LikeTreeStoryVO;
@@ -26,6 +27,8 @@ public class LikeTreeService {
     @Autowired
     LikeTreeEvent likeTreeEvent;
     @Autowired CommonService commonService;
+
+    Integer limitScore = 250000;
 
     /**********************************************************************************************
      * @Method 설명 : 좋아요 트리 사연 장식리스트
@@ -76,7 +79,7 @@ public class LikeTreeService {
         try {
 
             List<Object> data = likeTreeEvent.getLikeTreeMainList(memNo);
-            String stepYn = DBUtil.getData(data, 0, String.class);
+            LikeTreeGiftVO stepYn = DBUtil.getData(data, 0, LikeTreeGiftVO.class);
             Integer totScoreCnt = DBUtil.getData(data, 1, Integer.class);
             List<LikeTreeStoryVO> list = new ArrayList<>();
 
@@ -89,22 +92,26 @@ public class LikeTreeService {
 
             // 이벤트 단계 설정, check 선물 받았는지 확인하는 프로시저 필요함
             if (!today.isBefore(endDay)) {
-                resultInfo.put("step", ("y".equals(stepYn) ? 3 : 2)); // 2 - 보상 안받음, 3 - 보상 받음
+                if (totScoreCnt >= limitScore && stepYn.getTot_score_cnt() > 50) {
+                    resultInfo.put("step", ("y".equals(stepYn.getRcv_yn()) ? 3 : 2)); // 2 - 보상 안받음, 3 - 보상 받음
+                } else {
+                    resultInfo.put("step", 4); // 점수 달성 못하면 아에 보상 안나감
+                }
             } else {
                 resultInfo.put("step", 1); // 1 - 보상 수령 기간 아님
             }
 
             // 이미지 단계 설정
-            if (totScoreCnt >= 150000) {
+            if (totScoreCnt >= limitScore) {
                 resultInfo.put("imgStep", 3);
-            } else if (totScoreCnt >= 70000) {
+            } else if (totScoreCnt >= 120000) {
                 resultInfo.put("imgStep", 2);
             } else {
                 resultInfo.put("imgStep", 1);
             }
 
             resultInfo.put("totScoreCnt", totScoreCnt);
-            resultInfo.put("limitScore", 150000);
+            resultInfo.put("limitScore", limitScore);
             resultInfo.put("list", list);
 
             result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
@@ -195,8 +202,10 @@ public class LikeTreeService {
 
                 if (resultInfo == 1) {
                     result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultInfo);
+                } else if (resultInfo == -1) {
+                    result.setResVO(ResMessage.C30301.getCode(), ResMessage.C30301.getCodeNM(), null);
                 } else {
-                    result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), null);
+                    result.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
                 }
             }
         } catch (Exception e) {

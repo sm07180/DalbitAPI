@@ -264,7 +264,7 @@ public class LikeTreeController {
             String memNo = MemberVo.getMyMemNo(request);
             LocalDateTime today = LocalDateTime.now();
             LocalDateTime startDay = LocalDateTime.parse("2021-12-23T17:30:00.000");
-            LocalDateTime endDay = LocalDateTime.parse("2021-12-23T18:00:00.000");
+            LocalDateTime endDay = LocalDateTime.parse("2021-12-23T19:00:00.000");
             /*LocalDateTime startDay = LocalDateTime.parse("2022-01-07T00:00:00.000");
             LocalDateTime endDay = LocalDateTime.parse("2022-01-09T00:00:00.000");*/
 

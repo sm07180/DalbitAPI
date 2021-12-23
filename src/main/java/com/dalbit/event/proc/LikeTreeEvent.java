@@ -36,7 +36,7 @@ public interface LikeTreeEvent {
      * @Parameter :
      * @Return :
      **********************************************************************************************/ 
-    @ResultMap({"ResultMap.string", "ResultMap.integer", "ResultMap.StoryVo1", "ResultMap.StoryVo2", "ResultMap.StoryVo3"})
+    @ResultMap({"ResultMap.LikeGiftVo", "ResultMap.integer", "ResultMap.StoryVo1", "ResultMap.StoryVo2", "ResultMap.StoryVo3"})
     @Select("CALL rd_data.p_evt_like_tree_list(#{memNo})")
     List<Object> getLikeTreeMainList(@Param(value = "memNo") String memNo);
 
