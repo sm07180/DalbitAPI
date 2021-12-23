@@ -74,7 +74,7 @@ public class LikeTreeService {
         ResVO result = new ResVO();
         Map<String, Object> resultInfo = new HashMap<>();
         LocalDateTime today = LocalDateTime.now();
-        LocalDateTime endDay = LocalDateTime.parse("2021-12-23T17:30:00.000");
+        LocalDateTime endDay = LocalDateTime.parse("2022-01-06T23:59:59.000");
 
         try {
 
@@ -92,7 +92,7 @@ public class LikeTreeService {
 
             // 이벤트 단계 설정, check 선물 받았는지 확인하는 프로시저 필요함
             if (!today.isBefore(endDay)) {
-                if (totScoreCnt >= limitScore && stepYn.getTot_score_cnt() > 50) {
+                if (totScoreCnt >= limitScore && stepYn.getTot_score_cnt() >= 50) {
                     resultInfo.put("step", ("y".equals(stepYn.getRcv_yn()) ? 3 : 2)); // 2 - 보상 안받음, 3 - 보상 받음
                 } else {
                     resultInfo.put("step", 4); // 점수 달성 못하면 아에 보상 안나감
