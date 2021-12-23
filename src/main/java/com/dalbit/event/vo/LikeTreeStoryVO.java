@@ -32,6 +32,15 @@ public class LikeTreeStoryVO {
         return image_profile;
     }
 
+    public String getImageProfile() {
+        return image_profile;
+    }
+
+    public void setImage_Profile(String image_profile) {
+        this.image_profile = image_profile;
+        this.imageProfile = image_profile;
+    }
+
     public String getMem_nick() {
         return mem_nick;
     }
@@ -110,14 +119,6 @@ public class LikeTreeStoryVO {
         this.memSex = mem_sex;
     }
 
-    public String getImageProfile() {
-        return imageProfile;
-    }
-
-    public void setImage_Profile(String image_profile) {
-        this.image_profile = image_profile;
-        this.imageProfile = image_profile;
-    }
 
     public Integer getMemLevel() {
         return memLevel;

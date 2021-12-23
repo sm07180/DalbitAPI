@@ -82,7 +82,7 @@ public interface LikeTreeEvent {
      * @Parameter : storyNo BIGINT-- 사연등록번호, delChrgrName VARCHAR(40)	-- 삭제 관리자명, delSlct BIGINT-- 탈퇴사유[1:본인탈퇴 2:관리자 삭제]
      * @Return :
      **********************************************************************************************/ 
-    @Select("CALL rd_data.p_evt_like_tree_mem_story_del(#{storyNo}, #{delChrgrName}, #{delSlct})")
+    @Select("CALL rd_data.p_evt_like_tree_mem_story_del(#{storyNo}, #{delChrgrNo}, #{delSlct})")
     Integer likeTreeStoryDel(Map<String, Object> param);
     
     /**********************************************************************************************
