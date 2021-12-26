@@ -36,4 +36,14 @@
     <resultMap id="RankListVo" type="com.dalbit.event.vo.LikeTreeRankingVO"/>
     <resultMap id="LikeGiftVo" type="com.dalbit.event.vo.LikeTreeGiftVO"/>
 
+    <!-- Welcome 이벤트 -->
+    <resultMap id="WelcomeItemInfoVo1" type="com.dalbit.event.vo.WelcomItemListVO"/>
+    <resultMap id="WelcomeItemInfoVo2" type="com.dalbit.event.vo.WelcomItemListVO"/>
+    <resultMap id="WelcomeItemInfoVo3" type="com.dalbit.event.vo.WelcomItemListVO"/>
+    <resultMap id="WelcomeItemInfoVo4" type="com.dalbit.event.vo.WelcomItemListVO"/>
+    <resultMap id="WelcomeUserItemVo1" type="com.dalbit.event.vo.WelcomeUserItemVO"/>
+    <resultMap id="WelcomeUserItemVo2" type="com.dalbit.event.vo.WelcomeUserItemVO"/>
+    <resultMap id="WelcomeUserItemVo3" type="com.dalbit.event.vo.WelcomeUserItemVO"/>
+    <resultMap id="WelcomeUserItemVo4" type="com.dalbit.event.vo.WelcomeUserItemVO"/>
+
 </mapper>
