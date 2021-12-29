@@ -314,7 +314,7 @@ public class WowzaService {
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomCreateVo);
         roomDao.callBroadCastRoomCreate(procedureVo);
-        log.error(" roomDao.callBroadCastRoomCreate => {}", procedureVo);
+
         if(procedureVo.getRet().equals(Status.방송생성.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             String roomNo = DalbitUtil.isNullToString(resultMap.get("room_no"));
@@ -486,7 +486,7 @@ public class WowzaService {
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomJoinVo);
         roomDao.callBroadCastRoomJoin(procedureVo);
-        log.error("callBroadCastRoomJoin like => {}", procedureVo);
+
         if(procedureVo.getRet().equals(Status.방송참여성공.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             RoomOutVo target = getRoomInfo(pRoomJoinVo.getRoom_no(), pRoomJoinVo.getMem_no(), pRoomJoinVo.getMemLogin(), request);
@@ -670,8 +670,6 @@ public class WowzaService {
                 pRoomStreamTokenVo.setBj_streamid(WOWZA_PREFIX + roomTokenVo.getRoomNo());
                 ProcedureVo procedureUpdateVo = new ProcedureVo(pRoomStreamTokenVo);
                 roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
-
-                log.error("callBroadcastRoomTokenUpdate like=> {}", procedureUpdateVo);
                 if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                     HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
                     String deviceUuid = StringUtils.defaultIfEmpty(DalbitUtil.getStringMap(resultUpdateMap, "deviceUuid"), "").trim();
