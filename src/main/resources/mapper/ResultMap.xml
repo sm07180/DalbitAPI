@@ -28,4 +28,7 @@
     <!-- 추억의 뽑기 이벤트 -->
     <resultMap id="DrawGiftVo" type="com.dalbit.event.vo.DrawGiftVO"/>
     <resultMap id="DrawListVo" type="com.dalbit.event.vo.DrawListVO"/>
+    <!-- 달나라 이벤트 -->
+    <resultMap id="MoonLandRankVO" type="com.dalbit.event.vo.MoonLandRankVO"/>
+
 </mapper>

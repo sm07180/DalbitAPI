@@ -85,6 +85,8 @@ public class ActionService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+        log.error("callBroadCastRoomGood - resultMap => goodRank {}", resultMap);
         HashMap returnMap = new HashMap();
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
@@ -102,6 +104,9 @@ public class ActionService {
                 }
                 boolean isLoveGood = DalbitUtil.getIntMap(resultMap, "goodRank") > 0;
                 socketService.sendLike(pRoomGoodVo.getRoom_no(), pRoomGoodVo.getMem_no(), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isLoveGood, DalbitUtil.getIntMap(resultMap, "goodRank"), new DeviceVo(request));
+
+                //달나라 좋아요 : 지독한 사랑꾼
+//                socketService.sendMoonLandLike();
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendLike Exception {}", e);
@@ -373,6 +378,28 @@ public class ActionService {
                 GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
                 returnMap.put("gganbuPocketCnt", statIns);
 
+                //달나라 조건 체크 - 선물 갯수 10개 이상
+                log.error("dal cnt chk => {}", itemMap.get("dalCnt"));
+                if (DalbitUtil.getIntMap(resultMap, "ruby") > 9) {
+                    pRoomGiftVo.getMem_no(); // sendUser
+                    pRoomGiftVo.getGifted_mem_no(); // dj
+                    pRoomGiftVo.getRoom_no();
+                    // (일반 코인)
+                    /* 기본 획득! : {"점수": "선물한 달 갯수", "코인모양": "일반 코인", "코인 받을 대상": "all",
+                                             "획득할 점수":[dj: 점수 결과, sendUser: 점수 결과, listener: 점수 결과], "점수 획득 방식": [dj: 자동터치, sendUser: 자동획득, listener: 터치시] }*/
+                    
+                    // (보너스 코인)
+                    // 선물한 사람이 아이템 미션 4개 완료여부 : Y
+                        /* 5% 확률 돌리기 - 당첨여부 Y : {"점수": "1000 ~ 3000점", "코인모양": "캐릭터 코인", "코인 받을 대상": "all",
+                             "획득할 점수":[dj: 점수 결과, sendUser: 점수 결과, listener: 점수 결과], "점수 획득 방식": [dj: 자동터치, sendUser: 터치시, listener: 터치시] }*/
+                        /* 5% 확률 돌리기 - 당첨여부 N : {"점수": "50 ~ 300점", "코인모양": "황금 코인", "코인 받을 대상": "all",
+                             "획득할 점수": [dj: 점수 결과, sendUser: (점수 결과 +  선물 달의 10% ~ 30% 랜덤), listener: 점수 결과], "점수 획득 방식": [dj: 자동터치, sendUser: 터치시, listener: 터치시] }*/
+
+                    // 선물한 사람이 아이템 미션 4개 완료여부 : N
+                        /* {"점수": "10% ~ 30% 선물한 달", "코인모양": "황금코인", "코인 받을 대상": "sendUser",
+                              "획득할 점수": [sendUser: 점수 결과, dj: 0, listener: 0], "점수 획득 방식": [sendUser: 터치시] }*/
+                }
+
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -467,6 +494,9 @@ public class ActionService {
         if(Status.부스터성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
+
+            log.error("callBroadCastRoomBooster => {} roomCnt", resultMap);
+
             returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
             int roomCnt = DalbitUtil.getIntMap(resultMap, "totalRoomCnt");
             int rank = DalbitUtil.getIntMap(resultMap, "rank");
