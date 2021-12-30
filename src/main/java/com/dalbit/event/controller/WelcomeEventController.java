@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/event/welcom")
+@RequestMapping("/event/welcome")
 @Scope("prototype")
 @Slf4j
 public class WelcomeEventController {
@@ -37,10 +37,9 @@ public class WelcomeEventController {
             String memNo = MemberVo.getMyMemNo(request);
 
             if (memNo != null) {
-                result = welcomeEventService.getWelcomeDjInfo(memNo);
+                result = welcomeEventService.getWelcomeUserInfo(memNo, "1");
             } else {
                 result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
-                result = welcomeEventService.getWelcomeDjInfo("11631261112504");
             }
         } catch (Exception e) {
             log.error("WelcomeEventController / getWelcomeDjInfo => {}", e);
@@ -66,10 +65,9 @@ public class WelcomeEventController {
             String memNo = MemberVo.getMyMemNo(request);
 
             if (memNo != null) {
-                result = welcomeEventService.getWelcomeUserInfo(memNo);
+                result = welcomeEventService.getWelcomeUserInfo(memNo, "2");
             } else {
                 result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
-                result = welcomeEventService.getWelcomeUserInfo("11631261112504");
             }
         } catch (Exception e) {
             log.error("WelcomeEventController / getWelcomeUserInfo => {}", e);
@@ -78,20 +76,6 @@ public class WelcomeEventController {
         return result;
     }
 
-    /*@GetMapping("/authInfo")
-    public ResVO getItemAuthInfo(@RequestParam(value = "memPhone", defaultValue = "") String memPhone, HttpServletRequest request) {
-        ResVO result = new ResVO();
-
-        try {
-            result = welcomeEventService.getWelcomeUserInfo("11631261112504");
-
-        } catch (Exception e) {
-            log.error("WelcomeEventController / getWelcomeUserInfo => {}", e);
-            result.setFailResVO();
-        }
-        return result;
-    }
-*/
     /**********************************************************************************************
      * @Method 설명 : 웹컴 조건 인증체크 프로시저 (페이지 접근시 호출하여 자격을 검증해야함.(데이터 처리때문에 페이지 접근시 돌려야함))
      * @작성일 : 2021-12-24
@@ -112,11 +96,48 @@ public class WelcomeEventController {
                 result = welcomeEventService.getWelcomeEventQualityInfo(memNo);//
             } else {
                 result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
-                result = welcomeEventService.getWelcomeEventQualityInfo("11631261112504");//
             }
 
         } catch (Exception e) {
             log.error("WelcomeEventController / getWelcomeUserInfo => {}", e);
+            result.setFailResVO();
+        }
+        return result;
+    }
+
+    @PostMapping("/reqGift/{giftSlct}")
+    public ResVO putWelcomeGift(@RequestParam Map<String, Object> params, @PathVariable("giftSlct") String giftSlct, HttpServletRequest request) {
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            params.put("giftSlct", giftSlct);
+
+            if (memNo == null) {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            } else if (!params.containsKey("memPhone")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftStepNo")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftCode")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftTheMonth")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftDalCnt")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftCont")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftName")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else if (!params.containsKey("giftOrdNo")) {
+                result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
+            } else {
+                params.put("memNo", memNo);
+                result = welcomeEventService.putWelcomeGift(memNo, params);
+            }
+        } catch (Exception e) {
+            log.error("WelcomeEventController / putWelcomeGift => {}", e);
             result.setFailResVO();
         }
         return result;
