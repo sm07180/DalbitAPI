@@ -37,7 +37,7 @@ public class ActionController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(goodVo.getRoomNo());
 
-        String result = actionService.callBroadCastRoomGood(apiData, request);
+        String result = actionService.callBroadCastRoomGood(apiData, goodVo, request);
 
         return result;
     }
@@ -117,7 +117,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomBoosterVo apiData = new P_RoomBoosterVo(boosterVo, request);
-        String result = actionService.callBroadCastRoomBooster(apiData, request);
+        String result = actionService.callBroadCastRoomBooster(apiData, boosterVo, request);
 
         return result;
     }

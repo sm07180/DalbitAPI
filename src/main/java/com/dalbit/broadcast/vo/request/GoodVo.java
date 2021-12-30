@@ -12,4 +12,5 @@ public class GoodVo {
     @NotBlank(message = "{\"ko_KR\" : \"방번호를\"}")
     @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
     private String roomNo;
+    private String memNo = "0";
 }

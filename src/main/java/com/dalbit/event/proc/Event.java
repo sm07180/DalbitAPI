@@ -548,19 +548,17 @@ public interface Event {
      * ,roomNo BIGINT			    --방번호
      *
      * @Return :
-     * moon_no       			INT		--     회차번호
-     * room_no       			BIGINT		-- 방번호
-     * star_mem_no        		BIGINT		-- 별똥별완료 회원번호
-     * lanterns_mem_no        	BIGINT		-- 풍등완료 회원번호
-     * rocket_mem_no      		BIGINT		-- 로켓완료 회원번호
-     * balloon_mem_no     		BIGINT		-- 열기구완료 회원번호
-     * lanterns_item_yn       	CHAR(1)		-- 풍등아이템 완료여부
-     * balloon_item_yn        	CHAR(1)		-- 열기구아이템 완료여부
-     * rocket_item_yn     		CHAR(1)		-- 로켓아이템 완료여부
-     * star_item_yn       		CHAR(1)		-- 별똥별아이템 완료여부
-     * rcv_yn        			CHAR(1)		-- 전체아이템 완료여부
-     * ins_date      		    DATETIME	-- 등록일자
-     * upd_date      		    DATETIME	-- 수정일자
+     * s_moonNo       			INT		--     회차번호
+     * s_roomNo       			BIGINT		-- 방번호
+     * s_starMemNo        		BIGINT		-- 별똥별완료 회원번호
+     * s_lanternsMemNo        	BIGINT		-- 풍등완료 회원번호
+     * s_rocketMemNo      		BIGINT		-- 로켓완료 회원번호
+     * s_balloonMemNo     		BIGINT		-- 열기구완료 회원번호
+     * s_lanternsItemYn       	CHAR(1)		-- 풍등아이템 완료여부
+     * s_balloonItemYn        	CHAR(1)		-- 열기구아이템 완료여부
+     * s_rocketItemYn     		CHAR(1)		-- 로켓아이템 완료여부
+     * s_starItemYn       		CHAR(1)		-- 별똥별아이템 완료여부
+     * s_rcvYn        			CHAR(1)		-- 전체아이템 완료여부
      */
     @Select("CALL rd_data.p_evt_moon_item_mission_sel(#{moonNo}, #{roomNo})")
     MoonLandMissionSelVO pEvtMoonItemMissionSel(Map<String, Object> map);
@@ -570,8 +568,7 @@ public interface Event {
      * 작성자 : 박용훈
      * @Param :
      * memNo        BIGINT			-- 회원번호
-     * ,ptSlct      INT			-- 구분[1:아이템선물(일반), 2:아이템선물(보너스), 3:좋아요(보너스), 4:부스터(보너스), 5:아이템 미션(보너스),
-     *                                  6:부스터(캐릭터), 7:아이템 미션(캐릭터)]
+     * ,ptSlct      INT			-- 구분[1:아이템선물(일반), 2:아이템선물(보너스), 3:좋아요(보너스), 4:부스터(보너스), 5:아이템 미션(보너스), 6:부스터(캐릭터), 7:아이템 미션(캐릭터)]
      * ,rcvScore    INT			-- 집계 점수
      * ,roomNo      BIGINT			-- 점수 획득한 방번호
      *

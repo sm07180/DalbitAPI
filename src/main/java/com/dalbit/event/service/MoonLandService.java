@@ -99,22 +99,22 @@ public class MoonLandService {
                 switch(itemName){
                     case "로켓":
                         included = true;
-                        completeYn = missionSelVO.getRocket_item_yn();
+                        completeYn = missionSelVO.getS_rocketItemYn();
                         idx++;
                         break;
                     case "열기구":
                         included = true;
-                        completeYn = missionSelVO.getBalloon_item_yn();
+                        completeYn = missionSelVO.getS_balloonItemYn();
                         idx++;
                         break;
                     case "풍등":
                         included = true;
-                        completeYn = missionSelVO.getLanterns_item_yn();
+                        completeYn = missionSelVO.getS_lanternsItemYn();
                         idx++;
                         break;
                     case "별똥별":
                         included = true;
-                        completeYn = missionSelVO.getStar_item_yn();
+                        completeYn = missionSelVO.getS_starItemYn();
                         idx++;
                         break;
                     default:
@@ -122,7 +122,7 @@ public class MoonLandService {
                 }
 
                 if(included) {
-                    resultList.add(new MoonLandMissionSelResultVO(String.valueOf(data.getCost()), "", data.getItemNo(), data.getItemNm(), completeYn));
+                    resultList.add(new MoonLandMissionSelResultVO(String.valueOf(data.getCost()), data.getThumbs(), data.getItemNo(), data.getItemNm(), completeYn));
                 }
             }
         }
@@ -139,8 +139,10 @@ public class MoonLandService {
                 moonLandMyRankVO = getCurrentTotalScore(moonLandMyRankVO);
                 rankingMap.put("rank", moonLandMyRankVO.getMy_rank_no());    //내 순위
                 rankingCoinMap.put("balance", String.valueOf(moonLandMyRankVO.getRank_pt()));  // 내 점수
-                rankingCoinMap.put("total", moonLandMyRankVO.getTot_score());    // 현재 단계의 목표점수
+                rankingCoinMap.put("total", String.valueOf(moonLandMyRankVO.getTot_score()));    // 현재 단계의 목표점수
                 rankingMap.put("coin", rankingCoinMap);
+                rankingMap.put("animation", moonLandMyRankVO.getAnimationUrl());
+                rankingMap.put("nextGift", moonLandMyRankVO.getNext_reward()+"달");
             } else {
                 log.error("getMoonLandMissionData => moonLandMyRankVO is null {}", moonLandMyRankVO);
             }
@@ -158,15 +160,13 @@ public class MoonLandService {
         return param;
     }
 
-
     //내부 로직에서 사용할 메소드
     /** 달나라 이벤트 점수 등록
      * 작성일 : 2021-12-28
      * 작성자 : 박용훈
      * @Param :
      * memNo        BIGINT			-- 회원번호
-     * ,ptSlct      INT			-- 구분[1:아이템선물(일반), 2:아이템선물(보너스), 3:좋아요(보너스), 4:부스터(보너스), 5:아이템 미션(보너스),
-     *                                  6:부스터(캐릭터), 7:아이템 미션(캐릭터)]
+     * ,ptSlct      INT			-- 구분[1:아이템선물(일반), 2:아이템선물(보너스), 3:좋아요(보너스), 4:부스터(보너스), 5:아이템 미션(보너스), 6:부스터(캐릭터), 7:아이템 미션(캐릭터)]
      * ,rcvScore    INT			-- 집계 점수
      * ,roomNo      BIGINT			-- 점수 획득한 방번호
      *
@@ -174,14 +174,24 @@ public class MoonLandService {
      * s_return		INT		-- 0:에러, 1:정상
      */
     public Integer setMoonLandScoreIns(Long memNo, Integer ptSlct, Integer rcvScore, Long roomNo) {
-        HashMap paramMap = new HashMap();
+        try {
+            if(memNo > 0 && ptSlct > 0 && rcvScore> 0 && roomNo > 0) {
+                HashMap paramMap = new HashMap();
 
-        paramMap.put("memNo", memNo);
-        paramMap.put("ptSlct", ptSlct);
-        paramMap.put("rcvScore", rcvScore);
-        paramMap.put("roomNo", roomNo);
+                paramMap.put("memNo", memNo);
+                paramMap.put("ptSlct", ptSlct);
+                paramMap.put("rcvScore", rcvScore);
+                paramMap.put("roomNo", roomNo);
 
-        return event.pEvtMoonRankPtIns(paramMap);
+                return event.pEvtMoonRankPtIns(paramMap);
+            } else {
+                log.error("MoonService setMoonLandScoreIns Fail => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {}",memNo, ptSlct, rcvScore, roomNo);
+                return 0;
+            }
+        } catch(Exception e) {
+            log.error("MoonService setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} \n error: {}", memNo, ptSlct, rcvScore, roomNo, e);
+            return -1;
+        }
     }
 
     //내부 로직에서 사용할 메소드
@@ -193,12 +203,12 @@ public class MoonLandService {
      * ,roomNo BIGINT		    --방번호
      * ,itemCode VARCHAR(10)    --아이템코드
      * @Return :
-     * sReturn		            INT	 -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상
-     * sRRocketItemYn	        CHAR(1)	-- 로켓아이템 완료여부
-     * sRBalloonItemYn	        CHAR(1)	-- 열기구아이템 완료여부
-     * sRLanternsItemYn	        CHAR(1)	-- 풍등아이템 완료여부
-     * sRStarItemYn		        CHAR(1)	-- 별똥별아이템 완료여부
-     * sRcvYn			        CHAR(1)	-- 전체아이템 완료여부 : "y", "n"
+     * s_Return		            INT	 -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상
+     * s_rRocketItemYn	        CHAR(1)	-- 로켓아이템 완료여부
+     * s_rBalloonItemYn	        CHAR(1)	-- 열기구아이템 완료여부
+     * s_rLanternsItemYn	    CHAR(1)	-- 풍등아이템 완료여부
+     * s_rStarItemYn		    CHAR(1)	-- 별똥별아이템 완료여부
+     * s_rcvYn			        CHAR(1)	-- 전체아이템 완료여부 : "y", "n"
      */
     public MoonLandMissionInsVO setMoonLandMissionDataIns(Long memNo, Long roomNo, String itemCode){
         HashMap paramMap = new HashMap();
@@ -239,8 +249,8 @@ public class MoonLandService {
      * view_cnt;			    //INT		-- 청취시간 합계
      * my_rank_no;			    //INT		-- 나의 랭킹순위
      *
-     * tot_socre;               //INT
-     * next_reward;             //INT
+     * tot_socre;               //INT 임의로 추가한 데이터
+     * next_reward;             //INT 임의로 추가한 데이터
      */
     public MoonLandMyRankVO getMoonLandMyRank(Integer moonNo, HttpServletRequest request){
         HashMap map = new HashMap();
@@ -331,26 +341,32 @@ public class MoonLandService {
             case 1:
                 vo.setTot_score(50000); // 5만점
                 vo.setNext_reward(5);   // 5달
+                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_1st_ani.webp");
                 break;
             case 2:
                 vo.setTot_score(150000);
-                vo.setNext_reward(5);
+                vo.setNext_reward(10);
+                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_2nd_ani.webp");
                 break;
             case 3:
                 vo.setTot_score(250000);
-                vo.setNext_reward(5);
+                vo.setNext_reward(15);
+                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_3rd_ani.webp");
                 break;
             case 4:
                 vo.setTot_score(400000);
-                vo.setNext_reward(5);
+                vo.setNext_reward(20);
+                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_4th_ani.webp");
                 break;
             case 5:
                 vo.setTot_score(400000);
                 vo.setNext_reward(0);
+                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_5th_ani.webp");
                 break;
             default:
                 vo.setTot_score(0);
                 vo.setNext_reward(0);
+                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_1st_ani.webp");
                 break;
         }
 

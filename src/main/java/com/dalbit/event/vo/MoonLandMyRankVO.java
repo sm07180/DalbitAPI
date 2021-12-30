@@ -26,6 +26,7 @@ public class MoonLandMyRankVO {
    private Integer view_cnt = 0;			    //INT		-- 청취시간 합계
    private Integer my_rank_no = 0;			    //INT		-- 나의 랭킹순위
 
-   private Integer tot_score =0;
-   private Integer next_reward =0;
+   private Integer tot_score =0;             // 현재 단계 목표치
+   private Integer next_reward =0;           // 다음 단계 보상
+   private String animationUrl = "";         // 현재 단계 webp URL
 }

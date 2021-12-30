@@ -3,13 +3,12 @@ package com.dalbit.event.controller;
 import com.dalbit.event.service.MoonLandService;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.vo.MoonLandMissionSelVO;
+import com.dalbit.event.vo.MoonLandScoreInsVO;
+import com.dalbit.member.vo.MemberVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -127,6 +126,27 @@ public class MoonLandController {
         } catch (Exception e) {
             resVO.setFailResVO();
             log.error("MoonLandController getMoonLandRankList => {}", e);
+        }
+
+        return resVO;
+    }
+
+    /** 달나라 점수 누적
+     * 작성일 : 2021-12-28
+     * 작성자 : 박용훈
+     * @Param :
+     * @Return : 0 or 1
+     */
+    @PostMapping("/score")
+    public ResVO setMoonLandScore(@RequestBody MoonLandScoreInsVO paramVO, HttpServletRequest request){
+        ResVO resVO = new ResVO();
+        try {
+                Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+                Long roomNo = Long.parseLong(paramVO.getRoomNo());
+                resVO.setSuccessResVO(moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo));
+        } catch (Exception e) {
+            resVO.setFailResVO();
+            log.error("MoonLandController setMoonLandScore => {}", e);
         }
 
         return resVO;
