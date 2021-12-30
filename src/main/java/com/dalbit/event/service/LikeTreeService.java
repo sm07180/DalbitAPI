@@ -28,7 +28,7 @@ public class LikeTreeService {
     LikeTreeEvent likeTreeEvent;
     @Autowired CommonService commonService;
 
-    Integer limitScore = 250000;
+    Integer limitScore = 220000;
 
     /**********************************************************************************************
      * @Method 설명 : 좋아요 트리 사연 장식리스트
@@ -104,7 +104,7 @@ public class LikeTreeService {
             // 이미지 단계 설정
             if (totScoreCnt >= limitScore) {
                 resultInfo.put("imgStep", 3);
-            } else if (totScoreCnt >= 120000) {
+            } else if (totScoreCnt >= 110000) {
                 resultInfo.put("imgStep", 2);
             } else {
                 resultInfo.put("imgStep", 1);
