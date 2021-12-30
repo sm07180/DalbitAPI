@@ -197,7 +197,7 @@ public class WelcomeEventService {
                         maxDalCnt = params.get("giftSlct").equals("1") ? 200 : 30;
                         break;
                 }
-                if (temp.getMemTime() < maxMemTime && temp.getLikeCnt() < maxLikeCnt && temp.getDalCnt() < maxDalCnt) {
+                if (temp.getMemTime() < maxMemTime || temp.getLikeCnt() < maxLikeCnt || temp.getDalCnt() < maxDalCnt) {
                     result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
                     return result;
                 }
