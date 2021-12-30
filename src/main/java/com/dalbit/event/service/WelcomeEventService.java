@@ -80,19 +80,19 @@ public class WelcomeEventService {
                 // 1,2,3단계 미션 달성 조건 (하드코딩)
                 switch (i) {
                     case 0:
-                        tempMap.put("maxMemTime", 3600);
-                        tempMap.put("maxLikeCnt", 3);
-                        tempMap.put("maxDalCnt", 0);
+                        tempMap.put("maxMemTime", 300); // 3600
+                        tempMap.put("maxLikeCnt", 1); // 3
+                        tempMap.put("maxDalCnt", 0); // 0
                         break;
                     case 1:
-                        tempMap.put("maxMemTime", 3600 * 5);
-                        tempMap.put("maxLikeCnt", 10);
-                        tempMap.put("maxDalCnt", (memSlct.equals(1) ? 50 : 0));
+                        tempMap.put("maxMemTime", 600); // 3600 * 5
+                        tempMap.put("maxLikeCnt", 2); // 10
+                        tempMap.put("maxDalCnt", (memSlct.equals(1) ? 50 : 0)); // (memSlct.equals(1) ? 50 : 0)
                         break;
                     case 2:
-                        tempMap.put("maxMemTime", 3600 * 10);
-                        tempMap.put("maxLikeCnt", 20);
-                        tempMap.put("maxDalCnt", (memSlct.equals(1) ? 200 : 30));
+                        tempMap.put("maxMemTime", 900); // 3600 * 10
+                        tempMap.put("maxLikeCnt", 3); // 20
+                        tempMap.put("maxDalCnt", (memSlct.equals(1) ? 200 : 30)); // (memSlct.equals(1) ? 200 : 30)
                         break;
                 }
 
@@ -154,6 +154,7 @@ public class WelcomeEventService {
         Integer resultInfo = 0;
 
         try {
+            // 인증 체크
             Integer auth = welcomeEvent.checkWelcomeAuth(memNo, (String)params.get("memPhone"), (String)params.get("giftSlct"), (String)params.get("giftStepNo"));
 
             if (auth != 1) {
@@ -171,6 +172,38 @@ public class WelcomeEventService {
                 return result;
             }
 
+            List<WelcomListVO> userListInfo = welcomeEvent.getUserListInfo(memNo, (String)params.get("giftSlct"));
+
+            if (userListInfo.size() > 0) {
+                WelcomListVO temp = userListInfo.get(userListInfo.size() - 1);
+                Integer maxMemTime = 0;
+                Integer maxLikeCnt = 0;
+                Integer maxDalCnt = 0;
+                // 1,2,3단계 미션 달성 조건 (하드코딩)
+                switch (temp.getStepNo()) {
+                    case 1:
+                        maxMemTime = 300;
+                        maxLikeCnt = 1;
+                        maxDalCnt = 0;
+                        break;
+                    case 2:
+                        maxMemTime = 600;
+                        maxLikeCnt = 2;
+                        maxDalCnt = params.get("giftSlct").equals("1") ? 50 : 0;
+                        break;
+                    case 3:
+                        maxMemTime = 900;
+                        maxLikeCnt = 3;
+                        maxDalCnt = params.get("giftSlct").equals("1") ? 200 : 30;
+                        break;
+                }
+                if (temp.getMemTime() < maxMemTime && temp.getLikeCnt() < maxLikeCnt && temp.getDalCnt() < maxDalCnt) {
+                    result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
+                    return result;
+                }
+            }
+
+            // 선물 받기 처리
             resultInfo = welcomeEvent.insWelcomeItem(params);
 
             if (resultInfo != 1) {
