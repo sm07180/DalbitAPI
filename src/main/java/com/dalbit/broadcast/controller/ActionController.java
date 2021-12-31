@@ -27,6 +27,8 @@ public class ActionController {
 
     /**
      * 방송방 좋아요 추가
+     *
+     * 달나라 이벤트 - GoodVo : memNo (String) 추가
      */
     @PostMapping("/likes")
     public String roomGood(@Valid GoodVo goodVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{

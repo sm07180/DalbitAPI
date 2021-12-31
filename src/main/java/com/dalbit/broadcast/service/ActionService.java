@@ -115,57 +115,7 @@ public class ActionService {
 
                 //달나라 좋아요
                 MoonLandCoinDataVO coinDataVO = null;
-                List<MoonLandInfoVO> moonLandRound= moonLandService.getMoonLandInfoData();
-
-                if(moonLandRound != null && moonLandRound.size() > 0 && returnMap.get("goodRank") != null) {
-                    //보너스 코인 점수 ins
-                    Random random = new Random();
-                    int m_goodRank = (int) returnMap.get("goodRank");
-                    int eventScoreValue = 0;
-
-                    log.error("좋아요 goodRank chk => {}", m_goodRank);
-                    switch(m_goodRank){
-                        case 1: //지사
-                            coinDataVO = new MoonLandCoinDataVO();
-                            eventScoreValue = random.nextInt(31) + 20; // 20 ~ 50
-                            //좋아요 누른사람, 일반 시청자 : 점수
-                            coinDataVO.setEventScore(eventScoreValue);
-                            break;
-                        case 2:
-                            coinDataVO = new MoonLandCoinDataVO();
-                            eventScoreValue = random.nextInt(31) + 10; // 10 ~ 40
-                            //좋아요 누른사람, 일반 시청자 점수
-                            coinDataVO.setEventScore(eventScoreValue);
-                            break;
-                        case 3:
-                            coinDataVO = new MoonLandCoinDataVO();
-                            eventScoreValue = random.nextInt(11) + 10;  // 10~ 20
-                            //좋아요 누른사람, 일반 시청자 점수
-                            coinDataVO.setEventScore(eventScoreValue);
-                            break;
-                        default:
-                            break;
-                            
-                    }
-
-                    Long djMemNo = Long.parseLong(goodVo.getMemNo());
-                    Long roomNo = Long.parseLong(pRoomGoodVo.getRoom_no());
-                    // ~사랑꾼 조건에 들어야 됨
-                    if (eventScoreValue > 0 && djMemNo > 0) {
-                        /** DJ는 자동 획득 */
-                        int insResult = moonLandService.setMoonLandScoreIns(djMemNo, 3, eventScoreValue, roomNo);
-
-                        if (insResult != 1) {
-                            log.error("사랑꾼 좋아요 점수 등록 실패 !! => moonLandService.setMoonLandScoreIns() djMemNo: {}, eventScoreValue: {}, roomNo: {}", djMemNo, eventScoreValue, roomNo);
-                        } else {
-                            log.warn("사랑꾼 좋아요 점수 등록 성공 !! => moonLandService.setMoonLandScoreIns() djMemNo: {}, eventScoreValue: {}, roomNo: {}", djMemNo, eventScoreValue, roomNo);
-                        }
-                    } else if (djMemNo == 0) {
-                        log.error("사랑꾼 좋아요 => djMemNo를 안준경우! => goodVo.getGiftedMemNo() : {}", goodVo.getMemNo());
-                    } else {
-                        log.error("사랑꾼이 아닌데 좋아요 누름! => m_goodRank : {}", m_goodRank);
-                    }
-                }
+                coinDataVO = moonLandService.getSendLikeMoonLandCoinDataVO(coinDataVO, returnMap, pRoomGoodVo, goodVo);
 
                 socketService.sendLike(pRoomGoodVo.getRoom_no(), pRoomGoodVo.getMem_no(), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isLoveGood, DalbitUtil.getIntMap(resultMap, "goodRank"),
                         new DeviceVo(request), coinDataVO);
@@ -441,86 +391,12 @@ public class ActionService {
                 GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
                 returnMap.put("gganbuPocketCnt", statIns);
 
-                //달나라 조건 체크 - 선물 갯수 10개 이상
-                itemMap.put("coinData", null); //달나라 관련 데이터
-                int dalCnt = (int) itemMap.get("dalCnt");
-                log.error("dal cnt chk => {}", dalCnt);
-                if (dalCnt > 9) {
-                    MoonLandCoinDataVO coinDataVO = null;
-                    try {
-                        List<MoonLandInfoVO> moonLandRound= moonLandService.getMoonLandInfoData();
-                        //이벤트 진행중 여부 체크 (null 이면 이벤트 기간 아님)
-                        if(moonLandRound != null && moonLandRound.size() > 0) {
-                            //pRoomGiftVo.getMem_no(); // sendUser
-                            //pRoomGiftVo.getGifted_mem_no(); // dj
-                            //pRoomGiftVo.getRoom_no();
-                            long sendUser = Long.parseLong(pRoomGiftVo.getMem_no());
-                            long rcvDj = Long.parseLong(pRoomGiftVo.getMem_no());
-                            long roomNo = Long.parseLong(pRoomGiftVo.getRoom_no());
-                            // s_Return         -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상
-                            MoonLandMissionInsVO resultVO = moonLandService.setMoonLandMissionDataIns(sendUser, roomNo, item_code);
-                            if (resultVO.getS_Return() != null) {
-                                int s_Return = resultVO.getS_Return();
-                                log.error("1 moonLandService.setMoonLandMissionDataIns() Call => s_Return: {}", s_Return);
+                MoonLandCoinDataVO coinDataVO = null;
+                coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
 
-                                //일반 코인 (예외 조건 외에는 무조건 일반코인은 세팅)
-                                coinDataVO = new MoonLandCoinDataVO();
-                                int score = dalCnt;
-                                coinDataVO.setScore(score);
+                log.error("sendGift => coinData : {}", coinDataVO);
+                itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
 
-                                //일반 코인 점수 ins
-                                /** 선물한 시청자 자동획득 */
-                                moonLandService.setMoonLandScoreIns(sendUser, 1, score, roomNo); //todo 0, 1 예외 처리 필요
-                                /** DJ는 자동 획득 */
-                                moonLandService.setMoonLandScoreIns(rcvDj, 1, score, roomNo);
-
-                                log.error("2 일반 코인 점수 moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}, score: {}, resultVO{}", sendUser, rcvDj, score, gsonUtil.toJson(resultVO));
-
-                                switch (s_Return) {
-                                    case 1: // 정상 -> 달나라 소켓 보내기
-                                        //   4종 아이템 미션 완료
-                                        if (StringUtils.equals("y", resultVO.getS_rBalloonItemYn())
-                                                && StringUtils.equals("y", resultVO.getS_rLanternsItemYn())
-                                                && StringUtils.equals("y", resultVO.getS_rStarItemYn())
-                                                && StringUtils.equals("y", resultVO.getS_rRocketItemYn()) ) {
-
-                                            // 3% 확률 => 황금코인 or 캐릭터코인 결정
-                                            Random random = new Random();
-                                            int randNumber = random.nextInt(100) + 1; //1 ~ 100
-                                            int eventScoreValue = 0;  //1000 ~ 3000 점 랜덤
-
-                                            if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
-                                                coinDataVO.setJackpotYn("y");
-                                                eventScoreValue = random.nextInt(2001) + 1000;
-                                                /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
-                                                moonLandService.setMoonLandScoreIns(rcvDj, 7, eventScoreValue, roomNo);
-                                            } else { //3% Fail
-                                                eventScoreValue = random.nextInt(51) + 250;
-                                                /** DJ는 자동 획득, 황금코인 점수 세팅 */
-                                                moonLandService.setMoonLandScoreIns(rcvDj, 5, eventScoreValue, roomNo);
-                                            }
-                                            coinDataVO.setEventScore(eventScoreValue);
-
-                                            //소켓에 데이터 세팅!
-
-                                            log.error("3 - 1) 아이템 미션 완료 moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
-                                        }
-                                        log.error("3 - 2) 아이템 미션 미완! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
-                                        break;
-                                    default:
-                                        log.error("3 - 3) 아이템 미션 실패! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}, s_Return {}", sendUser, rcvDj, s_Return);
-                                        break;
-                                }
-
-                                itemMap.put("coinData", coinDataVO);
-                                log.error("4 최종 coinData, itemMap chk => coinData : {}, \n itemMap : {}",  gsonUtil.toJson(coinDataVO), gsonUtil.toJson(itemMap));
-                            }
-                        }
-                    }catch(Exception e){
-                        log.error("ActionService.java - moonLandService.setMoonLandMissionDataIns() Exception => sendMemNo: {} / djMemNo: {} / roomNo : {}",
-                                pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(), pRoomGiftVo.getRoom_no() ,e);
-                    }
-                }
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
@@ -637,64 +513,7 @@ public class ActionService {
 
             //달나라 갈거야 시작
             MoonLandCoinDataVO coinDataVO = null;
-            try {
-                List<MoonLandInfoVO> moonLandRound= moonLandService.getMoonLandInfoData();
-
-                //이벤트 진행중 여부 체크 (null 이면 이벤트 기간 아님)
-                if(moonLandRound != null && moonLandRound.size() > 0) {
-                    if( !StringUtils.equals(null, boosterVo.getMemNo()) ){
-                        int boostCnt = DalbitUtil.getIntMap(resultMap, "usedItemCnt");
-                        int listenerCnt = -1;
-                        Long rcvDjMemNo = Long.parseLong(boosterVo.getMemNo());
-                        Long sendUserMemNo = moonLandService.getStringMemNoToLongMemNo(request);
-                        Long roomNo = Long.parseLong(pRoomBoosterVo.getRoom_no());
-
-                        //청취자 수 계산
-                        List<P_RoomMemberListVo> listenerList= userService.getListenerList(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
-                        if(listenerList != null){
-                            listenerCnt = listenerList.size();
-                            log.warn("ActionService sendBooster => listenerCnt : {}",listenerCnt);
-                        } else {
-                            log.error("ActionService sendBooster => listenerList is null listenerList: {}, roomNo: {}, memNo: {}", listenerList, pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
-                        }
-
-                        Random random = new Random();
-                        int eventScoreValue = 0;
-
-                        if(listenerCnt != -1) {
-                            coinDataVO = new MoonLandCoinDataVO();
-                            if (listenerCnt < 10) { //청취자 수 10명 미만
-                                // 3% 확률
-                                int randNumber = random.nextInt(100) + 1; // 1 ~ 100
-                                if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
-                                    coinDataVO.setJackpotYn("y");
-                                    eventScoreValue = boostCnt * (random.nextInt(701) + 300); //300 ~ 1000
-                                    /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
-                                    moonLandService.setMoonLandScoreIns(rcvDjMemNo, 6, eventScoreValue, roomNo);
-                                    log.warn("1 10명 미만 sendBooster 3% 확률에 당첨!! rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",rcvDjMemNo, roomNo, eventScoreValue);
-                                } else { //3% Fail
-                                    eventScoreValue = boostCnt * (random.nextInt(21) + 10); //(10 ~ 30)
-                                    /** DJ는 자동 획득, 황금코인 점수 세팅 */
-                                    moonLandService.setMoonLandScoreIns(rcvDjMemNo, 4, eventScoreValue, roomNo);
-                                    log.warn("2 10명 미만 sendBooster 3% 확률에 실패!! rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",rcvDjMemNo, roomNo, eventScoreValue);
-                                }
-
-                            } else {
-                                eventScoreValue = boostCnt * (random.nextInt(21) + 10); // boostCnt & (10 ~ 30)
-                                /** DJ는 자동 획득, 황금코인 점수 세팅 */
-                                moonLandService.setMoonLandScoreIns(rcvDjMemNo, 4, eventScoreValue, roomNo);
-                                log.warn("3 10명 이상 sendBooster 3% 확률에 실패!! rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",rcvDjMemNo, roomNo, eventScoreValue);
-                            }
-                            coinDataVO.setEventScore(eventScoreValue);
-                        } else {
-                            log.error("ActionService sendBooster => listenerCnt : {}", listenerCnt);
-                        }
-                    }
-                }
-
-            } catch (Exception e) {
-                log.error("Socket Service sendBooster MoonLand {}", e);
-            }
+            coinDataVO = moonLandService.getSendBoosterMoonLandCoinDataVO(coinDataVO, request, pRoomBoosterVo, boosterVo, returnMap);
             //달나라 갈거야 끝
 
             SocketVo vo = socketService.getSocketObjectVo(pRoomBoosterVo.getRoom_no(), pRoomBoosterVo.getMem_no(), DalbitUtil.isLogin(request));
