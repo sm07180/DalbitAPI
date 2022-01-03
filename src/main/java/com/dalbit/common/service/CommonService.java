@@ -1,16 +1,16 @@
 package com.dalbit.common.service;
 
 import com.dalbit.admin.dao.AdminDao;
-import com.dalbit.admin.service.AdminService;
-import com.dalbit.admin.vo.AdminMenuVo;
-import com.dalbit.admin.vo.SearchVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
+import com.dalbit.common.proc.Common;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.*;
+import com.dalbit.common.vo.request.ParentCertInputVo;
+import com.dalbit.common.vo.request.ParentsAgreeEmailVo;
 import com.dalbit.common.vo.request.SmsVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
@@ -42,6 +42,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -68,6 +69,9 @@ public class CommonService {
 
     @Autowired
     AdminDao adminDao;
+
+    @Autowired EmailService emailService;
+    @Autowired Common common;
 
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
@@ -1252,6 +1256,129 @@ public class CommonService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 법정대리인 이메일등록(결제)
+     */
+    public ResVO parentCertIns(ParentCertInputVo agreeInfo) {
+        ResVO result = new ResVO();
+        try {
+            Integer insResult = common.parentsAuthEmailIns(agreeInfo);
+            //-3:미인증, -2:나이 안맞음, -1:이미 동의된 데이터, 0:에러, 1:정상
+            switch (insResult) {
+                case -3: result.setResVO(ResMessage.C40003.getCode(), ResMessage.C40003.getCodeNM(), insResult); break;
+                case -2: result.setResVO(ResMessage.C40002.getCode(), ResMessage.C40002.getCodeNM(), insResult); break;
+                case -1: result.setResVO(ResMessage.C40001.getCode(), ResMessage.C40001.getCodeNM(), insResult); break;
+                case 0: result.setDBErrorResVO(); log.error("CommonService / parentsAuthChk DB error"); break;
+                case 1: result.setSuccessResVO(insResult); break;
+                default: result.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 이메일 ins 에러");
+            e.printStackTrace();
+        }
+
+        return result;
+    }
+
+    /**
+     * 법정대리인 pass 인증(결제)
+     */
+    public ResVO parentsAuthIns(ParentCertInputVo agreeInfo) {
+        ResVO result = new ResVO();
+        try {
+            Integer insResult = common.parentsAuthIns(agreeInfo);
+            // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
+            switch (insResult) {
+                case -5: result.setResVO(ResMessage.C40004.getCode(), ResMessage.C40004.getCodeNM(), insResult); break;
+                case -4: result.setResVO(ResMessage.C40003.getCode(), ResMessage.C40003.getCodeNM(), insResult); break;
+                case -3: result.setResVO(ResMessage.C40002.getCode(), ResMessage.C40002.getCodeNM(), insResult); break;
+                case -2: result.setResVO(ResMessage.C40005.getCode(), ResMessage.C40005.getCodeNM(), insResult); break;
+                case -1: result.setResVO(ResMessage.C40001.getCode(), ResMessage.C40001.getCodeNM(), insResult); break;
+                case -0: result.setDBErrorResVO(); break;
+                case 1:
+                    try {
+                        ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
+                        ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
+                        emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
+                        emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
+                        emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
+                        emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
+                        emailVo.setAgreeExpireDate(
+                            new SimpleDateFormat("yyyy.MM.dd").parse(parentsAuthSel.getExpire_date()).toString()
+                        );
+                        sendPayAgreeEmail(emailVo);
+                        result.setSuccessResVO(insResult);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류");
+                        result.setFailResVO();
+                    }
+                    break;
+                default:
+            }
+        } catch (Exception e) {
+            log.error("CommonService / parentsAuthIns 법정대리인 pass 인증 ins 에러");
+            e.printStackTrace();
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**
+     * 미성년자 법정대리인(결제) 동의 안내 메일 발송
+     */
+    private void sendPayAgreeEmail(ParentsAgreeEmailVo parentsAgreeEmailVo) {
+        String sHtml = "";
+        StringBuffer mailContent = new StringBuffer();
+        BufferedReader in = null;
+        try{
+            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/agreeInfo.txt");
+            URLConnection urlconn = url.openConnection();
+            in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
+
+            while((sHtml = in.readLine()) != null){
+                mailContent.append("\n");
+                mailContent.append(sHtml);
+            }
+
+            String msgCont;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String today = dateFormat.format(new Date());
+
+            msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", parentsAgreeEmailVo.getAgreeAllowUserName());
+            msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", parentsAgreeEmailVo.getAgreeRcvUserName());
+            msgCont = msgCont.replaceAll("@@agreeRcvUserId@@", parentsAgreeEmailVo.getAgreeRcvUserId());
+            msgCont = msgCont.replaceAll("@@agreeDate@@", today);
+            msgCont = msgCont.replaceAll("@@agreeDuration@@", parentsAgreeEmailVo.getAgreeDuration());
+            msgCont = msgCont.replaceAll("@@agreeExpireDate@@", parentsAgreeEmailVo.getAgreeExpireDate());
+            msgCont = msgCont.replaceAll("@@agreeScope@@", "결제(달 충전, 아이템 선물)");
+
+            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", parentsAgreeEmailVo.getEmail(), msgCont);
+
+            emailService.sendEmail(emailVo);
+        }
+        catch(Exception e){
+            log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 미성년자 법정 대리인 인증 여부 체크 (결제)
+     */
+    public String parentsAuthChk(String memNo) {
+        String result = "n";
+        try {
+            result = common.parentsAuthChk(memNo);
+        } catch (Exception e) {
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 인증 여부 체크 에러");
+            e.getStackTrace();
         }
 
         return result;

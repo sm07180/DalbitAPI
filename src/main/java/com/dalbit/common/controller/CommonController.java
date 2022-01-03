@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -365,8 +364,26 @@ public class CommonController {
                 //회원본인인증 DB 저장
                 apiData.setParents_agreeYn("n");
                 result = commonService.callMemberCertification(apiData);
-            } else {
+            } else if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("2")) { // 법정대리인 인증 (결제)
+                String memNo = selfAuthSaveVo.getPlusInfo().split("_")[0]; // 유저 번호
+                String parentName = selfAuthSaveVo.getName(); // 대리인 이름
+                String parentSex = selfAuthSaveVo.getGender(); // 대리인 성별
+                String parentBirthYear = selfAuthSaveVo.getBirthDay().substring(0, 4); // 대리인 생년
+                String parentBirthDay = selfAuthSaveVo.getBirthDay().substring(6, 8); // 대리인 월일
+                String parnetHphone = selfAuthSaveVo.getPhoneNo(); // 대리인 휴대폰 번호
 
+                ParentCertInputVo parentCertInputVo = new ParentCertInputVo(
+                    memNo, parentName, parentSex, parentBirthYear, parentBirthDay, parnetHphone
+                );
+
+                // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
+                ResVO insRes = commonService.parentsAuthIns(parentCertInputVo);
+                if(StringUtils.equals(insRes.getCode(), "00000")) {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, apiData));
+                }else {
+                    result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증실패, apiData));
+                }
+            } else { // 법정대리인 인증(환전)
                 // 만 19세 미만 이용불가
                 if(manAge < 19){
                     return gsonUtil.toJson(new JsonOutputVo(Status.보호자인증20세미만, apiData));
@@ -562,4 +579,42 @@ public class CommonController {
         return result;
     }
 
+    /**
+     * 법정대리인 이메일등록(결제)
+     */
+    @PostMapping("/parent/cert/ins")
+    public ResVO parentCertIns(@Valid ParentCertInputVo agreeInfo, HttpServletRequest request){
+        ResVO result = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            agreeInfo.setMemNo(memNo);
+            result = commonService.parentCertIns(agreeInfo);
+        } catch (Exception e) {
+            log.error("CommonController / parentCertIns");
+            e.printStackTrace();
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**
+     * 미성년자 법정 대리인 인증 여부 체크 (결제)
+     */
+    @GetMapping("/parent/cert/chk")
+    public ResVO parentsAuthChk(HttpServletRequest request){
+        ResVO resVO = new ResVO();
+
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            resVO.setSuccessResVO(commonService.parentsAuthChk(memNo));
+        } catch (Exception e) {
+            log.error("CommonController / parentsAuthChk");
+            e.getStackTrace();
+            resVO.setFailResVO();
+        }
+
+        return resVO;
+    }
 }
