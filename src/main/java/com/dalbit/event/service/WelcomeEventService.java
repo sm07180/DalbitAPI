@@ -80,18 +80,18 @@ public class WelcomeEventService {
                 // 1,2,3단계 미션 달성 조건 (하드코딩)
                 switch (i) {
                     case 0:
-                        tempMap.put("maxMemTime", 300); // 3600
-                        tempMap.put("maxLikeCnt", 1); // 3
+                        tempMap.put("maxMemTime", 3600); // 3600
+                        tempMap.put("maxLikeCnt", 3); // 3
                         tempMap.put("maxDalCnt", 0); // 0
                         break;
                     case 1:
-                        tempMap.put("maxMemTime", 600); // 3600 * 5
-                        tempMap.put("maxLikeCnt", 2); // 10
+                        tempMap.put("maxMemTime", 18000); // 3600 * 5
+                        tempMap.put("maxLikeCnt", 10); // 10
                         tempMap.put("maxDalCnt", (memSlct.equals(1) ? 50 : 0)); // (memSlct.equals(1) ? 50 : 0)
                         break;
                     case 2:
-                        tempMap.put("maxMemTime", 900); // 3600 * 10
-                        tempMap.put("maxLikeCnt", 3); // 20
+                        tempMap.put("maxMemTime", 36000); // 3600 * 10
+                        tempMap.put("maxLikeCnt", 20); // 20
                         tempMap.put("maxDalCnt", (memSlct.equals(1) ? 200 : 30)); // (memSlct.equals(1) ? 200 : 30)
                         break;
                 }
@@ -182,18 +182,18 @@ public class WelcomeEventService {
                 // 1,2,3단계 미션 달성 조건 (하드코딩)
                 switch (temp.getStepNo()) {
                     case 1:
-                        maxMemTime = 300;
-                        maxLikeCnt = 1;
+                        maxMemTime = 3600;
+                        maxLikeCnt = 3;
                         maxDalCnt = 0;
                         break;
                     case 2:
-                        maxMemTime = 600;
-                        maxLikeCnt = 2;
+                        maxMemTime = 18000;
+                        maxLikeCnt = 10;
                         maxDalCnt = params.get("giftSlct").equals("1") ? 50 : 0;
                         break;
                     case 3:
-                        maxMemTime = 900;
-                        maxLikeCnt = 3;
+                        maxMemTime = 36000;
+                        maxLikeCnt = 20;
                         maxDalCnt = params.get("giftSlct").equals("1") ? 200 : 30;
                         break;
                 }
