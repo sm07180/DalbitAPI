@@ -562,4 +562,9 @@ public class CommonController {
         return result;
     }
 
+    @PostMapping("/pay/restapi/test")
+    public void payRestAPITest(@RequestBody HashMap<String,Object> param, HttpServletRequest request){
+        log.error("param = {}, request = {}", param, request);
+        System.out.println("param = " + param + ", request = " + request);
+    }
 }
