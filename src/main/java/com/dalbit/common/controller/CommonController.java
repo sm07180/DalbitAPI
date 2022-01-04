@@ -568,25 +568,19 @@ public class CommonController {
 
     @PostMapping("/pay/restapi/test")
     public String payRestAPITest(HttpServletRequest request){
-        String clientIP = ipUtil.getClientIP(request);
-        if (ipUtil.validationInnerIP(clientIP)) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, clientIP));
-        }
-
-        //todo ipcheck
-        log.warn("{}", request);
-        log.error("{}", request);
-        System.out.println("request = " + request);
-
         HashMap<String, Object> map = new HashMap<>();
         map.put("memNo", request.getParameter("memNo"));
         map.put("orderId", request.getParameter("orderId"));
 
-        log.warn("{}", map);
-        log.error("{}", map);
-        System.out.println("map = " + map);
+        String clientIP = ipUtil.getClientIP(request);
+        map.put("clientIP", clientIP);
+        map.put("ipUtil", ipUtil.validationInnerIP(clientIP));
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
+        if (ipUtil.validationInnerIP(clientIP)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, map));
+        }else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
+        }
     }
 
 
