@@ -568,4 +568,11 @@ public class CommonController {
         log.error("param = {}, request = {}", param, request);
         System.out.println("param = " + param + ", request = " + request);
     }
+
+    @GetMapping("/pay/restapi/test2")
+    public void payRestAPITest2(HttpServletRequest request){
+        log.warn("request = {}", request);
+        log.error("request = {}", request);
+        System.out.println("request = " + request);
+    }
 }
