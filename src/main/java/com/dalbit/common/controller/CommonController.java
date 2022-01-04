@@ -564,6 +564,7 @@ public class CommonController {
 
     @PostMapping("/pay/restapi/test")
     public void payRestAPITest(@RequestBody HashMap<String,Object> param, HttpServletRequest request){
+        log.warn("param = {}, request = {}", param, request);
         log.error("param = {}, request = {}", param, request);
         System.out.println("param = " + param + ", request = " + request);
     }
