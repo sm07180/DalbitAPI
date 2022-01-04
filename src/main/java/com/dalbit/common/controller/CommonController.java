@@ -53,6 +53,9 @@ public class CommonController {
     @Autowired
     MypageService mypageService;
 
+    @Autowired
+    IPUtil ipUtil;
+
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
@@ -565,13 +568,10 @@ public class CommonController {
 
     @PostMapping("/pay/restapi/test")
     public String payRestAPITest(HttpServletRequest request){
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null) ip = request.getRemoteAddr();
-
-
-        if(ip.equals("\"61.80.148.63\"")){
-            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, ip));
-        };
+        String clientIP = ipUtil.getClientIP(request);
+        if (ipUtil.validationInnerIP(clientIP)) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, clientIP));
+        }
 
         //todo ipcheck
         log.warn("{}", request);
