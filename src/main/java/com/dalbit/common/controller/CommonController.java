@@ -569,7 +569,7 @@ public class CommonController {
         if (ip == null) ip = request.getRemoteAddr();
 
 
-        if(ip.equals("61.80.148.63")){
+        if(ip.equals("\"61.80.148.63\"")){
             return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, ip));
         };
 
