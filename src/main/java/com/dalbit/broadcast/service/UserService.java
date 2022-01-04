@@ -462,4 +462,20 @@ public class UserService {
         }
         return result;
     }
+
+    /** 현재 roomNo의 청취자 리스트 */
+    public List<P_RoomMemberListVo> getListenerList(String roomNo, String memNo) {
+        try {
+            P_RoomMemberListVo apiData = new P_RoomMemberListVo();
+            apiData.setMem_no(memNo);
+            apiData.setRoom_no(roomNo);
+            apiData.setPageNo(1);
+            apiData.setPageCnt(10);
+            ProcedureVo procedureVo = new ProcedureVo(apiData);
+            return userDao.callBroadCastRoomMemberList(procedureVo);
+        } catch (Exception e) {
+            log.error("UserService getListenerList => {}", e);
+        }
+        return null;
+    }
 }
