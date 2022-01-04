@@ -12,6 +12,7 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -563,12 +564,21 @@ public class CommonController {
     }
 
     @PostMapping("/pay/restapi/test")
-    public String payRestAPITest(){
+    public String payRestAPITest(HttpServletRequest request){
         //todo ipcheck
-//        log.warn("{}", request);
-//        log.error("{}", request);
-//        System.out.println("request = " + request);
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인));
+        log.warn("{}", request);
+        log.error("{}", request);
+        System.out.println("request = " + request);
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("name", request.getParameter("name"));
+        map.put("age", request.getParameter("age"));
+
+        log.warn("{}", map);
+        log.error("{}", map);
+        System.out.println("map = " + map);
+
+        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
     }
 
 
