@@ -563,16 +563,13 @@ public class CommonController {
     }
 
     @PostMapping("/pay/restapi/test")
-    public void payRestAPITest(@RequestBody HashMap<String,Object> param, HttpServletRequest request){
+    public String payRestAPITest(@RequestBody HashMap<String,Object> param, HttpServletRequest request){
+        //todo ipcheck
         log.warn("param = {}, request = {}", param, request);
         log.error("param = {}, request = {}", param, request);
         System.out.println("param = " + param + ", request = " + request);
+        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, param));
     }
 
-    @GetMapping("/pay/restapi/test2")
-    public void payRestAPITest2(HttpServletRequest request){
-        log.warn("request = {}", request);
-        log.error("request = {}", request);
-        System.out.println("request = " + request);
-    }
+
 }
