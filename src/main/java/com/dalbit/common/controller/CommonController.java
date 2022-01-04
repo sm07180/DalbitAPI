@@ -565,14 +565,22 @@ public class CommonController {
 
     @PostMapping("/pay/restapi/test")
     public String payRestAPITest(HttpServletRequest request){
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null) ip = request.getRemoteAddr();
+
+
+        if(ip.equals("61.80.148.63")){
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, ip));
+        };
+
         //todo ipcheck
         log.warn("{}", request);
         log.error("{}", request);
         System.out.println("request = " + request);
 
         HashMap<String, Object> map = new HashMap<>();
-        map.put("name", request.getParameter("name"));
-        map.put("age", request.getParameter("age"));
+        map.put("memNo", request.getParameter("memNo"));
+        map.put("orderId", request.getParameter("orderId"));
 
         log.warn("{}", map);
         log.error("{}", map);
