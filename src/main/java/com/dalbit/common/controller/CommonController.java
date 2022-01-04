@@ -574,12 +574,13 @@ public class CommonController {
 
         String clientIP = ipUtil.getClientIP(request);
         map.put("clientIP", clientIP);
-        map.put("ipUtil", ipUtil.validationInnerIP(clientIP));
+        map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
+        map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
 
-        if (ipUtil.validationInnerIP(clientIP)) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, map));
-        }else {
+        if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
+        }else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, map));
         }
     }
 
