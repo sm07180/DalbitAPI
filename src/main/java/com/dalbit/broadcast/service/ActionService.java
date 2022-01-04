@@ -394,7 +394,7 @@ public class ActionService {
                 MoonLandCoinDataVO coinDataVO = null;
                 coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
 
-                log.error("sendGift => coinData : {}", coinDataVO);
+                System.out.println("coinDataVo = " + gsonUtil.toJson(coinDataVO));
                 itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
 
 

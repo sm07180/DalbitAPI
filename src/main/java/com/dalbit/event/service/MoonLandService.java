@@ -489,7 +489,7 @@ public class MoonLandService {
                         coinDataVo = new MoonLandCoinDataVO();
                         if (listenerCnt < 10) { //청취자 수 10명 미만
                             // 3% 확률
-                            int randNumber = random.nextInt(100) + 1; // 1 ~ 100
+                            int randNumber = 100;//random.nextInt(100) + 1; // 1 ~ 100
                             if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
                                 coinDataVo.setJackpotYn("y");
                                 eventScoreValue = boostCnt * (random.nextInt(701) + 300); //300 ~ 1000
@@ -510,6 +510,7 @@ public class MoonLandService {
                             //log.warn("3 10명 이상 sendBooster 3% 확률에 실패!! rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",rcvDjMemNo, roomNo, eventScoreValue);
                         }
                         coinDataVo.setEventScore(eventScoreValue);
+                        System.out.println("coinDataVo = " + gsonUtil.toJson(coinDataVo));
                     } else {
                         log.error("ActionService sendBooster 청취자 수 proc 실패 => listenerCnt : {}", listenerCnt);
                     }
@@ -567,7 +568,7 @@ public class MoonLandService {
 
                                     // 3% 확률 => 황금코인 or 캐릭터코인 결정
                                     Random random = new Random();
-                                    int randNumber = random.nextInt(100) + 1; //1 ~ 100
+                                    int randNumber = 100;//random.nextInt(100) + 1; //1 ~ 100
                                     int eventScoreValue = 0;  //1000 ~ 3000 점 랜덤
 
                                     if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
