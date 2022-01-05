@@ -485,31 +485,50 @@ public class MoonLandService {
 
                     if(listenerCnt != -1) {
                         Random random = new Random();
-                        int eventScoreValue = 0;
                         coinDataVo = new MoonLandCoinDataVO();
+                        int characterCnt = 0;
+                        int goldScore = 0;
+                        int characterScore = 0;
                         if (listenerCnt < 10) { //청취자 수 10명 미만
-                            // 3% 확률
-                            int randNumber = 100;//random.nextInt(100) + 1; // 1 ~ 100
-                            if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
-                                coinDataVo.setJackpotYn("y");
-                                eventScoreValue = boostCnt * (random.nextInt(701) + 300); //300 ~ 1000
-                                /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
-                                setMoonLandScoreIns(rcvDjMemNo, 6, eventScoreValue, roomNo);
-                                //log.warn("1 10명 미만 sendBooster 3% 확률에 당첨!!, boostCnt:{} rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",boostCnt, rcvDjMemNo, roomNo, eventScoreValue);
-                            } else { //3% Fail
-                                eventScoreValue = boostCnt * (random.nextInt(21) + 10); //(10 ~ 30)
-                                /** DJ는 자동 획득, 황금코인 점수 세팅 */
-                                setMoonLandScoreIns(rcvDjMemNo, 4, eventScoreValue, roomNo);
-                                //log.warn("2 10명 미만 sendBooster 3% 확률에 실패!! boostCnt: {}, rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",boostCnt, rcvDjMemNo, roomNo, eventScoreValue);
+                            
+                            // 3% 확률 * 부스터 갯수
+                            for (int i = 0; i < boostCnt; i++) {
+                                int randNumber = random.nextInt(100) + 1; // 1 ~ 100
+                                System.out.println("randomNumber ! => "+ randNumber);
+                                if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
+                                    /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
+                                    characterScore += random.nextInt(701) + 300; //300 ~ 1000
+                                    characterCnt++;
+
+                                } else { //3% Fail
+                                    /** DJ는 자동 획득, 황금코인 점수 세팅 */
+                                    goldScore += random.nextInt(21) + 10; //(10 ~ 30)
+                                }
                             }
-                            //System.out.println("sendBooster 3% randNumber = " + randNumber);
+                            log.warn("10명 미만 sendBooster 점수 결과!! boostCnt: {}, rcvDjMemNo: {}, roomNo: {}, goldScore: {}, characterScore: {}",boostCnt, rcvDjMemNo, roomNo, goldScore, characterScore);
+                            
+                            //황금 코인 일 수 있음!
+                            //bj 점수 ins
+                            if(characterScore> 0) { // 3% 성공 캐릭터 코인
+                                setMoonLandScoreIns(rcvDjMemNo, 6, characterScore, roomNo);
+
+                            }
+                            if(goldScore > 0){ //3% 실패 캐릭터 코인
+                                setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo);
+                            }
+
                         } else {
-                            eventScoreValue = boostCnt * (random.nextInt(21) + 10); // boostCnt & (10 ~ 30)
-                            /** DJ는 자동 획득, 황금코인 점수 세팅 */
-                            setMoonLandScoreIns(rcvDjMemNo, 4, eventScoreValue, roomNo);
-                            //log.warn("3 10명 이상 sendBooster 3% 확률에 실패!! rcvDjMemNo: {}, roomNo: {}, eventScoreValue: {}",rcvDjMemNo, roomNo, eventScoreValue);
+                            for (int i = 0; i < boostCnt; i++) {
+                                /** DJ는 자동 획득, 황금코인 점수 세팅 */
+                                goldScore += random.nextInt(21) + 10; // boostCnt & (10 ~ 30)
+                            }
+                            setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo);
+                            log.warn("10명 이상 sendBooster 점수 결과!! boostCnt: {}, rcvDjMemNo: {}, roomNo: {}, goldScore: {}, characterScore: {}",boostCnt, rcvDjMemNo, roomNo, goldScore, characterScore);
                         }
-                        coinDataVo.setEventScore(eventScoreValue);
+
+                        coinDataVo.setCharacterCnt(characterCnt);
+                        coinDataVo.setGoldScore(goldScore);
+                        coinDataVo.setCharacterScore(characterScore);
                         System.out.println("coinDataVo = " + gsonUtil.toJson(coinDataVo));
                     } else {
                         log.error("ActionService sendBooster 청취자 수 proc 실패 => listenerCnt : {}", listenerCnt);
@@ -568,34 +587,39 @@ public class MoonLandService {
 
                                     // 3% 확률 => 황금코인 or 캐릭터코인 결정
                                     Random random = new Random();
-                                    int randNumber = 100;//random.nextInt(100) + 1; //1 ~ 100
-                                    int eventScoreValue = 0;  //1000 ~ 3000 점 랜덤
+                                    int randNumber = random.nextInt(100) + 1; //1 ~ 100
+                                    int goldScore = 0;  // 황금 코인
+                                    int characterScore = 0;  // 캐릭터 코인
 
                                     if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
-                                        coinDataVo.setJackpotYn("y");
-                                        eventScoreValue = random.nextInt(2001) + 1000;
                                         /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
-                                        setMoonLandScoreIns(rcvDj, 7, eventScoreValue, roomNo);
+                                        coinDataVo.setCharacterCnt(1);
+                                        characterScore = random.nextInt(2001) + 1000;
+                                        coinDataVo.setCharacterScore(characterScore);
+
+                                        //db score ins
+                                        setMoonLandScoreIns(rcvDj, 7, characterScore, roomNo);
                                     } else { //3% Fail
-                                        eventScoreValue = random.nextInt(51) + 250;
                                         /** DJ는 자동 획득, 황금코인 점수 세팅 */
-                                        setMoonLandScoreIns(rcvDj, 5, eventScoreValue, roomNo);
+                                        goldScore = random.nextInt(51) + 250;
+                                        coinDataVo.setGoldScore(goldScore);
+
+                                        //db score ins
+                                        setMoonLandScoreIns(rcvDj, 5, goldScore, roomNo);
                                     }
-                                    coinDataVo.setEventScore(eventScoreValue);
                                     coinDataVo.setMissionSuccessYn("y");    // 미션 달성여부 (달나라 뿅가는 애니메이션 재생해줘요)
 
-                                    //log.error("3 - 1) 아이템 미션 완료!!! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
+                                    log.error("3 - 1) 아이템 미션 완료!!! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
                                 } else {
-                                    //log.error("3 - 2) 아이템 미션 미완! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
+                                    log.error("3 - 2) 아이템 미션 미완! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
                                 }
                                 break;
                             default:
-                                //log.error("3 - 3) 아이템 미션 불가! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}, s_Return {} \n -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상",
-                                        //sendUser, rcvDj, s_Return);
+                                log.error("3 - 3) 아이템 미션 불가! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}, s_Return {} \n -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상", sendUser, rcvDj, s_Return);
                                 break;
                         }
 
-                        //log.error("4 최종 coinData, itemMap chk => coinData : {}, \n itemMap : {}",  gsonUtil.toJson(coinDataVo));
+                        log.error("4 최종 coinData, itemMap chk => coinData : {}, \n itemMap : {}",  gsonUtil.toJson(coinDataVo));
                     }
                 }
             } catch (Exception e) {
@@ -623,19 +647,19 @@ public class MoonLandService {
                     coinDataVo = new MoonLandCoinDataVO();
                     eventScoreValue = random.nextInt(31) + 20; // 20 ~ 50
                     //좋아요 누른사람, 일반 시청자 : 점수
-                    coinDataVo.setEventScore(eventScoreValue);
+                    coinDataVo.setGoldScore(eventScoreValue);
                     break;
                 case 2:
                     coinDataVo = new MoonLandCoinDataVO();
                     eventScoreValue = random.nextInt(31) + 10; // 10 ~ 40
                     //좋아요 누른사람, 일반 시청자 점수
-                    coinDataVo.setEventScore(eventScoreValue);
+                    coinDataVo.setGoldScore(eventScoreValue);
                     break;
                 case 3:
                     coinDataVo = new MoonLandCoinDataVO();
                     eventScoreValue = random.nextInt(11) + 10;  // 10~ 20
                     //좋아요 누른사람, 일반 시청자 점수
-                    coinDataVo.setEventScore(eventScoreValue);
+                    coinDataVo.setGoldScore(eventScoreValue);
                     break;
                 default:
                     break;
@@ -657,7 +681,7 @@ public class MoonLandService {
             } else if (djMemNo == 0) {
                 log.error("사랑꾼 좋아요 => djMemNo를 안준경우! => goodVo.getGiftedMemNo() : {}", goodVo.getMemNo());
             } else {
-                //log.error("사랑꾼이 아닌데 좋아요 누름! => m_goodRank : {}", m_goodRank);
+                log.error("사랑꾼이 아닌데 좋아요 누름! => m_goodRank : {}", m_goodRank);
             }
         }
         return coinDataVo;
