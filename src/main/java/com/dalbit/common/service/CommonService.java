@@ -1279,8 +1279,7 @@ public class CommonService {
                 default: result.setFailResVO();
             }
         } catch (Exception e) {
-            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 이메일 ins 에러");
-            e.printStackTrace();
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 이메일 ins 에러 {}", e);
         }
 
         return result;
@@ -1308,18 +1307,15 @@ public class CommonService {
                         log.error("1 {}",agreeInfo.getMemNo());
                         log.error("2 {}",parentsAuthSel.getMem_name());
                         log.error("3 {}",parentsAuthSel.getExpire_date());
-                        log.error("4 {}",new SimpleDateFormat("yyyy.MM.dd").parse(parentsAuthSel.getExpire_date()).toString());
+                        log.error("4 {}",parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
                         emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
                         emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
-                        emailVo.setAgreeExpireDate(
-                            new SimpleDateFormat("yyyy.MM.dd").parse(parentsAuthSel.getExpire_date()).toString()
-                        );
+                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
                         sendPayAgreeEmail(emailVo);
                         result.setSuccessResVO(insResult);
                     } catch (Exception e) {
-                        e.printStackTrace();
                         log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류 => {}", e);
                         result.setFailResVO();
                     }
@@ -1327,8 +1323,7 @@ public class CommonService {
                 default:
             }
         } catch (Exception e) {
-            log.error("CommonService / parentsAuthIns 법정대리인 pass 인증 ins 에러");
-            e.printStackTrace();
+            log.error("CommonService / parentsAuthIns 법정대리인 pass 인증 ins 에러 {}", e);
             result.setFailResVO();
         }
 
@@ -1379,8 +1374,7 @@ public class CommonService {
             }
         }
         catch(Exception e){
-            log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러");
-            e.printStackTrace();
+            log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러 {}", e);
         }
     }
 
