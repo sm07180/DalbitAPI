@@ -1305,6 +1305,10 @@ public class CommonService {
                     try {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
                         ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
+                        log.error("1 {}",agreeInfo.getMemNo());
+                        log.error("2 {}",parentsAuthSel.getMem_name());
+                        log.error("3 {}",parentsAuthSel.getExpire_date());
+                        log.error("4 {}",new SimpleDateFormat("yyyy.MM.dd").parse(parentsAuthSel.getExpire_date()).toString());
                         emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
@@ -1316,7 +1320,7 @@ public class CommonService {
                         result.setSuccessResVO(insResult);
                     } catch (Exception e) {
                         e.printStackTrace();
-                        log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류");
+                        log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류 => {}", e);
                         result.setFailResVO();
                     }
                     break;
