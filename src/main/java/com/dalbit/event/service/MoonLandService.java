@@ -495,7 +495,7 @@ public class MoonLandService {
                             for (int i = 0; i < boostCnt; i++) {
                                 int randNumber = random.nextInt(100) + 1; // 1 ~ 100
                                 System.out.println("randomNumber ! => "+ randNumber);
-                                if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
+                                if (randNumber == 50) { //3% Success
                                     /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
                                     characterScore += random.nextInt(701) + 300; //300 ~ 1000
                                     characterCnt++;
@@ -591,7 +591,7 @@ public class MoonLandService {
                                     int goldScore = 0;  // 황금 코인
                                     int characterScore = 0;  // 캐릭터 코인
 
-                                    if (randNumber == 1 || randNumber == 50 || randNumber == 100) { //3% Success
+                                    if (randNumber == 50) { //3% Success
                                         /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
                                         coinDataVo.setCharacterCnt(1);
                                         characterScore = random.nextInt(2001) + 1000;
