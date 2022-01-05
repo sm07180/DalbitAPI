@@ -183,11 +183,11 @@ public class MoonLandService {
                 rankingMap.put("nextGift", moonLandMyRankVO.getNext_reward()+"달");
                 rankingMap.put("rankStep", moonLandMyRankVO.getRank_step());
             } else {
-                log.error("getMoonLandMissionData => moonLandMyRankVO is null {}", moonLandMyRankVO);
+                log.error("MoonLandService getMoonLandMissionData => moonLandMyRankVO is null {}", moonLandMyRankVO);
             }
 
         } catch (Exception e) {
-            log.error("getMoonLandMissionData event.pEvtMoonRankMySel(param) Exception => {}", moonLandMyRankVO);
+            log.error("MoonLandService Exception getMoonLandMissionData event.pEvtMoonRankMySel(param) => {}", moonLandMyRankVO);
         }
 
         //최종 result
@@ -224,11 +224,11 @@ public class MoonLandService {
 
                 return event.pEvtMoonRankPtIns(paramMap);
             } else {
-                log.error("MoonService setMoonLandScoreIns Fail => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {}",memNo, ptSlct, rcvScore, roomNo);
+                log.error("MoonLandService setMoonLandScoreIns Fail => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {}",memNo, ptSlct, rcvScore, roomNo);
                 return 0;
             }
         } catch(Exception e) {
-            log.error("MoonService setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} \n error: {}", memNo, ptSlct, rcvScore, roomNo, e);
+            log.error("MoonLandService Exception setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} \n error: {}", memNo, ptSlct, rcvScore, roomNo, e);
             return -1;
         }
     }
@@ -348,7 +348,7 @@ public class MoonLandService {
             map.put("cnt", cnt);
             map.put("list", setRankProperty(list, pageNo, pagePerCnt)); //setRankPropery() 순위값 계산후 리스트 반환
         } else {
-            log.error("MoonLandService getMoonLandRankList => multiList is null{}", multiList);
+            log.warn("MoonLandService getMoonLandRankList => multiList is null{}", multiList);
             map.put("cnt", 0);
             map.put("list", new ArrayList<>()); //setRankPropery() 순위값 계산후 리스트 반환
         }
@@ -362,7 +362,7 @@ public class MoonLandService {
             memNo = MemberVo.getMyMemNo(request);
             return Long.parseLong(memNo);
         }catch(Exception e){
-            log.error("MoonLandService getStringToLong => memNo: {} error: {}", memNo, e);
+            log.error("MoonLandService Exception getStringToLong => memNo: {} error: {}", memNo, e);
             return 0L;
         }
     };
@@ -370,7 +370,7 @@ public class MoonLandService {
     //달나라 내 랭킹 : 다음 단계 점수, 달 보상 값 추가
     public MoonLandMyRankVO getCurrentTotalScore(MoonLandMyRankVO vo){
         if(vo == null){
-            log.error("getCurrentTotalScore param is null => {}", vo);
+            log.warn("getCurrentTotalScore param is null => {}", vo);
             vo.setTot_score(0);
             vo.setNext_reward(0);
             return vo;
@@ -478,9 +478,8 @@ public class MoonLandService {
                     List<P_RoomMemberListVo> listenerList = userService.getListenerList(pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
                     if(listenerList != null){
                         listenerCnt = listenerList.size();
-                        log.warn("ActionService sendBooster => listenerCnt : {}",listenerCnt);
                     } else {
-                        log.error("ActionService sendBooster => listenerList is null listenerList: {}, roomNo: {}, memNo: {}", listenerList, pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
+                        log.warn("MoonLandService Exception sendBooster => listenerList is null listenerList: {}, roomNo: {}, memNo: {}", listenerList, pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
                     }
 
                     if(listenerCnt != -1) {
@@ -494,7 +493,6 @@ public class MoonLandService {
                             // 3% 확률 * 부스터 갯수
                             for (int i = 0; i < boostCnt; i++) {
                                 int randNumber = random.nextInt(100) + 1; // 1 ~ 100
-                                System.out.println("randomNumber ! => "+ randNumber);
                                 if (randNumber == 50) { //3% Success
                                     /** DJ는 자동 획득, 캐릭터 코인 점수 세팅 */
                                     characterScore += random.nextInt(701) + 300; //300 ~ 1000
@@ -505,25 +503,22 @@ public class MoonLandService {
                                     goldScore += random.nextInt(21) + 10; //(10 ~ 30)
                                 }
                             }
-                            log.warn("10명 미만 sendBooster 점수 결과!! boostCnt: {}, rcvDjMemNo: {}, roomNo: {}, goldScore: {}, characterScore: {}",boostCnt, rcvDjMemNo, roomNo, goldScore, characterScore);
                             
                             //황금 코인 일 수 있음!
                             //bj 점수 ins
                             if(characterScore> 0) { // 3% 성공 캐릭터 코인
                                 setMoonLandScoreIns(rcvDjMemNo, 6, characterScore, roomNo);
-
                             }
                             if(goldScore > 0){ //3% 실패 캐릭터 코인
                                 setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo);
                             }
 
-                        } else {
+                        } else {    // 청취자 10명 이상
                             for (int i = 0; i < boostCnt; i++) {
                                 /** DJ는 자동 획득, 황금코인 점수 세팅 */
                                 goldScore += random.nextInt(21) + 10; // boostCnt & (10 ~ 30)
                             }
                             setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo);
-                            log.warn("10명 이상 sendBooster 점수 결과!! boostCnt: {}, rcvDjMemNo: {}, roomNo: {}, goldScore: {}, characterScore: {}",boostCnt, rcvDjMemNo, roomNo, goldScore, characterScore);
                         }
 
                         coinDataVo.setCharacterCnt(characterCnt);
@@ -531,13 +526,13 @@ public class MoonLandService {
                         coinDataVo.setCharacterScore(characterScore);
                         System.out.println("coinDataVo = " + gsonUtil.toJson(coinDataVo));
                     } else {
-                        log.error("ActionService sendBooster 청취자 수 proc 실패 => listenerCnt : {}", listenerCnt);
+                        log.error("MoonLandService Exception sendBooster 청취자 수 proc 실패 => listenerCnt : {}", listenerCnt);
                     }
                 }
             }
 
         } catch (Exception e) {
-            log.error("Socket Service sendBooster MoonLand {}", e);
+            log.error("MoonLandService Exception sendBooster getSendBoosterMoonLandCoinDataVO {}", e);
         }
         return coinDataVo;
     }
@@ -545,7 +540,6 @@ public class MoonLandService {
     //달나라 - 아이템선물 소켓에 같이 보낼 VO
     //coinDataVO에 값 넣어준 후 coinDataVO 리턴
     public MoonLandCoinDataVO getSendItemMoonLandCoinDataVO(MoonLandCoinDataVO coinDataVo, P_RoomGiftVo pRoomGiftVo, int dalCnt, String item_code){
-        log.error("getSendItemMoonLandCoinDataVO dal cnt chk => {}", dalCnt);
         //달나라 조건 체크 - 선물 갯수 10개 이상
         if (dalCnt > 9) {
             try {
@@ -562,8 +556,6 @@ public class MoonLandService {
                     MoonLandMissionInsVO resultVO = setMoonLandMissionDataIns(sendUser, roomNo, item_code);
                     if (resultVO.getS_Return() != null) {
                         int s_Return = resultVO.getS_Return();
-                        //log.error("1 moonLandService.setMoonLandMissionDataIns() Call => s_Return: {}", s_Return);
-
                         //일반 코인 (예외 조건 외에는 무조건 일반코인은 세팅)
                         coinDataVo = new MoonLandCoinDataVO();
                         int score = dalCnt;
@@ -572,10 +564,9 @@ public class MoonLandService {
                         //일반 코인 점수 ins
                         /** 선물한 시청자 자동획득 */
                         int sendUserRstNum = setMoonLandScoreIns(sendUser, 1, score, roomNo);
+
                         /** DJ는 자동 획득 */
                         int rcvDjRstNum = setMoonLandScoreIns(rcvDj, 1, score, roomNo);
-
-                        //log.error("2 일반 코인 점수 moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}, score: {}, resultVO{}", sendUser, rcvDj, score, gsonUtil.toJson(resultVO));
 
                         switch (s_Return) {
                             case 1: // 정상 -> 달나라 소켓 보내기
@@ -608,23 +599,16 @@ public class MoonLandService {
                                         setMoonLandScoreIns(rcvDj, 5, goldScore, roomNo);
                                     }
                                     coinDataVo.setMissionSuccessYn("y");    // 미션 달성여부 (달나라 뿅가는 애니메이션 재생해줘요)
-
-                                    log.error("3 - 1) 아이템 미션 완료!!! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
-                                } else {
-                                    log.error("3 - 2) 아이템 미션 미완! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}", sendUser, rcvDj);
                                 }
                                 break;
                             default:
-                                log.error("3 - 3) 아이템 미션 불가! moonLandService.setMoonLandScoreIns() Call => sendUser: {}, rcvDj: {}, s_Return {} \n -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상", sendUser, rcvDj, s_Return);
                                 break;
                         }
-
-                        log.error("4 최종 coinData, itemMap chk => coinData : {}, \n itemMap : {}",  gsonUtil.toJson(coinDataVo));
                     }
                 }
             } catch (Exception e) {
                 coinDataVo = null;
-                log.error("ActionService.java - moonLandService.setMoonLandMissionDataIns() Exception => sendMemNo: {} / djMemNo: {} / roomNo : {}",
+                log.error("MoonLandService Exception setMoonLandMissionDataIns => sendMemNo: {} / djMemNo: {} / roomNo : {}",
                         pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(), pRoomGiftVo.getRoom_no() ,e);
             }
         }
@@ -641,7 +625,6 @@ public class MoonLandService {
             int m_goodRank = (int) returnMap.get("goodRank");
             int eventScoreValue = 0;
 
-            log.error("좋아요 goodRank chk => {}", m_goodRank);
             switch(m_goodRank){
                 case 1: //지사
                     coinDataVo = new MoonLandCoinDataVO();
@@ -674,14 +657,10 @@ public class MoonLandService {
                 int insResult = setMoonLandScoreIns(djMemNo, 3, eventScoreValue, roomNo);
 
                 if (insResult != 1) {
-                    log.error("사랑꾼 좋아요 점수 등록 실패 !! => moonLandService.setMoonLandScoreIns() djMemNo: {}, eventScoreValue: {}, roomNo: {}", djMemNo, eventScoreValue, roomNo);
-                } else {
-                    //log.warn("사랑꾼 좋아요 점수 등록 성공 !! => moonLandService.setMoonLandScoreIns() djMemNo: {}, eventScoreValue: {}, roomNo: {}", djMemNo, eventScoreValue, roomNo);
+                    log.error("MoonLandService Exception sendLike setMoonLandScoreIns Failed djMemNo: {}, eventScoreValue: {}, roomNo: {}", djMemNo, eventScoreValue, roomNo);
                 }
             } else if (djMemNo == 0) {
-                log.error("사랑꾼 좋아요 => djMemNo를 안준경우! => goodVo.getGiftedMemNo() : {}", goodVo.getMemNo());
-            } else {
-                log.error("사랑꾼이 아닌데 좋아요 누름! => m_goodRank : {}", m_goodRank);
+                log.warn("MoonLandService Exception 사랑꾼 좋아요 => djMemNo값이 없는 경우! => goodVo.getGiftedMemNo() : {}", goodVo.getMemNo());
             }
         }
         return coinDataVo;

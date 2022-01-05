@@ -478,10 +478,8 @@ public class SocketService {
 
                 //달나라 좋아요 코인데이터 세팅
                 if(coinDataVO != null){
-                    log.error("SocketService - sendLike => coinData : {}", gsonUtil.toJson(coinDataVO));
                     msgMap.put("coinData", coinDataVO);
                 } else {
-                    log.error("SocketService - sendLike => coinData is null");
                     msgMap.put("coinData", null);
                 }
 

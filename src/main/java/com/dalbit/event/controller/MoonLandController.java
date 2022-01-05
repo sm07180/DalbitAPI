@@ -44,7 +44,7 @@ public class MoonLandController {
             resVO.setSuccessResVO(moonLandService.getMoonLandInfoData());
         }catch(Exception e){
             resVO.setFailResVO();
-            log.error("getMoonLandInfoData => {}", e);
+            log.error("MoonLandController Exception getMoonLandInfoData => {}", e);
         }
         return resVO;
     }
@@ -71,7 +71,7 @@ public class MoonLandController {
                 return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
             }
         } catch (Exception e) {
-            log.error("MoonLandController getMoonLandPopUpData => {}", e);
+            log.error("MoonLandController Exception getMoonLandPopUpData => {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
         }
     }
@@ -89,7 +89,7 @@ public class MoonLandController {
             Long roomNo = Long.parseLong(paramVO.getRoomNo());
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo)));
         } catch (Exception e) {
-            log.error("MoonLandController setMoonLandScore => {}", e);
+            log.error("MoonLandController Exception setMoonLandScore => {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
         }
     }
@@ -118,7 +118,7 @@ public class MoonLandController {
             }
         } catch (Exception e) {
             resVO.setFailResVO();
-            log.error("MoonLandController getMoonLandMyRank => {}", e);
+            log.error("MoonLandController Exception getMoonLandMyRank => {}", e);
         }
 
         return resVO;
@@ -150,7 +150,7 @@ public class MoonLandController {
             }
         } catch (Exception e) {
             resVO.setFailResVO();
-            log.error("MoonLandController getMoonLandRankList => {}", e);
+            log.error("MoonLandController Exception getMoonLandRankList => {}", e);
         }
 
         return resVO;
