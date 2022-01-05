@@ -1304,10 +1304,7 @@ public class CommonService {
                     try {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
                         ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
-                        log.error("1 {}",agreeInfo.getMemNo());
-                        log.error("2 {}",parentsAuthSel.getMem_name());
-                        log.error("3 {}",parentsAuthSel.getExpire_date());
-                        log.error("4 {}",parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
+                        emailVo.setEmail(agreeInfo.getPMemEmail());
                         emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
@@ -1335,6 +1332,7 @@ public class CommonService {
      */
     private void sendPayAgreeEmail(ParentsAgreeEmailVo parentsAgreeEmailVo) {
         String memNo = parentsAgreeEmailVo.getMemNo();
+        String email = parentsAgreeEmailVo.getEmail();
         String sHtml = "";
         StringBuffer mailContent = new StringBuffer();
         BufferedReader in = null;
@@ -1360,14 +1358,11 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@agreeExpireDate@@", parentsAgreeEmailVo.getAgreeExpireDate());
             msgCont = msgCont.replaceAll("@@agreeScope@@", "결제(달 충전, 아이템 선물)");
 
-            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", parentsAgreeEmailVo.getEmail(), msgCont);
-
+            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
-            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(
-                memNo, parentsAgreeEmailVo.getEmail(), "a", ""
-            );
+            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "a", "");
             Integer logInsRes = common.parentsAuthEmailLogIns(parentsEmailLogInsVo);
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
