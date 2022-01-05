@@ -300,6 +300,7 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
     }
 
+    // 만나이
     private int birthToAmericanAge(int birthYear, int birthMonth, int birthDay) {
         Calendar cal = Calendar.getInstance();
         int nowYear = cal.get(Calendar.YEAR);

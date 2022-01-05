@@ -22,4 +22,5 @@ public class ParentsAgreeEmailVo {
     private String agreeDuration; // 동의 기간
     private String agreeExpireDate; // 만료 기간
     private String email; // 법정대리인 이메일
+    private String memNo;
 }

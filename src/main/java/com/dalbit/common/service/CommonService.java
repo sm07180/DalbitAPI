@@ -11,6 +11,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.*;
 import com.dalbit.common.vo.request.ParentCertInputVo;
 import com.dalbit.common.vo.request.ParentsAgreeEmailVo;
+import com.dalbit.common.vo.request.ParentsEmailLogInsVo;
 import com.dalbit.common.vo.request.SmsVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
@@ -1334,6 +1335,7 @@ public class CommonService {
      * 미성년자 법정대리인(결제) 동의 안내 메일 발송
      */
     private void sendPayAgreeEmail(ParentsAgreeEmailVo parentsAgreeEmailVo) {
+        String memNo = parentsAgreeEmailVo.getMemNo();
         String sHtml = "";
         StringBuffer mailContent = new StringBuffer();
         BufferedReader in = null;
@@ -1362,6 +1364,15 @@ public class CommonService {
             EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", parentsAgreeEmailVo.getEmail(), msgCont);
 
             emailService.sendEmail(emailVo);
+
+            // 이메일 발송 로그
+            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(
+                memNo, parentsAgreeEmailVo.getEmail(), "a", ""
+            );
+            Integer logInsRes = common.parentsAuthEmailLogIns(parentsEmailLogInsVo);
+            if(logInsRes != 1) {
+                log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
+            }
         }
         catch(Exception e){
             log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러");

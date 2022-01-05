@@ -2,6 +2,7 @@ package com.dalbit.common.proc;
 
 import com.dalbit.common.vo.ParentsAuthSelVo;
 import com.dalbit.common.vo.request.ParentCertInputVo;
+import com.dalbit.common.vo.request.ParentsEmailLogInsVo;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -50,7 +51,7 @@ public interface Common {
     String parentsAuthChk(String memNo);
 
     /**********************************************************************************************
-    * @Method 설명 : 법정대리인 인증 정보
+    * @Method 설명 : 법정대리인 인증 정보 (어드민이랑 같음)
     * @작성일   : 2022-01-03
     * @작성자   : 박성민
     * @param  : memNo: 회원번호(신청자)
@@ -70,4 +71,18 @@ public interface Common {
     **********************************************************************************************/
     @Select("CALL rd_data.p_mem_parents_auth_sel(#{memNo})")
     ParentsAuthSelVo parentsAuthSel(String memNo);
+    
+    /**********************************************************************************************
+    * @Method 설명 : 법정대리인 이메일 발송로그 등록 (어드민이랑 같음)
+    * @작성일   : 2022-01-04
+    * @작성자   : 박성민
+    * @param  :
+    *   memNo  회원번호(신청자)
+    *   pMemEmail  대리인 이메일주소
+    *   mailSlct  메일발송구분[a:동의, p:결제, c:결제취소]
+    *   mailEtc  메일발송정보
+    * @return : s_return - 0:에러, 1:정상
+    **********************************************************************************************/
+    @Select("CALL rd_data.p_mem_parents_auth_email_log_ins(#{memNo}, #{pMemEmail}, #{mailSlct}, #{mailEtc})")
+    Integer parentsAuthEmailLogIns(ParentsEmailLogInsVo param);
 }
