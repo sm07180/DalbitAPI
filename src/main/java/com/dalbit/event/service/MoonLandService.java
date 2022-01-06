@@ -173,22 +173,22 @@ public class MoonLandService {
         try {
             param.put("memNo", getStringMemNoToLongMemNo(request));
             moonLandMyRankVO = event.pEvtMoonRankMySel(param);
-            if (moonLandMyRankVO != null) {
-                moonLandMyRankVO = getCurrentTotalScore(moonLandMyRankVO);
-                rankingMap.put("rank", moonLandMyRankVO.getMy_rank_no());    //내 순위
-                rankingCoinMap.put("balance", String.valueOf(moonLandMyRankVO.getRank_pt()));  // 내 점수
-                rankingCoinMap.put("total", String.valueOf(moonLandMyRankVO.getTot_score()));    // 현재 단계의 목표점수
-                rankingMap.put("coin", rankingCoinMap);
-                rankingMap.put("animation", moonLandMyRankVO.getAnimationUrl());
-                rankingMap.put("nextGift", moonLandMyRankVO.getNext_reward()+"달");
-                rankingMap.put("rankStep", moonLandMyRankVO.getRank_step());
-            } else {
+            if (moonLandMyRankVO == null) {
                 log.error("MoonLandService getMoonLandMissionData => moonLandMyRankVO is null {}", moonLandMyRankVO);
             }
+            moonLandMyRankVO = getCurrentTotalScore(moonLandMyRankVO);
 
         } catch (Exception e) {
             log.error("MoonLandService Exception getMoonLandMissionData event.pEvtMoonRankMySel(param) => {}", moonLandMyRankVO);
         }
+
+        rankingMap.put("rank", moonLandMyRankVO.getMy_rank_no());    //내 순위
+        rankingCoinMap.put("balance", String.valueOf(moonLandMyRankVO.getRank_pt()));  // 내 점수
+        rankingCoinMap.put("total", String.valueOf(moonLandMyRankVO.getTot_score()));    // 현재 단계의 목표점수
+        rankingMap.put("coin", rankingCoinMap);
+        rankingMap.put("animation", moonLandMyRankVO.getAnimationUrl());
+        rankingMap.put("nextGift", moonLandMyRankVO.getNext_reward() + "달");
+        rankingMap.put("rankStep", moonLandMyRankVO.getRank_step());
 
         //최종 result
         param = new HashMap();
@@ -371,8 +371,10 @@ public class MoonLandService {
     public MoonLandMyRankVO getCurrentTotalScore(MoonLandMyRankVO vo){
         if(vo == null){
             log.warn("getCurrentTotalScore param is null => {}", vo);
+            vo = new MoonLandMyRankVO();
             vo.setTot_score(0);
             vo.setNext_reward(0);
+            vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_1st_ani.webp");
             return vo;
         }
 
@@ -406,6 +408,7 @@ public class MoonLandService {
                 vo.setTot_score(400000);
                 vo.setNext_reward(0);
                 vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_6th_ani.webp");
+                vo.setRank_step(0); //마지막 단계 보상 미표기 처리용
                 break;
             default:
                 vo.setTot_score(0);
@@ -524,7 +527,6 @@ public class MoonLandService {
                         coinDataVo.setCharacterCnt(characterCnt);
                         coinDataVo.setGoldScore(goldScore);
                         coinDataVo.setCharacterScore(characterScore);
-                        System.out.println("coinDataVo = " + gsonUtil.toJson(coinDataVo));
                     } else {
                         log.error("MoonLandService Exception sendBooster 청취자 수 proc 실패 => listenerCnt : {}", listenerCnt);
                     }

@@ -21,7 +21,7 @@ public class MoonLandMyRankVO {
    private Integer mem_cha_booster_score = 0;	//INT		-- 부스터 점수(캐릭터)
    private Integer mem_cha_mission_score = 0;	//INT		-- 아이템 미션 점수(캐릭터)
    private Integer rank_pt = 0;				    //INT		-- 점수합
-   private Integer rank_step = 0;			    //INT		-- 랭킹 단계
+   private Integer rank_step = 1;			    //INT		-- 랭킹 단계
    private Integer send_like_cnt = 0;			//INT		-- 좋아요 합계
    private Integer view_cnt = 0;			    //INT		-- 청취시간 합계
    private Integer my_rank_no = 0;			    //INT		-- 나의 랭킹순위
