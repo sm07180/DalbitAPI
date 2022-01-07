@@ -4,6 +4,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.MoonLandService;
 import com.dalbit.common.vo.ResVO;
+import com.dalbit.event.vo.MoonLandInfoVO;
 import com.dalbit.event.vo.MoonLandMissionSelVO;
 import com.dalbit.event.vo.MoonLandScoreInsVO;
 import com.dalbit.member.vo.MemberVo;
@@ -20,6 +21,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -43,7 +45,12 @@ public class MoonLandController {
     public ResVO getMoonLandInfoData(){
         ResVO resVO = new ResVO();
         try{
-            resVO.setSuccessResVO(moonLandService.getMoonLandInfoData());
+            List<MoonLandInfoVO> list = moonLandService.getMoonLandInfoData();
+            if(list != null && list.size() > 0){
+                resVO.setSuccessResVO(list);
+            } else {
+                resVO.setFailResVO();
+            }
         }catch(Exception e){
             resVO.setFailResVO();
             log.error("MoonLandController Exception getMoonLandInfoData => {}", e);
