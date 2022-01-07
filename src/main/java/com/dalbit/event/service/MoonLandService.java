@@ -90,7 +90,7 @@ public class MoonLandService {
 
         List<MoonLandInfoVO> list = event.pEvtMoonNoSel();//가장 최신 회차 조회 (moonNo)
 
-        if(list == null || list.size()> 0){
+        if(list == null || list.size() == 0){
             return null;
         }
             MoonLandInfoVO lastMoonNo = list.get(list.size()-1);
