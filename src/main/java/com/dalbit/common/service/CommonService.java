@@ -1349,9 +1349,13 @@ public class CommonService {
             String msgCont;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String today = dateFormat.format(new Date());
+            String rcvUserName = parentsAgreeEmailVo.getAgreeRcvUserName();
+            String rcvUserLastLetterReplace = rcvUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+            String allowUserName = parentsAgreeEmailVo.getAgreeAllowUserName();
+            String allowUserLastLetterReplace = allowUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
 
-            msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", parentsAgreeEmailVo.getAgreeAllowUserName());
-            msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", parentsAgreeEmailVo.getAgreeRcvUserName());
+            msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", allowUserLastLetterReplace);
+            msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", rcvUserLastLetterReplace);
             msgCont = msgCont.replaceAll("@@agreeRcvUserId@@", parentsAgreeEmailVo.getAgreeRcvUserId());
             msgCont = msgCont.replaceAll("@@agreeDate@@", today);
             msgCont = msgCont.replaceAll("@@agreeDuration@@", parentsAgreeEmailVo.getAgreeDuration());
@@ -1362,7 +1366,18 @@ public class CommonService {
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
-            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "a", "");
+            JSONObject mailEtcInfo = new JSONObject();
+            mailEtcInfo.put("agreeAllowUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeRcvUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeRcvUserId", parentsAgreeEmailVo.getAgreeRcvUserId());
+            mailEtcInfo.put("agreeDate", today);
+            mailEtcInfo.put("agreeDuration", parentsAgreeEmailVo.getAgreeDuration());
+            mailEtcInfo.put("agreeExpireDate", parentsAgreeEmailVo.getAgreeExpireDate());
+            mailEtcInfo.put("agreeScope", "결제(달 충전, 아이템 선물)");
+            mailEtcInfo.put("rcvUserFullName", rcvUserName);
+            mailEtcInfo.put("allowUserFullName", allowUserName);
+            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "a", mailEtcInfo.toString());
+
             Integer logInsRes = common.parentsAuthEmailLogIns(parentsEmailLogInsVo);
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
