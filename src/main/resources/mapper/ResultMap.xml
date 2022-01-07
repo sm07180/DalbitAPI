@@ -35,4 +35,8 @@
     <resultMap id="StoryVo3" type="com.dalbit.event.vo.LikeTreeStoryVO"/>
     <resultMap id="RankListVo" type="com.dalbit.event.vo.LikeTreeRankingVO"/>
     <resultMap id="LikeGiftVo" type="com.dalbit.event.vo.LikeTreeGiftVO"/>
+
+    <!-- 달나라 이벤트 -->
+    <resultMap id="MoonLandRankVO" type="com.dalbit.event.vo.MoonLandRankVO"/>
+
 </mapper>

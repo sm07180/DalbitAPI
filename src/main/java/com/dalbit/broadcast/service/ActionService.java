@@ -1,10 +1,14 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ActionDao;
+import com.dalbit.broadcast.dao.UserDao;
+import com.dalbit.broadcast.vo.MoonLandCoinDataVO;
 import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.RoomShareLinkOutVo;
 import com.dalbit.broadcast.vo.TTSSpeakVo;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.BoosterVo;
+import com.dalbit.broadcast.vo.request.GoodVo;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
@@ -12,7 +16,10 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.service.MoonLandService;
 import com.dalbit.event.vo.GganbuPocketStatInsVo;
+import com.dalbit.event.vo.MoonLandInfoVO;
+import com.dalbit.event.vo.MoonLandMissionInsVO;
 import com.dalbit.event.vo.request.GganbuMarbleExchangeInputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
@@ -29,13 +36,11 @@ import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -64,6 +69,10 @@ public class ActionService {
 
     @Autowired EventService eventService;
 
+    @Autowired MoonLandService moonLandService;
+
+    @Autowired UserService userService;
+
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
     @Value("${item.direct.min}")
@@ -76,7 +85,7 @@ public class ActionService {
     /**
      * 방송방 좋아요 추가
      */
-    public String callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo, HttpServletRequest request) {
+    public String callBroadCastRoomGood(P_RoomGoodVo pRoomGoodVo, GoodVo goodVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomGoodVo);
         actionDao.callBroadCastRoomGood(procedureVo);
 
@@ -85,6 +94,8 @@ public class ActionService {
         log.info(" ### 프로시저 호출결과 ###");
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+
+        log.error("callBroadCastRoomGood - resultMap => goodRank {}", resultMap);
         HashMap returnMap = new HashMap();
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
@@ -101,7 +112,14 @@ public class ActionService {
                     isFirst = (DalbitUtil.getIntMap(resultMap, "firstGood") == 1);
                 }
                 boolean isLoveGood = DalbitUtil.getIntMap(resultMap, "goodRank") > 0;
-                socketService.sendLike(pRoomGoodVo.getRoom_no(), pRoomGoodVo.getMem_no(), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isLoveGood, DalbitUtil.getIntMap(resultMap, "goodRank"), new DeviceVo(request));
+
+                //달나라 좋아요
+                MoonLandCoinDataVO coinDataVO = null;
+                coinDataVO = moonLandService.getSendLikeMoonLandCoinDataVO(coinDataVO, returnMap, pRoomGoodVo, goodVo);
+
+                socketService.sendLike(pRoomGoodVo.getRoom_no(), pRoomGoodVo.getMem_no(), isFirst, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isLoveGood, DalbitUtil.getIntMap(resultMap, "goodRank"),
+                        new DeviceVo(request), coinDataVO);
+
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service sendLike Exception {}", e);
@@ -373,6 +391,13 @@ public class ActionService {
                 GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
                 returnMap.put("gganbuPocketCnt", statIns);
 
+                MoonLandCoinDataVO coinDataVO = null;
+                coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
+
+                log.error("sendGift => coinData : {}", coinDataVO);
+                itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
+
+
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
@@ -459,7 +484,7 @@ public class ActionService {
     /**
      * 부스터 사용하기
      */
-    public String callBroadCastRoomBooster(P_RoomBoosterVo pRoomBoosterVo, HttpServletRequest request) {
+    public String callBroadCastRoomBooster(P_RoomBoosterVo pRoomBoosterVo, BoosterVo boosterVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pRoomBoosterVo);
         actionDao.callBroadCastRoomBooster(procedureVo);
 
@@ -467,6 +492,9 @@ public class ActionService {
         if(Status.부스터성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
+
+            log.error("callBroadCastRoomBooster => {} roomCnt", resultMap);
+
             returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
             int roomCnt = DalbitUtil.getIntMap(resultMap, "totalRoomCnt");
             int rank = DalbitUtil.getIntMap(resultMap, "rank");
@@ -482,6 +510,11 @@ public class ActionService {
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
+
+            //달나라 갈거야 시작
+            MoonLandCoinDataVO coinDataVO = null;
+            coinDataVO = moonLandService.getSendBoosterMoonLandCoinDataVO(coinDataVO, request, pRoomBoosterVo, boosterVo, returnMap);
+            //달나라 갈거야 끝
 
             SocketVo vo = socketService.getSocketObjectVo(pRoomBoosterVo.getRoom_no(), pRoomBoosterVo.getMem_no(), DalbitUtil.isLogin(request));
             try{
@@ -510,6 +543,7 @@ public class ActionService {
                 itemMap.put("dalCnt", item.getByeol());
                 itemMap.put("memNo", vo1.getMemNo());
                 itemMap.put("isGuest", false);
+                itemMap.put("coinData", coinDataVO);    //달나라 코인 점수 (부스터)
 
                 socketService.giftItem(pRoomBoosterVo.getRoom_no(), pRoomBoosterVo.getMem_no(), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

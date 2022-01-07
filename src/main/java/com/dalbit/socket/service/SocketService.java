@@ -2,6 +2,7 @@ package com.dalbit.socket.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.GuestInfoVo;
+import com.dalbit.broadcast.vo.MoonLandCoinDataVO;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.StateEditVo;
 import com.dalbit.common.dao.CommonDao;
@@ -17,6 +18,7 @@ import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketOutVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RestApiUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -63,6 +66,9 @@ public class SocketService {
     @Autowired
     ProfileDao profileDao;
 
+    @Autowired
+    GsonUtil gsonUtil; //todo 테스트 후 지우셈
+    
     public void sendSocketApi(String authToken, String roomNo, String params) {
         String result = "";
         params = StringUtils.defaultIfEmpty(params, "").trim();
@@ -444,7 +450,8 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void sendLike(String roomNo, String memNo, boolean isFirst, String authToken, boolean isLogin, SocketVo vo, boolean isLoveGood, int goodRank, DeviceVo deviceVo){
+    public void sendLike(String roomNo, String memNo, boolean isFirst, String authToken, boolean isLogin, SocketVo vo, boolean isLoveGood, int goodRank, DeviceVo deviceVo,
+                         MoonLandCoinDataVO coinDataVO){
         log.info("Socket Start : sendLike {}, {}, {}, {}", roomNo, memNo, isFirst, isLogin);
         roomNo = roomNo == null ? "" : roomNo.trim();
         memNo = memNo == null ? "" : memNo.trim();
@@ -468,6 +475,16 @@ public class SocketService {
                 vo.setCommand("reqGood");
                 HashMap msgMap = new HashMap();
                 msgMap.put("goodRank", goodRank);
+
+                //달나라 좋아요 코인데이터 세팅
+                if(coinDataVO != null){
+                    log.error("SocketService - sendLike => coinData : {}", gsonUtil.toJson(coinDataVO));
+                    msgMap.put("coinData", coinDataVO);
+                } else {
+                    log.error("SocketService - sendLike => coinData is null");
+                    msgMap.put("coinData", null);
+                }
+
                 vo.setMessage(msgMap);
                 sendSocketApi(authToken, roomNo, vo.toQueryString());
             }
