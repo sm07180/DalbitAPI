@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -65,7 +67,12 @@ public class MoonLandController {
     public String getMoonLandMissionData(@RequestParam("roomNo") String roomNo, HttpServletRequest request){
         try {
             if(!StringUtils.equals(null, roomNo)) {
-               return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_성공, moonLandService.getMoonLandMissionData(roomNo, request)));
+                Map<String, Object> result = moonLandService.getMoonLandMissionData(roomNo, request);
+                if(result != null){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_성공, result));    
+                } else {    //db 에러로 list가 null 인 경우
+                    return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
+                }
             } else {
                 log.error("MoonLandController getMoonLandMissionData param is null roomNo: {}", roomNo);
                 return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));

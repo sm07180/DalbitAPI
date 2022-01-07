@@ -89,6 +89,10 @@ public class MoonLandService {
         ArrayList<MoonLandMissionSelResultVO> resultList = new ArrayList<>();
 
         List<MoonLandInfoVO> list = event.pEvtMoonNoSel();//가장 최신 회차 조회 (moonNo)
+
+        if(list == null){
+            return null;
+        }
             MoonLandInfoVO lastMoonNo = list.get(list.size()-1);
             param.put("moonNo", lastMoonNo.getMoon_no());
             param.put("roomNo", Long.parseLong(roomNo));
