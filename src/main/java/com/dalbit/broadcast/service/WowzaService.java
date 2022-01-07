@@ -398,7 +398,7 @@ public class WowzaService {
 
             // 달나라 이벤트 진행중 여부
             boolean moonLandEvent = false; // [ true: 이벤트 기간 o, false: 이벤트기간 x ]
-            List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData();
+            List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData(1);
 
             if(moonLandRound != null && moonLandRound.size() > 0) {
                 moonLandEvent = true;
@@ -850,7 +850,7 @@ public class WowzaService {
 
         // 달나라 이벤트 진행중 여부
         boolean moonLandEvent = false; // [ true: 이벤트 기간 o, false: 이벤트기간 x ]
-        List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData();
+        List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData(1);
         if (moonLandRound != null && moonLandRound.size() > 0) { // 비로그인이면 달나라 이벤트 안보임!
             moonLandEvent = true;
         }

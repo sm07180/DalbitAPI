@@ -46,7 +46,7 @@ public class MoonLandController {
     public ResVO getMoonLandInfoData(){
         ResVO resVO = new ResVO();
         try{
-            List<MoonLandInfoVO> list = moonLandService.getMoonLandInfoData();
+            List<MoonLandInfoVO> list = moonLandService.getMoonLandInfoData(1);
             if(list != null && list.size() > 0){
                 resVO.setSuccessResVO(list);
             } else {

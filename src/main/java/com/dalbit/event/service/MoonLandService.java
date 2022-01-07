@@ -56,8 +56,8 @@ public class MoonLandService {
      * endDate	    DATETIME	-- 종료일자
      * insDate	    DATETIME	-- 등록일자
      */
-    public List<MoonLandInfoVO> getMoonLandInfoData(){
-        List<MoonLandInfoVO> list = event.pEvtMoonNoSel();
+    public List<MoonLandInfoVO> getMoonLandInfoData(int noSlct){
+        List<MoonLandInfoVO> list = event.pEvtMoonNoSel(noSlct); //현재 회차
         return list;
     }
 
@@ -88,7 +88,7 @@ public class MoonLandService {
         HashMap param = new HashMap();
         ArrayList<MoonLandMissionSelResultVO> resultList = new ArrayList<>();
 
-        List<MoonLandInfoVO> list = event.pEvtMoonNoSel();//가장 최신 회차 조회 (moonNo)
+        List<MoonLandInfoVO> list = getMoonLandInfoData(2);//전체 리스트 조회
 
         if(list == null || list.size() == 0){
             return null;
@@ -470,7 +470,7 @@ public class MoonLandService {
     //coinDataVO에 값 넣어준 후 coinDataVO 리턴
     public MoonLandCoinDataVO getSendBoosterMoonLandCoinDataVO(MoonLandCoinDataVO coinDataVo, HttpServletRequest request, P_RoomBoosterVo pRoomBoosterVo, BoosterVo boosterVo, HashMap resultMap){
         try {
-            List<MoonLandInfoVO> moonLandRound = getMoonLandInfoData();
+            List<MoonLandInfoVO> moonLandRound = getMoonLandInfoData(1);
 
             //이벤트 진행중 여부 체크 (null 이면 이벤트 기간 아님)
             if(moonLandRound != null && moonLandRound.size() > 0) {
@@ -549,7 +549,7 @@ public class MoonLandService {
         //달나라 조건 체크 - 선물 갯수 10개 이상
         if (dalCnt > 9) {
             try {
-                List<MoonLandInfoVO> moonLandRound = getMoonLandInfoData();
+                List<MoonLandInfoVO> moonLandRound = getMoonLandInfoData(1);
                 //이벤트 진행중 여부 체크 (null 이면 이벤트 기간 아님)
                 if(moonLandRound != null && moonLandRound.size() > 0) {
                     //pRoomGiftVo.getMem_no(); // sendUser
@@ -623,7 +623,7 @@ public class MoonLandService {
 
     //달나라 - 좋아요 소켓에 같이 보낼 VO
     public MoonLandCoinDataVO getSendLikeMoonLandCoinDataVO(MoonLandCoinDataVO coinDataVo, HashMap returnMap, P_RoomGoodVo pRoomGoodVo, GoodVo goodVo){
-        List<MoonLandInfoVO> moonLandRound= getMoonLandInfoData();
+        List<MoonLandInfoVO> moonLandRound= getMoonLandInfoData(1);
 
         if(moonLandRound != null && moonLandRound.size() > 0 && returnMap.get("goodRank") != null) {
             //보너스 코인 점수 ins
