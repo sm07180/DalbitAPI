@@ -57,7 +57,7 @@ public class MoonLandController {
                 vo.setEnd_date("2022-01-16");
                 vo.setIns_date("");
                 hardCodingList.add(vo);
-                resVO.setSuccessResVO(list);
+                resVO.setSuccessResVO(hardCodingList);
             }
         }catch(Exception e){
             resVO.setFailResVO();
