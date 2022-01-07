@@ -20,6 +20,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +50,14 @@ public class MoonLandController {
             if(list != null && list.size() > 0){
                 resVO.setSuccessResVO(list);
             } else {
-                resVO.setFailResVO();
+                List<MoonLandInfoVO> hardCodingList  = new ArrayList<>();
+                MoonLandInfoVO vo = new MoonLandInfoVO();
+                vo.setMoon_no(1);
+                vo.setStart_date("2022-01-10");
+                vo.setEnd_date("2022-01-16");
+                vo.setIns_date("");
+                hardCodingList.add(vo);
+                resVO.setSuccessResVO(list);
             }
         }catch(Exception e){
             resVO.setFailResVO();
