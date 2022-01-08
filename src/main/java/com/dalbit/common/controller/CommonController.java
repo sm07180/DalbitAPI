@@ -587,8 +587,10 @@ public class CommonController {
     @PostMapping("/pay/restapi/test")
     public String payRestAPITest(HttpServletRequest request){
         HashMap<String, Object> map = new HashMap<>();
-        map.put("memNo", request.getParameter("memNo"));
-        map.put("orderId", request.getParameter("orderId"));
+        String memNo = request.getParameter("memNo");
+        String orderId = request.getParameter("orderId");
+        map.put("memNo", memNo);
+        map.put("orderId", orderId);
 
         String clientIP = ipUtil.getClientIP(request);
         map.put("clientIP", clientIP);
@@ -596,6 +598,7 @@ public class CommonController {
         map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
 
         if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
+            commonService.sendPayMailManager(memNo, orderId);
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
         }else {
             return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, map));
@@ -615,8 +618,7 @@ public class CommonController {
             agreeInfo.setMemNo(memNo);
             result = commonService.parentCertIns(agreeInfo);
         } catch (Exception e) {
-            log.error("CommonController / parentCertIns");
-            e.printStackTrace();
+            log.error("CommonController / parentCertIns error : ", e);
             result.setFailResVO();
         }
 
@@ -634,8 +636,7 @@ public class CommonController {
             String memNo = MemberVo.getMyMemNo(request);
             resVO.setSuccessResVO(commonService.parentsAuthChk(memNo));
         } catch (Exception e) {
-            log.error("CommonController / parentsAuthChk");
-            e.getStackTrace();
+            log.error("CommonController / parentsAuthChk error : ", e);
             resVO.setFailResVO();
         }
 

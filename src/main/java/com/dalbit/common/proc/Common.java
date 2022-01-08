@@ -1,6 +1,7 @@
 package com.dalbit.common.proc;
 
 import com.dalbit.common.vo.ParentsAuthSelVo;
+import com.dalbit.common.vo.PaySuccSelVo;
 import com.dalbit.common.vo.request.ParentCertInputVo;
 import com.dalbit.common.vo.request.ParentsEmailLogInsVo;
 import org.apache.ibatis.annotations.Select;
@@ -85,4 +86,17 @@ public interface Common {
     **********************************************************************************************/
     @Select("CALL rd_data.p_mem_parents_auth_email_log_ins(#{memNo}, #{pMemEmail}, #{mailSlct}, #{mailEtc})")
     Integer parentsAuthEmailLogIns(ParentsEmailLogInsVo param);
+
+    /**********************************************************************************************
+     * @Method 설명 : 미성년자 결제 후 메일 발송을 위한 결제 내용 조회
+     * @작성일   : 2022-01-08
+     * @작성자   : 박성민
+     * @param  :
+     *   memNo  회원번호(신청자)
+     *   orderId 주문번호
+     * @return : (결제 정보)
+     *   order_id, mem_no, pay_way, pay_amt, item_amt, pay_code, card_no, card_nm, pay_ok_date, pay_ok_time
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_mem_pay_succ_sel(#{memNo}, #{orderId})")
+    PaySuccSelVo paySuccSel(String memNo, String orderId);
 }
