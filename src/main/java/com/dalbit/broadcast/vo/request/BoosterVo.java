@@ -18,4 +18,5 @@ public class BoosterVo {
     private Integer itemCnt;
 
     private String isItemUse="";
+    private String memNo = "0";    //부스트 받을 DJ 회원번호
 }

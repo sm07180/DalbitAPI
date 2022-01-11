@@ -27,6 +27,8 @@ public class ActionController {
 
     /**
      * 방송방 좋아요 추가
+     *
+     * 달나라 이벤트 - GoodVo : memNo (String) 추가
      */
     @PostMapping("/likes")
     public String roomGood(@Valid GoodVo goodVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
@@ -37,7 +39,7 @@ public class ActionController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(goodVo.getRoomNo());
 
-        String result = actionService.callBroadCastRoomGood(apiData, request);
+        String result = actionService.callBroadCastRoomGood(apiData, goodVo, request);
 
         return result;
     }
@@ -117,7 +119,7 @@ public class ActionController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_RoomBoosterVo apiData = new P_RoomBoosterVo(boosterVo, request);
-        String result = actionService.callBroadCastRoomBooster(apiData, request);
+        String result = actionService.callBroadCastRoomBooster(apiData, boosterVo, request);
 
         return result;
     }
