@@ -207,6 +207,7 @@ public class GoodStartService {
 
             List<Object> rankFanObj = goodStartEvent.goodStartRankFanList(goodStartInputVo);
             Integer rankFanListCnt = DBUtil.getData(rankFanObj, 0, Integer.class);
+
             List<GoodStartRankVo> rankFanList = DBUtil.getList(rankFanObj, 1, GoodStartRankVo.class);
             for(GoodStartRankVo vo : rankFanList) {
                 vo.setProfImg(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
@@ -233,6 +234,7 @@ public class GoodStartService {
                 goodStartRankFanMySel.setLevelColor(DalbitUtil.getProperty("level.color."+l).split(","));
             }
             fanRankData.put("rankFanMyInfo", goodStartRankFanMySel);
+            resVO.setSuccessResVO(fanRankData);
         } catch (Exception e) {
             log.error("GoodStartService / goodStartFanRank ", e);
             resVO.setFailResVO();
