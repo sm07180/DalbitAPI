@@ -157,6 +157,12 @@ public class WelcomeEventService {
             // 인증 체크
             Integer auth = welcomeEvent.checkWelcomeAuth(memNo, (String)params.get("memPhone"), (String)params.get("giftSlct"), (String)params.get("giftStepNo"));
 
+            if (auth == null) {
+                log.error("WelcomeEventService / checkWelcomeAuth auth check error => {} {}", params, memNo);
+                result.setFailResVO();
+                return result;
+            }
+
             if (auth != 1) {
                 switch (auth) {
                     case -1:
@@ -226,7 +232,7 @@ public class WelcomeEventService {
 
             result.setSuccessResVO(resultInfo);
         } catch (Exception e) {
-            log.error("WelcomeEventService / checkWelcomeAuth => {}", e);
+            log.error("WelcomeEventService / checkWelcomeAuth => {} {} {}", e, params, memNo);
             result.setFailResVO();
         }
 
