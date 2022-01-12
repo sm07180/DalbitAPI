@@ -12,4 +12,6 @@ public class BroadcastSettingEditVo {
     private String listenerOut;
     private String liveBadgeView;
     private String listenOpen;
+    private String ttsSound;
+    private String normalSound;
 }

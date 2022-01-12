@@ -20,6 +20,8 @@ public class P_BroadcastSettingEditVo extends P_ApiVo {
     private Integer listenerOut;
     private Integer liveBadgeView;
     private Integer listenOpen;
+    private Integer ttsSound;
+    private Integer normalSound;
 
     public P_BroadcastSettingEditVo(){}
     public P_BroadcastSettingEditVo(BroadcastSettingEditVo broadcastSettingEditVo, HttpServletRequest request){
@@ -31,6 +33,8 @@ public class P_BroadcastSettingEditVo extends P_ApiVo {
         setListenerOut(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenerOut()) ? (("true".equals(broadcastSettingEditVo.getListenerOut().toLowerCase()) || "1".equals(broadcastSettingEditVo.getListenerOut())) ? 1: 0) : null);
         setLiveBadgeView(!DalbitUtil.isEmpty(broadcastSettingEditVo.getLiveBadgeView()) ? (("true".equals(broadcastSettingEditVo.getLiveBadgeView().toLowerCase()) || "1".equals(broadcastSettingEditVo.getLiveBadgeView())) ? 1: 0) : null);
         setListenOpen(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenOpen()) ? Integer.parseInt(broadcastSettingEditVo.getListenOpen()) : null);
+        setTtsSound(!DalbitUtil.isEmpty(broadcastSettingEditVo.getTtsSound()) ? (("true".equals(broadcastSettingEditVo.getTtsSound().toLowerCase()) || "1".equals(broadcastSettingEditVo.getTtsSound())) ? 1: 0) : null);
+        setNormalSound(!DalbitUtil.isEmpty(broadcastSettingEditVo.getNormalSound()) ? (("true".equals(broadcastSettingEditVo.getNormalSound().toLowerCase()) || "1".equals(broadcastSettingEditVo.getNormalSound())) ? 1: 0) : null);
     }
 
 }

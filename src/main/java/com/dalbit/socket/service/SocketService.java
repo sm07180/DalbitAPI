@@ -18,7 +18,6 @@ import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketOutVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RestApiUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -66,9 +65,6 @@ public class SocketService {
     @Autowired
     ProfileDao profileDao;
 
-    @Autowired
-    GsonUtil gsonUtil; //todo 테스트 후 지우셈
-    
     public void sendSocketApi(String authToken, String roomNo, String params) {
         String result = "";
         params = StringUtils.defaultIfEmpty(params, "").trim();

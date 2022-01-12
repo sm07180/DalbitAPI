@@ -2343,6 +2343,8 @@ public class MypageService {
             returnMap.put("listenOpen", DalbitUtil.getIntMap(resultMap, "listenOpen"));
             returnMap.put("isSpecial", isSpecial);
             returnMap.put("specialBadge", specialdj_badge);
+            returnMap.put("ttsSound", DalbitUtil.getIntMap(resultMap, "ttsSound") == 1);
+            returnMap.put("normalSound", DalbitUtil.getIntMap(resultMap, "normalSound") == 1);
 
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송설정조회_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.방송설정조회_회원아님.getMessageCode())) {
@@ -2401,6 +2403,15 @@ public class MypageService {
                 returnMap.put("listenOpen", pBroadcastSettingEditVo.getListenOpen());
             }
 
+            // ttsItem 사용 여부 설정
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getTtsSound())){
+                returnMap.put("ttsSound", pBroadcastSettingEditVo.getTtsSound() == 1);
+            }
+            // soundItem 사용 여부 설정
+            if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getNormalSound())){
+                returnMap.put("normalSound", pBroadcastSettingEditVo.getNormalSound() == 1);
+            }
+
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("dj_listener_in", DalbitUtil.getBooleanMap(returnMap, "djListenerIn") ? 1 : 0);
@@ -2410,6 +2421,10 @@ public class MypageService {
                 socketMap.put("listener_in", DalbitUtil.getBooleanMap(returnMap, "listenerIn") ? 1 : 0);
                 socketMap.put("listener_out", DalbitUtil.getBooleanMap(returnMap, "listenerOut") ? 1 : 0);
                 socketMap.put("badge_view", DalbitUtil.getBooleanMap(returnMap, "liveBadgeView") ? 1 : 0);
+
+                /** todo 방장인 경우 조건 나눠서 socket 쏘기!! */
+                //socketMap.put("tts_sound", DalbitUtil.getBooleanMap(returnMap, "ttsSound") ? 1 : 0);
+                //socketMap.put("normal_sound", DalbitUtil.getBooleanMap(returnMap, "normalSound") ? 1 : 0);
                 HashMap inOutMap = new HashMap();
                 inOutMap.put("inOut", socketMap);
                 socketService.changeMemberInfo(pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
@@ -2436,6 +2451,18 @@ public class MypageService {
                         status = Status.선물스타추가_ON;
                     } else {
                         status = Status.선물스타추가_OFF;
+                    }
+                }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getTtsSound()) && pBroadcastSettingEditVo.getTtsSound() != DalbitUtil.getIntMap(boforeMap, "ttsSound")){
+                    if (pBroadcastSettingEditVo.getTtsSound() == 1) {
+                        status = Status.TTS_아이템_ON;
+                    } else {
+                        status = Status.TTS_아이템_OFF;
+                    }
+                }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getNormalSound()) && pBroadcastSettingEditVo.getNormalSound() != DalbitUtil.getIntMap(boforeMap, "normalSound")){
+                    if (pBroadcastSettingEditVo.getNormalSound() == 1) {
+                        status = Status.SOUND_아이템_ON;
+                    } else {
+                        status = Status.SOUND_아이템_OFF;
                     }
                 }else{
                     status = Status.방송설정수정_성공;
