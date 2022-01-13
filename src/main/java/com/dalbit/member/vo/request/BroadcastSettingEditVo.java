@@ -14,4 +14,6 @@ public class BroadcastSettingEditVo {
     private String listenOpen;
     private String ttsSound;
     private String normalSound;
+    private String roomNo;
+    private String bjMemNo;
 }

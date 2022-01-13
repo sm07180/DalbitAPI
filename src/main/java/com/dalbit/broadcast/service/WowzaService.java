@@ -609,19 +609,19 @@ public class WowzaService {
                     }
                 }
             }
+            //방장의 tts, sound 아이템 on/off 설정 조회
+            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
+            apiData.setMem_no(roomInfoVo.getBjMemNo());
+            HashMap<String, Object> bjSettingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+            roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(bjSettingMap, "ttsSound"));
+            roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(bjSettingMap, "normalSound"));
 
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
             // tts 성우 리스트
-            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
-            result.put("ttsActors", ttsActors);
-
-            //방장의 tts, sound 아이템 on/off 설정
-            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
-            String bjSettingSelect = mypageService.callBroadcastSettingSelect(apiData);
-            result.put("ttsSound", false);
-            result.put("normalSound", false);
+//            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+//            result.put("ttsActors", ttsActors);
 
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
             result.put("status", Status.방송참여_회원아님);

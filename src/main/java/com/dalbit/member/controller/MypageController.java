@@ -916,7 +916,7 @@ public class MypageController {
     @GetMapping("/broadcast/setting")
     public String broadcastSettingSelect(HttpServletRequest request){
         P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
-        String result = mypageService.callBroadcastSettingSelect(apiData);
+        String result = (String) mypageService.callBroadcastSettingSelect(apiData, false);
         return result;
     }
 

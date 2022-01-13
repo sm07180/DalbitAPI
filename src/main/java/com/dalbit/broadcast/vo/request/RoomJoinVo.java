@@ -12,6 +12,5 @@ public class RoomJoinVo {
     @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
     private String roomNo;
 
-    private String bjMemNo;
     private Integer shadow;
 }
