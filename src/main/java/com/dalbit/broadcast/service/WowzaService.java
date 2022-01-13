@@ -617,6 +617,12 @@ public class WowzaService {
             ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
             result.put("ttsActors", ttsActors);
 
+            //방장의 tts, sound 아이템 on/off 설정
+            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
+            String bjSettingSelect = mypageService.callBroadcastSettingSelect(apiData);
+            result.put("ttsSound", false);
+            result.put("normalSound", false);
+
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
             result.put("status", Status.방송참여_회원아님);
         } else if (procedureVo.getRet().equals(Status.방송참여_해당방이없음.getMessageCode())) {
