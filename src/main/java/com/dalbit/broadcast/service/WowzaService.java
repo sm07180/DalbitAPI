@@ -609,13 +609,12 @@ public class WowzaService {
                     }
                 }
             }
-            //방장의 tts, sound 아이템 on/off 설정 조회
+            //방장 (bjMemNo)의 tts, sound 아이템 on/off 설정 조회
             P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
             apiData.setMem_no(roomInfoVo.getBjMemNo());
-            HashMap<String, Object> bjSettingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
-            roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(bjSettingMap, "ttsSound"));
-            roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(bjSettingMap, "normalSound"));
-
+            HashMap<String, Object> djSettingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+            roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(djSettingMap, "djTtsSound"));
+            roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(djSettingMap, "djNormalSound"));
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);

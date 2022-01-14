@@ -22,6 +22,8 @@ public class P_BroadcastSettingEditVo extends P_ApiVo {
     private Integer listenOpen;
     private Integer ttsSound;
     private Integer normalSound;
+    private Integer djTtsSound;
+    private Integer djNormalSound;
 
     private String bjMemNo; // 방송방 - 요청한 유저가 방장 본인인지 확인하기 위한 구분값
     private String roomNo;  // 방송방 여부 체크 (공통으로 쓰는 API)
@@ -38,6 +40,8 @@ public class P_BroadcastSettingEditVo extends P_ApiVo {
         setListenOpen(!DalbitUtil.isEmpty(broadcastSettingEditVo.getListenOpen()) ? Integer.parseInt(broadcastSettingEditVo.getListenOpen()) : null);
         setTtsSound(!DalbitUtil.isEmpty(broadcastSettingEditVo.getTtsSound()) ? (("true".equals(broadcastSettingEditVo.getTtsSound().toLowerCase()) || "1".equals(broadcastSettingEditVo.getTtsSound())) ? 1: 0) : null);
         setNormalSound(!DalbitUtil.isEmpty(broadcastSettingEditVo.getNormalSound()) ? (("true".equals(broadcastSettingEditVo.getNormalSound().toLowerCase()) || "1".equals(broadcastSettingEditVo.getNormalSound())) ? 1: 0) : null);
+        setDjTtsSound(!DalbitUtil.isEmpty(broadcastSettingEditVo.getDjTtsSound()) ? (("true".equals(broadcastSettingEditVo.getDjTtsSound().toLowerCase()) || "1".equals(broadcastSettingEditVo.getDjTtsSound())) ? 1: 0) : null);
+        setDjNormalSound(!DalbitUtil.isEmpty(broadcastSettingEditVo.getDjNormalSound()) ? (("true".equals(broadcastSettingEditVo.getDjNormalSound().toLowerCase()) || "1".equals(broadcastSettingEditVo.getDjNormalSound())) ? 1: 0) : null);
         setRoomNo(!DalbitUtil.isEmpty(broadcastSettingEditVo.getRoomNo()) ? broadcastSettingEditVo.getRoomNo() : "");
         setBjMemNo(!DalbitUtil.isEmpty(broadcastSettingEditVo.getBjMemNo()) ? broadcastSettingEditVo.getBjMemNo() : "");
     }

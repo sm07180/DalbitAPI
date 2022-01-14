@@ -104,8 +104,8 @@ public class RoomInfoVo {
 
     private ArrayList<Map<String, String>> ttsActors;
     private boolean moonLandEvent;
-    private boolean ttsSound;
-    private boolean normalSound;
+    private boolean djTtsSound;
+    private boolean djNormalSound;
 
     /* 필터/메이크업 */
     private boolean useFilter = false;

@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -929,6 +930,8 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BroadcastSettingEditVo apiData = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+
+        System.out.println("api param Chk = "+gsonUtil.toJson(apiData));
         String result = mypageService.callBroadcastSettingEdit(apiData, request, "edit");
         return result;
     }
