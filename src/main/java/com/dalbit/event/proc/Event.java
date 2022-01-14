@@ -537,8 +537,8 @@ public interface Event {
      * end_date	    DATETIME	-- 종료일자
      * ins_date	    DATETIME	-- 등록일자
      */
-    @Select("CALL rd_data.p_evt_moon_no_sel()")
-    List<MoonLandInfoVO> pEvtMoonNoSel();
+    @Select("CALL rd_data.p_evt_moon_no_sel(#{noSlct})")
+    List<MoonLandInfoVO> pEvtMoonNoSel(int noSlct);
 
     /** 달나라 이벤트 아이템 미션 데이터 완료 리스트
      * 작성일 : 2021-12-28

@@ -4,6 +4,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.MoonLandService;
 import com.dalbit.common.vo.ResVO;
+import com.dalbit.event.vo.MoonLandInfoVO;
 import com.dalbit.event.vo.MoonLandMissionSelVO;
 import com.dalbit.event.vo.MoonLandScoreInsVO;
 import com.dalbit.member.vo.MemberVo;
@@ -19,6 +20,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -41,10 +46,22 @@ public class MoonLandController {
     public ResVO getMoonLandInfoData(){
         ResVO resVO = new ResVO();
         try{
-            resVO.setSuccessResVO(moonLandService.getMoonLandInfoData());
+            List<MoonLandInfoVO> list = moonLandService.getMoonLandInfoData(1);
+            if(list != null && list.size() > 0){
+                resVO.setSuccessResVO(list);
+            } else {
+                List<MoonLandInfoVO> hardCodingList  = new ArrayList<>();
+                MoonLandInfoVO vo = new MoonLandInfoVO();
+                vo.setMoon_no(1);
+                vo.setStart_date("2022-01-10");
+                vo.setEnd_date("2022-01-16");
+                vo.setIns_date("");
+                hardCodingList.add(vo);
+                resVO.setSuccessResVO(hardCodingList);
+            }
         }catch(Exception e){
             resVO.setFailResVO();
-            log.error("getMoonLandInfoData => {}", e);
+            log.error("MoonLandController Exception getMoonLandInfoData => {}", e);
         }
         return resVO;
     }
@@ -65,13 +82,18 @@ public class MoonLandController {
     public String getMoonLandMissionData(@RequestParam("roomNo") String roomNo, HttpServletRequest request){
         try {
             if(!StringUtils.equals(null, roomNo)) {
-               return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_성공, moonLandService.getMoonLandMissionData(roomNo, request)));
+                Map<String, Object> result = moonLandService.getMoonLandMissionData(roomNo, request);
+                if(result != null){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_성공, result));    
+                } else {    //db 에러로 list가 null 인 경우
+                    return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
+                }
             } else {
                 log.error("MoonLandController getMoonLandMissionData param is null roomNo: {}", roomNo);
                 return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
             }
         } catch (Exception e) {
-            log.error("MoonLandController getMoonLandPopUpData => {}", e);
+            log.error("MoonLandController Exception getMoonLandPopUpData => {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
         }
     }
@@ -89,7 +111,7 @@ public class MoonLandController {
             Long roomNo = Long.parseLong(paramVO.getRoomNo());
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo)));
         } catch (Exception e) {
-            log.error("MoonLandController setMoonLandScore => {}", e);
+            log.error("MoonLandController Exception setMoonLandScore => {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
         }
     }
@@ -118,7 +140,7 @@ public class MoonLandController {
             }
         } catch (Exception e) {
             resVO.setFailResVO();
-            log.error("MoonLandController getMoonLandMyRank => {}", e);
+            log.error("MoonLandController Exception getMoonLandMyRank => {}", e);
         }
 
         return resVO;
@@ -150,7 +172,7 @@ public class MoonLandController {
             }
         } catch (Exception e) {
             resVO.setFailResVO();
-            log.error("MoonLandController getMoonLandRankList => {}", e);
+            log.error("MoonLandController Exception getMoonLandRankList => {}", e);
         }
 
         return resVO;
