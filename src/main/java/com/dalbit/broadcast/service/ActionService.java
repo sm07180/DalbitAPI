@@ -393,10 +393,7 @@ public class ActionService {
 
                 MoonLandCoinDataVO coinDataVO = null;
                 coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
-
-                log.error("sendGift => coinData : {}", coinDataVO);
                 itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
-
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
