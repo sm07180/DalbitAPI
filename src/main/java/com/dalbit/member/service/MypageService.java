@@ -2439,10 +2439,10 @@ public class MypageService {
                 socketMap.put("listener_in", DalbitUtil.getBooleanMap(returnMap, "listenerIn") ? 1 : 0);
                 socketMap.put("listener_out", DalbitUtil.getBooleanMap(returnMap, "listenerOut") ? 1 : 0);
                 socketMap.put("badge_view", DalbitUtil.getBooleanMap(returnMap, "liveBadgeView") ? 1 : 0);
-                socketMap.put("tts_sound", DalbitUtil.getBooleanMap(returnMap, "ttsSound") ? 1 : 0);
-                socketMap.put("normal_sound", DalbitUtil.getBooleanMap(returnMap, "normalSound") ? 1 : 0);
-                socketMap.put("dj_tts_sound", DalbitUtil.getBooleanMap(returnMap, "djTtsSound") ? 1 : 0);
-                socketMap.put("dj_normal_sound", DalbitUtil.getBooleanMap(returnMap, "djNormalSound") ? 1 : 0);
+                socketMap.put("tts_sound", DalbitUtil.getBooleanMap(returnMap, "ttsSound"));
+                socketMap.put("normal_sound", DalbitUtil.getBooleanMap(returnMap, "normalSound"));
+                socketMap.put("dj_tts_sound", DalbitUtil.getBooleanMap(returnMap, "djTtsSound"));
+                socketMap.put("dj_normal_sound", DalbitUtil.getBooleanMap(returnMap, "djNormalSound"));
 
                 System.out.println("in setting edit - after update=> "+ returnMap);
 
@@ -2455,8 +2455,8 @@ public class MypageService {
                 // bj인지 체크, 방송방 여부 체크
                 // ttsSound on/off시 or normalSound on/off시
                 if (StringUtils.equals(MemberVo.getMyMemNo(request), pBroadcastSettingEditVo.getBjMemNo()) && !StringUtils.equals(pBroadcastSettingEditVo.getRoomNo(), "")) {
-                    if ( DalbitUtil.getIntMap(beforeMap, "djNormalSound") != DalbitUtil.getIntMap(returnMap, "djNormalSound")
-                        || DalbitUtil.getIntMap(beforeMap, "djTtsSound") != DalbitUtil.getIntMap(returnMap, "djTtsSound")) {
+                    if ( DalbitUtil.getIntMap(beforeMap, "djNormalSound") != (DalbitUtil.getBooleanMap(returnMap, "djNormalSound")? 1: 0)
+                        || DalbitUtil.getIntMap(beforeMap, "djTtsSound") != (DalbitUtil.getBooleanMap(returnMap, "djTtsSound")? 1:0)) {
                         SocketVo vo = socketService.getSocketVo(pBroadcastSettingEditVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                         socketService.reqDjSetting(pBroadcastSettingEditVo.getRoomNo(), pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
 
