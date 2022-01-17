@@ -577,6 +577,8 @@ public class CommonController {
         map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
         map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
 
+        log.error("test map =>{}", map);
+
         if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
         }else {
