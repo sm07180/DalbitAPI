@@ -239,6 +239,7 @@ public class WelcomeEventService {
                 return result;
             }
 
+            log.info("WelcomeEventService / success welcome present => {} {} {} {}", params, memNo, auth, memCheck);
             result.setSuccessResVO(resultInfo);
         } catch (Exception e) {
             log.error("WelcomeEventService / checkWelcomeAuth => {} {} {}", e, params, memNo);
