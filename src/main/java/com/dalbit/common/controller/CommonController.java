@@ -566,7 +566,7 @@ public class CommonController {
         return result;
     }
 
-    @PostMapping("/pay/restapi/test")
+    @PostMapping("/pay/result/callback")
     public String payRestAPITest(HttpServletRequest request){
         HashMap<String, Object> map = new HashMap<>();
         map.put("memNo", request.getParameter("memNo"));
