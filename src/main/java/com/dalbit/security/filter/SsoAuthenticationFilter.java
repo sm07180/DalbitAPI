@@ -73,7 +73,7 @@ public class SsoAuthenticationFilter implements Filter {
         , "/broad/tts"
         , "/broad/tts/callback"
         , "/security/log"
-        , "/pay/restapi/test"
+        , "/pay/result/callback"
     };
 
     @Override
