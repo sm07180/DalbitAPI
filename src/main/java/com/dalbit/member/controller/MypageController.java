@@ -916,9 +916,14 @@ public class MypageController {
      */
     @GetMapping("/broadcast/setting")
     public String broadcastSettingSelect(HttpServletRequest request){
-        P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
-        String result = (String) mypageService.callBroadcastSettingSelect(apiData, false);
-        return result;
+        try {
+            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
+            String result = (String) mypageService.callBroadcastSettingSelect(apiData, false);
+            return result;
+        } catch (Exception e) {
+            log.error("MyPageController broadcastSettingSelect => {}", e);
+            return null;
+        }
     }
 
 
@@ -931,7 +936,6 @@ public class MypageController {
 
         P_BroadcastSettingEditVo apiData = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
 
-        System.out.println("api param Chk = "+gsonUtil.toJson(apiData));
         String result = mypageService.callBroadcastSettingEdit(apiData, request, "edit");
         return result;
     }

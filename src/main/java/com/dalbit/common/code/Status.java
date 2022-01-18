@@ -1594,12 +1594,8 @@ public enum Status {
     SOUND_아이템_OFF("0", "mypage.broadcast.setting.gift.sound.off.success", "Sound 아이템 사용여부 OFF"),
     청취자_입장표시_ON("0", "mypage.broadcast.setting.listener.come.on.success", "청취자 입장표시 ON"),
     청취자_입장표시_OFF("0", "mypage.broadcast.setting.listener.come.off.success", "청취자 입장표시 OFF"),
-    DJ_청취자_입장표시_ON("0", "mypage.broadcast.setting.dj.listener.come.on.success", "DJ 청취자 입장표시 ON"),
-    DJ_청취자_입장표시_OFF("0", "mypage.broadcast.setting.dj.listener.come.off.success", "DJ 청취자 입장표시 OFF"),
     청취자_퇴장표시_ON("0", "mypage.broadcast.setting.listener.out.on.success", "청취자 퇴장표시 ON"),
     청취자_퇴장표시_OFF("0", "mypage.broadcast.setting.listener.out.off.success", "청취자 퇴장표시 OFF"),
-    DJ_청취자_퇴장표시_ON("0", "mypage.broadcast.setting.dj.listener.out.on.success", "DJ 청취자 퇴장표시 ON"),
-    DJ_청취자_퇴장표시_OFF("0", "mypage.broadcast.setting.dj.listener.out.off.success", "DJ 청취자 퇴장표시 OFF"),
     클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 
     //방송방 채팅 얼리기

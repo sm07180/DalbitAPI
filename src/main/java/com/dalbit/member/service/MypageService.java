@@ -2385,9 +2385,6 @@ public class MypageService {
             returnMap.put("djTtsSound", DalbitUtil.getIntMap(beforeMap, "djTtsSound") == 1);
             returnMap.put("djNormalSound", DalbitUtil.getIntMap(beforeMap, "djNormalSound") == 1);
 
-            System.out.println("in setting edit - before select=> "+ returnMap);
-
-
             //변경 후 프로시져 결과값에 따라 변경전 Map에 덮어 씌우기
             if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getGiftFanReg())){
                 returnMap.put("giftFanReg", pBroadcastSettingEditVo.getGiftFanReg() == 1);
@@ -2428,8 +2425,6 @@ public class MypageService {
                 returnMap.put("djNormalSound", pBroadcastSettingEditVo.getDjNormalSound() == 1);
             }
 
-            System.out.println("in setting edit - after select=> "+ returnMap);
-
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("dj_listener_in", DalbitUtil.getBooleanMap(returnMap, "djListenerIn") ? 1 : 0);
@@ -2444,8 +2439,6 @@ public class MypageService {
                 socketMap.put("dj_tts_sound", DalbitUtil.getBooleanMap(returnMap, "djTtsSound"));
                 socketMap.put("dj_normal_sound", DalbitUtil.getBooleanMap(returnMap, "djNormalSound"));
 
-                System.out.println("in setting edit - after update=> "+ returnMap);
-
                 HashMap inOutMap = new HashMap();
                 inOutMap.put("inOut", socketMap);
                 socketService.changeMemberInfo(pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
@@ -2455,15 +2448,32 @@ public class MypageService {
                 // bj인지 체크, 방송방 여부 체크
                 // ttsSound on/off시 or normalSound on/off시
                 if (StringUtils.equals(MemberVo.getMyMemNo(request), pBroadcastSettingEditVo.getBjMemNo()) && !StringUtils.equals(pBroadcastSettingEditVo.getRoomNo(), "")) {
-                    if ( DalbitUtil.getIntMap(beforeMap, "djNormalSound") != (DalbitUtil.getBooleanMap(returnMap, "djNormalSound")? 1: 0)
-                        || DalbitUtil.getIntMap(beforeMap, "djTtsSound") != (DalbitUtil.getBooleanMap(returnMap, "djTtsSound")? 1:0)) {
+                    int beforeDjNormalSound = DalbitUtil.getIntMap(beforeMap, "djNormalSound");
+                    int beforeDjTtsSound = DalbitUtil.getIntMap(beforeMap, "djTtsSound");
+                    int afterDjNormalSound = DalbitUtil.getBooleanMap(returnMap, "djNormalSound")? 1: 0;
+                    int afterDjTtsSound = DalbitUtil.getBooleanMap(returnMap, "djTtsSound")? 1: 0;
+                    String text = "";
+                    if (beforeDjNormalSound != afterDjNormalSound || beforeDjTtsSound != afterDjTtsSound) {
+                        if (beforeDjNormalSound > afterDjNormalSound) {// normalSound off
+                            text = "DJ의 설정으로 사운드 아이템 옵션을 사용할 수 없습니다.";
+                        } else if (beforeDjNormalSound < afterDjNormalSound) {// normalSound on
+                            text = "DJ의 설정으로 사운드 아이템 옵션을 제공합니다.";
+                        } else if (beforeDjTtsSound > afterDjTtsSound) {// ttsSound off
+                            text = "DJ의 설정으로 TTS 아이템 옵션을 사용할 수 없습니다.";
+                        } else if (beforeDjTtsSound < afterDjTtsSound) {// ttsSound on
+                            text = "DJ의 설정으로 TTS 아이템 옵션을 제공합니다.";
+                        }
+
+                        socketMap.put("text", text);
+                        inOutMap.put("inOut", socketMap);
                         SocketVo vo = socketService.getSocketVo(pBroadcastSettingEditVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                         socketService.reqDjSetting(pBroadcastSettingEditVo.getRoomNo(), pBroadcastSettingEditVo.getMem_no(), inOutMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-
                         vo.resetData();
                     }
                 }
-            }catch (Exception e){}
+            } catch (Exception e) {
+                log.error("MyPageService DJ TTS, Sound item ON/OFF ERROR => {}", e);
+            }
 
             Status status = null;
             if(state.equals("edit")){
@@ -2514,16 +2524,16 @@ public class MypageService {
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getDjListenerIn()) && pBroadcastSettingEditVo.getDjListenerIn() != DalbitUtil.getIntMap(beforeMap, "djListenerIn")) {
                     //dj 청취자 입장 표시
                     if (pBroadcastSettingEditVo.getDjListenerIn() == 1) {
-                        status = Status.DJ_청취자_입장표시_ON;
+                        status = Status.청취자_입장표시_ON;
                     } else {
-                        status = Status.DJ_청취자_입장표시_OFF;
+                        status = Status.청취자_입장표시_OFF;
                     }
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getDjListenerOut()) && pBroadcastSettingEditVo.getDjListenerOut() != DalbitUtil.getIntMap(beforeMap, "djListenerOut")) {
                     //dj 청취자 퇴장 표시
                     if (pBroadcastSettingEditVo.getDjListenerOut() == 1) {
-                        status = Status.DJ_청취자_퇴장표시_ON;
+                        status = Status.청취자_퇴장표시_ON;
                     } else {
-                        status = Status.DJ_청취자_퇴장표시_OFF;
+                        status = Status.청취자_퇴장표시_OFF;
                     }
                 }else if(!DalbitUtil.isEmpty(pBroadcastSettingEditVo.getListenerIn()) && pBroadcastSettingEditVo.getListenerIn() != DalbitUtil.getIntMap(beforeMap, "listenerIn")) {
                     //청취자 입장 표시

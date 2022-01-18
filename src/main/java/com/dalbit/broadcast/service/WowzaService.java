@@ -724,7 +724,7 @@ public class WowzaService {
                         }
                     }
                     
-                    //F5 눌렀을때 roomInfo 갱신용
+                    //웹 방송방에서 F5 눌렀을때 roomInfo 갱신용
                     try {
                         P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
                         apiData.setMem_no(roomInfoVo.getBjMemNo());
@@ -739,7 +739,6 @@ public class WowzaService {
                         roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
                         roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
 
-                        log.error("room Info {}", roomInfoVo.toString());
                     } catch (Exception e) {
                         log.error("WowzaService => URL : /broad/vw/info, bjSetting failed", e);
                     }
