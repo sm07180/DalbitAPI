@@ -39,4 +39,6 @@
     <!-- 달나라 이벤트 -->
     <resultMap id="MoonLandRankVO" type="com.dalbit.event.vo.MoonLandRankVO"/>
 
+    <!-- 굿스타트 이벤트 -->
+    <resultMap id="GoodStartRankVo" type="com.dalbit.event.vo.GoodStartRankVo"/>
 </mapper>

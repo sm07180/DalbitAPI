@@ -584,7 +584,7 @@ public class MoonLandService {
 
                                     // 3% 확률 => 황금코인 or 캐릭터코인 결정
                                     Random random = new Random();
-                                    int randNumber = random.nextInt(100) + 1; //1 ~ 100
+                                    int randNumber = 50; //1 ~ 100
                                     int goldScore = 0;  // 황금 코인
                                     int characterScore = 0;  // 캐릭터 코인
 
