@@ -154,8 +154,23 @@ public class WelcomeEventService {
         Integer resultInfo = 0;
 
         try {
+            // 조건 체크
+            Integer memCheck = 0;
             // 인증 체크
-            Integer auth = welcomeEvent.checkWelcomeAuth(memNo, (String)params.get("memPhone"), (String)params.get("giftSlct"), (String)params.get("giftStepNo"));
+            Integer auth = 0;
+
+            memCheck = welcomeEvent.getWelcomeEventQualityInfo(memNo, (String)params.get("giftSlct"));
+            if (1 != memCheck) {
+                result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
+                return result;
+            }
+
+            auth = welcomeEvent.checkWelcomeAuth(memNo, (String)params.get("memPhone"), (String)params.get("giftSlct"), (String)params.get("giftStepNo"));
+            if (auth == null) {
+                log.error("WelcomeEventService / checkWelcomeAuth auth check error => {} {}", params, memNo);
+                result.setFailResVO();
+                return result;
+            }
 
             if (auth != 1) {
                 switch (auth) {
@@ -224,9 +239,10 @@ public class WelcomeEventService {
                 return result;
             }
 
+            log.info("WelcomeEventService / success welcome present => {} {} {} {}", params, memNo, auth, memCheck);
             result.setSuccessResVO(resultInfo);
         } catch (Exception e) {
-            log.error("WelcomeEventService / checkWelcomeAuth => {}", e);
+            log.error("WelcomeEventService / checkWelcomeAuth => {} {} {}", e, params, memNo);
             result.setFailResVO();
         }
 

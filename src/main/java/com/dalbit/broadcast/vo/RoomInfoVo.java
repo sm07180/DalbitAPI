@@ -103,7 +103,7 @@ public class RoomInfoVo {
     private int nonMemberTime = 60;
 
     private ArrayList<Map<String, String>> ttsActors;
-
+    private boolean moonLandEvent;
     /* 필터/메이크업 */
     private boolean useFilter = false;
 
@@ -116,7 +116,7 @@ public class RoomInfoVo {
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
-                      HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors){
+                      HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors, boolean moonLandEvent){
         this.roomNo = target.getRoomNo();
         this.title = target.getTitle();
         this.bgImg = target.getBgImg();
@@ -248,6 +248,8 @@ public class RoomInfoVo {
         if(ttsActors != null) {
             this.ttsActors = ttsActors;
         }
+
+        this.moonLandEvent = moonLandEvent;
     }
 
     public void changeBackgroundImg(DeviceVo deviceVo){

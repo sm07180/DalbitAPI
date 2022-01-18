@@ -14,6 +14,8 @@ import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.service.MoonLandService;
+import com.dalbit.event.vo.MoonLandInfoVO;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
@@ -82,6 +84,7 @@ public class WowzaService {
     MiniGameService miniGameService;
 
     @Autowired TTSService ttsService;
+    @Autowired MoonLandService moonLandService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -404,7 +407,16 @@ public class WowzaService {
             result.put("status", Status.방송생성);
             // tts 성우 리스트
             ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
-            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors);
+
+            // 달나라 이벤트 진행중 여부
+            boolean moonLandEvent = false; // [ true: 이벤트 기간 o, false: 이벤트기간 x ]
+            List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData(1);
+
+            if(moonLandRound != null && moonLandRound.size() > 0) {
+                moonLandEvent = true;
+            }
+
+            RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors, moonLandEvent);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
@@ -876,7 +888,14 @@ public class WowzaService {
         // tts 성우 리스트
         ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
 
-        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors);
+        // 달나라 이벤트 진행중 여부
+        boolean moonLandEvent = false; // [ true: 이벤트 기간 o, false: 이벤트기간 x ]
+        List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData(1);
+        if (moonLandRound != null && moonLandRound.size() > 0) { // 비로그인이면 달나라 이벤트 안보임!
+            moonLandEvent = true;
+        }
+
+        RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors, moonLandEvent);
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());

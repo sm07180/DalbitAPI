@@ -7,6 +7,7 @@ import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.service.DrawService;
 import com.dalbit.event.service.EventService;
+import com.dalbit.event.service.GoodStartService;
 import com.dalbit.event.vo.*;
 import com.dalbit.event.vo.ItemInsVo;
 import com.dalbit.event.vo.KnowhowEventInputVo;
@@ -44,6 +45,8 @@ public class EventController {
 
     @Autowired
     private DrawService drawService;
+
+    @Autowired GoodStartService goodStartService;
 
     @GetMapping("/ranking/term")
     public String event200608Term() {
@@ -1232,5 +1235,51 @@ public class EventController {
         }
 
         return result;
+    }
+
+    /**********************************************************************************************
+    * @Method 설명 : 굿스타트 이벤트 (DJ)
+    * @작성일   : 2022-01-08
+    * @작성자   : 박성민
+    * @변경이력  :
+    **********************************************************************************************/
+    @GetMapping("/goodStart/dj/page")
+    public ResVO goodStartDjPage(@Valid GoodStartInputVo goodStartInputVo, HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        goodStartInputVo.setMemNo(memNo);
+
+        return goodStartService.goodStartDjPage(goodStartInputVo);
+    }
+
+    // DJ 랭킹
+    @GetMapping("/goodStart/dj/rank")
+    public ResVO goodStartDjRank(@Valid GoodStartInputVo goodStartInputVo, HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        goodStartInputVo.setMemNo(memNo);
+
+        return goodStartService.goodStartDjRank(goodStartInputVo);
+    }
+
+    // 신입 DJ 랭킹
+    @GetMapping("/goodStart/dj/new/rank")
+    public ResVO goodStartDjNewRank(@Valid GoodStartInputVo goodStartInputVo, HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        goodStartInputVo.setMemNo(memNo);
+
+        return goodStartService.goodStartDjNewRank(goodStartInputVo);
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 굿스타트 이벤트 (Fan)
+     * @작성일   : 2022-01-08
+     * @작성자   : 박성민
+     * @변경이력  :
+     **********************************************************************************************/
+    @GetMapping("/goodStart/fan/page")
+    public ResVO goodStartFanPage(@Valid GoodStartInputVo goodStartInputVo, HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        goodStartInputVo.setMemNo(memNo);
+
+        return goodStartService.goodStartFanPage(goodStartInputVo);
     }
 }
