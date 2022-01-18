@@ -42,6 +42,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -1415,14 +1416,46 @@ public class CommonService {
             //    private String pay_ok_date;
             //    private String pay_ok_time;
             PaySuccSelVo paySuccSelVo = common.paySuccSel(memNo, orderId);
+            DecimalFormat format = new DecimalFormat("###,###");
+            String priceComma = format.format(paySuccSelVo.getPay_amt());
+
             ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
             parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
             parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
-            // 정보 가공이 필요해서 가능하면 바로 가져올 수 있는 방법 찾아야됨(DB or pay server)
+
+            parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
+            parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
+            parentsPayEmailVo.setPaymentAccount("");// 결제 정보1
+            parentsPayEmailVo.setPaymentBank("");// 결제 정보2
+            parentsPayEmailVo.setPaymentProduct(paySuccSelVo.getPay_code());// 결제 상품
+            parentsPayEmailVo.setPaymentQuantity(paySuccSelVo.getItem_amt());// 결제 수량
+            parentsPayEmailVo.setPaymentPrice(priceComma + "원");// 결제 금액
+
 
             sendPayMail(parentsPayEmailVo);
         } catch (Exception e) {
             log.error("CommonService / sendPayMailManager error : ", e);
+        }
+    }
+
+    private String getPayWay(String code) {
+        switch (code) {
+            case "simple": return "간편결제(계좌)";
+//            case "VA": return "가상계좌";
+            case "CN": return "신용카드";
+            case "MC": return "휴대폰";
+            case "kakaoMoney": return "카카오페이(머니)";
+            case "kakaopay": return "카카오페이(카드)";
+            case "payco": return "페이코";
+            case "GM": return "문화상품권";
+            case "tmoney": return "티머니";
+            case "cashbee": return "캐시비";
+            case "HM": return "해피머니상품권";
+//            case "InApp": return "인앱(IOS)";
+
+            case "GG": return "게임문화상품권"; // 결제 수단이 없음
+            case "GC": return "도서문화상품권"; // 결제 수단이 없음
+            default: return "";
         }
     }
 
