@@ -622,7 +622,15 @@ public class WowzaService {
             settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
             roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
             roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
-
+            
+            //신규유저 이벤트 정보 세팅
+            settingMap.put("imgURL", "https://image.dalbitlive.com/event/welcome/floatingBtn.png");
+            settingMap.put("pageLink", DalbitUtil.getProperty("server.mobile.url") + "/event/welcome");
+            settingMap.put("positionX", 1);
+            settingMap.put("positionY", 1);
+            settingMap.put("visible", false);
+            roomInfoVo.setEventInfoMap(settingMap);
+            
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
