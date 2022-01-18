@@ -96,7 +96,7 @@ public class RoomInfoVo {
 
     /* 영상 기본값 설정 */
     private int videoFrameRate = 24;
-    private int videoResolution = 480;  /* 144, 288, 360, 480, 540, 720, 1080, 2160 */
+    private int videoResolution = 720;  /* 144, 288, 360, 480, 540, 720, 1080, 2160 */
 
     private List miniGameList = new ArrayList();
     private boolean isMinigame;
@@ -106,6 +106,13 @@ public class RoomInfoVo {
 
     /* 필터/메이크업 */
     private boolean useFilter = false;
+
+    /* 아고라 토큰 */
+    private String agoraToken;
+    private String agoraAppId;
+    private String agoraAccount;
+    /*와우자 아고라 플래그값*/
+    private String platForm;
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,

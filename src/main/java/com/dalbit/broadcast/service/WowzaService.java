@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.service;
 
+import com.dalbit.agora.media.RtcTokenBuilder;
 import com.dalbit.broadcast.dao.GuestDao;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
@@ -34,11 +35,13 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import com.dalbit.agora.media.RtcTokenBuilder.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,6 +93,10 @@ public class WowzaService {
     String WOWZA_ACC;
     @Value("${wowza.opus}")
     String WOWZA_OPUS;
+
+    static String appId = "6956f28ae2dc46d1a70fa5a449fbbc0c";
+    static String appCertificate = "8405dfa59f2642a8bee67373ce5ad4ea";
+    static int expirationTimeInSeconds = 10800;
 
     public HashMap doUpdateWowzaState(HttpServletRequest request){
         StringBuffer body = new StringBuffer();
@@ -389,6 +396,11 @@ public class WowzaService {
                 miniGameList = getRouletteData(request, roomNo, isLogin);
             }
 
+            //아고라 토큰 생성
+            RtcTokenBuilder token = new RtcTokenBuilder();
+            int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+            String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
+                    roomNo + "", MemberVo.getMyMemNo(request) + "", Role.Role_Publisher, timestamp);
             result.put("status", Status.방송생성);
             // tts 성우 리스트
             ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
@@ -398,6 +410,10 @@ public class WowzaService {
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+            roomInfoVo.setAgoraToken(agoraToken);
+            roomInfoVo.setAgoraAppId(appId);
+            roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+            roomInfoVo.setPlatForm(roomCreateVo.getPlatform());
             result.put("data", roomInfoVo);
 
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
@@ -597,7 +613,19 @@ public class WowzaService {
                     }
                 }
             }
-
+            //아고라 토큰 생성
+            RtcTokenBuilder token = new RtcTokenBuilder();
+            int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+            String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
+                    roomInfoVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);
+            System.out.println("join_agoraToken =====>>>"+agoraToken);
+            System.out.println("join_timestamp =====>>>"+timestamp);
+            System.out.println("join_target.getBjMemNo() =====>>>"+target.getBjMemNo());
+            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(timestamp));
+            roomInfoVo.setAgoraToken(agoraToken);
+            roomInfoVo.setAgoraAppId(appId);
+            roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+            roomInfoVo.setPlatForm(roomJoinVo.getPlatform());
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
@@ -620,9 +648,11 @@ public class WowzaService {
             }else{
                 String deviceUuid = DalbitUtil.getStringMap(resultMap, "deviceUuid");
                 deviceUuid = deviceUuid == null ? "" : deviceUuid.trim();
+
                 if(deviceUuid.equals(pRoomJoinVo.getDeviceUuid())){ //동일기기 참가일때 /reToken과 동일로직
                     RoomTokenVo roomTokenVo = new RoomTokenVo();
                     roomTokenVo.setRoomNo(roomJoinVo.getRoomNo());
+                    roomTokenVo.setPlatForm(roomJoinVo.getPlatform());
                     result = getBroadcast(roomTokenVo, request);
                 }else{
                     result.put("status", Status.방송참여_이미참가);
@@ -659,6 +689,7 @@ public class WowzaService {
     public HashMap getBroadcast(RoomTokenVo roomTokenVo, HttpServletRequest request) throws GlobalException{
         HashMap result = new HashMap();
         RoomOutVo target = getRoomInfo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), request);
+
         if(target != null){
             if(target.getState() == 4){
                 result.put("status", Status.방정보보기_해당방없음);
@@ -689,6 +720,15 @@ public class WowzaService {
 
                     RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
                     roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), MemberVo.getMyMemNo(request)));
+                    //아고라 토큰 생성
+                    RtcTokenBuilder token = new RtcTokenBuilder();
+                    int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+                    String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
+                            roomTokenVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);;
+                    roomInfoVo.setAgoraToken(agoraToken);
+                    roomInfoVo.setAgoraAppId(appId);
+                    roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+                    roomInfoVo.setPlatForm(roomTokenVo.getPlatForm());
 
                     //방정보 조회시 본인 게스트여부 체크
                     for (int i=0; i < roomInfoVo.getGuests().size(); i++ ){
@@ -733,7 +773,7 @@ public class WowzaService {
         pRoomInfoViewVo.setRoom_no(roomNo);
         ProcedureVo procedureInfoViewVo = new ProcedureVo(pRoomInfoViewVo);
         P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
-        if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())){
+         if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())){
             roomInfoViewVo.setExt(procedureInfoViewVo.getExt());
             //출석체크 완료 여부 조회
             P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo();
