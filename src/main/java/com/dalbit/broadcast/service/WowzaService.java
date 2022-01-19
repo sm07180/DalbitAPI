@@ -30,7 +30,6 @@ import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
@@ -97,8 +96,11 @@ public class WowzaService {
     @Value("${wowza.opus}")
     String WOWZA_OPUS;
 
-    static String appId = "6956f28ae2dc46d1a70fa5a449fbbc0c";
-    static String appCertificate = "8405dfa59f2642a8bee67373ce5ad4ea";
+    @Value("${agora.app.id}")
+    String AGORA_APP_ID;
+    @Value("${agora.app.cert}")
+    String AGORA_APP_CERT;
+
     static int expirationTimeInSeconds = 10800;
 
     public HashMap doUpdateWowzaState(HttpServletRequest request){
@@ -402,7 +404,7 @@ public class WowzaService {
             //아고라 토큰 생성
             RtcTokenBuilder token = new RtcTokenBuilder();
             int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
-            String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
+            String agoraToken = token.buildTokenWithUserAccount(AGORA_APP_ID, AGORA_APP_CERT,
                     roomNo + "", MemberVo.getMyMemNo(request) + "", Role.Role_Publisher, timestamp);
             result.put("status", Status.방송생성);
             // tts 성우 리스트
@@ -423,7 +425,7 @@ public class WowzaService {
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             roomInfoVo.setAgoraToken(agoraToken);
-            roomInfoVo.setAgoraAppId(appId);
+            roomInfoVo.setAgoraAppId(AGORA_APP_ID);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
             roomInfoVo.setPlatForm(roomCreateVo.getPlatform());
             result.put("data", roomInfoVo);
@@ -628,14 +630,14 @@ public class WowzaService {
             //아고라 토큰 생성
             RtcTokenBuilder token = new RtcTokenBuilder();
             int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
-            String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
+            String agoraToken = token.buildTokenWithUserAccount(AGORA_APP_ID, AGORA_APP_CERT,
                     roomInfoVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);
             System.out.println("join_agoraToken =====>>>"+agoraToken);
             System.out.println("join_timestamp =====>>>"+timestamp);
             System.out.println("join_target.getBjMemNo() =====>>>"+target.getBjMemNo());
             System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(timestamp));
             roomInfoVo.setAgoraToken(agoraToken);
-            roomInfoVo.setAgoraAppId(appId);
+            roomInfoVo.setAgoraAppId(AGORA_APP_ID);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
             roomInfoVo.setPlatForm(roomJoinVo.getPlatform());
             roomInfoVo.changeBackgroundImg(deviceVo);
@@ -735,10 +737,10 @@ public class WowzaService {
                     //아고라 토큰 생성
                     RtcTokenBuilder token = new RtcTokenBuilder();
                     int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
-                    String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
+                    String agoraToken = token.buildTokenWithUserAccount(AGORA_APP_ID, AGORA_APP_CERT,
                             roomTokenVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);;
                     roomInfoVo.setAgoraToken(agoraToken);
-                    roomInfoVo.setAgoraAppId(appId);
+                    roomInfoVo.setAgoraAppId(AGORA_APP_ID);
                     roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
                     roomInfoVo.setPlatForm(roomTokenVo.getPlatForm());
 
