@@ -2472,7 +2472,7 @@ public class MypageService {
                     }
                 }
             } catch (Exception e) {
-                log.error("MyPageService DJ TTS, Sound item ON/OFF ERROR => {}", e);
+                log.error("MyPageService callBroadcastSettingEdit ERROR => {}", e);
             }
 
             Status status = null;
