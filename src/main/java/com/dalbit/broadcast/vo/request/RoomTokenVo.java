@@ -13,5 +13,5 @@ public class RoomTokenVo {
     @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
     private String roomNo;
     /*와우자 아고라 플래그값*/
-    private String platForm;
+    private String platform;
 }
