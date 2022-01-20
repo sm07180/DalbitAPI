@@ -2460,4 +2460,65 @@ public class EventService {
         return result;
     }
     /* 깐부 이벤트 끝~~~ */
+
+
+    /** 신입 웹컴 이벤트 방송방 조건 체크 프로시저
+     * @Param :
+     * memNo BIGINT		        -- 회원번호
+     * ,memSlct BIGINT		    -- 회원[1:dj, 2:청취자]
+     *
+     * @Return :
+     * s_return		INT		-- -4: 이벤트 보상 모두 달성, -3: 본인인증 조건 미달, -2: 청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상
+     * */
+    // result [-7: Exception, -6: DB result Null, -5: memNo or memSlct이 잘못된 값,
+    //-4: 이벤트 보상 모두 달성, -3: 본인인증 조건 미달, -2: 청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상]
+    public HashMap<String, Object> broadcastWelcomeUserEventChk(HashMap<String, Object> param, DeviceVo deviceVo) {
+        HashMap<String, Object> resultMap = new HashMap<>();
+        String memNo = DalbitUtil.getStringMap(param, "memNo");
+        String memSlct = DalbitUtil.getStringMap(param, "memSlct");
+        Integer result = -5;
+        int os = deviceVo.getOs();
+        String link = "";
+        log.error("broadcastWelcomeUserEventChk parm chk {}, {}", memNo, memSlct);
+        if(!StringUtils.equals(memNo, "") && !StringUtils.equals(memSlct, "")){
+            try {
+                // result  -3:본인인증 조건 미달, -2:청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상
+                result = event.pWelcomeRoomChk(param);
+                if(result == null){
+                    result = -6;
+                }
+            } catch (Exception e) {
+                result = -7;
+                    log.error("EventService - broadcastWelcomeUserEventChk => Exception : {}", e);
+            }
+        }
+
+        if(result ==-6 || result == -5 || result == 0)
+            log.error("EventService - broadcastWelcomeUserEventChk => resultCode : {}, memNo : {}, memSlct : {}", result, memNo, memSlct);
+        if (result == 1) {
+            resultMap.put("visible", true);
+        } else {
+            resultMap.put("visible", true); //todo test
+        }
+        switch (os) {
+            case 1: //Android
+                link = DalbitUtil.getProperty("server.mobile.url") + "/event/welcome";
+                break;
+            case 2: //IOS
+                link = DalbitUtil.getProperty("server.mobile.url") + "/event/welcome?webview=new";
+                break;
+            case 3: //Web
+                link = "/event/welcome";
+                break;
+            default:
+                break;
+        }
+
+        resultMap.put("imgURL", "https://image.dalbitlive.com/event/welcome/floatingBtn.png");
+        resultMap.put("pageLink", link);
+        resultMap.put("positionX", 1);
+        resultMap.put("positionY", 1);
+
+        return resultMap;
+    }
 }

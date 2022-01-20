@@ -410,6 +410,15 @@ public class WowzaService {
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+
+            //welcome Event Chk
+            //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+            log.error(" @@@@@@@ room Create bjMemNo {}, requestMemNo {}", roomInfoVo.getBjMemNo(), MemberVo.getMyMemNo(request));
+            HashMap paramMap = new HashMap<>();
+            paramMap.put("memNo", MemberVo.getMyMemNo(request));
+            paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+            roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+
             result.put("data", roomInfoVo);
 
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
@@ -609,28 +618,31 @@ public class WowzaService {
                     }
                 }
             }
-            //방장 (bjMemNo)의 tts, sound 아이템 on/off 설정 조회
-            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
-            apiData.setMem_no(roomInfoVo.getBjMemNo());
-            HashMap<String, Object> settingMap;
-            settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
-            roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
-            roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
 
-            //청취자 (memNo)의 tts, sound 아이템 on/off 설정 조회 (네이티브에서 요청, 웹에서는 안씀)
-            apiData.setMem_no(MemberVo.getMyMemNo(request));
-            settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
-            roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
-            roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
-            
-            //신규유저 이벤트 정보 세팅
-            settingMap.put("imgURL", "https://image.dalbitlive.com/event/welcome/floatingBtn.png");
-            settingMap.put("pageLink", DalbitUtil.getProperty("server.mobile.url") + "/event/welcome");
-            settingMap.put("positionX", 1);
-            settingMap.put("positionY", 1);
-            settingMap.put("visible", false);
-            roomInfoVo.setEventInfoMap(settingMap);
-            
+            //방장 (bjMemNo)의 tts, sound 아이템 on/off 설정 조회
+            try {
+                P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
+                apiData.setMem_no(roomInfoVo.getBjMemNo());
+                HashMap<String, Object> settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
+                roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
+
+                //청취자 (memNo)의 tts, sound 아이템 on/off 설정 조회 (네이티브에서 요청, 웹에서는 안씀)
+                apiData.setMem_no(MemberVo.getMyMemNo(request));
+                settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
+                roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
+            }catch(Exception e) {
+                log.error("WowzaService => URL : /broad/vw/join, bjSetting failed", e);
+            }
+
+            //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+            log.error(" @@@@@@@ room Join bjMemNo {}, requestMemNo {}", roomInfoVo.getBjMemNo(), MemberVo.getMyMemNo(request));
+            HashMap paramMap = new HashMap<>();
+            paramMap.put("memNo", MemberVo.getMyMemNo(request));
+            paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+            roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
@@ -750,6 +762,15 @@ public class WowzaService {
                     } catch (Exception e) {
                         log.error("WowzaService => URL : /broad/vw/info, bjSetting failed", e);
                     }
+
+                    //welcome event chk
+                    //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+                    log.error(" @@@@@@@ room Info bjMemNo {}, requestMemNo {}", roomInfoVo.getBjMemNo(), MemberVo.getMyMemNo(request));
+
+                    HashMap paramMap = new HashMap<>();
+                    paramMap.put("memNo", MemberVo.getMyMemNo(request));
+                    paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+                    roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
 
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
