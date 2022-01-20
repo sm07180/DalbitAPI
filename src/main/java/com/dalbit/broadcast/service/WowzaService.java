@@ -425,7 +425,11 @@ public class WowzaService {
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(appId);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
-            roomInfoVo.setPlatForm(roomCreateVo.getPlatform());
+            roomInfoVo.setPlatform(roomCreateVo.getPlatform());
+            if(roomCreateVo.getPlatform().equals("agora")){
+                roomInfoVo.setVideoResolution(720);
+                roomInfoVo.setUseFilter(false);
+            }
             result.put("data", roomInfoVo);
 
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
@@ -476,7 +480,9 @@ public class WowzaService {
             result.put("status", Status.로그인필요);
             return result;
         }
-
+        if(roomJoinVo.getPlatform() == null){
+            roomJoinVo.setPlatform("agora");
+        }
         //방 참여 접속 불가 상태 체크
         if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
             var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
@@ -630,14 +636,14 @@ public class WowzaService {
             int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
             String agoraToken = token.buildTokenWithUserAccount(appId, appCertificate,
                     roomInfoVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);
-            System.out.println("join_agoraToken =====>>>"+agoraToken);
-            System.out.println("join_timestamp =====>>>"+timestamp);
-            System.out.println("join_target.getBjMemNo() =====>>>"+target.getBjMemNo());
-            System.out.println(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(timestamp));
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(appId);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
-            roomInfoVo.setPlatForm(roomJoinVo.getPlatform());
+            roomInfoVo.setPlatform(roomJoinVo.getPlatform());
+            if(roomJoinVo.getPlatform().equals("agora")){
+                roomInfoVo.setVideoResolution(720);
+                roomInfoVo.setUseFilter(false);
+            }
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
@@ -664,7 +670,7 @@ public class WowzaService {
                 if(deviceUuid.equals(pRoomJoinVo.getDeviceUuid())){ //동일기기 참가일때 /reToken과 동일로직
                     RoomTokenVo roomTokenVo = new RoomTokenVo();
                     roomTokenVo.setRoomNo(roomJoinVo.getRoomNo());
-                    roomTokenVo.setPlatForm(roomJoinVo.getPlatform());
+                    roomTokenVo.setPlatform(roomJoinVo.getPlatform());
                     result = getBroadcast(roomTokenVo, request);
                 }else{
                     result.put("status", Status.방송참여_이미참가);
@@ -701,7 +707,9 @@ public class WowzaService {
     public HashMap getBroadcast(RoomTokenVo roomTokenVo, HttpServletRequest request) throws GlobalException{
         HashMap result = new HashMap();
         RoomOutVo target = getRoomInfo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), request);
-
+        if(roomTokenVo.getPlatform() == null){
+            roomTokenVo.setPlatform("agora");
+        }
         if(target != null){
             if(target.getState() == 4){
                 result.put("status", Status.방정보보기_해당방없음);
@@ -740,7 +748,11 @@ public class WowzaService {
                     roomInfoVo.setAgoraToken(agoraToken);
                     roomInfoVo.setAgoraAppId(appId);
                     roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
-                    roomInfoVo.setPlatForm(roomTokenVo.getPlatForm());
+                    roomInfoVo.setPlatform(roomTokenVo.getPlatform());
+                    if(roomTokenVo.getPlatform().equals("agora")){
+                        roomInfoVo.setVideoResolution(720);
+                        roomInfoVo.setUseFilter(false);
+                    }
 
                     //방정보 조회시 본인 게스트여부 체크
                     for (int i=0; i < roomInfoVo.getGuests().size(); i++ ){
