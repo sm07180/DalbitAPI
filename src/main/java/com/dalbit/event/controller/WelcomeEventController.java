@@ -142,4 +142,40 @@ public class WelcomeEventController {
         }
         return result;
     }
+
+    /**********************************************************************************************
+     * @Method 설명 : 웹컴페이지 접속 체크값 수정 (방송방에서 버튼 하루 한번만 표시용, 버튼을 클릭시 이 API를 호출합니다)
+     * @작성일 : 2022-01-21
+     * @작성자 : 박용훈
+     * @변경이력 :
+     * @Parameter : memNo       BIGINT
+     * @Return :    s_return		INT		--   -1: 이상, 0: 에러, 1:정상
+     **********************************************************************************************/
+    @PostMapping("/chkInfoUpd")
+    public ResVO putWelcomeDayConfirmChecker(HttpServletRequest request){
+        ResVO result = new ResVO();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+
+            if(memNo != null){
+                Integer dbResultCode = welcomeEventService.putWelcomeDayConfirmChecker(memNo);
+
+                if(dbResultCode == 1) { // DB result값이 정상
+                    result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), dbResultCode);
+                } else if(dbResultCode == -1){ // 이미 오늘 봤어요 (클라이언트 로직 오류)
+                    result.setResVO(ResMessage.C39006.getCode(), ResMessage.C39006.getCodeNM(), dbResultCode);
+                } else { // DB result값이 에러
+                    result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), dbResultCode);
+                }
+            } else {
+                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+            }
+
+        }catch(Exception e){
+            log.error("putWelcomeDayConfirmChecker => {}", e);
+            result.setResVO(ResMessage.C99998.getCode(), ResMessage.C99998.getCodeNM(), null);
+        }
+
+        return result;
+    }
 }
