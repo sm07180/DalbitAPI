@@ -618,12 +618,12 @@ public class WowzaService {
                     }
                 }
             }
-
             //방장 (bjMemNo)의 tts, sound 아이템 on/off 설정 조회
+            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
+            apiData.setMem_no(roomInfoVo.getBjMemNo());
             try {
-                P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
-                apiData.setMem_no(roomInfoVo.getBjMemNo());
-                HashMap<String, Object> settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                HashMap<String, Object> settingMap;
+                settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
                 roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
                 roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
 
@@ -632,8 +632,12 @@ public class WowzaService {
                 settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
                 roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
                 roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
-            }catch(Exception e) {
-                log.error("WowzaService => URL : /broad/vw/join, bjSetting failed", e);
+            }catch(Exception e){
+                log.error("WowzaService roomJoin callBroadcastSettingSelect => {}", e);
+                roomInfoVo.setTtsSound(true);
+                roomInfoVo.setNormalSound(true);
+                roomInfoVo.setDjTtsSound(true);
+                roomInfoVo.setDjNormalSound(true);
             }
 
             //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
@@ -760,7 +764,11 @@ public class WowzaService {
                         roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
 
                     } catch (Exception e) {
-                        log.error("WowzaService => URL : /broad/vw/info, bjSetting failed", e);
+                        log.error("WowzaService roomInfo callBroadcastSettingSelect => {}", e);
+                        roomInfoVo.setTtsSound(true);
+                        roomInfoVo.setNormalSound(true);
+                        roomInfoVo.setDjTtsSound(true);
+                        roomInfoVo.setDjNormalSound(true);
                     }
 
                     //welcome event chk
