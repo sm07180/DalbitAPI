@@ -95,7 +95,6 @@ public class ActionService {
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
 
-        log.error("callBroadCastRoomGood - resultMap => goodRank {}", resultMap);
         HashMap returnMap = new HashMap();
         returnMap.put("likes", DalbitUtil.getIntMap(resultMap, "good"));
         returnMap.put("rank", DalbitUtil.getIntMap(resultMap, "rank"));
