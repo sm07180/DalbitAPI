@@ -366,11 +366,11 @@ public class WowzaService {
             }
 
             //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 수정
-            BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
-            broadcastSettingEditVo.setDjListenerIn(roomCreateVo.getDjListenerIn());
-            broadcastSettingEditVo.setDjListenerOut(roomCreateVo.getDjListenerOut());
-            P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
-            mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "create");
+            //BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
+            //broadcastSettingEditVo.setDjListenerIn(roomCreateVo.getDjListenerIn());
+            //broadcastSettingEditVo.setDjListenerOut(roomCreateVo.getDjListenerOut());
+            //P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+            //mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "create");
 
             //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 조회
             P_BroadcastSettingVo pBroadcastSettingVo = new P_BroadcastSettingVo(request);
@@ -609,13 +609,33 @@ public class WowzaService {
                     }
                 }
             }
+            //방장 (bjMemNo)의 tts, sound 아이템 on/off 설정 조회
+            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
+            apiData.setMem_no(roomInfoVo.getBjMemNo());
+            try {
+                HashMap<String, Object> settingMap;
+                settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
+                roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
 
+                //청취자 (memNo)의 tts, sound 아이템 on/off 설정 조회 (네이티브에서 요청, 웹에서는 안씀)
+                apiData.setMem_no(MemberVo.getMyMemNo(request));
+                settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
+                roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
+            }catch(Exception e){
+                log.error("WowzaService roomJoin callBroadcastSettingSelect => {}", e);
+                roomInfoVo.setTtsSound(true);
+                roomInfoVo.setNormalSound(true);
+                roomInfoVo.setDjTtsSound(true);
+                roomInfoVo.setDjNormalSound(true);
+            }
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
             // tts 성우 리스트
-            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
-            result.put("ttsActors", ttsActors);
+//            ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
+//            result.put("ttsActors", ttsActors);
 
         } else if (procedureVo.getRet().equals(Status.방송참여_회원아님.getMessageCode())) {
             result.put("status", Status.방송참여_회원아님);
@@ -709,6 +729,29 @@ public class WowzaService {
                         }else{
                             roomInfoVo.setIsGuest(false);
                         }
+                    }
+                    
+                    //웹 방송방에서 F5 눌렀을때 roomInfo 갱신용
+                    try {
+                        P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
+                        apiData.setMem_no(roomInfoVo.getBjMemNo());
+                        HashMap<String, Object> settingMap;
+                        settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                        roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
+                        roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
+
+                        //청취자 (memNo)의 tts, sound 아이템 on/off 설정 조회 (네이티브에서 요청, 웹에서는 안씀)
+                        apiData.setMem_no(MemberVo.getMyMemNo(request));
+                        settingMap = (HashMap<String, Object>) mypageService.callBroadcastSettingSelect(apiData, true);
+                        roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
+                        roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
+
+                    } catch (Exception e) {
+                        log.error("WowzaService roomInfo callBroadcastSettingSelect => {}", e);
+                        roomInfoVo.setTtsSound(true);
+                        roomInfoVo.setNormalSound(true);
+                        roomInfoVo.setDjTtsSound(true);
+                        roomInfoVo.setDjNormalSound(true);
                     }
 
                     roomInfoVo.changeBackgroundImg(deviceVo);

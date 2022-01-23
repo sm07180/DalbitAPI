@@ -12,6 +12,7 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
+import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -51,6 +52,9 @@ public class CommonController {
 
     @Autowired
     MypageService mypageService;
+
+    @Autowired
+    IPUtil ipUtil;
 
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
@@ -561,5 +565,23 @@ public class CommonController {
         String result = commonService.getLongTermDate(apiData);
         return result;
     }
+
+    @PostMapping("/pay/result/callback")
+    public String payRestAPITest(HttpServletRequest request){
+        String clientIP = ipUtil.getClientIP(request);
+        if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("memNo", request.getParameter("memNo"));
+            map.put("orderId", request.getParameter("orderId"));
+            map.put("clientIP", clientIP);
+            map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
+            map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
+            log.error("test map =>{}", map);
+            return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
+        }else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한));
+        }
+    }
+
 
 }
