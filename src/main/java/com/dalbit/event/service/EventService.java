@@ -2519,7 +2519,6 @@ public class EventService {
         resultMap.put("pageLink", link);
         resultMap.put("positionX", 1);
         resultMap.put("positionY", 1);
-        log.error("resultMap chk {}", gsonUtil.toJson(resultMap));
         return resultMap;
     }
 }
