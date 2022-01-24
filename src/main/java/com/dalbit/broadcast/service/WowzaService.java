@@ -413,7 +413,6 @@ public class WowzaService {
 
             //welcome Event Chk
             //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
-            log.error(" @@@@@@@ room Create bjMemNo {}, requestMemNo {}", roomInfoVo.getBjMemNo(), MemberVo.getMyMemNo(request));
             HashMap paramMap = new HashMap<>();
             paramMap.put("memNo", MemberVo.getMyMemNo(request));
             paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
@@ -641,7 +640,6 @@ public class WowzaService {
             }
 
             //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
-            log.error(" @@@@@@@ room Join bjMemNo {}, requestMemNo {}", roomInfoVo.getBjMemNo(), MemberVo.getMyMemNo(request));
             HashMap paramMap = new HashMap<>();
             paramMap.put("memNo", MemberVo.getMyMemNo(request));
             paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
@@ -773,8 +771,6 @@ public class WowzaService {
 
                     //welcome event chk
                     //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
-                    log.error(" @@@@@@@ room Info bjMemNo {}, requestMemNo {}", roomInfoVo.getBjMemNo(), MemberVo.getMyMemNo(request));
-
                     HashMap paramMap = new HashMap<>();
                     paramMap.put("memNo", MemberVo.getMyMemNo(request));
                     paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
