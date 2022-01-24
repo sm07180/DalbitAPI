@@ -16,4 +16,11 @@ public class PaySuccSelVo {
     private String card_nm;
     private String pay_ok_date;
     private String pay_ok_time;
+
+    private String pay_info;
+    private String account_no;
+    private String bank_code;
+    private String pay_info_no;
+    private String pay_info_nm;
+    private String birth;
 }

@@ -304,26 +304,6 @@ public class CommonController {
         return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
     }
 
-    // 만나이
-    private int birthToAmericanAge(int birthYear, int birthMonth, int birthDay) {
-        Calendar cal = Calendar.getInstance();
-        int nowYear = cal.get(Calendar.YEAR);
-        int nowMonth = cal.get(Calendar.MONTH) + 1;
-        int nowDay = cal.get(Calendar.DAY_OF_MONTH);
-        int monthAndDay = Integer.parseInt(nowMonth + "" + nowDay);
-
-        int birthMonthAndDay = Integer.parseInt(birthMonth + "" + birthDay);
-        int yearDiff = nowYear - birthYear;
-        int monthAndDayDiff = monthAndDay - birthMonthAndDay;
-        int manAge = yearDiff;
-
-        if(monthAndDayDiff < 0) {
-            manAge--;
-        }
-
-        return manAge;
-    }
-
     /**
      * 본인인증 확인
      */
@@ -352,7 +332,7 @@ public class CommonController {
             apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
             apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
 
-            int manAge = birthToAmericanAge(
+            int manAge = commonService.birthToAmericanAge(
                 Integer.parseInt(apiData.getBirthYear()),
                 Integer.parseInt(apiData.getBirthMonth()),
                 Integer.parseInt(apiData.getBirthDay())

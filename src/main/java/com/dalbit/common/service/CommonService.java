@@ -1416,26 +1416,89 @@ public class CommonService {
             //    private String pay_ok_date;
             //    private String pay_ok_time;
             PaySuccSelVo paySuccSelVo = common.paySuccSel(memNo, orderId);
-            DecimalFormat format = new DecimalFormat("###,###");
-            String priceComma = format.format(paySuccSelVo.getPay_amt());
+            // 미성년자 메일 발송
+            String[] birthSplit = paySuccSelVo.getBirth().split("-");
+            int birthYear = Integer.parseInt(birthSplit[0]);
+            int birthMonth = Integer.parseInt(birthSplit[1]);
+            int birthDay = Integer.parseInt(birthSplit[2]);
+            if(birthToAmericanAge(birthYear, birthMonth, birthDay) < 19) {
+                String[] accountInfo = accountInfo(paySuccSelVo);
+                DecimalFormat format = new DecimalFormat("###,###");
+                String priceComma = format.format(paySuccSelVo.getPay_amt());
 
-            ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
-            parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
-            parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+                ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
+                parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
+                parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+                parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
+                parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
+                parentsPayEmailVo.setPaymentAccount(accountInfo[0]);// 결제 정보1
+                parentsPayEmailVo.setPaymentBank(accountInfo[1]);// 결제 정보2
+                parentsPayEmailVo.setPaymentProduct(paySuccSelVo.getPay_code());// 결제 상품
+                parentsPayEmailVo.setPaymentQuantity(paySuccSelVo.getItem_amt());// 결제 수량
+                parentsPayEmailVo.setPaymentPrice(priceComma + "원");// 결제 금액
 
-            parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
-            parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
-            parentsPayEmailVo.setPaymentAccount("");// 결제 정보1
-            parentsPayEmailVo.setPaymentBank("");// 결제 정보2
-            parentsPayEmailVo.setPaymentProduct(paySuccSelVo.getPay_code());// 결제 상품
-            parentsPayEmailVo.setPaymentQuantity(paySuccSelVo.getItem_amt());// 결제 수량
-            parentsPayEmailVo.setPaymentPrice(priceComma + "원");// 결제 금액
-
-
-            sendPayMail(parentsPayEmailVo);
+                sendPayMail(parentsPayEmailVo);
+            }
         } catch (Exception e) {
             log.error("CommonService / sendPayMailManager error : ", e);
         }
+    }
+
+    private String[] accountInfo(PaySuccSelVo paySuccSelVo) {
+        String[] result = new String[2];
+        String info1 = "-";
+        String info2 = "";
+        switch (paySuccSelVo.getPay_way()) {
+            case "MC":
+                if(!StringUtils.isEmpty(paySuccSelVo.getPay_info_no())) {
+                    info1 = paySuccSelVo.getPay_info_no()
+                        .replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
+                }
+                break;
+            case "CN":
+                if(!StringUtils.isEmpty(paySuccSelVo.getPay_info_no())) {
+                    info1 = paySuccSelVo.getPay_info_no()
+                        .replaceAll("/([0-9*]{4})([0-9*]{4})([0-9*]{4})([0-9*]{4})/", "$1-$2-$3-$4");
+                    info2 = paySuccSelVo.getPay_info_nm();
+                }
+                break;
+            case "cashbee":
+            case "tmoney":
+            case "payco":
+            case "kakaopay":
+            case "kakaoMoney":
+                info1 = paySuccSelVo.getPay_info();
+                break;
+            case "simple":
+                info1 = paySuccSelVo.getAccount_no();
+                //info2 = paySuccSelVo.getBank_code(); // bank code
+                break;
+            default:
+        }
+
+        result[0] = info1;
+        result[1] = info2;
+        return result;
+    }
+
+    // 만나이
+    public int birthToAmericanAge(int birthYear, int birthMonth, int birthDay) {
+        Calendar cal = Calendar.getInstance();
+        int nowYear = cal.get(Calendar.YEAR);
+        int nowMonth = cal.get(Calendar.MONTH) + 1;
+        int nowDay = cal.get(Calendar.DAY_OF_MONTH);
+        int monthAndDay = Integer.parseInt(nowMonth + "" + nowDay);
+
+        int birthMonthAndDay = Integer.parseInt(birthMonth + "" + birthDay);
+        int yearDiff = nowYear - birthYear;
+        int monthAndDayDiff = monthAndDay - birthMonthAndDay;
+        int manAge = yearDiff;
+
+        if(monthAndDayDiff < 0) {
+            manAge--;
+        }
+
+        return manAge;
     }
 
     private String getPayWay(String code) {
