@@ -427,10 +427,12 @@ public class WowzaService {
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(AGORA_APP_ID);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
-            roomInfoVo.setPlatform(roomCreateVo.getPlatform());
-            if(roomCreateVo.getPlatform().equals("agora")){
+            if("v".equals(roomInfoVo.getMediaType())){
+                roomInfoVo.setPlatform("agora");
                 roomInfoVo.setVideoResolution(720);
                 roomInfoVo.setUseFilter(false);
+            }else{
+                roomInfoVo.setPlatform("wowza");
             }
             result.put("data", roomInfoVo);
 
@@ -481,9 +483,6 @@ public class WowzaService {
         }else if((deviceVo.getOs() == 1 || deviceVo.getOs() == 2) && DalbitUtil.versionCompare("1.5.7", deviceVo.getAppVersion()) && !DalbitUtil.isLogin(request)){
             result.put("status", Status.로그인필요);
             return result;
-        }
-        if(roomJoinVo.getPlatform() == null){
-            roomJoinVo.setPlatform("agora");
         }
         //방 참여 접속 불가 상태 체크
         if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
@@ -641,10 +640,12 @@ public class WowzaService {
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(AGORA_APP_ID);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
-            roomInfoVo.setPlatform(roomJoinVo.getPlatform());
-            if(roomJoinVo.getPlatform().equals("agora")){
+            if("v".equals(roomInfoVo.getMediaType())){
+                roomInfoVo.setPlatform("agora");
                 roomInfoVo.setVideoResolution(720);
                 roomInfoVo.setUseFilter(false);
+            }else{
+                roomInfoVo.setPlatform("wowza");
             }
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
@@ -672,7 +673,6 @@ public class WowzaService {
                 if(deviceUuid.equals(pRoomJoinVo.getDeviceUuid())){ //동일기기 참가일때 /reToken과 동일로직
                     RoomTokenVo roomTokenVo = new RoomTokenVo();
                     roomTokenVo.setRoomNo(roomJoinVo.getRoomNo());
-                    roomTokenVo.setPlatform(roomJoinVo.getPlatform());
                     result = getBroadcast(roomTokenVo, request);
                 }else{
                     result.put("status", Status.방송참여_이미참가);
@@ -709,9 +709,6 @@ public class WowzaService {
     public HashMap getBroadcast(RoomTokenVo roomTokenVo, HttpServletRequest request) throws GlobalException{
         HashMap result = new HashMap();
         RoomOutVo target = getRoomInfo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), request);
-        if(roomTokenVo.getPlatform() == null){
-            roomTokenVo.setPlatform("agora");
-        }
         if(target != null){
             if(target.getState() == 4){
                 result.put("status", Status.방정보보기_해당방없음);
@@ -750,10 +747,12 @@ public class WowzaService {
                     roomInfoVo.setAgoraToken(agoraToken);
                     roomInfoVo.setAgoraAppId(AGORA_APP_ID);
                     roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
-                    roomInfoVo.setPlatform(roomTokenVo.getPlatform());
-                    if(roomTokenVo.getPlatform().equals("agora")){
+                    if("v".equals(roomInfoVo.getMediaType())){
+                        roomInfoVo.setPlatform("agora");
                         roomInfoVo.setVideoResolution(720);
                         roomInfoVo.setUseFilter(false);
+                    }else{
+                        roomInfoVo.setPlatform("wowza");
                     }
 
                     //방정보 조회시 본인 게스트여부 체크
