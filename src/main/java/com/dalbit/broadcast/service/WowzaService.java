@@ -424,6 +424,14 @@ public class WowzaService {
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+
+            //welcome Event Chk
+            //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+            HashMap paramMap = new HashMap<>();
+            paramMap.put("memNo", MemberVo.getMyMemNo(request));
+            paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+            roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(AGORA_APP_ID);
             roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
@@ -653,6 +661,13 @@ public class WowzaService {
                 roomInfoVo.setDjTtsSound(true);
                 roomInfoVo.setDjNormalSound(true);
             }
+
+            //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+            HashMap paramMap = new HashMap<>();
+            paramMap.put("memNo", MemberVo.getMyMemNo(request));
+            paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+            roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+
             //아고라 토큰 생성
             RtcTokenBuilder token = new RtcTokenBuilder();
             int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
@@ -807,6 +822,13 @@ public class WowzaService {
                         roomInfoVo.setDjTtsSound(true);
                         roomInfoVo.setDjNormalSound(true);
                     }
+
+                    //welcome event chk
+                    //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+                    HashMap paramMap = new HashMap<>();
+                    paramMap.put("memNo", MemberVo.getMyMemNo(request));
+                    paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+                    roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
 
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
