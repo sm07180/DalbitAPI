@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -915,9 +916,14 @@ public class MypageController {
      */
     @GetMapping("/broadcast/setting")
     public String broadcastSettingSelect(HttpServletRequest request){
-        P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
-        String result = mypageService.callBroadcastSettingSelect(apiData);
-        return result;
+        try {
+            P_BroadcastSettingVo apiData = new P_BroadcastSettingVo(request);
+            String result = (String) mypageService.callBroadcastSettingSelect(apiData, false);
+            return result;
+        } catch (Exception e) {
+            log.error("MyPageController broadcastSettingSelect => {}", e);
+            return null;
+        }
     }
 
 
@@ -929,6 +935,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_BroadcastSettingEditVo apiData = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+
         String result = mypageService.callBroadcastSettingEdit(apiData, request, "edit");
         return result;
     }

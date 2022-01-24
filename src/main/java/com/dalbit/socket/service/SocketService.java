@@ -18,7 +18,6 @@ import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketOutVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RestApiUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -66,9 +65,6 @@ public class SocketService {
     @Autowired
     ProfileDao profileDao;
 
-    @Autowired
-    GsonUtil gsonUtil; //todo 테스트 후 지우셈
-    
     public void sendSocketApi(String authToken, String roomNo, String params) {
         String result = "";
         params = StringUtils.defaultIfEmpty(params, "").trim();
@@ -1278,5 +1274,26 @@ public class SocketService {
 
         log.info("Socket vo to Query String: {}",vo.toQueryString());
         sendSocketApi(authToken, roomNo, vo.toQueryString());
+    }
+
+    @Async("threadTaskExecutor")
+    public void reqDjSetting(String roomNo, String memNo, Object message, String authToken, boolean isLogin, SocketVo vo) {
+        log.info("Socket Start : reqDjSetting {}, {}, {}, {}", roomNo, memNo, message, isLogin);
+
+        try {
+            roomNo = roomNo == null ? "" : roomNo.trim();
+            memNo = memNo == null ? "" : memNo.trim();
+            authToken = authToken == null ? "" : authToken.trim();
+            if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
+                if(vo != null && vo.getMemNo() != null) {
+                    vo.setCommand("reqDjSetting");
+                    vo.setMessage(message);
+                    System.out.println("Socket Send reqDjSetting \n" + vo.toQueryString());
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
+            }
+        } catch (Exception e) {
+            log.info("Socket Start : reqDjSetting {} {} {} {} {}", roomNo, memNo, message, isLogin, e);
+        }
     }
 }
