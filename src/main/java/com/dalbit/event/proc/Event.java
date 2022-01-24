@@ -666,4 +666,16 @@ public interface Event {
     @Select("CALL rd_data.p_evt_moon_rank_my_sel(#{moonNo}, #{memNo})")
     MoonLandMyRankVO pEvtMoonRankMySel(Map<String, Object> map);
     /* 달나라 끝 */
+
+    /** 신입 웹컴 이벤트 방송방 조건 체크 프로시저
+     * @Param :
+     * memNo BIGINT		        -- 회원번호
+     * ,memSlct BIGINT		    -- 회원[1:dj, 2:청취자]
+     *
+     * @Return :
+     * s_return		INT		-- -3:본인인증 조건 미달, -2:청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상
+     * */
+    @Select("CALL rd_data.p_welcome_room_chk(#{memNo}, #{memSlct})")
+    Integer pWelcomeRoomChk(Map<String, Object> map);
+
 }

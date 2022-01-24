@@ -383,11 +383,11 @@ public class RoomService {
         P_RoomEditOutVo pRoomEditOutVo = roomDao.callBroadCastRoomEdit(procedureVo);
 
         //방송설정 입퇴장메시지 + 실시간 팬 배지 세팅 수정
-        BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
-        broadcastSettingEditVo.setDjListenerIn(pRoomEditVo.getDjListenerIn());
-        broadcastSettingEditVo.setDjListenerOut(pRoomEditVo.getDjListenerOut());
-        P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
-        mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "edit");
+        //BroadcastSettingEditVo broadcastSettingEditVo = new BroadcastSettingEditVo();
+        //broadcastSettingEditVo.setDjListenerIn(pRoomEditVo.getDjListenerIn());
+        //broadcastSettingEditVo.setDjListenerOut(pRoomEditVo.getDjListenerOut());
+        //P_BroadcastSettingEditVo pBroadcastSettingEditVo = new P_BroadcastSettingEditVo(broadcastSettingEditVo, request);
+        //mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "edit");
 
         String result;
         if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {

@@ -1587,6 +1587,15 @@ public enum Status {
     우체통사용_ON("0", "mypage.broadcast.setting.mailbox.on.success", "우체통사용여부 ON"),
     우체통사용_OFF("0", "mypage.broadcast.setting.mailbox.off.success", "우체통사용여부 OFF"),
 
+    // 방송 설정 추가 ( tts, sound 사용여부 )
+    TTS_아이템_ON("0", "mypage.broadcast.setting.gift.tts.on.success", "TTS 아이템 사용여부 ON"),
+    TTS_아이템_OFF("0", "mypage.broadcast.setting.gift.tts.off.success", "TTS 아이템 사용여부 OFF"),
+    SOUND_아이템_ON("0", "mypage.broadcast.setting.gift.sound.on.success", "Sound 아이템 사용여부 ON"),
+    SOUND_아이템_OFF("0", "mypage.broadcast.setting.gift.sound.off.success", "Sound 아이템 사용여부 OFF"),
+    청취자_입장표시_ON("0", "mypage.broadcast.setting.listener.come.on.success", "청취자 입장표시 ON"),
+    청취자_입장표시_OFF("0", "mypage.broadcast.setting.listener.come.off.success", "청취자 입장표시 OFF"),
+    청취자_퇴장표시_ON("0", "mypage.broadcast.setting.listener.out.on.success", "청취자 퇴장표시 ON"),
+    청취자_퇴장표시_OFF("0", "mypage.broadcast.setting.listener.out.off.success", "청취자 퇴장표시 OFF"),
     클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 
     //방송방 채팅 얼리기
