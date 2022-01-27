@@ -1134,7 +1134,7 @@ public class SocketService {
                         msg = " 마이크 OFF";
                     }
                 }else if("call".equals(stateEditVo.getMediaState())){
-                    socketMap.put("mediaOn", !mediaOn);
+                    socketMap.put("mediaOn", !mediaOn); // 데이터처리를 이상하게 해놔서 socket 전송할 때만 반대로 해준다.
                     if(mediaOn){
                         msg = "가 통화중입니다.";
                     }else{
