@@ -1135,9 +1135,9 @@ public class SocketService {
                     }
                 }else if("call".equals(stateEditVo.getMediaState())){
                     if(mediaOn){
-                        msg = "가 통화중입니다.";
-                    }else{
                         msg = "가 통화를 종료했습니다.";
+                    }else{
+                        msg = "가 통화중입니다.";
                     }
                 }else if("video".equals(stateEditVo.getMediaState())){
                     if(mediaOn){
