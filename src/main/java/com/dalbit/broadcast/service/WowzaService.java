@@ -410,7 +410,11 @@ public class WowzaService {
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
-
+            //네이티브에서 사용하는 방생성시 DJ의 설정
+            roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
+            roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
+            roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
+            roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
             //welcome Event Chk
             //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
             HashMap paramMap = new HashMap<>();

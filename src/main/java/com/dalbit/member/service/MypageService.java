@@ -2578,7 +2578,10 @@ public class MypageService {
         returnMap.put("listenerIn", DalbitUtil.getIntMap(resultMap, "listenerIn") == 1);
         returnMap.put("listenerOut", DalbitUtil.getIntMap(resultMap, "listenerOut") == 1);
         returnMap.put("liveBadgeView", DalbitUtil.getIntMap(resultMap, "liveBadgeView") == 1);
-
+        returnMap.put("ttsSound", DalbitUtil.getIntMap(resultMap, "ttsSound") == 1);
+        returnMap.put("normalSound", DalbitUtil.getIntMap(resultMap, "normalSound") == 1);
+        returnMap.put("djTtsSound", DalbitUtil.getIntMap(resultMap, "djTtsSound") == 1);
+        returnMap.put("djNormalSound", DalbitUtil.getIntMap(resultMap, "djNormalSound") == 1);
         return returnMap;
     }
 
