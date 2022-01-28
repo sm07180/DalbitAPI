@@ -115,6 +115,7 @@ public class MainServiceV2 {
         mainMap.put("popupLevel", 0); // ???
 
         /* 방금 착륙한 NEW 달둥스 (신입 BJ) */
+        List<P_RoomListVo> newBjList = new ArrayList<>();
         try {
             RoomListVo roomListVo = new RoomListVo();
             roomListVo.setMediaType("");
@@ -124,11 +125,11 @@ public class MainServiceV2 {
             roomListVo.setDjType(3);
             P_RoomListVo apiData = new P_RoomListVo(roomListVo, request);
             ProcedureVo procedureVo = new ProcedureVo(apiData);
-            List<P_RoomListVo> newBjList = roomDao.callBroadCastRoomList(procedureVo);
+            newBjList = roomDao.callBroadCastRoomList(procedureVo);
             mainMap.put("newBjList", newBjList);
         } catch (Exception e) {
             log.error("MainServiceV2 / main / newBjList", e);
-            mainMap.put("newBjList", null);
+            mainMap.put("newBjList", newBjList);
         }
 
         /* 메인 center 배너 */
