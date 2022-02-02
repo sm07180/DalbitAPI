@@ -76,6 +76,7 @@ public class MainServiceV2 {
         List<BannerVo> bannerList = new ArrayList<>();
         List<P_MainTimeRankingPageVo> mainRankingPageVoList = new ArrayList<>();
         List<P_MainRankingPageVo> mainFanRankingVoList = new ArrayList<>();
+        List<P_MainRankingPageVo> mainLoverRankingVoList = new ArrayList<>();
         List<P_MainStarVo> starVoList = new ArrayList<>();
         List<?> resultSets;
 
@@ -91,8 +92,9 @@ public class MainServiceV2 {
                 bannerList = DBUtil.getList(resultSets, 1, BannerVo.class);
                 mainRankingPageVoList = DBUtil.getList(resultSets, 2, P_MainTimeRankingPageVo.class);
                 mainFanRankingVoList = DBUtil.getList(resultSets, 3, P_MainRankingPageVo.class);
+                mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainRankingPageVo.class);
                 if(DalbitUtil.isLogin(request)){
-                    starVoList = DBUtil.getList(resultSets, 4, P_MainStarVo.class);
+                    starVoList = DBUtil.getList(resultSets, 5, P_MainStarVo.class);
                 }
             }
         } catch (Exception e) {
@@ -109,7 +111,7 @@ public class MainServiceV2 {
         HashMap<String, Object> dayRankingMap = new HashMap<>();
         dayRankingMap.put("djRank", getMainDayDjRank(mainRankingPageVoList)); // dj
         dayRankingMap.put("fanRank", getMainDayFanRank(mainFanRankingVoList)); // fan
-//        dayRankingMap.put("loverRank", getMainDayLoverRank(mainFanRankingVoList)); // lover
+        dayRankingMap.put("loverRank", getMainDayLoverRank(mainLoverRankingVoList)); // lover
         mainMap.put("dayRanking", dayRankingMap);
 
         mainMap.put("popupLevel", 0); // ???
@@ -386,24 +388,16 @@ public class MainServiceV2 {
     /**
      *  lover 랭킹
      */
-    /*private List<MainFanRankingOutVo> getMainDayLoverRank(List<P_MainRankingPageVo> mainFanRankingVoList) {
-        List<MainFanRankingOutVo> fanRank = new ArrayList<>();
+    private List<MainFanRankingOutVo> getMainDayLoverRank(List<P_MainRankingPageVo> mainFanRankingVoList) {
+        List<MainFanRankingOutVo> loverRank = new ArrayList<>();
         try {
             for(P_MainRankingPageVo vo : mainFanRankingVoList) {
-                fanRank.add(new MainFanRankingOutVo(vo, false));
+                loverRank.add(new MainFanRankingOutVo(vo, false));
             }
-
         } catch (Exception e) {
-            log.error("MainServiceV2 / main / fanRank", e);
+            log.error("MainServiceV2 / getMainDayLoverRank", e);
         }
 
-        try {
-            dayRankingMap.put("loverRank", ">_<");
-        } catch (Exception e) {
-            log.error("MainServiceV2 / main / getMainDayLoverRank", e);
-            dayRankingMap.put("loverRank", null);
-        }
-
-        return fanRank;
-    }*/
+        return loverRank;
+    }
 }
