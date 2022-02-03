@@ -180,6 +180,12 @@ public class WelcomeEventService {
                     case -2:
                         result.setResVO(ResMessage.C39002.getCode(), ResMessage.C39002.getCodeNM(), null);
                         break;
+                    case -3:
+                        result.setResVO(ResMessage.C39003.getCode(), ResMessage.C39003.getCodeNM(), null);
+                        break;
+                    case -4:
+                        result.setResVO(ResMessage.C39007.getCode(), ResMessage.C39007.getCodeNM(), null);
+                        break;
                     default:
                         result.setFailResVO();
                         break;
@@ -221,7 +227,7 @@ public class WelcomeEventService {
             // 선물 받기 처리
             resultInfo = welcomeEvent.insWelcomeItem(params);
 
-            if (resultInfo != 1) {
+            if (resultInfo != null && resultInfo != 1) {
                 switch (resultInfo) {
                     case -1:
                         result.setResVO(ResMessage.C10002.getCode(), ResMessage.C10002.getCodeNM(), null);
@@ -237,15 +243,33 @@ public class WelcomeEventService {
                         break;
                 }
                 return result;
+            } else {
+                result.setFailResVO();
             }
 
             log.info("WelcomeEventService / success welcome present => {} {} {} {}", params, memNo, auth, memCheck);
             result.setSuccessResVO(resultInfo);
         } catch (Exception e) {
-            log.error("WelcomeEventService / checkWelcomeAuth => {} {} {}", e, params, memNo);
+            log.error("WelcomeEventService / putWelcomeGift => {} {} {}", e, params, memNo);
             result.setFailResVO();
         }
 
         return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 웹컴페이지 접속 체크값 수정 (방송방에서 하루 한번만 표시용)
+     * @작성일 : 2022-01-21
+     * @작성자 : 박용훈
+     * @변경이력 :
+     * @Parameter : memNo       BIGINT
+     * @Return : s_return		INT		--   -1: 이상, 0: 에러, 1:정상
+     **********************************************************************************************/
+    public Integer putWelcomeDayConfirmChecker(String memNo) throws Exception {
+        try {
+            return welcomeEvent.pWelcomeMemDayChk(Long.parseLong(memNo));
+        } catch (Exception e) {
+            throw new Exception();
+        }
     }
 }

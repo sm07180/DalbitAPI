@@ -109,8 +109,17 @@ public class RoomInfoVo {
     private boolean ttsSound;
     private boolean normalSound;
 
+    /* 신규이벤트 페이지 이동 버튼 정보 */
+    private Map<String, Object> eventInfoMap;
     /* 필터/메이크업 */
     private boolean useFilter = false;
+
+    /* 아고라 토큰 */
+    private String agoraToken;
+    private String agoraAppId;
+    private String agoraAccount;
+    /*와우자 아고라 플래그값*/
+    private String platform;
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,

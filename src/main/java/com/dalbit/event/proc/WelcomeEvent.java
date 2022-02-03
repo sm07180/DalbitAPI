@@ -147,4 +147,13 @@ public interface WelcomeEvent {
     @Select("CALL rd_data.p_welcome_gift_ins(#{memNo}, #{giftSlct}, #{giftCode}, #{giftName}, #{giftCont}, #{giftDalCnt}, #{giftStepNo}, #{giftTheMonth}, #{giftOrdNo})")
     Integer insWelcomeItem(Map<String, Object> params);
 
+    /**********************************************************************************************
+     * @Method 설명 : 웹컴페이지 접속 체크 값 업데이트 프로시저 (방송방 - 웹, 네이티브)
+     * @작성일 : 2022-01-21
+     * @작성자 : 박용훈
+     * @변경이력 :  memNo 		BIGINT		-- 회원번호
+     * @Return :  s_return		INT		--   -1: 이상, 0: 에러, 1:정상
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_welcome_mem_day_chk(#{memNo})")
+    Integer pWelcomeMemDayChk(Long memNo);
 }

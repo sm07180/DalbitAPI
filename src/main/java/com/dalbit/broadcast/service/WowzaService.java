@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.service;
 
+import com.dalbit.agora.media.RtcTokenBuilder;
 import com.dalbit.broadcast.dao.GuestDao;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.*;
@@ -29,18 +30,19 @@ import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import com.dalbit.agora.media.RtcTokenBuilder.Role;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +95,13 @@ public class WowzaService {
     String WOWZA_ACC;
     @Value("${wowza.opus}")
     String WOWZA_OPUS;
+
+    @Value("${agora.app.id}")
+    String AGORA_APP_ID;
+    @Value("${agora.app.cert}")
+    String AGORA_APP_CERT;
+
+    static int expirationTimeInSeconds = 10800;
 
     public HashMap doUpdateWowzaState(HttpServletRequest request){
         StringBuffer body = new StringBuffer();
@@ -392,6 +401,11 @@ public class WowzaService {
                 miniGameList = getRouletteData(request, roomNo, isLogin);
             }
 
+            //아고라 토큰 생성
+            RtcTokenBuilder token = new RtcTokenBuilder();
+            int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+            String agoraToken = token.buildTokenWithUserAccount(AGORA_APP_ID, AGORA_APP_CERT,
+                    roomNo + "", MemberVo.getMyMemNo(request) + "", Role.Role_Publisher, timestamp);
             result.put("status", Status.방송생성);
             // tts 성우 리스트
             ArrayList<Map<String, String>> ttsActors = ttsService.findActor();
@@ -410,6 +424,28 @@ public class WowzaService {
             badgeService.setBadgeInfo(target.getBjMemNo(), 4);
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+            //네이티브에서 사용하는 방생성시 DJ의 설정
+            roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
+            roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
+            roomInfoVo.setTtsSound(DalbitUtil.getBooleanMap(settingMap, "ttsSound"));
+            roomInfoVo.setNormalSound(DalbitUtil.getBooleanMap(settingMap, "normalSound"));
+            //welcome Event Chk
+            //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+            HashMap paramMap = new HashMap<>();
+            paramMap.put("memNo", MemberVo.getMyMemNo(request));
+            paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+            roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+
+            roomInfoVo.setAgoraToken(agoraToken);
+            roomInfoVo.setAgoraAppId(AGORA_APP_ID);
+            roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+            if("v".equals(roomInfoVo.getMediaType())){
+                roomInfoVo.setPlatform("agora");
+                roomInfoVo.setVideoResolution(720);
+                roomInfoVo.setUseFilter(false);
+            }else{
+                roomInfoVo.setPlatform("wowza");
+            }
             result.put("data", roomInfoVo);
 
             //나를 스타로 등록한 팬들에게 PUSH 소켓연동
@@ -460,7 +496,6 @@ public class WowzaService {
             result.put("status", Status.로그인필요);
             return result;
         }
-
         //방 참여 접속 불가 상태 체크
         if(!ipUtil.isInnerIP(ipUtil.getClientIP(request))){
             var codeVo = commonService.selectCodeDefine(new CodeVo(Code.시스템설정_방송방막기.getCode(), Code.시스템설정_방송방막기.getDesc()));
@@ -630,6 +665,28 @@ public class WowzaService {
                 roomInfoVo.setDjTtsSound(true);
                 roomInfoVo.setDjNormalSound(true);
             }
+
+            //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+            HashMap paramMap = new HashMap<>();
+            paramMap.put("memNo", MemberVo.getMyMemNo(request));
+            paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+            roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+
+            //아고라 토큰 생성
+            RtcTokenBuilder token = new RtcTokenBuilder();
+            int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+            String agoraToken = token.buildTokenWithUserAccount(AGORA_APP_ID, AGORA_APP_CERT,
+                    roomInfoVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);
+            roomInfoVo.setAgoraToken(agoraToken);
+            roomInfoVo.setAgoraAppId(AGORA_APP_ID);
+            roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+            if("v".equals(roomInfoVo.getMediaType())){
+                roomInfoVo.setPlatform("agora");
+                roomInfoVo.setVideoResolution(720);
+                roomInfoVo.setUseFilter(false);
+            }else{
+                roomInfoVo.setPlatform("wowza");
+            }
             roomInfoVo.changeBackgroundImg(deviceVo);
             result.put("status", Status.방송참여성공);
             result.put("data", roomInfoVo);
@@ -652,6 +709,7 @@ public class WowzaService {
             }else{
                 String deviceUuid = DalbitUtil.getStringMap(resultMap, "deviceUuid");
                 deviceUuid = deviceUuid == null ? "" : deviceUuid.trim();
+
                 if(deviceUuid.equals(pRoomJoinVo.getDeviceUuid())){ //동일기기 참가일때 /reToken과 동일로직
                     RoomTokenVo roomTokenVo = new RoomTokenVo();
                     roomTokenVo.setRoomNo(roomJoinVo.getRoomNo());
@@ -721,6 +779,21 @@ public class WowzaService {
 
                     RoomInfoVo roomInfoVo = getRoomInfo(target, resultUpdateMap, request);
                     roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), MemberVo.getMyMemNo(request)));
+                    //아고라 토큰 생성
+                    RtcTokenBuilder token = new RtcTokenBuilder();
+                    int timestamp = (int)(System.currentTimeMillis() / 1000 + expirationTimeInSeconds);
+                    String agoraToken = token.buildTokenWithUserAccount(AGORA_APP_ID, AGORA_APP_CERT,
+                            roomTokenVo.getRoomNo() + "", MemberVo.getMyMemNo(request) + "", Role.Role_Subscriber, timestamp);;
+                    roomInfoVo.setAgoraToken(agoraToken);
+                    roomInfoVo.setAgoraAppId(AGORA_APP_ID);
+                    roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+                    if("v".equals(roomInfoVo.getMediaType())){
+                        roomInfoVo.setPlatform("agora");
+                        roomInfoVo.setVideoResolution(720);
+                        roomInfoVo.setUseFilter(false);
+                    }else{
+                        roomInfoVo.setPlatform("wowza");
+                    }
 
                     //방정보 조회시 본인 게스트여부 체크
                     for (int i=0; i < roomInfoVo.getGuests().size(); i++ ){
@@ -730,7 +803,7 @@ public class WowzaService {
                             roomInfoVo.setIsGuest(false);
                         }
                     }
-                    
+
                     //웹 방송방에서 F5 눌렀을때 roomInfo 갱신용
                     try {
                         P_BroadcastSettingVo apiData = new P_BroadcastSettingVo();
@@ -753,6 +826,13 @@ public class WowzaService {
                         roomInfoVo.setDjTtsSound(true);
                         roomInfoVo.setDjNormalSound(true);
                     }
+
+                    //welcome event chk
+                    //신규유저 이벤트 정보 세팅 (memNo 입장 유저, memSlct [1: dj, 2: 청취자])
+                    HashMap paramMap = new HashMap<>();
+                    paramMap.put("memNo", MemberVo.getMyMemNo(request));
+                    paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
+                    roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
 
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
@@ -788,7 +868,7 @@ public class WowzaService {
         pRoomInfoViewVo.setRoom_no(roomNo);
         ProcedureVo procedureInfoViewVo = new ProcedureVo(pRoomInfoViewVo);
         P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
-        if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())){
+         if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())){
             roomInfoViewVo.setExt(procedureInfoViewVo.getExt());
             //출석체크 완료 여부 조회
             P_AttendanceCheckVo attendanceCheckVo = new P_AttendanceCheckVo();
