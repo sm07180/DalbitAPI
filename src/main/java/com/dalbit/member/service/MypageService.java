@@ -865,7 +865,7 @@ public class MypageService {
         paramMap.put("feedTopFix", param.getTopFix());
         int regNo = mypageDao.pMemberFeedIns(paramMap);
 
-        if(regNo > 0) { //피드 등록 후 성공시 포토 서버 이미지 경로 변경
+        if(regNo > 0 && !StringUtils.equals(param.getImagePath(), "")) { //피드 등록 후 성공시 포토 서버 이미지 경로 변경
             if(isDone) {
                 if (!DalbitUtil.isEmpty(param.getImagePath())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(param.getImagePath()), request);
@@ -883,8 +883,11 @@ public class MypageService {
                 log.error("MypageService.java - Profile feed Image Ins Failed :{}", resultCode);
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
             }
-
-        } else {    //피드 등록 실패
+        } else if(regNo > 0){   //사진 없이 등록하는 경우
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
+        } else if(regNo == -1){    //피드 등록 실패
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_상단고정_초과));
+        } else {    // Error
             log.error("MypageService.java - feed Ins Failed :{}", regNo);
             return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
         }
@@ -975,13 +978,14 @@ public class MypageService {
         for(int i=0; i< list.size(); i++) {
             ProfileFeedOutVo vo = list.get(i);
             Long noticeIdx = vo.getNoticeIdx();
-            vo.setPhotoInfoList(new ArrayList<>());
-            
-            for(ProfileFeedPhotoOutVo photoVo :  photoList){
-                if(vo.getNoticeIdx() == photoVo.getFeed_reg_no()){
-                    vo.getPhotoInfoList().add(photoVo);
+            List photoListTemp = photoListTemp = new ArrayList<>();
+
+            for (ProfileFeedPhotoOutVo photoVo : photoList) {
+                if(vo.getNoticeIdx().equals(photoVo.getFeed_reg_no())){
+                    photoListTemp.add(photoVo);
                 }
             }
+            vo.setPhotoInfoList(photoListTemp);
 
             //고정된 글 리스트에 추가
             if(vo.getTopFix() == 1) fixedList.add(vo);

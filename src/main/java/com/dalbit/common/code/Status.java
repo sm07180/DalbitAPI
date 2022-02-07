@@ -607,6 +607,7 @@ public enum Status {
     공지등록_요청회원번호_회원아님("-1", "mypage.notice.create.member.number.error", "요청회원번호가 회원 아닐 시"),
     공지등록_대상회원번호_회원아님("-2", "mypage.notice.create.object.member.number.error", "대상회원번호가 회원 아닐 시"),
     공지등록_권한없음("-3", "mypage.notice.create.authorization.not", "공지등록 권한 없을 시"),
+    공지등록_상단고정_초과("-4", "mypage.notice.create.topFix.fail", "마이페이지 공지등록 실패 시"),
     공지등록_실패("C006", "mypage.notice.create.fail", "마이페이지 공지등록 실패 시"),
 
     //마이페이지 공지사항 수정
