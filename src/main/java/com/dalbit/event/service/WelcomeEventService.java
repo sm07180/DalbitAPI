@@ -87,12 +87,12 @@ public class WelcomeEventService {
                     case 1:
                         tempMap.put("maxMemTime", 18000); // 3600 * 5
                         tempMap.put("maxLikeCnt", 10); // 10
-                        tempMap.put("maxDalCnt", (memSlct.equals(1) ? 50 : 0)); // (memSlct.equals(1) ? 50 : 0)
+                        tempMap.put("maxDalCnt", (memSlct.equals("1") ? 50 : 0)); // (memSlct.equals(1) ? 50 : 0)
                         break;
                     case 2:
                         tempMap.put("maxMemTime", 36000); // 3600 * 10
                         tempMap.put("maxLikeCnt", 20); // 20
-                        tempMap.put("maxDalCnt", (memSlct.equals(1) ? 200 : 30)); // (memSlct.equals(1) ? 200 : 30)
+                        tempMap.put("maxDalCnt", (memSlct.equals("1") ? 200 : 30)); // (memSlct.equals(1) ? 200 : 30)
                         break;
                 }
 

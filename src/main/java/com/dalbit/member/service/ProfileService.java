@@ -726,4 +726,37 @@ public class ProfileService {
     public String callCertificationChkSel(String memNo) {
         return profileDao.callCertificationChkSel(memNo);
     }
+
+
+    /**
+     * 팬보드 상세 조회
+     *
+     * @Param
+     * fanboardNo    INT		-- 팬보드번호
+     * ,memNo 		BIGINT		-- 회원번호
+     * ,viewMemNo 	BIGINT		-- 회원번호(접속자)
+     *
+     * @Return
+     * board_idx;                  //BIGINT		-- 번호
+     * writer_mem_no;              //BIGINT		-- 회원번호(작성자)
+     * nickName;                 //VARCHAR	--닉네임(작성자)
+     * userId;                   //VARCHAR	--아이디(작성자)
+     * memSex;                   //VARCHAR	-- 성별(작성자)
+     * profileImage;             //VARCHAR	-- 프로필(작성자)
+     * STATUS;                     //BIGINT		-- 상태
+     * viewOn;                     //BIGINT		-- 1:공개 0:비공개
+     * writeDate;                //DATETIME	-- 수정일자
+     * ins_date;                 //DATETIME	-- 등록일자
+     * rcv_like_cnt;               //BIGINT		-- 좋아요수
+     * rcv_like_cancel_cnt;        //BIGINT		-- 취소 좋아요수
+     * like_yn;                  //CHAR		-- 좋아요 확인[y,n]
+     * */
+    public ProfileBoardDetailOutVo boardDetailSel(ProfileBoardDetailSelVo vo, HttpServletRequest request){
+        HashMap map = new HashMap();
+        map.put("fanboardNo", vo.getFanBoardNo());   // 글번호
+        map.put("memNo", Long.parseLong(vo.getMemNo()));       // 프로필 주인
+        map.put("viewMemNo", Long.parseLong(MemberVo.getMyMemNo(request)) );   //로그인한 유저
+
+        return profileDao.pMemberFanboardSel(map);
+    }
 }
