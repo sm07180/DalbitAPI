@@ -929,7 +929,7 @@ public class MypageService {
 
         paramMap.put("pageNo", pageNo);
         paramMap.put("pagePerCnt", pagePerCnt);
-        paramMap.put("memNo", memNo);
+        paramMap.put("memNo", ownerMemNo);
         paramMap.put("viewMemNo", reqMemNo);
 
         feedMultiRow = mypageDao.pMemberFeedList(paramMap);
@@ -938,7 +938,7 @@ public class MypageService {
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(feedMultiRow) ){
-            resultMap.put("fixCnt", 0);
+            resultMap.put("fixList", new ArrayList());
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
@@ -952,7 +952,6 @@ public class MypageService {
         String systemBanWord = commonService.banWordSelect();
         String banWord = commonService.broadcastBanWordSelect(banWordVo);
 
-        int fixCnt = 0;
         for (int i=0; i<list.size(); i++){
             feedNoList[i] = list.get(i).getNoticeIdx();
             //사이트+방송방 금지어 조회 마이페이지 공지사항 제목, 내용 마스킹 처리
@@ -965,31 +964,34 @@ public class MypageService {
             }
             //프로필 이미지 사진 세팅
             list.get(i).setProfImg(new ImageVo(list.get(i).getImagePath(), list.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url")));
-
-            //고정된 글 갯수 체크
-            if(list.get(i).getTopFix() == 1) fixCnt ++;
         }
 
+        //사진 리스트 조회
         List<ProfileFeedPhotoOutVo> photoList = mypageDao.pMemberFeedPhotoList(Arrays.toString(feedNoList).replace("[", "").replace("]", ""));
 
-        //피드 리스트에 사진 데이터 set
+        //피드 리스트에 사진 데이터 set, 고정 리스트 고정, 안된 리스트 분리
+        ArrayList fixedList = new ArrayList();
+        ArrayList unfixedList = new ArrayList();
         for(int i=0; i< list.size(); i++) {
             ProfileFeedOutVo vo = list.get(i);
             Long noticeIdx = vo.getNoticeIdx();
             vo.setPhotoInfoList(new ArrayList<>());
-
+            
             for(ProfileFeedPhotoOutVo photoVo :  photoList){
                 if(vo.getNoticeIdx() == photoVo.getFeed_reg_no()){
-                    log.error("index chk {} {}", vo.getNoticeIdx(), photoVo.getFeed_reg_no());
-
                     vo.getPhotoInfoList().add(photoVo);
                 }
             }
+
+            //고정된 글 리스트에 추가
+            if(vo.getTopFix() == 1) fixedList.add(vo);
+            //고정 안된 글 리스트에 추가
+            unfixedList.add(vo);
         }
 
         //최종 데이터
-        resultMap.put("fixCnt", fixCnt);
-        resultMap.put("list", list);
+        resultMap.put("fixList", fixedList);
+        resultMap.put("list", unfixedList);
         resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));
 
         return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
