@@ -938,6 +938,7 @@ public class MypageService {
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(feedMultiRow) ){
+            resultMap.put("fixCnt", 0);
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
@@ -951,6 +952,7 @@ public class MypageService {
         String systemBanWord = commonService.banWordSelect();
         String banWord = commonService.broadcastBanWordSelect(banWordVo);
 
+        int fixCnt = 0;
         for (int i=0; i<list.size(); i++){
             feedNoList[i] = list.get(i).getNoticeIdx();
             //사이트+방송방 금지어 조회 마이페이지 공지사항 제목, 내용 마스킹 처리
@@ -963,6 +965,9 @@ public class MypageService {
             }
             //프로필 이미지 사진 세팅
             list.get(i).setProfImg(new ImageVo(list.get(i).getImagePath(), list.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+
+            //고정된 글 갯수 체크
+            if(list.get(i).getTopFix() == 1) fixCnt ++;
         }
 
         List<ProfileFeedPhotoOutVo> photoList = mypageDao.pMemberFeedPhotoList(Arrays.toString(feedNoList).replace("[", "").replace("]", ""));
@@ -983,6 +988,7 @@ public class MypageService {
         }
 
         //최종 데이터
+        resultMap.put("fixCnt", fixCnt);
         resultMap.put("list", list);
         resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));
 
