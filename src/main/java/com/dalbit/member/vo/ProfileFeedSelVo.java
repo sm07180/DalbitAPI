@@ -15,6 +15,4 @@ public class ProfileFeedSelVo {
     private Integer pageNo;
     @NotNull
     private Integer pagePerCnt;
-    @NotNull
-    private Integer topFix;
 }

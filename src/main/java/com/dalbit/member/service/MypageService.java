@@ -894,7 +894,7 @@ public class MypageService {
      * 마이페이지 피드 조회
      * memNo : profile 주인 memNo
      */
-    public String noticeSelect(String memNo, Integer pageNo, Integer pagePerCnt, Integer topFix, HttpServletRequest request) throws GlobalException{
+    public String noticeSelect(String memNo, Integer pageNo, Integer pagePerCnt, HttpServletRequest request) throws GlobalException{
         HashMap paramMap = new HashMap();
         List<Object> feedMultiRow = null;
         List<ProfileFeedOutVo> list = null;
@@ -904,21 +904,12 @@ public class MypageService {
 
         paramMap.put("pageNo", pageNo);
         paramMap.put("pagePerCnt", pagePerCnt);
+        paramMap.put("memNo", memNo);
+        paramMap.put("viewMemNo", reqMemNo);
 
-        if(topFix == 0) {   //상단고정 안된 피드 리스트 조회
-            paramMap.put("memNo", memNo);
-            paramMap.put("viewMemNo", reqMemNo);
-
-            feedMultiRow = mypageDao.pMemberFeedList(paramMap);
-            cnt = DBUtil.getData(feedMultiRow, 0, Integer.class);
-            list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
-        } else {    //상단고정된 피드 리스트 조회
-            paramMap.put("memNo", memNo);
-
-            feedMultiRow = mypageDao.pMemberFeedFixList(paramMap);
-            cnt = DBUtil.getData(feedMultiRow, 0, Integer.class);
-            list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
-        }
+        feedMultiRow = mypageDao.pMemberFeedList(paramMap);
+        cnt = DBUtil.getData(feedMultiRow, 0, Integer.class);
+        list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(feedMultiRow) ){
