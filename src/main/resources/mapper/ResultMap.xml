@@ -41,4 +41,7 @@
 
     <!-- 굿스타트 이벤트 -->
     <resultMap id="GoodStartRankVo" type="com.dalbit.event.vo.GoodStartRankVo"/>
+
+    <!-- 리브랜딩 프로필 피드 -->
+    <resultMap id="ProfileFeedOutVO" type="com.dalbit.member.vo.ProfileFeedOutVo"/>
 </mapper>
