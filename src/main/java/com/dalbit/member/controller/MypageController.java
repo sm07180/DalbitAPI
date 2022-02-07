@@ -1054,6 +1054,7 @@ public class MypageController {
      * pageNo           Integer 페이지번호
      * pagePerCnt;      Integer 페이지당 리스트갯수
      * topFix;          Integer 상단 고정리스트 조회여부 [0 : 상단 고정안된 리스트, 1: 상단고정 리스트]
+     *
      * @Return
      * # 1
      * cnt                  Integer     총 갯수
@@ -1082,7 +1083,9 @@ public class MypageController {
         return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), noticeSelVo.getTopFix(), request);
     }
 
-    /**피드 수정
+    /**
+     * 피드 수정
+     *
      * @Param
      * memNo                String  유저번호
      * title                String  제목
@@ -1099,14 +1102,15 @@ public class MypageController {
         return mypageService.noticeUpdate(param, request);
     }
 
-    /**피드 수정
+    /**
+     * 피드 삭제
+     *
      * @Param
      * noticeIdx                Long  공지글번호
      * delChrgrName             String  제목
      *
      * @Return
      * */
-    //피드 삭제
     @DeleteMapping("/notice")
     public String noticeDelete(@Valid ProfileFeedDelVo param, BindingResult bindingResult) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
@@ -1114,11 +1118,12 @@ public class MypageController {
     }
 
     /**
+     * 피드 상세조회
      *
-     * @param noticeSelVo
-     *
+     * @param
      * feedNo              Integer 공지글 번호
      * memNo;              String  프로필 주인의 memNo
+     *
      * @return
      * noticeIdx        BIGINT		-- 번호
      * mem_no		BIGINT		-- 회원번호
@@ -1135,7 +1140,6 @@ public class MypageController {
      * rcv_like_cnt	BIGINT		-- 좋아요수
      * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
      */
-    //피드 상세조회
     @GetMapping("/notice/detail")
     public String noticeDetailSelect(@Valid ProfileFeedDetailSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
