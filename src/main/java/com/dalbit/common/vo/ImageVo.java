@@ -73,11 +73,13 @@ public class ImageVo extends BaseVo{
     private String thumb336x336;
     private String thumb500x500;
     private String thumb700x700;
+    private boolean isDefaultImg = true;
 
     public void setPath(String path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path)){
             this.path = path;
             this.url = photoServerUrl + this.path;
+            this.isDefaultImg = false;
 
             setThumbs();
         }
@@ -88,6 +90,7 @@ public class ImageVo extends BaseVo{
             this.path = path;
             DeviceVo deviceVo = new DeviceVo(request);
             this.url = photoServerUrl + this.path;
+            this.isDefaultImg = false;
             setThumbs();
 
             if(deviceVo.getOs() != 3 && !"Y".equals(deviceVo.getIsHybrid())){

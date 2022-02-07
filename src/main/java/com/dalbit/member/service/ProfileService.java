@@ -84,7 +84,7 @@ public class ProfileService {
             badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1);
             profileInfoOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             profileInfoOutVo.setCommonBadgeList(badgeService.getCommonBadge());
-            profileInfoOutVo.setFanBadgeList(new ArrayList());
+//            profileInfoOutVo.setFanBadgeList(new ArrayList());
 
             //과거 스페셜DJ 선정 여부
             if(profileInfoOutVo.getIsSpecial()){
