@@ -393,7 +393,7 @@ public interface MypageDao {
     int pMemberFeedPhotoDel(Map<String, Object> param);
 
     /**
-     * 피드 좋아요 등록
+     * 피드 좋아요 등록 (미적용)
      *
      * @Param
      * regNo        INT		-- 피드 등록글 번호
@@ -407,7 +407,7 @@ public interface MypageDao {
     int pMemberFeedLikeLogIns(Map<String, Object> param);
 
     /**
-     * 피드 좋아요 취소
+     * 피드 좋아요 취소 (미적용)
      *
      * @Param
      * regNo        INT			-- 피드 등록글 번호
