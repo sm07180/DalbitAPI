@@ -986,7 +986,7 @@ public class MypageService {
             //고정된 글 리스트에 추가
             if(vo.getTopFix() == 1) fixedList.add(vo);
             //고정 안된 글 리스트에 추가
-            unfixedList.add(vo);
+            else if(vo.getTopFix() == 0) unfixedList.add(vo);
         }
 
         //최종 데이터
