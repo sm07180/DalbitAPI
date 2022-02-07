@@ -891,10 +891,35 @@ public class MypageService {
     }
 
     /**
-     * 마이페이지 피드 조회
-     * memNo : profile 주인 memNo
+     * 피드 리스트 조회
+     *
+     * @Param
+     * memNo 		BIGINT		-- 회원번호 (프로필 주인)
+     * viewMemNo 		BIGINT		-- 회원번호 (프로필 보고있는 유저)
+     * ,pageNo 		INT 		-- 페이지 번호
+     * ,pageCnt 	INT		-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * Multi Rows
+     * #1
+     * cnt		INT		--총 수
+     * #2
+     * noticeIdx		BIGINT		-- 번호
+     * mem_no		BIGINT		-- 회원번호
+     * nickName	VARCHAR	--닉네임
+     * memSex		VARCHAR	-- 성별
+     * image_profile	VARCHAR	-- 프로필
+     * title		VARCHAR	-- 제목
+     * contents		VARCHAR	-- 내용
+     * imagePath	VARCHAR	-- 대표사진
+     * topFix		BIGINT		-- 고정여부[0:미고정 ,1:고정]
+     * writeDate		DATETIME	-- 수정일자
+     * readCnt		BIGINT		-- 읽은수
+     * replyCnt		BIGINT		-- 댓글수
+     * rcv_like_cnt	BIGINT		-- 좋아요수
+     * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
      */
-    public String noticeSelect(String memNo, Integer pageNo, Integer pagePerCnt, Integer topFix, HttpServletRequest request) throws GlobalException{
+    public String noticeSelect(String memNo, Integer pageNo, Integer pagePerCnt, HttpServletRequest request) throws GlobalException{
         HashMap paramMap = new HashMap();
         List<Object> feedMultiRow = null;
         List<ProfileFeedOutVo> list = null;
@@ -904,21 +929,12 @@ public class MypageService {
 
         paramMap.put("pageNo", pageNo);
         paramMap.put("pagePerCnt", pagePerCnt);
+        paramMap.put("memNo", memNo);
+        paramMap.put("viewMemNo", reqMemNo);
 
-        if(topFix == 0) {   //상단고정 안된 피드 리스트 조회
-            paramMap.put("memNo", memNo);
-            paramMap.put("viewMemNo", reqMemNo);
-
-            feedMultiRow = mypageDao.pMemberFeedList(paramMap);
-            cnt = DBUtil.getData(feedMultiRow, 0, Integer.class);
-            list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
-        } else {    //상단고정된 피드 리스트 조회
-            paramMap.put("memNo", memNo);
-
-            feedMultiRow = mypageDao.pMemberFeedFixList(paramMap);
-            cnt = DBUtil.getData(feedMultiRow, 0, Integer.class);
-            list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
-        }
+        feedMultiRow = mypageDao.pMemberFeedList(paramMap);
+        cnt = DBUtil.getData(feedMultiRow, 0, Integer.class);
+        list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(feedMultiRow) ){

@@ -1053,7 +1053,6 @@ public class MypageController {
      * memNo            String  유저번호;
      * pageNo           Integer 페이지번호
      * pagePerCnt;      Integer 페이지당 리스트갯수
-     * topFix;          Integer 상단 고정리스트 조회여부 [0 : 상단 고정안된 리스트, 1: 상단고정 리스트]
      *
      * @Return
      * # 1
@@ -1080,7 +1079,7 @@ public class MypageController {
     @GetMapping("/notice/sel")
     public String noticeSelect(@Valid ProfileFeedSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), noticeSelVo.getTopFix(), request);
+        return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), request);
     }
 
     /**
