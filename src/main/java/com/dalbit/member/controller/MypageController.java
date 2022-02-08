@@ -1035,7 +1035,6 @@ public class MypageController {
      * @Param
      *  title       String 제목
      *  contents    String 내용
-     *  imagePath   String 사진 경로
      *  topFix      Integer 상단 고정여부 [0, 1]
      *  photoInfoList List<ProfileFeedPhotoOutVo> 등록 이미지 리스트  [{img_name:""}, {img_name:""}, ...]
      * @Return

@@ -311,7 +311,7 @@ public interface MypageDao {
      * @Return
      * s_return		INT		-- #  0:에러, 1: 정상
      * */
-    @Select("CALL rd_data.p_member_feed_del(#{feedNo}, #{delChrgrName})")
+    @Select("CALL rd_data.p_member_feed_del(#{noticeIdx}, #{delChrgrName})")
     int pMemberFeedDel(ProfileFeedDelVo param);
 
     /**
@@ -357,7 +357,7 @@ public interface MypageDao {
      * @Return
      * s_return		INT		-- #  -1: 삭제할 파일 없음, 0:에러, 1: 정상
      */
-    @Select("CALL rd_data.p_member_feed_photo_del(#{photoNo}, #{regNo}, #{imageName}, #{delChrgrName}")
+    @Select("CALL rd_data.p_member_feed_photo_del(#{photoNo}, #{regNo}, #{imageName}, #{delChrgrName})")
     int pMemberFeedPhotoDel(Map<String, Object> param);
 
     /**
@@ -371,7 +371,7 @@ public interface MypageDao {
      * @Return
      * s_return        INT		-- #   -1:이미좋아요함, 0:에러 , 1:최초좋아요, 2: 좋아요취소후 다시 좋아요
      * */
-    @Select("CALL rd_data.p_member_feed_like_log_ins(#{regNo}, #{mMemNo}, #{vMemNo}")
+    @Select("CALL rd_data.p_member_feed_like_log_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
     int pMemberFeedLikeLogIns(Map<String, Object> param);
 
     /**

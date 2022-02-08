@@ -1068,7 +1068,7 @@ public class MypageService {
                     delParam.put("regNo", vo.getNoticeIdx());
                     delParam.put("delChrgrName", vo.getChrgrName());
                     delParam.put("photoNo", oldPhotoVo.getPhoto_no());
-                    delParam.put("imgName", oldPhotoVo.getImg_name());
+                    delParam.put("imageName", oldPhotoVo.getImg_name());
                     oldResult = mypageDao.pMemberFeedPhotoDel(delParam);
                     if (oldResult == 0){
                         error = true;
@@ -1134,7 +1134,7 @@ public class MypageService {
             delParam.put("regNo", vo.getNoticeIdx());
             delParam.put("delChrgrName", vo.getDelChrgrName());
             delParam.put("photoNo", photoVo.getPhoto_no());
-            delParam.put("imgName", photoVo.getImg_name());
+            delParam.put("imageName", photoVo.getImg_name());
             resultCode = mypageDao.pMemberFeedPhotoDel(delParam);
 
             if (resultCode == 0) {
@@ -1164,7 +1164,7 @@ public class MypageService {
             delParam.put("regNo", vo.getNoticeIdx());
             delParam.put("delChrgrName", vo.getDelChrgrName());
             delParam.put("photoNo", photoVo.getPhoto_no());
-            delParam.put("imgName", photoVo.getImg_name());
+            delParam.put("imageName", photoVo.getImg_name());
             resultCode = mypageDao.pMemberFeedPhotoDel(delParam);
 
             if (resultCode == 0) {
@@ -1206,6 +1206,9 @@ public class MypageService {
         param.put("memNo", vo.getMemNo());
         param.put("viewMemNo", MemberVo.getMyMemNo(request));
         ProfileFeedOutVo resultVo = mypageDao.pMemberFeedSel(param);
+
+        //사진 리스트 set
+        resultVo.setPhotoInfoList(mypageDao.pMemberFeedPhotoList(String.valueOf(vo.getFeedNo())));
 
         //금지단어 체크
         BanWordVo banWordVo = new BanWordVo();

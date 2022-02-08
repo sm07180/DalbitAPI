@@ -13,9 +13,6 @@ public class ProfileFeedDelVo {
     @NotNull(message = "{\"ko_KR\" : \"유저명을\"}")
     private String delChrgrName;        // 삭제한 유저명
 
-    public ProfileFeedDelVo(){
-    }
-
     public ProfileFeedDelVo(Long noticeIdx, String delChrgrName) {
         this.noticeIdx = noticeIdx;
         this.delChrgrName = delChrgrName;
