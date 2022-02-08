@@ -20,18 +20,21 @@ public class ImageVo extends BaseVo{
         if(!DalbitUtil.isEmpty(url)){
             this.url = url;
             setThumbs();
+            this.isDefaultImg = false;
         }
     }
 
     public ImageVo(P_MailBoxListVo path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
             setPath(path.toString(), photoServerUrl);
+            this.isDefaultImg = false;
         }
     }
 
     public ImageVo(Object path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
             setPath(path.toString(), photoServerUrl);
+            this.isDefaultImg = false;
         }
     }
 
@@ -43,6 +46,7 @@ public class ImageVo extends BaseVo{
                 setThumbs();
             }
         }else{
+            this.isDefaultImg = false;
             setPath(path.toString(), photoServerUrl);
         }
     }
@@ -55,6 +59,7 @@ public class ImageVo extends BaseVo{
                 setThumbs();
             }
         }else{
+            this.isDefaultImg = false;
             setPath(path.toString(), photoServerUrl, request);
         }
     }
@@ -79,7 +84,6 @@ public class ImageVo extends BaseVo{
         if(!DalbitUtil.isEmpty(path)){
             this.path = path;
             this.url = photoServerUrl + this.path;
-            this.isDefaultImg = false;
 
             setThumbs();
         }
@@ -90,7 +94,6 @@ public class ImageVo extends BaseVo{
             this.path = path;
             DeviceVo deviceVo = new DeviceVo(request);
             this.url = photoServerUrl + this.path;
-            this.isDefaultImg = false;
             setThumbs();
 
             if(deviceVo.getOs() != 3 && !"Y".equals(deviceVo.getIsHybrid())){

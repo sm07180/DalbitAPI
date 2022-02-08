@@ -10,7 +10,7 @@ import java.util.List;
 @Setter
 public class ProfileFeedOutVo {
     private Long noticeIdx;              //         BIGINT		-- 번호
-    private Long mem_no;                 //         BIGINT		-- 회원번호
+    private String mem_no;                 //         BIGINT		-- 회원번호
     private String nickName;             //         VARCHAR	--닉네임
     private String memSex;               //         VARCHAR	-- 성별
     private String image_profile;        //         VARCHAR	-- 프로필
