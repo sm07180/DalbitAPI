@@ -617,6 +617,7 @@ public enum Status {
     공지수정_권한없음("-3", "mypage.notice.edit.authorization.not", "공지수정 권한 없을 시"),
     공지수정_잘못된공지번호("-4", "mypage.notice.edit.number.error", "공지번호가 잘못된 번호일 시"),
     공지수정_실패("C006", "mypage.notice.edit.fail", "마이페이지 공지수정 실패 시"),
+    공지수정_사진작업_실패("C006", "mypage.notice.edit.photo.fail", "마이페이지 공지수정 실패 시"),
 
     //마이페이지 공지사항 삭제
     공지삭제_성공("0", "mypage.notice.delete.success", "마이페이지 공지삭제 성공 시"),

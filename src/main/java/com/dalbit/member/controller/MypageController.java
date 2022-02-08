@@ -16,6 +16,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -1035,15 +1037,18 @@ public class MypageController {
      *  contents    String 내용
      *  imagePath   String 사진 경로
      *  topFix      Integer 상단 고정여부 [0, 1]
+     *  photoInfoList List<ProfileFeedPhotoOutVo> 등록 이미지 리스트  [{img_name:""}, {img_name:""}, ...]
      * @Return
      *
      */
     @PostMapping("/notice/add")
-    public String noticeAdd(@Valid ProfileFeedAddVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        String result = mypageService.noticeAdd(param, request);
-
-        return result;
+    public String noticeAdd(@Valid @RequestBody ProfileFeedAddVo param, HttpServletRequest request) {
+        try {
+            return mypageService.noticeAdd(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeAdd Error {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+        }
     }
 
     /**
@@ -1086,19 +1091,22 @@ public class MypageController {
      * 피드 수정
      *
      * @Param
-     * memNo                String  유저번호
      * title                String  제목
      * contents             String  내용
      * noticeIdx            Integer 공지글번호
      * topFix               Integer 고정여부 [0: 고정안함, 1: 고정함]
-     * imagePath            String 이미지경로
+     * photoInfoList List<ProfileFeedPhotoOutVo> 등록 이미지 리스트  [{img_name:""}, {img_name:""}, ...]
      *
      * @Return
      * */
     @PostMapping("/notice/edit")
-    public String noticeUpdate(@Valid ProfileFeedUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return mypageService.noticeUpdate(param, request);
+    public String noticeUpdate(@Valid @RequestBody ProfileFeedUpdVo param, HttpServletRequest request){
+        try {
+            return mypageService.noticeUpdate(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeUpdate Error {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+        }
     }
 
     /**
