@@ -991,7 +991,7 @@ public class MypageService {
                 list.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, list.get(i).getContents()));
             }
             //프로필 이미지 사진 세팅
-            list.get(i).setProfImg(new ImageVo(list.get(i).getImagePath(), list.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+            list.get(i).setProfImg(new ImageVo(list.get(i).getImage_profile(), list.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         }
 
         //사진 리스트 조회
@@ -1225,7 +1225,7 @@ public class MypageService {
             resultVo.setContents(DalbitUtil.replaceMaskString(systemBanWord, resultVo.getContents()));
         }
         //프로필 이미지 사진 세팅
-        resultVo.setProfImg(new ImageVo(resultVo.getImagePath(), resultVo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
 
         if (!resultVo.equals(null)) {
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultVo));
