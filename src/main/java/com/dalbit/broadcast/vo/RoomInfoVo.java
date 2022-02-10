@@ -118,6 +118,7 @@ public class RoomInfoVo {
     private String agoraToken;
     private String agoraAppId;
     private String agoraAccount;
+    private Map<String, Object> agoraOption;
     /*와우자 아고라 플래그값*/
     private String platform;
 
