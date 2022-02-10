@@ -7,6 +7,7 @@ import com.dalbit.common.vo.ResVO;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.ProfileBoardDetailOutVo;
 import com.dalbit.member.vo.ProfileBoardDetailSelVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
@@ -326,8 +327,8 @@ public class ProfileController {
     /**
      * 팬보드 상세 조회
      * @Param
-     * memNo : 프로필 주인 memNo
-     * fanBoardNo : 팬보드 글번호
+     * memNo            String 프로필 주인 memNo
+     * fanBoardNo       Integer  팬보드 글번호
      *
      * @Return
      * board_idx;                //BIGINT		-- 번호
@@ -345,16 +346,19 @@ public class ProfileController {
      * like_yn;                  //CHAR		-- 좋아요 확인[y,n]
      * */
     @GetMapping("/board/detail")
-    public ResVO boardDetailSel(@Valid ProfileBoardDetailSelVo vo, HttpServletRequest request){
-        ResVO resVO = new ResVO();
+    public String boardDetailSel(@Valid ProfileBoardDetailSelVo vo, HttpServletRequest request){
         try {
-            resVO.setSuccessResVO(profileService.boardDetailSel(vo, request));
+            ProfileBoardDetailOutVo result = profileService.boardDetailSel(vo, request);
+
+            if(result != null) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회성공, result));
+            } else {
+                return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회정보없음));
+            }
         } catch(Exception e) {
             log.error("ProfileController / boardDetailSel => {}", e);
-            resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회실패));
         }
-
-        return resVO;
     }
 
 }

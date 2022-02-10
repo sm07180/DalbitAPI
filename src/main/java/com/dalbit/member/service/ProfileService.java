@@ -757,6 +757,14 @@ public class ProfileService {
         map.put("memNo", Long.parseLong(vo.getMemNo()));       // 프로필 주인
         map.put("viewMemNo", Long.parseLong(MemberVo.getMyMemNo(request)) );   //로그인한 유저
 
-        return profileDao.pMemberFanboardSel(map);
+        ProfileBoardDetailOutVo resultVo = profileDao.pMemberFanboardSel(map);
+
+        if(resultVo != null) {
+            resultVo.setProfImg(new ImageVo(resultVo.getProfileImage(), resultVo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+
+            log.error("resultVo => {}", gsonUtil.toJson(resultVo));
+        }
+
+        return resultVo;
     }
 }
