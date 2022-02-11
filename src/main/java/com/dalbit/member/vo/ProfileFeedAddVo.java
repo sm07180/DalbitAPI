@@ -13,7 +13,6 @@ import java.util.List;
 @Setter
 public class ProfileFeedAddVo {
     @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
-    @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
     @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
     @Size (message = "{\"ko_KR\" : \"내용을\"}", max = 1024)
     private String contents;
