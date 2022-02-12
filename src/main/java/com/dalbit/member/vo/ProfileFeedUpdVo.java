@@ -22,9 +22,7 @@ public class ProfileFeedUpdVo {
     @NotNull
     private Integer topFix;
 
-    @Builder.Default
     private List<ProfileFeedPhotoOutVo> photoInfoList = null;
-    @Builder.Default
     private String chrgrName = "";        // 수정한 유저명
     private String title;
 }
