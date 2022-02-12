@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,4 +20,7 @@ public class ProfileBoardDetailOutVo {
     private Long rcv_like_cnt;               //BIGINT		-- 좋아요수
     private Long rcv_like_cancel_cnt;        //BIGINT		-- 취소 좋아요수
     private String like_yn;                  //CHAR		-- 좋아요 확인[y,n]
+    private String contents;                 //VACHAR  내용
+
+    private ImageVo profImg;                //이미지 경로 객체 set
 }

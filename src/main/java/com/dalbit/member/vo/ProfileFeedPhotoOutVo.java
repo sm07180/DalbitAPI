@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,4 +13,6 @@ public class ProfileFeedPhotoOutVo {
     private Long mem_no;		//BIGINT            회원번호
     private String ins_date;	//DATETIME          등록일
 
+
+    private ImageVo imgObj;     //URL 정보가 담긴 obj (Service 에서 따로 처리)
 }
