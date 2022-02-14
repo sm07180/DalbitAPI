@@ -114,6 +114,13 @@ public class RoomInfoVo {
     /* 필터/메이크업 */
     private boolean useFilter = false;
 
+    /* 아고라 토큰 */
+    private String agoraToken;
+    private String agoraAppId;
+    private String agoraAccount;
+    /*와우자 아고라 플래그값*/
+    private String platform;
+
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
                       HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors, boolean moonLandEvent){

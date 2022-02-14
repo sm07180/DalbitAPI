@@ -23,6 +23,7 @@ public class BoardVo {
     private int viewOn = 1;
     private String writeDt;
     private long writeTs;
+    private String mem_no; // writerMemNo와 같음
 
     public BoardVo(P_FanboardListVo target) {
         this.replyIdx = target.getBoard_idx();
@@ -38,6 +39,7 @@ public class BoardVo {
         this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
         this.memId = target.getUserId();
         this.viewOn = target.getViewOn();
+        this.mem_no = target.getWriter_mem_no();
     }
 
     public BoardVo(P_ClipReplyListVo target){
@@ -51,6 +53,7 @@ public class BoardVo {
         setContents(target.getContents());
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
+        this.mem_no = target.getWriter_mem_no();
     }
 
     public BoardVo(P_FanboardReplyVo target) {
@@ -66,6 +69,7 @@ public class BoardVo {
         this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
         this.memId = target.getUserId();
         this.viewOn = target.getViewOn();
+        this.mem_no = target.getWriter_mem_no();
     }
 
 
