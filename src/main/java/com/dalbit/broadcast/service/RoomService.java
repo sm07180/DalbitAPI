@@ -469,7 +469,7 @@ public class RoomService {
         roomList.put("list", procedureOutputVo.getOutputBox());
         roomList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomListVo.getPageNo(), pRoomListVo.getPageCnt()));
         //roomList.put("isGreenMoon", DalbitUtil.getIntMap(resultMap, "greenMoon") == 1);
-        roomList.put("isGreenMoon", false);
+        //roomList.put("isGreenMoon", false);
 
         log.info("프로시저 응답 코드: {}", procedureOutputVo.getRet());
         log.info("프로시저 응답 데이타: {}", procedureOutputVo.getExt());

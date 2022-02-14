@@ -7,6 +7,8 @@ import com.dalbit.common.vo.ResVO;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.ProfileBoardDetailOutVo;
+import com.dalbit.member.vo.ProfileBoardDetailSelVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
@@ -321,5 +323,43 @@ public class ProfileController {
 
         return resVO;
     }
+
+    /**
+     * 팬보드 상세 조회
+     * @Param
+     * memNo            String 프로필 주인 memNo
+     * fanBoardNo       Integer  팬보드 글번호
+     *
+     * @Return
+     * board_idx;                //BIGINT		-- 번호
+     * writer_mem_no;            //BIGINT		-- 회원번호(작성자)
+     * nickName;                 //VARCHAR	--닉네임(작성자)
+     * userId;                   //VARCHAR	--아이디(작성자)
+     * memSex;                   //VARCHAR	-- 성별(작성자)
+     * profileImage;             //VARCHAR	-- 프로필(작성자)
+     * STATUS;                   //BIGINT		-- 상태
+     * viewOn;                   //BIGINT		-- 1:공개 0:비공개
+     * writeDate;                //DATETIME	-- 수정일자
+     * ins_date;                 //DATETIME	-- 등록일자
+     * rcv_like_cnt;             //BIGINT		-- 좋아요수
+     * rcv_like_cancel_cnt;      //BIGINT		-- 취소 좋아요수
+     * like_yn;                  //CHAR		-- 좋아요 확인[y,n]
+     * */
+    @GetMapping("/board/detail")
+    public String boardDetailSel(@Valid ProfileBoardDetailSelVo vo, HttpServletRequest request){
+        try {
+            ProfileBoardDetailOutVo result = profileService.boardDetailSel(vo, request);
+
+            if(result != null) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회성공, result));
+            } else {
+                return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회정보없음));
+            }
+        } catch(Exception e) {
+            log.error("ProfileController / boardDetailSel => {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회실패));
+        }
+    }
+
 }
 

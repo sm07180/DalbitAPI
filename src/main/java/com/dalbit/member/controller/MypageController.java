@@ -1,6 +1,7 @@
 package com.dalbit.member.controller;
 
 import com.dalbit.member.service.ProfileService;
+import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
 import com.dalbit.member.vo.request.WalletPopupListVo;
 import com.dalbit.common.code.Status;
@@ -8,16 +9,14 @@ import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MypageService;
-import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.SpecialDjRegManageVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
-import okhttp3.internal.connection.Exchange;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -322,45 +321,60 @@ public class MypageController {
     /**
      * 마이페이지 공지사항 등록
      */
-    @PostMapping("/notice/add")
-    public String noticeAdd(@Valid MypageNoticeAddVo mypageNoticeAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MypageNoticeAddVo apiData = new P_MypageNoticeAddVo(mypageNoticeAddVo, request);
-
-        String result = mypageService.callMypageNoticeAdd(apiData, request);
-
-        return result;
-    }
+//    @PostMapping("/notice/add")
+//    public String noticeAdd(@Valid MypageNoticeAddVo mypageNoticeAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//        P_MypageNoticeAddVo apiData = new P_MypageNoticeAddVo(mypageNoticeAddVo, request);
+//
+//        String result = mypageService.callMypageNoticeAdd(apiData, request);
+//
+//        return result;
+//    }
 
     /**
      * 마이페이지 공지사항 수정
      */
-    @PostMapping("/notice/edit")
-    public String noticeEdit(@Valid MypageNoticeEditVo mypageNoticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//    @PostMapping("/notice/edit")
+//    public String noticeEdit(@Valid MypageNoticeEditVo mypageNoticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//        P_MypageNoticeEditVo apiData = new P_MypageNoticeEditVo(mypageNoticeEditVo, request);
+//
+//        String result = mypageService.callMypageNoticeEdit(apiData, request);
+//
+//        return result;
+//    }
 
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MypageNoticeEditVo apiData = new P_MypageNoticeEditVo(mypageNoticeEditVo, request);
 
-        String result = mypageService.callMypageNoticeEdit(apiData, request);
-
-        return result;
-    }
+    /**
+     * 마이페이지 공지사항 수정
+     */
+//    @PostMapping("/notice/edit")
+//    public String noticeEdit(@Valid MypageNoticeEditVo mypageNoticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//        P_MypageNoticeEditVo apiData = new P_MypageNoticeEditVo(mypageNoticeEditVo, request);
+//
+//        String result = mypageService.callMypageNoticeEdit(apiData, request);
+//
+//        return result;
+//    }
 
 
     /**
      * 마이페이지 공지사항 삭제
      */
-    @DeleteMapping("/notice")
-    public String noticeDel(@Valid MypageNoticeDelVo mypageNoticeDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MypageNoticeDelVo apiData = new P_MypageNoticeDelVo(mypageNoticeDelVo, request);
-
-        String result = mypageService.callMypageNoticeDel(apiData);
-
-        return result;
-    }
+//    @DeleteMapping("/notice")
+//    public String noticeDel(@Valid MypageNoticeDelVo mypageNoticeDelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//        P_MypageNoticeDelVo apiData = new P_MypageNoticeDelVo(mypageNoticeDelVo, request);
+//
+//        String result = mypageService.callMypageNoticeDel(apiData);
+//
+//        return result;
+//    }
 
     /**
      * 마이페이지 공지사항 조회수
@@ -1015,4 +1029,133 @@ public class MypageController {
         String result = mypageService.callExchangeCancel(apiData);
         return result;
     }
+
+    /**
+     * 피드 등록
+     * @Param
+     *  title       String 제목
+     *  contents    String 내용
+     *  topFix      Integer 상단 고정여부 [0, 1]
+     *  photoInfoList List<ProfileFeedPhotoOutVo> 등록 이미지 리스트  [{img_name:""}, {img_name:""}, ...]
+     * @Return
+     *
+     */
+    @PostMapping("/notice/add")
+    public String noticeAdd(@Valid @RequestBody ProfileFeedAddVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.noticeAdd(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeAdd Error {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+        }
+    }
+
+    /**
+     * 피드 조회
+     *
+     * @Param
+     * memNo            String  유저번호;
+     * pageNo           Integer 페이지번호
+     * pagePerCnt;      Integer 페이지당 리스트갯수
+     *
+     * @Return
+     * # 1
+     * cnt                  Integer     총 갯수
+     *
+     * # 2
+     * noticeIdx;            Long		-- 번호
+     * mem_no;               Long		-- 회원번호
+     * nickName;             String	--닉네임
+     * memSex;               String	-- 성별
+     * image_profile;        String	-- 프로필
+     * title;                String	-- 제목
+     * contents;             String	-- 내용
+     * imagePath;            String	-- 대표사진
+     * topFix;               Long		-- 고정여부[0:미고정 ,1:고정]
+     * writeDate;            String	-- 수정일자
+     * readCnt;              Long		-- 읽은수
+     * replyCnt;             Long		-- 댓글수
+     * rcv_like_cnt;         Long		-- 좋아요수
+     * rcv_like_cancel_cnt;  Long		-- 취소 좋아요수
+     * ImageVo profImg;      String 프로필 이미지
+     * List<ProfileFeedPhotoOutVo> photoInfoList;   게시글 사진 리스트
+     */
+    @GetMapping("/notice/sel")
+    public String noticeSelect(@Valid ProfileFeedSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), request);
+    }
+
+    /**
+     * 피드 수정
+     *
+     * @Param
+     * title                String  제목
+     * contents             String  내용
+     * noticeIdx            Integer 공지글번호
+     * topFix               Integer 고정여부 [0: 고정안함, 1: 고정함]
+     * photoInfoList List<ProfileFeedPhotoOutVo> 등록 이미지 리스트  [{img_name:""}, {img_name:""}, ...]
+     *
+     * @Return
+     * */
+    @PostMapping("/notice/edit")
+    public String noticeUpdate(@Valid @RequestBody ProfileFeedUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.noticeUpdate(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeUpdate Error {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+        }
+    }
+
+    /**
+     * 피드 삭제
+     *
+     * @Param
+     * noticeIdx                Long  공지글번호
+     * delChrgrName             String  제목
+     *
+     * @Return
+     * */
+    @DeleteMapping("/notice")
+    public String noticeDelete(@Valid ProfileFeedDelVo param, BindingResult bindingResult) throws GlobalException{
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return mypageService.noticeDelete(param);
+    }
+
+    /**
+     * 피드 상세조회
+     *
+     * @param
+     * feedNo              Integer 공지글 번호
+     * memNo;              String  프로필 주인의 memNo
+     *
+     * @return
+     * noticeIdx        BIGINT		-- 번호
+     * mem_no		BIGINT		-- 회원번호
+     * nickName	VARCHAR	--닉네임
+     * memSex		VARCHAR	-- 성별
+     * image_profile	VARCHAR	-- 프로필
+     * title		VARCHAR	-- 제목
+     * contents		VARCHAR	-- 내용
+     * imagePath	VARCHAR	-- 대표사진
+     * topFix		BIGINT		-- 고정여부[0:미고정 ,1:고정]
+     * writeDate		DATETIME	-- 수정일자
+     * readCnt		BIGINT		-- 읽은수
+     * replyCnt		BIGINT		-- 댓글수
+     * rcv_like_cnt	BIGINT		-- 좋아요수
+     * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
+     */
+    @GetMapping("/notice/detail")
+    public String noticeDetailSelect(@Valid ProfileFeedDetailSelVo noticeSelVo, HttpServletRequest request) {
+        try {
+            return mypageService.noticeDetailSelect(noticeSelVo, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeDetailSelect Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+        }
+    }
+
 }
