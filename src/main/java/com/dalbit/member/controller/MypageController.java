@@ -1041,7 +1041,8 @@ public class MypageController {
      *
      */
     @PostMapping("/notice/add")
-    public String noticeAdd(@Valid @RequestBody ProfileFeedAddVo param, HttpServletRequest request) {
+    public String noticeAdd(@Valid @RequestBody ProfileFeedAddVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
             return mypageService.noticeAdd(param, request);
         } catch (Exception e) {
@@ -1099,7 +1100,8 @@ public class MypageController {
      * @Return
      * */
     @PostMapping("/notice/edit")
-    public String noticeUpdate(@Valid @RequestBody ProfileFeedUpdVo param, HttpServletRequest request){
+    public String noticeUpdate(@Valid @RequestBody ProfileFeedUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
             return mypageService.noticeUpdate(param, request);
         } catch (Exception e) {

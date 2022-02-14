@@ -761,8 +761,6 @@ public class ProfileService {
 
         if(resultVo != null) {
             resultVo.setProfImg(new ImageVo(resultVo.getProfileImage(), resultVo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
-
-            log.error("resultVo => {}", gsonUtil.toJson(resultVo));
         }
 
         return resultVo;

@@ -1023,10 +1023,14 @@ public class MypageService {
             }
             vo.setPhotoInfoList(photoListTemp);
 
+            /* 나중을 위해 나두기 */
             //고정된 글 리스트에 추가
-            if(vo.getTopFix() == 1) fixedList.add(vo);
+//            if(vo.getTopFix() == 1) fixedList.add(vo);
             //고정 안된 글 리스트에 추가
-            else if(vo.getTopFix() == 0) unfixedList.add(vo);
+//            else if(vo.getTopFix() == 0) unfixedList.add(vo);
+            
+            // 고정, 비고정 글 모두 list에 담기
+            unfixedList.add(vo);
         }
 
         //최종 데이터
