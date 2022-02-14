@@ -7,6 +7,7 @@ import com.dalbit.common.vo.*;
 import com.dalbit.event.dao.JoinDao;
 import com.dalbit.event.vo.procedure.P_JoinCheckVo;
 import com.dalbit.main.dao.MainDao;
+import com.dalbit.main.proc.RankPage;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
@@ -46,6 +47,9 @@ public class MainService {
 
     @Autowired
     AdminService adminService;
+
+    @Autowired
+    RankPage rankPage;
 
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
@@ -944,6 +948,27 @@ public class MainService {
             }
         }
 
+        return result;
+    }
+    
+    /**********************************************************************************************
+     * @Method 설명 : MyRank(DJ/FAN/LOVER)
+     * @작성일 : 2022-02-14
+     * @작성자 : 강알찬
+     * @변경이력 :
+     **********************************************************************************************/
+    public String getMyRank(HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        String result;
+        List<MyRankVO> list = rankPage.getMyRank(memNo);
+
+        if (memNo == null) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_요청회원_정보없음));
+        } else if (list.size() > 0){
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, list));
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
         return result;
     }
 
