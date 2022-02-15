@@ -213,4 +213,9 @@ public class MainController {
             return null;
         }
     }
+
+    @GetMapping("/rank/myRank")
+    public String getMyRank(HttpServletRequest request){
+        return mainService.getMyRank(request);
+    }
 }

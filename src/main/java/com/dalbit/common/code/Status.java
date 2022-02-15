@@ -2341,6 +2341,11 @@ public enum Status {
     달나라_팝업조회_실패("C006", "moonLand.mission.sel.fail", "달나라 팝업 조회 실패 시"),
     달나라_점수등록_성공("0", "moonLand.mission.score.ins.success", "달나라 점수 등록 성공 시"),
     달나라_점수등록_실패("C006", "moonLand.mission.score.ins.fail", "달나라 점수 등록 실패 시"),
+
+    //공통
+    공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
+    공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
+    공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
 ;
 
 
