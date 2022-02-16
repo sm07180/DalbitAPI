@@ -7,10 +7,7 @@ import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
-import com.dalbit.main.vo.BannerVo;
-import com.dalbit.main.vo.MainFanRankingOutVo;
-import com.dalbit.main.vo.MainStarVo;
-import com.dalbit.main.vo.MainTimeRankingPageOutVo;
+import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.member.dao.MypageDao;
@@ -76,7 +73,7 @@ public class MainServiceV2 {
         List<BannerVo> bannerList = new ArrayList<>();
         List<P_MainTimeRankingPageVo> mainRankingPageVoList = new ArrayList<>();
         List<P_MainRankingPageVo> mainFanRankingVoList = new ArrayList<>();
-        List<P_MainRankingPageVo> mainLoverRankingVoList = new ArrayList<>();
+        List<P_MainLoverRankingPageVo> mainLoverRankingVoList = new ArrayList<>();
         List<P_MainStarVo> starVoList = new ArrayList<>();
         List<?> resultSets;
 
@@ -92,7 +89,7 @@ public class MainServiceV2 {
                 bannerList = DBUtil.getList(resultSets, 1, BannerVo.class);
                 mainRankingPageVoList = DBUtil.getList(resultSets, 2, P_MainTimeRankingPageVo.class);
                 mainFanRankingVoList = DBUtil.getList(resultSets, 3, P_MainRankingPageVo.class);
-                mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainRankingPageVo.class);
+                mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainLoverRankingPageVo.class);
                 if(DalbitUtil.isLogin(request)){
                     starVoList = DBUtil.getList(resultSets, 5, P_MainStarVo.class);
                 }
@@ -142,9 +139,9 @@ public class MainServiceV2 {
             HashMap params = new HashMap();
             params.put("memNo", memNo);
             HashMap alarmMap = mypageDao.selectMyPageNew(params);
-            int newAlarmCnt = DalbitUtil.getIntMap(
-                alarmMap, "alarm") + DalbitUtil.getIntMap(alarmMap, "qna") + DalbitUtil.getIntMap(alarmMap, "notice"
-            );
+            int newAlarmCnt = DalbitUtil.getIntMap(alarmMap, "alarm")
+                + DalbitUtil.getIntMap(alarmMap, "qna")
+                + DalbitUtil.getIntMap(alarmMap, "notice");
             mainMap.put("newAlarmCnt", newAlarmCnt);
         } catch (Exception e) {
             log.error("MainServiceV2 / main / 알림", e);
@@ -388,11 +385,11 @@ public class MainServiceV2 {
     /**
      *  lover 랭킹
      */
-    private List<MainFanRankingOutVo> getMainDayLoverRank(List<P_MainRankingPageVo> mainFanRankingVoList) {
-        List<MainFanRankingOutVo> loverRank = new ArrayList<>();
+    private List<MainLoverRankingOutVo> getMainDayLoverRank(List<P_MainLoverRankingPageVo> mainLoverRankingVoList) {
+        List<MainLoverRankingOutVo> loverRank = new ArrayList<>();
         try {
-            for(P_MainRankingPageVo vo : mainFanRankingVoList) {
-                loverRank.add(new MainFanRankingOutVo(vo, false));
+            for(P_MainLoverRankingPageVo vo : mainLoverRankingVoList) {
+                loverRank.add(new MainLoverRankingOutVo(vo, false));
             }
         } catch (Exception e) {
             log.error("MainServiceV2 / getMainDayLoverRank", e);
