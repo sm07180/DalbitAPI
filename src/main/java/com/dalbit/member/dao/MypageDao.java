@@ -288,7 +288,7 @@ public interface MypageDao {
      * s_return		INT		-- # -1:상단 고정  개수 초과, 0:에러, 1: 정상
      * */
     @Select("CALL rd_data.p_member_feed_ins(#{memNo}, #{feedTitle}, #{feedContents}, #{feedTopFix})")
-    int pMemberFeedIns(Map<String, Object> param);
+    Integer pMemberFeedIns(Map<String, Object> param);
 
     /**
      * 피드 수정
@@ -301,7 +301,7 @@ public interface MypageDao {
      * s_return		INT		-- # -1:상단 고정  개수 초과, 0:에러, 1: 정상
      * */
     @Select("CALL rd_data.p_member_feed_upd(#{feedNo}, #{memNo}, #{feedTitle}, #{feedContents}, #{feedTopFix})")
-    int pMemberFeedUpd(Map<String, Object> param);
+    Integer pMemberFeedUpd(Map<String, Object> param);
 
     /**
      * 피드 삭제
@@ -312,7 +312,7 @@ public interface MypageDao {
      * s_return		INT		-- #  0:에러, 1: 정상
      * */
     @Select("CALL rd_data.p_member_feed_del(#{noticeIdx}, #{delChrgrName})")
-    int pMemberFeedDel(ProfileFeedDelVo param);
+    Integer pMemberFeedDel(ProfileFeedDelVo param);
 
     /**
      * 피드 사진 리스트 조회
@@ -343,7 +343,7 @@ public interface MypageDao {
      * s_return        INT		-- -2: 등록글 없음, -1: 등록사진 개수 초과, 0:에러, 1: 정상
      */
     @Select("CALL rd_data.p_member_feed_photo_ins(#{regNo}, #{memNo}, #{imgName})")
-    int pMemberFeedPhotoIns(Map<String, Object> param);
+    Integer pMemberFeedPhotoIns(Map<String, Object> param);
 
     /**
      * 피드 사진 삭제
@@ -358,7 +358,7 @@ public interface MypageDao {
      * s_return		INT		-- #  -1: 삭제할 파일 없음, 0:에러, 1: 정상
      */
     @Select("CALL rd_data.p_member_feed_photo_del(#{photoNo}, #{regNo}, #{imageName}, #{delChrgrName})")
-    int pMemberFeedPhotoDel(Map<String, Object> param);
+    Integer pMemberFeedPhotoDel(Map<String, Object> param);
 
     /**
      * 피드 좋아요 등록 (미적용)
@@ -372,7 +372,7 @@ public interface MypageDao {
      * s_return        INT		-- #   -1:이미좋아요함, 0:에러 , 1:최초좋아요, 2: 좋아요취소후 다시 좋아요
      * */
     @Select("CALL rd_data.p_member_feed_like_log_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
-    int pMemberFeedLikeLogIns(Map<String, Object> param);
+    Integer pMemberFeedLikeLogIns(Map<String, Object> param);
 
     /**
      * 피드 좋아요 취소 (미적용)
@@ -386,5 +386,5 @@ public interface MypageDao {
      * s_return		INT		-- # -1:좋아요하지않은 등록글, 0:에러 , 1:취소완료
      * */
     @Select("CALL p_member_feed_like_cancel_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
-    int pMemberFeedLikeCancelIns(Map<String, Object> param);
+    Integer pMemberFeedLikeCancelIns(Map<String, Object> param);
 }

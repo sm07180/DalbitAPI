@@ -356,7 +356,7 @@ public class AdminService {
                     pPushInsertVo.setMem_nos(proImageInitVo.getMem_no());
                     pPushInsertVo.setSlct_push("35");
                     pPushInsertVo.setPush_slct("57");
-                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_title("달라 운영정책 위반 안내");
                     pPushInsertVo.setSend_cont(proImageInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(proImageInitVo.getReport_message().replaceAll("\n", "<br>"));
                     pPushInsertVo.setImage_type("101");
@@ -491,7 +491,7 @@ public class AdminService {
                     pPushInsertVo.setMem_nos(nickTextInitVo.getMem_no());
                     pPushInsertVo.setSlct_push("35");
                     pPushInsertVo.setPush_slct("57");
-                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_title("달라 운영정책 위반 안내");
                     pPushInsertVo.setSend_cont(nickTextInitVo.getReport_title());
                     pPushInsertVo.setEtc_contents(nickTextInitVo.getReport_message().replaceAll("\n", "<br>"));
                     pPushInsertVo.setImage_type("101");
@@ -732,7 +732,7 @@ public class AdminService {
                     P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                     pPushInsertVo.setMem_nos(reportedInfo.getMem_no());
                     pPushInsertVo.setSlct_push("35");
-                    pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                    pPushInsertVo.setSend_title("달라 운영정책 위반 안내");
                     pPushInsertVo.setSend_cont(declarationVo.getNotiContents());
                      pPushInsertVo.setEtc_contents(declarationVo.getNotiMemo().replaceAll("\n", "<br>"));
                     pPushInsertVo.setImage_type("101");
@@ -810,7 +810,7 @@ public class AdminService {
                 P_pushInsertVo pPushInsertVo = new P_pushInsertVo();
                 pPushInsertVo.setMem_nos(forcedOutVo.getMem_no());
                 pPushInsertVo.setSlct_push("35");
-                pPushInsertVo.setSend_title("달빛 라이브 운영자 메시지");
+                pPushInsertVo.setSend_title("달라 운영정책 위반 안내");
                 pPushInsertVo.setSend_cont(forcedOutVo.getReport_title());
                 pPushInsertVo.setEtc_contents(forcedOutVo.getReport_message().replaceAll("\n", "<br>"));
                 pPushInsertVo.setImage_type("101");

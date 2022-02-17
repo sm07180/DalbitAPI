@@ -254,6 +254,11 @@ public enum Status {
     팬보드_스타회원번호_회원아님("-2", "fanboard.list.starNo.notMember","스타 회원번호가 회원이 아님"),
     팬보드_조회오류("C006", "fanboard.list.error", "팬보드 댓글 리스트 조회 실패"),
 
+    //프로필 팬보드 상세 조회
+    팬보드상세조회성공("C001", "fanboard.detail.select.success", "팬보드 상세 조회 성공"),
+    팬보드상세조회정보없음("-1", "fanboard.detail.select.fail.writeNo", "팬보드 상세 조회 글 없음"),
+    팬보드상세조회실패("C006", "fanboard.detail.select.fail.error", "팬보드 정보 조회 실패"),
+
     //회원 마이페이지 팬보드 댓글 삭제
     팬보드_댓글삭제성공("0", "fanboard.delete.comment.success", "댓글 삭제 성공"),
     팬보드_댓글삭제실패_스타회원번호_회원아님("-1", "fanboard.delete.starNo.notMember", "스타 회원번호가 회원이 아님"),
@@ -609,6 +614,7 @@ public enum Status {
     공지등록_권한없음("-3", "mypage.notice.create.authorization.not", "공지등록 권한 없을 시"),
     공지등록_상단고정_초과("-4", "mypage.notice.create.topFix.fail", "마이페이지 공지등록 실패 시"),
     공지등록_실패("C006", "mypage.notice.create.fail", "마이페이지 공지등록 실패 시"),
+    공지이미지_경로변경_실패("-1", "mypage.notice.photo.move.fail", "포토서버 이미지 경로변경 실패"),
 
     //마이페이지 공지사항 수정
     공지수정_성공("0", "mypage.notice.edit.success", "마이페이지 공지수정 성공 시"),
@@ -2335,6 +2341,15 @@ public enum Status {
     달나라_팝업조회_실패("C006", "moonLand.mission.sel.fail", "달나라 팝업 조회 실패 시"),
     달나라_점수등록_성공("0", "moonLand.mission.score.ins.success", "달나라 점수 등록 성공 시"),
     달나라_점수등록_실패("C006", "moonLand.mission.score.ins.fail", "달나라 점수 등록 실패 시"),
+
+    //친구초대
+    추천코드_등록("0000", "invitaion.code.success", "추천코드 등록 성공 시"),
+    추천코드_중복("C001", "invitaion.code.duplication", "추천코드 중복 발생 시"),
+
+    //공통
+    공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
+    공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
+    공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
 ;
 
 

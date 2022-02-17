@@ -100,8 +100,23 @@ public class WowzaService {
     String AGORA_APP_ID;
     @Value("${agora.app.cert}")
     String AGORA_APP_CERT;
+    @Value("${agora.app.area}")
+    String[] AGORA_APP_AREA;
+    @Value("${agora.app.minbit}")
+    int AGORA_APP_MINBIT;
+    @Value("${agora.app.maxbit}")
+    int AGORA_APP_MAXBIT;
+    @Value("${agora.app.ligh}")
+    double AGORA_APP_LIGH;
+    @Value("${agora.app.smoot}")
+    double AGORA_APP_SMOOT;
+    @Value("${agora.app.redne}")
+    double AGORA_APP_REDNE;
+    @Value("${agora.app.shar}")
+    double AGORA_APP_SHAR;
 
     static int expirationTimeInSeconds = 10800;
+
 
     public HashMap doUpdateWowzaState(HttpServletRequest request){
         StringBuffer body = new StringBuffer();
@@ -443,6 +458,15 @@ public class WowzaService {
                 roomInfoVo.setPlatform("agora");
                 roomInfoVo.setVideoResolution(720);
                 roomInfoVo.setUseFilter(false);
+                HashMap agoraMap = new HashMap<>();
+                agoraMap.put("agoraArea",AGORA_APP_AREA);
+                agoraMap.put("agoraMinVideoBitrate",AGORA_APP_MINBIT);
+                agoraMap.put("agoraMaxVideoBitrate",AGORA_APP_MAXBIT);
+                agoraMap.put("agoraLightening",AGORA_APP_LIGH);
+                agoraMap.put("agoraSmoothness",AGORA_APP_SMOOT);
+                agoraMap.put("agoraRedness",AGORA_APP_REDNE);
+                agoraMap.put("agoraSharpness",AGORA_APP_SHAR);
+                roomInfoVo.setAgoraOption(agoraMap);
             }else{
                 roomInfoVo.setPlatform("wowza");
             }
@@ -684,6 +708,15 @@ public class WowzaService {
                 roomInfoVo.setPlatform("agora");
                 roomInfoVo.setVideoResolution(720);
                 roomInfoVo.setUseFilter(false);
+                HashMap agoraMap = new HashMap<>();
+                agoraMap.put("agoraArea",AGORA_APP_AREA);
+                agoraMap.put("agoraMinVideoBitrate",AGORA_APP_MINBIT);
+                agoraMap.put("agoraMaxVideoBitrate",AGORA_APP_MAXBIT);
+                agoraMap.put("agoraLightening",AGORA_APP_LIGH);
+                agoraMap.put("agoraSmoothness",AGORA_APP_SMOOT);
+                agoraMap.put("agoraRedness",AGORA_APP_REDNE);
+                agoraMap.put("agoraSharpness",AGORA_APP_SHAR);
+                roomInfoVo.setAgoraOption(agoraMap);
             }else{
                 roomInfoVo.setPlatform("wowza");
             }
@@ -791,6 +824,15 @@ public class WowzaService {
                         roomInfoVo.setPlatform("agora");
                         roomInfoVo.setVideoResolution(720);
                         roomInfoVo.setUseFilter(false);
+                        HashMap agoraMap = new HashMap<>();
+                        agoraMap.put("agoraArea",AGORA_APP_AREA);
+                        agoraMap.put("agoraMinVideoBitrate",AGORA_APP_MINBIT);
+                        agoraMap.put("agoraMaxVideoBitrate",AGORA_APP_MAXBIT);
+                        agoraMap.put("agoraLightening",AGORA_APP_LIGH);
+                        agoraMap.put("agoraSmoothness",AGORA_APP_SMOOT);
+                        agoraMap.put("agoraRedness",AGORA_APP_REDNE);
+                        agoraMap.put("agoraSharpness",AGORA_APP_SHAR);
+                        roomInfoVo.setAgoraOption(agoraMap);
                     }else{
                         roomInfoVo.setPlatform("wowza");
                     }

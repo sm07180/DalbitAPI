@@ -1041,7 +1041,8 @@ public class MypageController {
      *
      */
     @PostMapping("/notice/add")
-    public String noticeAdd(@Valid @RequestBody ProfileFeedAddVo param, HttpServletRequest request) {
+    public String noticeAdd(@Valid @RequestBody ProfileFeedAddVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
             return mypageService.noticeAdd(param, request);
         } catch (Exception e) {
@@ -1099,7 +1100,8 @@ public class MypageController {
      * @Return
      * */
     @PostMapping("/notice/edit")
-    public String noticeUpdate(@Valid @RequestBody ProfileFeedUpdVo param, HttpServletRequest request){
+    public String noticeUpdate(@Valid @RequestBody ProfileFeedUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
             return mypageService.noticeUpdate(param, request);
         } catch (Exception e) {
@@ -1147,9 +1149,13 @@ public class MypageController {
      * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
      */
     @GetMapping("/notice/detail")
-    public String noticeDetailSelect(@Valid ProfileFeedDetailSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return mypageService.noticeDetailSelect(noticeSelVo, request);
+    public String noticeDetailSelect(@Valid ProfileFeedDetailSelVo noticeSelVo, HttpServletRequest request) {
+        try {
+            return mypageService.noticeDetailSelect(noticeSelVo, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeDetailSelect Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+        }
     }
 
 }
