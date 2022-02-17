@@ -44,4 +44,7 @@
 
     <!-- 리브랜딩 프로필 피드 -->
     <resultMap id="ProfileFeedOutVO" type="com.dalbit.member.vo.ProfileFeedOutVo"/>
+
+    <!-- 친구초대이벤트 -->
+    <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
 </mapper>

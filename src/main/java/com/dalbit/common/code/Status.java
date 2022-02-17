@@ -2342,6 +2342,10 @@ public enum Status {
     달나라_점수등록_성공("0", "moonLand.mission.score.ins.success", "달나라 점수 등록 성공 시"),
     달나라_점수등록_실패("C006", "moonLand.mission.score.ins.fail", "달나라 점수 등록 실패 시"),
 
+    //친구초대
+    추천코드_등록("0000", "invitaion.code.success", "추천코드 등록 성공 시"),
+    추천코드_중복("C001", "invitaion.code.duplication", "추천코드 중복 발생 시"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
