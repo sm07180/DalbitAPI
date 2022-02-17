@@ -28,16 +28,16 @@ public interface InviteEvent {
     @Select("CALL rd_data.p_evt_invitation_member_sel(#{memNo})")
     InviteVo pEvtInvitationMemberSel(String memNo);
 
-    //친구초대 회원 리스트
+    //초대왕 현황 리스트
     @ResultMap({"ResultMap.integer", "ResultMap.InviteVo"})
     @Select("CALL rd_data.p_evt_invitation_member_rank_list(#{pageNo}, #{pagePerCnt})")
     List<Object> pEvtInvitationMemberRankList(Integer pageNo, Integer pagePerCnt);
 
-    //친구초대 회원정보
+    //초대왕 현황 내 정보
     @Select("CALL rd_data.p_evt_invitation_member_rank_my_sel(#{memNo})")
-    List<InviteVo> pEvtInvitationMemberRankMySel(String memNo);
+    InviteVo pEvtInvitationMemberRankMySel(String memNo);
 
-    //초대한 회원 리스트
+    //나의 현황 리스트
     @ResultMap({"ResultMap.integer", "ResultMap.InviteVo"})
     @Select("CALL rd_data.p_evt_invitation_rcv_member_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> pEvtInvitationRcvMemberList(String memNo, Integer pageNo, Integer pagePerCnt);

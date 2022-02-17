@@ -4,11 +4,14 @@ package com.dalbit.event.service;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.InviteEvent;
+import com.dalbit.event.vo.GganbuMemberSearchVo;
 import com.dalbit.event.vo.InviteVo;
+import com.dalbit.util.DBUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Service
@@ -50,19 +53,31 @@ public class InviteService {
     }
 
     public String pEvtInvitationMemberRankList(Integer pageNo, Integer pagePerCnt) {
-        event.pEvtInvitationMemberRankList(pageNo, pagePerCnt);
-        return "";
+        List<Object> object = event.pEvtInvitationMemberRankList(pageNo, pagePerCnt);
+        Integer listCnt = DBUtil.getData(object, 0, Integer.class);
+        List<InviteVo> list = DBUtil.getList(object, 1, InviteVo.class);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("listCnt", listCnt);
+        resultMap.put("list", list);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 
     public String pEvtInvitationMemberRankMySel(String memNo) {
-        event.pEvtInvitationMemberRankMySel(memNo);
-        return "";
+        InviteVo inviteVo = event.pEvtInvitationMemberRankMySel(memNo);
+        if(inviteVo!=null){
+            return gsonUtil.toJson(new JsonOutputVo(Status.조회, inviteVo));
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+        }
     }
 
     public String pEvtInvitationRcvMemberList(String memNo, Integer pageNo, Integer pagePerCnt) {
-//        List<Object> object = event.pEvtInvitationRcvMemberList(memNo, pageNo, pagePerCnt);
-//        return gsonUtil.toJson(new JsonOutputVo(Status.조회, object));
-
-        return "";
+        List<Object> object = event.pEvtInvitationRcvMemberList(memNo, pageNo, pagePerCnt);
+        Integer listCnt = DBUtil.getData(object, 0, Integer.class);
+        List<InviteVo> list = DBUtil.getList(object, 1, InviteVo.class);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("listCnt", listCnt);
+        resultMap.put("list", list);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 }

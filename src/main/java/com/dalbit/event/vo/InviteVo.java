@@ -19,4 +19,20 @@ public class InviteVo {
    private Integer mem_state;   //BIGINT     -- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
    private Integer rankNo;   //BIGINT     -- 순위
 
+   private String send_mem_no         ;   //BIGINT       -- 회원 번호(보낸)
+   private String send_mem_id         ;   //RCHAR      -- 회원 아이디(보낸)
+   private String send_mem_sex        ;   //AR         -- 회원성별(보낸)
+   private String send_mem_age        ;   //GINT       -- 나이(보낸)
+   private String send_mem_dal_cnt    ;   //GINT       -- 지급달(보낸)
+   private String rcv_mem_no          ;   //GINT       -- 회원 번호(받은)
+   private String rcv_mem_id          ;   //RCHAR      -- 회원 아이디(받은)
+   private String rcv_mem_sex         ;   //AR         -- 회원성별(받은)
+   private String rcv_mem_age         ;   //GINT       -- 나이(받은)
+   private String rcv_mem_dal_cnt     ;   //GINT       -- 지급달(받은)
+   private String rcv_mem_nick        ;   //RCHAR      -- 회원 닉네임(받은)
+   private String rcv_image_profile   ;   //RCHAR      -- 프로필(받은)
+   private String rcv_mem_level       ;   //GINT       -- 레벨(받은)
+   private String rcv_mem_state       ;   //GINT       -- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)  (받은)
+   private String rcv_mem_join_date   ;   //TETIME     -- 가입일자(받은)
+
 }

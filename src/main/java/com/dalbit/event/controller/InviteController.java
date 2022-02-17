@@ -50,22 +50,21 @@ public class InviteController {
         return result;
     }
 
-    //친구초대 회원 리스트
+    //초대왕 현황 리스트
     @GetMapping("/list")
     public String pEvtInvitationMemberRankList(HttpServletRequest request, HashMap<String, Object> paramMap) {
-        String memNo = MemberVo.getMyMemNo(request);
-        service.pEvtInvitationMemberRankList(1, 999);
-        return "";
+        String result = service.pEvtInvitationMemberRankList(1, 999);
+        return result;
     }
 
-    //친구초대 내정보
+    //초대왕 현황 내 정보
     @GetMapping("/my-rank")
     public String pEvtInvitationMemberRankMySel(HttpServletRequest request, HashMap<String, Object> paramMap) {
         String memNo = MemberVo.getMyMemNo(request);
         return service.pEvtInvitationMemberRankMySel(memNo);
     }
 
-    //초대한 회원 리스트
+    //나의 현황 리스트
     @PostMapping("/my-list")
     public String pEvtInvitationRcvMemberList(HttpServletRequest request){
         String memNo = MemberVo.getMyMemNo(request);
