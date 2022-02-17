@@ -35,6 +35,9 @@ public interface CommonDao {
     List<ItemVo> selectItemList(P_ItemVo item);
 
     @Transactional(readOnly = true)
+    List<ItemDetailVo> selectMulti(String itemCode);
+
+    @Transactional(readOnly = true)
     List<ItemVo> selectBooster(String itemCode);
 
     @Transactional(readOnly = true)

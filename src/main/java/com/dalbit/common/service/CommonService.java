@@ -37,6 +37,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StopWatch;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
@@ -130,6 +131,14 @@ public class CommonService {
     }
 
     public HashMap getItemVersion(HashMap resultMap, HttpServletRequest request, String type){
+        String itemPaticleCode = DalbitUtil.getProperty("item.paticle.code");
+        String itemLoveGoodCode = DalbitUtil.getProperty("item.love.good.code");
+        String itemCodeBoost = DalbitUtil.getProperty("item.code.boost");
+        String itemCodeLevelUp = DalbitUtil.getProperty("item.code.levelUp");
+        String itemCodeDirect = DalbitUtil.getProperty("item.code.direct");
+        String mainDirectCode = DalbitUtil.getProperty("item.direct.code.main");
+        String itemCodeRocketBoost = DalbitUtil.getProperty("item.code.rocket.boost");
+
         String platform = "";
         DeviceVo deviceVo = new DeviceVo(request);
         int osInt = deviceVo.getOs() + 1;
@@ -147,10 +156,10 @@ public class CommonService {
         P_ItemVo pItemVo = new P_ItemVo();
         pItemVo.setItem_slct(1);
         pItemVo.setPlatform(platform);
-        pItemVo.setBooster(DalbitUtil.getProperty("item.code.boost"));
-        pItemVo.setLevelUp(DalbitUtil.getProperty("item.code.levelUp"));
-        pItemVo.setDirect(DalbitUtil.getProperty("item.code.direct"));
-        String mainDirectCode = DalbitUtil.getProperty("item.direct.code.main");
+
+        pItemVo.setBooster(itemCodeBoost);
+        pItemVo.setLevelUp(itemCodeLevelUp);
+        pItemVo.setDirect(itemCodeDirect);
         pItemVo.setDirects(ITEM_DIRECT_CODE);
         pItemVo.setVisibilityDirects((Arrays.stream(ITEM_DIRECT_CODE).filter(s->!s.equals(mainDirectCode))).toArray(String[]::new));
 
@@ -173,36 +182,55 @@ public class CommonService {
         }
         resultMap.put("items", items);
         //pItemVo.setItem_slct(2);
+
+        StringBuffer sbf = new StringBuffer("'");
+        sbf.append("G9997")
+                .append("','")
+                .append("G9998")
+                .append("','")
+                .append(itemCodeBoost)
+                .append("','")
+                .append(itemCodeRocketBoost)
+                .append("','")
+                .append(itemCodeLevelUp);
         List particleList = new ArrayList();
-        for (int i=0; i<DalbitUtil.getProperty("item.paticle.code").split(",").length; i++){
-            particleList.add(commonDao.selectItem(DalbitUtil.getProperty("item.paticle.code").split(",")[i]));
+        String[] itemPaticleCodeList = itemPaticleCode.split(",");
+        String[] itemLoveGoodCodeList = itemLoveGoodCode.split(",");
+        for (int i = 0; i< itemPaticleCodeList.length; i++){
+            sbf.append("','").append(itemPaticleCodeList[i]);
         }
-        resultMap.put("particles", particleList);
 
         List loveGoodList = new ArrayList();
-        for (int i=0; i<DalbitUtil.getProperty("item.love.good.code").split(",").length; i++){
-            loveGoodList.add(commonDao.selectItem(DalbitUtil.getProperty("item.love.good.code").split(",")[i]));
+        for (int i = 0; i< itemLoveGoodCodeList.length; i++){
+            sbf.append("','").append(itemLoveGoodCodeList[i]);
         }
-        resultMap.put("loveGood", loveGoodList);
+        sbf.append("'");
+        List<ItemDetailVo> itemDetailVos = commonDao.selectMulti(sbf.toString());
+        log.debug("{}",itemDetailVos);
+
         List boostList = new ArrayList();
-        if(!DalbitUtil.isEmpty(commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")))){
-            boostList.add(commonDao.selectBooster(DalbitUtil.getProperty("item.code.boost")).get(0));
+        List levelUpList = new ArrayList();
+        for(ItemDetailVo temp : itemDetailVos){
+            String itemNo = temp.getItemNo();
+            if(itemPaticleCode.contains(itemNo)){
+                particleList.add(temp);
+            }else if(itemLoveGoodCode.contains(itemNo)){
+                loveGoodList.add(temp);
+            }else if(itemCodeBoost.contains(itemNo)){
+                boostList.add(temp);
+            }else if(itemCodeRocketBoost.contains(itemNo)){
+                boostList.add(temp);
+            }else if(itemCodeLevelUp.contains(itemNo)){
+                levelUpList.add(temp);
+            }else if("G9997".contains(itemNo)){
+                levelUpList.add(temp);
+            }else if("G9998".contains(itemNo)){
+                levelUpList.add(temp);
+            }
         }
-        if(!DalbitUtil.isEmpty(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")))){
-            boostList.add(commonDao.selectBooster(DalbitUtil.getProperty("item.code.rocket.boost")).get(0));
-        }
-
+        resultMap.put("particles", particleList);
+        resultMap.put("loveGood", loveGoodList);
         resultMap.put("boost", boostList);
-
-        //추가적립 애니메이션 > 아이템관리에 등록 후 레벨업에 추가.[G9997, G9998]
-        List levelUpList = commonDao.selectBooster(DalbitUtil.getProperty("item.code.levelUp"));
-        ItemVo item_G9997 = commonDao.selectBooster("G9997").get(0);
-        item_G9997.setVisibility(false);
-        levelUpList.add(item_G9997);
-
-        ItemVo item_G9998 = commonDao.selectBooster("G9998").get(0);
-        item_G9998.setVisibility(false);
-        levelUpList.add(item_G9998);
         resultMap.put("levelUp", levelUpList);
 
         List<HashMap> itemCategories = new ArrayList<>();
@@ -332,11 +360,12 @@ public class CommonService {
         }
 
         //어드민 block 상태 체크
-        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo, MemberVo.getMyMemNo(request)));
+        String myMemNo = MemberVo.getMyMemNo(request);
+        int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo, myMemNo));
 
         if (isLogin && 0 == adminBlockCnt) {
             //토큰의 회원번호가 탈퇴 했거나 정상,경고가 아닐 경우 로그아웃처리
-            TokenCheckVo tokenCheckVo = memberDao.selectMemState(MemberVo.getMyMemNo(request));
+            TokenCheckVo tokenCheckVo = memberDao.selectMemState(myMemNo);
 
             //다른 서버의 memNo가 넘어왔을 시 null이다.
             if(DalbitUtil.isEmpty(tokenCheckVo)){
@@ -355,7 +384,7 @@ public class CommonService {
                 tokenVo = null;
             }*/
         }else{ //비회원토큰 실서버/개발서버와 충돌있는지 확인
-            TokenCheckVo tokenCheckVo = memberDao.selectAnonymousMem(MemberVo.getMyMemNo(request));
+            TokenCheckVo tokenCheckVo = memberDao.selectAnonymousMem(myMemNo);
             if(DalbitUtil.isEmpty(tokenCheckVo)){
                 dbSelectMemNo = "88888888888888";
                 isLogin = false;
@@ -494,12 +523,19 @@ public class CommonService {
         List<CodeVo> data = new ArrayList<>();
         if(!DalbitUtil.isEmpty(list)){
             for(int i = 0; i < list.size(); i++){
-                if(type.equals(list.get(i).get("type"))){
-                    if((int) list.get(i).get("is_use") == 1){
+                Map map = list.get(i);
+                Object type1 = map.get("type");
+                if(type.equals(type1)){
+                    int is_use = (int) map.get("is_use");
+                    if(is_use == 1){
+                        String value = (String) map.get("value");
+                        String code = (String) map.get("code");
+                        Object order1 = map.get("order");
+                        boolean empty = DalbitUtil.isEmpty(order1);
                         if(append == 2){
-                            data.add(new CodeVo((String)list.get(i).get("type"), (String)list.get(i).get("value"), (String)list.get(i).get("code"), DalbitUtil.isEmpty(list.get(i).get("order"))? i : (int) list.get(i).get("order"), (int) list.get(i).get("is_use")));
+                            data.add(new CodeVo((String) type1, value, code, empty ? i :  (int) order1, is_use));
                         }else{
-                            data.add(new CodeVo((String)list.get(i).get("value"), (String)list.get(i).get("code"), DalbitUtil.isEmpty(list.get(i).get("order"))? i : (int) list.get(i).get("order"), (int) list.get(i).get("is_use")));
+                            data.add(new CodeVo(value, code, empty ? i :  (int) order1, is_use));
                         }
                     }
                 }
@@ -560,14 +596,15 @@ public class CommonService {
         if (Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             for (int i = 0; i < kingFanRankListVo.size(); i++) {
                 HashMap liveBadgeMap = new HashMap();
-                liveBadgeMap.put("mem_no", kingFanRankListVo.get(i).getMem_no());
+                P_KingFanRankListVo p_kingFanRankListVo = kingFanRankListVo.get(i);
+                liveBadgeMap.put("mem_no", p_kingFanRankListVo.getMem_no());
                 liveBadgeMap.put("type", 0);
                 liveBadgeMap.put("by", "api");
                 BadgeFrameVo badgeFrameVo = commonDao.callMemberBadgeFrame(liveBadgeMap);
                 if(DalbitUtil.isEmpty(badgeFrameVo)){
-                    outVoList.add(new P_KingFanRankListOutVo(kingFanRankListVo.get(i), i+1));
+                    outVoList.add(new P_KingFanRankListOutVo(p_kingFanRankListVo, i+1));
                 }else{
-                    outVoList.add(new P_KingFanRankListOutVo(kingFanRankListVo.get(i), i+1, badgeFrameVo));
+                    outVoList.add(new P_KingFanRankListOutVo(p_kingFanRankListVo, i+1, badgeFrameVo));
                 }
             }
 
