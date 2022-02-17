@@ -21,8 +21,8 @@ public interface InviteEvent {
     int pEvtInvitationRcvMemberChk(String memNo, String memPhone);
 
     //추천코드 보상 지급
-    @Select("CALL rd_data.p_evt_invitation_reward_ins(#{sendMemNo}, #{rcvMemNo}, #{invitationCode})")
-    int pEvtInvitationRewardIns(String sendMemNo, String rcvMemNo, String invitationCode);
+    @Select("CALL rd_data.p_evt_invitation_reward_ins(#{rcvMemNo}, #{rcvMemIp}, #{invitationCode})")
+    int pEvtInvitationRewardIns(String rcvMemNo, String rcvMemIp, String invitationCode);
 
     //초대페이지 회원 정보
     @Select("CALL rd_data.p_evt_invitation_member_sel(#{memNo})")

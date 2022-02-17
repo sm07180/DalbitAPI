@@ -1,5 +1,6 @@
 package com.dalbit.event.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Data;
 
 @Data
@@ -24,6 +25,8 @@ public class InviteVo {
    private String send_mem_sex        ;   //AR         -- 회원성별(보낸)
    private String send_mem_age        ;   //GINT       -- 나이(보낸)
    private String send_mem_dal_cnt    ;   //GINT       -- 지급달(보낸)
+   private String send_mem_nick       ;
+   private String send_image_profile  ;
    private String rcv_mem_no          ;   //GINT       -- 회원 번호(받은)
    private String rcv_mem_id          ;   //RCHAR      -- 회원 아이디(받은)
    private String rcv_mem_sex         ;   //AR         -- 회원성별(받은)
@@ -34,5 +37,6 @@ public class InviteVo {
    private String rcv_mem_level       ;   //GINT       -- 레벨(받은)
    private String rcv_mem_state       ;   //GINT       -- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)  (받은)
    private String rcv_mem_join_date   ;   //TETIME     -- 가입일자(받은)
+   private ImageVo profImg;
 
 }

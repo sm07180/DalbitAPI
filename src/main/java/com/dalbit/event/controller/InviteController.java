@@ -37,9 +37,17 @@ public class InviteController {
 
     //추천코드 보상 지급
     @PostMapping("/reward")
-    public String pEvtInvitationRewardIns(HttpServletRequest request, HashMap<String, Object> paramMap) {
-//        service.pEvtInvitationRewardIns();
-        return "";
+    public String pEvtInvitationRewardIns(@RequestBody HashMap<String, Object> param, HttpServletRequest request) {
+        log.warn("{}", param);
+        log.warn("{}", request);
+        String rcvMemNo = MemberVo.getMyMemNo(request);                 //받는사람
+        String invitationCode = (String) param.get("invitationCode");   //보낸사람 초대코드
+
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null) ip = request.getRemoteAddr();
+
+        String result = service.pEvtInvitationRewardIns(rcvMemNo, ip, invitationCode);
+        return result;
     }
 
     //초대페이지 회원 정보
