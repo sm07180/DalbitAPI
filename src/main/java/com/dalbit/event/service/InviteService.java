@@ -35,9 +35,15 @@ public class InviteService {
         }
     }
 
-    public String pEvtInvitationRcvMemberChk(String memNo, Integer memPhone) {
-//        event.pEvtInvitationRcvMemberChk(memNo, memPhone);
-        return "";
+    public String pEvtInvitationRcvMemberChk(String memNo, String memPhone) {
+        Integer result = event.pEvtInvitationRcvMemberChk(memNo, memPhone);
+        if(result == 1){
+            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_참여대상, result));
+        }else if(result == -1){
+            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_참여대상_아님, result));
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, result));
+        }
     }
 
     public String pEvtInvitationRewardIns(String rcvMemNo, String rcvMemIp, String invitationCode) {
