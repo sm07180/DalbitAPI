@@ -378,7 +378,7 @@ public class MypageService {
         returnMap.put("isStarClip", DalbitUtil.getIntMap(resultMap, "set_9"));
         returnMap.put("isMyClip", DalbitUtil.getIntMap(resultMap, "set_10"));
         returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "set_11"));        //알림받기 방송시작 알림
-        returnMap.put("isMailbox", DalbitUtil.getIntMap(resultMap, "set_12"));        //우체통 알림받기
+        returnMap.put("isMailbox", DalbitUtil.getIntMap(resultMap, "set_12"));        //메시지 알림받기
         returnMap.put("alimType", DalbitUtil.getStringMap(resultMap, "alim_slct")); //알림음구분(n:무음,s:소리,v:진동)
         procedureVo.setData(returnMap);
 
@@ -442,7 +442,7 @@ public class MypageService {
             }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_11()) && DalbitUtil.getIntMap(resultMap, "set_11") != pMemberNotifyEditVo.getSet_11()){
                 status = pMemberNotifyEditVo.getSet_11() == 1 ? Status.방송시작알림_ON : Status.방송시작알림_OFF;
             }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_12()) && DalbitUtil.getIntMap(resultMap, "set_12") != pMemberNotifyEditVo.getSet_12()){
-                status = pMemberNotifyEditVo.getSet_12() == 1 ? Status.우체통알림_ON : Status.우체통알림_OFF;
+                status = pMemberNotifyEditVo.getSet_12() == 1 ? Status.메시지알림_ON : Status.메시지알림_OFF;
             }else{
                 status = Status.알림설정수정_성공;
             }
@@ -1725,7 +1725,7 @@ public class MypageService {
         String result;
         if(procedureVo.getRet().equals(Status.블랙리스트등록_성공.getMessageCode())) {
 
-            //우체통 체크
+            //메시지 체크
             SocketVo vo = socketService.getSocketVo(DalbitUtil.getProperty("socket.global.room"), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             socketService.chatBlack(DalbitUtil.getProperty("socket.global.room"), pMypageBlackAddVo.getMem_no(), pMypageBlackAddVo.getBlack_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
 
@@ -3125,7 +3125,7 @@ public class MypageService {
                         walletCode = 10;
                         order = 4;
                     }else if("mailboxGet".equals(key.get(i))){
-                        text = "우체통 선물 획득";
+                        text = "메시지 선물 획득";
                         walletCode = 12;
                         order = 5;
                     }else if("clipGet".equals(key.get(i))){
@@ -3184,7 +3184,7 @@ public class MypageService {
                         walletCode = 13;
                         order = 4;*/
                     }else if("mailboxUse".equals(key.get(i))){
-                        text = "우체통 선물 사용";
+                        text = "메시지 선물 사용";
                         walletCode = 14;
                         order = 3;
                     }else if("clipUse".equals(key.get(i))){

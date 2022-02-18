@@ -1044,7 +1044,7 @@ public class SocketService {
     }
 
     /**
-     * 우체통 선물
+     * 메시지 선물
      */
     @Async("threadTaskExecutor")
     public void chatGiftItem(String chatNo, String memNo, String giftedMemNo, Object item, String authToken, boolean isLogin, SocketVo vo){
@@ -1067,7 +1067,7 @@ public class SocketService {
 
 
     /**
-     *  우체통 이미지 삭제
+     *  메시지 이미지 삭제
      */
     @Async("threadTaskExecutor")
     public void sendChatImageDelete(String chatNo, HashMap message, String authToken, boolean isLogin) {
