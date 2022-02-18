@@ -27,26 +27,17 @@ public class InviteController {
         return result;
     }
 
-    //추천받은 회원 체크
-    @GetMapping("/check")
-    public String pEvtInvitationRcvMemberChk(HttpServletRequest request, HashMap<String, Object> paramMap) {
-        String memNo = MemberVo.getMyMemNo(request);
-//        service.pEvtInvitationRcvMemberChk();
-        return "";
-    }
-
     //추천코드 보상 지급
     @PostMapping("/reward")
     public String pEvtInvitationRewardIns(@RequestBody HashMap<String, Object> param, HttpServletRequest request) {
-        log.warn("{}", param);
-        log.warn("{}", request);
         String rcvMemNo = MemberVo.getMyMemNo(request);                 //받는사람
+        String memPhone = (String) param.get("memPhone");
         String invitationCode = (String) param.get("invitationCode");   //보낸사람 초대코드
 
         String ip = request.getHeader("X-Forwarded-For");
         if (ip == null) ip = request.getRemoteAddr();
 
-        String result = service.pEvtInvitationRewardIns(rcvMemNo, ip, invitationCode);
+        String result = service.pEvtInvitationRewardIns(rcvMemNo, ip, invitationCode, memPhone);
         return result;
     }
 

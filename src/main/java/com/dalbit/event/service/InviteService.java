@@ -35,24 +35,37 @@ public class InviteService {
         }
     }
 
-    public String pEvtInvitationRcvMemberChk(String memNo, Integer memPhone) {
-//        event.pEvtInvitationRcvMemberChk(memNo, memPhone);
-        return "";
-    }
-
-    public String pEvtInvitationRewardIns(String rcvMemNo, String rcvMemIp, String invitationCode) {
-        Integer result = event.pEvtInvitationRewardIns(rcvMemNo, rcvMemIp, invitationCode);
-        if(result == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_등록_성공, result));
+    public String pEvtInvitationRcvMemberChk(String memNo, String memPhone) {
+        Integer result = event.pEvtInvitationRcvMemberChk(memNo, memPhone);
+        if(result == 1){
+            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_참여대상, result));
         }else if(result == -1){
-            return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_없음, result));
-        }else if(result == -2){
-            return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_등록_에러, result));
-        }else if(result == -3){
-            return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_중복_등록, result));
+            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_참여대상_아님, result));
         }else{
             return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, result));
         }
+    }
+
+    public String pEvtInvitationRewardIns(String rcvMemNo, String rcvMemIp, String invitationCode, String memPhone) {
+
+        Integer checkAge = event.pEvtInvitationRcvMemberChk(rcvMemNo, memPhone);
+        if(checkAge == 1){
+            Integer result = event.pEvtInvitationRewardIns(rcvMemNo, rcvMemIp, invitationCode);
+            if(result == 0){
+                return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_등록_성공, result));
+            }else if(result == -1){
+                return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_없음, result));
+            }else if(result == -2){
+                return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_등록_에러, result));
+            }else if(result == -3){
+                return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_중복_등록, result));
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, result));
+            }
+        }else{
+            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_나이제한, checkAge));
+        }
+
     }
 
     public String pEvtInvitationMemberSel(String memNo) {
