@@ -32,7 +32,7 @@ public class MailBoxService {
     SocketService socketService;
 
     /**
-     * 우체통 대화방 리스트
+     * 메시지 대화방 리스트
      */
     public String callMailboxList(P_MailBoxListVo pMailBoxListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxListVo);
@@ -54,21 +54,21 @@ public class MailBoxService {
             mailBoxList.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
             mailBoxList.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통대화방_조회_성공, mailBoxList));
-        } else if (procedureVo.getRet().equals(Status.우체통팬대화방_조회_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통팬대화방_조회_회원아님));
-        } else if (procedureVo.getRet().equals(Status.우체통팬대화방_조회_레벨0.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지대화방_조회_성공, mailBoxList));
+        } else if (procedureVo.getRet().equals(Status.메시지팬대화방_조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지팬대화방_조회_회원아님));
+        } else if (procedureVo.getRet().equals(Status.메시지팬대화방_조회_레벨0.getMessageCode())) {
             mailBoxList.put("list", new ArrayList<>());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통팬대화방_조회_레벨0, mailBoxList));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지팬대화방_조회_레벨0, mailBoxList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통팬대화방_조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지팬대화방_조회_실패));
         }
         return result;
     }
 
 
     /**
-     * 우체통 대화방 추가 대상 리스트
+     * 메시지 대화방 추가 대상 리스트
      */
     public String callMailboxAddTargetList(P_MailBoxAddTargetListVo pMailBoxAddTargetListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxAddTargetListVo);
@@ -89,18 +89,18 @@ public class MailBoxService {
             mailBoxAddTargetList.put("fanTotalCnt", DalbitUtil.getIntMap(resultMap, "fanTotalCnt"));
             mailBoxAddTargetList.put("starTotalCnt", DalbitUtil.getIntMap(resultMap, "starTotalCnt"));
             mailBoxAddTargetList.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통대화방추가대상_조회_성공, mailBoxAddTargetList));
-        } else if (procedureVo.getRet().equals(Status.우체통대화방추가대상_조회_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통대화방추가대상_조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지대화방추가대상_조회_성공, mailBoxAddTargetList));
+        } else if (procedureVo.getRet().equals(Status.메시지대화방추가대상_조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지대화방추가대상_조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.우체통대화방추가대상_조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(Status.메시지대화방추가대상_조회_실패));
         }
         return result;
     }
 
 
     /**
-     * 우체통 대화방 입장
+     * 메시지 대화방 입장
      */
     public String callMailboxChatEnter(P_MailBoxEnterVo pMailBoxTargetEnterVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxTargetEnterVo);
@@ -138,7 +138,7 @@ public class MailBoxService {
 
 
     /**
-     *  우체통 대화방 퇴장
+     *  메시지 대화방 퇴장
      */
     public String callMailboxChatExit(P_MailBoxExitVo pMailBoxExitVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxExitVo);
@@ -161,7 +161,7 @@ public class MailBoxService {
 
 
     /**
-     * 우체통 대화방 대화 전송
+     * 메시지 대화방 대화 전송
      */
     public String callMailboxChatSend(P_MailBoxSendVo pMailBoxSendVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxSendVo);
@@ -230,7 +230,7 @@ public class MailBoxService {
 
 
     /**
-     * 우체통 대화방 대화 읽음처리
+     * 메시지 대화방 대화 읽음처리
      */
     public String callMailboxChatRead(P_MailBoxReadVo pMailBoxReadVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxReadVo);
@@ -260,7 +260,7 @@ public class MailBoxService {
 
 
     /**
-     * 우체통 대화방 대화 조회
+     * 메시지 대화방 대화 조회
      */
     public String callMailboxMsg(P_MailBoxMsgListVo pMailBoxMsgListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxMsgListVo);
@@ -302,7 +302,7 @@ public class MailBoxService {
 
 
     /**
-     * 우체통 이미지 리스트
+     * 메시지 이미지 리스트
      */
     public String callMailboxImageList(P_MailBoxImageListVo pMailBoxImageListVo) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxImageListVo);
@@ -335,7 +335,7 @@ public class MailBoxService {
 
 
     /**
-     * 우체통 이미지 삭제
+     * 메시지 이미지 삭제
      */
     public String callMailboxImageDelete(P_MailBoxImageDeleteVo pMailBoxImageDeleteVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxImageDeleteVo);
@@ -373,7 +373,7 @@ public class MailBoxService {
     }
 
     /**
-     * 우체통 신규메세지 조회
+     * 메시지 신규메세지 조회
      */
     public String callMailboxUnreadCheck(HttpServletRequest request) {
         if(DalbitUtil.isLogin(request)){
@@ -396,7 +396,7 @@ public class MailBoxService {
     }
 
     /**
-     * 우체통 활성화 설정
+     * 메시지 활성화 설정
      */
     public String callMailBoxIsUse(P_MailBoxIsUseVo pMailBoxIsUseVo, HttpServletRequest request) {
         ProcedureVo procedureVo = new ProcedureVo(pMailBoxIsUseVo);

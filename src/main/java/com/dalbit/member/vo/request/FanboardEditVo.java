@@ -17,6 +17,6 @@ public class FanboardEditVo {
 
     @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
     @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
-    @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 250)
+    @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 1000)
     private String contents;
 }

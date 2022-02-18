@@ -206,8 +206,8 @@ public enum Status {
     서비스알림_OFF("0", "mypage.member.notify.edit.service.off.success", "서비스 알림 OFF"),
     방송시작알림_ON("0", "mypage.member.notify.edit.broadcast.start.on.success", "방송 시작 알림 ON"),
     방송시작알림_OFF("0", "mypage.member.notify.edit.broadcast.start.off.success", "방송 시작 알림 OFF"),
-    우체통알림_ON("0", "mypage.member.notify.edit.mailbox.on.success", "우체통 알림 ON"),
-    우체통알림_OFF("0", "mypage.member.notify.edit.mailbox.off.success", "우체통 알림 OFF"),
+    메시지알림_ON("0", "mypage.member.notify.edit.mailbox.on.success", "메시지 알림 ON"),
+    메시지알림_OFF("0", "mypage.member.notify.edit.mailbox.off.success", "메시지 알림 OFF"),
 
 
     //회원 방송방 빠른말 가져오기
@@ -1594,8 +1594,8 @@ public enum Status {
     청취정보_OFF("0", "mypage.broadcast.setting.listen.open.off.success", "청취정보공개 OFF"),
     선물스타추가_ON("0", "mypage.broadcast.setting.gift.star.on.success", "선물시자동스타추가 ON"),
     선물스타추가_OFF("0", "mypage.broadcast.setting.gift.star.off.success", "선물시자동스타추가 OFF"),
-    우체통사용_ON("0", "mypage.broadcast.setting.mailbox.on.success", "우체통사용여부 ON"),
-    우체통사용_OFF("0", "mypage.broadcast.setting.mailbox.off.success", "우체통사용여부 OFF"),
+    메시지사용_ON("0", "mypage.broadcast.setting.mailbox.on.success", "메시지사용여부 ON"),
+    메시지사용_OFF("0", "mypage.broadcast.setting.mailbox.off.success", "메시지사용여부 OFF"),
 
     // 방송 설정 추가 ( tts, sound 사용여부 )
     TTS_아이템_ON("0", "mypage.broadcast.setting.gift.tts.on.success", "TTS 아이템 사용여부 ON"),
@@ -1833,18 +1833,18 @@ public enum Status {
     휴면해제_상태아님("-2", "member.sleep.return.no.sleep.state", "휴면상태가 아닐 시"),
     휴면해제_실패("C006", "member.sleep.return.fail", "휴면 해제 실패 시"),
 
-    //우체통 대화방 리스트
-    우체통대화방_조회_성공("C001", "mailbox.list.select.success", "대화방 리스트 조회 성공 시"),
-    우체통대화방_조회_없음("0", "mailbox.list.select.no.success", "대화방 리스트 없을 시"),
-    우체통팬대화방_조회_회원아님("-1", "mailbox.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
-    우체통팬대화방_조회_레벨0("-2", "mailbox.list.select.level.0", "본인 레벨 0"),
-    우체통팬대화방_조회_실패("C006", "mailbox.list.select.fail", "대화방 리스트 조회 실패 시"),
+    //메시지 대화방 리스트
+    메시지대화방_조회_성공("C001", "mailbox.list.select.success", "대화방 리스트 조회 성공 시"),
+    메시지대화방_조회_없음("0", "mailbox.list.select.no.success", "대화방 리스트 없을 시"),
+    메시지팬대화방_조회_회원아님("-1", "mailbox.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    메시지팬대화방_조회_레벨0("-2", "mailbox.list.select.level.0", "본인 레벨 0"),
+    메시지팬대화방_조회_실패("C006", "mailbox.list.select.fail", "대화방 리스트 조회 실패 시"),
 
-    //우체통 대화방 추가대상
-    우체통대화방추가대상_조회_성공("C001", "mailbox.add.target.list.select.success", "추가 대상 목록조회 성공 시"),
-    우체통대화방추가대상_조회_없음("0", "mailbox.add.target.list.select.no.success", "추가 대상 목록조회 없을 시"),
-    우체통대화방추가대상_조회_회원아님("-1", "mailbox.add.target.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
-    우체통대화방추가대상_조회_실패("C006", "mailbox.add.target.list.select.fail", "추가 대상 목록조회 실패 시"),
+    //메시지 대화방 추가대상
+    메시지대화방추가대상_조회_성공("C001", "mailbox.add.target.list.select.success", "추가 대상 목록조회 성공 시"),
+    메시지대화방추가대상_조회_없음("0", "mailbox.add.target.list.select.no.success", "추가 대상 목록조회 없을 시"),
+    메시지대화방추가대상_조회_회원아님("-1", "mailbox.add.target.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    메시지대화방추가대상_조회_실패("C006", "mailbox.add.target.list.select.fail", "추가 대상 목록조회 실패 시"),
 
     //대화방 입장
     대화방입장_신규입장_성공("1", "mailbox.chatroom.enter.new.success", "대화방 신규 입장 성공 시"),
@@ -2187,7 +2187,7 @@ public enum Status {
     미니게임종료_없음("-5", "mini.game.end.no", "등록된 미니게임 룰렛이 없을 시"),
     미니게임종료_실패("C006", "mini.game.end.fail", "미니게임 룰렛 종료 실패 시"),
 
-    //우체통 활성화 설정
+    //메시지 활성화 설정
     활성화설정_성공("0", "mailbox.use.success", "활성화 설정 시"),
     활성화설정_ON("0", "mailbox.use.on.success", "활성화"),
     활성화설정_OFF("0", "mailbox.use.off.success", "비활성화"),
@@ -2254,8 +2254,8 @@ public enum Status {
     영상대화_신청_상대정지("-2", "chat.video.apply.target.member.stop", "상대방이 정지회원 시"),
     영상대화_신청_차단회원("-3", "chat.video.apply.black", "본인이 차단 시"),
     영상대화_신청_상대가차단("-4", "chat.video.apply.target.black", "상대방이 차단했을 시"),
-    영상대화_신청_우체통비활성("-5", "chat.video.apply.mailbox.off", "우체통 비활성 시"),
-    영상대화_신청_우체통상대비활성("-6", "chat.video.apply.target.mailbox.off", "상대가 우체통 비활성 시"),
+    영상대화_신청_메시지비활성("-5", "chat.video.apply.mailbox.off", "메시지 비활성 시"),
+    영상대화_신청_메시지상대비활성("-6", "chat.video.apply.target.mailbox.off", "상대가 메시지 비활성 시"),
     영상대화_신청_수신거부("-7", "chat.video.apply.target.response.refuse", "수신거부 상태"),
     영상대화_신청_시간수신거부("-8", "chat.video.apply.target.response.time.refuse", "시간 수신거부 상태"),
     영상대화_신청_상대가수신거부("-9", "chat.video.apply.target.refuse", "상대가 수신거부 상태"),
