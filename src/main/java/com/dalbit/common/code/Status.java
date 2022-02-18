@@ -302,6 +302,7 @@ public enum Status {
     방송생성_20세제한("-4", "broadcast.room.limit.20age", "20세 미만 회원일 경우"),
     방송생성_3레벨제한("-5", "broadcast.room.limit.3level", "3레벨 제한"),
     방송생성_20세본인인증("-6", "broadcast.room.no.certification", "20세이상 방생성 시 본인인증 안한경우"),
+    방송생성_청취중_방송생성("-7", "broadcast.room.already.listener", "청취중일경우 방송시작시 에러코드"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
 
     //방송방 참가를 위한 스트림아이디, 토큰받아오기
@@ -325,6 +326,7 @@ public enum Status {
     방송참여_비회원IP중복("-12", "broadcast.room.join.ano.ip.duplicate", "비회원 IP 동일방 중복 있을 시"),
     방송참여_차단회원입장불가("-13", "broadcast.room.black.list.join.no", "차단회원 입장 불가 시"),
     방송참여_20세본인인증안함("-14", "broadcast.room.join.no.certification", "20세이상 방 입장시 본인인증 안한 경우"),
+    방송참여_방송중_다른방입장("-15", "broadcast.room.join.already.host", "방송중 청취시 에러코드"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
     비회원_재진입("-99", "broadcast.room.join.anonymous.twice", "비회원이 방송방에 2번 이상 들어왔을 시"),
     방송방조인따라가기비공개("-999", "broadcast.room.join.not.allow.fallow", "일반회원 참여시 따라가기 비공개일 경우"),
@@ -1806,6 +1808,7 @@ public enum Status {
     이어하기_연장한방송("-3", "broadcast.continue.extend.room", "연장한 방송이라 이어하기 불가"),
     이어하기_종료시간5분지남("-4", "broadcast.continue.end.time.5min.pass", "종료시간이 5분 지남"),
     이어하기_남은시간5분안됨("-5", "broadcast.continue.remaining.time.5min.limit", "남은시간이 5분 안됨"),
+    이어하기_청취중_방송생성("-7", "broadcast.continue.already.listener", "청취중 방송 생성시 에러코드"),
     이어하기_실패("C006", "broadcast.continue.fail", "이어하기 실패 시"),
 
     //방송방 뱃지 교체 체크

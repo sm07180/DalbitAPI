@@ -502,6 +502,8 @@ public class WowzaService {
             result.put("status", Status.방송생성_3레벨제한);
         } else if (procedureVo.getRet().equals(Status.방송생성_20세본인인증.getMessageCode())) {
             result.put("status", Status.방송생성_20세본인인증);
+        } else if (procedureVo.getRet().equals(Status.방송생성_청취중_방송생성.getMessageCode())) {
+            result.put("status", Status.방송생성_청취중_방송생성);
         } else {
             result.put("status", Status.방생성실패);
         }
@@ -773,6 +775,8 @@ public class WowzaService {
             result.put("status", Status.방송참여_20세본인인증안함);
         } else if (procedureVo.getRet().equals(Status.비회원_재진입.getMessageCode())) {
             result.put("status", Status.비회원_재진입);
+        } else if (procedureVo.getRet().equals(Status.방송참여_방송중_다른방입장.getMessageCode())) {
+            result.put("status", Status.방송참여_방송중_다른방입장);
         } else {
             result.put("status", Status.방참가실패);
         }
@@ -1075,6 +1079,8 @@ public class WowzaService {
             result.put("status", Status.이어하기_종료시간5분지남);
         }else if(procedureVo.getRet().equals(Status.이어하기_남은시간5분안됨.getMessageCode())){
             result.put("status", Status.이어하기_남은시간5분안됨);
+        }else if(procedureVo.getRet().equals(Status.이어하기_청취중_방송생성.getMessageCode())){
+            result.put("status", Status.이어하기_청취중_방송생성);
         }else{
             result.put("status", Status.이어하기_실패);
         }
