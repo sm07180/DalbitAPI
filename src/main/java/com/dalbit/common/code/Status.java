@@ -2353,6 +2353,7 @@ public enum Status {
 
     친구초대_참여대상("0000", "invitaion.join.code.success", "친구초대 참여대상"),
     친구초대_참여대상_아님("C004", "invitaion.join.code.fail", "친구초대 참여대상 아님"),
+    친구초대_나이제한("C005", "invitaion.join.age.fail", "친구초대 이벤트 나이제한"),
 
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
