@@ -29,17 +29,16 @@ public class InviteController {
 
     //추천받은 회원 체크
     @GetMapping("/check")
-    public String pEvtInvitationRcvMemberChk(HttpServletRequest request, HashMap<String, Object> paramMap) {
+    public String pEvtInvitationRcvMemberChk(HttpServletRequest request, HashMap<String, Object> param) {
         String memNo = MemberVo.getMyMemNo(request);
-//        service.pEvtInvitationRcvMemberChk();
-        return "";
+        String memPhone  = (String) param.get("memPhone");   //휴대폰 번호
+        String result = service.pEvtInvitationRcvMemberChk(memNo, memPhone);
+        return result;
     }
 
     //추천코드 보상 지급
     @PostMapping("/reward")
     public String pEvtInvitationRewardIns(@RequestBody HashMap<String, Object> param, HttpServletRequest request) {
-        log.warn("{}", param);
-        log.warn("{}", request);
         String rcvMemNo = MemberVo.getMyMemNo(request);                 //받는사람
         String invitationCode = (String) param.get("invitationCode");   //보낸사람 초대코드
 

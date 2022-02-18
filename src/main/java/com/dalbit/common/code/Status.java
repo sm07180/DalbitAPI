@@ -2353,6 +2353,10 @@ public enum Status {
     친구코드_없음("C001", "invitaion.friend.code.empty", "친구코드 없음"),
     친구코드_등록_에러("C002", "invitaion.friend.code.fail", "친구코드 등록 실패 시"),
     친구코드_중복_등록("C003", "invitaion.friend.code.duplication", "친구코드 중복 등록 시도 시"),
+
+    친구초대_참여대상("0000", "invitaion.join.code.success", "친구초대 참여대상"),
+    친구초대_참여대상_아님("C004", "invitaion.join.code.fail", "친구초대 참여대상 아님"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
