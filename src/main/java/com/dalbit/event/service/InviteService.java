@@ -51,7 +51,7 @@ public class InviteService {
         Integer checkAge = event.pEvtInvitationRcvMemberChk(rcvMemNo, memPhone);
         if(checkAge == 1){
             Integer result = event.pEvtInvitationRewardIns(rcvMemNo, rcvMemIp, invitationCode);
-            if(result == 0){
+            if(result == 1){
                 return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_등록_성공, result));
             }else if(result == -1){
                 return gsonUtil.toJson(new JsonOutputVo(Status.친구코드_없음, result));
