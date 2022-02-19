@@ -23,7 +23,8 @@ public class InviteController {
         log.warn("{}", param);
         String memNo = MemberVo.getMyMemNo(request);
         String invitationCode = (String) param.get("invitationCode");
-        String result = service.pEvtInvitationMemberIns(memNo, invitationCode);
+        String memPhone = (String) param.get("memPhone");
+        String result = service.pEvtInvitationMemberIns(memNo, invitationCode, memPhone);
         return result;
     }
 

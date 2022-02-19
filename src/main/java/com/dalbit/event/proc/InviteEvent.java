@@ -13,8 +13,8 @@ import java.util.List;
 public interface InviteEvent {
 
     //추천코드 및 회원 등록
-    @Select("CALL rd_data.p_evt_invitation_member_ins(#{memNo}, #{invitationCode})")
-    int pEvtInvitationMemberIns(String memNo, String invitationCode);
+    @Select("CALL rd_data.p_evt_invitation_member_ins(#{memNo}, #{invitationCode}, #{memPhone})")
+    int pEvtInvitationMemberIns(String memNo, String invitationCode, String memPhone);
 
     //추천받은 회원 체크
     @Select("CALL rd_data.p_evt_invitation_rcv_member_chk(#{memNo}, #{memPhone})")

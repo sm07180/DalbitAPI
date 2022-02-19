@@ -23,8 +23,8 @@ public class InviteService {
     private final InviteEvent event;
     private final GsonUtil gsonUtil;
 
-    public String pEvtInvitationMemberIns(String memNo, String invitationCode) {
-        Integer result = event.pEvtInvitationMemberIns(memNo, invitationCode);
+    public String pEvtInvitationMemberIns(String memNo, String invitationCode, String memPhone) {
+        Integer result = event.pEvtInvitationMemberIns(memNo, invitationCode, memPhone);
 
         if(result == 1){
             return gsonUtil.toJson(new JsonOutputVo(Status.초대코드_생성, result));
