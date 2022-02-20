@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.broadcast.dao.VoteDao" >
+    <!-- 투표 -->
+    <resultMap id="VoteResultVo1" type="com.dalbit.broadcast.vo.VoteResultVo">
+        <result property="voteNo" column="vote_no"/>
+        <result property="memNo" column="mem_no"/>
+        <result property="roomNo" column="room_no"/>
+        <result property="voteTitle" column="vote_title"/>
+        <result property="voteEndSlct" column="vote_end_slct"/>
+        <result property="voteAnonyYn" column="vote_anony_yn"/>
+        <result property="voteDupliYn" column="vote_dupli_yn"/>
+        <result property="voteMemCnt" column="vote_mem_cnt"/>
+        <result property="voteItemCnt" column="vote_item_cnt"/>
+        <result property="endTime" column="end_time"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
+        <result property="insDate" column="INS_date"/>
+        <result property="updDate" column="upd_date"/>
+        <result property="itemNo" column="item_no"/>
+        <result property="voteItemName" column="vote_item_name"/>
+    </resultMap>
+    <resultMap id="integer" type="Integer" />
+
+    <select id="pRoomVoteSel" statementType="CALLABLE" parameterType="VoteRequestVo" resultMap="VoteResultVo1,VoteResultVo1">
+        { CALL p_room_vote_sel(#{memNo},#{roomNo},#{voteNo}) }
+    </select>
+
+    <select id="pRoomVoteList" statementType="CALLABLE" parameterType="VoteRequestVo" resultMap="integer,VoteResultVo1">
+        { CALL p_room_vote_list(#{memNo},#{roomNo},#{voteSlct}) }
+    </select>
+
+</mapper>

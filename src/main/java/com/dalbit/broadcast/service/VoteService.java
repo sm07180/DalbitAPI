@@ -1,8 +1,10 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.VoteDao;
+import com.dalbit.broadcast.vo.VoteResultVo;
 import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import com.dalbit.util.DBUtil;
+import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,9 +22,9 @@ public class VoteService {
 
     public Map<String, Object> insVote(VoteRequestVo voteRequestVo) {
         Map<String, Object> returnMap = new HashMap<>();
-
         try {
-            voteDao.pRoomVoteIns(voteRequestVo);
+            int result = voteDao.pRoomVoteIns(voteRequestVo);
+            returnMap.put("result", result);
         } catch (Exception e) {
             log.error("VoteService insVote Error => {}", e.getMessage());
         }
@@ -32,7 +34,7 @@ public class VoteService {
         Map<String, Object> returnMap = new HashMap<>();
         try {
             int result = voteDao.pRoomVoteItemIns(voteRequestVo);
-            returnMap.put("data", result);
+            returnMap.put("result", result);
         } catch (Exception e) {
             log.error("VoteService insVoteItem Error => {}", e.getMessage());
         }
@@ -42,7 +44,8 @@ public class VoteService {
         Map<String, Object> returnMap = new HashMap<>();
 
         try {
-            voteDao.pRoomVoteDel(voteRequestVo);
+            int result = voteDao.pRoomVoteDel(voteRequestVo);
+            returnMap.put("result", result);
         } catch (Exception e) {
             log.error("VoteService delVote Error => {}", e.getMessage());
         }
@@ -52,7 +55,11 @@ public class VoteService {
         Map<String, Object> returnMap = new HashMap<>();
 
         try {
-            voteDao.pRoomVoteList(voteRequestVo);
+            List<Object> pRoomVoteList = voteDao.pRoomVoteList(voteRequestVo);
+            Integer cnt = DBUtil.getData(pRoomVoteList, 0, Integer.class);
+            List<VoteResultVo> list = DBUtil.getList(pRoomVoteList, 1, VoteResultVo.class);
+            returnMap.put("cnt", cnt);
+            returnMap.put("list", list);
         } catch (Exception e) {
             log.error("VoteService getVoteList Error => {}", e.getMessage());
         }
@@ -62,9 +69,13 @@ public class VoteService {
         Map<String, Object> returnMap = new HashMap<>();
 
         try {
-            List<Object> pRoomVoteSel = voteDao.pRoomVoteSel(voteRequestVo);
-            log.error("{}", pRoomVoteSel);
-//            List<Object> cnt = DBUtil.getList(pRoomVoteSel, 0, List.class);
+            List<?> resultSets = voteDao.pRoomVoteSel(voteRequestVo);
+            if(!DalbitUtil.isEmpty(resultSets)){
+                VoteResultVo info = DBUtil.getData(resultSets, 0, VoteResultVo.class);
+                List<VoteResultVo> list = DBUtil.getList(resultSets, 1, VoteResultVo.class);
+                returnMap.put("info", info);
+                returnMap.put("list", list);
+            }
         } catch (Exception e) {
             log.error("VoteService getVoteSel Error => {}", e.getMessage());
         }

@@ -1,19 +1,15 @@
 package com.dalbit.broadcast.controller;
 
-import com.dalbit.broadcast.service.MiniGameService;
 import com.dalbit.broadcast.service.VoteService;
-import com.dalbit.broadcast.vo.procedure.*;
-import com.dalbit.broadcast.vo.request.*;
-import com.dalbit.exception.GlobalException;
-import com.dalbit.util.DalbitUtil;
+import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/broad/vote")
@@ -23,29 +19,24 @@ public class VoteController {
     @Autowired
     VoteService voteService;
 
-    @GetMapping("/insVote")
-    public Object vote(VoteRequestVo voteRequestVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+    @PostMapping("/insVote")
+    public Object vote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.insVote(voteRequestVo);
     }
-    @GetMapping("/insVoteItem")
-    public Object insVoteItem(VoteRequestVo voteRequestVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+    @PostMapping("/insVoteItem")
+    public Object insVoteItem(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.insVoteItem(voteRequestVo);
     }
-    @GetMapping("/delVote")
-    public Object delVote(VoteRequestVo voteRequestVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+    @PostMapping("/delVote")
+    public Object delVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.delVote(voteRequestVo);
     }
-    @GetMapping("/getVoteList")
-    public Object getVoteList(VoteRequestVo voteRequestVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+    @PostMapping("/getVoteList")
+    public Object getVoteList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.getVoteList(voteRequestVo);
     }
-    @GetMapping("/getVoteSel")
-    public Object getVoteSel(@RequestBody VoteRequestVo voteRequestVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+    @PostMapping("/getVoteSel")
+    public Object getVoteSel(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.getVoteSel(voteRequestVo);
     }
 }

@@ -49,7 +49,7 @@
     <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
 
     <!-- 투표 -->
-    <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo"/>
+    <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo" />
 
 
 </mapper>

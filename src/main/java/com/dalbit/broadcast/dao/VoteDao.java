@@ -1,10 +1,9 @@
 package com.dalbit.broadcast.dao;
 
-import com.dalbit.broadcast.vo.VoteResultVo;
 import com.dalbit.broadcast.vo.request.VoteRequestVo;
-import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -93,8 +92,8 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-    @Select("CALL p_room_vote_list(#{memNo},#{roomNo},#{voteSlct})")
-    List<VoteResultVo> pRoomVoteList(VoteRequestVo voteRequestVo);
+    @Transactional(readOnly = true)
+    List<Object> pRoomVoteList(VoteRequestVo voteRequestVo);
 
     /**
      * ##### 방송방 투표 상세리스트
@@ -133,8 +132,7 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-//    @ResultMap({"ResultMap.list", "ResultMap.list"})
-    @Select("CALL p_room_vote_sel(#{memNo},#{roomNo},#{voteNo})")
-    List<Object> pRoomVoteSel(VoteRequestVo voteRequestVo);
+    @Transactional(readOnly = true)
+    List<?> pRoomVoteSel(VoteRequestVo voteRequestVo);
 
 }
