@@ -3,12 +3,15 @@ package com.dalbit.broadcast.service;
 import com.dalbit.broadcast.dao.VoteDao;
 import com.dalbit.broadcast.vo.VoteResultVo;
 import com.dalbit.broadcast.vo.request.VoteRequestVo;
+import com.dalbit.socket.service.SocketService;
+import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,8 +22,9 @@ public class VoteService {
 
     @Autowired
     VoteDao voteDao;
-
-    public Map<String, Object> insVote(VoteRequestVo voteRequestVo) {
+    @Autowired
+    SocketService socketService;
+    public Map<String, Object> insVote(VoteRequestVo voteRequestVo, HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>();
         try {
             int voteNo = voteDao.pRoomVoteIns(voteRequestVo);
@@ -32,6 +36,8 @@ public class VoteService {
                 voteDao.pRoomVoteItemIns(voteNo, voteRequestVo.getMemNo(), voteRequestVo.getRoomNo(), s);
             });
             returnMap.put("result", voteNo);
+            SocketVo vo1 = socketService.getSocketVo(voteRequestVo.getRoomNo(), voteRequestVo.getMemNo(), DalbitUtil.isLogin(request));
+            socketService.reqPopVote(voteRequestVo.getRoomNo(), voteRequestVo.getMemNo(), voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo1);
         } catch (Exception e) {
             log.error("VoteService insVote Error => {}", e.getMessage());
         }

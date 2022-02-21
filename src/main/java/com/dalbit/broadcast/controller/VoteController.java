@@ -21,7 +21,7 @@ public class VoteController {
 
     @PostMapping("/insVote")
     public Object insVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
-        return voteService.insVote(voteRequestVo);
+        return voteService.insVote(voteRequestVo, request);
     }
     @PostMapping("/insMemVote")
     public Object insMemVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){

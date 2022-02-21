@@ -1297,4 +1297,25 @@ public class SocketService {
             log.info("Socket Start : reqDjSetting {} {} {} {} {}", roomNo, memNo, message, isLogin, e);
         }
     }
+
+    @Async("threadTaskExecutor")
+    public void reqPopVote(String roomNo, String memNo, Object message, String authToken, boolean isLogin, SocketVo vo) {
+        log.info("Socket Start : reqDjSetting {}, {}, {}, {}", roomNo, memNo, message, isLogin);
+
+        try {
+            roomNo = roomNo == null ? "" : roomNo.trim();
+            memNo = memNo == null ? "" : memNo.trim();
+            authToken = authToken == null ? "" : authToken.trim();
+            if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
+                if(vo != null && vo.getMemNo() != null) {
+                    vo.setCommand("reqPopVote");
+                    vo.setMessage(message);
+                    System.out.println("Socket Send reqPopVote \n" + vo.toQueryString());
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
+            }
+        } catch (Exception e) {
+            log.error("Socket Error : reqPopVote {} {} {} {} {}", roomNo, memNo, message, isLogin, e.getMessage());
+        }
+    }
 }
