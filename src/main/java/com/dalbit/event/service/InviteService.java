@@ -63,7 +63,7 @@ public class InviteService {
                 return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, result));
             }
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_나이제한, checkAge));
+            return gsonUtil.toJson(new JsonOutputVo(Status.친구초대_참여대상_아님, checkAge));
         }
 
     }
