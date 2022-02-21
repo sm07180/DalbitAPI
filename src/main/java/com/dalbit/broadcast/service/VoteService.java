@@ -36,8 +36,7 @@ public class VoteService {
                 voteDao.pRoomVoteItemIns(voteNo, voteRequestVo.getMemNo(), voteRequestVo.getRoomNo(), s);
             });
             returnMap.put("result", voteNo);
-            SocketVo vo1 = socketService.getSocketVo(voteRequestVo.getRoomNo(), voteRequestVo.getMemNo(), DalbitUtil.isLogin(request));
-            socketService.reqPopVote(voteRequestVo.getRoomNo(), voteRequestVo.getMemNo(), voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo1);
+            socketService.reqPopVote(voteRequestVo.getRoomNo(), voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         } catch (Exception e) {
             log.error("VoteService insVote Error => {}", e.getMessage());
         }

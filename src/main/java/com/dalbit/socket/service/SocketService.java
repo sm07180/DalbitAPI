@@ -1299,23 +1299,20 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void reqPopVote(String roomNo, String memNo, Object message, String authToken, boolean isLogin, SocketVo vo) {
-        log.info("Socket Start : reqDjSetting {}, {}, {}, {}", roomNo, memNo, message, isLogin);
+    public void reqPopVote(String roomNo, Object data, String authToken, boolean isLogin) {
+        log.info("Socket Start : miniGameStart {}, {}", data, isLogin);
+        authToken = authToken == null ? "" : authToken.trim();
 
-        try {
-            roomNo = roomNo == null ? "" : roomNo.trim();
-            memNo = memNo == null ? "" : memNo.trim();
-            authToken = authToken == null ? "" : authToken.trim();
-            if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
-                if(vo != null && vo.getMemNo() != null) {
-                    vo.setCommand("reqPopVote");
-                    vo.setMessage(message);
-                    System.out.println("Socket Send reqPopVote \n" + vo.toQueryString());
-                    sendSocketApi(authToken, roomNo, vo.toQueryString());
-                }
-            }
-        } catch (Exception e) {
-            log.error("Socket Error : reqPopVote {} {} {} {} {}", roomNo, memNo, message, isLogin, e.getMessage());
-        }
+        HashMap<String, Object> message = new HashMap<String, Object>();
+        message.put("clientCommand", "reqPopVote");
+        message.put("data", data);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(message);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
     }
 }
