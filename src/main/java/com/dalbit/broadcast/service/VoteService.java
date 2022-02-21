@@ -23,20 +23,28 @@ public class VoteService {
     public Map<String, Object> insVote(VoteRequestVo voteRequestVo) {
         Map<String, Object> returnMap = new HashMap<>();
         try {
-            int result = voteDao.pRoomVoteIns(voteRequestVo);
-            returnMap.put("result", result);
+            int voteNo = voteDao.pRoomVoteIns(voteRequestVo);
+            if(voteNo < 1){
+                returnMap.put("result", voteNo);
+                return returnMap;
+            }
+            voteRequestVo.getVoteItemNames().forEach(s -> {
+                voteDao.pRoomVoteItemIns(voteNo, voteRequestVo.getMemNo(), voteRequestVo.getRoomNo(), s);
+            });
+            returnMap.put("result", voteNo);
         } catch (Exception e) {
             log.error("VoteService insVote Error => {}", e.getMessage());
         }
         return returnMap;
     }
-    public Map<String, Object> insVoteItem(VoteRequestVo voteRequestVo) {
+
+    public Map<String, Object> insMemVote(VoteRequestVo voteRequestVo) {
         Map<String, Object> returnMap = new HashMap<>();
         try {
-            int result = voteDao.pRoomVoteItemIns(voteRequestVo);
+            int result = voteDao.pRoomVoteMemIns(voteRequestVo);
             returnMap.put("result", result);
         } catch (Exception e) {
-            log.error("VoteService insVoteItem Error => {}", e.getMessage());
+            log.error("VoteService insMemVote Error => {}", e.getMessage());
         }
         return returnMap;
     }
@@ -67,19 +75,23 @@ public class VoteService {
     }
     public Map<String, Object> getVoteSel(VoteRequestVo voteRequestVo) {
         Map<String, Object> returnMap = new HashMap<>();
-
         try {
-            List<?> resultSets = voteDao.pRoomVoteSel(voteRequestVo);
-            if(!DalbitUtil.isEmpty(resultSets)){
-                VoteResultVo info = DBUtil.getData(resultSets, 0, VoteResultVo.class);
-                List<VoteResultVo> list = DBUtil.getList(resultSets, 1, VoteResultVo.class);
-                returnMap.put("info", info);
-                returnMap.put("list", list);
-            }
+            VoteResultVo info = voteDao.pRoomVoteSel(voteRequestVo);
+            returnMap.put("info", info);
         } catch (Exception e) {
             log.error("VoteService getVoteSel Error => {}", e.getMessage());
         }
         return returnMap;
     }
 
+    public Map<String, Object> getVoteDetailList(VoteRequestVo voteRequestVo) {
+        Map<String, Object> returnMap = new HashMap<>();
+        try {
+            List<VoteResultVo> list = voteDao.pRoomVoteDetailList(voteRequestVo);
+            returnMap.put("list", list);
+        } catch (Exception e) {
+            log.error("VoteService getVoteDetailList Error => {}", e.getMessage());
+        }
+        return returnMap;
+    }
 }

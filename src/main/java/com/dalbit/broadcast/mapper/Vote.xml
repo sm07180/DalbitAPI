@@ -10,6 +10,7 @@
         <result property="voteEndSlct" column="vote_end_slct"/>
         <result property="voteAnonyYn" column="vote_anony_yn"/>
         <result property="voteDupliYn" column="vote_dupli_yn"/>
+        <result property="memVoteYn" column="mem_vote_yn"/>
         <result property="voteMemCnt" column="vote_mem_cnt"/>
         <result property="voteItemCnt" column="vote_item_cnt"/>
         <result property="endTime" column="end_time"/>
@@ -22,12 +23,16 @@
     </resultMap>
     <resultMap id="integer" type="Integer" />
 
-    <select id="pRoomVoteSel" statementType="CALLABLE" parameterType="VoteRequestVo" resultMap="VoteResultVo1,VoteResultVo1">
+    <select id="pRoomVoteList" statementType="CALLABLE" parameterType="com.dalbit.broadcast.vo.request.VoteRequestVo" resultMap="integer,VoteResultVo1">
+        { CALL p_room_vote_list(#{memNo},#{roomNo},#{voteSlct}) }
+    </select>
+
+    <select id="pRoomVoteSel" statementType="CALLABLE" parameterType="com.dalbit.broadcast.vo.request.VoteRequestVo" resultMap="VoteResultVo1">
         { CALL p_room_vote_sel(#{memNo},#{roomNo},#{voteNo}) }
     </select>
 
-    <select id="pRoomVoteList" statementType="CALLABLE" parameterType="VoteRequestVo" resultMap="integer,VoteResultVo1">
-        { CALL p_room_vote_list(#{memNo},#{roomNo},#{voteSlct}) }
+    <select id="pRoomVoteDetailList" statementType="CALLABLE" parameterType="com.dalbit.broadcast.vo.request.VoteRequestVo" resultMap="VoteResultVo1">
+        { CALL p_room_vote_detail_list(#{memNo},#{pmemNo},#{roomNo},#{voteNo}) }
     </select>
 
 </mapper>

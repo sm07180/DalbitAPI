@@ -15,6 +15,8 @@ public class VoteResultVo {
     private String voteEndSlct;      // 투표종료구분[s:투표중, e:마감, d:투표삭제]
     private String voteAnonyYn;      // 익명투표 여부
     private String voteDupliYn;      // 중복투표 여부
+    private String memVoteYn;        // 항목투표 여부
+
     private Integer voteMemCnt;      // 투표참여회원수
     private Integer voteItemCnt;     // 투표항목수
     private Integer endTime;         // 마감설정시간(초)
