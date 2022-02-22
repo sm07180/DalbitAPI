@@ -22,14 +22,12 @@ public class PoemController {
 
     @GetMapping
     public String getPoemList(@RequestParam String memNo, @RequestParam Integer pageNo, @RequestParam Integer pagePerCnt){
-        System.out.println("memNo = " + memNo + ", pageNo = " + pageNo + ", pagePerCnt = " + pagePerCnt);
         return service.getPoemList(memNo, pageNo, pagePerCnt);
     }
 
     @PostMapping
     public String savePoem(HttpServletRequest request, @RequestBody PoemEventReqVo poemEventReqVo){
         poemEventReqVo.setTailMemIp(DalbitUtil.getIp(request));
-        System.out.println("poemEventReqVo = " + poemEventReqVo);
         return service.savePoem(poemEventReqVo);
     }
 
@@ -37,13 +35,11 @@ public class PoemController {
     public String deletePoem(@RequestBody HashMap<String, Object> payload){
         String tailNo = (String) payload.get("tailNo");
         String tailMemNo = (String) payload.get("tailMemNo");
-        System.out.println("tailNo = " + tailNo + ", tailMemNo = " + tailMemNo);
         return service.deletePoem(tailNo, tailMemNo);
     }
 
     @PutMapping
     public String editPoem(@RequestBody PoemEventReqVo poemEventReqVo){
-        System.out.println("poemEventReqVo = " + poemEventReqVo);
         return service.editPoem(poemEventReqVo);
     }
 
