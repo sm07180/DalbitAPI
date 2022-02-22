@@ -2358,6 +2358,19 @@ public enum Status {
     친구초대_참여대상_아님("C004", "invitaion.join.code.fail", "친구초대 참여대상 아님"),
     친구초대_나이제한("C005", "invitaion.join.age.fail", "친구초대 이벤트 나이제한"),
 
+    // 공유 이벤트
+    공유이벤트_댓글목록_조회_성공("0", "share.event.tail.list.success", "공유 이벤트 댓글 목록 조회 성공 시"),
+    공유이벤트_댓글목록_조회_실패("-1", "share.event.tail.list.fail", "공유 이벤트 댓글 목록 조회 실패 시"),
+
+    공유이벤트_댓글목록_삭제_성공("0", "share.event.tail.del.success", "공유 이벤트 댓글 목록 삭제 성공 시"),
+    공유이벤트_댓글목록_삭제_실패("-1", "share.event.tail.del.fail", "공유 이벤트 댓글 목록 삭제 실패 시"),
+
+    공유이벤트_댓글목록_등록_성공("0", "share.event.tail.ins.success", "공유 이벤트 댓글 목록 등록 성공 시"),
+    공유이벤트_댓글목록_등록_실패("-1", "share.event.tail.ins.fail", "공유 이벤트 댓글 목록 등록 실패 시"),
+
+    공유이벤트_댓글목록_수정_성공("0", "share.event.tail.upd.success", "공유 이벤트 댓글 목록 수정 성공 시"),
+    공유이벤트_댓글목록_수정_실패("-1", "share.event.tail.upd.fail", "공유 이벤트 댓글 목록 수정 실패 시"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),

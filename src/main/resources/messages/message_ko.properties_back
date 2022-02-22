@@ -1447,3 +1447,16 @@ admin.broadcast.hide.fail=숨김 또는 해제 실패하였습니다.
 mini.game.win.list.success=룰렛 당첨 리스트 조회하였습니다.
 mini.game.win.list.diffDj=DJ가 아닙니다.
 mini.game.win.list.fail=룰렛 당첨 리스트 조회 실패하였습니다.
+
+# share event
+share.event.tail.list.success=공유 이벤트 댓글 목록 조회 성공하였습니다.
+share.event.tail.list.fail=공유 이벤트 댓글 목록 조회 실패하였습니다.
+
+share.event.tail.del.success=공유 이벤트 댓글 목록 삭제를 성공하였습니다.
+share.event.tail.del.fail=공유 이벤트 댓글 목록 삭제를 실패하였습니다.
+
+share.event.tail.ins.success=공유 이벤트 댓글 목록 등록를 성공하였습니다.
+share.event.tail.ins.fail=공유 이벤트 댓글 목록 등록을 실패하였습니다.
+
+share.event.tail.upd.success=공유 이벤트 댓글 목록 수정을 성공하였습니다.
+share.event.tail.upd.fail=공유 이벤트 댓글 목록 수정을 실패하였습니다.
