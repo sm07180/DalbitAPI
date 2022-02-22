@@ -2358,6 +2358,28 @@ public enum Status {
     친구초대_참여대상_아님("C004", "invitaion.join.code.fail", "친구초대 참여대상 아님"),
     친구초대_나이제한("C005", "invitaion.join.age.fail", "친구초대 이벤트 나이제한"),
 
+    //투표
+    투표_생성("C001", "vote.code.insert.success", "투표_생성"),
+    투표_삭제("C002", "vote.code.delete.success", "투표_삭제"),
+    투표_투표처리("C003", "vote.code.member.insert.success", "투표_투표처리"),
+    투표_리스트조회("C004", "vote.code.vote.list.success", "투표_리스트조회"),
+    투표_정보조회("C005", "vote.code.vote.sel.success", "투표_정보조회"),
+    투표_항목조회("C006", "vote.code.vote.detail.list.success", "투표_항목조회"),
+
+    투표_생성_파리미터("E001", "vote.code.insert.parameter", "투표_생성_파리미터"),
+    투표_삭제_파라미터("E002", "vote.code.delete.parameter", "투표_삭제_파리미터"),
+    투표_투표처리_파라미터("E003", "vote.code.member.insert.parameter", "투표_투표처리_파리미터"),
+    투표_리스트조회_파리미터("E004", "vote.code.vote.list.parameter", "투표_리스트조회_파리미터"),
+    투표_정보조회_파리미터("E005", "vote.code.vote.sel.parameter", "투표_정보조회_파리미터"),
+    투표_항목조회_파리미터("E006", "vote.code.vote.detail.list.parameter", "투표_항목조회_파리미터"),
+
+    투표_생성_에러("E001", "vote.code.insert.fail", "투표_생성_에러"),
+    투표_삭제_에러("E002", "vote.code.delete.fail", "투표_삭제_에러"),
+    투표_투표처리_에러("E003", "vote.code.member.insert.fail", "투표_투표처리_에러"),
+    투표_리스트조회_에러("E004", "vote.code.vote.list.fail", "투표_리스트조회_에러"),
+    투표_정보조회_에러("E005", "vote.code.vote.sel.fail", "투표_정보조회_에러"),
+    투표_항목조회_에러("E006", "vote.code.vote.detail.list.fail", "투표_항목조회_에러"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),

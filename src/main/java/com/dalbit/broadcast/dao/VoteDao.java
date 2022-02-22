@@ -140,7 +140,7 @@ public interface VoteDao {
     VoteResultVo pRoomVoteSel(VoteRequestVo voteRequestVo);
 
     /**
-     * ##### 투표 아이템 리스트
+     * ##### 투표 항목 리스트
      *
      * CALL p_room_vote_detail_list(
      * memNo BIGINT			-- 회원번호
