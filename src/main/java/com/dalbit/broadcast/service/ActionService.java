@@ -15,8 +15,11 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ItemVo;
+import com.dalbit.event.service.DallagersEventService;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.service.MoonLandService;
+import com.dalbit.event.vo.DallagersInitialAddVo;
+import com.dalbit.event.vo.DallagersRoomFerverSelVo;
 import com.dalbit.event.vo.GganbuPocketStatInsVo;
 import com.dalbit.event.vo.MoonLandInfoVO;
 import com.dalbit.event.vo.MoonLandMissionInsVO;
@@ -72,6 +75,8 @@ public class ActionService {
     @Autowired MoonLandService moonLandService;
 
     @Autowired UserService userService;
+
+    @Autowired DallagersEventService dallaEvent;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -390,9 +395,58 @@ public class ActionService {
                 GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
                 returnMap.put("gganbuPocketCnt", statIns);
 
+                //달나라 이벤트
                 MoonLandCoinDataVO coinDataVO = null;
                 coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
                 itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
+
+                //리브랜딩 달라조각 모으기 이벤트
+
+                HashMap socketParamMap = new HashMap(); //소켓에 보내기 위한 map
+                Long roomNo = Long.parseLong(pRoomGiftVo.getRoom_no());
+                Long dalCnt = DalbitUtil.getLongMap(itemMap,"dalCnt");
+
+                //1) 피버 타임 발동 조건체크
+                DallagersRoomFerverSelVo feverInfo = dallaEvent.callEventRoomFeverInfo(roomNo);
+                // feverInfo is null => error
+                String feverTimeYn = feverInfo.getFever_yn();
+                //todo 프로시져 달 누적수치 필요
+//                feverInfo.getGift_fever_cnt();   //달 선물 누적조건으로 발동된 피버 횟수
+                
+                // 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상
+                List<P_RoomMemberListVo> listeners = userService.getListenerList(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no());
+                if(listeners.size() < 11) { //10명 이하 체크
+
+                }
+                listeners = null;
+
+
+                boolean isFeverTime = StringUtils.equals("y", feverTimeYn);
+                float feverValue = isFeverTime? 1.5F: 1;
+                double sendPieceCnt = Math.floor( (dalCnt % 50) * feverValue ); //보낸사람 (청취자)
+                double rcvPieceCnt = Math.floor( (dalCnt % 100) * feverValue );  //받는사람 (방장)
+
+                DallagersInitialAddVo addVo = new DallagersInitialAddVo();
+                addVo.setRoomNo(Long.parseLong(pRoomGiftVo.getRoom_no()));
+                if(sendPieceCnt > 0){   // 달조각 등록 (청취자)
+                    addVo.setMemNo(Long.parseLong(pRoomGiftVo.getMem_no()));
+                    addVo.setCollectSlct(3);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4: 부스터수 ,5:받은별]
+                    addVo.setSlctValCnt(dalCnt);    // 달, 별 갯수
+                    addVo.setFeverYn(feverTimeYn);  // 피버 타임 여부 [y,n]
+                    socketParamMap.put("toBJ", dallaEvent.callEventInitialAdd(addVo, sendPieceCnt));
+                }
+                if(rcvPieceCnt > 0){    // 달조각 등록 (방장)
+                    addVo.setMemNo(Long.parseLong(pRoomGiftVo.getGifted_mem_no()));
+                    addVo.setCollectSlct(5);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4:부스터수 ,5:받은별]
+                    addVo.setSlctValCnt(dalCnt);    // 달, 별 갯수
+                    addVo.setFeverYn(feverTimeYn);  // 피버 타임 여부 [y,n]
+                    socketParamMap.put("toViewer", dallaEvent.callEventInitialAdd(addVo, rcvPieceCnt));
+                }
+                addVo = null;
+
+                
+
+
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

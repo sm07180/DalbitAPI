@@ -1032,6 +1032,7 @@ public class WowzaService {
         return roomInfoVo;
     }
 
+
     public List getGuestList(String roomNo, String memNo){
         List list = new ArrayList();
         GuestListVo guestListVo = new GuestListVo();
