@@ -52,14 +52,15 @@ public class VoteService {
             voteRequestVo.getVoteItemNames().forEach(s -> {
                 voteDao.pRoomVoteItemIns(finalVoteNo, voteRequestVo.getMemNo(), voteRequestVo.getRoomNo(), s);
             });
-            socketService.reqPopVote(voteRequestVo.getRoomNo(), voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            voteRequestVo.setVoteNo(String.valueOf(voteNo));
+            socketService.reqVoteByPass(voteRequestVo.getRoomNo(), "reqInsVote", voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         } catch (Exception e) {
             log.error("VoteService insVote Error => {}", e.getMessage());
         }
         return gsonUtil.toJson(new JsonOutputVo(Status.투표_생성, voteNo));
     }
 
-    public String insMemVote(VoteRequestVo voteRequestVo) {
+    public String insMemVote(VoteRequestVo voteRequestVo, HttpServletRequest request) {
         if (StringUtils.isEmpty(voteRequestVo.getMemNo())
                 || StringUtils.isEmpty(voteRequestVo.getPmemNo())
                 || StringUtils.isEmpty(voteRequestVo.getRoomNo())
@@ -73,15 +74,17 @@ public class VoteService {
 
         try {
             result = voteDao.pRoomVoteMemIns(voteRequestVo);
+            if (result < 1) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.투표_투표처리_에러, result));
+            }
+            socketService.reqVoteByPass(voteRequestVo.getRoomNo(), "reqInsMemVote", voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         } catch (Exception e) {
             log.error("VoteService insMemVote Error => {}", e.getMessage());
         }
-        return result > 0
-                ? gsonUtil.toJson(new JsonOutputVo(Status.투표_투표처리, result))
-                : gsonUtil.toJson(new JsonOutputVo(Status.투표_투표처리_에러, null));
+        return gsonUtil.toJson(new JsonOutputVo(Status.투표_투표처리, result));
     }
 
-    public String delVote(VoteRequestVo voteRequestVo) {
+    public String delVote(VoteRequestVo voteRequestVo, HttpServletRequest request) {
         if (StringUtils.isEmpty(voteRequestVo.getMemNo())
                 || StringUtils.isEmpty(voteRequestVo.getRoomNo())
                 || StringUtils.isEmpty(voteRequestVo.getVoteNo())
@@ -91,13 +94,14 @@ public class VoteService {
         int result = 0;
         try {
             result = voteDao.pRoomVoteDel(voteRequestVo);
-
+            if (result < 1) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.투표_삭제_에러, result));
+            }
+            socketService.reqVoteByPass(voteRequestVo.getRoomNo(), "reqDelVote", voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         } catch (Exception e) {
             log.error("VoteService delVote Error => {}", e.getMessage());
         }
-        return result > 0
-                ? gsonUtil.toJson(new JsonOutputVo(Status.투표_삭제, result))
-                : gsonUtil.toJson(new JsonOutputVo(Status.투표_삭제_에러, null));
+        return gsonUtil.toJson(new JsonOutputVo(Status.투표_삭제, result));
     }
 
     public String getVoteList(VoteRequestVo voteRequestVo) {
@@ -112,18 +116,17 @@ public class VoteService {
         Map<String, Object> returnMap = new HashMap<>();
         try {
             List<Object> pRoomVoteList = voteDao.pRoomVoteList(voteRequestVo);
-            if (pRoomVoteList != null && !pRoomVoteList.isEmpty()) {
-                Integer cnt = DBUtil.getData(pRoomVoteList, 0, Integer.class);
-                List<VoteResultVo> list = DBUtil.getList(pRoomVoteList, 1, VoteResultVo.class);
-                returnMap.put("cnt", cnt);
-                returnMap.put("list", list);
+            if (pRoomVoteList == null || pRoomVoteList.isEmpty()) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.투표_리스트조회_에러, null));
             }
+            Integer cnt = DBUtil.getData(pRoomVoteList, 0, Integer.class);
+            List<VoteResultVo> list = DBUtil.getList(pRoomVoteList, 1, VoteResultVo.class);
+            returnMap.put("cnt", cnt);
+            returnMap.put("list", list);
         } catch (Exception e) {
             log.error("VoteService getVoteList Error => {}", e.getMessage());
         }
-        return returnMap.containsKey("cnt")
-                ? gsonUtil.toJson(new JsonOutputVo(Status.투표_리스트조회, returnMap))
-                : gsonUtil.toJson(new JsonOutputVo(Status.투표_리스트조회_에러, null));
+        return gsonUtil.toJson(new JsonOutputVo(Status.투표_리스트조회, returnMap));
     }
 
     public String getVoteSel(VoteRequestVo voteRequestVo) {
@@ -137,6 +140,9 @@ public class VoteService {
         VoteResultVo info = null;
         try {
             info = voteDao.pRoomVoteSel(voteRequestVo);
+            if(info == null){
+                return gsonUtil.toJson(new JsonOutputVo(Status.투표_정보조회_에러, null));
+            }
         } catch (Exception e) {
             log.error("VoteService getVoteSel Error => {}", e.getMessage());
         }
@@ -155,11 +161,12 @@ public class VoteService {
         List<VoteResultVo> list = null;
         try {
             list = voteDao.pRoomVoteDetailList(voteRequestVo);
+            if(list == null){
+                return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회_에러, null));
+            }
         } catch (Exception e) {
             log.error("VoteService getVoteDetailList Error => {}", e.getMessage());
         }
-        return list != null
-                ? gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회, list))
-                : gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회_에러, null));
+        return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회, list));
     }
 }

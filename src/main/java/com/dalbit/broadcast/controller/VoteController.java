@@ -25,12 +25,11 @@ public class VoteController {
     }
     @PostMapping("/insMemVote")
     public Object insMemVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
-        return voteService.insMemVote(voteRequestVo);
+        return voteService.insMemVote(voteRequestVo, request);
     }
-
     @PostMapping("/delVote")
     public Object delVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
-        return voteService.delVote(voteRequestVo);
+        return voteService.delVote(voteRequestVo, request);
     }
     @PostMapping("/getVoteList")
     public Object getVoteList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){

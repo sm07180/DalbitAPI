@@ -1299,12 +1299,11 @@ public class SocketService {
     }
 
     @Async("threadTaskExecutor")
-    public void reqPopVote(String roomNo, Object data, String authToken, boolean isLogin) {
-        log.info("Socket Start : miniGameStart {}, {}", data, isLogin);
-        authToken = authToken == null ? "" : authToken.trim();
+    public void reqVoteByPass(String roomNo, String clientCommand, Object data, String authToken, boolean isLogin) {
+        log.info("Socket Start : {} {}, {}", clientCommand, data, isLogin);
 
         HashMap<String, Object> message = new HashMap<String, Object>();
-        message.put("clientCommand", "reqPopVote");
+        message.put("clientCommand", clientCommand);
         message.put("data", data);
 
         SocketVo vo = new SocketVo();
@@ -1313,6 +1312,6 @@ public class SocketService {
         vo.setMessage(message);
 
         log.info("Socket vo to Query String: {}",vo.toQueryString());
-        sendSocketApi(authToken, roomNo, vo.toQueryString());
+        sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
     }
 }
