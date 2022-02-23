@@ -132,7 +132,7 @@ public class MainServiceV2 {
         }
 
         /* 메인 center 배너 */
-        // mainMap.put("centerBanner", mainService.selectBanner("9", request));
+        mainMap.put("centerBanner", mainService.selectBanner("9", request));
 
         /* 알림 */
         try {
