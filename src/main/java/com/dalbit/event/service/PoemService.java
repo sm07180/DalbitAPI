@@ -25,7 +25,7 @@ public class PoemService {
     private final GsonUtil gsonUtil;
 
     public String getPoemList(String memNo, Integer pageNo, Integer pagePerCnt){
-        List<Object> objects = event.pTbEventRbdTailList("0", pageNo, pagePerCnt);
+        List<Object> objects = event.pTbEventRbdTailList(memNo, pageNo, pagePerCnt);
         Integer listCnt = DBUtil.getData(objects, 0, Integer.class);
         List<PoemEventResVo> list = DBUtil.getList(objects, 1, PoemEventResVo.class);
         list.stream().parallel().forEach(item -> {
@@ -34,23 +34,7 @@ public class PoemService {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("listCnt", listCnt);
         resultMap.put("list", list);
-        if(!memNo.equals("false")){
-            resultMap.put("myPoem", getMyPoem(memNo));
-        }
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
-    }
-
-    public PoemEventResVo getMyPoem(String memNo){
-        List<Object> objects = event.pTbEventRbdTailList(memNo, 1, 1);
-        List<PoemEventResVo> list = DBUtil.getList(objects, 1, PoemEventResVo.class);
-        if(!list.isEmpty()){
-            list.stream().parallel().forEach(item -> {
-                item.setProfImg(new ImageVo(item.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
-            });
-            return list.get(0);
-        }else{
-            return null;
-        }
     }
 
 
