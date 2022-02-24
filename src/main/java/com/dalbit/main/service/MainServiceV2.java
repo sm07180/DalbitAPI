@@ -184,11 +184,12 @@ public class MainServiceV2 {
                             outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + ".webp");
                         }
                     }else{
-                        if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
+                        /*if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
                             outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + "?720x440");
                         }else{
                             outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + "?920x560");
-                        }
+                        }*/
+                        outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + "?960x720");
                     }
                     outVo.setProfImg(new ImageVo(p_mainRecommandVo.getProfileUrl(), p_mainRecommandVo.getGender(), photoSvrUrl));
                     outVo.setRoomType(p_mainRecommandVo.getRoomType());
