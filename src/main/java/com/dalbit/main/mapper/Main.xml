@@ -9,7 +9,7 @@
     <resultMap id="mainLoverRankingMap" type="com.dalbit.main.vo.procedure.P_MainLoverRankingPageVo" />
     <resultMap id="mainMyStarMap" type="P_MainStarVo" />
 
-    <select id="callMainAll" statementType="CALLABLE" parameterType="P_BannerVo" resultMap="mainTopMap,mainBannerMap,mainDjRankingMap,mainFanRankingMap,mainLoverRankingMap,mainMyStarMap">
+    <select id="callMainAll" statementType="CALLABLE" parameterType="P_BannerVo" resultMap="mainTopMap,mainBannerMap,mainMyStarMap">
         CALL sp_main_all_select_v1(#{paramMemNo, mode=IN, jdbcType=INTEGER}, #{paramDevice, mode=IN, jdbcType=INTEGER}, #{paramPlatform, mode=IN, jdbcType=CHAR})
     </select>
 
