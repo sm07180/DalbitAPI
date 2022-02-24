@@ -27,6 +27,7 @@ public class InviteVo {
    private String send_mem_dal_cnt    ;   //GINT       -- 지급달(보낸)
    private String send_mem_nick       ;
    private String send_image_profile  ;
+   private String sendExitYn          ;
    private String rcv_mem_no          ;   //GINT       -- 회원 번호(받은)
    private String rcv_mem_id          ;   //RCHAR      -- 회원 아이디(받은)
    private String rcv_mem_sex         ;   //AR         -- 회원성별(받은)

@@ -246,6 +246,7 @@ public interface MypageDao {
      * rcv_like_cnt	BIGINT		-- 좋아요수
      * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
      */
+    @Transactional(readOnly = false)
     @ResultMap({"ResultMap.integer", "ResultMap.ProfileFeedOutVO"})
     @Select("call rd_data.p_member_feed_list(#{memNo}, #{viewMemNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> pMemberFeedList(Map<String, Object> param);
@@ -328,6 +329,7 @@ public interface MypageDao {
      * img_name	BIGINT		-- 이미지 이름
      * ins_date		DATETIME	--  등록일
      * */
+    @Transactional(readOnly = false)
     @Select("CALL rd_data.p_member_feed_photo_list(#{regNo})")
     List<ProfileFeedPhotoOutVo> pMemberFeedPhotoList(String param);
 
