@@ -71,9 +71,9 @@ public class MainServiceV2 {
         P_BannerVo pBannerVo = new P_BannerVo();
         List<P_MainRecommandVo> recommendVoList = new ArrayList<>();
         List<BannerVo> bannerList = new ArrayList<>();
-        List<P_MainTimeRankingPageVo> mainRankingPageVoList = new ArrayList<>();
+/*        List<P_MainTimeRankingPageVo> mainRankingPageVoList = new ArrayList<>();
         List<P_MainRankingPageVo> mainFanRankingVoList = new ArrayList<>();
-        List<P_MainLoverRankingPageVo> mainLoverRankingVoList = new ArrayList<>();
+        List<P_MainLoverRankingPageVo> mainLoverRankingVoList = new ArrayList<>();*/
         List<P_MainStarVo> starVoList = new ArrayList<>();
         List<?> resultSets;
 
@@ -87,11 +87,11 @@ public class MainServiceV2 {
             if(!DalbitUtil.isEmpty(resultSets)){
                 recommendVoList = DBUtil.getList(resultSets, 0, P_MainRecommandVo.class);
                 bannerList = DBUtil.getList(resultSets, 1, BannerVo.class);
-                mainRankingPageVoList = DBUtil.getList(resultSets, 2, P_MainTimeRankingPageVo.class);
+/*                mainRankingPageVoList = DBUtil.getList(resultSets, 2, P_MainTimeRankingPageVo.class);
                 mainFanRankingVoList = DBUtil.getList(resultSets, 3, P_MainRankingPageVo.class);
-                mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainLoverRankingPageVo.class);
+                mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainLoverRankingPageVo.class);*/
                 if(DalbitUtil.isLogin(request)){
-                    starVoList = DBUtil.getList(resultSets, 5, P_MainStarVo.class);
+                    starVoList = DBUtil.getList(resultSets, 2, P_MainStarVo.class);
                 }
             }
         } catch (Exception e) {
@@ -104,11 +104,12 @@ public class MainServiceV2 {
         /* 현재 방송중인 내가 등록한 스타 */
         mainMap.put("myStar", getMyStar(starVoList, isLogin, photoSvrUrl));
 
+
         /* 일간 랭킹 */
         HashMap<String, Object> dayRankingMap = new HashMap<>();
-        dayRankingMap.put("djRank", getMainDayDjRank(mainRankingPageVoList)); // dj
+/*        dayRankingMap.put("djRank", getMainDayDjRank(mainRankingPageVoList)); // dj
         dayRankingMap.put("fanRank", getMainDayFanRank(mainFanRankingVoList)); // fan
-        dayRankingMap.put("loverRank", getMainDayLoverRank(mainLoverRankingVoList)); // lover
+        dayRankingMap.put("loverRank", getMainDayLoverRank(mainLoverRankingVoList)); // lover*/
         mainMap.put("dayRanking", dayRankingMap);
 
         mainMap.put("popupLevel", 0); // ???
@@ -184,11 +185,12 @@ public class MainServiceV2 {
                             outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + ".webp");
                         }
                     }else{
-                        if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
+                        /*if(startUrl.startsWith("https://m.") || startUrl.startsWith("https://devm.") || startUrl.startsWith("https://devm2.")){
                             outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + "?720x440");
                         }else{
                             outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + "?920x560");
-                        }
+                        }*/
+                        outVo.setBannerUrl(photoSvrUrl + p_mainRecommandVo.getBannerUrl() + "?960x720");
                     }
                     outVo.setProfImg(new ImageVo(p_mainRecommandVo.getProfileUrl(), p_mainRecommandVo.getGender(), photoSvrUrl));
                     outVo.setRoomType(p_mainRecommandVo.getRoomType());
