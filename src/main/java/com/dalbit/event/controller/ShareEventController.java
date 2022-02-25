@@ -4,6 +4,7 @@ import com.dalbit.event.service.ShareEventService;
 import com.dalbit.event.vo.ShareEventInputVo;
 import com.dalbit.event.vo.ShareEventVo;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.IPUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 public class ShareEventController {
     private final ShareEventService shareEventService;
+    private final IPUtil ipUtil;
 
     @GetMapping("/tail/list")
     public String shareTailList(@RequestBody ShareEventVo shareEventVo, HttpServletRequest request) {
@@ -35,11 +37,13 @@ public class ShareEventController {
     }
 
     @PostMapping("/tail/ins")
-    public String shareTailIns(@RequestBody ShareEventInputVo shareEventInputVo) {
+    public String shareTailIns(@RequestBody ShareEventInputVo shareEventInputVo, HttpServletRequest request) {
+        String clientIP = ipUtil.getClientIP(request);
+        shareEventInputVo.setTailMemIp(clientIP);
         return shareEventService.shareTailIns(shareEventInputVo);
     }
 
-    @PostMapping("/tail/upd")
+    @PutMapping("/tail/upd")
     public String shareTailUpd(@RequestBody ShareEventInputVo shareEventInputVo) {
         return shareEventService.shareTailUpd(shareEventInputVo);
     }

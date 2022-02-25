@@ -2372,6 +2372,9 @@ public enum Status {
     공유이벤트_댓글목록_수정_성공("0", "share.event.tail.upd.success", "공유 이벤트 댓글 목록 수정 성공 시"),
     공유이벤트_댓글목록_수정_실패("-1", "share.event.tail.upd.fail", "공유 이벤트 댓글 목록 수정 실패 시"),
 
+    공유이벤트_댓글여부_체크_성공("0", "share.event.tail.chk.success", "공유 이벤트 댓글 체크 성공 시"),
+    공유이벤트_댓글여부_체크_실패("-2", "share.event.tail.chk.fail", "공유 이벤트 댓글 체크 실패 시"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),

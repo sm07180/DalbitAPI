@@ -20,4 +20,8 @@ public class ShareEventInputVo {
 
     /* 수정 */
     // #{tailNo}, #{tailMemNo}, #{tailMemId}, #{tailMemSex}, #{tailMemIp}, #{tailConts}, #{tailLoginMedia}
+
+    /* 체크 */
+    private String memNo;
+    // private String tailConts;
 }

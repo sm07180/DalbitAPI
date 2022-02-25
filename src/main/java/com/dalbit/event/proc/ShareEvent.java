@@ -86,4 +86,17 @@ public interface ShareEvent {
     @ResultMap({"ResultMap.integer", "ResultMap.ShareEventVo"})
     @Select("CALL rd_data.p_tb_event_rbd_share_tail_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> shareTailList(ShareEventVo shareEventVo);
+
+    /**********************************************************************************************
+     * @Method 설명 : # 공유하기 등록 검사
+     * @작성일   : 2022-02-22
+     * @작성자   : 박성민
+     * @Param  :
+     *   memNo BIGINT UNSIGNED		-- 회원번호
+     * 	,tailConts VARCHAR(300)		-- 내용
+     * @return :
+     *  s_return			INT			# 1보다 클 경우 등록되어 있는 상태
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_tb_event_rbd_share_tail_chk(#{memNo}, #{tailConts})")
+    Integer shareTailChk(ShareEventInputVo shareEventInputVo);
 }

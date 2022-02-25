@@ -73,11 +73,16 @@ public class ShareEventService {
     public String shareTailIns(ShareEventInputVo shareEventInputVo) {
         Integer procResult = 0;
         try {
-            procResult = shareEvent.shareTailIns(shareEventInputVo);
-            if(procResult == 1) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_성공, procResult));
+            Integer chk = shareEvent.shareTailChk(shareEventInputVo);
+            if(chk > 0) { // 이미 참여한 url
+                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글여부_체크_실패, procResult));
             }else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_실패, procResult));
+                procResult = shareEvent.shareTailIns(shareEventInputVo);
+                if(procResult == 1) {
+                    return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_성공, procResult));
+                }else {
+                    return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_실패, procResult));
+                }
             }
         } catch (Exception e) {
             log.error("ShareEventService shareTailIns Error : ", e);
