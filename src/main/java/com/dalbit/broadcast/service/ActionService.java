@@ -400,53 +400,64 @@ public class ActionService {
                 coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
                 itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
 
-                //리브랜딩 달라조각 모으기 이벤트
+                /* 리브랜딩 달라조각 모으기 이벤트 */
+                HashMap feverInfoMap = new HashMap();
+                HashMap stoneInfoMap = new HashMap();
 
-                HashMap socketParamMap = new HashMap(); //소켓에 보내기 위한 map
                 Long roomNo = Long.parseLong(pRoomGiftVo.getRoom_no());
                 Long dalCnt = DalbitUtil.getLongMap(itemMap,"dalCnt");
 
-                //1) 피버 타임 발동 조건체크
-                DallagersRoomFerverSelVo feverInfo = dallaEvent.callEventRoomFeverInfo(roomNo);
-                // feverInfo is null => error
-                String feverTimeYn = feverInfo.getFever_yn();
-                //todo 프로시져 달 누적수치 필요
-//                feverInfo.getGift_fever_cnt();   //달 선물 누적조건으로 발동된 피버 횟수
-                
-                // 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상
-                List<P_RoomMemberListVo> listeners = userService.getListenerList(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no());
-                if(listeners.size() < 11) { //10명 이하 체크
+                // 1) 피버 타임 발동 조건체크 (피버 시작, 종료 프로시져는 소켓서버에서 호출함)
+                DallagersRoomFerverSelVo feverInfo = dallaEvent.callEventRoomFeverInfo(roomNo); // feverInfo is null => error
+                if(feverInfo == null)
+                    log.error("sendGift / feverInfo db result null");
+                boolean feverChkContinueFlag  = false; // 누적 조건 성립시 다음 조건체크 무시하기 위한 플래그값
 
+                // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 조건 2개인 경우 1번만 발동 )
+                Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
+
+                // 누적선물 5000씩 증가하는 피버발동 조건
+                if((Long.valueOf(feverInfo.getGift_fever_cnt())) - (goldCnt % 5000) < 0){
+                    feverChkContinueFlag = true;
+                    feverInfoMap.put("type", 1);
+                    feverInfoMap.put("time", 0);
                 }
-                listeners = null;
 
+                // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 조건 2개인 경우 1번만 발동 )
+                if(!feverChkContinueFlag) {
+                    List<P_RoomMemberListVo> listeners = userService.getListenerList(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no());
+                    if (listeners.size() < 11 && true) { //10명 이하 체크 + 방송시간 30분 이상
+                        feverInfoMap.put("type", 2);
+                        feverInfoMap.put("time", 1800); //30분
+                    }
+                    listeners = null;
+                }
 
-                boolean isFeverTime = StringUtils.equals("y", feverTimeYn);
-                float feverValue = isFeverTime? 1.5F: 1;
-                double sendPieceCnt = Math.floor( (dalCnt % 50) * feverValue ); //보낸사람 (청취자)
-                double rcvPieceCnt = Math.floor( (dalCnt % 100) * feverValue );  //받는사람 (방장)
-
+                boolean isFeverTime = StringUtils.equals("y", feverInfo.getFever_yn()); // 현재 피버타임 진행중 여부
+                float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
+                
+                // 2) 스톤 등록 처리
+                double sendPieceCnt = Math.floor( (dalCnt % 50) * feverValue ); // 보낸사람 (청취자)
+                double rcvPieceCnt = Math.floor( (dalCnt % 100) * feverValue ); // 받는사람 (방장)
                 DallagersInitialAddVo addVo = new DallagersInitialAddVo();
                 addVo.setRoomNo(Long.parseLong(pRoomGiftVo.getRoom_no()));
-                if(sendPieceCnt > 0){   // 달조각 등록 (청취자)
+                if(sendPieceCnt > 0){   // 스톤 등록 (청취자)
                     addVo.setMemNo(Long.parseLong(pRoomGiftVo.getMem_no()));
                     addVo.setCollectSlct(3);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4: 부스터수 ,5:받은별]
                     addVo.setSlctValCnt(dalCnt);    // 달, 별 갯수
-                    addVo.setFeverYn(feverTimeYn);  // 피버 타임 여부 [y,n]
-                    socketParamMap.put("toBJ", dallaEvent.callEventInitialAdd(addVo, sendPieceCnt));
+                    addVo.setFeverYn(isFeverTime? "y": "n");  // 피버 타임 여부 [y,n]
+                    stoneInfoMap.put("toBJ", dallaEvent.callEventInitialAdd(addVo, sendPieceCnt));
                 }
-                if(rcvPieceCnt > 0){    // 달조각 등록 (방장)
+                if(rcvPieceCnt > 0){    // 스톤 등록 (방장)
                     addVo.setMemNo(Long.parseLong(pRoomGiftVo.getGifted_mem_no()));
                     addVo.setCollectSlct(5);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4:부스터수 ,5:받은별]
                     addVo.setSlctValCnt(dalCnt);    // 달, 별 갯수
-                    addVo.setFeverYn(feverTimeYn);  // 피버 타임 여부 [y,n]
-                    socketParamMap.put("toViewer", dallaEvent.callEventInitialAdd(addVo, rcvPieceCnt));
+                    addVo.setFeverYn(isFeverTime? "y": "n");  // 피버 타임 여부 [y,n]
+                    stoneInfoMap.put("toViewer", dallaEvent.callEventInitialAdd(addVo, rcvPieceCnt));
                 }
                 addVo = null;
-
-                
-
-
+                itemMap.put("stoneInfo",stoneInfoMap);
+                //todo test , 30분 이상정보 넣기
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
