@@ -1,15 +1,24 @@
 package com.dalbit.event.service;
 
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.DallagersEvent;
+import com.dalbit.event.vo.DallagersEventMySelVo;
+import com.dalbit.event.vo.DallagersEventSpecialMySelVo;
 import com.dalbit.event.vo.DallagersInitialAddVo;
 import com.dalbit.event.vo.DallagersRoomFerverSelVo;
+import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -182,6 +191,272 @@ public class DallagersEventService {
         } catch (Exception e) {
             log.error("DallagersEventService.java / callEventRoomFeverInfo Exception {}", e);
             return null;
+        }
+    }
+
+    /**
+     * 달라이벤트 스케줄 (현재 이벤트 진행여부 체크용도)
+     * @Param
+     *
+     * @Return
+     * cnt        INT		-- 로우 수
+     * seq_no		INT		-- 회차번호
+     * start_date	DATETIME	-- 시작일자
+     * end_date		DATETIME	-- 종료일자
+     * */
+    public String getReqNo(){
+        try {
+            Map<String, Object> result = dallagersEvent.pEvtDallaCollectScheduleSel();
+
+            if (result == null) {
+                log.error("DallagersEventService.java / getReqNo() => Db result null");
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, result));
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getReqNo() => Exception {}",e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
+    }
+
+    /**
+     * 달라이벤트 이니셜 뽑기
+     * @Param
+     * memNo        BIGINT		-- 회원번호
+     * ,useDallaGubunOne CHAR(1)		-- 구분[d,a,l](사용)
+     * ,useDallaGubunTwo CHAR(1)		-- 구분[d,a,l](사용)
+     * ,insDallaGubun    	CHAR(1)		-- 구분[d,a,l](받은)
+     *
+     * seqNo        INT         --현재 회차 (insert 후 회원정보 select 용)
+     * @Return
+     * s_return		INT		--  -1: 스톤 부족, 0:에러, 1: 정상
+     * */
+    public String pEvtDallaCollectBbopgiIns(HashMap<String, Object> param, HttpServletRequest request){
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            String useDallaGubunOne = DalbitUtil.getStringMap(param, "useDallaGubunOne");
+            String useDallaGubunTwo = DalbitUtil.getStringMap(param, "useDallaGubunTwo");
+            Integer seqNo = DalbitUtil.getIntMap(param, "seqNo");
+            String insDallaGubun = "";
+            Random random = new Random();
+            int stoneNumber = random.nextInt(3001);
+
+            // 스톤 뽑기( 결과 계산 )
+            if(stoneNumber < 1000){ //0 ~ 999 : d
+                insDallaGubun = "d";
+            } else if (stoneNumber < 2000) { // 1000 ~ 1999 : a
+                insDallaGubun = "a";
+            } else { // 2000 ~ 3000 : l
+                insDallaGubun = "l";
+            }
+
+            if(!seqNo.equals(0) && !StringUtils.equals(useDallaGubunOne, "") && !StringUtils.equals(useDallaGubunTwo, "") &&
+                    !StringUtils.equals(insDallaGubun, "") && !StringUtils.equals(memNo, null)) {
+                param.put("memNo", Long.parseLong(memNo));
+                // 스톤 뽑기
+                Integer resultCode = dallagersEvent.pEvtDallaCollectBbopgiIns(param);
+
+                if(resultCode == null || resultCode == 0){
+                    log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => db result error, param: {}, resultCode: {}", gsonUtil.toJson(param), resultCode);
+                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_DB_실패));
+                } else if(resultCode == -1){
+                    log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => fail param: {}", gsonUtil.toJson(param));
+                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_DB_실패));
+                }
+
+                // 스톤 뽑기 완료 후 내 정보 재조회
+                HashMap resultData = new HashMap();
+                DallagersEventMySelVo mySelVo = dallagersEvent.pEvtDallaCollectMemberRankMySel(param);
+                resultData.put("resultStone", insDallaGubun);
+                resultData.put("myInfo", mySelVo);
+
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultData));
+            } else {
+                log.error("DallagersEventService.java / getMyRankInfo() => param Error {}", gsonUtil.toJson(param));
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getMyRankInfo() => Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
+    }
+
+    /**
+     * 달라이벤트 회원정보 o
+     * @Param
+     * seqNo INT 			-- 회차 번호
+     * ,memNo BIGINT			-- 회원 번호
+     *
+     * @Return
+     * rankNo		BIGINT		-- 순위
+     * ins_d_cnt		INT		-- 사용가능한 d 수
+     * ins_a_cnt		INT		-- 사용가능한 a 수
+     * ins_l_cnt		INT		-- 사용가능한 l 수
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_no		BIGINT		-- 회원 번호
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    public String getMyRankInfo(Integer seqNo , HttpServletRequest request){
+        try {
+            HashMap<String, Object> param = new HashMap();
+            String memNo = MemberVo.getMyMemNo(request);
+            if(!seqNo.equals(0) && !StringUtils.equals(memNo, null)) {
+                param.put("memNo", Long.parseLong(memNo));
+                param.put("seqNo", seqNo);
+                DallagersEventMySelVo resultVo = dallagersEvent.pEvtDallaCollectMemberRankMySel(param);
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
+            } else {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getMyRankInfo() => Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
+    }
+
+    /**
+     * 달라이벤트 리스트 o
+     * @Param
+     * seqNo 		INT 		-- 회차 번호
+     * ,pageNo 		INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * #1
+     * cnt		BIGINT		-- 전체 수
+     *
+     * #2
+     * seq_no		INT		-- 회차 번호
+     * mem_no		BIGINT		-- 회원 번호
+     * ins_d_cnt		INT		-- 사용가능한 d 수
+     * ins_a_cnt		INT		-- 사용가능한 a 수
+     * ins_l_cnt		INT		-- 사용가능한 l 수
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    public String getRankList(HashMap<String, Object> param, HttpServletRequest request){
+        try {
+            Integer seqNo = DalbitUtil.getIntMap(param, "seqNo");
+            Integer pageNo = DalbitUtil.getIntMap(param, "pageNo");
+            Integer pagePerCnt = DalbitUtil.getIntMap(param, "pagePerCnt");
+
+            if(!seqNo.equals(0) && !pageNo.equals(0) && !pagePerCnt.equals(0)) {
+                List<Object> queryList = dallagersEvent.pEvtDallaCollectMemberRankList(param);
+                Integer cnt = DBUtil.getData(queryList, 0, Integer.class);
+                List<DallagersEventMySelVo> list = DBUtil.getList(queryList, 1, DallagersEventMySelVo.class);
+
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, list));
+            } else {
+                log.error("DallagersEventService.java / getRankList() => param Error {}", gsonUtil.toJson(param));
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getRankList() => Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
+    }
+
+    /**
+     * 달라이벤트 스페셜 회원정보 o
+     * @Param
+     * memNo		 BIGINT		-- 회원 번호
+     *
+     * @Return
+     * rankNo		BIGINT		-- 순위
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_no		BIGINT		-- 회원 번호
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    public String getSpecialMyRankInfo(HttpServletRequest request){
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            if(!StringUtils.equals(memNo, null)) {
+                DallagersEventSpecialMySelVo resultVo = dallagersEvent.pEvtDallaCollectMemberSpecialRankMySel(Long.parseLong(memNo));
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
+            } else {
+                log.error("DallagersEventService.java / getSpecialMyRankInfo() => param Error {}", memNo);
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getSpecialMyRankInfo() => Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
+    }
+
+    /**
+     * 달라이벤트 회원 스페셜 리스트 o
+     * @Param
+     * pageNo        INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * #1
+     * cnt		BIGINT		-- 전체 수
+     *
+     * #2
+     * seq_no        INT		-- 회차 번호
+     * mem_no		BIGINT		-- 회원 번호
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    public String getSpecialRankList(HashMap<String, Object> param, HttpServletRequest request){
+        try {
+            Integer pageNo = DalbitUtil.getIntMap(param, "pageNo");
+            Integer pagePerCnt = DalbitUtil.getIntMap(param, "pagePerCnt");
+
+            if (!pageNo.equals(0) && !pagePerCnt.equals(0)) {
+                HashMap resultMap = new HashMap();
+                List<Object> queryList = dallagersEvent.pEvtDallaCollectMemberSpecialRankList(param);
+                Integer cnt = DBUtil.getData(queryList, 0, Integer.class);
+                List<DallagersEventSpecialMySelVo> list = DBUtil.getList(queryList, 1, DallagersEventSpecialMySelVo.class);
+                resultMap.put("cnt", cnt);
+                resultMap.put("list", list);
+
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultMap));
+            } else {
+                log.error("DallagersEventService.java / getSpecialRankList() => param Error {}", gsonUtil.toJson(param));
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getSpecialRankList() => Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
         }
     }
 

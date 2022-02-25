@@ -75,14 +75,13 @@ public interface DallagersEvent {
      * @Param
      *
      * @Return
-     * room_no                 BIGINT   방번호
-     * gift_fever_cnt          INT      피버횟수(선물)
-     * play_fever_cnt          INT      피버횟수(시간)
-     * tot_fever_cnt           INT      총합
-     * fever_yn                CHAR     피버확인[y,n]
+     * cnt        INT		-- 로우 수
+     * seq_no		INT		-- 회차번호
+     * start_date	DATETIME	-- 시작일자
+     * end_date		DATETIME	-- 종료일자
      * */
-    @Select("CALL rd_data.p_evt_dalla_collect_schedule_sel(#{roomNo})")
-    DallagersEventScheduleSelVo pEvtDallaCollectScheduleSel(Long roomNo);
+    @Select("CALL rd_data.p_evt_dalla_collect_schedule_sel()")
+    Map<String, Object> pEvtDallaCollectScheduleSel();
 
     /**
      * 달라이벤트 이니셜 뽑기
@@ -100,7 +99,7 @@ public interface DallagersEvent {
 
 
     /**
-     * 달라이벤트 회원정보
+     * 달라이벤트 회원정보 o
      * @Param
      * seqNo INT 			-- 회차 번호
      * ,memNo BIGINT			-- 회원 번호
@@ -127,7 +126,7 @@ public interface DallagersEvent {
     DallagersEventMySelVo pEvtDallaCollectMemberRankMySel(Map<String, Object> param);
 
     /**
-     * 달라이벤트 리스트
+     * 달라이벤트 리스트 o
      * @Param
      * seqNo 		INT 		-- 회차 번호
      * ,pageNo 		INT UNSIGNED	-- 페이지 번호
@@ -161,7 +160,7 @@ public interface DallagersEvent {
 
 
     /**
-     * 달라이벤트 스페셜 회원정보
+     * 달라이벤트 스페셜 회원정보 o
      * @Param
      * memNo		 BIGINT		-- 회원 번호
      *
@@ -184,7 +183,7 @@ public interface DallagersEvent {
     DallagersEventSpecialMySelVo pEvtDallaCollectMemberSpecialRankMySel(Long memNo);
 
     /**
-     * 달라이벤트 회원 스페셜 리스트
+     * 달라이벤트 회원 스페셜 리스트 o
      * @Param
      * pageNo        INT UNSIGNED	-- 페이지 번호
      * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)

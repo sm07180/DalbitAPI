@@ -47,4 +47,8 @@
 
     <!-- 친구초대이벤트 -->
     <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
+
+    <!-- 달라져스 조각 모으기 이벤트 -->
+    <resultMap id="DallagersEventMySelVo" type="com.dalbit.event.vo.DallagersEventMySelVo"/>
+    <resultMap id="DallagersEventSpecialMySelVo" type="com.dalbit.event.vo.DallagersEventSpecialMySelVo"/>
 </mapper>
