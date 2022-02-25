@@ -181,7 +181,7 @@ public class DallagersEventService {
             return resultVo;
         } catch (Exception e) {
             log.error("DallagersEventService.java / callEventRoomFeverInfo Exception {}", e);
-            return resultVo;
+            return null;
         }
     }
 

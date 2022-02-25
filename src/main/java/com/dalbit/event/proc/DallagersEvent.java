@@ -1,12 +1,12 @@
 package com.dalbit.event.proc;
 
-import com.dalbit.event.vo.DallagersEventScheduleSelVo;
-import com.dalbit.event.vo.DallagersInitialAddVo;
-import com.dalbit.event.vo.DallagersRoomFerverSelVo;
+import com.dalbit.event.vo.*;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -84,5 +84,132 @@ public interface DallagersEvent {
     @Select("CALL rd_data.p_evt_dalla_collect_schedule_sel(#{roomNo})")
     DallagersEventScheduleSelVo pEvtDallaCollectScheduleSel(Long roomNo);
 
+    /**
+     * 달라이벤트 이니셜 뽑기
+     * @Param
+     * memNo        BIGINT		-- 회원번호
+     * ,useDallaGubunOne CHAR(1)		-- 구분[d,a,l](사용)
+     * ,useDallaGubunTwo CHAR(1)		-- 구분[d,a,l](사용)
+     * ,insDallaGubun    	CHAR(1)		-- 구분[d,a,l](받은)
+     *
+     * @Return
+     * s_return		INT		--  -1: 스톤 부족, 0:에러, 1: 정상
+     * */
+    @Select("CALL rd_data.p_evt_dalla_collect_bbopgi_ins(#{memNo}, #{useDallaGubunOne}, #{useDallaGubunTwo}, #{insDallaGubun})")
+    Integer pEvtDallaCollectBbopgiIns(Map<String, Object> param);
+
+
+    /**
+     * 달라이벤트 회원정보
+     * @Param
+     * seqNo INT 			-- 회차 번호
+     * ,memNo BIGINT			-- 회원 번호
+     *
+     * @Return
+     * rankNo		BIGINT		-- 순위
+     * ins_d_cnt		INT		-- 사용가능한 d 수
+     * ins_a_cnt		INT		-- 사용가능한 a 수
+     * ins_l_cnt		INT		-- 사용가능한 l 수
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_no		BIGINT		-- 회원 번호
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    @Select("CALL p_evt_dalla_collect_member_rank_my_sel(#{seqNo}, #{memNo})")
+    DallagersEventMySelVo pEvtDallaCollectMemberRankMySel(Map<String, Object> param);
+
+    /**
+     * 달라이벤트 리스트
+     * @Param
+     * seqNo 		INT 		-- 회차 번호
+     * ,pageNo 		INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * #1
+     * cnt		BIGINT		-- 전체 수
+     *
+     * #2
+     * seq_no		INT		-- 회차 번호
+     * mem_no		BIGINT		-- 회원 번호
+     * ins_d_cnt		INT		-- 사용가능한 d 수
+     * ins_a_cnt		INT		-- 사용가능한 a 수
+     * ins_l_cnt		INT		-- 사용가능한 l 수
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    @ResultMap({"ResultMap.integer", "ResultMap.DallagersEventMySelVo"})
+    @Select("CALL rd_data.p_evt_dalla_collect_member_rank_list(#{seqNo}, #{pageNo}, #{pagePerCnt})")
+    List<Object> pEvtDallaCollectMemberRankList(Map<String, Object> param);
+
+
+    /**
+     * 달라이벤트 스페셜 회원정보
+     * @Param
+     * memNo		 BIGINT		-- 회원 번호
+     *
+     * @Return
+     * rankNo		BIGINT		-- 순위
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_no		BIGINT		-- 회원 번호
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    @Select("CALL p_evt_dalla_collect_member_special_rank_my_sel(#{memNo})")
+    DallagersEventSpecialMySelVo pEvtDallaCollectMemberSpecialRankMySel(Long memNo);
+
+    /**
+     * 달라이벤트 회원 스페셜 리스트
+     * @Param
+     * pageNo        INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * #1
+     * cnt		BIGINT		-- 전체 수
+     *
+     * #2
+     * seq_no        INT		-- 회차 번호
+     * mem_no		BIGINT		-- 회원 번호
+     * dalla_cnt		INT		-- 달라 수
+     * view_time	INT		-- 청취시간
+     * play_time		INT		-- 방송시간
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * mem_id		VARCHAR	-- 회원 아이디
+     * mem_nick	VARCHAR	-- 회원 닉네임
+     * mem_sex		CHAR		-- 회원성별
+     * image_profile	VARCHAR	-- 프로필
+     * mem_level	BIGINT		-- 레벨
+     * mem_state	BIGINT		-- 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
+     * */
+    @ResultMap({"ResultMap.integer", "ResultMap.DallagersEventSpecialMySelVo"})
+    @Select("CALL p_evt_dalla_collect_member_special_rank_list(#{pageNo}, #{pagePerCnt})")
+    List<Object> pEvtDallaCollectMemberSpecialRankList(Map<String, Object> param);
 
 }
