@@ -2349,14 +2349,15 @@ public enum Status {
     초대코드_생성("0000", "invitaion.code.success", "초대코드 생성 성공 시"),
     초대코드_중복("C001", "invitaion.code.duplication", "초대코드 중복 발생 시"),
 
-    친구코드_등록_성공("0000", "invitaion.friend.code.success", "친구코드 등록 성공 시"),
-    친구코드_없음("C001", "invitaion.friend.code.empty", "친구코드 없음"),
-    친구코드_등록_에러("C002", "invitaion.friend.code.fail", "친구코드 등록 실패 시"),
-    친구코드_중복_등록("C003", "invitaion.friend.code.duplication", "친구코드 중복 등록 시도 시"),
+    친구코드_등록_성공("0000", "invitaion.friend.success", "친구코드 등록 성공 시"),
+    친구코드_없음("C001", "invitaion.friendempty", "친구코드 없음"),
+    친구코드_등록_에러("C002", "invitaion.friend.fail", "친구코드 등록 실패 시"),
+    친구코드_중복_등록("C003", "invitaion.friend.fail", "친구코드 중복 등록 시도 시"),
 
-    친구초대_참여대상("0000", "invitaion.join.code.success", "친구초대 참여대상"),
-    친구초대_참여대상_아님("C004", "invitaion.join.code.fail", "친구초대 참여대상 아님"),
-    친구초대_나이제한("C005", "invitaion.join.age.fail", "친구초대 이벤트 나이제한"),
+    친구초대_참여대상_아님("C004", "invitaion.join.fail", "친구초대 참여대상 아님"),
+    친구초대_기간_중복("C005", "invitaion.join.fail", "친구초대 가입내역, 중복아이디 대상"),
+    친구초대_나이제한("C006", "invitaion.join.fail", "친구초대 나이제한"),
+
 
     //투표
     투표_생성("C001", "vote.code.insert.success", "투표_생성"),
