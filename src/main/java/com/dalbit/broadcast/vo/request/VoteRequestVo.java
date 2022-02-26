@@ -19,6 +19,7 @@ public class VoteRequestVo {
     private String voteDupliYn;         // 중복투표 여부
     private Integer voteItemCnt;        // 투표항목수
     private Integer endTime;            // 마감설정시간 (초)
+    private String endSlct;             // 마감구분 [a:전체마감, o:단일마감]
 
     private String voteItemName;        // 투표 아이템 제목
     private List<String> voteItemNames; // loop

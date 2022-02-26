@@ -83,6 +83,23 @@ public interface VoteDao {
     Integer pRoomVoteDel(VoteRequestVo voteRequestVo);
 
     /**
+     * ##### 방송방 투표 마감
+     *
+     * CALL p_room_vote_end(
+     * memNo BIGINT			-- 회원번호
+     * ,roomNo BIGINT		-- 방번호
+     * ,voteNo BIGINT		-- 투표번호
+     * ,endSlct CHAR(1)		-- 마감구분[a:전체마감, o:단일마감]
+     * )
+     *
+     * # RETURN
+     *
+     * s_return		INT		--  0:에러, 1:정상
+     */
+    @Select("CALL p_room_vote_end(#{memNo},#{roomNo},#{voteNo},#{endSlct})")
+    Integer pRoomVoteEnd(VoteRequestVo voteRequestVo);
+
+    /**
      * ##### 방송방 투표 리스트
      *
      * CALL p_room_vote_list(
@@ -136,7 +153,7 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-    @Transactional(readOnly = true)
+    // insert 후 바로 조회 => Master
     VoteResultVo pRoomVoteSel(VoteRequestVo voteRequestVo);
 
     /**

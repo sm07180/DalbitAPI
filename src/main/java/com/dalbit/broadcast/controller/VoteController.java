@@ -31,6 +31,10 @@ public class VoteController {
     public Object delVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.delVote(voteRequestVo, request);
     }
+    @PostMapping("/endVote")
+    public Object endVote(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
+        return voteService.endVote(voteRequestVo, request);
+    }
     @PostMapping("/getVoteList")
     public Object getVoteList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.getVoteList(voteRequestVo);
@@ -42,5 +46,10 @@ public class VoteController {
     @PostMapping("/getVoteDetailList")
     public Object getVoteDetailList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.getVoteDetailList(voteRequestVo);
+    }
+
+    @PostMapping("/getVoteSelAndDetailList")
+    public Object getVoteSelAndDetailList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
+        return voteService.getVoteSelAndDetailList(voteRequestVo);
     }
 }
