@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -190,12 +192,12 @@ public class VoteService {
             if(list == null){
                 return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회_에러, null));
             }
+            list = setVoteRank(list);
         } catch (Exception e) {
             log.error("VoteService getVoteDetailList Error => {}", e.getMessage());
         }
         return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회, list));
     }
-
 
     public String getVoteSelAndDetailList(VoteRequestVo voteRequestVo) {
         if (StringUtils.isEmpty(voteRequestVo.getMemNo())
@@ -213,6 +215,7 @@ public class VoteService {
             if(detailList == null || detailList.isEmpty() || sel == null){
                 return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목과리스트_조회_에러, null));
             }
+            detailList = setVoteRank(detailList);
         } catch (Exception e) {
             log.error("VoteService getVoteDetailList Error => {}", e.getMessage());
         }
@@ -244,5 +247,30 @@ public class VoteService {
             log.error("mapper.readValue error => {}", e.getMessage());
         }
         return returnBoolean;
+    }
+
+
+    private List<VoteResultVo> setVoteRank(List<VoteResultVo> list){
+        list = list.stream()
+                .sorted(Comparator.comparing(VoteResultVo::getVoteMemCnt).reversed())
+                .collect(Collectors.toList());
+        for (int i = 0; i < list.size(); i++) {
+            VoteResultVo now = list.get(i);
+            if(i==0){
+                now.setRank(1);
+                continue;
+            }
+            VoteResultVo prev = list.get(i-1);
+            if(now.getVoteMemCnt().equals(prev.getVoteMemCnt())){
+                now.setRank(prev.getRank());
+            }else{
+                now.setRank(prev.getRank()+1);
+            }
+        }
+        list = list.stream()
+                .sorted(Comparator.comparing(VoteResultVo::getItemNo))
+                .collect(Collectors.toList());
+
+        return list;
     }
 }

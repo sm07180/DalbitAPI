@@ -26,4 +26,6 @@ public class VoteResultVo {
     private LocalDateTime updDate;   // 변경일자
     private String itemNo;           // 투표항목번호
     private String voteItemName;     // 투표 항목 이름
+
+    private Integer rank;            // custom rank
 }

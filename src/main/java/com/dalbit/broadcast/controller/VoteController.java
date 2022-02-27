@@ -47,7 +47,6 @@ public class VoteController {
     public Object getVoteDetailList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.getVoteDetailList(voteRequestVo);
     }
-
     @PostMapping("/getVoteSelAndDetailList")
     public Object getVoteSelAndDetailList(@RequestBody VoteRequestVo voteRequestVo, HttpServletRequest request){
         return voteService.getVoteSelAndDetailList(voteRequestVo);
