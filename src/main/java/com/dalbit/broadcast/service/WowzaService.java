@@ -593,6 +593,9 @@ public class WowzaService {
             roomInfoVo.setIsVote(
                 voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s")
             );
+            // todo 투표일감 실서버 적용시점에 제거
+            roomInfoVo.setIsVoteHidden(true);
+
             //참여시 게스트 여부 체크
             for (int i=0; i<roomInfoVo.getGuests().size(); i++){
                 if(MemberVo.getMyMemNo(request).equals(((RoomGuestListOutVo) roomInfoVo.getGuests().get(i)).getMemNo())){
@@ -830,6 +833,8 @@ public class WowzaService {
                     roomInfoVo.setIsVote(
                             voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s")
                     );
+                    // todo 투표일감 실서버 적용시점에 제거
+                    roomInfoVo.setIsVoteHidden(true);
                     if("v".equals(roomInfoVo.getMediaType())){
                         roomInfoVo.setPlatform("agora");
                         roomInfoVo.setVideoResolution(720);

@@ -123,13 +123,24 @@ public class VoteService {
         try {
             result = voteDao.pRoomVoteEnd(voteRequestVo);
             if (result < 1) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.투표_마감_에러, result));
+                if("a".equals(voteRequestVo.getEndSlct())){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.투표_전체_마감_에러, result));
+                }
+                if("o".equals(voteRequestVo.getEndSlct())){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.투표_단일_마감_에러, result));
+                }
+
             }
             socketService.reqVoteByPass(voteRequestVo.getRoomNo(), "reqEndVote", voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         } catch (Exception e) {
             log.error("VoteService endVote Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.투표_마감, result));
+
+        if("o".equals(voteRequestVo.getEndSlct())){
+            return gsonUtil.toJson(new JsonOutputVo(Status.투표_단일_마감, result));
+        }else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.투표_전체_마감, result));
+        }
     }
 
     public String getVoteList(VoteRequestVo voteRequestVo) {
@@ -232,17 +243,16 @@ public class VoteService {
         voteRequestVo.setRoomNo(roomNo);
         voteRequestVo.setMemNo(memNo);
         voteRequestVo.setVoteSlct(voteSlct);
-        String aaa = getVoteList(voteRequestVo);
+        String voteList = getVoteList(voteRequestVo);
         ObjectMapper mapper = new ObjectMapper();
         boolean returnBoolean = false;
         try{
-            Map<String, Object> map = mapper.readValue(aaa, Map.class);
+            Map<String, Object> map = mapper.readValue(voteList, Map.class);
             Map<String, Object> inner = (Map<String, Object>) map.get("data");
-            Integer aa = (Integer) inner.get("cnt");
-            if(aa>0){
+            Integer cnt = (Integer) inner.get("cnt");
+            if(cnt > 0){
                 returnBoolean = true;
             }
-            log.error("@@@{}", map);
         }catch (Exception e){
             log.error("mapper.readValue error => {}", e.getMessage());
         }

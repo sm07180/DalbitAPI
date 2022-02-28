@@ -2366,8 +2366,9 @@ public enum Status {
     투표_리스트조회("C004", "vote.code.vote.list.success", "투표_리스트조회"),
     투표_정보조회("C005", "vote.code.vote.sel.success", "투표_정보조회"),
     투표_항목조회("C006", "vote.code.vote.detail.list.success", "투표_항목조회"),
-    투표_마감("C007", "vote.code.end.success", "투표_마감"),
-    투표_항목과리스트_조회("C008", "vote.code.vote.sel.detail.list.success", "투표_항목과리스트_조회"),
+    투표_단일_마감("C007", "vote.code.end.one.success", "투표_단일_마감"),
+    투표_전체_마감("C008", "vote.code.end.all.success", "투표_전체_마감"),
+    투표_항목과리스트_조회("C009", "vote.code.vote.sel.detail.list.success", "투표_항목과리스트_조회"),
 
     투표_생성_파라미터("EP001", "vote.code.insert.parameter", "투표_생성_파리미터"),
     투표_삭제_파라미터("EP002", "vote.code.delete.parameter", "투표_삭제_파리미터"),
@@ -2385,8 +2386,9 @@ public enum Status {
     투표_리스트조회_에러("E004", "vote.code.vote.list.fail", "투표_리스트조회_에러"),
     투표_정보조회_에러("E005", "vote.code.vote.sel.fail", "투표_정보조회_에러"),
     투표_항목조회_에러("E006", "vote.code.vote.detail.list.fail", "투표_항목조회_에러"),
-    투표_마감_에러("E007", "vote.code.vote.end.list.fail", "투표_마감_에러"),
-    투표_항목과리스트_조회_에러("E008", "vote.code.vote.sel.detail.list.fail", "투표_항목과리스트_조회_에러"),
+    투표_단일_마감_에러("E007", "vote.code.vote.end.one.list.fail", "투표_단일_마감_에러"),
+    투표_전체_마감_에러("E008", "vote.code.vote.end.all.list.fail", "투표_전체_마감_에러"),
+    투표_항목과리스트_조회_에러("E009", "vote.code.vote.sel.detail.list.fail", "투표_항목과리스트_조회_에러"),
 
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),

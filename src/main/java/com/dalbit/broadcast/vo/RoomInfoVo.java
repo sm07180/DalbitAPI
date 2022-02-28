@@ -101,6 +101,8 @@ public class RoomInfoVo {
     private List miniGameList = new ArrayList();
     private boolean isMinigame;
     private boolean isVote;
+    // todo 투표일감 실서버 적용시점에 제거
+    private boolean isVoteHidden;
     private int nonMemberTime = 60;
 
     private ArrayList<Map<String, String>> ttsActors;
@@ -269,6 +271,9 @@ public class RoomInfoVo {
 
     public void setIsVote(boolean isVote){
         this.isVote = isVote;
-
+    }
+    // todo 투표일감 실서버 적용시점에 제거
+    public void setIsVoteHidden(boolean isVoteHidden){
+        this.isVoteHidden = isVoteHidden;
     }
 }
