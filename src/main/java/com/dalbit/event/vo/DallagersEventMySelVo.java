@@ -1,5 +1,6 @@
 package com.dalbit.event.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,4 +29,6 @@ public class DallagersEventMySelVo {
     private Long mem_state;             //BIGINT        회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
 
     private Integer seq_no;             //INT           회차 번호 (랭킹 리스트에서만 사용)
+
+    private ImageVo profImg;            //image_profile => imgUrl object
 }

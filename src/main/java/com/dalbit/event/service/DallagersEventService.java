@@ -4,6 +4,7 @@ import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.DallagersEvent;
 import com.dalbit.event.vo.DallagersEventMySelVo;
@@ -320,6 +321,10 @@ public class DallagersEventService {
                     return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
                 }
 
+                //프로필 이미지 obj set
+                resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+
+
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
             } else {
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
@@ -370,6 +375,11 @@ public class DallagersEventService {
                 Integer cnt = DBUtil.getData(queryList, 0, Integer.class);
                 List<DallagersEventMySelVo> list = DBUtil.getList(queryList, 1, DallagersEventMySelVo.class);
 
+                //프로필 이미지 obj set
+                for (DallagersEventMySelVo vo: list){
+                    vo.setProfImg(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+                }
+
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, list));
             } else {
                 log.error("DallagersEventService.java / getRankList() => param Error {}", gsonUtil.toJson(param));
@@ -409,6 +419,9 @@ public class DallagersEventService {
                 if(resultVo == null){
                     return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
                 }
+                
+                //프로필 이미지 obj 생성
+                resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
 
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
             } else {
@@ -459,6 +472,11 @@ public class DallagersEventService {
                 resultMap.put("cnt", cnt);
                 resultMap.put("list", list);
 
+                //프로필 이미지 obj set
+                for (DallagersEventSpecialMySelVo vo: list){
+                    vo.setProfImg(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+                }
+
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultMap));
             } else {
                 log.error("DallagersEventService.java / getSpecialRankList() => param Error {}", gsonUtil.toJson(param));
@@ -503,9 +521,9 @@ public class DallagersEventService {
         // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 조건 2개인 경우 1번만 발동 )
         Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
 
-        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
+        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 100) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
-            feverInfoMap.put("time", 0);
+            feverInfoMap.put("time", 60);
             feverInfoAdded = true;
         }
 
@@ -513,7 +531,7 @@ public class DallagersEventService {
         if(!feverInfoAdded) {
             List<P_RoomMemberListVo> listeners = userService.getListenerList(sRoomNo, reqMemNo);
 
-            if (listeners.size() > 0) { //10명 이하 체크 + 방송시간 30분 이상
+            if (listeners.size() < 11 && feverInfo.getPlay_fever_cnt() < 2) { //10명 이하 체크 + 방송시간 30분 이상
                 try {
                     //30분 이상
                     Calendar now = Calendar.getInstance();
@@ -524,9 +542,10 @@ public class DallagersEventService {
                     long diffSec = (now.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
                     long diffMinutes = diffSec / 60;
 
-                    if (diffMinutes > 30) {
+                    // 30분
+                    if (diffMinutes > 5) { //if (diffMinutes >= 30) {
                         feverInfoMap.put("type", 2);
-                        feverInfoMap.put("time", diffMinutes); //30분
+                        feverInfoMap.put("time", 60); //30분
                         feverInfoAdded = true;
                     }
                 } catch (Exception e) {
@@ -540,8 +559,8 @@ public class DallagersEventService {
         float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
 
         // 2) 스톤 등록 처리 (d, a, l 조각 생성)
-        double sendPieceCnt = Math.floor( (dalCnt / 50) * feverValue ); // 보낸사람 (청취자)
-        double rcvPieceCnt = Math.floor( (dalCnt / 100) * feverValue ); // 받는사람 (방장)
+        double sendPieceCnt = Math.floor( (dalCnt / 10) * feverValue ); // 보낸사람 (청취자) 50
+        double rcvPieceCnt = Math.floor( (dalCnt / 10) * feverValue ); // 받는사람 (방장) 100
 
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
         addVo.setRoomNo(roomNo);
