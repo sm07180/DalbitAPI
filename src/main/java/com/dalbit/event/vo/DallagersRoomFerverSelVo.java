@@ -13,4 +13,5 @@ public class DallagersRoomFerverSelVo {
     private String fever_yn;              //CHAR     피버확인[y,n]
     private Integer gold;                 //INT      누적 받은별
     private Integer booster_cnt;          //INT      누적 부스터수
+    private String start_date;            //DATETIME 방송시작시간
 }

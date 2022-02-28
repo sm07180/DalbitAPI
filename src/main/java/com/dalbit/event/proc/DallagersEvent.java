@@ -40,8 +40,8 @@ public interface DallagersEvent {
      *
      * s_return		INT		--  -4:방송방시간 피버 2회 초과,  -3: 이벤트 기간 초과 , -2: 실시간방 없음 , -1: 현재 피버타임중 , 0: 에러
      * */
-    @Select("CALL rd_data.p_evt_dalla_collect_room_fever_ins(#{feverSlct}, #{roomNo})")
-    Integer pEvtDallaCollectRoomFeverIns(Map<String, Object> param);
+    //@Select("CALL rd_data.p_evt_dalla_collect_room_fever_ins(#{feverSlct}, #{roomNo})")
+    //Integer pEvtDallaCollectRoomFeverIns(Map<String, Object> param);
 
     /**
      * 피버타임 종료
@@ -50,8 +50,8 @@ public interface DallagersEvent {
      * # RETURN
      * s_return		INT		--   -3: 이벤트 기간 초과 , -2: 실시간방 없음 , -1: 현재 피버타임없음 , 0: 에러, 1:정상
      * */
-    @Select("CALL rd_data.p_evt_dalla_collect_room_fever_end(#{roomNo})")
-    Integer pEvtDallaCollectRoomFeverEnd(Long roomNo);
+    //@Select("CALL rd_data.p_evt_dalla_collect_room_fever_end(#{roomNo})")
+    //Integer pEvtDallaCollectRoomFeverEnd(Long roomNo);
 
     /**
      * 달라이벤트 방 피버 정보

@@ -399,9 +399,9 @@ public class ActionService {
                 MoonLandCoinDataVO coinDataVO = null;
                 coinDataVO = moonLandService.getSendItemMoonLandCoinDataVO(coinDataVO, pRoomGiftVo, (int) itemMap.get("dalCnt"), item_code );
                 itemMap.put("coinData", coinDataVO); //달나라 관련 데이터
-                dallaEvent.getDallagersPacketData(pRoomGiftVo, itemMap);
-                itemMap.put("stoneInfo", );
-                //todo test , 30분 이상정보 넣기
+
+                //리브랜딩 스톤 모으기: itemMap - put {stoneInfo, feverInfo}
+                dallaEvent.getDallagersPacketData(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(), itemMap, "gift");
 
                 socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
@@ -519,8 +519,6 @@ public class ActionService {
             //달나라 갈거야 시작
             MoonLandCoinDataVO coinDataVO = null;
             coinDataVO = moonLandService.getSendBoosterMoonLandCoinDataVO(coinDataVO, request, pRoomBoosterVo, boosterVo, returnMap);
-            //달나라 갈거야 끝
-
 
             SocketVo vo = socketService.getSocketObjectVo(pRoomBoosterVo.getRoom_no(), pRoomBoosterVo.getMem_no(), DalbitUtil.isLogin(request));
             try{
@@ -550,6 +548,9 @@ public class ActionService {
                 itemMap.put("memNo", vo1.getMemNo());
                 itemMap.put("isGuest", false);
                 itemMap.put("coinData", coinDataVO);    //달나라 코인 점수 (부스터)
+
+                //리브랜딩 스톤 모으기 returnMap - put {stoneInfo, feverInfo}
+                dallaEvent.getDallagersPacketData(pRoomBoosterVo.getRoom_no(), pRoomBoosterVo.getMem_no(), boosterVo.getMemNo(), itemMap, "booster");
 
                 socketService.giftItem(pRoomBoosterVo.getRoom_no(), pRoomBoosterVo.getMem_no(), "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();

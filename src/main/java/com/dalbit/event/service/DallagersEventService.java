@@ -20,10 +20,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -128,7 +126,7 @@ public class DallagersEventService {
      *
      * s_return		INT		--  -4:방송방시간 피버 2회 초과,  -3: 이벤트 기간 초과 , -2: 실시간방 없음 , -1: 현재 피버타임중 , 0: 에러, 1:정상
      * */
-    public Boolean callEventFeverTimeStart(Long feverSlct, Long roomNo){
+    /*public Boolean callEventFeverTimeStart(Long feverSlct, Long roomNo){
         try {
             HashMap param = new HashMap();
             param.put("feverSlct", feverSlct);
@@ -144,7 +142,7 @@ public class DallagersEventService {
             log.error("DallagersEventService.java / callEventFeverTimeStart Exception {}", e);
             return false;
         }
-    }
+    }*/
 
     /**
      * 피버타임 종료
@@ -157,7 +155,7 @@ public class DallagersEventService {
      *
      * s_return		INT		--   -3: 이벤트 기간 초과 , -2: 실시간방 없음 , -1: 현재 피버타임없음 , 0: 에러, 1:정상
      * */
-    public Boolean callEventFeverTimeEnd(Long roomNo){
+    /*public Boolean callEventFeverTimeEnd(Long roomNo){
         try {
             Integer result = dallagersEvent.pEvtDallaCollectRoomFeverEnd(roomNo);
 
@@ -169,7 +167,7 @@ public class DallagersEventService {
             log.error("DallagersEventService.java / callEventFeverTimeEnd Exception {}", e);
             return false;
         }
-    }
+    }*/
 
      /**
      * 달라이벤트 방 피버 정보
@@ -318,6 +316,10 @@ public class DallagersEventService {
                 param.put("memNo", Long.parseLong(memNo));
                 param.put("seqNo", seqNo);
                 DallagersEventMySelVo resultVo = dallagersEvent.pEvtDallaCollectMemberRankMySel(param);
+                if(resultVo == null){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                }
+
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
             } else {
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
@@ -404,6 +406,10 @@ public class DallagersEventService {
             String memNo = MemberVo.getMyMemNo(request);
             if(!StringUtils.equals(memNo, null)) {
                 DallagersEventSpecialMySelVo resultVo = dallagersEvent.pEvtDallaCollectMemberSpecialRankMySel(Long.parseLong(memNo));
+                if(resultVo == null){
+                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                }
+
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
             } else {
                 log.error("DallagersEventService.java / getSpecialMyRankInfo() => param Error {}", memNo);
@@ -464,36 +470,68 @@ public class DallagersEventService {
         }
     }
 
-    /* 소켓 서버에 보낼 패킷데이터 생성용*/
-    public HashMap getDallagersPacketData(P_RoomGiftVo pRoomGiftVo, HashMap itemMap){
+    /**
+    * 리브랜딩 스톤 모으기 이벤트 : 소켓 서버에 보낼 패킷데이터 담기
+    * 일반 선물시, 부스터 선물시
+    * */
+    public void getDallagersPacketData(String sRoomNo,String reqMemNo,String rcvMemNo, HashMap itemMap, String actionFlag){
         /* 리브랜딩 달라조각 모으기 이벤트 */
-        HashMap result = new HashMap();
-        HashMap feverInfoMap = new HashMap();
-        HashMap stoneInfoMap = new HashMap();
+        Map<String, Object> result = dallagersEvent.pEvtDallaCollectScheduleSel();
 
-        Long roomNo = Long.parseLong(pRoomGiftVo.getRoom_no());
+        if (result == null) {
+            log.error("DallagersEventService.java / getReqNo() => Db result null");
+            return;
+        }
+        //이벤트 진행중 아님
+        if ((int) result.get("seq_no") == 0) {
+            return;
+        }
+
+        HashMap stoneInfoMap = new HashMap();
+        HashMap feverInfoMap = new HashMap();
+        boolean stoenInfoAdded = false;
+        boolean feverInfoAdded = false;
+
+        Long roomNo = Long.parseLong(sRoomNo);
         Long dalCnt = DalbitUtil.getLongMap(itemMap,"dalCnt");
 
         // 1) 피버 타임 발동 조건체크 (피버 시작, 종료 프로시져는 소켓서버에서 호출함)
         DallagersRoomFerverSelVo feverInfo = callEventRoomFeverInfo(roomNo); // feverInfo is null => error
         if(feverInfo == null)
             log.error("sendGift / feverInfo db result null");
-        boolean feverChkContinueFlag  = false; // 누적 조건 성립시 다음 조건체크 무시하기 위한 플래그값
 
         // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 조건 2개인 경우 1번만 발동 )
         Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
-        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - (goldCnt % 5000) < 0){
-            feverChkContinueFlag = true;
+
+        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 0);
+            feverInfoAdded = true;
         }
 
         // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 조건 2개인 경우 1번만 발동 )
-        if(!feverChkContinueFlag) {
-            List<P_RoomMemberListVo> listeners = userService.getListenerList(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no());
-            if (listeners.size() < 11 && true) { //10명 이하 체크 + 방송시간 30분 이상
-                feverInfoMap.put("type", 2);
-                feverInfoMap.put("time", 1800); //30분
+        if(!feverInfoAdded) {
+            List<P_RoomMemberListVo> listeners = userService.getListenerList(sRoomNo, reqMemNo);
+
+            if (listeners.size() > 0) { //10명 이하 체크 + 방송시간 30분 이상
+                try {
+                    //30분 이상
+                    Calendar now = Calendar.getInstance();
+                    now.setTime(new Date());
+                    Date startDate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(feverInfo.getStart_date());
+                    Calendar cmpDate = Calendar.getInstance();
+                    cmpDate.setTime(startDate);
+                    long diffSec = (now.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
+                    long diffMinutes = diffSec / 60;
+
+                    if (diffMinutes > 30) {
+                        feverInfoMap.put("type", 2);
+                        feverInfoMap.put("time", diffMinutes); //30분
+                        feverInfoAdded = true;
+                    }
+                } catch (Exception e) {
+                    log.error("dallagersService.java / getDallagersPacketData - feverTimeChk2 Exception {}", e);
+                }
             }
             listeners = null;
         }
@@ -502,28 +540,38 @@ public class DallagersEventService {
         float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
 
         // 2) 스톤 등록 처리 (d, a, l 조각 생성)
-        double sendPieceCnt = Math.floor( (dalCnt % 50) * feverValue ); // 보낸사람 (청취자)
-        double rcvPieceCnt = Math.floor( (dalCnt % 100) * feverValue ); // 받는사람 (방장)
+        double sendPieceCnt = Math.floor( (dalCnt / 50) * feverValue ); // 보낸사람 (청취자)
+        double rcvPieceCnt = Math.floor( (dalCnt / 100) * feverValue ); // 받는사람 (방장)
+
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
-        addVo.setRoomNo(Long.parseLong(pRoomGiftVo.getRoom_no()));
+        addVo.setRoomNo(roomNo);
+        boolean isGift = StringUtils.equals(actionFlag, "gift");
+
         if(sendPieceCnt > 0){   // 스톤 등록 (청취자)
-            addVo.setMemNo(Long.parseLong(pRoomGiftVo.getMem_no()));
-            addVo.setCollectSlct(3);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4: 부스터수 ,5:받은별]
+            addVo.setMemNo(Long.parseLong(reqMemNo));
+            addVo.setCollectSlct(isGift? 3 : 4);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4: 부스터수 ,5:받은별]
             addVo.setSlctValCnt(dalCnt);    // 달, 별 갯수
             addVo.setFeverYn(isFeverTime? "y": "n");  // 피버 타임 여부 [y,n]
-            stoneInfoMap.put("toBJ", callEventInitialAdd(addVo, sendPieceCnt));
+            stoneInfoMap.put("toViewer", callEventInitialAdd(addVo, sendPieceCnt));
+            stoenInfoAdded = true;
         }
         if(rcvPieceCnt > 0){    // 스톤 등록 (방장)
-            addVo.setMemNo(Long.parseLong(pRoomGiftVo.getGifted_mem_no()));
-            addVo.setCollectSlct(5);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4:부스터수 ,5:받은별]
+            addVo.setMemNo(Long.parseLong(rcvMemNo));
+            addVo.setCollectSlct(isGift? 5 : 4);        // 구분 [1:방송청취, 2:방송시간, 3:보낸달, 4:부스터수 ,5:받은별]
             addVo.setSlctValCnt(dalCnt);    // 달, 별 갯수
             addVo.setFeverYn(isFeverTime? "y": "n");  // 피버 타임 여부 [y,n]
-            stoneInfoMap.put("toViewer", callEventInitialAdd(addVo, rcvPieceCnt));
+            stoneInfoMap.put("toBJ", callEventInitialAdd(addVo, rcvPieceCnt));
+            stoenInfoAdded = true;
         }
-        addVo = null;
-        result.put("stoneInfo", stoneInfoMap);
-        result.put("feverInfo", feverInfoMap);
 
-        return result;
+        //소켓 데이터 set
+        if(stoenInfoAdded) {
+            itemMap.put("stoneInfo", stoneInfoMap);
+        }
+        if(feverInfoAdded) {
+            itemMap.put("feverInfo", feverInfoMap);
+        }
+
+        log.error("test => socket result {}", gsonUtil.toJson(itemMap));
     }
 }
