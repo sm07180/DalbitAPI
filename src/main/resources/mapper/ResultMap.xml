@@ -48,8 +48,10 @@
     <!-- 친구초대이벤트 -->
     <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
 
+    <resultMap id="PoemEventResVo" type="com.dalbit.event.vo.PoemEventResVo" />
+
     <!-- 투표 -->
     <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo" />
 
-
 </mapper>
+
