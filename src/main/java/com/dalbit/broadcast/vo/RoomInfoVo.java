@@ -100,6 +100,9 @@ public class RoomInfoVo {
 
     private List miniGameList = new ArrayList();
     private boolean isMinigame;
+    private boolean isVote;
+    // todo 투표일감 실서버 적용시점에 제거
+    private boolean isVoteHidden = true;
     private int nonMemberTime = 60;
 
     private ArrayList<Map<String, String>> ttsActors;
@@ -264,5 +267,9 @@ public class RoomInfoVo {
         if(("iPhone 6".equals(deviceVo.getDeviceModel()) || "iPhone 6 Plus".equals(deviceVo.getDeviceModel())) && this.bgImg.getUrl().endsWith(".gif")){
             this.bgImg.setUrl(this.bgImg.getUrl() + "?750x1334");
         }
+    }
+
+    public void setIsVote(boolean isVote){
+        this.isVote = isVote;
     }
 }

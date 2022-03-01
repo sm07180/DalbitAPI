@@ -6,6 +6,7 @@
 		<setting name="defaultExecutorType" value="REUSE" />
 		<setting name="aggressiveLazyLoading" value="false"/>
 		<!--<setting name="mapUnderscoreToCamelCase" value="true"/>-->
+		<setting name="returnInstanceForEmptyRow" value="true"/>
 	</settings>
 
 	<typeAliases>
@@ -85,6 +86,8 @@
 		<typeAlias type="com.dalbit.store.vo.PayChargeVo" alias="PayChargeVo" />
 
 		<typeAlias type="com.dalbit.socket.vo.P_RoomMemberInfoSelectVo" alias="P_RoomMemberInfoSelectVo" />
+
+		<typeAlias type="com.dalbit.broadcast.vo.request.VoteRequestVo" alias="VoteRequestVo" />
 	</typeAliases>
 
 	<mappers>
