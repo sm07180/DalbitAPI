@@ -48,6 +48,9 @@
     <!-- 친구초대이벤트 -->
     <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
 
+    <resultMap id="PoemEventResVo" type="com.dalbit.event.vo.PoemEventResVo" />
+
+
     <!-- 공유 이벤트 -->
     <resultMap id="ShareEventVo" type="com.dalbit.event.vo.ShareEventVo"/>
 </mapper>
