@@ -48,6 +48,12 @@
     <!-- 친구초대이벤트 -->
     <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
 
-    <!-- 리브랜딩 방송공지 -->
-    <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
+    <resultMap id="PoemEventResVo" type="com.dalbit.event.vo.PoemEventResVo" />
+
+    <!-- 투표 -->
+    <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo" />
+
+
+    <!-- 공유 이벤트 -->
+    <resultMap id="ShareEventVo" type="com.dalbit.event.vo.ShareEventVo"/>
 </mapper>

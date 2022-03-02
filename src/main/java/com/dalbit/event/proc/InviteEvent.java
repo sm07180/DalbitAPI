@@ -17,6 +17,7 @@ public interface InviteEvent {
     int pEvtInvitationMemberIns(String memNo, String invitationCode, String memPhone);
 
     //추천받은 회원 체크
+    //# -4: 이벤트 기간 전 회원가입  ,-3: 나이제한   ,-2: 본인 미인증  ,-1: 인증 아이디1개 초과   ,0: 에러 , 1:참여대상
     @Select("CALL rd_data.p_evt_invitation_rcv_member_chk(#{memNo}, #{memPhone})")
     int pEvtInvitationRcvMemberChk(String memNo, String memPhone);
 

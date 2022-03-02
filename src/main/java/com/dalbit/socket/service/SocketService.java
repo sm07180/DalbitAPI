@@ -1297,4 +1297,21 @@ public class SocketService {
             log.info("Socket Start : reqDjSetting {} {} {} {} {}", roomNo, memNo, message, isLogin, e);
         }
     }
+
+    @Async("threadTaskExecutor")
+    public void reqVoteByPass(String roomNo, String clientCommand, Object data, String authToken, boolean isLogin) {
+        log.info("Socket Start : {} {}, {}", clientCommand, data, isLogin);
+
+        HashMap<String, Object> message = new HashMap<String, Object>();
+        message.put("clientCommand", clientCommand);
+        message.put("data", data);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(message);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
+    }
 }

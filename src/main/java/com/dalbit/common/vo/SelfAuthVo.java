@@ -25,5 +25,7 @@ public class SelfAuthVo {
     private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성(RoomMake), 4:환전, 5:프로필, 6:방송하기&클립, 7:휴면해제, 8:방송방참여)
     private String authType;        //인증타입(0: 본인, 1:보호자)
 
+    private String pushLink = "";   // 기본 폼일때 인증 후 이동할 url
+
 
 }

@@ -12,7 +12,6 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -290,11 +288,18 @@ public class CommonController {
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
-        if(selfAuthVo.getAuthType().equals("0")){
-            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType());
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+            + selfAuthVo.getPushLink()
+        );
+        /*if(selfAuthVo.getAuthType().equals("0")){
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+                + selfAuthVo.getPushLink()
+            );
         } else {
-            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm());
-        }
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+                + selfAuthVo.getPushLink()
+            );
+        }*/
 
 
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));            //IFrame사용여부
@@ -351,6 +356,8 @@ public class CommonController {
             apiData.setIsHybrid(selfAuthSaveVo.getPlusInfo().split("_")[2]);
             apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
             apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
+            apiData.setAgreeTerm(selfAuthSaveVo.getPlusInfo().split("_")[5]);
+            apiData.setPushLink(selfAuthSaveVo.getPlusInfo().split("_")[6]);
 
             int manAge = birthToAmericanAge(
                 Integer.parseInt(apiData.getBirthYear()),
