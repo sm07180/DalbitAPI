@@ -101,6 +101,7 @@ public class RoomInfoVo {
     private List miniGameList = new ArrayList();
     private boolean isMinigame;
     private boolean isVote;
+    private boolean isVoteHidden = false;
     private int nonMemberTime = 60;
 
     private ArrayList<Map<String, String>> ttsActors;
