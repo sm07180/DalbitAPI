@@ -53,7 +53,9 @@
     <!-- 투표 -->
     <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo" />
 
-
     <!-- 공유 이벤트 -->
     <resultMap id="ShareEventVo" type="com.dalbit.event.vo.ShareEventVo"/>
+
+    <!-- 리브랜딩 방송공지 -->
+    <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
 </mapper>
