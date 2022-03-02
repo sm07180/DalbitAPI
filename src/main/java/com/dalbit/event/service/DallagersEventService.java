@@ -257,6 +257,7 @@ public class DallagersEventService {
             if(!seqNo.equals(0) && !StringUtils.equals(useDallaGubunOne, "") && !StringUtils.equals(useDallaGubunTwo, "") &&
                     !StringUtils.equals(insDallaGubun, "") && !StringUtils.equals(memNo, null)) {
                 param.put("memNo", Long.parseLong(memNo));
+                param.put("insDallaGubun", insDallaGubun);
                 // 스톤 뽑기
                 Integer resultCode = dallagersEvent.pEvtDallaCollectBbopgiIns(param);
 
@@ -276,11 +277,11 @@ public class DallagersEventService {
 
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultData));
             } else {
-                log.error("DallagersEventService.java / getMyRankInfo() => param Error {}", gsonUtil.toJson(param));
+                log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => param Error {}", gsonUtil.toJson(param));
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
             }
         } catch (Exception e) {
-            log.error("DallagersEventService.java / getMyRankInfo() => Exception {}", e);
+            log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => Exception {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
         }
     }
@@ -486,6 +487,31 @@ public class DallagersEventService {
             log.error("DallagersEventService.java / getSpecialRankList() => Exception {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
         }
+    }
+    /**
+     * 이벤트 진행중 여부 체크
+     * */
+    public Map<String, Object> getBroadcastEventScheduleCheck(){
+        /* 리브랜딩 달라조각 모으기 이벤트 */
+        Map<String, Object> eventInfo = new HashMap();
+        String link = DalbitUtil.getProperty("server.mobile.url") + "/event/rebranding?webview=new";
+        eventInfo.put("visible", false);    // 이벤트 진행 여부
+        eventInfo.put("pageLink", link);    // 클릭시 이동할 주소
+        try {
+            Map<String, Object> result = dallagersEvent.pEvtDallaCollectScheduleSel();
+
+            if (result == null) {
+                log.error("DallagersEventService.java / getReqNo() => Db result null");
+            }
+            //이벤트 진행중
+            if ((int) result.get("seq_no") > 0) {
+                eventInfo.put("visible", true);
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / getBroadcastEventScheduleCheck");
+        }
+
+        return eventInfo;
     }
 
     /**

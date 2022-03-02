@@ -13,6 +13,7 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.event.service.DallagersEventService;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.service.MoonLandService;
 import com.dalbit.event.vo.MoonLandInfoVO;
@@ -84,6 +85,7 @@ public class WowzaService {
 
     @Autowired TTSService ttsService;
     @Autowired MoonLandService moonLandService;
+    @Autowired DallagersEventService dallagersEventService;
 
     @Value("${wowza.prefix}")
     String WOWZA_PREFIX;
@@ -450,6 +452,8 @@ public class WowzaService {
             paramMap.put("memNo", MemberVo.getMyMemNo(request));
             paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
             roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+            // 조각 모으기 이벤트 정보 담기(이벤트 진행중 여부, 이벤트페이지 url)
+            roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck());
 
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(AGORA_APP_ID);
@@ -697,6 +701,8 @@ public class WowzaService {
             paramMap.put("memNo", MemberVo.getMyMemNo(request));
             paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
             roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
+            //조각 모으기 이벤트 정보 담기(이벤트 진행중 여부, 이벤트페이지 url)
+            roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck());
 
             //아고라 토큰 생성
             RtcTokenBuilder token = new RtcTokenBuilder();
