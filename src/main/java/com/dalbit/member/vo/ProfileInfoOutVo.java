@@ -75,6 +75,7 @@ public class ProfileInfoOutVo extends BaseVo {
     List profImgList;
     private boolean isMailboxOn;
     private String memJoinYn;
+    private int listenOpen;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
@@ -140,5 +141,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isReceive = target.getAlertYn() == 1;
         this.isMailboxOn = target.getMailboxOnOff() == 1;
         this.memJoinYn = target.getMemJoinYn();
+        this.listenOpen = target.getListenOpen();
     }
 }
