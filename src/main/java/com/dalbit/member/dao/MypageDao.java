@@ -389,4 +389,64 @@ public interface MypageDao {
      * */
     @Select("CALL p_member_feed_like_cancel_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
     Integer pMemberFeedLikeCancelIns(Map<String, Object> param);
+
+    /**
+     * 방송공지 등록
+     *
+     * @param
+     * memNo            BIGINT  -- 회원 번호
+     * ,roomNo          BIGINT  -- 방 번호[0: 기본, 방 있을시에만]
+     * ,roomNoticeConts VARCHAR -- 방송공지 등록글 내용
+     *
+     * @Return
+     * s_return         INT     -- #-1: 회원번호 없음 또는 공지글 등록있음, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_broadcast_room_notice_ins(#{memNo}, #{roomNo}, #{roomNoticeConts})")
+    Integer pMemberBroadcastNoticeIns(Map<String, Object> param);
+
+    /**
+     * 방송공지 수정
+     *
+     * @param
+     * roomNoticeNo     BIGINT  -- 방송공지 키값
+     * ,memNo           BIGINT  -- 회원번호
+     * ,roomNo          BIGINT  -- 방번호[0: 기본, 방 있을시에만]
+     * ,roomNoticeConts VARCHAR -- 방송공지 등록글 내용
+     *
+     * @Return
+     * s_return         INT     -- #-1: 공지글 등록 없음, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_broadcast_room_notice_upd(#{roomNoticeNo}, #{memNo}, #{roomNo}, #{roomNoticeConts})")
+    Integer pMemberBroadcastNoticeUpd(Map<String, Object> param);
+
+    /**
+     * 방송공지 삭제
+     *
+     * @param
+     * roomNoticeNo     BIGINT  -- 방송공지 키값
+     * ,memNo           BIGINT  -- 회원번호
+     * ,roomNo          BIGINT  -- 방번호[0: 기본, 방 있을시에만]
+     *
+     * @Return
+     * s_return         INT     -- #-1: 공지글 등록 없음, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_broadcast_room_notice_del(#{roomNoticeNo}, #{memNo}, #{roomNo})")
+    Integer pMemberBroadcastNoticeDel(BroadcastNoticeDelVo param);
+
+    /**
+     * 방송공지 정보
+     *
+     * @param
+     * memNo            BIGINT  -- 회원번호
+     *
+     * @Return
+     * auto_no          INT         -- 자동증가 번호
+     * mem_no           BIGINT      -- 회원 번호
+     * conts            VARCHAR     -- 회원 아이디
+     * ins_date         DATETIME    -- 등록 일자
+     * upd_date         DATETIME    -- 수정 일자
+     */
+    @ResultMap({"ResultMap.BroadcastNoticeListOutVo"})
+    @Select("CALL rd_data.p_broadcast_room_notice_sel(#{memNo})")
+    List<Object> pMemberBroadcastNoticeList(Map<String, Object> param);
 }

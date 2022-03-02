@@ -47,4 +47,7 @@
 
     <!-- 친구초대이벤트 -->
     <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
+
+    <!-- 리브랜딩 방송공지 -->
+    <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
 </mapper>

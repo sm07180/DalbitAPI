@@ -1031,6 +1031,52 @@ public class MypageController {
     }
 
     /**
+     * 설정 방송공지 등록
+     */
+    @PostMapping("/broad/add")
+    public String broadcastNoticeAdd(@Valid @RequestBody BroadcastNoticeAddVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.broadcastNoticeAdd(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / broadcastNoticeAdd Error {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+        }
+    }
+
+    /**
+     * 설정 방송공지 수정
+     */
+    @PostMapping("/broad/edit")
+    public String broadcastNoticeUpd(@Valid @RequestBody BroadcastNoticeUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.broadcastNoticeUpd(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / broadcastNoticeUpd Error {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+        }
+    }
+
+    /**
+     * 설정 방송공지 삭제
+     */
+    @DeleteMapping("/broad")
+    public String broadcastNoticedel(@Valid BroadcastNoticeDelVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return mypageService.broadcastNoticeDel(param, request);
+    }
+
+    /**
+     * 설정 방송공지 조회
+     */
+    @GetMapping("/broad/sel")
+    public String broadcastNoticeSel(@Valid BroadcastNoticeSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return mypageService.broadcastNoticeSel(noticeSelVo, request);
+    }
+
+    /**
      * 피드 등록
      * @Param
      *  title       String 제목

@@ -14,7 +14,6 @@ import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.GoodListVo;
-import com.dalbit.member.vo.request.MypageNoticeAddVo;
 import com.dalbit.member.vo.request.StoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -855,6 +854,101 @@ public class MypageService {
     }
 
     /**
+     * 설정 방송공지 등록
+     */
+    public String broadcastNoticeAdd(BroadcastNoticeAddVo noticeAddVo, HttpServletRequest request) {
+       HashMap paramMap = new HashMap();
+       Long reqMemNo = Long.parseLong(MemberVo.getMyMemNo(request));
+       Long reqRoomNo = Long.parseLong(noticeAddVo.getRoomNo());
+       paramMap.put("memNo", reqMemNo);
+       paramMap.put("roomNo", reqRoomNo);
+       paramMap.put("roomNoticeConts", StringUtils.equals(noticeAddVo.getRoomNoticeConts(),"") ? "default" : noticeAddVo.getRoomNoticeConts());
+       int regNo = mypageDao.pMemberBroadcastNoticeIns(paramMap);
+
+       if(regNo > 0) {
+           return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
+       } else if(regNo == -1) {
+           return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_상단고정_초과));
+       } else {
+           log.error("MypageService.java - broadcastNotice Ins Failed: {}", regNo);
+           return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+       }
+    }
+
+    /**
+     * 설정 방송공지 수정
+     */
+    public String broadcastNoticeUpd(BroadcastNoticeUpdVo noticeUpdVo, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+
+        paramMap.put("roomNoticeNo", noticeUpdVo.getRoomNoticeNo());
+        paramMap.put("memNo", MemberVo.getMyMemNo());
+        paramMap.put("roomNo", noticeUpdVo.getRoomNo());
+        paramMap.put("roomNoticeConts", StringUtils.equals(noticeUpdVo.getRoomNoticeConts(),"") ? "default" : noticeUpdVo.getRoomNoticeConts());
+        int result = mypageDao.pMemberBroadcastNoticeUpd(paramMap);
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
+        } else {
+            if(result == -1) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_상단고정_초과));
+            }
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+        }
+    }
+
+    /**
+     * 설정 방송공지 삭제
+     */
+    public String broadcastNoticeDel(BroadcastNoticeDelVo noticeDelVo, HttpServletRequest request) {
+        Integer deleteResult = mypageDao.pMemberBroadcastNoticeDel(noticeDelVo);
+        if(deleteResult == null || deleteResult < 1) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_실패));
+        } else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_성공));
+        }
+    }
+
+    /**
+     * 설정 방송공지 조회
+     */
+    public String broadcastNoticeSel(BroadcastNoticeSelVo noticeSelVo, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        List<BroadcastNoticeListOutVo> noticeRow = null;
+        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+
+        paramMap.put("memNo", memNo);
+        noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
+
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(noticeRow)) {
+            resultMap.put("list", new ArrayList());
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+        }
+
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(noticeSelVo.getMemNo());
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+
+        for(int i = 0; i < noticeRow.size(); i++) {
+            if(!DalbitUtil.isEmpty(banWord)) {
+                noticeRow.get(i).setConts(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, noticeRow.get(i).getConts()));
+            } else if(!DalbitUtil.isEmpty(systemBanWord)) {
+                noticeRow.get(i).setConts(DalbitUtil.replaceMaskString(systemBanWord, noticeRow.get(i).getConts()));
+            }
+        }
+
+        ArrayList arrList = new ArrayList();
+        for(int i = 0; i < noticeRow.size(); i++) {
+            BroadcastNoticeListOutVo vo = noticeRow.get(i);
+            arrList.add(vo);
+        }
+
+        resultMap.put("list", arrList);
+        return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
+    }
+
+    /**
      * 마이페이지 피드 등록
      */
     public String noticeAdd(ProfileFeedAddVo param, HttpServletRequest request) {
@@ -1025,12 +1119,12 @@ public class MypageService {
 
             /* 나중을 위해 나두기 */
             //고정된 글 리스트에 추가
-//            if(vo.getTopFix() == 1) fixedList.add(vo);
+            if(vo.getTopFix() == 1) fixedList.add(vo);
             //고정 안된 글 리스트에 추가
-//            else if(vo.getTopFix() == 0) unfixedList.add(vo);
+            else if(vo.getTopFix() == 0) unfixedList.add(vo);
             
             // 고정, 비고정 글 모두 list에 담기
-            unfixedList.add(vo);
+//            unfixedList.add(vo);
         }
 
         //최종 데이터
@@ -2451,7 +2545,6 @@ public class MypageService {
     public String getMyPageNewWallet(HttpServletRequest request){
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mypageDao.selectMyPageWallet(MemberVo.getMyMemNo(request))));
     }
-
 
     /**
      *  방송설정 제목 추가
