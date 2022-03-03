@@ -519,7 +519,7 @@ public class DallagersEventService {
     * 일반 선물시, 부스터 선물시
     * */
     public void getDallagersPacketData(String sRoomNo,String reqMemNo,String rcvMemNo, HashMap itemMap, String actionFlag){
-        /* 리브랜딩 달라조각 모으기 이벤트 */
+        /* 이벤트 진행중 여부 체크*/
         Map<String, Object> result = dallagersEvent.pEvtDallaCollectScheduleSel();
 
         if (result == null) {
@@ -537,23 +537,24 @@ public class DallagersEventService {
         boolean feverInfoAdded = false;
 
         Long roomNo = Long.parseLong(sRoomNo);
-        Long dalCnt = DalbitUtil.getLongMap(itemMap,"dalCnt");
+        Long dalCnt = DalbitUtil.getLongMap(itemMap,"dalCnt");  // 별 갯수
 
         // 1) 피버 타임 발동 조건체크 (피버 시작, 종료 프로시져는 소켓서버에서 호출함)
         DallagersRoomFerverSelVo feverInfo = callEventRoomFeverInfo(roomNo); // feverInfo is null => error
         if(feverInfo == null)
             log.error("sendGift / feverInfo db result null");
 
-        // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 조건 2개인 경우 1번만 발동 )
+        // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 시작이 중복인 경우 1-1)조건 발동 )
         Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
 
+        //todo 조건 수정하기
         if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 100) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 60);
             feverInfoAdded = true;
         }
 
-        // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 조건 2개인 경우 1번만 발동 )
+        // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 시작이 중복인 경우 1-1)조건 발동 )
         if(!feverInfoAdded) {
             List<P_RoomMemberListVo> listeners = userService.getListenerList(sRoomNo, reqMemNo);
 
@@ -569,6 +570,7 @@ public class DallagersEventService {
                     long diffMinutes = diffSec / 60;
 
                     // 30분
+                    //todo 조건 수정하기
                     if (diffMinutes > 5) { //if (diffMinutes >= 30) {
                         feverInfoMap.put("type", 2);
                         feverInfoMap.put("time", 60); //30분
@@ -584,13 +586,16 @@ public class DallagersEventService {
         boolean isFeverTime = StringUtils.equals("y", feverInfo.getFever_yn()); // 현재 피버타임 진행중 여부
         float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
 
+        // 선물아이템 or 부스터 아이템 여부 판단
+        boolean isGift = StringUtils.equals(actionFlag, "gift");
+        int itemCnt = DalbitUtil.getIntMap(itemMap,"itemCnt");  //부스터 아이템인 경우 dalCnt * itemCnt 해줘야함
+        
         // 2) 스톤 등록 처리 (d, a, l 조각 생성)
-        double sendPieceCnt = Math.floor( (dalCnt / 10) * feverValue ); // 보낸사람 (청취자) 50
+        //todo 조건 수정하기
+        double sendPieceCnt = isGift? Math.floor( (dalCnt / 10) * feverValue ) : Math.floor( ((20 * itemCnt) / 10) * feverValue ); // 보낸사람 (청취자) 50
         double rcvPieceCnt = Math.floor( (dalCnt / 10) * feverValue ); // 받는사람 (방장) 100
-
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
         addVo.setRoomNo(roomNo);
-        boolean isGift = StringUtils.equals(actionFlag, "gift");
 
         if(sendPieceCnt > 0){   // 스톤 등록 (청취자)
             addVo.setMemNo(Long.parseLong(reqMemNo));
@@ -616,7 +621,5 @@ public class DallagersEventService {
         if(feverInfoAdded) {
             itemMap.put("feverInfo", feverInfoMap);
         }
-
-        log.error("test => socket result {}", gsonUtil.toJson(itemMap));
     }
 }

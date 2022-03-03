@@ -886,6 +886,8 @@ public class WowzaService {
                     paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
                     roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
 
+                    //조각 모으기 이벤트 정보 담기(이벤트 진행중 여부, 이벤트페이지 url)
+                    roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck());
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
