@@ -35,6 +35,7 @@ public class StoreController {
         HashMap data = new HashMap();
         data.put("dalCnt", storeService.getDalCnt(request));
         data.put("list", list == null ? new ArrayList<>() : list);
+        data.put("defaultNum", 2); //IOS 스토어 기본값 설정 위한 값
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
 
