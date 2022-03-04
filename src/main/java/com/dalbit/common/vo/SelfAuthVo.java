@@ -20,10 +20,12 @@ public class SelfAuthVo {
     private String date;            //요청일시
     private String certMet = "M";   //인증방법 ("M": 휴대폰, "C":신용카드, "P":공인인증서)
     private String plusInfo = "";   //추가DATA정보
-    private String agreeTerm;       //동의기간
+    private String agreeTerm = "0";       //동의기간
 
     private String pageCode;        //페이지코드(1:결제(WEB), 2:결제(방송방), 3:방송방생성(RoomMake), 4:환전, 5:프로필, 6:방송하기&클립, 7:휴면해제, 8:방송방참여)
     private String authType;        //인증타입(0: 본인, 1:보호자)
+
+    private String pushLink = "";   // 기본 폼일때 인증 후 이동할 url 코드 (ex: main - 메인페이지, share - 공유 이벤트)
 
 
 }

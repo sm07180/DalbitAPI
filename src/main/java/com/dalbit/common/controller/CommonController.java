@@ -12,7 +12,6 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLDecoder;
@@ -290,11 +288,15 @@ public class CommonController {
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
-        if(selfAuthVo.getAuthType().equals("0")){
-            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType());
+        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+            + "_" + selfAuthVo.getPushLink()
+        );
+        /*if(selfAuthVo.getAuthType().equals("0")){
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()
+            );
         } else {
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm());
-        }
+        }*/
 
 
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));            //IFrame사용여부
@@ -336,8 +338,9 @@ public class CommonController {
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
+            String[] plusInfo = selfAuthSaveVo.getPlusInfo().split("_");
 
-            apiData.setMem_no(selfAuthSaveVo.getPlusInfo().split("_")[0]); //요청시 보낸 회원번호 (추가정보)
+            apiData.setMem_no(plusInfo[0]); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
             apiData.setMemSex(selfAuthSaveVo.getGender());
@@ -347,10 +350,12 @@ public class CommonController {
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
-            apiData.setOs(selfAuthSaveVo.getPlusInfo().split("_")[1]);
-            apiData.setIsHybrid(selfAuthSaveVo.getPlusInfo().split("_")[2]);
-            apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
-            apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
+            apiData.setOs(plusInfo[1]);
+            apiData.setIsHybrid(plusInfo[2]);
+            apiData.setPageCode(plusInfo[3]);
+            apiData.setAuthType(plusInfo[4]);
+            apiData.setAgreeTerm(plusInfo[5]);
+            apiData.setPushLink(plusInfo[6]);
 
             int manAge = birthToAmericanAge(
                 Integer.parseInt(apiData.getBirthYear()),

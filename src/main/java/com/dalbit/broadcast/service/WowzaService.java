@@ -85,6 +85,7 @@ public class WowzaService {
 
     @Autowired TTSService ttsService;
     @Autowired MoonLandService moonLandService;
+    @Autowired VoteService voteService;
     @Autowired DallagersEventService dallagersEventService;
 
     @Value("${wowza.prefix}")
@@ -593,6 +594,9 @@ public class WowzaService {
             }
 
             roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), pRoomJoinVo.getMem_no()));
+            roomInfoVo.setIsVote(
+                voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s")
+            );
 
             //참여시 게스트 여부 체크
             for (int i=0; i<roomInfoVo.getGuests().size(); i++){
@@ -830,6 +834,9 @@ public class WowzaService {
                     roomInfoVo.setAgoraToken(agoraToken);
                     roomInfoVo.setAgoraAppId(AGORA_APP_ID);
                     roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
+                    roomInfoVo.setIsVote(
+                            voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s")
+                    );
                     if("v".equals(roomInfoVo.getMediaType())){
                         roomInfoVo.setPlatform("agora");
                         roomInfoVo.setVideoResolution(720);
@@ -1039,7 +1046,6 @@ public class WowzaService {
 
         return roomInfoVo;
     }
-
 
     public List getGuestList(String roomNo, String memNo){
         List list = new ArrayList();

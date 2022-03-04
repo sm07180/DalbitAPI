@@ -14,6 +14,7 @@ public interface ClipDao {
 
     ProcedureVo callClipEdit(ProcedureVo procedureVo);
 
+    @Transactional(readOnly = true)
     List<P_ClipListVo> callClipList(ProcedureVo procedureVo);
 
     ProcedureVo callClipPlay(ProcedureVo procedureVo);
