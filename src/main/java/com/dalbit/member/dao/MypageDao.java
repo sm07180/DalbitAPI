@@ -426,11 +426,12 @@ public interface MypageDao {
      * roomNoticeNo     BIGINT  -- 방송공지 키값
      * ,memNo           BIGINT  -- 회원번호
      * ,roomNo          BIGINT  -- 방번호[0: 기본, 방 있을시에만]
+     * ,delChrgrName     VARCHAR -- 삭제 관리자명
      *
      * @Return
      * s_return         INT     -- #-1: 공지글 등록 없음, 0: 에러, 1: 정상
      */
-    @Select("CALL rd_data.p_broadcast_room_notice_del(#{roomNoticeNo}, #{memNo}, #{roomNo})")
+    @Select("CALL rd_data.p_broadcast_room_notice_del(#{roomNoticeNo}, #{memNo}, #{roomNo}, #{delChrgrName})")
     Integer pMemberBroadcastNoticeDel(BroadcastNoticeDelVo param);
 
     /**

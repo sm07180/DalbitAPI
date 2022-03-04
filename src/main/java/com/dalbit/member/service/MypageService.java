@@ -901,10 +901,10 @@ public class MypageService {
      */
     public String broadcastNoticeDel(BroadcastNoticeDelVo noticeDelVo, HttpServletRequest request) {
         Integer deleteResult = mypageDao.pMemberBroadcastNoticeDel(noticeDelVo);
-        if(deleteResult == null || deleteResult < 1) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_실패));
-        } else {
+        if(deleteResult == null || deleteResult > 0) {
             return gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_성공));
+        } else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_실패));
         }
     }
 
@@ -1353,6 +1353,46 @@ public class MypageService {
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultVo));
         }
         return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+    }
+
+    /**
+     * 피드 좋아요
+     */
+    public String noticeLike(ProfileFeedLikeVo feedLikeVo, HttpServletRequest request) {
+        HashMap param = new HashMap();
+        param.put("regNo", feedLikeVo.getRegNo());
+        param.put("mMemNo", feedLikeVo.getMMemNo());
+        param.put("vMemNo", feedLikeVo.getVMemNo());
+        int result = mypageDao.pMemberFeedLikeLogIns(param);
+
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요));
+        } else if(result == -1) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_이미했음));
+        } else {
+            log.error("MypageService.java - noticeLike Failed: {}", result);
+            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패));
+        }
+    }
+
+    /**
+     * 피드 좋아요 취소
+     */
+    public String noticeLikeCancel(ProfileFeedLikeCancelVo feedLikeCancelVo, HttpServletRequest request) {
+        HashMap param = new HashMap();
+        param.put("regNo", feedLikeCancelVo.getRegNo());
+        param.put("mMemNo", feedLikeCancelVo.getMMemNo());
+        param.put("vMemNo", feedLikeCancelVo.getVMemNo());
+        int result = mypageDao.pMemberFeedLikeCancelIns(param);
+
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_취소));
+        } else if(result == -1) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_하지않음));
+        } else {
+            log.error("MypageService.java - noticeLikeCancel Failed: {}", result);
+            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_취소실패));
+        }
     }
 
     /**

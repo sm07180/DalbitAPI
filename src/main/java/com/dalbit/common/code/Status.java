@@ -402,11 +402,14 @@ public enum Status {
 
     //방송좋아요
     좋아요("0", "broadcast.like.success", "좋아요 성공 시"),
+    좋아요_취소("0", "broadcast.cancel.success", "좋아요 취소 성공 시"),
     좋아요_회원아님("-1", "broadcast.like.member.no", "회원이 아닐 시"),
     좋아요_해당방송없음("-2", "broadcast.like.room.no", "해당 방송이 없을 시"),
     좋아요_방송참가자아님("-3", "broadcast.like.room.in.no", "방송 참가자가 아닐 시"),
     좋아요_이미했음("-4", "broadcast.like.already", "좋아요 이미 했을 시"),
+    좋아요_하지않음("-4", "broadcast.cancel.already", "좋아요 하지 않았을 시"),
     좋아요_실패("C006", "broadcast.like.fail", "좋아요 실패 시"),
+    좋아요_취소실패("C006", "broadcast.cancel.fail", "좋아요 취소 실패 시"),
 
     //방송방 공유하기 링크체크
     링크체크_성공("0", "broadcast.share.link.success", "링크체크 성공 시"),
