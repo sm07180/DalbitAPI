@@ -272,6 +272,10 @@ public class DallagersEventService {
                 // 스톤 뽑기 완료 후 내 정보 재조회
                 HashMap resultData = new HashMap();
                 DallagersEventMySelVo mySelVo = dallagersEvent.pEvtDallaCollectMemberRankMySel(param);
+
+                //프로필 이미지 obj set
+                mySelVo.setProfImg(new ImageVo(mySelVo.getImage_profile(), mySelVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
+
                 resultData.put("resultStone", insDallaGubun);
                 resultData.put("myInfo", mySelVo);
 
