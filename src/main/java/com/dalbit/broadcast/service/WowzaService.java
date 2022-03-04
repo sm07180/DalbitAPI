@@ -454,7 +454,7 @@ public class WowzaService {
             paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
             roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
             // 조각 모으기 이벤트 정보 담기(이벤트 진행중 여부, 이벤트페이지 url)
-            roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck());
+            roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck(roomInfoVo.getBjMemNo()));
 
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(AGORA_APP_ID);
@@ -706,7 +706,7 @@ public class WowzaService {
             paramMap.put("memSlct", StringUtils.equals(MemberVo.getMyMemNo(request), roomInfoVo.getBjMemNo()) ? 1 : 2);
             roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
             //조각 모으기 이벤트 정보 담기(이벤트 진행중 여부, 이벤트페이지 url)
-            roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck());
+            roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck(roomInfoVo.getBjMemNo()));
 
             //아고라 토큰 생성
             RtcTokenBuilder token = new RtcTokenBuilder();
@@ -894,7 +894,7 @@ public class WowzaService {
                     roomInfoVo.setEventInfoMap(eventService.broadcastWelcomeUserEventChk(paramMap, deviceVo));
 
                     //조각 모으기 이벤트 정보 담기(이벤트 진행중 여부, 이벤트페이지 url)
-                    roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck());
+                    roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck(roomInfoVo.getBjMemNo()));
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
