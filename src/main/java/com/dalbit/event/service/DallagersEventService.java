@@ -558,7 +558,7 @@ public class DallagersEventService {
         if(!feverInfoAdded) {
             List<P_RoomMemberListVo> listeners = userService.getListenerList(sRoomNo, reqMemNo);
 
-            if (listeners.size() < 11 && feverInfo.getPlay_fever_cnt() < 2) { //10명 이하 체크 + 방송시간 30분 이상
+            if (listeners.size() < 2 && feverInfo.getPlay_fever_cnt() < 2) { //10명 이하 체크 + 방송시간 30분 이상
                 try {
                     //30분 이상
                     Calendar now = Calendar.getInstance();
