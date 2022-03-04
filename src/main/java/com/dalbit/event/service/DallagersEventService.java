@@ -548,7 +548,7 @@ public class DallagersEventService {
         Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
 
         //todo 조건 수정하기
-        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 100) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
+        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 500) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 60);
             feverInfoAdded = true;
@@ -571,10 +571,14 @@ public class DallagersEventService {
 
                     // 30분
                     //todo 조건 수정하기
-                    if (diffMinutes > 5) { //if (diffMinutes >= 30) {
-                        feverInfoMap.put("type", 2);
-                        feverInfoMap.put("time", 60); //30분
-                        feverInfoAdded = true;
+                    if (diffMinutes >= 3) { //if (diffMinutes >= 30) {
+                        Random random = new Random();
+                        Integer randNum = random.nextInt(1000);   // d, a, l
+                        if(randNum > 100 && randNum <=250){ // 15%
+                            feverInfoMap.put("type", 2);
+                            feverInfoMap.put("time", 60); //30분
+                            feverInfoAdded = true;
+                        }
                     }
                 } catch (Exception e) {
                     log.error("dallagersService.java / getDallagersPacketData - feverTimeChk2 Exception {}", e);
@@ -592,7 +596,7 @@ public class DallagersEventService {
         
         // 2) 스톤 등록 처리 (d, a, l 조각 생성)
         //todo 조건 수정하기
-        double sendPieceCnt = isGift? Math.floor( (dalCnt / 10) * feverValue ) : Math.floor( ((20 * itemCnt) / 10) * feverValue ); // 보낸사람 (청취자) 50
+        double sendPieceCnt = isGift? Math.floor( (dalCnt / 5) * feverValue ) : Math.floor( ((20 * itemCnt) / 5) * feverValue ); // 보낸사람 (청취자) 50
         double rcvPieceCnt = Math.floor( (dalCnt / 10) * feverValue ); // 받는사람 (방장) 100
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
         addVo.setRoomNo(roomNo);
