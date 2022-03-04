@@ -5,6 +5,7 @@ import com.dalbit.search.vo.procedure.P_LiveRoomSearchVo;
 import com.dalbit.search.vo.procedure.P_MemberSearchVo;
 import com.dalbit.search.vo.procedure.P_RoomRecommandListVo;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.List;
 @Repository
 public interface SearchDao {
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_MemberSearchVo> callMemberNickSearch(ProcedureVo procedureVo);
     //@Transactional(readOnly = true)
     List<P_LiveRoomSearchVo> callLiveRoomSearch(ProcedureVo procedureVo);
