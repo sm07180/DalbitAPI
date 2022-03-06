@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Slf4j
@@ -32,6 +33,7 @@ public class DallagersEventService {
     @Autowired GsonUtil gsonUtil;
     @Autowired UserService userService;
 
+    private String dearMemNo = "41627522827493";
     /**
      * 이니셜 등록 (달조각 등록)
      *
@@ -510,7 +512,7 @@ public class DallagersEventService {
 
             // 특정 유저가 방장인 경우 이벤트 x
             //이벤트 진행중
-            if ((int) result.get("seq_no") > 0 && !StringUtils.equals("", bjMemNo)) {
+            if ((int) result.get("seq_no") > 0 && !(StringUtils.equals(dearMemNo, bjMemNo) && isEventBlockDateChecker()) ) {
                 eventInfo.put("visible", true);
             }
         } catch (Exception e) {
@@ -518,6 +520,15 @@ public class DallagersEventService {
         }
 
         return eventInfo;
+    }
+
+    // true : 이벤트 진행불가
+    public boolean isEventBlockDateChecker(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 6, 13, 57,59);  // pm 8: 29: 59 ~
+        LocalDateTime endDateTime = LocalDateTime.of(2022, 3, 6, 14, 0,59);    // pm 11:59: 59
+
+        return localDateTime.isAfter(startDateTime) && localDateTime.isBefore(endDateTime);
     }
 
     /**
@@ -534,7 +545,7 @@ public class DallagersEventService {
         }
 
         //이벤트 진행중 아님
-        if ((int) result.get("seq_no") == 0 || StringUtils.equals("",  rcvMemNo)) {
+        if ((int) result.get("seq_no") == 0 || (StringUtils.equals(dearMemNo,  rcvMemNo) && isEventBlockDateChecker()) ) {
             return;
         }
 
