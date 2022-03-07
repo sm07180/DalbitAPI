@@ -33,11 +33,11 @@ public class DallagersEventService {
     @Autowired GsonUtil gsonUtil;
     @Autowired UserService userService;
 
-    private final Integer DAL_CNT = 5;   // 보낸사람 실서버 조건: 50
-    private final Integer BYEOL_CNT = 10; // 받는사람 실서버 조건: 100
-    private final Integer FEVER_DAL_CNT = 500;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
-    private final Integer FEVER_ROOM_LISTENER_CNT = 2;  // 피버 조건 2) 청취자 수 10명 이하인 경우
-    private final Integer FEVER_MINUTE = 5;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
+    private final Integer DAL_CNT = 50;   // 보낸사람 실서버 조건: 50
+    private final Integer BYEOL_CNT = 100; // 받는사람 실서버 조건: 100
+    private final Integer FEVER_DAL_CNT = 5000;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
+    private final Integer FEVER_ROOM_LISTENER_CNT = 10;  // 피버 조건 2) 청취자 수 10명 이하인 경우
+    private final Integer FEVER_MINUTE = 30;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
 
     private final String dearMemNo = "11599118330637";      // Dear memNo ( 특정시간에 제외하고자 하는 유저 memNo )
 
