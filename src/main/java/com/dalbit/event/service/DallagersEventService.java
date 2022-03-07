@@ -46,7 +46,7 @@ public class DallagersEventService {
     // 2022- 03 -08 21:59:59 ~ 23:59:59 동안 이벤트 제외
     public boolean isEventBlockDateChecker(){
         LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 8, 21, 29,59);  // pm 8: 29: 59 ~
+        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 8, 20, 59,59);  // pm 8: 29: 59 ~
         LocalDateTime endDateTime = LocalDateTime.of(2022, 3, 8, 23, 59,59);    // pm 11:59: 59
 
         return localDateTime.isAfter(startDateTime) && localDateTime.isBefore(endDateTime);
