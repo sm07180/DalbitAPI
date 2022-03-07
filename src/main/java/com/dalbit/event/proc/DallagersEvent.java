@@ -97,6 +97,19 @@ public interface DallagersEvent {
     @Select("CALL rd_data.p_evt_dalla_collect_bbopgi_ins(#{memNo}, #{useDallaGubunOne}, #{useDallaGubunTwo}, #{insDallaGubun})")
     Integer pEvtDallaCollectBbopgiIns(Map<String, Object> param);
 
+    /**
+     * 달라이벤트 점수 등록
+     * @Param
+     * memNo            BIGINT      회원번호
+     * ,roomNo          BIGINT      방번호
+     * ,collectSlct     INT         구분[1:방송청취,2:방송시간,3:보낸달,4: 부스터수,5:받은별]
+     * ,slctValCnt      BIGINT      구분에서의 값 [방송청취,방송시간,보낸달,부스터수,받은별]
+     *
+     * @Return
+     * s_return         INT         -3: 이벤트 기간 초과 , -2: 실시간방 없음 , -1: 회원 데이터 없음 , 0: 에러, 1:정상
+     * */
+    @Select("CALL rd_data.p_evt_dalla_collect_member_score_ins(#{memNo}, #{roomNo}, #{collectSlct}, #{slctValCnt})")
+    Integer pEvtDallaCollectMemberScoreIns(Map<String, Object> param);
 
     /**
      * 달라이벤트 회원정보 o

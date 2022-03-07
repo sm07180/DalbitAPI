@@ -33,7 +33,25 @@ public class DallagersEventService {
     @Autowired GsonUtil gsonUtil;
     @Autowired UserService userService;
 
-    private String dearMemNo = "41627522827493";
+    private final Integer DAL_CNT = 5;   // 보낸사람 실서버 조건: 50
+    private final Integer BYEOL_CNT = 10; // 받는사람 실서버 조건: 100
+    private final Integer FEVER_DAL_CNT = 500;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
+    private final Integer FEVER_ROOM_LISTENER_CNT = 2;  // 피버 조건 2) 청취자 수 10명 이하인 경우
+    private final Integer FEVER_MINUTE = 5;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
+
+    private final String dearMemNo = "11599118330637";      // Dear memNo ( 특정시간에 제외하고자 하는 유저 memNo )
+
+    // true : 이벤트 진행x
+    // 이벤트 진행 제외하기
+    // 2022- 03 -08 21:59:59 ~ 23:59:59 동안 이벤트 제외
+    public boolean isEventBlockDateChecker(){
+        LocalDateTime localDateTime = LocalDateTime.now();
+        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 8, 21, 29,59);  // pm 8: 29: 59 ~
+        LocalDateTime endDateTime = LocalDateTime.of(2022, 3, 8, 23, 59,59);    // pm 11:59: 59
+
+        return localDateTime.isAfter(startDateTime) && localDateTime.isBefore(endDateTime);
+    }
+
     /**
      * 이니셜 등록 (달조각 등록)
      *
@@ -103,6 +121,9 @@ public class DallagersEventService {
             resultMap.put("dStone", dCnt);
             resultMap.put("aStone", aCnt);
             resultMap.put("lStone", lCnt);
+
+            // 최종 이벤트 점수 등록
+            pEvtDallaCollectMemberScoreIns(addVo);
 
             return resultMap;
 
@@ -522,13 +543,32 @@ public class DallagersEventService {
         return eventInfo;
     }
 
-    // true : 이벤트 진행불가
-    public boolean isEventBlockDateChecker(){
-        LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 6, 13, 57,59);  // pm 8: 29: 59 ~
-        LocalDateTime endDateTime = LocalDateTime.of(2022, 3, 6, 14, 0,59);    // pm 11:59: 59
 
-        return localDateTime.isAfter(startDateTime) && localDateTime.isBefore(endDateTime);
+
+    /**
+     * 달라이벤트 점수 등록 (스톤 보낸사람, 받는사람 한번씩)
+     *
+     * memNo            BIGINT      회원번호
+     * ,roomNo          BIGINT      방번호
+     * ,collectSlct     INT         구분[1:방송청취,2:방송시간,3:보낸달,4: 부스터수,5:받은별]
+     * ,slctValCnt      BIGINT      구분에서의 값 [방송청취,방송시간,보낸달,부스터수,받은별]
+     * */
+    public void pEvtDallaCollectMemberScoreIns(DallagersInitialAddVo vo){
+        try {
+            HashMap param = new HashMap();
+            param.put("memNo", vo.getMemNo());
+            param.put("roomNo", vo.getRoomNo());
+            param.put("collectSlct", vo.getCollectSlct());
+            param.put("slctValCnt", vo.getSlctValCnt());
+            Integer result = dallagersEvent.pEvtDallaCollectMemberScoreIns(param);
+            
+            // 정상 아닌 경우
+            if(result != 1){
+                log.error("DallagersEventService.java / pEvtDallaCollectMemberScoreIns db result Error => {}", result);
+            }
+        } catch (Exception e) {
+            log.error("DallagersEventService.java / pEvtDallaCollectMemberScoreIns Exception => {}", e);
+        }
     }
 
     /**
@@ -568,12 +608,10 @@ public class DallagersEventService {
         if(feverInfo == null)
             log.error("sendGift / feverInfo db result null");
 
-        // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 시작이 중복인 경우 1-1)조건 발동 )
+        // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 시작이 중복인 경우 1-1) 조건 발동 )
         Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
 
-        log.error("stone => chk getGift_fever_cnt: {}, goldCnt/500 :{}",feverInfo.getGift_fever_cnt(), goldCnt );
-        //todo 조건 수정하기
-        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 500) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
+        if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / FEVER_DAL_CNT) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 60);
             feverInfoAdded = true;
@@ -583,7 +621,7 @@ public class DallagersEventService {
         if(!feverInfoAdded) {
             List<P_RoomMemberListVo> listeners = userService.getListenerList(sRoomNo, reqMemNo);
 
-            if (listeners.size() < 2 && feverInfo.getPlay_fever_cnt() < 2) { //10명 이하 체크 + 방송시간 30분 이상
+            if (listeners.size() < FEVER_ROOM_LISTENER_CNT && feverInfo.getPlay_fever_cnt() < 2) { //10명 이하 체크 + 방송시간 30분 이상
                 try {
                     //30분 이상
                     Calendar now = Calendar.getInstance();
@@ -593,10 +631,9 @@ public class DallagersEventService {
                     cmpDate.setTime(startDate);
                     long diffSec = (now.getTimeInMillis() - cmpDate.getTimeInMillis()) / 1000;
                     long diffMinutes = diffSec / 60;
-                    log.error("stone => chk2 diffMinutes: {}", diffMinutes);
+
                     // 30분
-                    //todo 조건 수정하기
-                    if (diffMinutes >= 3) { //if (diffMinutes >= 30) {
+                    if (diffMinutes >= FEVER_MINUTE) {
                         Random random = new Random();
                         Integer randNum = random.nextInt(1000);   // d, a, l
                         if(randNum > 100 && randNum <=250){ // 15%
@@ -616,12 +653,8 @@ public class DallagersEventService {
         float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
         
         // 2) 스톤 등록 처리 (d, a, l 조각 생성)
-        //todo 조건 수정하기
-        double sendPieceCnt = Math.floor( (dalCnt / 5) * feverValue ); // 보낸사람 (청취자) 50
-        double rcvPieceCnt = Math.floor( (byeolCnt / 10) * feverValue ); // 받는사람 (방장) 100
-
-        System.out.println("stone => 선물한 청취자  dalCnt: " + dalCnt + ", pieceCnt" + sendPieceCnt);
-        System.out.println("stone => 방장  byeolCnt: " + byeolCnt + ", pieceCnt" + rcvPieceCnt);
+        double sendPieceCnt = Math.floor( (dalCnt / DAL_CNT) * feverValue ); // 보낸사람 (청취자) 50
+        double rcvPieceCnt = Math.floor( (byeolCnt / BYEOL_CNT) * feverValue ); // 받는사람 (방장) 100
 
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
         addVo.setRoomNo(roomNo);
@@ -650,7 +683,5 @@ public class DallagersEventService {
         if(feverInfoAdded) {
             itemMap.put("feverInfo", feverInfoMap);
         }
-
-        log.error("stone => {}, {}", gsonUtil.toJson(stoneInfoMap), gsonUtil.toJson(feverInfoMap) );
     }
 }

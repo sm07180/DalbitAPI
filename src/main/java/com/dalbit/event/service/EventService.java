@@ -2503,7 +2503,7 @@ public class EventService {
         }
         switch (os) {
             case 1: //Android
-                link = DalbitUtil.getProperty("server.mobile.url") + "/event/welcome";
+                link = DalbitUtil.getProperty("server.mobile.url") + "/event/welcome?webview=new";
                 break;
             case 2: //IOS
                 link = DalbitUtil.getProperty("server.mobile.url") + "/event/welcome?webview=new";
