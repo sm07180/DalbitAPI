@@ -46,10 +46,23 @@ public class DallagersEventService {
     // 2022- 03 -08 21:59:59 ~ 23:59:59 동안 이벤트 제외
     public boolean isEventBlockDateChecker(){
         LocalDateTime localDateTime = LocalDateTime.now();
-        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 8, 20, 59,59);  // pm 8: 29: 59 ~
-        LocalDateTime endDateTime = LocalDateTime.of(2022, 3, 8, 23, 59,59);    // pm 11:59: 59
+        LocalDateTime startDateTime = LocalDateTime.of(2022, 3, 11, 20, 59,59);  // pm 9 : 00 ~
+        LocalDateTime endDateTime = LocalDateTime.of(2022, 3, 11, 23, 59,59);    // pm 11:59: 59
 
         return localDateTime.isAfter(startDateTime) && localDateTime.isBefore(endDateTime);
+    }
+
+    // true : ios
+    public boolean isIOSCheck(HttpServletRequest request){
+        String ua = request.getHeader("user-agent");
+        ua = ua.toUpperCase();
+
+        System.out.println(" ios check => "+ ua);
+        if(ua.indexOf("IPHONE") != -1 || ua.indexOf("IPAD") != -1 || ua.indexOf("MAC") != -1){
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -518,7 +531,7 @@ public class DallagersEventService {
     /**
      * 이벤트 진행중 여부 체크
      * */
-    public Map<String, Object> getBroadcastEventScheduleCheck(String bjMemNo){
+    public Map<String, Object> getBroadcastEventScheduleCheck(HttpServletRequest request, String bjMemNo){
         /* 리브랜딩 달라조각 모으기 이벤트 */
         Map<String, Object> eventInfo = new HashMap();
         String link = DalbitUtil.getProperty("server.mobile.url") + "/event/rebranding?webview=new";
@@ -533,7 +546,7 @@ public class DallagersEventService {
 
             // 특정 유저가 방장인 경우 이벤트 x
             //이벤트 진행중
-            if ((int) result.get("seq_no") > 0 && !(StringUtils.equals(dearMemNo, bjMemNo) && isEventBlockDateChecker()) ) {
+            if (!isIOSCheck(request) && (int) result.get("seq_no") > 0 && !(StringUtils.equals(dearMemNo, bjMemNo) && isEventBlockDateChecker()) ) {
                 eventInfo.put("visible", true);
             }
         } catch (Exception e) {
