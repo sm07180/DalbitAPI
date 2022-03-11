@@ -2361,6 +2361,8 @@ public enum Status {
     친구초대_기간_중복("C005", "invitaion.join.fail", "친구초대 가입내역, 중복아이디 대상"),
     친구초대_나이제한("C006", "invitaion.join.fail", "친구초대 나이제한"),
 
+    //스톤 모으기
+    달라_이벤트_조각부족("C001", "dalla.event.bbobgi.ins.fail", "달라 조각 부족"),
 
     //투표
     투표_생성("C001", "vote.code.insert.success", "투표_생성"),
@@ -2413,6 +2415,7 @@ public enum Status {
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
     공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
+    공통_기본_DB_실패("C007", "common.select.fail", "기본 조회 실패 db null"),
 ;
 
 

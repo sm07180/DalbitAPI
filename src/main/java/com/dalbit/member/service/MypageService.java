@@ -1067,7 +1067,7 @@ public class MypageService {
         list = DBUtil.getList(feedMultiRow, 1, ProfileFeedOutVo.class);
 
         HashMap resultMap = new HashMap();
-        if(DalbitUtil.isEmpty(feedMultiRow) ){
+        if(DalbitUtil.isEmpty(feedMultiRow) || list.size() == 0){
             resultMap.put("fixList", new ArrayList());
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));

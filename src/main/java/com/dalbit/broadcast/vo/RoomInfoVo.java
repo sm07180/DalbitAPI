@@ -113,6 +113,8 @@ public class RoomInfoVo {
 
     /* 신규이벤트 페이지 이동 버튼 정보 */
     private Map<String, Object> eventInfoMap;
+    /* 조각 모으기 이벤트 정보 (url, 방송방 버튼 노출여부) */
+    private Map<String, Object> stoneEventInfo;
     /* 필터/메이크업 */
     private boolean useFilter = false;
 
