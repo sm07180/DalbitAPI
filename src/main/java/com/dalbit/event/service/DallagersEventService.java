@@ -57,7 +57,6 @@ public class DallagersEventService {
         String ua = request.getHeader("user-agent");
         ua = ua.toUpperCase();
 
-        System.out.println(" ios check => "+ ua);
         if(ua.indexOf("IPHONE") != -1 || ua.indexOf("IPAD") != -1 || ua.indexOf("MAC") != -1){
             return true;
         }
@@ -628,6 +627,9 @@ public class DallagersEventService {
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 60);
             feverInfoAdded = true;
+            log.error("feverTime chk => gold: {}, booster Cnt: {}", feverInfo.getGold(), feverInfo.getBooster_cnt()* 20);
+        }else{
+            log.error("feverTime chk  start @@@ => gold: {}, booster Cnt: {}", feverInfo.getGold(), feverInfo.getBooster_cnt()* 20);
         }
 
         // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 시작이 중복인 경우 1-1)조건 발동 )
