@@ -24,11 +24,11 @@
     <resultMap id="integer" type="Integer" />
 
     <select id="pRoomVoteList" statementType="CALLABLE" parameterType="com.dalbit.broadcast.vo.request.VoteRequestVo" resultMap="integer,VoteResultVo1">
-        { CALL p_room_vote_list(#{memNo},#{roomNo},#{voteSlct}) }
+        { CALL p_room_vote_list_v1(#{memNo},#{pmemNo},#{roomNo},#{voteSlct}) }
     </select>
 
     <select id="pRoomVoteSel" statementType="CALLABLE" parameterType="com.dalbit.broadcast.vo.request.VoteRequestVo" resultMap="VoteResultVo1">
-        { CALL p_room_vote_sel(#{memNo},#{roomNo},#{voteNo}) }
+        { CALL p_room_vote_sel_v1(#{memNo},#{pmemNo},#{roomNo},#{voteNo}) }
     </select>
 
     <select id="pRoomVoteDetailList" statementType="CALLABLE" parameterType="com.dalbit.broadcast.vo.request.VoteRequestVo" resultMap="VoteResultVo1">

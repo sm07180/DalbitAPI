@@ -5,6 +5,7 @@ import com.dalbit.broadcast.vo.VoteResultVo;
 import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -83,7 +85,7 @@ public class VoteService {
             if (result < 1) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.투표_투표처리_에러, result));
             }
-            socketService.reqVoteByPass(voteRequestVo.getRoomNo(), "reqInsMemVote", voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
+            //socketService.reqVoteByPass(voteRequestVo.getRoomNo(), "reqInsMemVote", voteRequestVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         } catch (Exception e) {
             log.error("VoteService insMemVote Error => {}", e.getMessage());
         }
@@ -143,7 +145,7 @@ public class VoteService {
         }
     }
 
-    public String getVoteList(VoteRequestVo voteRequestVo) {
+    public String getVoteList(VoteRequestVo voteRequestVo, HttpServletRequest request) {
         if (StringUtils.isEmpty(voteRequestVo.getMemNo())
                 || StringUtils.isEmpty(voteRequestVo.getRoomNo())
                 || StringUtils.isEmpty(voteRequestVo.getVoteSlct())
@@ -154,6 +156,7 @@ public class VoteService {
 
         Map<String, Object> returnMap = new HashMap<>();
         try {
+            voteRequestVo.setPmemNo(MemberVo.getMyMemNo(request));
             List<Object> pRoomVoteList = voteDao.pRoomVoteList(voteRequestVo);
             if (pRoomVoteList == null || pRoomVoteList.isEmpty()) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.투표_리스트조회_에러, null));
@@ -168,7 +171,7 @@ public class VoteService {
         return gsonUtil.toJson(new JsonOutputVo(Status.투표_리스트조회, returnMap));
     }
 
-    public String getVoteSel(VoteRequestVo voteRequestVo) {
+    public String getVoteSel(VoteRequestVo voteRequestVo, HttpServletRequest request) {
         if (StringUtils.isEmpty(voteRequestVo.getMemNo())
                 || StringUtils.isEmpty(voteRequestVo.getRoomNo())
                 || StringUtils.isEmpty(voteRequestVo.getVoteNo())
@@ -178,6 +181,7 @@ public class VoteService {
 
         VoteResultVo info = null;
         try {
+            voteRequestVo.setPmemNo(MemberVo.getMyMemNo(request));
             info = voteDao.pRoomVoteSel(voteRequestVo);
             if(info == null){
                 return gsonUtil.toJson(new JsonOutputVo(Status.투표_정보조회_에러, null));
@@ -210,7 +214,7 @@ public class VoteService {
         return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목조회, list));
     }
 
-    public String getVoteSelAndDetailList(VoteRequestVo voteRequestVo) {
+    public String getVoteSelAndDetailList(VoteRequestVo voteRequestVo, HttpServletRequest request) {
         if (StringUtils.isEmpty(voteRequestVo.getMemNo())
                 || StringUtils.isEmpty(voteRequestVo.getPmemNo())
                 || StringUtils.isEmpty(voteRequestVo.getRoomNo())
@@ -238,12 +242,12 @@ public class VoteService {
         return gsonUtil.toJson(new JsonOutputVo(Status.투표_항목과리스트_조회, map));
     }
 
-    public boolean isVote(String roomNo, String memNo, String voteSlct){
+    public boolean isVote(String roomNo, String memNo, String voteSlct, HttpServletRequest request){
         VoteRequestVo voteRequestVo = new VoteRequestVo();
         voteRequestVo.setRoomNo(roomNo);
         voteRequestVo.setMemNo(memNo);
         voteRequestVo.setVoteSlct(voteSlct);
-        String voteList = getVoteList(voteRequestVo);
+        String voteList = getVoteList(voteRequestVo, request);
         ObjectMapper mapper = new ObjectMapper();
         boolean returnBoolean = false;
         try{
