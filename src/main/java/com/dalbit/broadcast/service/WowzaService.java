@@ -595,7 +595,7 @@ public class WowzaService {
 
             roomInfoVo.setGuests(getGuestList(roomInfoVo.getRoomNo(), pRoomJoinVo.getMem_no()));
             roomInfoVo.setIsVote(
-                voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s")
+                voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s", request)
             );
 
             //참여시 게스트 여부 체크
@@ -835,7 +835,7 @@ public class WowzaService {
                     roomInfoVo.setAgoraAppId(AGORA_APP_ID);
                     roomInfoVo.setAgoraAccount(MemberVo.getMyMemNo(request));
                     roomInfoVo.setIsVote(
-                            voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s")
+                            voteService.isVote(target.getRoomNo(), target.getBjMemNo(), "s", request)
                     );
                     if("v".equals(roomInfoVo.getMediaType())){
                         roomInfoVo.setPlatform("agora");
