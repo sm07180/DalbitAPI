@@ -9,6 +9,7 @@ import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.CommonDao;
+import com.dalbit.common.proc.CommonProc;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.*;
 import com.dalbit.common.vo.request.SmsVo;
@@ -69,6 +70,8 @@ public class CommonService {
 
     @Autowired
     AdminDao adminDao;
+
+    @Autowired CommonProc commonProc;
 
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
@@ -1289,6 +1292,27 @@ public class CommonService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 회원 본인인증 체크 및 상태해제 (휴면회원)
+     */
+    public String sleepMemChkUpd(String memNo, String memPhone) {
+        String result = "";
+        Integer procResult = commonProc.sleepMemChkUpd(memNo, memPhone);
+        if(procResult == 1) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면회원_본인인증_체크_성공));
+        }else if(procResult == -1) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면회원_본인인증_결과없음));
+        }else if(procResult == -2) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면회원_본인인증_휴면상태아님));
+        }else if(procResult == -3) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_회원아님));
+        }else {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
         }
 
         return result;

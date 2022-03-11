@@ -588,5 +588,8 @@ public class CommonController {
         }
     }
 
-
+    @PostMapping("/sleep/member/update")
+    public String sleepMemChkUpd(@RequestParam(value = "memNo") String memNo, @RequestParam(value = "memPhone") String memPhone) {
+        return commonService.sleepMemChkUpd(memNo, memPhone);
+    }
 }
