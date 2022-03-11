@@ -621,15 +621,14 @@ public class DallagersEventService {
             log.error("sendGift / feverInfo db result null");
 
         // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 시작이 중복인 경우 1-1) 조건 발동 )
-        Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
+        Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 10);
 
         if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / FEVER_DAL_CNT) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 60);
             feverInfoAdded = true;
-            log.error("feverTime chk => gold: {}, booster Cnt: {}", feverInfo.getGold(), feverInfo.getBooster_cnt()* 20);
-        }else{
-            log.error("feverTime chk  start @@@ => gold: {}, booster Cnt: {}", feverInfo.getGold(), feverInfo.getBooster_cnt()* 20);
+            log.error("DallagersEventService.java / feverTime chk => getGift_fever_cnt: {}, goldCnt : {}, FEVER_DAL_CNT: {}, floor: {}, feverInfo.getGold: {}, feverInfo.boosterCnt: {}", feverInfo.getGift_fever_cnt(), goldCnt, FEVER_DAL_CNT,
+                    Math.floor(goldCnt / FEVER_DAL_CNT), feverInfo.getGold(), feverInfo.getBooster_cnt());
         }
 
         // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 시작이 중복인 경우 1-1)조건 발동 )
