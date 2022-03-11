@@ -59,14 +59,24 @@ public class BadgeService {
                 HashMap<String, Object> ranks = new Gson().fromJson(djRanks, HashMap.class);
                 if(!DalbitUtil.isEmpty(ranks) && ranks.containsKey(mem_no)){
                     LinkedTreeMap<String, Double> tmp = (LinkedTreeMap)ranks.get(mem_no);
-                    djRank = tmp.get("RANK").longValue();
+                    if(tmp.get("RANK") != null){
+                        djRank = tmp.get("RANK").longValue();
+                    }else if(tmp.get("rank") != null){
+                        djRank = tmp.get("rank").longValue();
+                    }else{
+                    }
                 }
             }
             if(!DalbitUtil.isEmpty(fanRanks)){
                 HashMap<String, Object> ranks = new Gson().fromJson(fanRanks, HashMap.class);
                 if(!DalbitUtil.isEmpty(ranks) && ranks.containsKey(mem_no)){
                     LinkedTreeMap<String, Double> tmp = (LinkedTreeMap)ranks.get(mem_no);
-                    fanRank = tmp.get("RANK").longValue();
+                    if(tmp.get("RANK") != null){
+                        fanRank = tmp.get("RANK").longValue();
+                    }else if(tmp.get("rank") != null){
+                        fanRank = tmp.get("rank").longValue();
+                    }else{
+                    }
                 }
             }
 
