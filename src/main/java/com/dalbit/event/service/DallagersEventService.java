@@ -54,12 +54,11 @@ public class DallagersEventService {
 
     // true : ios
     public boolean isIOSCheck(HttpServletRequest request){
-        String ua = request.getHeader("user-agent");
-        ua = ua.toUpperCase();
-
-        if(ua.indexOf("IPHONE") != -1 || ua.indexOf("IPAD") != -1 || ua.indexOf("MAC") != -1){
-            return true;
-        }
+        //String ua = request.getHeader("user-agent");
+        //ua = ua.toUpperCase();
+        //if(ua.indexOf("IPHONE") != -1 || ua.indexOf("IPAD") != -1 || ua.indexOf("MAC") != -1){
+        //    return true;
+        //}
 
         return false;
     }
