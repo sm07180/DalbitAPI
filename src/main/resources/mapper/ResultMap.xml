@@ -59,4 +59,7 @@
 
     <resultMap id="DallagersEventMySelVo" type="com.dalbit.event.vo.DallagersEventMySelVo"/>
     <resultMap id="DallagersEventSpecialMySelVo" type="com.dalbit.event.vo.DallagersEventSpecialMySelVo"/>
+
+    <!--star-->
+    <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
 </mapper>
