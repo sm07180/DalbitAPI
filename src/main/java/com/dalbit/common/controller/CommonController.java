@@ -290,7 +290,7 @@ public class CommonController {
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
         if(StringUtils.equals(selfAuthVo.getPageCode(), "7")) {
             selfAuthVo.setPlusInfo(selfAuthVo.getMemNo()+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
-                + "_" + selfAuthVo.getPushLink()
+                + "_" + selfAuthVo.getPushLink() + selfAuthVo.getPhoneNo()
             );
         }else {
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
@@ -298,7 +298,6 @@ public class CommonController {
             );
         }
 
-        log.warn("{}", selfAuthVo.getPlusInfo());
         /*if(selfAuthVo.getAuthType().equals("0")){
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()
             );
@@ -363,7 +362,6 @@ public class CommonController {
             apiData.setPageCode(plusInfo[3]);
             apiData.setAuthType(plusInfo[4]);
             apiData.setAgreeTerm(plusInfo[5]);
-            apiData.setPushLink(plusInfo[6]);
 
             int manAge = birthToAmericanAge(
                 Integer.parseInt(apiData.getBirthYear()),
