@@ -31,11 +31,13 @@ public class DallagersEventService {
     @Autowired GsonUtil gsonUtil;
     @Autowired UserService userService;
 
-    private final Integer DAL_CNT = 50;   // 보낸사람 실서버 조건: 50
-    private final Integer BYEOL_CNT = 100; // 받는사람 실서버 조건: 100
-    private final Integer FEVER_DAL_CNT = 5000;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
-    private final Integer FEVER_ROOM_LISTENER_CNT = 10;  // 피버 조건 2) 청취자 수 10명 이하인 경우
-    private final Integer FEVER_MINUTE = 30;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
+    private final int DAL_CNT = 50;   // 보낸사람 실서버 조건: 50
+    private final int BYEOL_CNT = 100; // 받는사람 실서버 조건: 100
+    private final int FEVER_DAL_CNT = 5000;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
+    private final int FEVER_ROOM_LISTENER_CNT = 10;  // 피버 조건 2) 청취자 수 10명 이하인 경우
+    private final int FEVER_MINUTE = 30;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
+    private final int SEND_CNT = 2; // 보낸달 50개당 스톤 2개
+    private final int RCV_CNT = 3;  // 받은 별 100개당 스톤 3개
 
     private final String dearMemNo = "11599118330637";      // Dear memNo ( 특정시간에 제외하고자 하는 유저 memNo )
 
@@ -704,7 +706,6 @@ public class DallagersEventService {
         Map<String, Object> result = dallagersEvent.pEvtDallaCollectScheduleSel();
 
         if (result == null) {
-            log.error("DallagersEventService.java / getReqNo() => Db result null");
             return;
         }
 
@@ -778,9 +779,9 @@ public class DallagersEventService {
         boolean isFeverTime = StringUtils.equals("y", feverInfo.getFever_yn()); // 현재 피버타임 진행중 여부
         float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
         
-        // 2) 스톤 등록 처리 (d, a, l 조각 생성)
-        double sendPieceCnt = Math.floor( (dalCnt / DAL_CNT) * feverValue ); // 보낸사람 (청취자) 50
-        double rcvPieceCnt = Math.floor( (byeolCnt / BYEOL_CNT) * feverValue ); // 받는사람 (방장) 100
+        // 2) 스톤 등록 처리 (d, a, l 조각 생성) - 보낸사람 50달마다 스톤 2개, 받는사람 100별마다 스톤 3개
+        double sendPieceCnt = Math.floor( (dalCnt / DAL_CNT) * SEND_CNT * feverValue ); // 보낸사람 (청취자) 50
+        double rcvPieceCnt = Math.floor( (byeolCnt / BYEOL_CNT) * RCV_CNT * feverValue ); // 받는사람 (방장) 100
 
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
         addVo.setRoomNo(roomNo);
