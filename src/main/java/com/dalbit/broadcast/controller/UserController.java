@@ -50,7 +50,6 @@ public class UserController {
         apiData.setPageCnt(pageCnt);
 
         String result = userService.callBroadCastRoomMemberList(apiData, request);
-
         return result;
     }
 

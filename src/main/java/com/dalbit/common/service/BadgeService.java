@@ -41,42 +41,57 @@ public class BadgeService {
     //private String rankTimeFan;
 
     public void setBadgeInfo(String mem_no, int type){
-        RedisHashCommands redisHashCommands = redisTemplateSocket.getConnectionFactory().getConnection().hashCommands();
-        Date now = new Date();
-        long djRank = 0, fanRank = 0;
-        int timeDay = (now.getMinutes() / 5) % 2;
-        String djRankKey = timeDay == 0 ? rankTimeDj : rankDailyDj;
-        String fanRankKey = rankDailyFan;
+        try{
+            RedisHashCommands redisHashCommands = redisTemplateSocket.getConnectionFactory().getConnection().hashCommands();
+            Date now = new Date();
+            long djRank = 0, fanRank = 0;
+            int timeDay = (now.getMinutes() / 5) % 2;
+            String djRankKey = timeDay == 0 ? rankTimeDj : rankDailyDj;
+            String fanRankKey = rankDailyFan;
 
-        String djTime = new String(redisHashCommands.hGet(rankKey.getBytes(), djRankKey.getBytes()));
-        String fanTime = new String(redisHashCommands.hGet(rankKey.getBytes(), fanRankKey.getBytes()));
+            String djTime = new String(redisHashCommands.hGet(rankKey.getBytes(), djRankKey.getBytes()));
+            String fanTime = new String(redisHashCommands.hGet(rankKey.getBytes(), fanRankKey.getBytes()));
 
-        String djRanks = new String(redisHashCommands.hGet(djRankKey.getBytes(), djTime.getBytes()));
-        String fanRanks = new String(redisHashCommands.hGet(fanRankKey.getBytes(), fanTime.getBytes()));
+            String djRanks = new String(redisHashCommands.hGet(djRankKey.getBytes(), djTime.getBytes()));
+            String fanRanks = new String(redisHashCommands.hGet(fanRankKey.getBytes(), fanTime.getBytes()));
 
-        if(!DalbitUtil.isEmpty(djRanks)){
-            HashMap<String, Object> ranks = new Gson().fromJson(djRanks, HashMap.class);
-            if(!DalbitUtil.isEmpty(ranks) && ranks.containsKey(mem_no)){
-                LinkedTreeMap<String, Double> tmp = (LinkedTreeMap)ranks.get(mem_no);
-                djRank = tmp.get("rank").longValue();
+            if(!DalbitUtil.isEmpty(djRanks)){
+                HashMap<String, Object> ranks = new Gson().fromJson(djRanks, HashMap.class);
+                if(!DalbitUtil.isEmpty(ranks) && ranks.containsKey(mem_no)){
+                    LinkedTreeMap<String, Double> tmp = (LinkedTreeMap)ranks.get(mem_no);
+                    if(tmp.get("RANK") != null){
+                        djRank = tmp.get("RANK").longValue();
+                    }else if(tmp.get("rank") != null){
+                        djRank = tmp.get("rank").longValue();
+                    }else{
+                    }
+                }
             }
-        }
-        if(!DalbitUtil.isEmpty(fanRanks)){
-            HashMap<String, Object> ranks = new Gson().fromJson(fanRanks, HashMap.class);
-            if(!DalbitUtil.isEmpty(ranks) && ranks.containsKey(mem_no)){
-                LinkedTreeMap<String, Double> tmp = (LinkedTreeMap)ranks.get(mem_no);
-                fanRank = tmp.get("rank").longValue();
+            if(!DalbitUtil.isEmpty(fanRanks)){
+                HashMap<String, Object> ranks = new Gson().fromJson(fanRanks, HashMap.class);
+                if(!DalbitUtil.isEmpty(ranks) && ranks.containsKey(mem_no)){
+                    LinkedTreeMap<String, Double> tmp = (LinkedTreeMap)ranks.get(mem_no);
+                    if(tmp.get("RANK") != null){
+                        fanRank = tmp.get("RANK").longValue();
+                    }else if(tmp.get("rank") != null){
+                        fanRank = tmp.get("rank").longValue();
+                    }else{
+                    }
+                }
             }
+
+            HashMap param = new HashMap();
+            param.put("mem_no", mem_no);
+            param.put("type", type);
+            param.put("timeDay", timeDay);
+            param.put("djRank", djRank);
+            param.put("fanRank", fanRank);
+            param.put("by", "api");
+            badgeList = commonDao.callMemberBadgeListServer(param);
+        }catch (Exception e){
+            log.error("BadgeService setBadgeInfo Error => {}", e.getMessage());
         }
 
-        HashMap param = new HashMap();
-        param.put("mem_no", mem_no);
-        param.put("type", type);
-        param.put("timeDay", timeDay);
-        param.put("djRank", djRank);
-        param.put("fanRank", fanRank);
-        param.put("by", "api");
-        badgeList = commonDao.callMemberBadgeListServer(param);
     }
 
     public List<BadgeVo> getCommonBadge(){

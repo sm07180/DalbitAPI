@@ -154,6 +154,7 @@ public interface VoteDao {
      * upd_date	datetime(6)	-- 변경일자
      */
     // insert 후 바로 조회 => Master
+    @Transactional(readOnly = true)
     VoteResultVo pRoomVoteSel(VoteRequestVo voteRequestVo);
 
     /**
