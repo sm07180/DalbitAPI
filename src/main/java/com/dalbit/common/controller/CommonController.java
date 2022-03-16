@@ -288,9 +288,17 @@ public class CommonController {
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
-        selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
-            + "_" + selfAuthVo.getPushLink()
-        );
+        if(StringUtils.equals(selfAuthVo.getPageCode(), "7")) {
+            selfAuthVo.setPlusInfo(selfAuthVo.getMemNo()+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+                + "_" + selfAuthVo.getPushLink()
+            );
+        }else {
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+                + "_" + selfAuthVo.getPushLink()
+            );
+        }
+
+        log.warn("{}", selfAuthVo.getPlusInfo());
         /*if(selfAuthVo.getAuthType().equals("0")){
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()
             );
