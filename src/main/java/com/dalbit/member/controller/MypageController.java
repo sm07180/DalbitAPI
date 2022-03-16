@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.vo.PagingVo;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1084,7 +1086,16 @@ public class MypageController {
     @GetMapping("/notice/sel")
     public String noticeSelect(@Valid ProfileFeedSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), request);
+        try {
+            return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeSelect() => {}", e);
+            HashMap resultMap = new HashMap();
+            resultMap.put("fixList", new ArrayList());
+            resultMap.put("list", new ArrayList());
+            resultMap.put("paging", new PagingVo(0, 0, 0));
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+        }
     }
 
     /**
