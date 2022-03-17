@@ -290,7 +290,7 @@ public class CommonController {
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
         if(StringUtils.equals(selfAuthVo.getPageCode(), "7")) {
             selfAuthVo.setPlusInfo(selfAuthVo.getMemNo()+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
-                + "_" + selfAuthVo.getPushLink() + selfAuthVo.getPhoneNo()
+                + "_" + selfAuthVo.getPushLink()
             );
         }else {
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
