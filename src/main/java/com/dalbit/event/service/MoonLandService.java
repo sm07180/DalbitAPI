@@ -254,12 +254,17 @@ public class MoonLandService {
      * s_rcvYn			        CHAR(1)	-- 전체아이템 완료여부 : "y", "n"
      */
     public MoonLandMissionInsVO setMoonLandMissionDataIns(Long memNo, Long roomNo, String itemCode){
-        HashMap paramMap = new HashMap();
+        try {
+            HashMap paramMap = new HashMap();
 
-        paramMap.put("memNo", memNo);
-        paramMap.put("roomNo", roomNo);
-        paramMap.put("itemCode", itemCode);
-        return event.pEvtMoonItemMissionIns(paramMap);
+            paramMap.put("memNo", memNo);
+            paramMap.put("roomNo", roomNo);
+            paramMap.put("itemCode", itemCode);
+            return event.pEvtMoonItemMissionIns(paramMap);
+        } catch (Exception e) {
+            log.error("MoonLandService.java / setMoonLandMissionDataIns() => Exception: {}", e);
+            return null;
+        }
     }
 
     //------------------------------------ 달나라 이벤트 페이지 ↓  ------------------------------------
@@ -486,7 +491,7 @@ public class MoonLandService {
                     if(listenerList != null){
                         listenerCnt = listenerList.size();
                     } else {
-                        log.warn("MoonLandService Exception sendBooster => listenerList is null listenerList: {}, roomNo: {}, memNo: {}", listenerList, pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
+                        log.error("MoonLandService Exception sendBooster => listenerList is null listenerList: {}, roomNo: {}, memNo: {}", listenerList, pRoomBoosterVo.getRoom_no(), MemberVo.getMyMemNo(request));
                     }
 
                     if(listenerCnt != -1) {
@@ -560,6 +565,12 @@ public class MoonLandService {
                     long roomNo = Long.parseLong(pRoomGiftVo.getRoom_no());
                     // s_Return         -3: 이미선물한 아이템, -2:방송방 미션 완료, -1:이벤트 기간아님, 0:에러, 1:정상
                     MoonLandMissionInsVO resultVO = setMoonLandMissionDataIns(sendUser, roomNo, item_code);
+
+                    if(resultVO == null){
+                        log.error("MoonLandService.java / getSendItemMoonLandCoinDataVO / setMoonLandMissionDataIns => DB return null giftVo: {}",
+                                gsonUtil.toJson(pRoomGiftVo));
+                        return null;
+                    }
                     if (resultVO.getS_Return() != null) {
                         int s_Return = resultVO.getS_Return();
                         //일반 코인 (예외 조건 외에는 무조건 일반코인은 세팅)
@@ -614,7 +625,7 @@ public class MoonLandService {
                 }
             } catch (Exception e) {
                 coinDataVo = null;
-                log.error("MoonLandService Exception setMoonLandMissionDataIns => sendMemNo: {} / djMemNo: {} / roomNo : {}",
+                log.error("MoonLandService Exception setMoonLandMissionDataIns => sendMemNo: {} / djMemNo: {} / roomNo : {} / Exception : {}",
                         pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(), pRoomGiftVo.getRoom_no() ,e);
             }
         }

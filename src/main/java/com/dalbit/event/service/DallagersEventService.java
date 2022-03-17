@@ -226,7 +226,7 @@ public class DallagersEventService {
             }
             return resultVo;
         } catch (Exception e) {
-            log.error("DallagersEventService.java / callEventRoomFeverInfo Exception {}", e);
+            log.error("DallagersEventService.java / callEventRoomFeverInfo Exception: {}, roomNo: {}", e, roomNo);
             return null;
         }
     }
@@ -730,8 +730,11 @@ public class DallagersEventService {
 
         // 1) 피버 타임 발동 조건체크 (피버 시작, 종료 프로시져는 소켓서버에서 호출함)
         DallagersRoomFerverSelVo feverInfo = callEventRoomFeverInfo(roomNo); // feverInfo is null => error
-        if(feverInfo == null)
-            log.error("sendGift / feverInfo db result null");
+        if(feverInfo == null) {
+            feverInfo = new DallagersRoomFerverSelVo(roomNo, 0, 0, 0, "n", 0, 0, "");
+            log.error("DallagersEventService.java / getDallagersPacketData() => feverInfo db result null, roomNo: {}, reqMemNo: {}, rcvMemNo: {}, giftType:{}, dalCnt: {}, byeolCnt: {}",
+                    roomNo, reqMemNo, rcvMemNo, actionFlag, dalCnt, byeolCnt);
+        }
 
         // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 시작이 중복인 경우 1-1) 조건 발동 )
         Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 10);
