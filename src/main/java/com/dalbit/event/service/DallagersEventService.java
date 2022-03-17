@@ -36,8 +36,8 @@ public class DallagersEventService {
     private final int FEVER_DAL_CNT = 5000;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
     private final int FEVER_ROOM_LISTENER_CNT = 10;  // 피버 조건 2) 청취자 수 10명 이하인 경우
     private final int FEVER_MINUTE = 30;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
-    private final int SEND_CNT = 2; // 보낸달 50개당 스톤 2개
-    private final int RCV_CNT = 3;  // 받은 별 100개당 스톤 3개
+    private int SEND_CNT = 1; // 보낸달 50개당 스톤 2개
+    private int RCV_CNT = 1;  // 받은 별 100개당 스톤 3개
 
     private final String dearMemNo = "11599118330637";      // Dear memNo ( 특정시간에 제외하고자 하는 유저 memNo )
 
@@ -712,6 +712,11 @@ public class DallagersEventService {
         //이벤트 진행중 아님
         if ((int) result.get("seq_no") == 0 || (StringUtils.equals(dearMemNo,  rcvMemNo) && isEventBlockDateChecker()) ) {
             return;
+        }
+
+        if((int) result.get("seq_no") == 2){    //2 라운드 부터 받는 보상...
+            SEND_CNT = 2;
+            RCV_CNT = 3;
         }
 
         HashMap stoneInfoMap = new HashMap();
