@@ -7,6 +7,7 @@ import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
+import com.dalbit.main.proc.MainPage;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
@@ -34,6 +35,7 @@ public class MainServiceV2 {
     @Autowired MainDao mainDao;
     @Autowired RoomDao roomDao;
     @Autowired MypageDao mypageDao;
+    @Autowired MainPage mainPage;
 
     /**
      * 메인 페이지
@@ -75,6 +77,7 @@ public class MainServiceV2 {
         List<P_MainRankingPageVo> mainFanRankingVoList = new ArrayList<>();
         List<P_MainLoverRankingPageVo> mainLoverRankingVoList = new ArrayList<>();*/
         List<P_MainStarVo> starVoList = new ArrayList<>();
+        int starCnt = 0;
         List<?> resultSets;
 
         try {
@@ -91,7 +94,12 @@ public class MainServiceV2 {
                 mainFanRankingVoList = DBUtil.getList(resultSets, 3, P_MainRankingPageVo.class);
                 mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainLoverRankingPageVo.class);*/
                 if(DalbitUtil.isLogin(request)){
-                    starVoList = DBUtil.getList(resultSets, 2, P_MainStarVo.class);
+                    Map starMap = new HashMap();
+                    starMap.put("memNo", memNo);
+                    starMap.put("pageNo", 1);
+                    starMap.put("pagePerCnt", 10);
+                    starVoList = DBUtil.getList(mainPage.getMyStar(starMap), 1, P_MainStarVo.class);
+                    starCnt = DBUtil.getData(mainPage.getMyStar(starMap), 0, Integer.class);
                 }
             }
         } catch (Exception e) {
@@ -103,6 +111,7 @@ public class MainServiceV2 {
 
         /* 현재 방송중인 내가 등록한 스타 */
         mainMap.put("myStar", getMyStar(starVoList, isLogin, photoSvrUrl));
+        mainMap.put("myStarCnt", starCnt);
 
 
         /* 일간 랭킹 */
