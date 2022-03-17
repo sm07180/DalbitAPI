@@ -1043,7 +1043,7 @@ public class WowzaService {
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
-
+        roomInfoVo.setJoinDate(DalbitUtil.getStringMap(resultMap, "joinDate"));
         return roomInfoVo;
     }
 

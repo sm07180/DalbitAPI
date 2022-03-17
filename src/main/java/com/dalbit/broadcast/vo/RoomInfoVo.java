@@ -126,6 +126,8 @@ public class RoomInfoVo {
     /*와우자 아고라 플래그값*/
     private String platform;
 
+    private String joinDate;
+
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
                       HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors, boolean moonLandEvent){
