@@ -35,13 +35,15 @@ public class DallagersEventController {
 
     /**
      * 달라이벤트 이니셜 뽑기 (스톤 뽑기)
+     * API param
      * @Param
-     * memNo        BIGINT		-- 회원번호
-     * ,useDallaGubunOne CHAR(1)		-- 구분[d,a,l](사용)
-     * ,useDallaGubunTwo CHAR(1)		-- 구분[d,a,l](사용)
-     * ,insDallaGubun    	CHAR(1)		-- 구분[d,a,l](받은)
+     * memNo             BIGINT     회원번호
+     * ,useDallaGubunOne String     {d: 1}
+     * ,useDallaGubunTwo String     {a: 3}
      *
-     * seqNo        INT         --현재 회차 (insert 후 회원정보 select 용)
+     * seqNo             INT        현재회차 (insert 후 회원정보 select 용)
+     *
+     * Procedure
      * @Return
      * s_return		INT		--  -1: 스톤 부족, 0:에러, 1: 정상
      *
