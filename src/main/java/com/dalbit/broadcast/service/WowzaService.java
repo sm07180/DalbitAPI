@@ -29,6 +29,7 @@ import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -117,6 +118,9 @@ public class WowzaService {
     double AGORA_APP_REDNE;
     @Value("${agora.app.shar}")
     double AGORA_APP_SHAR;
+
+    @Autowired
+    GsonUtil gsonUtil;
 
     static int expirationTimeInSeconds = 10800;
 
@@ -654,6 +658,14 @@ public class WowzaService {
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
+            }
+
+            // 방입장한 유저 누적선물달 체크 (누적선물달 수치를 소켓서버에 전달)
+            try{
+                Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.parseLong(pRoomJoinVo.getRoom_no()), Long.parseLong(MemberVo.getMyMemNo(request)) );
+                socketService.reqUserDalCnt(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, sendDalCnt);
+            } catch (Exception e) {
+                log.error("WowzaService.java / doJoinBroadcast / reqUserDalCnt Exception {}", e);
             }
 
             //애드브릭스 전달을 위한 데이터 생성

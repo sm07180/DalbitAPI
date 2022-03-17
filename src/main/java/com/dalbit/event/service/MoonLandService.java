@@ -225,14 +225,14 @@ public class MoonLandService {
                 paramMap.put("ptSlct", ptSlct);
                 paramMap.put("rcvScore", rcvScore);
                 paramMap.put("roomNo", roomNo);
-
+                paramMap.put("scoreUid", "");   //todo uid를 넣자
                 return event.pEvtMoonRankPtIns(paramMap);
             } else {
                 log.error("MoonLandService setMoonLandScoreIns Fail => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {}",memNo, ptSlct, rcvScore, roomNo);
                 return 0;
             }
         } catch(Exception e) {
-            log.error("MoonLandService Exception setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} \n error: {}", memNo, ptSlct, rcvScore, roomNo, e);
+            log.error("MoonLandService Exception setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} \n Exception: {}", memNo, ptSlct, rcvScore, roomNo, e);
             return -1;
         }
     }
@@ -630,6 +630,20 @@ public class MoonLandService {
             }
         }
         return coinDataVo;
+    }
+
+    // 방송 입장시 유저가 선물한 달 수치 (소켓서버에 전달용)
+    public Integer getUserSendDalCnt(Long roomNo, Long memNo){
+        try {
+            HashMap param = new HashMap();
+            param.put("roomNo", roomNo);
+            param.put("memNo", memNo);
+
+            return event.pEvtMoonSendDalChk(param);
+        }catch(Exception e){
+            log.error("MoonLandService.java / getUserSendDalCnt => sendDalCnt chk Exception {}", e);
+            return 0;
+        }
     }
 
     //달나라 - 좋아요 소켓에 같이 보낼 VO
