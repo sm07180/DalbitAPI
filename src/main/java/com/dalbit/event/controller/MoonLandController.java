@@ -104,14 +104,21 @@ public class MoonLandController {
      * @Param :
      * @Return : 0: 실패 or 1: 성공
      */
-    @PostMapping("/score") //todo => returnType : String
+    @PostMapping("/score")
     public String setMoonLandScore(@Valid MoonLandScoreInsVO paramVO, HttpServletRequest request){
         try {
             Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
             Long roomNo = Long.parseLong(paramVO.getRoomNo());
-            return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo)));
+            Integer result = moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo, paramVO.getCoinKey() );
+
+            if(result == 1) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, result));
+            } else {
+                log.warn(" setMoonLandScoreIns DB result fail => {}", result);
+                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
+            }
         } catch (Exception e) {
-            log.error("MoonLandController Exception setMoonLandScore => {}", e);
+            log.error("MoonLandController / setMoonLandScore => Exception {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
         }
     }

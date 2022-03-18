@@ -910,6 +910,15 @@ public class WowzaService {
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
+
+                    // 방입장한 유저 누적선물 10달 체크 (누적선물달 수치를 소켓서버에 전달)
+                    try{
+                        SocketVo vo = socketService.getSocketVo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                        Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.valueOf(roomTokenVo.getRoomNo()), Long.valueOf(MemberVo.getMyMemNo(request)) );
+                        socketService.reqUserDalCnt(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, sendDalCnt);
+                    } catch (Exception e) {
+                        log.error("WowzaService.java / getBroadcast() / reqUserDalCnt Exception {}", e);
+                    }
                 }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
                     result.put("status", Status.스트림아이디_회원아님);
                 }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){

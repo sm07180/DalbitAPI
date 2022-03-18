@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Timestamp;
 import java.util.*;
 
 @Slf4j
@@ -88,14 +89,14 @@ public class MoonLandService {
         HashMap param = new HashMap();
         ArrayList<MoonLandMissionSelResultVO> resultList = new ArrayList<>();
 
-        List<MoonLandInfoVO> list = getMoonLandInfoData(2);//전체 리스트 조회
+        List<MoonLandInfoVO> list = getMoonLandInfoData(1);//전체 리스트 조회
 
         if(list == null || list.size() == 0){
             return null;
         }
-            MoonLandInfoVO lastMoonNo = list.get(list.size()-1);
-            param.put("moonNo", lastMoonNo.getMoon_no());
-            param.put("roomNo", Long.parseLong(roomNo));
+        MoonLandInfoVO lastMoonNo = list.get(list.size()-1);
+        param.put("moonNo", lastMoonNo.getMoon_no());
+        param.put("roomNo", Long.parseLong(roomNo));
         MoonLandMissionSelVO missionSelVO = event.pEvtMoonItemMissionSel(param);
 
         //한번도 점수가 쌓인적이 없으면 null을 리턴함!
@@ -216,23 +217,31 @@ public class MoonLandService {
      * @Return :
      * s_return		INT		-- 0:에러, 1:정상
      */
-    public Integer setMoonLandScoreIns(Long memNo, Integer ptSlct, Integer rcvScore, Long roomNo) {
+    public int setMoonLandScoreIns(Long memNo, Integer ptSlct, Integer rcvScore, Long roomNo, String scoreUid) {
         try {
-            if(memNo > 0 && ptSlct > 0 && rcvScore> 0 && roomNo > 0) {
+            //timestamp + roomNo + memNo
+            if(memNo > 0 && ptSlct > 0 && rcvScore> 0 && roomNo > 0 && !StringUtils.equals(scoreUid, "")) {
                 HashMap paramMap = new HashMap();
 
                 paramMap.put("memNo", memNo);
                 paramMap.put("ptSlct", ptSlct);
                 paramMap.put("rcvScore", rcvScore);
                 paramMap.put("roomNo", roomNo);
-                paramMap.put("scoreUid", "");   //todo uid를 넣자
-                return event.pEvtMoonRankPtIns(paramMap);
+                paramMap.put("scoreUid", scoreUid);
+                Integer result = event.pEvtMoonRankPtIns(paramMap);
+
+                //test
+                if(result != 1){
+                    log.error("MoonLandService.java / setMoonLandScoreIns Fail {}", result);
+                }
+
+                return result == null? -1 : result;
             } else {
-                log.error("MoonLandService setMoonLandScoreIns Fail => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {}",memNo, ptSlct, rcvScore, roomNo);
+                log.error("MoonLandService setMoonLandScoreIns INVALID Param => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {}, scoreUid", memNo, ptSlct, rcvScore, roomNo, scoreUid);
                 return 0;
             }
         } catch(Exception e) {
-            log.error("MoonLandService Exception setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} \n Exception: {}", memNo, ptSlct, rcvScore, roomNo, e);
+            log.error("MoonLandService Exception setMoonLandScoreIns Error => memNo: {}, ptSlct: {}, rcvScore: {}, roomNo: {} scoreUid: {} \n Exception: {}", memNo, ptSlct, rcvScore, roomNo, scoreUid, e);
             return -1;
         }
     }
@@ -264,6 +273,36 @@ public class MoonLandService {
         } catch (Exception e) {
             log.error("MoonLandService.java / setMoonLandMissionDataIns() => Exception: {}", e);
             return null;
+        }
+    }
+
+    /** 아이템 4종미션 완료 (미션 성공시 데이터 초기화 해주기)
+     * @Param :
+     * moonNo   INT         -- 회차번호
+     * ,roomNo  BIGINT      -- 방번호
+     *
+     * @Return :
+     * s_return	INT		-- -1: 미션 미완료, 0: 에러 , 1: 정상
+     * */
+    public void missionDataRefresh(Long roomNo, List<MoonLandInfoVO> moonLandRound){
+        Integer moonNo = null;
+        try {
+            moonNo = moonLandRound.get(moonLandRound.size() -1).getMoon_no();
+
+            if(moonNo > 0 && roomNo > 0) {
+                HashMap param = new HashMap();
+                param.put("moon", moonNo);
+                param.put("roomNo", roomNo);
+
+                Integer resultCode = event.pEvtMoonItemMissionCom(param);
+                if(resultCode != 1){
+                    log.warn("MoonLandService.java / missionDataRefresh() => fail moonNo:{}, roomNo: {}", moonNo, roomNo);
+                }
+            } else {
+                log.warn("MoonLandService.java / missionDataRefresh() => param Error moonNo:{}, roomNo: {}", moonNo, roomNo);
+            }
+        } catch (Exception e) {
+            log.error("MoonLandService.java / missionDataRefresh() => moonNo: {}, roomNo: {}, Exception: {}", moonNo, roomNo, e);
         }
     }
 
@@ -519,10 +558,10 @@ public class MoonLandService {
                             //황금 코인 일 수 있음!
                             //bj 점수 ins
                             if(characterScore> 0) { // 3% 성공 캐릭터 코인
-                                setMoonLandScoreIns(rcvDjMemNo, 6, characterScore, roomNo);
+                                setMoonLandScoreIns(rcvDjMemNo, 6, characterScore, roomNo, makeStringUid(roomNo, rcvDjMemNo, 6));
                             }
                             if(goldScore > 0){ //3% 실패 캐릭터 코인
-                                setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo);
+                                setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo,  makeStringUid(roomNo, rcvDjMemNo, 4));
                             }
 
                         } else {    // 청취자 10명 이상
@@ -530,7 +569,7 @@ public class MoonLandService {
                                 /** DJ는 자동 획득, 황금코인 점수 세팅 */
                                 goldScore += random.nextInt(21) + 10; // boostCnt & (10 ~ 30)
                             }
-                            setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo);
+                            setMoonLandScoreIns(rcvDjMemNo, 4, goldScore, roomNo, makeStringUid(roomNo, rcvDjMemNo, 4));
                         }
 
                         coinDataVo.setCharacterCnt(characterCnt);
@@ -551,8 +590,12 @@ public class MoonLandService {
     //달나라 - 아이템선물 소켓에 같이 보낼 VO
     //coinDataVO에 값 넣어준 후 coinDataVO 리턴
     public MoonLandCoinDataVO getSendItemMoonLandCoinDataVO(MoonLandCoinDataVO coinDataVo, P_RoomGiftVo pRoomGiftVo, int dalCnt, String item_code){
+        //todo 개발 아이템가격을 왜 조정함...
+        boolean wtfchk = StringUtils.equals(item_code, "G1173") || StringUtils.equals(item_code, "G1533")
+                || StringUtils.equals(item_code, "G1786") || StringUtils.equals(item_code, "G1691");
+
         //달나라 조건 체크 - 선물 갯수 10개 이상
-        if (dalCnt > 9) {
+        if (dalCnt > 9 || wtfchk) {
             try {
                 List<MoonLandInfoVO> moonLandRound = getMoonLandInfoData(1);
                 //이벤트 진행중 여부 체크 (null 이면 이벤트 기간 아님)
@@ -580,10 +623,10 @@ public class MoonLandService {
 
                         //일반 코인 점수 ins
                         /** 선물한 시청자 자동획득 */
-                        int sendUserRstNum = setMoonLandScoreIns(sendUser, 1, score, roomNo);
+                        int sendUserRstNum = setMoonLandScoreIns(sendUser, 1, score, roomNo, makeStringUid(roomNo, sendUser, 1));
 
                         /** DJ는 자동 획득 */
-                        int rcvDjRstNum = setMoonLandScoreIns(rcvDj, 1, score, roomNo);
+                        int rcvDjRstNum = setMoonLandScoreIns(rcvDj, 1, score, roomNo, makeStringUid(roomNo, rcvDj, 1));
 
                         switch (s_Return) {
                             case 1: // 정상 -> 달나라 소켓 보내기
@@ -606,15 +649,19 @@ public class MoonLandService {
                                         coinDataVo.setCharacterScore(characterScore);
 
                                         //db score ins
-                                        setMoonLandScoreIns(rcvDj, 7, characterScore, roomNo);
+                                        setMoonLandScoreIns(rcvDj, 7, characterScore, roomNo, makeStringUid(roomNo, rcvDj, 7) );
                                     } else { //3% Fail
                                         /** DJ는 자동 획득, 황금코인 점수 세팅 */
                                         goldScore = random.nextInt(51) + 250;
                                         coinDataVo.setGoldScore(goldScore);
 
                                         //db score ins
-                                        setMoonLandScoreIns(rcvDj, 5, goldScore, roomNo);
+                                        setMoonLandScoreIns(rcvDj, 5, goldScore, roomNo, makeStringUid(roomNo, rcvDj, 5) );
                                     }
+
+                                    // 미션완료 : 초기화 proc call
+                                    missionDataRefresh(roomNo, moonLandRound);
+
                                     coinDataVo.setMissionSuccessYn("y");    // 미션 달성여부 (달나라 뿅가는 애니메이션 재생해줘요)
                                 }
                                 break;
@@ -630,20 +677,6 @@ public class MoonLandService {
             }
         }
         return coinDataVo;
-    }
-
-    // 방송 입장시 유저가 선물한 달 수치 (소켓서버에 전달용)
-    public Integer getUserSendDalCnt(Long roomNo, Long memNo){
-        try {
-            HashMap param = new HashMap();
-            param.put("roomNo", roomNo);
-            param.put("memNo", memNo);
-
-            return event.pEvtMoonSendDalChk(param);
-        }catch(Exception e){
-            log.error("MoonLandService.java / getUserSendDalCnt => sendDalCnt chk Exception {}", e);
-            return 0;
-        }
     }
 
     //달나라 - 좋아요 소켓에 같이 보낼 VO
@@ -685,7 +718,7 @@ public class MoonLandService {
             // ~사랑꾼 조건에 들어야 됨
             if (eventScoreValue > 0 && djMemNo > 0) {
                 /** DJ는 자동 획득 */
-                int insResult = setMoonLandScoreIns(djMemNo, 3, eventScoreValue, roomNo);
+                int insResult = setMoonLandScoreIns(djMemNo, 3, eventScoreValue, roomNo, makeStringUid(roomNo, djMemNo, 3));
 
                 if (insResult != 1) {
                     log.error("MoonLandService Exception sendLike setMoonLandScoreIns Failed djMemNo: {}, eventScoreValue: {}, roomNo: {}", djMemNo, eventScoreValue, roomNo);
@@ -697,4 +730,29 @@ public class MoonLandService {
         return coinDataVo;
     }
 
+    // 방송 입장시 유저가 선물한 달 수치 (소켓서버에 전달용)
+    public Integer getUserSendDalCnt(Long roomNo, Long memNo){
+        try {
+            HashMap param = new HashMap();
+            param.put("roomNo", roomNo);
+            param.put("memNo", memNo);
+
+            return event.pEvtMoonSendDalChk(param);
+        } catch (Exception e) {
+            log.error("MoonLandService.java / getUserSendDalCnt => sendDalCnt chk Exception {}", e);
+            return 0;
+        }
+    }
+
+    // 점수 insert 프로시져에서 이 값으로 중복체크
+    public String makeStringUid(Long roomNo, Long memNo, Integer type) {
+        try {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(System.currentTimeMillis()).append(memNo).append(type).append(roomNo);
+            return stringBuilder.toString();
+        }catch(Exception e){
+            log.error("MoonLandService.java / makeStringUid => ", e);
+            return "";
+        }
+    }
 }

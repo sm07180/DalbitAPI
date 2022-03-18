@@ -673,7 +673,7 @@ public interface Event {
      * ,roomNo      BIGINT              점수 획득한 방번호
      * ,scoreUid    VARCHAR(200)        점수 Uid값
      * @Return :
-     * s_return		INT		-- 0:에러, 1:정상
+     * s_return		INT		-- -2 달 선물 갯수 미달, -1: 동일 UID값 있음, 0: 에러 , 1: 정상
      */
     @Select("CALL rd_data.p_evt_moon_rank_pt_ins_v1(#{memNo}, #{ptSlct}, #{rcvScore}, #{roomNo}, #{scoreUid} )")
     Integer pEvtMoonRankPtIns(Map<String, Object> map);
@@ -690,7 +690,7 @@ public interface Event {
     Integer pEvtMoonItemMissionCom(Map<String, Object> map);
 
 
-    /** 입장방송방 선물 갯수 체크
+    /** 방송방 입장 : 선물 갯수 체크
      * @Param :
      * roomNo BIGINT			-- 방번호
      * ,memNo BIGINT			-- 회원번호
