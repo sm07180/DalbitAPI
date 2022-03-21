@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -34,6 +35,7 @@ public interface MainPage {
     last_login_date	DATETIME	-- 접속일자
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @ResultMap({"ResultMap.integer", "ResultMap.P_MainStarVo"})
     @Select("CALL rd_data.p_main_my_stat_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getMyStar(Map map);
