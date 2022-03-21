@@ -34,6 +34,5 @@ public class P_SelfAuthVo extends P_ApiVo {
     private String authToken;
 
     private String agreeTerm = "";
-    private String pushLink = ""; // 본인인증 완료 후 보낼 페이지
 
 }
