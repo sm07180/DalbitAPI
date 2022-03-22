@@ -528,7 +528,7 @@ public interface Event {
     /* 깐부 이벤트 끝~~~ */
 
     //------------------------------------ 달나라 이벤트 방송방 ↓ ------------------------------------
-    /** 달나라 이벤트 일정 리스트 (회차정보) (방송방, 이벤트페이지 공용)
+    /** 달나라 이벤트 일정 리스트 (회차정보 - 방송방)
      * 작성일 : 2021-12-28
      * 작성자 : 박용훈
      * @Return :
@@ -539,6 +539,23 @@ public interface Event {
      */
     @Select("CALL rd_data.p_evt_moon_no_sel(#{noSlct})")
     List<MoonLandInfoVO> pEvtMoonNoSel(int noSlct);
+
+    /** 달나라 이벤트 일정 리스트 (전체 회차 정보 - 이벤트페이지)
+     * 작성일 : 2021-12-28
+     * 작성자 : 박용훈
+     * @Return :
+     * @Rows 1
+     * cnt
+     *
+     * @Rows 2
+     * moon_no	    INT		--     회차번호
+     * start_date	DATETIME	-- 시작일자
+     * end_date	    DATETIME	-- 종료일자
+     * ins_date	    DATETIME	-- 등록일자
+     */
+    @ResultMap({"ResultMap.integer", "ResultMap.map"})
+    @Select("CALL rd_data.p_evt_moon_no_sel(#{noSlct})")
+    List<Object> pEvtMoonNoSelMultiRows(int noSlct);
 
     /** 달나라 이벤트 아이템 미션 데이터 완료 리스트
      * 작성일 : 2021-12-28
