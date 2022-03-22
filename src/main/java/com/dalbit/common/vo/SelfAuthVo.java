@@ -26,6 +26,6 @@ public class SelfAuthVo {
     private String authType;        //인증타입(0: 본인, 1:보호자)
 
     private String pushLink = "none";   // 기본 폼일때 인증 후 이동할 url 코드 (ex: main - 메인페이지, share - 공유 이벤트)
-
+    private String memNo = "";      // 휴면 인증인 경우에 파라미터로 받은 memNo 사용
 
 }
