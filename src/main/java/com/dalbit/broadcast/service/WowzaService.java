@@ -660,15 +660,15 @@ public class WowzaService {
                 log.info("Socket Service changeCount Exception {}", e);
             }
 
-            // 방입장한 유저 누적선물달 체크 (누적선물달 수치를 소켓서버에 전달)
+            /* 방입장한 유저의 누적선물, 10달 체크 ( 클라이언트에 값 관리 ) */
+            roomInfoVo.setSendDalCnt(0);
+            roomInfoVo.setSendDalFix(10);
             try{
                 Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.parseLong(pRoomJoinVo.getRoom_no()), Long.parseLong(MemberVo.getMyMemNo(request)) );
                 roomInfoVo.setSendDalCnt(sendDalCnt == null? 0 : sendDalCnt);
-                roomInfoVo.setSendDalFix(10);
                 socketService.reqUserDalCnt(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, sendDalCnt);
             } catch (Exception e) {
                 log.error("WowzaService.java / doJoinBroadcast / reqUserDalCnt Exception {}", e);
-                roomInfoVo.setSendDalCnt(0);
             }
 
             //애드브릭스 전달을 위한 데이터 생성
@@ -914,16 +914,16 @@ public class WowzaService {
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
 
-                    // 방입장한 유저 누적선물 10달 체크 ( 클라이언트에 값 관리 )
+                    /* 방입장한 유저의 누적선물, 10달 체크 ( 클라이언트에 값 관리 ) */
+                    roomInfoVo.setSendDalCnt(0);
+                    roomInfoVo.setSendDalFix(10);
                     try{
                         SocketVo vo = socketService.getSocketVo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                         Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.valueOf(roomTokenVo.getRoomNo()), Long.valueOf(MemberVo.getMyMemNo(request)) );
                         socketService.reqUserDalCnt(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, sendDalCnt);
                         roomInfoVo.setSendDalCnt(sendDalCnt == null? 0 : sendDalCnt);
-                        roomInfoVo.setSendDalFix(10);
                     } catch (Exception e) {
                         log.error("WowzaService.java / getBroadcast() / reqUserDalCnt Exception {}", e);
-                        roomInfoVo.setSendDalCnt(0);
                     }
                 }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
                     result.put("status", Status.스트림아이디_회원아님);
