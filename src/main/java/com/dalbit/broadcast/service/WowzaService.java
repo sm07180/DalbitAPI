@@ -314,7 +314,7 @@ public class WowzaService {
         pRoomCreateVo.setTitle(roomCreateVo.getTitle());
         pRoomCreateVo.setBackgroundImage(roomCreateVo.getBgImg());
         pRoomCreateVo.setBackgroundImageGrade(DalbitUtil.isStringToNumber(roomCreateVo.getBgImgRacy()));
-        pRoomCreateVo.setWelcomMsg(roomCreateVo.getWelcomMsg());
+        pRoomCreateVo.setWelcomMsg(roomCreateVo.getWelcomMsg().replace("\r\n","\n"));
         pRoomCreateVo.setNotice(roomCreateVo.getNotice());
         pRoomCreateVo.setEntryType(roomCreateVo.getEntryType());
         pRoomCreateVo.setImageType(roomCreateVo.getImageType());
@@ -1043,7 +1043,7 @@ public class WowzaService {
         badgeService.setBadgeInfo(target.getBjMemNo(), 4);
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
-
+        roomInfoVo.setJoinDate(DalbitUtil.getStringMap(resultMap, "joinDate"));
         return roomInfoVo;
     }
 
