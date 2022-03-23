@@ -60,6 +60,6 @@
     <resultMap id="DallagersEventMySelVo" type="com.dalbit.event.vo.DallagersEventMySelVo"/>
     <resultMap id="DallagersEventSpecialMySelVo" type="com.dalbit.event.vo.DallagersEventSpecialMySelVo"/>
 
-    <!-- 리브랜딩 방송공지 -->
-    <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
+    <!--star-->
+    <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
 </mapper>

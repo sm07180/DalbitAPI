@@ -7,14 +7,12 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.DallagersEvent;
-import com.dalbit.event.vo.DallagersEventMySelVo;
-import com.dalbit.event.vo.DallagersEventSpecialMySelVo;
-import com.dalbit.event.vo.DallagersInitialAddVo;
-import com.dalbit.event.vo.DallagersRoomFerverSelVo;
+import com.dalbit.event.vo.*;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,11 +31,13 @@ public class DallagersEventService {
     @Autowired GsonUtil gsonUtil;
     @Autowired UserService userService;
 
-    private final Integer DAL_CNT = 50;   // 보낸사람 실서버 조건: 50
-    private final Integer BYEOL_CNT = 100; // 받는사람 실서버 조건: 100
-    private final Integer FEVER_DAL_CNT = 5000;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
-    private final Integer FEVER_ROOM_LISTENER_CNT = 10;  // 피버 조건 2) 청취자 수 10명 이하인 경우
-    private final Integer FEVER_MINUTE = 30;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
+    private final int DAL_CNT = 50;   // 보낸사람 실서버 조건: 50
+    private final int BYEOL_CNT = 100; // 받는사람 실서버 조건: 100
+    private final int FEVER_DAL_CNT = 5000;         // 피버 조건 1) 해당 방 누적 달 5000개씩 마다 피버타임 진행
+    private final int FEVER_ROOM_LISTENER_CNT = 10;  // 피버 조건 2) 청취자 수 10명 이하인 경우
+    private final int FEVER_MINUTE = 30;           // 피버 조건 2) 방송 진행시간 30분 이상인 경우
+    private int SEND_CNT = 1; // 보낸달 50개당 스톤 2개
+    private int RCV_CNT = 1;  // 받은 별 100개당 스톤 3개
 
     private final String dearMemNo = "11599118330637";      // Dear memNo ( 특정시간에 제외하고자 하는 유저 memNo )
 
@@ -54,13 +54,11 @@ public class DallagersEventService {
 
     // true : ios
     public boolean isIOSCheck(HttpServletRequest request){
-        String ua = request.getHeader("user-agent");
-        ua = ua.toUpperCase();
-
-        System.out.println(" ios check => "+ ua);
-        if(ua.indexOf("IPHONE") != -1 || ua.indexOf("IPAD") != -1 || ua.indexOf("MAC") != -1){
-            return true;
-        }
+        //String ua = request.getHeader("user-agent");
+        //ua = ua.toUpperCase();
+        //if(ua.indexOf("IPHONE") != -1 || ua.indexOf("IPAD") != -1 || ua.indexOf("MAC") != -1){
+        //    return true;
+        //}
 
         return false;
     }
@@ -228,7 +226,7 @@ public class DallagersEventService {
             }
             return resultVo;
         } catch (Exception e) {
-            log.error("DallagersEventService.java / callEventRoomFeverInfo Exception {}", e);
+            log.error("DallagersEventService.java / callEventRoomFeverInfo Exception: {}, roomNo: {}", e, roomNo);
             return null;
         }
     }
@@ -259,8 +257,112 @@ public class DallagersEventService {
         }
     }
 
+    // 스톤 랜덤으로 얻기
+    private void resultStoneCalc(HashMap<String, Object> param, DallagersEventStoneVO resultStoneVO){
+        String resultStone = "";
+        Random random = new Random();
+        int stoneNumber = random.nextInt(3001);
+
+        // 1:1:1 확률로 스톤 교환하기
+        if(stoneNumber < 1000){ //0 ~ 999 : d
+            resultStone = "d";
+            resultStoneVO.setDStone(resultStoneVO.getDStone() + 1);
+        } else if (stoneNumber < 2000) { // 1000 ~ 1999 : a
+            resultStone = "a";
+            resultStoneVO.setAStone(resultStoneVO.getAStone() + 1);
+        } else { // 2000 ~ 3000 : l
+            resultStone = "l";
+            resultStoneVO.setLStone(resultStoneVO.getLStone() + 1);
+        }
+
+        // 합성후 얻은 스톤 (프로시져 파라미터)
+        param.put("insDallaGubun", resultStone);
+    }
+
+    // 스톤 합성하기
+    private void stoneReplace(Integer stoneCnt, String stoneType,DallagersEventStoneVO resultStoneVO, HashMap<String, Object> param){
+        // 스톤(d, a, l)이 짝수이면 insert proc 호출해주기
+        // resultStoneVO에 얻은 스톤을 set
+        if(stoneCnt != null && stoneCnt/2 > 0){
+            int _stoneCnt = (int) Math.floor(stoneCnt / 2);
+
+            param.put("useDallaGubunOne", stoneType);
+            param.put("useDallaGubunTwo", stoneType);
+            //insert proc call (스톤 교환)
+            for (int i = 0; i < _stoneCnt; i++) {
+                resultStoneCalc(param, resultStoneVO);
+                Integer resultCode = dallagersEvent.pEvtDallaCollectBbopgiIns(param);
+
+                if(resultCode == null || resultCode == 0){
+                    log.error("DallagersEventService.java / stoneReplace() => db result error, param: {}, resultCode: {}", gsonUtil.toJson(param), resultCode);
+                } else if(resultCode == -1){
+                    log.error("DallagersEventService.java / stoneReplace() => fail param: {}", gsonUtil.toJson(param));
+                }
+            }
+
+            return;
+        }
+    }
+
+    // 남은 스톤으로 합성하기
+    private void remainStoneReplace(Integer dStone, Integer aStone, Integer lStone,
+                                       DallagersEventStoneVO resultStoneVO, HashMap<String, Object> param){
+        int remainStoneCnt = dStone % 2 + aStone % 2 + lStone % 2;   // 0 ~ 3
+
+        // param 구분값 체크용 (Map에 useDallaGubunOne key로 put 했을시 체크용)
+        boolean gubunBool1 = false;
+        boolean gubunBool2 = false;
+
+        if (remainStoneCnt > 1) {
+            // 1번 슬롯
+            if (dStone % 2 > 0) {
+                if(!gubunBool1){
+                    param.put("useDallaGubunOne", "d");
+                    gubunBool1 = true;
+                } else if(!gubunBool2) {
+                    param.put("useDallaGubunTwo", "d");
+                    gubunBool2 = true;
+                }
+            }
+
+            //2번 슬롯
+            if (aStone % 2 > 0) {
+                if(!gubunBool1){
+                    param.put("useDallaGubunOne", "a");
+                    gubunBool1 = true;
+                } else if(!gubunBool2) {
+                    param.put("useDallaGubunTwo", "a");
+                    gubunBool2 = true;
+                }
+            }
+
+            //3번 슬롯
+            if (lStone % 2 > 0) {
+                if(!gubunBool1){
+                    param.put("useDallaGubunOne", "l");
+                    gubunBool1 = true;
+                } else if(!gubunBool2) {
+                    param.put("useDallaGubunTwo", "l");
+                    gubunBool2 = true;
+                }
+            }
+
+            //1:1:1 확률로 합성결과 스톤
+            resultStoneCalc(param, resultStoneVO);
+            Integer resultCode = dallagersEvent.pEvtDallaCollectBbopgiIns(param);
+
+            if(resultCode == null || resultCode == 0){
+                log.error("DallagersEventService.java / remainStoneReplace() => db result error, param: {}, resultCode: {}", gsonUtil.toJson(param), resultCode);
+            } else if(resultCode == -1){
+                log.error("DallagersEventService.java / remainStoneReplace() => fail param: {}", gsonUtil.toJson(param));
+            }
+        }
+    }
+
     /**
-     * 달라이벤트 이니셜 뽑기
+     * 달라이벤트 이니셜 뽑기 (스톤 뽑기)
+     *
+     * procedure
      * @Param
      * memNo        BIGINT		-- 회원번호
      * ,useDallaGubunOne CHAR(1)		-- 구분[d,a,l](사용)
@@ -274,36 +376,47 @@ public class DallagersEventService {
     public String pEvtDallaCollectBbopgiIns(HashMap<String, Object> param, HttpServletRequest request){
         try {
             String memNo = MemberVo.getMyMemNo(request);
-            String useDallaGubunOne = DalbitUtil.getStringMap(param, "useDallaGubunOne");
-            String useDallaGubunTwo = DalbitUtil.getStringMap(param, "useDallaGubunTwo");
-            Integer seqNo = DalbitUtil.getIntMap(param, "seqNo");
-            String insDallaGubun = "";
-            Random random = new Random();
-            int stoneNumber = random.nextInt(3001);
+            Integer seqNo = DalbitUtil.getIntMap(param, "seqNo");   //회차 번호
+            Integer dStone = 0;
+            Integer aStone = 0;
+            Integer lStone = 0;
 
-            // 스톤 뽑기( 결과 계산 )
-            if(stoneNumber < 1000){ //0 ~ 999 : d
-                insDallaGubun = "d";
-            } else if (stoneNumber < 2000) { // 1000 ~ 1999 : a
-                insDallaGubun = "a";
-            } else { // 2000 ~ 3000 : l
-                insDallaGubun = "l";
+            try {
+                dStone = (Integer) param.get("slot1");
+                aStone = (Integer) param.get("slot2");
+                lStone = (Integer) param.get("slot3");
+            } catch(Exception e) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
             }
 
-            if(!seqNo.equals(0) && !StringUtils.equals(useDallaGubunOne, "") && !StringUtils.equals(useDallaGubunTwo, "") &&
-                    !StringUtils.equals(insDallaGubun, "") && !StringUtils.equals(memNo, null)) {
-                param.put("memNo", Long.parseLong(memNo));
-                param.put("insDallaGubun", insDallaGubun);
-                // 스톤 뽑기
-                Integer resultCode = dallagersEvent.pEvtDallaCollectBbopgiIns(param);
+            if(!seqNo.equals(0) && !StringUtils.equals(memNo, null) &&
+                    dStone != null && aStone != null && lStone != null ) {
+                Gson gson = new Gson();
 
-                if(resultCode == null || resultCode == 0){
-                    log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => db result error, param: {}, resultCode: {}", gsonUtil.toJson(param), resultCode);
-                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_DB_실패));
-                } else if(resultCode == -1){
-                    log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => fail param: {}", gsonUtil.toJson(param));
-                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_DB_실패));
-                }
+                // 스톤 합성결과 VO
+                DallagersEventStoneVO resultStoneVO = new DallagersEventStoneVO(0,0,0);
+                param.put("memNo", Long.parseLong(memNo));
+
+                // 슬롯 1번 - 같은 이니셜 2개씩 합성
+                stoneReplace(dStone,"d", resultStoneVO, param);
+                param.put("useDallaGubunOne", "");
+                param.put("useDallaGubunTwo", "");
+                param.put("insDallaGubun", "");
+
+                // 슬롯 2번 - 같은 이니셜 2개씩 합성
+                stoneReplace(aStone,"a", resultStoneVO, param);
+                param.put("useDallaGubunOne", "");
+                param.put("useDallaGubunTwo", "");
+                param.put("insDallaGubun", "");
+
+                // 슬롯 3번 - 같은 이니셜 2개씩 합성
+                stoneReplace(lStone,"l", resultStoneVO, param);
+                param.put("useDallaGubunOne", "");
+                param.put("useDallaGubunTwo", "");
+                param.put("insDallaGubun", "");
+
+                // 슬롯 1번, 슬롯 2번, 슬롯 3번 남은 스톤으로 합성하기
+                remainStoneReplace(dStone, aStone, lStone, resultStoneVO, param);
 
                 // 스톤 뽑기 완료 후 내 정보 재조회
                 HashMap resultData = new HashMap();
@@ -312,7 +425,7 @@ public class DallagersEventService {
                 //프로필 이미지 obj set
                 mySelVo.setProfImg(new ImageVo(mySelVo.getImage_profile(), mySelVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
 
-                resultData.put("resultStone", insDallaGubun);
+                resultData.put("resultStone", resultStoneVO);
                 resultData.put("myInfo", mySelVo);
 
                 return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultData));
@@ -593,13 +706,17 @@ public class DallagersEventService {
         Map<String, Object> result = dallagersEvent.pEvtDallaCollectScheduleSel();
 
         if (result == null) {
-            log.error("DallagersEventService.java / getReqNo() => Db result null");
             return;
         }
 
         //이벤트 진행중 아님
         if ((int) result.get("seq_no") == 0 || (StringUtils.equals(dearMemNo,  rcvMemNo) && isEventBlockDateChecker()) ) {
             return;
+        }
+
+        if((int) result.get("seq_no") == 2){    //2 라운드 부터 받는 보상...
+            SEND_CNT = 2;
+            RCV_CNT = 3;
         }
 
         HashMap stoneInfoMap = new HashMap();
@@ -618,16 +735,21 @@ public class DallagersEventService {
 
         // 1) 피버 타임 발동 조건체크 (피버 시작, 종료 프로시져는 소켓서버에서 호출함)
         DallagersRoomFerverSelVo feverInfo = callEventRoomFeverInfo(roomNo); // feverInfo is null => error
-        if(feverInfo == null)
-            log.error("sendGift / feverInfo db result null");
+        if(feverInfo == null) {
+            feverInfo = new DallagersRoomFerverSelVo(roomNo, 0, 0, 0, "n", 0, 0, "");
+            log.error("DallagersEventService.java / getDallagersPacketData() => feverInfo db result null, roomNo: {}, reqMemNo: {}, rcvMemNo: {}, giftType:{}, dalCnt: {}, byeolCnt: {}",
+                    roomNo, reqMemNo, rcvMemNo, actionFlag, dalCnt, byeolCnt);
+        }
 
         // 1-1) 누적선물(별 + 부스터) 피버발동 조건 체크 ( 피버타임 시작이 중복인 경우 1-1) 조건 발동 )
-        Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 20);
+        Long goldCnt = Long.valueOf(feverInfo.getGold() + feverInfo.getBooster_cnt()* 10);
 
         if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / FEVER_DAL_CNT) < 0){// if((Long.valueOf(feverInfo.getGift_fever_cnt())) - Math.floor(goldCnt / 5000) < 0){
             feverInfoMap.put("type", 1);
             feverInfoMap.put("time", 60);
             feverInfoAdded = true;
+            log.error("DallagersEventService.java / feverTime chk => getGift_fever_cnt: {}, goldCnt : {}, FEVER_DAL_CNT: {}, floor: {}, feverInfo.getGold: {}, feverInfo.boosterCnt: {}", feverInfo.getGift_fever_cnt(), goldCnt, FEVER_DAL_CNT,
+                    Math.floor(goldCnt / FEVER_DAL_CNT), feverInfo.getGold(), feverInfo.getBooster_cnt());
         }
 
         // 1-2) 현재 방의 인원수 체크 10이하 + 방송시간 30분 이상 ( 피버타임 시작이 중복인 경우 1-1)조건 발동 )
@@ -656,7 +778,7 @@ public class DallagersEventService {
                         }
                     }
                 } catch (Exception e) {
-                    log.error("dallagersService.java / getDallagersPacketData - feverTimeChk2 Exception {}", e);
+                    log.error("DallagersService.java / getDallagersPacketData - feverTimeChk2 Exception {}", e);
                 }
             }
             listeners = null;
@@ -665,9 +787,9 @@ public class DallagersEventService {
         boolean isFeverTime = StringUtils.equals("y", feverInfo.getFever_yn()); // 현재 피버타임 진행중 여부
         float feverValue = isFeverTime? 1.5F : 1;  // 피버타임시 스톤 획득량 1.5배 적용
         
-        // 2) 스톤 등록 처리 (d, a, l 조각 생성)
-        double sendPieceCnt = Math.floor( (dalCnt / DAL_CNT) * feverValue ); // 보낸사람 (청취자) 50
-        double rcvPieceCnt = Math.floor( (byeolCnt / BYEOL_CNT) * feverValue ); // 받는사람 (방장) 100
+        // 2) 스톤 등록 처리 (d, a, l 조각 생성) - 보낸사람 50달마다 스톤 2개, 받는사람 100별마다 스톤 3개
+        double sendPieceCnt = Math.floor( (dalCnt / DAL_CNT) * SEND_CNT * feverValue ); // 보낸사람 (청취자) 50
+        double rcvPieceCnt = Math.floor( (byeolCnt / BYEOL_CNT) * RCV_CNT * feverValue ); // 받는사람 (방장) 100
 
         DallagersInitialAddVo addVo = new DallagersInitialAddVo();
         addVo.setRoomNo(roomNo);

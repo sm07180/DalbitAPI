@@ -2411,6 +2411,10 @@ public enum Status {
     공유이벤트_댓글여부_체크_성공("0", "share.event.tail.chk.success", "공유 이벤트 댓글 체크 성공 시"),
     공유이벤트_댓글여부_체크_실패("-2", "share.event.tail.chk.fail", "공유 이벤트 댓글 체크 실패 시"),
 
+    휴면회원_본인인증_체크_성공("0", "sleep.mem.chk.upd.success", "휴면 회원 본인 인증 성공"),
+    휴면회원_본인인증_결과없음("-1", "sleep.mem.chk.upd.no.auth", "휴면 회원 본인 인증 결과 없음"),
+    휴면회원_본인인증_휴면상태아님("-2", "sleep.mem.chk.upd.no.sleep", "휴면 회원 본인 인증 휴면 상태 아님"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),

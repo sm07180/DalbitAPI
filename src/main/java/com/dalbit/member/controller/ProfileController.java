@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -73,11 +75,17 @@ public class ProfileController {
     public String fanboardList(@Valid FanboardViewVo fanboardViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         //벨리데이션 체크
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            P_FanboardListVo fanboardListVo = new P_FanboardListVo(fanboardViewVo, request);
 
-        P_FanboardListVo fanboardListVo = new P_FanboardListVo(fanboardViewVo, request);
-
-        String result = profileService.callMemberFanboardList(fanboardListVo);
-        return result;
+            String result = profileService.callMemberFanboardList(fanboardListVo);
+            return result;
+        }catch(Exception e){
+            log.error("ProfileController.java / fanboardList () => {}", e);
+            HashMap fanBoardList = new HashMap();
+            fanBoardList.put("list", new ArrayList<>());
+            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
+        }
     }
 
 
