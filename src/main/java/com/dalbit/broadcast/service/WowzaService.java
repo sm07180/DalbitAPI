@@ -666,7 +666,6 @@ public class WowzaService {
             try{
                 Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.parseLong(pRoomJoinVo.getRoom_no()), Long.parseLong(MemberVo.getMyMemNo(request)) );
                 roomInfoVo.setSendDalCnt(sendDalCnt == null? 0 : sendDalCnt);
-                socketService.reqUserDalCnt(pRoomJoinVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, sendDalCnt);
             } catch (Exception e) {
                 log.error("WowzaService.java / doJoinBroadcast / reqUserDalCnt Exception {}", e);
             }
@@ -918,9 +917,7 @@ public class WowzaService {
                     roomInfoVo.setSendDalCnt(0);
                     roomInfoVo.setSendDalFix(10);
                     try{
-                        SocketVo vo = socketService.getSocketVo(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                         Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.valueOf(roomTokenVo.getRoomNo()), Long.valueOf(MemberVo.getMyMemNo(request)) );
-                        socketService.reqUserDalCnt(roomTokenVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, sendDalCnt);
                         roomInfoVo.setSendDalCnt(sendDalCnt == null? 0 : sendDalCnt);
                     } catch (Exception e) {
                         log.error("WowzaService.java / getBroadcast() / reqUserDalCnt Exception {}", e);

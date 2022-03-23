@@ -1313,23 +1313,4 @@ public class SocketService {
         log.info("Socket vo to Query String: {}",vo.toQueryString());
         sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
     }
-
-    // 달나라 누적선물 10달 이상 조건 체크용
-    @Async("threadTaskExecutor")
-    public void reqUserDalCnt(String roomNo, String memNo, String authToken, boolean isLogin, SocketVo vo, Integer sendDalCnt){
-        roomNo = roomNo == null ? "" : roomNo.trim();
-        memNo = memNo == null ? "" : memNo.trim();
-        authToken = authToken == null ? "" : authToken.trim();
-
-        if(!"".equals(memNo) && !"".equals(roomNo) && !"".equals(authToken)){
-            if(vo != null && vo.getMemNo() != null) {
-                HashMap socketMap = new HashMap();
-                socketMap.put("sendDalCnt", sendDalCnt == null? 0 : sendDalCnt);
-
-                vo.setCommand("reqUserDalCnt");
-                vo.setMessage(socketMap);
-                sendSocketApi(authToken, roomNo, vo.toQueryString());
-            }
-        }
-    }
 }
