@@ -12,7 +12,7 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.proc.CommonProc;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.*;
-import com.dalbit.common.vo.request.SmsVo;
+import com.dalbit.common.vo.request.*;
 import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.MemberDao;
@@ -44,7 +44,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -72,6 +74,7 @@ public class CommonService {
     AdminDao adminDao;
 
     @Autowired CommonProc commonProc;
+    @Autowired EmailService emailService;
 
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
@@ -767,12 +770,15 @@ public class CommonService {
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
             //생년월일 조회 후 미성년자 여부 체크
             AdultCheckVo adultCheckVo = commonDao.getMembirth(pSelfAuthVo.getMem_no());
-            String adultYn;
-            if(DalbitUtil.getKorAge(Integer.parseInt(adultCheckVo.getMem_birth_year())) < 20){
+            int birthYear = Integer.parseInt(adultCheckVo.getMem_birth_year());
+            int birthMonth = Integer.parseInt(adultCheckVo.getMem_birth_month());
+            int birthDay = Integer.parseInt(adultCheckVo.getMem_birth_day());
+            String adultYn = birthToAmericanAge(birthYear, birthMonth, birthDay) < 19 ? "n" : "y"; // 19세 미만
+            /*if(DalbitUtil.getKorAge(Integer.parseInt(adultCheckVo.getMem_birth_year())) < 20){
                 adultYn = "n";
             } else {
                 adultYn = "y";
-            }
+            }*/
             returnMap.put("adultYn", adultYn);       //성인여부
             returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
             returnMap.put("phoneNo", DalbitUtil.getStringMap(resultMap, "mem_phone"));      //휴대폰번호
@@ -1316,5 +1322,326 @@ public class CommonService {
         }
 
         return result;
+    }
+
+    /**
+     * 법정대리인 이메일등록(미성년자 결제 인증 요청)
+     */
+    public ResVO parentCertIns(ParentCertInputVo agreeInfo) {
+        ResVO result = new ResVO();
+        try {
+            Integer insResult = commonProc.parentsAuthEmailIns(agreeInfo);
+            //-3:미인증, -2:나이 안맞음, -1:이미 동의된 데이터, 0:에러, 1:정상
+            switch (insResult) {
+                case -3: result.setResVO(ResMessage.C40003.getCode(), ResMessage.C40003.getCodeNM(), insResult); break;
+                case -2: result.setResVO(ResMessage.C40002.getCode(), ResMessage.C40002.getCodeNM(), insResult); break;
+                case -1: result.setResVO(ResMessage.C40001.getCode(), ResMessage.C40001.getCodeNM(), insResult); break;
+                case 0: result.setDBErrorResVO(); log.error("CommonService / parentsAuthChk DB error"); break;
+                case 1: result.setSuccessResVO(insResult); break;
+                default: result.setFailResVO();
+            }
+        } catch (Exception e) {
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 이메일 ins 에러", e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 법정대리인 pass 인증(결제)
+     */
+    public ResVO parentsAuthIns(ParentCertInputVo agreeInfo) {
+        ResVO result = new ResVO();
+        try {
+            Integer insResult = commonProc.parentsAuthIns(agreeInfo);
+            // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
+            switch (insResult) {
+                case -5: result.setResVO(ResMessage.C40004.getCode(), ResMessage.C40004.getCodeNM(), insResult); break;
+                case -4: result.setResVO(ResMessage.C40003.getCode(), ResMessage.C40003.getCodeNM(), insResult); break;
+                case -3: result.setResVO(ResMessage.C40002.getCode(), ResMessage.C40002.getCodeNM(), insResult); break;
+                case -2: result.setResVO(ResMessage.C40005.getCode(), ResMessage.C40005.getCodeNM(), insResult); break;
+                case -1: result.setResVO(ResMessage.C40001.getCode(), ResMessage.C40001.getCodeNM(), insResult); break;
+                case 0: result.setDBErrorResVO(); break;
+                case 1:
+                    try {
+                        ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
+                        ParentsAuthSelVo parentsAuthSel = commonProc.parentsAuthSel(agreeInfo.getMemNo());
+                        emailVo.setEmail(agreeInfo.getPMemEmail());
+                        emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
+                        emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
+                        emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
+                        emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
+                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
+
+                        sendPayAgreeEmail(emailVo); // 메일 발송
+                        result.setSuccessResVO(insResult);
+                    } catch (Exception e) {
+                        log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류", e);
+                        result.setFailResVO();
+                    }
+                    break;
+                default:
+            }
+        } catch (Exception e) {
+            log.error("CommonService / parentsAuthIns 법정대리인 pass 인증 ins 에러", e);
+            result.setFailResVO();
+        }
+
+        return result;
+    }
+
+    /**
+     * 미성년자 법정대리인(결제) 동의 안내 메일 발송
+     */
+    private void sendPayAgreeEmail(ParentsAgreeEmailVo parentsAgreeEmailVo) {
+        String memNo = parentsAgreeEmailVo.getMemNo();
+        String email = parentsAgreeEmailVo.getEmail();
+        String sHtml = "";
+        StringBuffer mailContent = new StringBuffer();
+        BufferedReader in = null;
+        try{
+            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/agreeInfo.txt");
+            URLConnection urlconn = url.openConnection();
+            in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
+
+            while((sHtml = in.readLine()) != null){
+                mailContent.append("\n");
+                mailContent.append(sHtml);
+            }
+
+            String msgCont;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String today = dateFormat.format(new Date());
+
+            String rcvUserName = parentsAgreeEmailVo.getAgreeRcvUserName();
+            String rcvUserLastLetterReplace = rcvUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+            String allowUserName = parentsAgreeEmailVo.getAgreeAllowUserName();
+            String allowUserLastLetterReplace = allowUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+
+            msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", allowUserLastLetterReplace);
+            msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", rcvUserLastLetterReplace);
+            msgCont = msgCont.replaceAll("@@agreeRcvUserId@@", parentsAgreeEmailVo.getAgreeRcvUserId());
+            msgCont = msgCont.replaceAll("@@agreeDate@@", today);
+            msgCont = msgCont.replaceAll("@@agreeDuration@@", parentsAgreeEmailVo.getAgreeDuration());
+            msgCont = msgCont.replaceAll("@@agreeExpireDate@@", parentsAgreeEmailVo.getAgreeExpireDate());
+            msgCont = msgCont.replaceAll("@@agreeScope@@", "결제(달 충전, 아이템 선물)");
+
+            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", email, msgCont);
+            emailService.sendEmail(emailVo);
+
+            // 이메일 발송 로그
+            JSONObject mailEtcInfo = new JSONObject();
+            mailEtcInfo.put("agreeAllowUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeRcvUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeRcvUserId", parentsAgreeEmailVo.getAgreeRcvUserId());
+            mailEtcInfo.put("agreeDate", today);
+            mailEtcInfo.put("agreeDuration", parentsAgreeEmailVo.getAgreeDuration());
+            mailEtcInfo.put("agreeExpireDate", parentsAgreeEmailVo.getAgreeExpireDate());
+            mailEtcInfo.put("agreeScope", "결제(달 충전, 아이템 선물)");
+            mailEtcInfo.put("rcvUserFullName", rcvUserName);
+            mailEtcInfo.put("allowUserFullName", allowUserName);
+            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "a", mailEtcInfo.toString());
+
+            Integer logInsRes = commonProc.parentsAuthEmailLogIns(parentsEmailLogInsVo);
+            if(logInsRes != 1) {
+                log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
+            }
+        }
+        catch(Exception e){
+            log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러", e);
+        }
+    }
+
+    /**
+     * 미성년자 법정 대리인 인증 여부 체크 (결제)
+     */
+    public String parentsAuthChk(String memNo) {
+        String result = "n";
+        try {
+            result = commonProc.parentsAuthChk(memNo);
+        } catch (Exception e) {
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 인증 여부 체크 에러", e);
+        }
+
+        return result;
+    }
+
+    /**
+     * 미성년자 법정대리인(결제) 결재 안내 메일 발송
+     */
+    public void sendPayMailManager(String memNo, String orderId) {
+        try {
+            //private String order_id;
+            //    private String mem_no;
+            //    private String pay_way;
+            //    private String pay_amt;
+            //    private String item_amt;
+            //    private String pay_code;
+            //    private String card_no;
+            //    private String card_nm;
+            //    private String pay_ok_date;
+            //    private String pay_ok_time;
+            PaySuccSelVo paySuccSelVo = commonProc.paySuccSel(memNo, orderId);
+            // 미성년자 메일 발송
+            String[] birthSplit = paySuccSelVo.getBirth().split("-");
+            int birthYear = Integer.parseInt(birthSplit[0]);
+            int birthMonth = Integer.parseInt(birthSplit[1]);
+            int birthDay = Integer.parseInt(birthSplit[2]);
+            if(birthToAmericanAge(birthYear, birthMonth, birthDay) < 19) {
+                String[] accountInfo = accountInfo(paySuccSelVo);
+                DecimalFormat format = new DecimalFormat("###,###");
+                String priceComma = format.format(paySuccSelVo.getPay_amt());
+                ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
+                parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
+                parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+
+                parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
+                parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
+                parentsPayEmailVo.setPaymentAccount(accountInfo[0]);// 결제 정보1
+                parentsPayEmailVo.setPaymentBank(accountInfo[1]);// 결제 정보2
+                parentsPayEmailVo.setPaymentProduct(paySuccSelVo.getPay_code());// 결제 상품
+                parentsPayEmailVo.setPaymentQuantity(paySuccSelVo.getItem_amt());// 결제 수량
+                parentsPayEmailVo.setPaymentPrice(priceComma + "원");// 결제 금액
+
+                sendPayMail(parentsPayEmailVo);
+            }
+        } catch (Exception e) {
+            log.error("CommonService / sendPayMailManager error : ", e);
+        }
+    }
+
+    private String[] accountInfo(PaySuccSelVo paySuccSelVo) {
+        String[] result = new String[2];
+        String info1 = "-";
+        String info2 = "";
+        switch (paySuccSelVo.getPay_way()) {
+            case "MC":
+                if(!StringUtils.isEmpty(paySuccSelVo.getPay_info_no())) {
+                    info1 = paySuccSelVo.getPay_info_no()
+                        .replaceAll("(\\d{3})(\\d{3,4})(\\d{4})", "$1-$2-$3");
+                }
+                break;
+            case "CN":
+                if(!StringUtils.isEmpty(paySuccSelVo.getPay_info_no())) {
+                    info1 = paySuccSelVo.getPay_info_no()
+                        .replaceAll("/([0-9*]{4})([0-9*]{4})([0-9*]{4})([0-9*]{4})/", "$1-$2-$3-$4");
+                    info2 = paySuccSelVo.getPay_info_nm();
+                }
+                break;
+            case "cashbee":
+            case "tmoney":
+            case "payco":
+            case "kakaopay":
+            case "kakaoMoney":
+                info1 = paySuccSelVo.getPay_info();
+                break;
+            case "simple":
+                info1 = paySuccSelVo.getAccount_no();
+                //info2 = paySuccSelVo.getBank_code(); // bank code
+                break;
+            default:
+        }
+
+        result[0] = info1;
+        result[1] = info2;
+        return result;
+    }
+
+    // 만나이
+    public int birthToAmericanAge(int birthYear, int birthMonth, int birthDay) {
+        Calendar cal = Calendar.getInstance();
+        int nowYear = cal.get(Calendar.YEAR);
+        int nowMonth = cal.get(Calendar.MONTH) + 1;
+        int nowDay = cal.get(Calendar.DAY_OF_MONTH);
+        int monthAndDay = Integer.parseInt(nowMonth + "" + nowDay);
+
+        int birthMonthAndDay = Integer.parseInt(birthMonth + "" + birthDay);
+        int yearDiff = nowYear - birthYear;
+        int monthAndDayDiff = monthAndDay - birthMonthAndDay;
+        int manAge = yearDiff;
+
+        if(monthAndDayDiff < 0) {
+            manAge--;
+        }
+
+        return manAge;
+    }
+
+    private String getPayWay(String code) {
+        switch (code) {
+            case "simple": return "간편결제(계좌)";
+//            case "VA": return "가상계좌";
+            case "CN": return "신용카드";
+            case "MC": return "휴대폰";
+            case "kakaoMoney": return "카카오페이(머니)";
+            case "kakaopay": return "카카오페이(카드)";
+            case "payco": return "페이코";
+            case "GM": return "문화상품권";
+            case "tmoney": return "티머니";
+            case "cashbee": return "캐시비";
+            case "HM": return "해피머니상품권";
+//            case "InApp": return "인앱(IOS)";
+
+            case "GG": return "게임문화상품권"; // 결제 수단이 없음
+            case "GC": return "도서문화상품권"; // 결제 수단이 없음
+            default: return "";
+        }
+    }
+
+    private void sendPayMail(ParentsPayEmailVo parentsPayEmailVo) {
+        String memNo = parentsPayEmailVo.getMemNo();
+        String email = parentsPayEmailVo.getEmail();
+        String sHtml = "";
+        StringBuffer mailContent = new StringBuffer();
+        BufferedReader in = null;
+        try{
+            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/payInfo.txt");
+            URLConnection urlconn = url.openConnection();
+            in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
+
+            while((sHtml = in.readLine()) != null){
+                mailContent.append("\n");
+                mailContent.append(sHtml);
+            }
+
+            String msgCont;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String today = dateFormat.format(new Date());
+            String paymentUserName = parentsPayEmailVo.getPaymentUserName();
+            String paymentUserLastLetterReplace = paymentUserName.substring(0, paymentUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+
+            msgCont = mailContent.toString().replaceAll("@@paymentUserName@@", paymentUserLastLetterReplace);
+            msgCont = msgCont.replaceAll("@@paymentDate@@", today);
+            msgCont = msgCont.replaceAll("@@paymentMethod@@", parentsPayEmailVo.getPaymentMethod());
+            msgCont = msgCont.replaceAll("@@paymentAccount@@", parentsPayEmailVo.getPaymentAccount());
+            msgCont = msgCont.replaceAll("@@paymentBank@@", parentsPayEmailVo.getPaymentBank());
+            msgCont = msgCont.replaceAll("@@paymentProduct@@", parentsPayEmailVo.getPaymentProduct());
+            msgCont = msgCont.replaceAll("@@paymentQuantity@@", parentsPayEmailVo.getPaymentQuantity());
+            msgCont = msgCont.replaceAll("@@paymentPrice@@", parentsPayEmailVo.getPaymentPrice());
+
+            EmailVo emailVo = new EmailVo("달빛라이브 결제 알림", email, msgCont);
+            emailService.sendEmail(emailVo);
+
+            // 이메일 발송 로그
+            JSONObject mailEtcInfo = new JSONObject();
+            mailEtcInfo.put("paymentUserName", paymentUserLastLetterReplace);
+            mailEtcInfo.put("paymentDate", today);
+            mailEtcInfo.put("paymentMethod", parentsPayEmailVo.getPaymentMethod());
+            mailEtcInfo.put("paymentAccount", parentsPayEmailVo.getPaymentAccount());
+            mailEtcInfo.put("paymentBank", parentsPayEmailVo.getPaymentBank());
+            mailEtcInfo.put("paymentProduct", parentsPayEmailVo.getPaymentProduct());
+            mailEtcInfo.put("paymentQuantity", parentsPayEmailVo.getPaymentQuantity());
+            mailEtcInfo.put("paymentPrice", parentsPayEmailVo.getPaymentPrice());
+            mailEtcInfo.put("paymentUserFullName", paymentUserName);
+            ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "p", mailEtcInfo.toString());
+
+            Integer logInsRes = commonProc.parentsAuthEmailLogIns(parentsEmailLogInsVo);
+            if(logInsRes != 1) {
+                log.error("CommonService / sendPayMail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
+            }
+        }
+        catch(Exception e){
+            log.error("CommonService / sendPayMail 이메일 발송 에러 : ", e);
+        }
     }
 }
