@@ -408,4 +408,66 @@ public class MainServiceV2 {
 
         return loverRank;
     }
+
+    public String getMainSwiper(HttpServletRequest request){
+        String memNo = MemberVo.getMyMemNo(request);
+
+        String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
+
+        Map resultMap = new HashMap();
+
+        resultMap.put("photoSvrUrl", photoSvrUrl);
+
+        Map bannerMap = new HashMap();
+        bannerMap.put("memNo", memNo);
+        bannerMap.put("device", "3");
+        bannerMap.put("platform", "1__");
+        bannerMap.put("position", 1);
+
+        int cnt = 0;
+
+        List<MainSwiperVO> swiperList = new ArrayList<>();
+
+        List<MainSwiperVO> adminBanner = mainPage.getAdminBanner(bannerMap);
+        for (MainSwiperVO vo: adminBanner) {
+            vo.setImage_profile(vo.getBannerUrl());
+        }
+
+        swiperList.addAll(adminBanner);
+        cnt = swiperList.size();
+
+        swiperList.addAll(mainPage.getMainPartnerList(bannerMap));
+        cnt = swiperList.size();
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getMainStarList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getTopViewList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getTopLikeList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 1){
+            swiperList.addAll(mainPage.getTopLiveList(bannerMap));
+        }
+
+        if (cnt > 10){
+            swiperList = swiperList.subList(0, 10);
+        }
+
+        resultMap.put("swiperList", swiperList);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
 }

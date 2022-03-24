@@ -62,4 +62,7 @@
 
     <!--star-->
     <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
+
+    <!--partner-->
+    <resultMap id="PartnerDjVO" type="com.dalbit.rank.vo.PartnerDjVO"/>
 </mapper>

@@ -26,4 +26,9 @@ public class MainControllerV2 {
     public String main(HttpServletRequest request) {
         return mainServiceV2.main(request);
     }
+
+    @RequestMapping("/getMainSwiper")
+    public String getMainSwiper(HttpServletRequest request) {
+        return mainServiceV2.getMainSwiper(request);
+    }
 }

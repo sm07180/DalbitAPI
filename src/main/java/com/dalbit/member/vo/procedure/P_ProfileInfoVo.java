@@ -55,6 +55,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private long listeningTime;                 //총 청취시간(초 단위)
     private int receivedGoodTotal;              //총 좋아요 받은 수
     private int badge_specialdj;
+    private int badge_partnerdj;
     private String fanBadgeText;
     private String fanBadgeIcon;
     private String fanBadgeStartColor;
