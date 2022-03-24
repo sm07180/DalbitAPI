@@ -62,4 +62,7 @@
 
     <!--star-->
     <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
+
+    <!-- 리브랜딩 방송방공지 -->
+    <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
 </mapper>
