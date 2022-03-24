@@ -76,6 +76,8 @@ public class CommonService {
     @Autowired CommonProc commonProc;
     @Autowired EmailService emailService;
 
+    @Autowired AdminService adminService;
+
     @Value("${sso.header.cookie.name}")
     private String SSO_HEADER_COOKIE_NAME;
 
@@ -359,6 +361,8 @@ public class CommonService {
                 log.info("check HeaderToken : " + headerToken);
                 tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
                 log.info("tokenVo : " + tokenVo);
+                boolean isAdmin = adminService.isAdmin(request);
+                tokenVo.setAdmin(isAdmin);
             }
         }catch(Exception e){
             isLogin = false;
