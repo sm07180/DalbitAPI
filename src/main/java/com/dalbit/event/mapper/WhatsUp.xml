@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.event.dao.WhatsUpDao" >
+    <!-- 와썹맨 -->
+    <resultMap id="WhatsUpResultVo" type="com.dalbit.event.vo.WhatsUpResultVo">
+        <result property="seqNo" column="seq_no"/>
+        <result property="rankNo" column="rankNo"/>
+        <result property="fanCnt" column="fan_cnt"/>
+        <result property="newFanCnt" column="new_fan_cnt"/>
+        <result property="memNo" column="mem_no"/>
+        <result property="memId" column="mem_id"/>
+        <result property="memNick" column="mem_nick"/>
+        <result property="memSex" column="mem_sex"/>
+        <result property="imageProfile" column="image_profile"/>
+        <result property="memLevel" column="mem_level"/>
+        <result property="memState" column="mem_state"/>
+        <result property="insDate" column="ins_date"/>
+        <result property="updDate" column="upd_date"/>
+        <result property="viewScoreCnt" column="view_score_cnt"/>
+        <result property="totScoreCnt" column="tot_score_cnt"/>
+    </resultMap>
+    <resultMap id="integer" type="Integer" />
+
+    <select id="pEvtWassupManDjRankList" statementType="CALLABLE" parameterType="WhatsUpRequestVo" resultMap="integer,WhatsUpResultVo">
+        { CALL p_evt_wassup_man_dj_rank_list(#{seqNo},#{pageNo},#{pagePerCnt}) }
+    </select>
+
+    <select id="pEvtWassupManDjRankSel" statementType="CALLABLE" parameterType="WhatsUpRequestVo" resultMap="WhatsUpResultVo">
+        { CALL p_evt_wassup_man_dj_rank_sel(#{seqNo},#{memNo}) }
+    </select>
+
+    <select id="pEvtWassupManNewMemRankList" statementType="CALLABLE" parameterType="WhatsUpRequestVo" resultMap="integer,WhatsUpResultVo">
+        { CALL p_evt_wassup_man_new_mem_rank_list(#{seqNo},#{pageNo},#{pagePerCnt}) }
+    </select>
+
+    <select id="pEvtWassupManNewMemRankSel" statementType="CALLABLE" parameterType="WhatsUpRequestVo" resultMap="WhatsUpResultVo">
+        { CALL p_evt_wassup_man_new_mem_rank_sel(#{seqNo},#{memNo}) }
+    </select>
+
+</mapper>
