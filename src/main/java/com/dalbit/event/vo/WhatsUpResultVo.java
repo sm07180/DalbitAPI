@@ -12,7 +12,7 @@ public class WhatsUpResultVo {
     private Integer rankNo;             // 순위
     private Integer fanCnt;             // 팬 수
     private Integer newFanCnt;          // 신입팬 수
-    private Integer memNo;              // 회원 번호
+    private String memNo;               // 회원 번호
     private String memId;               // 회원 아이디
     private String memNick;             // 회원 닉네임
     private String memSex;              // 회원성별
