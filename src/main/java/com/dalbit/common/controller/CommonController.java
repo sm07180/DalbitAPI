@@ -3,7 +3,9 @@ package com.dalbit.common.controller;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
+import com.dalbit.common.proc.CommonProc;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.service.EmailService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.*;
 import com.dalbit.common.vo.request.*;
@@ -53,6 +55,9 @@ public class CommonController {
 
     @Autowired
     IPUtil ipUtil;
+
+    @Autowired EmailService emailService;
+    @Autowired CommonProc common;
 
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
@@ -359,18 +364,18 @@ public class CommonController {
 
                 log.info("##### 본인인증 DB저장 #####");
                 //회원본인인증 DB 저장
-                apiData.setParents_agreeYn("n");
+                apiData.setParent_agreeYn("n");
                 result = commonService.callMemberCertification(apiData);
-            } else if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("2")) { // 법정대리인 인증 (결제)
+            }else if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("2")) { // 법정대리인 인증 (결제)
                 String memNo = selfAuthSaveVo.getPlusInfo().split("_")[0]; // 유저 번호
                 String parentName = selfAuthSaveVo.getName(); // 대리인 이름
                 String parentSex = selfAuthSaveVo.getGender(); // 대리인 성별
                 String parentBirthYear = selfAuthSaveVo.getBirthDay().substring(0, 4); // 대리인 생년
                 String parentBirthDay = selfAuthSaveVo.getBirthDay().substring(6, 8); // 대리인 월일
-                String parnetHphone = selfAuthSaveVo.getPhoneNo(); // 대리인 휴대폰 번호
+                String parentPhoneNo = selfAuthSaveVo.getPhoneNo(); // 대리인 휴대폰 번호
 
                 ParentCertInputVo parentCertInputVo = new ParentCertInputVo(
-                    memNo, parentName, parentSex, parentBirthYear, parentBirthDay, parnetHphone
+                    memNo, parentName, parentSex, parentBirthYear, parentBirthDay, parentPhoneNo
                 );
 
                 // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
@@ -381,6 +386,7 @@ public class CommonController {
                     result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증실패, apiData));
                 }
             } else { // 법정대리인 인증(환전)
+
                 // 만 19세 미만 이용불가
                 if(manAge < 19){
                     return gsonUtil.toJson(new JsonOutputVo(Status.보호자인증20세미만, apiData));
@@ -582,7 +588,6 @@ public class CommonController {
         if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
             String memNo = request.getParameter("memNo");
             String orderId = request.getParameter("orderId");
-
             HashMap<String, Object> map = new HashMap<>();
             map.put("memNo", memNo);
             map.put("orderId", orderId);
@@ -591,7 +596,9 @@ public class CommonController {
             map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
             log.error("test map =>{}", map);
 
-            commonService.sendPayMailManager(memNo, orderId);
+            // 미성년자는 법정대리인에게 메일 발송
+            //commonService.sendPayMailManager(memNo, orderId);
+
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
         }else {
             return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한));
@@ -604,7 +611,7 @@ public class CommonController {
     }
 
     /**
-     * 법정대리인 이메일등록(결제)
+     * 법정대리인 이메일등록(미성년자 결제 인증 요청)
      */
     @PostMapping("/parent/cert/ins")
     public ResVO parentCertIns(@Valid ParentCertInputVo agreeInfo, HttpServletRequest request){
@@ -615,7 +622,7 @@ public class CommonController {
             agreeInfo.setMemNo(memNo);
             result = commonService.parentCertIns(agreeInfo);
         } catch (Exception e) {
-            log.error("CommonController / parentCertIns error : ", e);
+            log.error("CommonController / parentCertIns", e);
             result.setFailResVO();
         }
 
@@ -633,7 +640,7 @@ public class CommonController {
             String memNo = MemberVo.getMyMemNo(request);
             resVO.setSuccessResVO(commonService.parentsAuthChk(memNo));
         } catch (Exception e) {
-            log.error("CommonController / parentsAuthChk error : ", e);
+            log.error("CommonController / parentsAuthChk", e);
             resVO.setFailResVO();
         }
 

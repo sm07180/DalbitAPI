@@ -71,6 +71,9 @@ public class CommonService {
     AdminDao adminDao;
 
     @Autowired CommonProc commonProc;
+    @Autowired EmailService emailService;
+
+    @Autowired AdminService adminService;
 
     @Autowired EmailService emailService;
     @Autowired Common common;
@@ -358,6 +361,8 @@ public class CommonService {
                 log.info("check HeaderToken : " + headerToken);
                 tokenVo = jwtUtil.getTokenVoFromJwt(headerToken);
                 log.info("tokenVo : " + tokenVo);
+                boolean isAdmin = adminService.isAdmin(request);
+                tokenVo.setAdmin(isAdmin);
             }
         }catch(Exception e){
             isLogin = false;
@@ -769,12 +774,15 @@ public class CommonService {
         if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
             //생년월일 조회 후 미성년자 여부 체크
             AdultCheckVo adultCheckVo = commonDao.getMembirth(pSelfAuthVo.getMem_no());
-            String adultYn;
-            if(DalbitUtil.getKorAge(Integer.parseInt(adultCheckVo.getMem_birth_year())) < 20){
+            int birthYear = Integer.parseInt(adultCheckVo.getMem_birth_year());
+            int birthMonth = Integer.parseInt(adultCheckVo.getMem_birth_month());
+            int birthDay = Integer.parseInt(adultCheckVo.getMem_birth_day());
+            String adultYn = birthToAmericanAge(birthYear, birthMonth, birthDay) < 19 ? "n" : "y"; // 19세 미만
+            /*if(DalbitUtil.getKorAge(Integer.parseInt(adultCheckVo.getMem_birth_year())) < 20){
                 adultYn = "n";
             } else {
                 adultYn = "y";
-            }
+            }*/
             returnMap.put("adultYn", adultYn);       //성인여부
             returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
             returnMap.put("phoneNo", DalbitUtil.getStringMap(resultMap, "mem_phone"));      //휴대폰번호
@@ -1321,12 +1329,12 @@ public class CommonService {
     }
 
     /**
-     * 법정대리인 이메일등록(결제)
+     * 법정대리인 이메일등록(미성년자 결제 인증 요청)
      */
     public ResVO parentCertIns(ParentCertInputVo agreeInfo) {
         ResVO result = new ResVO();
         try {
-            Integer insResult = common.parentsAuthEmailIns(agreeInfo);
+            Integer insResult = commonProc.parentsAuthEmailIns(agreeInfo);
             //-3:미인증, -2:나이 안맞음, -1:이미 동의된 데이터, 0:에러, 1:정상
             switch (insResult) {
                 case -3: result.setResVO(ResMessage.C40003.getCode(), ResMessage.C40003.getCodeNM(), insResult); break;
@@ -1337,7 +1345,7 @@ public class CommonService {
                 default: result.setFailResVO();
             }
         } catch (Exception e) {
-            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 이메일 ins 에러 : ", e);
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 이메일 ins 에러", e);
         }
 
         return result;
@@ -1349,7 +1357,7 @@ public class CommonService {
     public ResVO parentsAuthIns(ParentCertInputVo agreeInfo) {
         ResVO result = new ResVO();
         try {
-            Integer insResult = common.parentsAuthIns(agreeInfo);
+            Integer insResult = commonProc.parentsAuthIns(agreeInfo);
             // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
             switch (insResult) {
                 case -5: result.setResVO(ResMessage.C40004.getCode(), ResMessage.C40004.getCodeNM(), insResult); break;
@@ -1357,28 +1365,29 @@ public class CommonService {
                 case -3: result.setResVO(ResMessage.C40002.getCode(), ResMessage.C40002.getCodeNM(), insResult); break;
                 case -2: result.setResVO(ResMessage.C40005.getCode(), ResMessage.C40005.getCodeNM(), insResult); break;
                 case -1: result.setResVO(ResMessage.C40001.getCode(), ResMessage.C40001.getCodeNM(), insResult); break;
-                case -0: result.setDBErrorResVO(); break;
+                case 0: result.setDBErrorResVO(); break;
                 case 1:
                     try {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
-                        ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
+                        ParentsAuthSelVo parentsAuthSel = commonProc.parentsAuthSel(agreeInfo.getMemNo());
                         emailVo.setEmail(agreeInfo.getPMemEmail());
                         emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
                         emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
                         emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
-                        sendPayAgreeEmail(emailVo);
+
+                        sendPayAgreeEmail(emailVo); // 메일 발송
                         result.setSuccessResVO(insResult);
                     } catch (Exception e) {
-                        log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류 => : ", e);
+                        log.error("CommonService / parentsAuthIns 이메일 발송 파라미터 오류", e);
                         result.setFailResVO();
                     }
                     break;
                 default:
             }
         } catch (Exception e) {
-            log.error("CommonService / parentsAuthIns 법정대리인 pass 인증 ins 에러 : ", e);
+            log.error("CommonService / parentsAuthIns 법정대리인 pass 인증 ins 에러", e);
             result.setFailResVO();
         }
 
@@ -1407,6 +1416,7 @@ public class CommonService {
             String msgCont;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String today = dateFormat.format(new Date());
+
             String rcvUserName = parentsAgreeEmailVo.getAgreeRcvUserName();
             String rcvUserLastLetterReplace = rcvUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
             String allowUserName = parentsAgreeEmailVo.getAgreeAllowUserName();
@@ -1436,13 +1446,13 @@ public class CommonService {
             mailEtcInfo.put("allowUserFullName", allowUserName);
             ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "a", mailEtcInfo.toString());
 
-            Integer logInsRes = common.parentsAuthEmailLogIns(parentsEmailLogInsVo);
+            Integer logInsRes = commonProc.parentsAuthEmailLogIns(parentsEmailLogInsVo);
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
             }
         }
         catch(Exception e){
-            log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러 : ", e);
+            log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러", e);
         }
     }
 
@@ -1452,9 +1462,9 @@ public class CommonService {
     public String parentsAuthChk(String memNo) {
         String result = "n";
         try {
-            result = common.parentsAuthChk(memNo);
+            result = commonProc.parentsAuthChk(memNo);
         } catch (Exception e) {
-            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 인증 여부 체크 에러 : ", e);
+            log.error("CommonService / parentsAuthChk 미성년자 법정 대리인 인증 여부 체크 에러", e);
         }
 
         return result;
@@ -1475,7 +1485,7 @@ public class CommonService {
             //    private String card_nm;
             //    private String pay_ok_date;
             //    private String pay_ok_time;
-            PaySuccSelVo paySuccSelVo = common.paySuccSel(memNo, orderId);
+            PaySuccSelVo paySuccSelVo = commonProc.paySuccSel(memNo, orderId);
             // 미성년자 메일 발송
             String[] birthSplit = paySuccSelVo.getBirth().split("-");
             int birthYear = Integer.parseInt(birthSplit[0]);
@@ -1485,10 +1495,10 @@ public class CommonService {
                 String[] accountInfo = accountInfo(paySuccSelVo);
                 DecimalFormat format = new DecimalFormat("###,###");
                 String priceComma = format.format(paySuccSelVo.getPay_amt());
-
                 ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
                 parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
                 parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+
                 parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
                 parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
                 parentsPayEmailVo.setPaymentAccount(accountInfo[0]);// 결제 정보1
@@ -1629,7 +1639,7 @@ public class CommonService {
             mailEtcInfo.put("paymentUserFullName", paymentUserName);
             ParentsEmailLogInsVo parentsEmailLogInsVo = new ParentsEmailLogInsVo(memNo, email, "p", mailEtcInfo.toString());
 
-            Integer logInsRes = common.parentsAuthEmailLogIns(parentsEmailLogInsVo);
+            Integer logInsRes = commonProc.parentsAuthEmailLogIns(parentsEmailLogInsVo);
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayMail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
             }
