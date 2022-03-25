@@ -218,7 +218,7 @@ public interface MypageDao {
     ProcedureVo callExchangeCancel(ProcedureVo procedureVo);
 
     /**
-     * 피드 리스트 조회
+     * 방송공지 리스트 조회
      *
      * @Param
      * memNo 		BIGINT		-- 회원번호 (프로필 주인)
@@ -248,11 +248,11 @@ public interface MypageDao {
      */
     @Transactional(readOnly = false)
     @ResultMap({"ResultMap.integer", "ResultMap.ProfileFeedOutVO"})
-    @Select("call rd_data.p_member_feed_list(#{memNo}, #{viewMemNo}, #{pageNo}, #{pagePerCnt})")
+    @Select("call p_member_feed_list(#{memNo}, #{viewMemNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> pMemberFeedList(Map<String, Object> param);
 
     /**
-     * 피드 상세 조회
+     * 방송공지 상세 조회
      *
      * @Param
      * feedNo 		INT		-- 피드번호
@@ -279,7 +279,7 @@ public interface MypageDao {
     ProfileFeedOutVo pMemberFeedSel(Map<String, Object> param);
 
     /**
-     * 피드 등록
+     * 방송공지 등록
      * @Param
      * memNo        BIGINT			-- 회원번호
      * ,feedTitle 	VARCHAR(20)		-- 피드 등록글 제목
@@ -292,7 +292,7 @@ public interface MypageDao {
     Integer pMemberFeedIns(Map<String, Object> param);
 
     /**
-     * 피드 수정
+     * 방송공지 수정
      * @Param
      * feedNo 		INT			-- 피드번호
      * ,memNo 		BIGINT			-- 회원번호
@@ -305,7 +305,7 @@ public interface MypageDao {
     Integer pMemberFeedUpd(Map<String, Object> param);
 
     /**
-     * 피드 삭제
+     * 방송공지 삭제
      * @Param
      * feedNo        INT		-- 피드번호
      * ,delChrgrName 	VARCHAR(40)	-- 삭제 관리자명
@@ -316,7 +316,7 @@ public interface MypageDao {
     Integer pMemberFeedDel(ProfileFeedDelVo param);
 
     /**
-     * 피드 사진 리스트 조회
+     * 방송공지 사진 리스트 조회
      *
      * @Param
      * regNo 		TEXT			-- 피드 등록글 번호
@@ -334,7 +334,7 @@ public interface MypageDao {
     List<ProfileFeedPhotoOutVo> pMemberFeedPhotoList(String param);
 
     /**
-     * 피드 사진 리스트 등록
+     * 방송공지 사진 리스트 등록
      *
      * @Param
      * regNo        INT			-- 피드 등록글 번호
@@ -348,7 +348,7 @@ public interface MypageDao {
     Integer pMemberFeedPhotoIns(Map<String, Object> param);
 
     /**
-     * 피드 사진 삭제
+     * 방송공지 사진 삭제
      *
      * @Param
      * photoNo 	INT		-- 사진고유번호
@@ -363,7 +363,7 @@ public interface MypageDao {
     Integer pMemberFeedPhotoDel(Map<String, Object> param);
 
     /**
-     * 피드 좋아요 등록 (미적용)
+     * 방송공지 좋아요 등록
      *
      * @Param
      * regNo        INT		-- 피드 등록글 번호
@@ -377,7 +377,7 @@ public interface MypageDao {
     Integer pMemberFeedLikeLogIns(Map<String, Object> param);
 
     /**
-     * 피드 좋아요 취소 (미적용)
+     * 방송공지 좋아요 취소
      *
      * @Param
      * regNo        INT			-- 피드 등록글 번호
@@ -391,7 +391,274 @@ public interface MypageDao {
     Integer pMemberFeedLikeCancelIns(Map<String, Object> param);
 
     /**
-     * 방송공지 등록
+     * 피드 등록
+     *
+     * @Param
+     * memNo            BIGINT      -- 회원번호
+     * feedContents     VARCHAR     -- 피드 등록글 내용
+     *
+     * @Return
+     * s_return         INT         -- # 0: 에러, 1: 정상
+     */
+    @Select("CALL p_member_feed_ins_v1(#{memNo}, #{feedContents})")
+    Integer pMyPageFeedIns(Map<String, Object> param);
+
+    /**
+     * 피드 수정
+     *
+     * @Param
+     * feedNo           INT         -- 피드번호
+     * memNo            BIGINT      -- 회원번호
+     * feedContents     VARCHAR     -- 피드 등록글 내용
+     *
+     * @Return
+     * s_return         INT         -- # -1: 데이터 없음, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_member_feed_upd_v1(#{feedNo}, #{memNo}, #{feedContents})")
+    Integer pMyPageFeedUpd(Map<String, Object> param);
+
+    /**
+     * 피드 삭제
+     *
+     * @Param
+     * feedNo           INT         -- 피드번호
+     * delChrgrName     VARCHAR     -- 삭제 관리자명
+     *
+     * @Return
+     * s_return         INT         -- # -1: 데이터 없음, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_member_feed_del_v1(#{feedNo}, #{delChrgrName})")
+    Integer pMyPageFeedDel(MyPageFeedDelVo param);
+
+    /**
+     * 피드 리스트
+     *
+     * @Param
+     * memNo            BIGINT      -- 회원번호
+     * viewMemNo        BIGINT      -- 회원번호(접속자)
+     * pageNo           INT         -- 페이지 번호
+     * pageCnt          INT         -- 페이지 당 노출 건수(Limit)
+     *
+     * @Return
+     * Multi Rows
+     * #1
+     * cnt              INT         -- 총 수
+     *
+     * #2
+     * reg_no           BIGINT      -- 번호
+     * mem_no           BIGINT      -- 회원번호
+     * mem_nick         VARCHAR     -- 닉네임
+     * mem_sex          VARCHAR     -- 성별
+     * image_profile    VARCHAR     -- 프로필
+     * feed_conts       VARCHAR     -- 내용
+     * image_path       VARCHAR     -- 대표사진
+     * tail_cnt         BIGINT      -- 댓글수
+     * rcv_like_cnt     BIGINT      -- 좋아요수
+     * rcv_like_cancel_cnt  BIGINT  -- 취소 좋아요 수
+     * like_yn          CHAR        -- 좋아요 확인[y, n]
+     * ins_date         DATETIME    -- 등록일자
+     */
+    @Transactional(readOnly = false)
+    @ResultMap({"ResultMap.integer", "ResultMap.MyPageFeedOutVo"})
+    @Select("CALL rd_data.p_member_feed_list_v1(#{memNo}, #{viewMemNo}, #{pageNo}, #{pageCnt})")
+    List<Object> pMyPageFeedList(Map<String, Object> param);
+
+    /**
+     * 피드 상세
+     *
+     * @Param
+     * feedNo           INT         -- 피드번호
+     * memNo            BIGINT      -- 회원번호
+     * viewMemNo        BIGINT      -- 회원번호(접속자)
+     *
+     * @Return
+     * reg_no           BIGINT      -- 번호
+     * mem_no           BIGINT      -- 회원번호
+     * mem_nick         VARCHAR     -- 닉네임
+     * mem_sex          VARCHAR     -- 성별
+     * image_profile    VARCHAR     -- 프로필
+     * feed_conts       VARCHAR     -- 내용
+     * image_path       VARCHAR     -- 대표사진
+     * tail_cnt         BIGINT      -- 댓글수
+     * rcv_like_cnt     BIGINT      -- 좋아요수
+     * rcv_like_cancel_cnt  BIGINT  -- 취소 좋아요수
+     * like_yn          CHAR        -- 좋아요 확인[y, n]
+     * ins_date         DATETIME    -- 등록일자
+     */
+    @Select("CALL rd_data.p_member_feed_sel_v1(#{feedNo}, #{memNo}, #{viewMemNo})")
+    MyPageFeedOutVo pMyPageFeedSel(Map<String, Object> param);
+
+    /**
+     * 피드 사진등록
+     *
+     * @Param
+     * feedNo           INT         -- 피드번호
+     * memNo            BIGINT      -- 회원번호
+     * imgName          VARCHAR     -- 등록사진명
+     *
+     * @Return
+     * s_return         INT         -- # -2: 등록글 없음, -1: 등록사진 개수 초과, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_member_feed_photo_ins_v1(#{feedNo}, #{memNo}, #{imgName})")
+    Integer pMyPageFeedPictureIns(Map<String, Object> param);
+
+    /**
+     * 피드 사진삭제
+     *
+     * @Param
+     * photoNo          INT         -- 사진고유번호
+     * feedNo           INT         -- 피드 등록글 번호
+     * imgName          VARCHAR     -- 등록사진명
+     * delChrgrName     VARCHAR     -- 삭제 관리자명
+     *
+     * @Return
+     * s_return         INT         -- # -1: 삭제할 파일 없음, 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_member_feed_photo_del_v1(#{photoNo}, #{feedNo}, #{imgName}, #{delChrgrName})")
+    Integer pMyPageFeedPictureDel(Map<String, Object> param);
+
+    /**
+     * 피드 사진리스트
+     *
+     * @Param
+     * feedNo           TEXT        -- 피드 등록글 번호
+     *
+     * @Return
+     * photo_no         BIGINT      -- 사진번호
+     * feed_reg_no      BIGINT      -- 피드번호
+     * mem_no           BIGINT      -- 회원번호
+     * img_name         BIGINT      -- 이미지 이름
+     * ins_date         DATETIME    -- 등록일
+     */
+    @Transactional(readOnly = false)
+    @Select("CALL rd_data.p_member_feed_photo_list_v1(#{feedNo})")
+    List<MyPageFeedPictureOutVo> pMyPageFeedPictureList(String param);
+
+    /**
+     * 피드 댓글 등록
+     *
+     * @Param
+     * regNo            INT         -- 피드 고유번호
+     * memNo            BIGINT      -- 회원번호(bj)
+     * tmemNo           BIGINT      -- 등록회원번호
+     * tmemConts        VARCHAR     -- 등록내용
+     *
+     * @Return
+     * s_return         INT         -- # 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_member_feed_tail_ins(#{regNo}, #{memNo}, #{tmemNo}, #{tmemConts})")
+    Integer pMyPageFeedReplyIns(Map<String, Object> param);
+
+    /**
+     * 피드 댓글 수정
+     *
+     * @Param
+     * tailNo           INT         -- 댓글번호
+     * tmemConts        VARCHAR     -- 등록내용
+     *
+     * @Return
+     * s_return         INT         -- # 0: 에러, 1: 정상상
+    */
+    @Select("CALL rd_data.p_member_feed_tail_upd(#{tailNo}, #{tmemConts})")
+    Integer pMyPageFeedReplyUpd(Map<String, Object> param);
+
+    /**
+     * 피드 댓글 삭제
+     *
+     * @Param
+     * regNo            INT         -- 피드 고유번호
+     * tailNo           INT         -- 댓글번호
+     * chrgrName        VARCHAR     -- 삭제자명(아이디)
+     *
+     * @Return
+     * s_return         INT         -- # 0: 에러, 1: 정상
+     */
+    @Select("CALL rd_data.p_member_feed_tail_del(#{regNo}, #{tailNo}, #{chrgrName})")
+    Integer pMyPageFeedReplyDel(MyPageFeedReplyDelVo param);
+
+    /**
+     * 피드 댓글 리스트
+     *
+     * @Param
+     * feedNo           BIGINT      -- 피드글 번호
+     * pageNo           INT         -- 페이지 번호
+     * pageCnt          INT         -- 페이지 당 노출 건수(Limit)
+     *
+     * @Return
+     * Multi Rows
+     *
+     * #1
+     * cnt              INT         -- 총 수
+     *
+     * #2
+     * tail_no          BIGINT      -- 번호
+     * parent_no        BIGINT      -- 번호
+     * mem_no           BIGINT      -- 회원번호
+     * tail_mem_no      BIGINT      -- 회원번호
+     * tail_conts       VARCHAR     -- 내용
+     * tail_mem_nick    VARCHAR     -- 닉네임
+     * tail_mem_sex     VARCHAR     -- 성별
+     * tail_image_profile   VARCHAR -- 프로필
+     * ins_date         DATETIME    -- 등록일자
+     * upd_date         DATETIME    -- 수정일자
+     */
+    @Transactional(readOnly = false)
+    @ResultMap({"ResultMap.integer", "ResultMap.MyPageFeedReplyOutVo"})
+    @Select("CALL rd_data.p_member_feed_tail_list(#{feedNo}, #{pageNo}, #{pageCnt})")
+    List<Object> pMyPageFeedReplyList(Map<String, Object> param);
+
+    /**
+     * 피드 댓글 상세
+     *
+     * @Param
+     * regNo            BIGINT      -- 피드글 번호
+     * tailNo           BIGINT      -- 댓글번호
+     *
+     * @Return
+     * tail_no          BIGINT      -- 번호
+     * parent_no        BIGINT      -- 번호
+     * mem_no           BIGINT      -- 회원번호
+     * tail_mem_no      BIGINT      -- 회원번호
+     * tail_conts       VARCHAR     -- 내용
+     * tail_mem_nick    VARCHAR     -- 닉네임
+     * tail_mem_sex     VARCHAR     -- 성별
+     * tail_image_profile   VARCHAR -- 프로필
+     * ins_date         DATETIME    -- 등록일자
+     * upd_date         DATETIME    -- 수정일자
+     */
+    @Select("CALL rd_data.p_member_feed_tail_sel(#{regNo}, #{tailNo})")
+    MyPageFeedReplyOutVo pMyPageFeedReplySel(Map<String, Object> param);
+
+    /**
+     * 피드 좋아요
+     *
+     * @Param
+     * feedNo           INT         -- 피드 등록글 번호
+     * mMemNo           BIGINT      -- 피드 회원번호
+     * vMemNo           BIGINT      -- 방문자 회원번호
+     *
+     * @Return
+     * s_return         INT         -- # -1: 이미 좋아요함, 0: 에러, 1: 최초 좋아요 2: 좋아요 취소 후 다시 좋아요
+     */
+    @Select("CALL rd_data.p_member_feed_like_log_ins_v1(#{feedNo}, #{mMemNo}, #{vMemNo})")
+    Integer pMyPageFeedLike(Map<String, Object> param);
+
+    /**
+     * 피드 좋아요 취소
+     *
+     * @Param
+     * feedNo           INT         -- 피드 등록글 번호
+     * mMemNo           BIGINT      -- 피드 회원번호
+     * vMeMNo           BIGINT      -- 방문자 회원번호
+     *
+     * @Return
+     * s_return         INT         -- # -1: 좋아요 하지 않은 등록글, 0: 에러, 1: 취소 완료
+     */
+    @Select("CALL rd_data.p_member_feed_like_cancel_ins_v1(#{feedNo}, #{mMemNo}, #{vMemNo})")
+    Integer pMyPageFeedLikeCancel(Map<String, Object> param);
+
+    /**
+     * 방송방공지 등록
      *
      * @param
      * memNo            BIGINT  -- 회원 번호
@@ -405,7 +672,7 @@ public interface MypageDao {
     Integer pMemberBroadcastNoticeIns(Map<String, Object> param);
 
     /**
-     * 방송공지 수정
+     * 방송방공지 수정
      *
      * @param
      * roomNoticeNo     BIGINT  -- 방송공지 키값
@@ -420,7 +687,7 @@ public interface MypageDao {
     Integer pMemberBroadcastNoticeUpd(Map<String, Object> param);
 
     /**
-     * 방송공지 삭제
+     * 방송방공지 삭제
      *
      * @param
      * roomNoticeNo     BIGINT  -- 방송공지 키값
@@ -435,7 +702,7 @@ public interface MypageDao {
     Integer pMemberBroadcastNoticeDel(BroadcastNoticeDelVo param);
 
     /**
-     * 방송공지 정보
+     * 방송방공지 정보
      *
      * @param
      * memNo            BIGINT  -- 회원번호
