@@ -11,6 +11,13 @@ import org.springframework.stereotype.Repository;
 @Component
 @Repository
 public interface Common {
+    /**
+     * 회원 본인인증 체크 및 상태해제 (휴면회원)
+     * s_return		INT		--  -3:회원 없음, -2:휴면상태가 아님, -1: 본인인증 결과 없음,  0: 에러, 1:정상
+     */
+    @Select("CALL p_sleep_mem_chk_upd(#{memNo}, #{memPhone})")
+    Integer sleepMemChkUpd(String memNo, String memPhone);
+
     /**********************************************************************************************
     * @Method 설명 : 법정대리인 이메일등록(결제)
     * @작성일   : 2021-12-30
@@ -63,7 +70,7 @@ public interface Common {
     *   parents_mem_birth_year  smallint(6)         -- 회원대리인 생년
     *   parents_mem_birth_day   smallint(6)         -- 회원대리인 월일
     *   parents_mem_email       varchar(50)         -- 회원대리인 이메일
-    *   parents_mem_hphone      varchar(15)         -- 회원대리인 휴대전
+    *   parents_mem_hphone      varchar(15)         -- 회원대리인 휴대전화
     *   agreement_date          smallint(6)         -- 동의기간
     *   expire_date             datetime(6)         -- 만료일자
     *   auth_yn                 char(1)             -- 동의완료여부

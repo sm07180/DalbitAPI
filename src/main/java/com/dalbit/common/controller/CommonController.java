@@ -3,7 +3,6 @@ package com.dalbit.common.controller;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
-import com.dalbit.common.proc.CommonProc;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.service.EmailService;
 import com.dalbit.common.vo.*;
@@ -57,7 +56,6 @@ public class CommonController {
     IPUtil ipUtil;
 
     @Autowired EmailService emailService;
-    @Autowired CommonProc common;
 
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
@@ -294,11 +292,11 @@ public class CommonController {
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
         if(StringUtils.equals(selfAuthVo.getPageCode(), "7")) {
-            selfAuthVo.setPlusInfo(selfAuthVo.getMemNo()+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+            selfAuthVo.setPlusInfo(selfAuthVo.getMemNo()+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreePeriod()
                 + "_" + selfAuthVo.getPushLink()
             );
         }else {
-            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreePeriod()
                 + "_" + selfAuthVo.getPushLink()
             );
         }
@@ -307,7 +305,7 @@ public class CommonController {
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()
             );
         } else {
-            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm());
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreePeriod());
         }*/
 
 
@@ -347,7 +345,7 @@ public class CommonController {
             apiData.setIsHybrid(plusInfo[2]);
             apiData.setPageCode(plusInfo[3]);
             apiData.setAuthType(plusInfo[4]);
-            apiData.setAgreeTerm(plusInfo[5]);
+            apiData.setAgreePeriod(plusInfo[5]);
 
             int manAge = commonService.birthToAmericanAge(
                 Integer.parseInt(apiData.getBirthYear()),
@@ -378,8 +376,9 @@ public class CommonController {
                     memNo, parentName, parentSex, parentBirthYear, parentBirthDay, parentPhoneNo
                 );
 
-                // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
+                // -5:부모미성년, -4:미인증, -3:나이 안맞음, -2:이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
                 ResVO insRes = commonService.parentsAuthIns(parentCertInputVo);
+                apiData.setParentAuth(insRes);
                 if(StringUtils.equals(insRes.getCode(), "00000")) {
                     result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, apiData));
                 }else {
@@ -597,7 +596,7 @@ public class CommonController {
             log.error("test map =>{}", map);
 
             // 미성년자는 법정대리인에게 메일 발송
-            //commonService.sendPayMailManager(memNo, orderId);
+            commonService.sendPayMailManager(memNo, orderId);
 
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
         }else {
