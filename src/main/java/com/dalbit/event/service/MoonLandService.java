@@ -78,9 +78,9 @@ public class MoonLandService {
     public HashMap getMoonLandTotalInfoData(){
         try {
             HashMap map = new HashMap();
-            List<Object> list = event.pEvtMoonNoSelMultiRows(2); //현재 회차
-            map.put("cnt", DBUtil.getData(list, 0, Integer.class));
-            map.put("list", DBUtil.getList(list, 1, HashMap.class));
+            List<MoonLandInfoVO> list = event.pEvtMoonNoSel(1); //현재 회차
+            map.put("cnt", list.size());
+            map.put("list", list == null? new ArrayList<>(): list);
 
             return map;
         } catch (Exception e) {
