@@ -25,4 +25,10 @@ public class ResVO {
         this.message = ResMessage.C99999.getCodeNM();
         this.data = null;
     }
+
+    public void setDBErrorResVO () {
+        this.code = ResMessage.C99997.getCode();
+        this.message = ResMessage.C99997.getCodeNM();
+        this.data = null;
+    }
 }

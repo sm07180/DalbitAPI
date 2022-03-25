@@ -20,7 +20,7 @@ public class P_SelfAuthVo extends P_ApiVo {
 
     private String parents_agreeTerm;
     private String parents_agreeDt;
-    private String parents_agreeYn;
+    private String parent_agreeYn;
 
     private String os;
     private String isHybrid;
