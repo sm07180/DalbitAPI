@@ -1,5 +1,6 @@
 package com.dalbit.security.service;
 
+import com.dalbit.admin.service.AdminService;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.BlockVo;
 import com.dalbit.common.vo.DeviceVo;
@@ -47,6 +48,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Autowired
     private ProfileService profileService;
+
+    @Autowired AdminService adminService;
 
     /*@Autowired
     private RedisUtil redisUtil;*/
@@ -194,7 +197,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
             //todo - 프로시저에 관리자 구분 추가되어야함. 임시로 특정 아이디에 관리자 권한 부여
             //boolean isAdmin = memberVo.getMemSlct().equals("m");
-            boolean isAdmin = DalbitUtil.isEmpty(DalbitUtil.isEmpty(memberVo) || DalbitUtil.isEmpty(memberVo.getMemId())) ? false : memberVo.getMemId().equals("huhazv74");
+            //boolean isAdmin = DalbitUtil.isEmpty(DalbitUtil.isEmpty(memberVo) || DalbitUtil.isEmpty(memberVo.getMemId())) ? false : memberVo.getMemId().equals("huhazv74");
+            boolean isAdmin = adminService.isAdmin(memNo);
 
             SecurityUserVo securityUserVo = new SecurityUserVo(
                     memberVo.getMemId()
