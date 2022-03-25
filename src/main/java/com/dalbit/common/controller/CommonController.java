@@ -379,11 +379,7 @@ public class CommonController {
                 // -5:부모미성년, -4:미인증, -3:나이 안맞음, -2:이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
                 ResVO insRes = commonService.parentsAuthIns(parentCertInputVo);
                 apiData.setParentAuth(insRes);
-                if(StringUtils.equals(insRes.getCode(), "00000")) {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, apiData));
-                }else {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증실패, apiData));
-                }
+                result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, apiData));
             } else { // 법정대리인 인증(환전)
 
                 // 만 19세 미만 이용불가
