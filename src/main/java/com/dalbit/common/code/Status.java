@@ -2417,11 +2417,13 @@ public enum Status {
     와썹맨_DJ_조회("C002", "whats.up.dj.sel", "와썹맨_DJ_조회"),
     와썹맨_신입_리스트("C003", "whats.up.new.member.list", "와썹맨_신입_리스트"),
     와썹맨_신입_조회("C004", "whats.up.new.member.sel", "와썹맨_신입_조회"),
+    와썹맨_회차_조회("C005", "whats.up.info.sel", "와썹맨_회차_조회"),
 
     와썹맨_DJ_리스트_파라미터("EP001", "whats.up.dj.list.parameter", "와썹맨_DJ_리스트_파라미터"),
     와썹맨_DJ_조회_파라미터("EP002", "whats.up.dj.sel.parameter", "와썹맨_DJ_조회_파라미터"),
     와썹맨_신입_리스트_파라미터("EP003", "whats.up.new.member.list.parameter", "와썹맨_신입_리스트_파라미터"),
     와썹맨_신입_조회_파라미터("EP004", "whats.up.new.member.sel.parameter", "와썹맨_신입_조회_파라미터"),
+    와썹맨_회차_조회_파라미터("EP005", "whats.up.info.sel.parameter", "와썹맨_회차_조회_파라미터"),
 
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),

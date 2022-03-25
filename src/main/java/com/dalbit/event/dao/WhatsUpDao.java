@@ -114,4 +114,18 @@ public interface WhatsUpDao {
     @Transactional(readOnly = true)
     WhatsUpResultVo pEvtWassupManNewMemRankSel(WhatsUpRequestVo whatsUpRequestVo);
 
+    /**
+     * ##### 와썹맨 회차정보
+     * CALL p_evt_wassup_man_no_sel(
+     * noSlct INT	-- 일정구분[1:해당회차, 2,전체회차]
+     * )
+     *
+     * seq_no, start_date, end_date
+     */
+    @Transactional(readOnly = true)
+    WhatsUpResultVo pEvtWassupManNoSel();
+
+    @Transactional(readOnly = true)
+    List<WhatsUpResultVo> pEvtWassupManNoList();
+
 }

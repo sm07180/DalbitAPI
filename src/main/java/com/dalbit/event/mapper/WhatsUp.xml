@@ -16,6 +16,8 @@
         <result property="memState" column="mem_state"/>
         <result property="insDate" column="ins_date"/>
         <result property="updDate" column="upd_date"/>
+        <result property="startDate" column="start_date"/>
+        <result property="endDate" column="end_date"/>
         <result property="viewScoreCnt" column="view_score_cnt"/>
         <result property="totScoreCnt" column="tot_score_cnt"/>
     </resultMap>
@@ -35,6 +37,14 @@
 
     <select id="pEvtWassupManNewMemRankSel" statementType="CALLABLE" parameterType="WhatsUpRequestVo" resultMap="WhatsUpResultVo">
         { CALL p_evt_wassup_man_new_mem_rank_sel(#{seqNo},#{memNo}) }
+    </select>
+
+    <select id="pEvtWassupManNoSel" statementType="CALLABLE" resultMap="WhatsUpResultVo">
+        { CALL p_evt_wassup_man_no_sel('1') }
+    </select>
+
+    <select id="pEvtWassupManNoList" statementType="CALLABLE" resultMap="WhatsUpResultVo">
+        { CALL p_evt_wassup_man_no_sel('2') }
     </select>
 
 </mapper>

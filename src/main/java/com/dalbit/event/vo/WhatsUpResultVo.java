@@ -1,5 +1,6 @@
 package com.dalbit.event.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,8 +20,14 @@ public class WhatsUpResultVo {
     private String imageProfile;        // 프로필
     private Integer memLevel;           // 레벨
     private Integer memState;           // 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...)
-    private LocalDateTime insDate;      // 등록일자
-    private LocalDateTime updDate;      // 수정일자
+    private LocalDateTime insDate;      // 등록일시
+    private LocalDateTime updDate;      // 수정일시
     private long viewScoreCnt;          // 방송점수
     private long totScoreCnt;           // 총수
+
+    private LocalDateTime startDate;    // 회차시작일시
+    private LocalDateTime endDate;      // 회차종료일시
+
+    private ImageVo profImg;
+
 }

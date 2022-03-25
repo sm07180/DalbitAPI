@@ -35,4 +35,12 @@ public class WhatsUpController {
     public Object getNewMemberSel(@RequestBody WhatsUpRequestVo whatsUpRequestVo, HttpServletRequest request){
         return whatsUpService.getWhatsUpNewMemberSel(whatsUpRequestVo, request);
     }
+    @PostMapping("/pEvtWassupManNoSel")
+    public Object pEvtWassupManNoSel(){
+        return whatsUpService.pEvtWassupManNoSel();
+    }
+    @PostMapping("/pEvtWassupManNoList")
+    public Object pEvtWassupManNoList(){
+        return whatsUpService.pEvtWassupManNoList();
+    }
 }
