@@ -74,6 +74,11 @@ public class ReplicationDatabaseConfig {
     @Value("${spring.datasource.email.minimum-idle}")
     private int JDBC_EMAIL_MINIMUM_IDLE;
 
+    @Value("${spring.datasource.maximum-pool-size}")
+    private int JDBC_MAXIMUM_POOL_SIZE;
+
+    @Value("${spring.datasource.minimum-idle}")
+    private int JDBC_MINIMUM_IDLE;
 
     @Bean
     public DataSource masterDataSource() {
@@ -85,8 +90,8 @@ public class ReplicationDatabaseConfig {
         masterHikariConfig.setPassword(JDBC_PASSWORD);
         //masterHikariConfig.addDataSourceProperty("autoReconnect",true);
         masterHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
-        masterHikariConfig.setMaximumPoolSize(10);
-        masterHikariConfig.setMinimumIdle(6);
+        masterHikariConfig.setMaximumPoolSize(JDBC_MAXIMUM_POOL_SIZE);
+        masterHikariConfig.setMinimumIdle(JDBC_MINIMUM_IDLE);
         masterHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         masterHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         masterHikariConfig.setMaxLifetime(MAX_LIFETIME);
@@ -105,8 +110,8 @@ public class ReplicationDatabaseConfig {
         slaveHikariConfig.setPassword(JDBC_PASSWORD);
         //slaveHikariConfig.addDataSourceProperty("autoReconnect",true);
         slaveHikariConfig.addDataSourceProperty("tcpKeepAlive", true);
-        slaveHikariConfig.setMaximumPoolSize(10);
-        slaveHikariConfig.setMinimumIdle(6);
+        slaveHikariConfig.setMaximumPoolSize(JDBC_MAXIMUM_POOL_SIZE);
+        slaveHikariConfig.setMinimumIdle(JDBC_MINIMUM_IDLE);
         slaveHikariConfig.setConnectionTimeout(CONNECTION_TIMEOUT);
         slaveHikariConfig.setIdleTimeout(IDLE_TIMEOUT);
         slaveHikariConfig.setMaxLifetime(MAX_LIFETIME);

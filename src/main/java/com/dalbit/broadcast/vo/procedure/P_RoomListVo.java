@@ -2,11 +2,13 @@ package com.dalbit.broadcast.vo.procedure;
 
 import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.vo.DeviceVo;
+import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
@@ -15,8 +17,11 @@ import java.util.Date;
 @Setter
 public class P_RoomListVo extends P_ApiVo {
 
-    public P_RoomListVo(){}
+    public P_RoomListVo(){
+        this.photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
+    }
     public P_RoomListVo(RoomListVo roomListVo, HttpServletRequest request){
+        this.photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
         int pageNo = DalbitUtil.isEmpty(roomListVo.getPage()) ? 1 : roomListVo.getPage();
         int pageCnt = DalbitUtil.isEmpty(roomListVo.getRecords()) ? 10 : roomListVo.getRecords();
 
@@ -40,6 +45,7 @@ public class P_RoomListVo extends P_ApiVo {
         setMediaType(roomListVo.getMediaType());
     }
 
+    private String photoSvrUrl;
     /* Input */
     private int memLogin;                   //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;                  //방리스트 요청 회원번호
@@ -76,7 +82,8 @@ public class P_RoomListVo extends P_ApiVo {
     private String bj_memSex;               //bj 성별
     private int bj_birthYear;               //bj 생년
     private int bj_age;                     //bj 나이대
-    private Object bj_profileImage;         //bj 프로필이미지
+    private String bj_profileImage;         //bj 프로필이미지
+    private ImageVo bj_profileImageVo;         //bj 프로필이미지
     private String guest_mem_no;            //게스트회원번호
     private String guest_nickName;          //게스트닉네임
     private String guest_memSex;            //게스트성별
@@ -121,4 +128,18 @@ public class P_RoomListVo extends P_ApiVo {
     private int goodMem3;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
     private boolean isShining = false;
 
+    public void setBj_profileImage(String bj_profileImage) {
+        if(!StringUtils.isEmpty(this.bj_memSex)) {
+            this.bj_profileImageVo = new ImageVo
+                (bj_profileImage, this.bj_memSex, this.photoSvrUrl);
+        }
+        this.bj_profileImage = bj_profileImage;
+    }
+    public void setBj_memSex(String bj_memSex) {
+        if(!StringUtils.isEmpty(this.bj_profileImage)) {
+            this.bj_profileImageVo = new ImageVo
+                (this.bj_profileImage, bj_memSex, this.photoSvrUrl);
+        }
+        this.bj_memSex = bj_memSex;
+    }
 }

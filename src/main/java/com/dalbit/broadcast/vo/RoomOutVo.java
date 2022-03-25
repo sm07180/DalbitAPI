@@ -86,6 +86,7 @@ public class RoomOutVo {
     private boolean isVideo;
     private boolean isMinigame;
     private boolean isConDj;
+    private boolean isVote;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -254,5 +255,9 @@ public class RoomOutVo {
         this.isVideo = target.getVideo_state() == 1;
         this.isMinigame = isMiniGame;
         this.newFanCnt = target.getCount_fan();
+    }
+
+    public void setIsVote(boolean isVote){
+        this.isVote = isVote;
     }
 }

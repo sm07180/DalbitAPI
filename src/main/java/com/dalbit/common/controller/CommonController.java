@@ -12,7 +12,6 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.P_LoginVo;
-import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.util.*;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -289,11 +288,22 @@ public class CommonController {
         selfAuthVo.setCpId(DalbitUtil.getProperty("self.auth.cp.id"));                  //회원사ID
         selfAuthVo.setDate(DalbitUtil.getReqDay());                                     //요청일시
         selfAuthVo.setCertNum(DalbitUtil.getReqNum(selfAuthVo.getDate()));              //요청번호
-        if(selfAuthVo.getAuthType().equals("0")){
-            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType());
+        if(StringUtils.equals(selfAuthVo.getPageCode(), "7")) {
+            selfAuthVo.setPlusInfo(selfAuthVo.getMemNo()+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+                + "_" + selfAuthVo.getPushLink()
+            );
+        }else {
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm()
+                + "_" + selfAuthVo.getPushLink()
+            );
+        }
+
+        /*if(selfAuthVo.getAuthType().equals("0")){
+            selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()
+            );
         } else {
             selfAuthVo.setPlusInfo(MemberVo.getMyMemNo(request)+"_"+os+"_"+isHybrid+"_"+selfAuthVo.getPageCode()+"_"+selfAuthVo.getAuthType()+"_"+selfAuthVo.getAgreeTerm());
-        }
+        }*/
 
 
         selfAuthOutVo.setTr_add(DalbitUtil.getProperty("self.auth.tr.add"));            //IFrame사용여부
@@ -316,8 +326,9 @@ public class CommonController {
         String result;
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
+            String[] plusInfo = selfAuthSaveVo.getPlusInfo().split("_");
 
-            apiData.setMem_no(selfAuthSaveVo.getPlusInfo().split("_")[0]); //요청시 보낸 회원번호 (추가정보)
+            apiData.setMem_no(plusInfo[0]); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
             apiData.setMemSex(selfAuthSaveVo.getGender());
@@ -327,10 +338,11 @@ public class CommonController {
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
-            apiData.setOs(selfAuthSaveVo.getPlusInfo().split("_")[1]);
-            apiData.setIsHybrid(selfAuthSaveVo.getPlusInfo().split("_")[2]);
-            apiData.setPageCode(selfAuthSaveVo.getPlusInfo().split("_")[3]);
-            apiData.setAuthType(selfAuthSaveVo.getPlusInfo().split("_")[4]);
+            apiData.setOs(plusInfo[1]);
+            apiData.setIsHybrid(plusInfo[2]);
+            apiData.setPageCode(plusInfo[3]);
+            apiData.setAuthType(plusInfo[4]);
+            apiData.setAgreeTerm(plusInfo[5]);
 
             int manAge = commonService.birthToAmericanAge(
                 Integer.parseInt(apiData.getBirthYear()),
@@ -564,27 +576,32 @@ public class CommonController {
         return result;
     }
 
-    @PostMapping("/pay/restapi/test")
+    @PostMapping("/pay/result/callback")
     public String payRestAPITest(HttpServletRequest request){
-        HashMap<String, Object> map = new HashMap<>();
-        String memNo = request.getParameter("memNo");
-        String orderId = request.getParameter("orderId");
-        map.put("memNo", memNo);
-        map.put("orderId", orderId);
-
         String clientIP = ipUtil.getClientIP(request);
-        map.put("clientIP", clientIP);
-        map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
-        map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
-
         if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
+            String memNo = request.getParameter("memNo");
+            String orderId = request.getParameter("orderId");
+
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("memNo", memNo);
+            map.put("orderId", orderId);
+            map.put("clientIP", clientIP);
+            map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
+            map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
+            log.error("test map =>{}", map);
+
             commonService.sendPayMailManager(memNo, orderId);
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
         }else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한, map));
+            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한));
         }
     }
 
+    @PostMapping("/sleep/member/update")
+    public String sleepMemChkUpd(@RequestParam(value = "memNo") String memNo, @RequestParam(value = "memPhone") String memPhone) {
+        return commonService.sleepMemChkUpd(memNo, memPhone);
+    }
 
     /**
      * 법정대리인 이메일등록(결제)

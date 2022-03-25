@@ -22,6 +22,7 @@ public class FanBadgeVo {
     private String msgBorderSrtColor;
     private String msgBorderEndColor;
 
+    private String textStyle = "normal";
     private String textColor = "#ffffff";
     private String borderColor = "";
     private float bgAlpha = (float)1.0;
@@ -31,6 +32,8 @@ public class FanBadgeVo {
     private int chatImgWidth;
     private int chatImgHeight;
     private int badgeCnt;
+
+    public FanBadgeVo(){}
 
     public FanBadgeVo(String text, String icon, String startColor, String endColor){
         this.text = text;

@@ -33,5 +33,6 @@ public class P_SelfAuthVo extends P_ApiVo {
     private String comment;
     private String authToken;
 
+    private String agreeTerm = "";
 
 }

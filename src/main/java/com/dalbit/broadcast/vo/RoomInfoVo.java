@@ -100,12 +100,33 @@ public class RoomInfoVo {
 
     private List miniGameList = new ArrayList();
     private boolean isMinigame;
+    private boolean isVote;
+    private boolean isVoteHidden = false;
     private int nonMemberTime = 60;
 
     private ArrayList<Map<String, String>> ttsActors;
     private boolean moonLandEvent;
+    private boolean djTtsSound;
+    private boolean djNormalSound;
+    private boolean ttsSound;
+    private boolean normalSound;
+
+    /* 신규이벤트 페이지 이동 버튼 정보 */
+    private Map<String, Object> eventInfoMap;
+    /* 조각 모으기 이벤트 정보 (url, 방송방 버튼 노출여부) */
+    private Map<String, Object> stoneEventInfo;
     /* 필터/메이크업 */
     private boolean useFilter = false;
+
+    /* 아고라 토큰 */
+    private String agoraToken;
+    private String agoraAppId;
+    private String agoraAccount;
+    private Map<String, Object> agoraOption;
+    /*와우자 아고라 플래그값*/
+    private String platform;
+
+    private String joinDate;
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
@@ -249,5 +270,9 @@ public class RoomInfoVo {
         if(("iPhone 6".equals(deviceVo.getDeviceModel()) || "iPhone 6 Plus".equals(deviceVo.getDeviceModel())) && this.bgImg.getUrl().endsWith(".gif")){
             this.bgImg.setUrl(this.bgImg.getUrl() + "?750x1334");
         }
+    }
+
+    public void setIsVote(boolean isVote){
+        this.isVote = isVote;
     }
 }

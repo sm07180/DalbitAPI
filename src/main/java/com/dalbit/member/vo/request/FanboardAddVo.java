@@ -21,7 +21,7 @@ public class FanboardAddVo {
 
     @NotBlank(message = "{\"ko_KR\" : \"내용을\"}")
     @NotNull(message = "{\"ko_KR\" : \"내용을\"}")
-    @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 100)
+    @Size(message = "{\"ko_KR\" : \"내용을\"}", max = 1000)
     private String contents;
 
     @NotNull(message = "{\"ko_KR\" : \"비밀글 여부를\"}")

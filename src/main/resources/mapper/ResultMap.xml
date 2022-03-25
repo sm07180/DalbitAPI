@@ -41,4 +41,25 @@
 
     <!-- 굿스타트 이벤트 -->
     <resultMap id="GoodStartRankVo" type="com.dalbit.event.vo.GoodStartRankVo"/>
+
+    <!-- 리브랜딩 프로필 피드 -->
+    <resultMap id="ProfileFeedOutVO" type="com.dalbit.member.vo.ProfileFeedOutVo"/>
+
+    <!-- 친구초대이벤트 -->
+    <resultMap id="InviteVo" type="com.dalbit.event.vo.InviteVo"/>
+
+    <resultMap id="PoemEventResVo" type="com.dalbit.event.vo.PoemEventResVo" />
+
+    <!-- 투표 -->
+    <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo" />
+
+    <!-- 공유 이벤트 -->
+    <resultMap id="ShareEventVo" type="com.dalbit.event.vo.ShareEventVo"/>
+    <!-- 달라져스 조각 모으기 이벤트 -->
+
+    <resultMap id="DallagersEventMySelVo" type="com.dalbit.event.vo.DallagersEventMySelVo"/>
+    <resultMap id="DallagersEventSpecialMySelVo" type="com.dalbit.event.vo.DallagersEventSpecialMySelVo"/>
+
+    <!--star-->
+    <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
 </mapper>

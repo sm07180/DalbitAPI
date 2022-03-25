@@ -21,7 +21,6 @@ public class MiniGameWinListVo {
         setOpt(pMiniGameWinListVo.getOpt());
         setLastUpdDate(pMiniGameWinListVo.getLast_upd_date());
         setImageProfile(pMiniGameWinListVo.getImage_profile());
-        setImageProfile(pMiniGameWinListVo.getImage_profile());
     }
 
     private String roomNo;

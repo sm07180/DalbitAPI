@@ -13,4 +13,6 @@ public class RoomJoinVo {
     private String roomNo;
 
     private Integer shadow;
+    /*와우자 아고라 플래그값*/
+    private String platform;
 }

@@ -55,6 +55,10 @@
         )
     </select>
 
+    <select id="selectMulti" statementType="CALLABLE" parameterType="String" resultType="ItemDetailVo">
+        CALL sp_gift_item_multi_select(#{value, mode=IN, jdbcType=VARCHAR})
+    </select>
+
     <select id="selectBooster" statementType="CALLABLE" parameterType="String" resultType="ItemVo">
         CALL sp_gift_item_select(
             NULL

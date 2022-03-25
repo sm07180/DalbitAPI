@@ -28,7 +28,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 리스트
+     * 메시지 대화방 리스트
      */
     @GetMapping("/list")
     public String mailboxList(@Valid MailBoxListVo mailBoxListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -41,7 +41,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 추가 대상 리스트
+     * 메시지 대화방 추가 대상 리스트
      */
     @GetMapping("/target/list")
     public String mailboxChatTargetList(@Valid MailBoxAddTargetListVo mailBoxAddTargetListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -53,7 +53,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 대상 입장
+     * 메시지 대화방 대상 입장
      */
     @PostMapping("/enter")
     public String mailboxChatEnter(@Valid MailBoxEnterVo mailBoxEnterVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -65,7 +65,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 나가기
+     * 메시지 대화방 나가기
      */
     @PostMapping("/exit")
     public String mailboxChatExit(@Valid MailBoxExitVo mailBoxExitVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -77,7 +77,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 대화 전송
+     * 메시지 대화방 대화 전송
      */
     @PostMapping("/send")
     public String mailboxChatSend(@Valid MailBoxSendVo mailBoxSendVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -89,7 +89,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 대화 읽음처리
+     * 메시지 대화방 대화 읽음처리
      */
     @PostMapping("/read")
     public String mailboxChatRead(@Valid MailBoxReadVo mailBoxReadVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -101,7 +101,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 대화 조회
+     * 메시지 대화방 대화 조회
      */
     @GetMapping("/msg")
     public String mailboxMsg(@Valid MailBoxMsgListVo mailBoxMsgListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -113,7 +113,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 이미지 리스트
+     * 메시지 대화방 이미지 리스트
      */
     @GetMapping("/image/list")
     public String mailboxImageList(@Valid MailBoxImageListVo mailBoxImageListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -125,7 +125,7 @@ public class MailBoxController {
 
 
     /**
-     * 우체통 대화방 이미지 삭제
+     * 메시지 대화방 이미지 삭제
      */
     @PostMapping("/image/delete")
     public String mailboxImageDelete(@Valid MailBoxImageDeleteVo mailBoxImageDeleteVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
@@ -136,7 +136,7 @@ public class MailBoxController {
     }
 
     /**
-     * 우체통 신규메세지 조회
+     * 메시지 신규메세지 조회
      */
     @GetMapping("/new")
     public String mailboxIsNew(HttpServletRequest request){
@@ -144,7 +144,7 @@ public class MailBoxController {
     }
 
     /**
-     * 우체통 활성화 설정
+     * 메시지 활성화 설정
      */
     @PostMapping("/use")
     public String mailBoxIsUse(@Valid MailBoxIsUseVo mailBoxIsUseVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {

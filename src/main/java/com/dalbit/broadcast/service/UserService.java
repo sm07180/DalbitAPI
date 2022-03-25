@@ -470,9 +470,17 @@ public class UserService {
             apiData.setMem_no(memNo);
             apiData.setRoom_no(roomNo);
             apiData.setPageNo(1);
-            apiData.setPageCnt(10);
+            apiData.setPageCnt(11);
             ProcedureVo procedureVo = new ProcedureVo(apiData);
-            return userDao.callBroadCastRoomMemberList(procedureVo);
+
+            List<P_RoomMemberListVo> resultList = userDao.callBroadCastRoomMemberList(procedureVo);
+
+            if(resultList == null){
+                resultList = new ArrayList<>();
+                log.error("UserService getListenerList => DB result null");
+            }
+
+            return resultList;
         } catch (Exception e) {
             log.error("UserService getListenerList => {}", e);
         }

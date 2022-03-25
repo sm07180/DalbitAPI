@@ -11,6 +11,8 @@ public class P_MainStarVo extends P_ApiVo {
     private String gender;
     private String profImgUrl;
     private String roomNo;
+    private String listen_room_no;
+    private String last_login_date;
     private String title;
     private String roomType;
     private String roomTypeNm;

@@ -206,8 +206,8 @@ public enum Status {
     서비스알림_OFF("0", "mypage.member.notify.edit.service.off.success", "서비스 알림 OFF"),
     방송시작알림_ON("0", "mypage.member.notify.edit.broadcast.start.on.success", "방송 시작 알림 ON"),
     방송시작알림_OFF("0", "mypage.member.notify.edit.broadcast.start.off.success", "방송 시작 알림 OFF"),
-    우체통알림_ON("0", "mypage.member.notify.edit.mailbox.on.success", "우체통 알림 ON"),
-    우체통알림_OFF("0", "mypage.member.notify.edit.mailbox.off.success", "우체통 알림 OFF"),
+    메시지알림_ON("0", "mypage.member.notify.edit.mailbox.on.success", "메시지 알림 ON"),
+    메시지알림_OFF("0", "mypage.member.notify.edit.mailbox.off.success", "메시지 알림 OFF"),
 
 
     //회원 방송방 빠른말 가져오기
@@ -254,6 +254,11 @@ public enum Status {
     팬보드_스타회원번호_회원아님("-2", "fanboard.list.starNo.notMember","스타 회원번호가 회원이 아님"),
     팬보드_조회오류("C006", "fanboard.list.error", "팬보드 댓글 리스트 조회 실패"),
 
+    //프로필 팬보드 상세 조회
+    팬보드상세조회성공("C001", "fanboard.detail.select.success", "팬보드 상세 조회 성공"),
+    팬보드상세조회정보없음("-1", "fanboard.detail.select.fail.writeNo", "팬보드 상세 조회 글 없음"),
+    팬보드상세조회실패("C006", "fanboard.detail.select.fail.error", "팬보드 정보 조회 실패"),
+
     //회원 마이페이지 팬보드 댓글 삭제
     팬보드_댓글삭제성공("0", "fanboard.delete.comment.success", "댓글 삭제 성공"),
     팬보드_댓글삭제실패_스타회원번호_회원아님("-1", "fanboard.delete.starNo.notMember", "스타 회원번호가 회원이 아님"),
@@ -297,6 +302,7 @@ public enum Status {
     방송생성_20세제한("-4", "broadcast.room.limit.20age", "20세 미만 회원일 경우"),
     방송생성_3레벨제한("-5", "broadcast.room.limit.3level", "3레벨 제한"),
     방송생성_20세본인인증("-6", "broadcast.room.no.certification", "20세이상 방생성 시 본인인증 안한경우"),
+    방송생성_청취중_방송생성("-7", "broadcast.room.already.listener", "청취중일경우 방송시작시 에러코드"),
     방생성실패("C006", "broadcast.room.fail", "방송 생성 실패 시"),
 
     //방송방 참가를 위한 스트림아이디, 토큰받아오기
@@ -320,6 +326,7 @@ public enum Status {
     방송참여_비회원IP중복("-12", "broadcast.room.join.ano.ip.duplicate", "비회원 IP 동일방 중복 있을 시"),
     방송참여_차단회원입장불가("-13", "broadcast.room.black.list.join.no", "차단회원 입장 불가 시"),
     방송참여_20세본인인증안함("-14", "broadcast.room.join.no.certification", "20세이상 방 입장시 본인인증 안한 경우"),
+    방송참여_방송중_다른방입장("-15", "broadcast.room.join.already.host", "방송중 청취시 에러코드"),
     방참가실패("C006", "broadcast.room.join.fail", "방송 참가 실패 시"),
     비회원_재진입("-99", "broadcast.room.join.anonymous.twice", "비회원이 방송방에 2번 이상 들어왔을 시"),
     방송방조인따라가기비공개("-999", "broadcast.room.join.not.allow.fallow", "일반회원 참여시 따라가기 비공개일 경우"),
@@ -607,7 +614,9 @@ public enum Status {
     공지등록_요청회원번호_회원아님("-1", "mypage.notice.create.member.number.error", "요청회원번호가 회원 아닐 시"),
     공지등록_대상회원번호_회원아님("-2", "mypage.notice.create.object.member.number.error", "대상회원번호가 회원 아닐 시"),
     공지등록_권한없음("-3", "mypage.notice.create.authorization.not", "공지등록 권한 없을 시"),
+    공지등록_상단고정_초과("-4", "mypage.notice.create.topFix.fail", "마이페이지 공지등록 실패 시"),
     공지등록_실패("C006", "mypage.notice.create.fail", "마이페이지 공지등록 실패 시"),
+    공지이미지_경로변경_실패("-1", "mypage.notice.photo.move.fail", "포토서버 이미지 경로변경 실패"),
 
     //마이페이지 공지사항 수정
     공지수정_성공("0", "mypage.notice.edit.success", "마이페이지 공지수정 성공 시"),
@@ -616,6 +625,7 @@ public enum Status {
     공지수정_권한없음("-3", "mypage.notice.edit.authorization.not", "공지수정 권한 없을 시"),
     공지수정_잘못된공지번호("-4", "mypage.notice.edit.number.error", "공지번호가 잘못된 번호일 시"),
     공지수정_실패("C006", "mypage.notice.edit.fail", "마이페이지 공지수정 실패 시"),
+    공지수정_사진작업_실패("C006", "mypage.notice.edit.photo.fail", "마이페이지 공지수정 실패 시"),
 
     //마이페이지 공지사항 삭제
     공지삭제_성공("0", "mypage.notice.delete.success", "마이페이지 공지삭제 성공 시"),
@@ -1584,9 +1594,18 @@ public enum Status {
     청취정보_OFF("0", "mypage.broadcast.setting.listen.open.off.success", "청취정보공개 OFF"),
     선물스타추가_ON("0", "mypage.broadcast.setting.gift.star.on.success", "선물시자동스타추가 ON"),
     선물스타추가_OFF("0", "mypage.broadcast.setting.gift.star.off.success", "선물시자동스타추가 OFF"),
-    우체통사용_ON("0", "mypage.broadcast.setting.mailbox.on.success", "우체통사용여부 ON"),
-    우체통사용_OFF("0", "mypage.broadcast.setting.mailbox.off.success", "우체통사용여부 OFF"),
+    메시지사용_ON("0", "mypage.broadcast.setting.mailbox.on.success", "메시지사용여부 ON"),
+    메시지사용_OFF("0", "mypage.broadcast.setting.mailbox.off.success", "메시지사용여부 OFF"),
 
+    // 방송 설정 추가 ( tts, sound 사용여부 )
+    TTS_아이템_ON("0", "mypage.broadcast.setting.gift.tts.on.success", "TTS 아이템 사용여부 ON"),
+    TTS_아이템_OFF("0", "mypage.broadcast.setting.gift.tts.off.success", "TTS 아이템 사용여부 OFF"),
+    SOUND_아이템_ON("0", "mypage.broadcast.setting.gift.sound.on.success", "Sound 아이템 사용여부 ON"),
+    SOUND_아이템_OFF("0", "mypage.broadcast.setting.gift.sound.off.success", "Sound 아이템 사용여부 OFF"),
+    청취자_입장표시_ON("0", "mypage.broadcast.setting.listener.come.on.success", "청취자 입장표시 ON"),
+    청취자_입장표시_OFF("0", "mypage.broadcast.setting.listener.come.off.success", "청취자 입장표시 OFF"),
+    청취자_퇴장표시_ON("0", "mypage.broadcast.setting.listener.out.on.success", "청취자 퇴장표시 ON"),
+    청취자_퇴장표시_OFF("0", "mypage.broadcast.setting.listener.out.off.success", "청취자 퇴장표시 OFF"),
     클립재생시간_10분초과("C005", "clip.exceed.play.time.limit.10min", "클립 재생시간 초과 시"),
 
     //방송방 채팅 얼리기
@@ -1789,6 +1808,7 @@ public enum Status {
     이어하기_연장한방송("-3", "broadcast.continue.extend.room", "연장한 방송이라 이어하기 불가"),
     이어하기_종료시간5분지남("-4", "broadcast.continue.end.time.5min.pass", "종료시간이 5분 지남"),
     이어하기_남은시간5분안됨("-5", "broadcast.continue.remaining.time.5min.limit", "남은시간이 5분 안됨"),
+    이어하기_청취중_방송생성("-7", "broadcast.continue.already.listener", "청취중 방송 생성시 에러코드"),
     이어하기_실패("C006", "broadcast.continue.fail", "이어하기 실패 시"),
 
     //방송방 뱃지 교체 체크
@@ -1813,18 +1833,18 @@ public enum Status {
     휴면해제_상태아님("-2", "member.sleep.return.no.sleep.state", "휴면상태가 아닐 시"),
     휴면해제_실패("C006", "member.sleep.return.fail", "휴면 해제 실패 시"),
 
-    //우체통 대화방 리스트
-    우체통대화방_조회_성공("C001", "mailbox.list.select.success", "대화방 리스트 조회 성공 시"),
-    우체통대화방_조회_없음("0", "mailbox.list.select.no.success", "대화방 리스트 없을 시"),
-    우체통팬대화방_조회_회원아님("-1", "mailbox.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
-    우체통팬대화방_조회_레벨0("-2", "mailbox.list.select.level.0", "본인 레벨 0"),
-    우체통팬대화방_조회_실패("C006", "mailbox.list.select.fail", "대화방 리스트 조회 실패 시"),
+    //메시지 대화방 리스트
+    메시지대화방_조회_성공("C001", "mailbox.list.select.success", "대화방 리스트 조회 성공 시"),
+    메시지대화방_조회_없음("0", "mailbox.list.select.no.success", "대화방 리스트 없을 시"),
+    메시지팬대화방_조회_회원아님("-1", "mailbox.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    메시지팬대화방_조회_레벨0("-2", "mailbox.list.select.level.0", "본인 레벨 0"),
+    메시지팬대화방_조회_실패("C006", "mailbox.list.select.fail", "대화방 리스트 조회 실패 시"),
 
-    //우체통 대화방 추가대상
-    우체통대화방추가대상_조회_성공("C001", "mailbox.add.target.list.select.success", "추가 대상 목록조회 성공 시"),
-    우체통대화방추가대상_조회_없음("0", "mailbox.add.target.list.select.no.success", "추가 대상 목록조회 없을 시"),
-    우체통대화방추가대상_조회_회원아님("-1", "mailbox.add.target.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
-    우체통대화방추가대상_조회_실패("C006", "mailbox.add.target.list.select.fail", "추가 대상 목록조회 실패 시"),
+    //메시지 대화방 추가대상
+    메시지대화방추가대상_조회_성공("C001", "mailbox.add.target.list.select.success", "추가 대상 목록조회 성공 시"),
+    메시지대화방추가대상_조회_없음("0", "mailbox.add.target.list.select.no.success", "추가 대상 목록조회 없을 시"),
+    메시지대화방추가대상_조회_회원아님("-1", "mailbox.add.target.list.select.member.number.error", "요청회원번호 회원 아닐 시"),
+    메시지대화방추가대상_조회_실패("C006", "mailbox.add.target.list.select.fail", "추가 대상 목록조회 실패 시"),
 
     //대화방 입장
     대화방입장_신규입장_성공("1", "mailbox.chatroom.enter.new.success", "대화방 신규 입장 성공 시"),
@@ -2167,7 +2187,7 @@ public enum Status {
     미니게임종료_없음("-5", "mini.game.end.no", "등록된 미니게임 룰렛이 없을 시"),
     미니게임종료_실패("C006", "mini.game.end.fail", "미니게임 룰렛 종료 실패 시"),
 
-    //우체통 활성화 설정
+    //메시지 활성화 설정
     활성화설정_성공("0", "mailbox.use.success", "활성화 설정 시"),
     활성화설정_ON("0", "mailbox.use.on.success", "활성화"),
     활성화설정_OFF("0", "mailbox.use.off.success", "비활성화"),
@@ -2234,8 +2254,8 @@ public enum Status {
     영상대화_신청_상대정지("-2", "chat.video.apply.target.member.stop", "상대방이 정지회원 시"),
     영상대화_신청_차단회원("-3", "chat.video.apply.black", "본인이 차단 시"),
     영상대화_신청_상대가차단("-4", "chat.video.apply.target.black", "상대방이 차단했을 시"),
-    영상대화_신청_우체통비활성("-5", "chat.video.apply.mailbox.off", "우체통 비활성 시"),
-    영상대화_신청_우체통상대비활성("-6", "chat.video.apply.target.mailbox.off", "상대가 우체통 비활성 시"),
+    영상대화_신청_메시지비활성("-5", "chat.video.apply.mailbox.off", "메시지 비활성 시"),
+    영상대화_신청_메시지상대비활성("-6", "chat.video.apply.target.mailbox.off", "상대가 메시지 비활성 시"),
     영상대화_신청_수신거부("-7", "chat.video.apply.target.response.refuse", "수신거부 상태"),
     영상대화_신청_시간수신거부("-8", "chat.video.apply.target.response.time.refuse", "시간 수신거부 상태"),
     영상대화_신청_상대가수신거부("-9", "chat.video.apply.target.refuse", "상대가 수신거부 상태"),
@@ -2324,6 +2344,79 @@ public enum Status {
     달나라_팝업조회_실패("C006", "moonLand.mission.sel.fail", "달나라 팝업 조회 실패 시"),
     달나라_점수등록_성공("0", "moonLand.mission.score.ins.success", "달나라 점수 등록 성공 시"),
     달나라_점수등록_실패("C006", "moonLand.mission.score.ins.fail", "달나라 점수 등록 실패 시"),
+
+    //친구초대
+    초대코드_생성("0000", "invitaion.code.success", "초대코드 생성 성공 시"),
+    초대코드_중복("C001", "invitaion.code.duplication", "초대코드 중복 발생 시"),
+
+    친구코드_등록_성공("0000", "invitaion.friend.success", "친구코드 등록 성공 시"),
+    친구코드_없음("C001", "invitaion.friendempty", "친구코드 없음"),
+    친구코드_등록_에러("C002", "invitaion.friend.fail", "친구코드 등록 실패 시"),
+    친구코드_중복_등록("C003", "invitaion.friend.fail", "친구코드 중복 등록 시도 시"),
+
+    친구초대_참여대상_아님("C004", "invitaion.join.fail", "친구초대 참여대상 아님"),
+    친구초대_기간_중복("C005", "invitaion.join.fail", "친구초대 가입내역, 중복아이디 대상"),
+    친구초대_나이제한("C006", "invitaion.join.fail", "친구초대 나이제한"),
+
+    //스톤 모으기
+    달라_이벤트_조각부족("C001", "dalla.event.bbobgi.ins.fail", "달라 조각 부족"),
+
+    //투표
+    투표_생성("C001", "vote.code.insert.success", "투표_생성"),
+    투표_삭제("C002", "vote.code.delete.success", "투표_삭제"),
+    투표_투표처리("C003", "vote.code.member.insert.success", "투표_투표처리"),
+    투표_리스트조회("C004", "vote.code.vote.list.success", "투표_리스트조회"),
+    투표_정보조회("C005", "vote.code.vote.sel.success", "투표_정보조회"),
+    투표_항목조회("C006", "vote.code.vote.detail.list.success", "투표_항목조회"),
+    투표_단일_마감("C007", "vote.code.end.one.success", "투표_단일_마감"),
+    투표_전체_마감("C008", "vote.code.end.all.success", "투표_전체_마감"),
+    투표_항목과리스트_조회("C009", "vote.code.vote.sel.detail.list.success", "투표_항목과리스트_조회"),
+
+    투표_생성_파라미터("EP001", "vote.code.insert.parameter", "투표_생성_파리미터"),
+    투표_삭제_파라미터("EP002", "vote.code.delete.parameter", "투표_삭제_파리미터"),
+    투표_투표처리_파라미터("EP003", "vote.code.member.insert.parameter", "투표_투표처리_파리미터"),
+    투표_리스트조회_파라미터("EP004", "vote.code.vote.list.parameter", "투표_리스트조회_파리미터"),
+    투표_정보조회_파라미터("EP005", "vote.code.vote.sel.parameter", "투표_정보조회_파리미터"),
+    투표_항목조회_파라미터("EP006", "vote.code.vote.detail.list.parameter", "투표_항목조회_파리미터"),
+    투표_마감_파라미터("EP007", "vote.code.vote.end.list.parameter", "투표_마감_파리미터"),
+    투표_항목과리스트_조회_파라미터("EP008", "vote.code.vote.sel.detail.list.parameter", "투표_항목과리스트_조회_파라미터"),
+
+    투표_생성_개수초과_에러("E000", "vote.code.insert.max.fail", "투표_생성_개수초과_에러"),
+    투표_생성_에러("E001", "vote.code.insert.fail", "투표_생성_에러"),
+    투표_삭제_에러("E002", "vote.code.delete.fail", "투표_삭제_에러"),
+    투표_투표처리_에러("E003", "vote.code.member.insert.fail", "투표_투표처리_에러"),
+    투표_리스트조회_에러("E004", "vote.code.vote.list.fail", "투표_리스트조회_에러"),
+    투표_정보조회_에러("E005", "vote.code.vote.sel.fail", "투표_정보조회_에러"),
+    투표_항목조회_에러("E006", "vote.code.vote.detail.list.fail", "투표_항목조회_에러"),
+    투표_단일_마감_에러("E007", "vote.code.vote.end.one.list.fail", "투표_단일_마감_에러"),
+    투표_전체_마감_에러("E008", "vote.code.vote.end.all.list.fail", "투표_전체_마감_에러"),
+    투표_항목과리스트_조회_에러("E009", "vote.code.vote.sel.detail.list.fail", "투표_항목과리스트_조회_에러"),
+
+    // 공유 이벤트
+    공유이벤트_댓글목록_조회_성공("0", "share.event.tail.list.success", "공유 이벤트 댓글 목록 조회 성공 시"),
+    공유이벤트_댓글목록_조회_실패("-1", "share.event.tail.list.fail", "공유 이벤트 댓글 목록 조회 실패 시"),
+
+    공유이벤트_댓글목록_삭제_성공("0", "share.event.tail.del.success", "공유 이벤트 댓글 목록 삭제 성공 시"),
+    공유이벤트_댓글목록_삭제_실패("-1", "share.event.tail.del.fail", "공유 이벤트 댓글 목록 삭제 실패 시"),
+
+    공유이벤트_댓글목록_등록_성공("0", "share.event.tail.ins.success", "공유 이벤트 댓글 목록 등록 성공 시"),
+    공유이벤트_댓글목록_등록_실패("-1", "share.event.tail.ins.fail", "공유 이벤트 댓글 목록 등록 실패 시"),
+
+    공유이벤트_댓글목록_수정_성공("0", "share.event.tail.upd.success", "공유 이벤트 댓글 목록 수정 성공 시"),
+    공유이벤트_댓글목록_수정_실패("-1", "share.event.tail.upd.fail", "공유 이벤트 댓글 목록 수정 실패 시"),
+
+    공유이벤트_댓글여부_체크_성공("0", "share.event.tail.chk.success", "공유 이벤트 댓글 체크 성공 시"),
+    공유이벤트_댓글여부_체크_실패("-2", "share.event.tail.chk.fail", "공유 이벤트 댓글 체크 실패 시"),
+
+    휴면회원_본인인증_체크_성공("0", "sleep.mem.chk.upd.success", "휴면 회원 본인 인증 성공"),
+    휴면회원_본인인증_결과없음("-1", "sleep.mem.chk.upd.no.auth", "휴면 회원 본인 인증 결과 없음"),
+    휴면회원_본인인증_휴면상태아님("-2", "sleep.mem.chk.upd.no.sleep", "휴면 회원 본인 인증 휴면 상태 아님"),
+
+    //공통
+    공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
+    공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
+    공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
+    공통_기본_DB_실패("C007", "common.select.fail", "기본 조회 실패 db null"),
 ;
 
 

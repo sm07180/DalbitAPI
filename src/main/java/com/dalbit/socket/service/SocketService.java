@@ -18,7 +18,6 @@ import com.dalbit.socket.vo.P_RoomMemberInfoSelectVo;
 import com.dalbit.socket.vo.SocketOutVo;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
-import com.dalbit.util.GsonUtil;
 import com.dalbit.util.RestApiUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -66,9 +65,6 @@ public class SocketService {
     @Autowired
     ProfileDao profileDao;
 
-    @Autowired
-    GsonUtil gsonUtil; //todo 테스트 후 지우셈
-    
     public void sendSocketApi(String authToken, String roomNo, String params) {
         String result = "";
         params = StringUtils.defaultIfEmpty(params, "").trim();
@@ -1048,7 +1044,7 @@ public class SocketService {
     }
 
     /**
-     * 우체통 선물
+     * 메시지 선물
      */
     @Async("threadTaskExecutor")
     public void chatGiftItem(String chatNo, String memNo, String giftedMemNo, Object item, String authToken, boolean isLogin, SocketVo vo){
@@ -1071,7 +1067,7 @@ public class SocketService {
 
 
     /**
-     *  우체통 이미지 삭제
+     *  메시지 이미지 삭제
      */
     @Async("threadTaskExecutor")
     public void sendChatImageDelete(String chatNo, HashMap message, String authToken, boolean isLogin) {
@@ -1138,6 +1134,7 @@ public class SocketService {
                         msg = " 마이크 OFF";
                     }
                 }else if("call".equals(stateEditVo.getMediaState())){
+                    socketMap.put("mediaOn", !mediaOn); // 데이터처리를 이상하게 해놔서 socket 전송할 때만 반대로 해준다.
                     if(mediaOn){
                         msg = "가 통화중입니다.";
                     }else{
@@ -1278,5 +1275,43 @@ public class SocketService {
 
         log.info("Socket vo to Query String: {}",vo.toQueryString());
         sendSocketApi(authToken, roomNo, vo.toQueryString());
+    }
+
+    @Async("threadTaskExecutor")
+    public void reqDjSetting(String roomNo, String memNo, Object message, String authToken, boolean isLogin, SocketVo vo) {
+        log.info("Socket Start : reqDjSetting {}, {}, {}, {}", roomNo, memNo, message, isLogin);
+
+        try {
+            roomNo = roomNo == null ? "" : roomNo.trim();
+            memNo = memNo == null ? "" : memNo.trim();
+            authToken = authToken == null ? "" : authToken.trim();
+            if(!"".equals(roomNo) && !"".equals(memNo) && !"".equals(authToken)){
+                if(vo != null && vo.getMemNo() != null) {
+                    vo.setCommand("reqDjSetting");
+                    vo.setMessage(message);
+                    System.out.println("Socket Send reqDjSetting \n" + vo.toQueryString());
+                    sendSocketApi(authToken, roomNo, vo.toQueryString());
+                }
+            }
+        } catch (Exception e) {
+            log.info("Socket Start : reqDjSetting {} {} {} {} {}", roomNo, memNo, message, isLogin, e);
+        }
+    }
+
+    @Async("threadTaskExecutor")
+    public void reqVoteByPass(String roomNo, String clientCommand, Object data, String authToken, boolean isLogin) {
+        log.info("Socket Start : {} {}, {}", clientCommand, data, isLogin);
+
+        HashMap<String, Object> message = new HashMap<String, Object>();
+        message.put("clientCommand", clientCommand);
+        message.put("data", data);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqByPass");
+        vo.setMessage(message);
+
+        log.info("Socket vo to Query String: {}",vo.toQueryString());
+        sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
     }
 }

@@ -11,6 +11,7 @@ public class NoticeListOutVo {
     private int noticeIdx;
     private int noticeType;
     private String title;
+    private String contents;
     private boolean isTop;
     private String writeDt;
     private Long writeTs;
@@ -21,6 +22,7 @@ public class NoticeListOutVo {
         setNoticeIdx(target.getNoticeIdx());
         setNoticeType(target.getSlctType());
         setTitle(target.getTitle());
+        setContents(target.getContents());
         setTop(target.getTopFix() == 1);
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));

@@ -1,8 +1,10 @@
 package com.dalbit.config;
 
 import org.apache.catalina.connector.Connector;
+import org.apache.tomcat.util.http.LegacyCookieProcessor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
 import org.springframework.boot.web.servlet.server.ServletWebServerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,6 +25,12 @@ public class ServletConfig {
         TomcatServletWebServerFactory tomcatServletWebServerFactory = new TomcatServletWebServerFactory();
         tomcatServletWebServerFactory.addAdditionalTomcatConnectors(createStandardConnector());
         return tomcatServletWebServerFactory;
+    }
+
+    @Bean
+    public WebServerFactoryCustomizer<TomcatServletWebServerFactory> cookieProcessorCustomizer() {
+        return (serverFactory) -> serverFactory.addContextCustomizers(
+                (context) -> context.setCookieProcessor(new LegacyCookieProcessor()));
     }
 
     private Connector createStandardConnector(){

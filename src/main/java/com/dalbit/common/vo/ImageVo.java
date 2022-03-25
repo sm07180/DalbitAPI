@@ -20,18 +20,21 @@ public class ImageVo extends BaseVo{
         if(!DalbitUtil.isEmpty(url)){
             this.url = url;
             setThumbs();
+            this.isDefaultImg = false;
         }
     }
 
     public ImageVo(P_MailBoxListVo path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
             setPath(path.toString(), photoServerUrl);
+            this.isDefaultImg = false;
         }
     }
 
     public ImageVo(Object path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path) && !DalbitUtil.isEmpty(path.toString())){
             setPath(path.toString(), photoServerUrl);
+            this.isDefaultImg = false;
         }
     }
 
@@ -43,6 +46,7 @@ public class ImageVo extends BaseVo{
                 setThumbs();
             }
         }else{
+            this.isDefaultImg = false;
             setPath(path.toString(), photoServerUrl);
         }
     }
@@ -55,6 +59,7 @@ public class ImageVo extends BaseVo{
                 setThumbs();
             }
         }else{
+            this.isDefaultImg = false;
             setPath(path.toString(), photoServerUrl, request);
         }
     }
@@ -73,6 +78,7 @@ public class ImageVo extends BaseVo{
     private String thumb336x336;
     private String thumb500x500;
     private String thumb700x700;
+    private boolean isDefaultImg = true;
 
     public void setPath(String path, String photoServerUrl){
         if(!DalbitUtil.isEmpty(path)){

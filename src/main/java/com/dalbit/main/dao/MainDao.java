@@ -35,7 +35,7 @@ public interface MainDao {
 
     ProcedureVo callMainRankRandomBox(ProcedureVo procedureVo);
 
-    //@Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_MainRankingPageVo> callMainRankingPage(ProcedureVo procedureVo);
 
     //@Transactional(readOnly = true)
