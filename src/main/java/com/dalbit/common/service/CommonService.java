@@ -1373,7 +1373,7 @@ public class CommonService {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
                         emailVo.setMemNo(memNo);
                         emailVo.setEmail(email);
-                        emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
+                        emailVo.setAgreeAllowUserName(agreeInfo.getPMemName());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
                         emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
