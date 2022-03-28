@@ -29,6 +29,7 @@ import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import com.dalbit.util.IPUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -117,6 +118,9 @@ public class WowzaService {
     double AGORA_APP_REDNE;
     @Value("${agora.app.shar}")
     double AGORA_APP_SHAR;
+
+    @Autowired
+    GsonUtil gsonUtil;
 
     static int expirationTimeInSeconds = 10800;
 
@@ -430,7 +434,7 @@ public class WowzaService {
 
             // 달나라 이벤트 진행중 여부
             boolean moonLandEvent = false; // [ true: 이벤트 기간 o, false: 이벤트기간 x ]
-            List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData(1);
+            List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData();
 
             if(moonLandRound != null && moonLandRound.size() > 0) {
                 moonLandEvent = true;
@@ -654,6 +658,16 @@ public class WowzaService {
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
+            }
+
+            /* 방입장한 유저의 누적선물, 10달 체크 ( 클라이언트에 값 관리 ) */
+            roomInfoVo.setSendDalCnt(0);
+            roomInfoVo.setSendDalFix(10);
+            try{
+                Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.parseLong(pRoomJoinVo.getRoom_no()), Long.parseLong(MemberVo.getMyMemNo(request)) );
+                roomInfoVo.setSendDalCnt(sendDalCnt == null? 0 : sendDalCnt);
+            } catch (Exception e) {
+                log.error("WowzaService.java / doJoinBroadcast / reqUserDalCnt Exception {}", e);
             }
 
             //애드브릭스 전달을 위한 데이터 생성
@@ -898,6 +912,16 @@ public class WowzaService {
                     roomInfoVo.changeBackgroundImg(deviceVo);
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
+
+                    /* 방입장한 유저의 누적선물, 10달 체크 ( 클라이언트에 값 관리 ) */
+                    roomInfoVo.setSendDalCnt(0);
+                    roomInfoVo.setSendDalFix(10);
+                    try{
+                        Integer sendDalCnt = moonLandService.getUserSendDalCnt(Long.valueOf(roomTokenVo.getRoomNo()), Long.valueOf(MemberVo.getMyMemNo(request)) );
+                        roomInfoVo.setSendDalCnt(sendDalCnt == null? 0 : sendDalCnt);
+                    } catch (Exception e) {
+                        log.error("WowzaService.java / getBroadcast() / reqUserDalCnt Exception {}", e);
+                    }
                 }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
                     result.put("status", Status.스트림아이디_회원아님);
                 }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
@@ -1034,7 +1058,7 @@ public class WowzaService {
 
         // 달나라 이벤트 진행중 여부
         boolean moonLandEvent = false; // [ true: 이벤트 기간 o, false: 이벤트기간 x ]
-        List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData(1);
+        List<MoonLandInfoVO> moonLandRound = moonLandService.getMoonLandInfoData();
         if (moonLandRound != null && moonLandRound.size() > 0) { // 비로그인이면 달나라 이벤트 안보임!
             moonLandEvent = true;
         }

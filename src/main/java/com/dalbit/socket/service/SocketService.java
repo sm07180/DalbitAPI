@@ -1289,7 +1289,6 @@ public class SocketService {
                 if(vo != null && vo.getMemNo() != null) {
                     vo.setCommand("reqDjSetting");
                     vo.setMessage(message);
-                    System.out.println("Socket Send reqDjSetting \n" + vo.toQueryString());
                     sendSocketApi(authToken, roomNo, vo.toQueryString());
                 }
             }
