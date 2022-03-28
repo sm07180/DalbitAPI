@@ -12,10 +12,17 @@ import javax.validation.constraints.NotNull;
 public class MoonLandScoreInsVO {
     @NotNull()
     Integer type = 0;
+
     @NotNull()
     Integer score = 0;
+
     @NotNull()
     @NotEmpty()
     @NotBlank()
     String roomNo = "";
+
+    @NotNull()
+    @NotEmpty()
+    @NotBlank()
+    String coinKey = "";
 }

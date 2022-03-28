@@ -528,7 +528,7 @@ public interface Event {
     /* 깐부 이벤트 끝~~~ */
 
     //------------------------------------ 달나라 이벤트 방송방 ↓ ------------------------------------
-    /** 달나라 이벤트 일정 리스트 (회차정보) (방송방, 이벤트페이지 공용)
+    /** 달나라 이벤트 일정 리스트 (회차정보 - 방송방)
      * 작성일 : 2021-12-28
      * 작성자 : 박용훈
      * @Return :
@@ -539,6 +539,23 @@ public interface Event {
      */
     @Select("CALL rd_data.p_evt_moon_no_sel(#{noSlct})")
     List<MoonLandInfoVO> pEvtMoonNoSel(int noSlct);
+
+    /** 달나라 이벤트 일정 리스트 (전체 회차 정보 - 이벤트페이지)
+     * 작성일 : 2021-12-28
+     * 작성자 : 박용훈
+     * @Return :
+     * @Rows 1
+     * cnt
+     *
+     * @Rows 2
+     * moon_no	    INT		--     회차번호
+     * start_date	DATETIME	-- 시작일자
+     * end_date	    DATETIME	-- 종료일자
+     * ins_date	    DATETIME	-- 등록일자
+     */
+    @ResultMap({"ResultMap.integer", "ResultMap.map"})
+    @Select("CALL rd_data.p_evt_moon_no_sel(#{noSlct})")
+    List<Object> pEvtMoonNoSelMultiRows(int noSlct);
 
     /** 달나라 이벤트 아이템 미션 데이터 완료 리스트
      * 작성일 : 2021-12-28
@@ -562,21 +579,6 @@ public interface Event {
      */
     @Select("CALL rd_data.p_evt_moon_item_mission_sel(#{moonNo}, #{roomNo})")
     MoonLandMissionSelVO pEvtMoonItemMissionSel(Map<String, Object> map);
-
-    /** 달나라 이벤트 점수 등록
-     * 작성일 : 2021-12-28
-     * 작성자 : 박용훈
-     * @Param :
-     * memNo        BIGINT			-- 회원번호
-     * ,ptSlct      INT			-- 구분[1:아이템선물(일반), 2:아이템선물(보너스), 3:좋아요(보너스), 4:부스터(보너스), 5:아이템 미션(보너스), 6:부스터(캐릭터), 7:아이템 미션(캐릭터)]
-     * ,rcvScore    INT			-- 집계 점수
-     * ,roomNo      BIGINT			-- 점수 획득한 방번호
-     *
-     * @Return :
-     * s_return		INT		-- 0:에러, 1:정상
-     */
-    @Select("CALL rd_data.p_evt_moon_rank_pt_ins(#{memNo}, #{ptSlct}, #{rcvScore}, #{roomNo})")
-    Integer pEvtMoonRankPtIns(Map<String, Object> map);
 
     /** 달나라 이벤트 아이템 미션 데이터 등록
      * 작성일 : 2021-12-28
@@ -678,4 +680,41 @@ public interface Event {
     @Select("CALL rd_data.p_welcome_room_chk(#{memNo}, #{memSlct})")
     Integer pWelcomeRoomChk(Map<String, Object> map);
 
+    /** 달나라 이벤트 점수 등록
+     * 작성일 : 2021-12-28
+     * 작성자 : 박용훈
+     * @Param :
+     * memNo        BIGINT              회원번호
+     * ,ptSlct      INT                 구분[1:아이템선물(일반), 2:아이템선물(보너스), 3:좋아요(보너스), 4:부스터(보너스), 5:아이템 미션(보너스), 6:부스터(캐릭터), 7:아이템 미션(캐릭터)]
+     * ,rcvScore    INT                 집계 점수
+     * ,roomNo      BIGINT              점수 획득한 방번호
+     * ,scoreUid    VARCHAR(200)        점수 Uid값
+     * @Return :
+     * s_return		INT		-- -2 달 선물 갯수 미달, -1: 동일 UID값 있음, 0: 에러 , 1: 정상
+     */
+    @Select("CALL rd_data.p_evt_moon_rank_pt_ins_v1(#{memNo}, #{ptSlct}, #{rcvScore}, #{roomNo}, #{scoreUid} )")
+    Integer pEvtMoonRankPtIns(Map<String, Object> map);
+
+    /** 아이템 4종미션 완료
+     * @Param :
+     * moonNo   INT         -- 회차번호
+     * ,roomNo  BIGINT      -- 방번호
+     *
+     * @Return :
+     * s_return	INT		-- -1: 미션 미완료, 0: 에러 , 1: 정상
+     * */
+    @Select("CALL rd_data.p_evt_moon_item_mission_com(#{moon}, #{roomNo})")
+    Integer pEvtMoonItemMissionCom(Map<String, Object> map);
+
+
+    /** 방송방 입장 : 선물 갯수 체크
+     * @Param :
+     * roomNo BIGINT			-- 방번호
+     * ,memNo BIGINT			-- 회원번호
+     *
+     * @Return :
+     * s_giftGold	INT		-- 방송방에서 선물한 갯수
+     * */
+    @Select("CALL rd_data.p_evt_moon_send_dal_chk(#{roomNo}, #{memNo})")
+    Integer pEvtMoonSendDalChk(Map<String, Object> map);
 }
