@@ -369,7 +369,9 @@ public class CommonController {
                 String parentName = selfAuthSaveVo.getName(); // 대리인 이름
                 String parentSex = selfAuthSaveVo.getGender(); // 대리인 성별
                 String parentBirthYear = apiData.getBirthYear();
-                String parentBirthDay = apiData.getBirthMonth() + apiData.getBirthDay();
+                int month = Integer.parseInt(apiData.getBirthMonth());
+                String parentBirthMonth = month < 10 ? "0" + month : month + "";
+                String parentBirthDay = parentBirthMonth + apiData.getBirthDay();
                 String parentPhoneNo = apiData.getPhoneNum();
 
                 ParentCertInputVo parentCertInputVo = new ParentCertInputVo(

@@ -1358,6 +1358,7 @@ public class CommonService {
             String email = parentsAuthSel.getParents_mem_email();
             agreeInfo.setPMemEmail(email);
             agreeInfo.setAgreementDate(parentsAuthSel.getAgreement_date());
+
             Integer insResult = common.parentsAuthIns(agreeInfo);
             // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
             switch (insResult) {
@@ -1376,7 +1377,7 @@ public class CommonService {
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
                         emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
-                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
+                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replaceAll("-", "."));
 
                         sendPayAgreeEmail(emailVo); // 메일 발송
                         result.setSuccessResVO(insResult);
@@ -1421,7 +1422,7 @@ public class CommonService {
             String rcvUserName = parentsAgreeEmailVo.getAgreeRcvUserName();
             String rcvUserLastLetterReplace = rcvUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
             String allowUserName = parentsAgreeEmailVo.getAgreeAllowUserName();
-            String allowUserLastLetterReplace = allowUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+            String allowUserLastLetterReplace = allowUserName.substring(0, allowUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
 
             msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", allowUserLastLetterReplace);
             msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", rcvUserLastLetterReplace);
@@ -1436,7 +1437,7 @@ public class CommonService {
 
             // 이메일 발송 로그
             JSONObject mailEtcInfo = new JSONObject();
-            mailEtcInfo.put("agreeAllowUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeAllowUserName", allowUserLastLetterReplace);
             mailEtcInfo.put("agreeRcvUserName", rcvUserLastLetterReplace);
             mailEtcInfo.put("agreeRcvUserId", parentsAgreeEmailVo.getAgreeRcvUserId());
             mailEtcInfo.put("agreeDate", today);
@@ -1451,8 +1452,7 @@ public class CommonService {
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
             }
-        }
-        catch(Exception e){
+        } catch(Exception e){
             log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러", e);
         }
     }
