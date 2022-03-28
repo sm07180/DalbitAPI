@@ -17,7 +17,7 @@ public class ParentCertInputVo {
         this.pMemName = pMemName;
         this.pMemSex = pMemSex.equals("0") ? "m" : "f";
         this.pMemBirthYear = pMemBirthYear;
-        this.pMemBirthDay = pMemBirthDay;
+        this.pMemBirthDay = pMemBirthDay; // 월일 (ex: 0101)
         this.pMemHphone = pMemHphone;
     }
 

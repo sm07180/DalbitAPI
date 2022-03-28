@@ -1353,9 +1353,11 @@ public class CommonService {
     public ResVO parentsAuthIns(ParentCertInputVo agreeInfo) {
         ResVO result = new ResVO();
         try {
-            ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
+            String memNo = agreeInfo.getMemNo();
+            ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(memNo);
             String email = parentsAuthSel.getParents_mem_email();
             agreeInfo.setPMemEmail(email);
+            agreeInfo.setAgreementDate(parentsAuthSel.getAgreement_date());
             Integer insResult = common.parentsAuthIns(agreeInfo);
             // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
             switch (insResult) {
@@ -1368,6 +1370,7 @@ public class CommonService {
                 case 1:
                     try {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
+                        emailVo.setMemNo(memNo);
                         emailVo.setEmail(email);
                         emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
