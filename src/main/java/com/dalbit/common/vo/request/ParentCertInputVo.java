@@ -7,6 +7,11 @@ import lombok.Setter;
 @Setter
 public class ParentCertInputVo {
     public ParentCertInputVo() {}
+    /*public ParentCertInputVo(String memNo, String pMemEmail, String agreementDate) {
+        this.memNo = memNo;
+        this.pMemEmail = pMemEmail;
+        this.agreementDate = agreementDate;
+    }*/
     public ParentCertInputVo(String memNo, String pMemName, String pMemSex, String pMemBirthYear, String pMemBirthDay, String pMemHphone) {
         this.memNo = memNo;
         this.pMemName = pMemName;

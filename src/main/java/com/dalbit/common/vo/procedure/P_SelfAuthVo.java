@@ -1,6 +1,7 @@
 package com.dalbit.common.vo.procedure;
 
 import com.dalbit.common.vo.P_ApiVo;
+import com.dalbit.common.vo.ResVO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -33,6 +34,7 @@ public class P_SelfAuthVo extends P_ApiVo {
     private String comment;
     private String authToken;
 
-    private String agreeTerm = "";
+    private String agreePeriod = "0";
+    private ResVO parentAuth; // -5:부모미성년, -4:미인증, -3:나이 안맞음, -2:이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
 
 }
