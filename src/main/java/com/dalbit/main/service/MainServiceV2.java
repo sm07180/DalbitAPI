@@ -77,7 +77,7 @@ public class MainServiceV2 {
         List<P_MainRankingPageVo> mainFanRankingVoList = new ArrayList<>();
         List<P_MainLoverRankingPageVo> mainLoverRankingVoList = new ArrayList<>();*/
         List<P_MainStarVo> starVoList = new ArrayList<>();
-        int starCnt = 0;
+        Integer starCnt = 0;
         List<?> resultSets;
 
         try {
@@ -94,12 +94,13 @@ public class MainServiceV2 {
                 mainFanRankingVoList = DBUtil.getList(resultSets, 3, P_MainRankingPageVo.class);
                 mainLoverRankingVoList = DBUtil.getList(resultSets, 4, P_MainLoverRankingPageVo.class);*/
                 if(DalbitUtil.isLogin(request)){
-                    Map starMap = new HashMap();
+                    Map<String, Object> starMap = new HashMap<>();
                     starMap.put("memNo", memNo);
                     starMap.put("pageNo", 1);
                     starMap.put("pagePerCnt", 10);
-                    starVoList = DBUtil.getList(mainPage.getMyStar(starMap), 1, P_MainStarVo.class);
-                    starCnt = DBUtil.getData(mainPage.getMyStar(starMap), 0, Integer.class);
+                    List<Object> myStarData = mainPage.getMyStar(starMap);
+                    starVoList = DBUtil.getList(myStarData, 1, P_MainStarVo.class);
+                    starCnt = DBUtil.getData(myStarData, 0, Integer.class);
                 }
             }
         } catch (Exception e) {

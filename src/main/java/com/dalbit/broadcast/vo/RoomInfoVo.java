@@ -129,6 +129,10 @@ public class RoomInfoVo {
 
     private String joinDate;
 
+    /* 누적선물 달 : ( 달나라 이벤트 - 요청한 유저, roomNo 기준)  */
+    private int sendDalCnt;
+    private int sendDalFix;
+
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
                       HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors, boolean moonLandEvent){

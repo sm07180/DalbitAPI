@@ -43,25 +43,19 @@ public class MoonLandController {
      * @Return :
      */
     @GetMapping("/info/sel")
-    public ResVO getMoonLandInfoData(){
+    public ResVO getMoonLandTotalInfoData(){
         ResVO resVO = new ResVO();
-        try{
-            List<MoonLandInfoVO> list = moonLandService.getMoonLandInfoData(1);
-            if(list != null && list.size() > 0){
-                resVO.setSuccessResVO(list);
+        try {
+            HashMap resultMap = moonLandService.getMoonLandTotalInfoData();
+
+            if (resultMap != null) {
+                resVO.setSuccessResVO(resultMap);
             } else {
-                List<MoonLandInfoVO> hardCodingList  = new ArrayList<>();
-                MoonLandInfoVO vo = new MoonLandInfoVO();
-                vo.setMoon_no(1);
-                vo.setStart_date("2022-01-10");
-                vo.setEnd_date("2022-01-16");
-                vo.setIns_date("");
-                hardCodingList.add(vo);
-                resVO.setSuccessResVO(hardCodingList);
+                resVO.setFailResVO();
             }
-        }catch(Exception e){
+        } catch (Exception e) {
+            log.error("MoonLandController.java / getMoonLandTotalInfoData() => {}", e);
             resVO.setFailResVO();
-            log.error("MoonLandController Exception getMoonLandInfoData => {}", e);
         }
         return resVO;
     }
@@ -81,7 +75,7 @@ public class MoonLandController {
     @GetMapping("/mission/sel")
     public String getMoonLandMissionData(@RequestParam("roomNo") String roomNo, HttpServletRequest request){
         try {
-            if(!StringUtils.equals(null, roomNo)) {
+            if(!StringUtils.equals(null, roomNo) && MemberVo.getMyMemNo(request) != null) {
                 Map<String, Object> result = moonLandService.getMoonLandMissionData(roomNo, request);
                 if(result != null){
                     return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_성공, result));    
@@ -89,7 +83,7 @@ public class MoonLandController {
                     return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
                 }
             } else {
-                log.error("MoonLandController getMoonLandMissionData param is null roomNo: {}", roomNo);
+                log.error("MoonLandController getMoonLandMissionData param is null roomNo: {}, memNo: {}", roomNo, MemberVo.getMyMemNo(request));
                 return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
             }
         } catch (Exception e) {
@@ -104,14 +98,22 @@ public class MoonLandController {
      * @Param :
      * @Return : 0: 실패 or 1: 성공
      */
-    @PostMapping("/score") //todo => returnType : String
+    @PostMapping("/score")
     public String setMoonLandScore(@Valid MoonLandScoreInsVO paramVO, HttpServletRequest request){
         try {
             Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
             Long roomNo = Long.parseLong(paramVO.getRoomNo());
-            return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo)));
+            Integer result = moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo, paramVO.getCoinKey() );
+
+            if(result == 1) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, result));
+            } else {
+                log.error("MoonLandController.java / setMoonLandScoreIns DB result fail => resultCode: {}, memNo: {}, roomNo: {}, paramVo: {}",
+                        result, memNo, roomNo, gsonUtil.toJson(paramVO));
+                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
+            }
         } catch (Exception e) {
-            log.error("MoonLandController Exception setMoonLandScore => {}", e);
+            log.error("MoonLandController / setMoonLandScore => Exception {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
         }
     }
