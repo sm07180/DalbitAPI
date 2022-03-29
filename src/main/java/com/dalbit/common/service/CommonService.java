@@ -1432,7 +1432,7 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@agreeExpireDate@@", parentsAgreeEmailVo.getAgreeExpireDate());
             msgCont = msgCont.replaceAll("@@agreeScope@@", "결제(달 충전, 아이템 선물)");
 
-            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", email, msgCont);
+            EmailVo emailVo = new EmailVo("달라 보호자(법정대리인) 동의 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
@@ -1493,12 +1493,18 @@ public class CommonService {
             int birthMonth = Integer.parseInt(birthSplit[1]);
             int birthDay = Integer.parseInt(birthSplit[2]);
             if(birthToAmericanAge(birthYear, birthMonth, birthDay) < 19) {
+                ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(memNo);
+                String email = parentsAuthSel.getParents_mem_email();
+
                 String[] accountInfo = accountInfo(paySuccSelVo);
-                DecimalFormat format = new DecimalFormat("###,###");
-                String priceComma = format.format(paySuccSelVo.getPay_amt());
+                DecimalFormat formatter = new DecimalFormat("###,###");
+                int payPrice = (int)Double.parseDouble(paySuccSelVo.getPay_amt());
+                String priceComma = formatter.format(payPrice);
                 ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
                 parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
                 parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+                parentsPayEmailVo.setEmail(email);
+                parentsPayEmailVo.setPaymentUserName(parentsAuthSel.getParents_mem_name());
 
                 parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
                 parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
@@ -1624,7 +1630,7 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@paymentQuantity@@", parentsPayEmailVo.getPaymentQuantity());
             msgCont = msgCont.replaceAll("@@paymentPrice@@", parentsPayEmailVo.getPaymentPrice());
 
-            EmailVo emailVo = new EmailVo("달빛라이브 결제 알림", email, msgCont);
+            EmailVo emailVo = new EmailVo("달라 결제 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
