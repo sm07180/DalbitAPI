@@ -2,7 +2,9 @@ package com.dalbit.common.service;
 
 import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.service.AdminService;
+import com.dalbit.broadcast.vo.VoteResultVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
+import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -1643,5 +1645,18 @@ public class CommonService {
         catch(Exception e){
             log.error("CommonService / sendPayMail 이메일 발송 에러 : ", e);
         }
+    }
+
+    public String getNationCode(HttpServletRequest request) {
+        String nationCode = null;
+        try {
+            nationCode = commonDao.getNationCode(request.getRemoteAddr());
+            if(nationCode == null){
+                return gsonUtil.toJson(new JsonOutputVo(Status.아이피_조회_결과없음, null));
+            }
+        } catch (Exception e) {
+            log.error("CommonService getNationCode Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(Status.아이피_조회, nationCode));
     }
 }

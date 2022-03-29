@@ -2430,6 +2430,11 @@ public enum Status {
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
     공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
     공통_기본_DB_실패("C007", "common.select.fail", "기본 조회 실패 db null"),
+
+
+    아이피_조회("C001", "common.nation.sel", "아이피_조회"),
+    아이피_조회_결과없음("C002", "common.nation.sel.none", "아이피_조회_결과없음"),
+
     ;
 
 
