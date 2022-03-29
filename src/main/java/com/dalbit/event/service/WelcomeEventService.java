@@ -212,7 +212,7 @@ public class WelcomeEventService {
                 if (condListInfo.get(i).getQualifyStepNo().equals(target.getStepNo())) {
                     Integer setVal = condListInfo.get(i).getQualifyVal();
                     if (condListInfo.get(i).getQualifyName().equals("방송시청")) {
-                        maxMemTime = setVal;
+                        maxMemTime = setVal * 3600;
                     }
                     if (condListInfo.get(i).getQualifyName().equals("좋아요")) {
                         maxLikeCnt = setVal;
