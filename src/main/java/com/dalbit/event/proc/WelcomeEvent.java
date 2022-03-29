@@ -2,6 +2,7 @@ package com.dalbit.event.proc;
 
 import com.dalbit.event.vo.WelcomItemListVO;
 import com.dalbit.event.vo.WelcomListVO;
+import com.dalbit.event.vo.WelcomeCondVO;
 import com.dalbit.event.vo.WelcomeUserVO;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
@@ -15,50 +16,6 @@ import java.util.Map;
 @Component
 @Repository
 public interface WelcomeEvent {
-/*
-
-    */
-/**********************************************************************************************
-     * @Method 설명 : 웰컴 DJ 정보
-     * @작성일 : 2021-12-24
-     * @작성자 : 이정혁
-     * @변경이력 :
-     * @Parameter : memNo 		BIGINT		-- 회원번호(신청자)
-     *              giftSlct 		INT		-- 1:DJ, 2: 청취자
-     *              theMonth 	DATE		-- 경품월[0000-00-01]
-     *              memGiftNo 	BIGINT	 	-- 경품번호
-     *              memStepNo 	BIGINT		-- 경품단계번호
-     * @Return : s_return		INT		--    0: 에러, 1:정상
-     **********************************************************************************************//*
-
-    @Select("CALL rd_data.p_welcome_dj_info_list(#{memNo})")
-    List<WelcomListVO> getDjListInfo(@Param(value = "memNo") String memNo);
-    
-    */
-/**********************************************************************************************
-     * @Method 설명 : 웰컴 DJ 아이템 리스트
-     * @작성일 : 2021-12-24
-     * @작성자 : 이정혁
-     * @변경이력 :
-     * @Parameter : tDate 		DATE			-- 검색일자 (0000-00-00)
-     * @Return : the_month	DATE		-- 경품 일자(월)
-     *           dj_gift_no	INT		-- 경품 번호
-     *           dj_step_no	INT		-- 단계 번호
-     *           dj_gift_name	VARCHAR	-- 경품 이름
-     *           dj_gift_file_name	VARCHAR	-- 경품 파일이름
-     *           dj_gift_dal_cnt	INT		-- 달수
-     *           dj_gift_ord	INT		-- 정렬 [1,2,3]
-     *           tot_ins_cnt	INT		-- 응모수
-     *           ins_date		DATETIME	-- 등록일자
-     *           upd_date		DATETIME	-- 수정일자
-     **********************************************************************************************//*
-
-    @ResultMap({"ResultMap.WelcomeItemInfoVo1", "ResultMap.WelcomeItemInfoVo2", "ResultMap.WelcomeItemInfoVo3", "ResultMap.WelcomeItemInfoVo4"})
-    @Select("CALL rd_data.p_welcome_dj_item_list(#{tDate})")
-    List<Object> getDjItemListInfo(@Param(value = "tDate") String tDate);
-
-*/
-
     /**********************************************************************************************
      * @Method 설명 : 웰컴 회원 정보
      * @작성일 : 2021-12-24
@@ -156,4 +113,16 @@ public interface WelcomeEvent {
      **********************************************************************************************/
     @Select("CALL rd_data.p_welcome_mem_day_chk(#{memNo})")
     Integer pWelcomeMemDayChk(Long memNo);
+
+    /**********************************************************************************************
+     * @Method 설명 :
+     * @작성일 : 2022-02-24
+     * @작성자 : 이정혁
+     * @변경이력 :
+     * @Parameter : qualifySlct 	INT		-- [1:dj, 2:청취자]
+                   theMonth 	DATE		-- 사용월[0000-00-01]
+     * @Return :
+     **********************************************************************************************/
+    @Select("CALL p_welcome_qualify_list(#{memSlct}, #{theMonth})")
+    List<WelcomeCondVO> getWelcomeContList(@Param(value = "memSlct") String memSlct, @Param(value = "theMonth") String theMonth);
 }
