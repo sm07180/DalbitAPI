@@ -330,14 +330,17 @@ public class CommonController {
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
             String[] plusInfo = selfAuthSaveVo.getPlusInfo().split("_");
+            String birthYear = selfAuthSaveVo.getBirthDay().substring(0, 4);
+            String birthMonth = selfAuthSaveVo.getBirthDay().substring(4, 6);
+            String birthDay = selfAuthSaveVo.getBirthDay().substring(6, 8);
 
             apiData.setMem_no(plusInfo[0]); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
             apiData.setMemSex(selfAuthSaveVo.getGender());
-            apiData.setBirthYear(selfAuthSaveVo.getBirthDay().substring(0, 4));
-            apiData.setBirthMonth(selfAuthSaveVo.getBirthDay().substring(4, 6));
-            apiData.setBirthDay(selfAuthSaveVo.getBirthDay().substring(6, 8));
+            apiData.setBirthYear(birthYear);
+            apiData.setBirthMonth(birthMonth);
+            apiData.setBirthDay(birthDay);
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
@@ -348,9 +351,9 @@ public class CommonController {
             apiData.setAgreePeriod(plusInfo[5]);
 
             int manAge = commonService.birthToAmericanAge(
-                Integer.parseInt(apiData.getBirthYear()),
-                Integer.parseInt(apiData.getBirthMonth()),
-                Integer.parseInt(apiData.getBirthDay())
+                Integer.parseInt(birthYear),
+                Integer.parseInt(birthMonth),
+                Integer.parseInt(birthDay)
             );
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
@@ -368,8 +371,8 @@ public class CommonController {
                 String memNo = selfAuthSaveVo.getPlusInfo().split("_")[0]; // 유저 번호
                 String parentName = selfAuthSaveVo.getName(); // 대리인 이름
                 String parentSex = selfAuthSaveVo.getGender(); // 대리인 성별
-                String parentBirthYear = apiData.getBirthYear();
-                String parentBirthDay = apiData.getBirthMonth() + apiData.getBirthDay();
+                String parentBirthYear = birthYear; // 생년
+                String parentBirthDay = birthMonth + birthDay; // 월일
                 String parentPhoneNo = apiData.getPhoneNum();
 
                 ParentCertInputVo parentCertInputVo = new ParentCertInputVo(
