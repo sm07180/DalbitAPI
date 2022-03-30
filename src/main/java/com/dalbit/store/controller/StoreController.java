@@ -34,7 +34,7 @@ public class StoreController {
         List<StoreChargeVo> list = storeService.getStoreChargeList(request);
         HashMap data = new HashMap();
         data.put("dalCnt", storeService.getDalCnt(request));
-        data.put("list", list == null ? new ArrayList<>() : list);
+        data.put("dalPriceList", list == null ? new ArrayList<>() : list);
         data.put("defaultNum", 2); //IOS 스토어 기본값 설정 위한 값
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
@@ -43,5 +43,10 @@ public class StoreController {
     public String getChargeListByParam(HttpServletRequest request){
         StoreChargeVo storeChargeVo = storeService.getStoreChargeListByParam(request);
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, DalbitUtil.isEmpty(storeChargeVo) ? null : storeChargeVo));
+    }
+
+    @PostMapping("/store/getIndexData")
+    public Object getIndexData(HttpServletRequest request){
+        return storeService.getIndexData(request);
     }
 }

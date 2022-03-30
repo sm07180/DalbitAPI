@@ -2435,6 +2435,10 @@ public enum Status {
     아이피_조회("C001", "common.nation.sel", "아이피_조회"),
     아이피_조회_결과없음("C002", "common.nation.sel.none", "아이피_조회_결과없음"),
 
+
+    스토어_홈_데이터_조회_회원정보없음("EM001", "store.home.data.sel.member", "스토어_홈_데이터_조회_회원정보없음"),
+    스토어_홈_데이터_조회_파라미터("EP001", "store.home.data.sel.parameter", "스토어_홈_데이터_조회_파라미터"),
+    스토어_홈_데이터_조회("C001", "store.home.data.sel", "스토어_홈_데이터_조회"),
     ;
 
 
