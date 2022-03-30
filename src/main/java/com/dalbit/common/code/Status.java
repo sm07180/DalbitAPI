@@ -1523,7 +1523,7 @@ public enum Status {
     이벤트_당첨자등록정보수정_실패("-9", "business.error", "이벤트 당첨자 등록정보 조회 실패 시"),
 
 
-   //마이페이지 방송설정 제목추가
+    //마이페이지 방송설정 제목추가
     방송설정_제목추가_성공("0", "mypage.broadcast.title.add.success", "방송제목 추가 성공 시"),
     방송설정_제목추가_회원아님("-1", "mypage.broadcast.title.add.member.number.error", "요청 회원번호 정상 아닐 시"),
     방송설정_제목추가_제한("-2", "mypage.broadcast.title.add.limit3", "방송제목 추가 제한 시"),
@@ -2319,7 +2319,7 @@ public enum Status {
     달지급처리및로그기록_인증안됨("-3", "one.year.event.ins.dal.log.auth", "1주년 이벤트 달 지급 처리 및 로그기록 인증 안될 시"),
     달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
 
-     // 베스트DJ들 팬랭킹 조회
+    // 베스트DJ들 팬랭킹 조회
     베스트DJ팬랭킹조회_성공("0", "best.fan.rank.list.success", "베스트DJ들 팬랭킹 조회 성공 시"),
     베스트DJ팬랭킹조회_실패("C006", "best.fan.rank.list.fail", "베스트DJ들 팬랭킹 조회 실패 시"),
 
@@ -2412,16 +2412,29 @@ public enum Status {
     휴면회원_본인인증_결과없음("-1", "sleep.mem.chk.upd.no.auth", "휴면 회원 본인 인증 결과 없음"),
     휴면회원_본인인증_휴면상태아님("-2", "sleep.mem.chk.upd.no.sleep", "휴면 회원 본인 인증 휴면 상태 아님"),
 
+    // 와썹맨
+    와썹맨_DJ_리스트("C001", "whats.up.dj.list", "와썹맨_DJ_리스트"),
+    와썹맨_DJ_조회("C002", "whats.up.dj.sel", "와썹맨_DJ_조회"),
+    와썹맨_신입_리스트("C003", "whats.up.new.member.list", "와썹맨_신입_리스트"),
+    와썹맨_신입_조회("C004", "whats.up.new.member.sel", "와썹맨_신입_조회"),
+    와썹맨_회차_조회("C005", "whats.up.info.sel", "와썹맨_회차_조회"),
+
+    와썹맨_DJ_리스트_파라미터("EP001", "whats.up.dj.list.parameter", "와썹맨_DJ_리스트_파라미터"),
+    와썹맨_DJ_조회_파라미터("EP002", "whats.up.dj.sel.parameter", "와썹맨_DJ_조회_파라미터"),
+    와썹맨_신입_리스트_파라미터("EP003", "whats.up.new.member.list.parameter", "와썹맨_신입_리스트_파라미터"),
+    와썹맨_신입_조회_파라미터("EP004", "whats.up.new.member.sel.parameter", "와썹맨_신입_조회_파라미터"),
+    와썹맨_회차_조회_파라미터("EP005", "whats.up.info.sel.parameter", "와썹맨_회차_조회_파라미터"),
+
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
     공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
     공통_기본_DB_실패("C007", "common.select.fail", "기본 조회 실패 db null"),
-;
+    ;
 
 
 
-   final private String RESULT_SUCCESS = "success";
+    final private String RESULT_SUCCESS = "success";
     final private String RESULT_FAIL = "fail";
 
     final private String result;
