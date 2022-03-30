@@ -8,5 +8,6 @@ public class PartnerDjVO {
     private String mem_nick;
     private String mem_sex;
     private String image_profile;
-    private int room_no;
+    private String room_no;
+    private String fanYn;
 }

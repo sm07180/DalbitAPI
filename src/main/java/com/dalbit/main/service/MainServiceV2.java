@@ -460,7 +460,7 @@ public class MainServiceV2 {
             cnt = swiperList.size();
         }
 
-        if (cnt < 1){
+        if (cnt < 3){
             swiperList.addAll(mainPage.getTopLiveList(bannerMap));
         }
 

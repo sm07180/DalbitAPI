@@ -60,6 +60,7 @@ public class RoomOutVo {
     private Boolean isNew;
     private Boolean isSpecial;
     private int badgeSpecial;
+    private int badgePartner;
     private Boolean isAttendCheck;
     private String isAttendUrl;
     private int os;
@@ -142,6 +143,7 @@ public class RoomOutVo {
         this.isSpecial = target.getBadge_special() > 0;
         this.isConDj = target.getIsConDj() > 0;
         this.badgeSpecial = target.getBadge_special();
+        this.badgePartner = target.getBadge_partner();
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
         this.os = target.getOs_type();
