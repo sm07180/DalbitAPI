@@ -68,5 +68,5 @@
 
     <!-- 리브랜딩 피드 -->
     <resultMap id="MyPageFeedOutVo" type="com.dalbit.member.vo.MyPageFeedOutVo" />
-    <resultMap id="MyPageFeedReplyOutVo" type="com.dalbit.member.vo.MyPageFeedReplyDelVo" />
+    <resultMap id="MyPageFeedReplyOutVo" type="com.dalbit.member.vo.MyPageFeedReplyOutVo" />
 </mapper>

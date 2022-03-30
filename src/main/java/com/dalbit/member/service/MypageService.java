@@ -1025,8 +1025,8 @@ public class MypageService {
         HashMap paramMap = new HashMap();
         List<Object> feedMultiRow = null;
         List<MyPageFeedOutVo> list = null;
-        Long ownerMemNo = Long.parseLong(param.getMemNo());
-        Long viewMemNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        Long ownerMemNo = Long.parseLong(param.getMemNo()); //페이지 주인
+        Long viewMemNo = Long.parseLong(MemberVo.getMyMemNo(request)); //요청자
         int cnt = 0;
 
         paramMap.put("memNo", ownerMemNo);
@@ -1075,7 +1075,6 @@ public class MypageService {
             vo.setPhotoInfoList(photoListTemp);
             pictureList.add(vo);
         }
-        System.out.println("!!##!##" + list);
         resultMap.put("list", pictureList);
         resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
 
@@ -1211,8 +1210,8 @@ public class MypageService {
     public String feedDetailSelect(MyPageFeedDetailListVo param, HttpServletRequest request) {
         HashMap paramMap = new HashMap();
         paramMap.put("feedNo", param.getFeedNo());
-        paramMap.put("memNo", MemberVo.getMyMemNo(request));
-        paramMap.put("viewMemNo", param.getViewMemNo());
+        paramMap.put("memNo", param.getMemNo());
+        paramMap.put("viewMemNo", MemberVo.getMyMemNo(request));
         MyPageFeedOutVo resultVo = mypageDao.pMyPageFeedSel(paramMap);
 
         if(resultVo == null) {
@@ -1281,6 +1280,108 @@ public class MypageService {
     }
 
     /**
+     * 피드 댓글 등록
+     */
+    public String feedReplyAdd(MyPageFeedReplyAddVo param, HttpServletRequest request) {
+        Long tMemNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        HashMap paramMap = new HashMap();
+        paramMap.put("regNo", param.getRegNo());
+        paramMap.put("memNo", param.getMemNo());
+        paramMap.put("tmemNo", tMemNo);
+        paramMap.put("tmemConts", param.getTmemConts());
+        int result = mypageDao.pMyPageFeedReplyIns(paramMap);
+
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_성공));
+        } else {
+            log.error("MypageService.java / feedReplyAdd Ins Failed: {}", result);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_실패));
+        }
+    }
+
+    /**
+     * 피드 댓글 수정
+     */
+    public String feedReplyUpd(MyPageFeedReplyUpdVo param, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        paramMap.put("tailNo", param.getTailNo());
+        paramMap.put("tmemConts", param.getTmemConts());
+        int result = mypageDao.pMyPageFeedReplyUpd(paramMap);
+
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_성공));
+        } else {
+            log.error("MypageService.java / feedReplyUpd Failed: {}", result);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_실패));
+        }
+    }
+
+    /**
+     * 피드 댓글 삭제
+     */
+    public String feedReplyDel(MyPageFeedReplyDelVo param, HttpServletRequest request) {
+        Integer deleteResult = mypageDao.pMyPageFeedReplyDel(param);
+        if(deleteResult == null || deleteResult > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_성공));
+        } else {
+            log.error("MypageService.java / feedReplyDel Delete Failed: {}", deleteResult);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_실패));
+        }
+    }
+
+    /**
+     * 피드 댓글 조회
+     */
+    public String feedReplyList(MyPageFeedReplyListVo param, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        List<Object> replyMultiRow = null;
+        List<MyPageFeedReplyOutVo> list = null;
+        int cnt = 0;
+
+        paramMap.put("feedNo", param.getFeedNo());
+        paramMap.put("pageNo", param.getPageNo());
+        paramMap.put("pageCnt", param.getPageCnt());
+        replyMultiRow = mypageDao.pMyPageFeedReplyList(paramMap);
+        cnt = DBUtil.getData(replyMultiRow, 0, Integer.class);
+        list = DBUtil.getList(replyMultiRow, 1, MyPageFeedReplyOutVo.class);
+
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(replyMultiRow) || list.size() == 0) {
+            resultMap.put("list", new ArrayList());
+            resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_댓글없음, resultMap));
+        }
+        Long[] replyNoList = new Long[list.size()];
+
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(MemberVo.getMyMemNo(request));
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+
+        for(int i = 0; i < list.size(); i++) {
+            replyNoList[i] = list.get(i).getTail_no();
+            if(!DalbitUtil.isEmpty(banWord)) {
+                list.get(i).setTail_conts(DalbitUtil.replaceMaskString(systemBanWord + "|" + banWord, list.get(i).getTail_conts()));
+            } else if(!DalbitUtil.isEmpty(systemBanWord)) {
+                list.get(i).setTail_conts(DalbitUtil.replaceMaskString(systemBanWord, list.get(i).getTail_conts()));
+            }
+            list.get(i).setProfImg(new ImageVo(list.get(i).getTail_image_profile(), list.get(i).getTail_mem_sex(), DalbitUtil.getProperty("server.photo.url")));
+
+        }
+        ArrayList arrayList = new ArrayList();
+        for(int i = 0; i < list.size(); i++) {
+            MyPageFeedReplyOutVo vo = list.get(i);
+            arrayList.add(vo);
+        }
+        resultMap.put("list", arrayList);
+        return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_성공, resultMap));
+    }
+
+    /**
+     * 피드 댓글 상세 조회
+     */
+
+    /**
      * 방송공지 등록
      */
     public String noticeAdd(ProfileFeedAddVo param, HttpServletRequest request) {
@@ -1293,9 +1394,10 @@ public class MypageService {
 
         //피드 등록 작업
         paramMap.put("memNo", reqMemNo);
-        paramMap.put("feedTitle", StringUtils.equals(param.getTitle(),"") ? "default" : param.getTitle());
-        paramMap.put("feedContents", param.getContents());
-        paramMap.put("feedTopFix", param.getTopFix());
+        paramMap.put("noticeTitle", StringUtils.equals(param.getTitle(),"") ? "default" : param.getTitle());
+        paramMap.put("noticeContents", param.getContents());
+        paramMap.put("imgName", param.getImgName());
+        paramMap.put("noticeTopFix", param.getTopFix());
         int regNo = mypageDao.pMemberFeedIns(paramMap);
 
         if(regNo > 0 && param.getPhotoInfoList() != null && param.getPhotoInfoList().size() > 0) { //등록할 사진 리스트가 있는 경우
@@ -1381,7 +1483,7 @@ public class MypageService {
      * rcv_like_cnt	BIGINT		-- 좋아요수
      * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
      */
-    public String noticeSelect(String memNo, Integer pageNo, Integer pagePerCnt, HttpServletRequest request) throws GlobalException{
+    public String noticeSelect(String memNo, Integer pageNo, Integer pageCnt, HttpServletRequest request) throws GlobalException{
         HashMap paramMap = new HashMap();
         List<Object> feedMultiRow = null;
         List<ProfileFeedOutVo> list = null;
@@ -1390,7 +1492,7 @@ public class MypageService {
         int cnt = 0;
 
         paramMap.put("pageNo", pageNo);
-        paramMap.put("pagePerCnt", pagePerCnt);
+        paramMap.put("pageCnt", pageCnt);
         paramMap.put("memNo", ownerMemNo);
         paramMap.put("viewMemNo", reqMemNo);
 
@@ -1400,9 +1502,9 @@ public class MypageService {
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(feedMultiRow) || list.size() == 0){
-            resultMap.put("fixList", new ArrayList());
+//            resultMap.put("fixList", new ArrayList());
             resultMap.put("list", new ArrayList());
-            resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));
+            resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
         }
         //사진 리스트 가져오기 위한 index List
@@ -1432,7 +1534,7 @@ public class MypageService {
         List<ProfileFeedPhotoOutVo> photoList = mypageDao.pMemberFeedPhotoList(Arrays.toString(feedNoList).replace("[", "").replace("]", ""));
 
         //피드 리스트에 사진 데이터 set, 고정 리스트 고정, 안된 리스트 분리
-        ArrayList fixedList = new ArrayList();
+//        ArrayList fixedList = new ArrayList();
         ArrayList unfixedList = new ArrayList();
         for(int i=0; i< list.size(); i++) {
             ProfileFeedOutVo vo = list.get(i);
@@ -1451,19 +1553,83 @@ public class MypageService {
 
             /* 나중을 위해 나두기 */
             //고정된 글 리스트에 추가
-            if(vo.getTopFix() == 1) fixedList.add(vo);
+//          if(vo.getTopFix() == 1) fixedList.add(vo);
             //고정 안된 글 리스트에 추가
-            else if(vo.getTopFix() == 0) unfixedList.add(vo);
+            if(vo.getTopFix() == 0) unfixedList.add(vo);
             
             // 고정, 비고정 글 모두 list에 담기
 //            unfixedList.add(vo);
         }
 
         //최종 데이터
-        resultMap.put("fixList", fixedList);
+//        resultMap.put("fixList", fixedList);
         resultMap.put("list", unfixedList);
         resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pagePerCnt")));
 
+        return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
+    }
+
+    /**
+     * 방송공지 리스트(고정) 조회
+     */
+    public String noticeFixSelect(String memNo, Integer pageNo, Integer pageCnt, HttpServletRequest request) throws GlobalException {
+        HashMap paramMap = new HashMap();
+        List<Object> noticeMultiRow = null;
+        List<ProfileFeedOutVo> list = null;
+        Long ownerMemNo = Long.parseLong(memNo);
+        Long reqMemNo = Long.parseLong(MemberVo.getMyMemNo(request));   //요청자 memNo
+
+        int cnt = 0;
+
+        paramMap.put("memNo", ownerMemNo);
+        paramMap.put("viewMemNo", reqMemNo);
+        paramMap.put("pageNo", pageNo);
+        paramMap.put("pageCnt", pageCnt);
+        noticeMultiRow = mypageDao.pMemberFeedFixList(paramMap);
+        cnt = DBUtil.getData(noticeMultiRow, 0, Integer.class);
+        list = DBUtil.getList(noticeMultiRow, 1, ProfileFeedOutVo.class);
+
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(noticeMultiRow) || list.size() == 0) {
+            resultMap.put("fixList", new ArrayList());
+            resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+        }
+        Long[] noticeNoList = new Long[list.size()];
+
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(memNo);
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+
+        for(int i = 0; i < list.size(); i++) {
+            noticeNoList[i] = list.get(i).getNoticeIdx();
+            if(!DalbitUtil.isEmpty(banWord)) {
+                list.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord + "|" + banWord, list.get(i).getTitle()));
+                list.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord + "|" + banWord, list.get(i).getContents()));
+            } else if(!DalbitUtil.isEmpty(systemBanWord)) {
+                list.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord, list.get(i).getTitle()));
+                list.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, list.get(i).getContents()));
+            }
+            list.get(i).setProfImg(new ImageVo(list.get(i).getImage_profile(), list.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+        }
+        List<ProfileFeedPhotoOutVo> photoList = mypageDao.pMemberFeedPhotoList(Arrays.toString(noticeNoList).replace("[", "").replace("]", ""));
+
+        ArrayList fixedList = new ArrayList();
+        for(int i = 0; i < list.size(); i++) {
+            ProfileFeedOutVo vo = list.get(i);
+            List photoListTemp = photoListTemp = new ArrayList<>();
+            for(ProfileFeedPhotoOutVo photoVo : photoList) {
+                if(vo.getNoticeIdx().equals(photoVo.getFeed_reg_no())) {
+                    photoVo.setImgObj(new ImageVo(photoVo.getImg_name(), list.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url")));
+                    photoListTemp.add(photoVo);
+                }
+            }
+            vo.setPhotoInfoList(photoListTemp);
+            if(vo.getTopFix() == 1) fixedList.add(vo);
+        }
+        resultMap.put("fixList", fixedList);
+        resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
         return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
     }
 
@@ -1490,7 +1656,7 @@ public class MypageService {
         List<ProfileFeedPhotoOutVo> photoList = null;
 
         //피드에 사용된 사진 리스트 조회
-        photoList = mypageDao.pMemberFeedPhotoList(vo.getNoticeIdx().toString());
+        photoList = mypageDao.pMemberFeedPhotoList(vo.getNoticeNo().toString());
 
         // 사진 변경 작업
         if(vo.getPhotoInfoList() != null && vo.getPhotoInfoList().size() > 0) {
@@ -1499,11 +1665,12 @@ public class MypageService {
             try {
                 //사진 리스트 전부 삭제
                 for (ProfileFeedPhotoOutVo oldPhotoVo : photoList) {
-                    delParam.put("regNo", vo.getNoticeIdx());
+                    delParam.put("regNo", vo.getNoticeNo());
                     delParam.put("delChrgrName", vo.getChrgrName());
                     delParam.put("photoNo", oldPhotoVo.getPhoto_no());
                     delParam.put("imageName", oldPhotoVo.getImg_name());
                     oldResult = mypageDao.pMemberFeedPhotoDel(delParam);
+                    System.out.println("oldResult 결과는 ? " + oldResult);
                     if (oldResult == 0 || oldResult == null){
                         error = true;
                         log.error("MypageService.java / feed photo update fail oldResult:{}", oldResult);
@@ -1511,10 +1678,11 @@ public class MypageService {
                 }
                 //사진 리스트에 등록
                 for (ProfileFeedPhotoOutVo newPhotoVo : vo.getPhotoInfoList()) {
-                    delParam.put("regNo", vo.getNoticeIdx());
+                    delParam.put("regNo", vo.getNoticeNo());
                     delParam.put("memNo", MemberVo.getMyMemNo(request));
                     delParam.put("imgName", newPhotoVo.getImg_name());
                     newResult = mypageDao.pMemberFeedPhotoIns(delParam);
+                    System.out.println("newResult 결과는 ? " + newResult);
 
                     if (newResult == 0 || newResult == null) {
                         error = true;
@@ -1527,15 +1695,17 @@ public class MypageService {
             }
         }
         if (error) {
-            Integer r = feedPhotoDelete(new ProfileFeedDelVo(vo.getNoticeIdx(), "server"), photoList);
+            Integer r = feedPhotoDelete(new ProfileFeedDelVo(vo.getNoticeNo(), "server"), photoList);
             return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_사진작업_실패));
         } else {
             // 사진 변경작업 성공시 수정 프로시져 호출
+            paramMap.put("noticeNo", vo.getNoticeNo());
             paramMap.put("memNo", MemberVo.getMyMemNo(request));
-            paramMap.put("feedNo", vo.getNoticeIdx());
-            paramMap.put("feedTitle", StringUtils.equals(vo.getTitle(),"") ? "default" : vo.getTitle());
-            paramMap.put("feedContents", vo.getContents());
-            paramMap.put("feedTopFix", vo.getTopFix());
+            paramMap.put("noticeTitle", StringUtils.equals(vo.getNoticeTitle(),"") ? "default" : vo.getNoticeTitle());
+            paramMap.put("noticeContents", vo.getNoticeContents());
+//            paramMap.put("imgName", vo.getImgName());
+            paramMap.put("noticeTopFix", vo.getNoticeTopFix());
+            System.out.println("이게 왜 null 값이야 " + mypageDao.pMemberFeedUpd(paramMap) + " param값이 뭔데 " + paramMap);
 
             int result = mypageDao.pMemberFeedUpd(paramMap);
             if(result > 0) {
@@ -1551,7 +1721,7 @@ public class MypageService {
                 
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
             } else {
-                Integer r = feedPhotoDelete(new ProfileFeedDelVo(vo.getNoticeIdx(), "server"), photoList);
+                Integer r = feedPhotoDelete(new ProfileFeedDelVo(vo.getNoticeNo(), "server"), photoList);
                 if(result == -1) {
                     return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_상단고정_초과));
                 }
@@ -1572,12 +1742,12 @@ public class MypageService {
         HashMap delParam = new HashMap();
 
         //피드에 사용된 사진 리스트 조회
-        List<ProfileFeedPhotoOutVo> photoList = mypageDao.pMemberFeedPhotoList(vo.getNoticeIdx().toString());
+        List<ProfileFeedPhotoOutVo> photoList = mypageDao.pMemberFeedPhotoList(vo.getNoticeNo().toString());
 
         Integer resultCode = 1;
         //사진 리스트 삭제
         for (ProfileFeedPhotoOutVo photoVo : photoList) {
-            delParam.put("regNo", vo.getNoticeIdx());
+            delParam.put("noticeNo", vo.getNoticeNo());
             delParam.put("delChrgrName", vo.getDelChrgrName());
             delParam.put("photoNo", photoVo.getPhoto_no());
             delParam.put("imageName", photoVo.getImg_name());
@@ -1607,7 +1777,7 @@ public class MypageService {
         boolean error = false;
         //사진 리스트 삭제
         for (ProfileFeedPhotoOutVo photoVo : photoList) {
-            delParam.put("regNo", vo.getNoticeIdx());
+            delParam.put("regNo", vo.getNoticeNo());
             delParam.put("delChrgrName", vo.getDelChrgrName());
             delParam.put("photoNo", photoVo.getPhoto_no());
             delParam.put("imageName", photoVo.getImg_name());
@@ -1626,7 +1796,7 @@ public class MypageService {
      * 방송공지 상세 조회
      *
      * @Param
-     * feedNo 		INT		-- 피드번호
+     * noticeNo 		INT		-- 피드번호
      * ,memNo 		BIGINT		-- 회원번호 (프로필 주인)
      * viewMemNo 		BIGINT		-- 회원번호 (프로필 보고있는 유저)
      *
@@ -1648,7 +1818,7 @@ public class MypageService {
      */
     public String noticeDetailSelect(ProfileFeedDetailSelVo vo, HttpServletRequest request){
         HashMap param = new HashMap();
-        param.put("feedNo", vo.getFeedNo());
+        param.put("noticeNo", vo.getNoticeNo());
         param.put("memNo", vo.getMemNo());
         param.put("viewMemNo", MemberVo.getMyMemNo(request));
         ProfileFeedOutVo resultVo = mypageDao.pMemberFeedSel(param);
@@ -1658,7 +1828,7 @@ public class MypageService {
         }
 
         //사진 리스트 set
-        resultVo.setPhotoInfoList(mypageDao.pMemberFeedPhotoList(String.valueOf(vo.getFeedNo())));
+        resultVo.setPhotoInfoList(mypageDao.pMemberFeedPhotoList(String.valueOf(vo.getNoticeNo())));
 
         //금지단어 체크
         BanWordVo banWordVo = new BanWordVo();

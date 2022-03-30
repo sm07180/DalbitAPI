@@ -1,5 +1,6 @@
 package com.dalbit.member.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -17,4 +18,6 @@ public class MyPageFeedReplyOutVo {
     private String tail_image_profile;
     private String ins_date;
     private String upd_date;
+
+    private ImageVo profImg;
 }

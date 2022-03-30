@@ -248,14 +248,49 @@ public interface MypageDao {
      */
     @Transactional(readOnly = false)
     @ResultMap({"ResultMap.integer", "ResultMap.ProfileFeedOutVO"})
-    @Select("call p_member_feed_list(#{memNo}, #{viewMemNo}, #{pageNo}, #{pagePerCnt})")
+    @Select("call p_member_broadcast_notice_list(#{memNo}, #{viewMemNo}, #{pageNo}, #{pageCnt})")
     List<Object> pMemberFeedList(Map<String, Object> param);
+
+    /**
+     * 방송공지 리스트(고정) 조회
+     *
+     * @Param
+     * memNo        BIGINT      -- 회원번호
+     * viewMemNo    BIGINT      -- 회원번호(접속자)
+     * ,pageNo      INT         -- 페이지 번호
+     * ,pageCnt     INT         -- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * Multi Rows
+     * #1
+     * cnt          INT         -- 총 수
+     *
+     * #2
+     * noticeIdx		BIGINT		-- 번호
+     * mem_no		BIGINT		-- 회원번호
+     * nickName	VARCHAR	--닉네임
+     * memSex		VARCHAR	-- 성별
+     * image_profile	VARCHAR	-- 프로필
+     * title		VARCHAR	-- 제목
+     * contents		VARCHAR	-- 내용
+     * imagePath	VARCHAR	-- 대표사진
+     * topFix		BIGINT		-- 고정여부[0:미고정 ,1:고정]
+     * writeDate		DATETIME	-- 수정일자
+     * readCnt		BIGINT		-- 읽은수
+     * replyCnt		BIGINT		-- 댓글수
+     * rcv_like_cnt	BIGINT		-- 좋아요수
+     * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
+     */
+    @Transactional(readOnly = false)
+    @ResultMap({"ResultMap.integer", "ResultMap.ProfileFeedOutVO"})
+    @Select("CALL p_member_broadcast_notice_fix_list(#{memNo}, ${viewMemNo}, #{pageNo}, #{pageCnt})")
+    List<Object> pMemberFeedFixList(Map<String, Object> param);
 
     /**
      * 방송공지 상세 조회
      *
      * @Param
-     * feedNo 		INT		-- 피드번호
+     * noticeNo 		INT		-- 피드번호
      * ,memNo 		BIGINT		-- 회원번호 (프로필 주인)
      * viewMemNo 		BIGINT		-- 회원번호 (프로필 보고있는 유저)
      *
@@ -275,44 +310,47 @@ public interface MypageDao {
      * rcv_like_cnt	BIGINT		-- 좋아요수
      * rcv_like_cancel_cnt BIGINT		-- 취소 좋아요수
      */
-    @Select("CALL rd_data.p_member_feed_sel(#{feedNo}, #{memNo}, #{viewMemNo})")
+    @Select("CALL rd_data.p_member_broadcast_notice_sel(#{noticeNo}, #{memNo}, #{viewMemNo})")
     ProfileFeedOutVo pMemberFeedSel(Map<String, Object> param);
 
     /**
      * 방송공지 등록
      * @Param
      * memNo        BIGINT			-- 회원번호
-     * ,feedTitle 	VARCHAR(20)		-- 피드 등록글 제목
-     * ,feedContents 	VARCHAR(1024)		-- 피드 등록글 내용
-     * ,feedTopFix 	INT			-- 피드 상단고정[0:기본,1:고정]
+     * ,noticeTitle 	VARCHAR(20)		-- 피드 등록글 제목
+     * ,noticeContents 	VARCHAR(1024)		-- 피드 등록글 내용
+     * ,imgName         VARCHAR(100)        -- 등록사진명
+     * ,noticeTopFix 	INT			-- 피드 상단고정[0:기본,1:고정]
      * @Return
      * s_return		INT		-- # -1:상단 고정  개수 초과, 0:에러, 1: 정상
      * */
-    @Select("CALL rd_data.p_member_feed_ins(#{memNo}, #{feedTitle}, #{feedContents}, #{feedTopFix})")
+    @Select("CALL rd_data.p_member_broadcast_notice_ins(#{memNo}, #{noticeTitle}, #{noticeContents}, #{imgName}, #{noticeTopFix})")
     Integer pMemberFeedIns(Map<String, Object> param);
 
     /**
      * 방송공지 수정
      * @Param
-     * feedNo 		INT			-- 피드번호
+     * noticeNo 		INT			-- 피드번호
      * ,memNo 		BIGINT			-- 회원번호
-     * ,feedTitle 	VARCHAR(20)		-- 피드 등록글 제목
-     * ,feedContents	VARCHAR(1024)		-- 피드 등록글 내용
+     * ,noticeTitle 	VARCHAR(20)		-- 피드 등록글 제목
+     * ,noticeContents	VARCHAR(1024)		-- 피드 등록글 내용
+     * ,imgName`        VARCHAR(100)        -- 등록사진명
+     * ,noticeTopFix    INT         -- 공지 상단고정[0:기본,1:고정]
      * @Return
      * s_return		INT		-- # -1:상단 고정  개수 초과, 0:에러, 1: 정상
      * */
-    @Select("CALL rd_data.p_member_feed_upd(#{feedNo}, #{memNo}, #{feedTitle}, #{feedContents}, #{feedTopFix})")
+    @Select("CALL rd_data.p_member_broadcast_notice_upd(#{noticeNo}, #{memNo}, #{noticeTitle}, #{noticeContents}, #{imgName}, #{noticeTopFix})")
     Integer pMemberFeedUpd(Map<String, Object> param);
 
     /**
      * 방송공지 삭제
      * @Param
-     * feedNo        INT		-- 피드번호
+     * noticeNo        INT		-- 피드번호
      * ,delChrgrName 	VARCHAR(40)	-- 삭제 관리자명
      * @Return
      * s_return		INT		-- #  0:에러, 1: 정상
      * */
-    @Select("CALL rd_data.p_member_feed_del(#{noticeIdx}, #{delChrgrName})")
+    @Select("CALL rd_data.p_member_broadcast_notice_del(#{noticeNo}, #{delChrgrName})")
     Integer pMemberFeedDel(ProfileFeedDelVo param);
 
     /**
@@ -373,7 +411,7 @@ public interface MypageDao {
      * @Return
      * s_return        INT		-- #   -1:이미좋아요함, 0:에러 , 1:최초좋아요, 2: 좋아요취소후 다시 좋아요
      * */
-    @Select("CALL rd_data.p_member_feed_like_log_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
+    @Select("CALL rd_data.p_member_broadcast_notice_like_log_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
     Integer pMemberFeedLikeLogIns(Map<String, Object> param);
 
     /**
@@ -387,7 +425,7 @@ public interface MypageDao {
      * @Return
      * s_return		INT		-- # -1:좋아요하지않은 등록글, 0:에러 , 1:취소완료
      * */
-    @Select("CALL p_member_feed_like_cancel_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
+    @Select("CALL p_member_broadcast_notice_like_cancel_ins(#{regNo}, #{mMemNo}, #{vMemNo})")
     Integer pMemberFeedLikeCancelIns(Map<String, Object> param);
 
     /**

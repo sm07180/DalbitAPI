@@ -1179,6 +1179,62 @@ public class MypageController {
     }
 
     /**
+     * 피드 댓글 등록
+     */
+    @PostMapping("/feed/reply/add")
+    public String feedReplyAdd(@Valid @RequestBody MyPageFeedReplyAddVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.feedReplyAdd(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / feedReplyAdd Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_실패));
+        }
+    }
+
+    /**
+     * 피드 댓글 수정
+     */
+    @PostMapping("/feed/reply/upd")
+    public String feedReplyUpd(@Valid @RequestBody MyPageFeedReplyUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.feedReplyUpd(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / feedReplyUpd Exception: {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_실패));
+        }
+    }
+
+    /**
+     * 피드 댓글 삭제
+     */
+    @DeleteMapping("/feed/reply")
+    public String feedReplyDelete(@Valid MyPageFeedReplyDelVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.feedReplyDel(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / feedReplyDelete Exception: {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_실패));
+        }
+    }
+
+    /**
+     * 피드 댓글 조회
+     */
+    @GetMapping("/feed/reply/sel")
+    public String feedReplyList(@Valid MyPageFeedReplyListVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.feedReplyList(param, request);
+        } catch (Exception e) {
+            log.error("MypageController.java / feedReplyList Exception : {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_실패));
+        }
+    }
+
+    /**
      * 방송공지 등록
      * @Param
      *  title       String 제목
@@ -1233,12 +1289,29 @@ public class MypageController {
     public String noticeSelect(@Valid ProfileFeedSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
-            return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPagePerCnt(), request);
+            return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPageCnt(), request);
         } catch (Exception e) {
             log.error("MypageController.java / noticeSelect() => {}", e);
             HashMap resultMap = new HashMap();
-            resultMap.put("fixList", new ArrayList());
+//            resultMap.put("fixList", new ArrayList());
             resultMap.put("list", new ArrayList());
+            resultMap.put("paging", new PagingVo(0, 0, 0));
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+        }
+    }
+
+    /**
+     * 방송공지 리스트(고정) 조회
+     */
+    @GetMapping("notice/fix/sel")
+    public String noticeFixSelect(@Valid ProfileFeedFixSelVo noticeFixSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return mypageService.noticeFixSelect(noticeFixSelVo.getMemNo(), noticeFixSelVo.getPageNo(), noticeFixSelVo.getPageCnt(), request);
+        } catch (Exception e) {
+            log.error("MypageController.java / noticeFixSelect() => {}", e);
+            HashMap resultMap = new HashMap();
+            resultMap.put("fixList", new ArrayList());
             resultMap.put("paging", new PagingVo(0, 0, 0));
             return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
         }
