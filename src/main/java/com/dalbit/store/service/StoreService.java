@@ -44,6 +44,7 @@ public class StoreService {
     @Autowired
     UserDao userDao;
 
+    int testOs = 2;
 
     public List<StoreChargeVo> getStoreChargeList(HttpServletRequest request){
         DeviceVo deviceVo = new DeviceVo(request);
@@ -113,7 +114,7 @@ public class StoreService {
             int os = DalbitUtil.getIntMap(headers,"os");
 
             // fixme test code
-            deviceVo.setOs(1);
+            deviceVo.setOs(testOs);
 
             // 1. 외부결제 설정 정보 조회(어드민 설정 조회)
             StoreResultVo paymentSetting = storeDao.pPaymentSetSel();
@@ -224,7 +225,7 @@ public class StoreService {
             }
             DeviceVo deviceVo = new DeviceVo(request);
             // fixme test code
-            deviceVo.setOs(1);
+            deviceVo.setOs(testOs);
 
             if(platform.equals(Store.ModeType.IN_APP) && !(deviceVo.getOs() == Store.OS.ANDROID || deviceVo.getOs() == Store.OS.IOS)){
                 return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회_파라미터, returnMap));
