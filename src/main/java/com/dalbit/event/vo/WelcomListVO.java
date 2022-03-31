@@ -81,7 +81,7 @@ public class WelcomListVO {
         this.giftName = gift_name;
     }
 
-    public void setGift_ord_no(Integer gift_ord) { this.giftOrd = gift_ord; }
+    public void setGift_ord(Integer gift_ord) { this.giftOrd = gift_ord; }
 
     public Integer getStepNo() {
         return stepNo;
