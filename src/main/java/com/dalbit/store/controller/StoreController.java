@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -48,5 +49,9 @@ public class StoreController {
     @PostMapping("/store/getIndexData")
     public Object getIndexData(HttpServletRequest request){
         return storeService.getIndexData(request);
+    }
+    @PostMapping("/store/getDalPriceList")
+    public Object getDalPriceList(@RequestParam(value = "platform") String platform, HttpServletRequest request){
+        return storeService.getDalPriceList(platform, request);
     }
 }

@@ -12,6 +12,7 @@ import com.dalbit.member.vo.procedure.P_MemberInfoVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.store.dao.StoreDao;
 import com.dalbit.store.etc.Store;
+import com.dalbit.store.etc.StoreEnum;
 import com.dalbit.store.vo.PayChargeVo;
 import com.dalbit.store.vo.StoreChargeVo;
 import com.dalbit.store.vo.StoreResultVo;
@@ -102,7 +103,17 @@ public class StoreService {
             if(memberInfo == null || StringUtils.isEmpty(memberInfo.getMemId())){
                 return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회_회원정보없음, returnMap));
             }
+//            Device device = new LiteDeviceResolver().resolveDevice(request);
+
             DeviceVo deviceVo = new DeviceVo(request);
+
+            String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+            customHeader = java.net.URLDecoder.decode(customHeader);
+            HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
+            int os = DalbitUtil.getIntMap(headers,"os");
+
+            // fixme test code
+            deviceVo.setOs(1);
 
             // 1. 외부결제 설정 정보 조회(어드민 설정 조회)
             StoreResultVo paymentSetting = storeDao.pPaymentSetSel();
@@ -121,7 +132,9 @@ public class StoreService {
             LocalDateTime localDateTime = LocalDateTime.now();
             String platform = Store.Platform.UNKNOWN;
             String mode = Store.ModeType.IN_APP;
-            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
+//            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
+            // fixme test code
+            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
             int hourRangeResult = hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
 //            hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
             if(deviceVo.getOs() == 1){
@@ -190,16 +203,45 @@ public class StoreService {
                 mode = Store.ModeType.NONE;
                 platform = Store.Platform.UNKNOWN;
             }
+            returnMap.put("deviceInfo", deviceVo);
             returnMap.put("mode", mode);
-
-            List<StoreChargeVo> dalPriceList = storeDao.selectChargeItem(platform);
+            returnMap.put("platform", StoreEnum.searchFromPlatform(platform).getMode());
             returnMap.put("dalCnt", getDalCnt(request));
-            returnMap.put("dalPriceList", dalPriceList.isEmpty() ? new ArrayList<>() : dalPriceList);
             returnMap.put("defaultNum", 2); // IOS 스토어 기본값 설정 위한 값(legacy code)
 
         } catch (Exception e) {
             log.error("StoreService getIndexData Error => {}", e.getMessage());
         }
         return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회, returnMap));
+    }
+
+    public String getDalPriceList(String platform, HttpServletRequest request) {
+        Map<String, Object> returnMap = new HashMap<>();
+
+        try{
+            if(StringUtils.isEmpty(platform)){
+                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회_파라미터, returnMap));
+            }
+            DeviceVo deviceVo = new DeviceVo(request);
+            // fixme test code
+            deviceVo.setOs(1);
+
+            if(platform.equals(Store.ModeType.IN_APP) && !(deviceVo.getOs() == Store.OS.ANDROID || deviceVo.getOs() == Store.OS.IOS)){
+                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회_파라미터, returnMap));
+            }
+            if(!(platform.equals(Store.ModeType.IN_APP) || platform.equals(Store.ModeType.OTHER))){
+                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회_파라미터, returnMap));
+            }
+            String target = platform.equals(Store.ModeType.OTHER) ?
+                    Store.Platform.OTHER : deviceVo.getOs() == Store.OS.ANDROID ?
+                        Store.Platform.AOS_IN_APP : Store.Platform.IOS_IN_APP;
+
+            List<StoreChargeVo> dalPriceList = storeDao.selectChargeItem(target);
+            returnMap.put("dalPriceList", dalPriceList.isEmpty() ? new ArrayList<>() : dalPriceList);
+
+        } catch (Exception e) {
+            log.error("StoreService getDalPriceList Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회, returnMap));
     }
 }
