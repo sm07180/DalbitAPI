@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -313,6 +314,11 @@ public class ProfileController {
         P_ProfileImgLeaderVo apiData = new P_ProfileImgLeaderVo(profileImgLeaderVo, request);
         String result = profileService.callProfileImgLeader(apiData);
         return result;
+    }
+
+    @PostMapping("/update/img")
+    public String profileImgUpdate(@RequestBody Map param, HttpServletRequest request){
+        return profileService.profileImageUpdate(param, request);
     }
 
     /**
