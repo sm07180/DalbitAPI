@@ -99,14 +99,18 @@ public class TTSService {
         JsonElement callApiRes = ttsApiCall(connUrl, "findActor");
         JsonElement actorArray = callApiRes.getAsJsonObject().get("result").getAsJsonArray();
 
-        int idx = 0;
         ArrayList<Map<String, String>> result = new ArrayList<>();
         for(JsonElement vo : actorArray.getAsJsonArray()) {
             Map<String, String> data = new HashMap<>();
             if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
-                data.put("actorId", vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", ""));
-                data.put("actorName", vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", ""));
-                result.add(data);
+                String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
+                String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
+
+                if(StringUtils.equals(actorName, "다희") || StringUtils.equals(actorName, "준기")) {
+                    data.put("actorId", actorId);
+                    data.put("actorName", actorName);
+                    result.add(data);
+                }
             }
         }
 
