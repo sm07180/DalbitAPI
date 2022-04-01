@@ -10,7 +10,9 @@ import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.proc.MainPage;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
+import com.dalbit.main.vo.request.MainRankingPageVo;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
+import com.dalbit.main.vo.request.MainTimeRankingPageVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DBUtil;
@@ -22,6 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Slf4j
@@ -408,5 +411,39 @@ public class MainServiceV2 {
         }
 
         return loverRank;
+    }
+
+    /**
+     *  메인 페이지 NOW TOP 10
+     */
+    public String nowTop10(String callType, HttpServletRequest request) {
+        String result;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+        String now = dateFormat.format(new Date()) + ":00:00"; // yyyy-MM-dd HH:00:00
+
+        if(StringUtils.equals(callType, "FAN") || StringUtils.equals(callType, "CUPID")) {
+            MainRankingPageVo mainRankingPageVo = new MainRankingPageVo();
+            mainRankingPageVo.setRankSlct(StringUtils.equals(callType, "FAN") ? 2 : 3);
+            mainRankingPageVo.setRankType(1);
+            mainRankingPageVo.setRankingDate(now);
+            mainRankingPageVo.setPage(1);
+            mainRankingPageVo.setRecords(10);
+
+            P_MainRankingPageVo apiData = new P_MainRankingPageVo(mainRankingPageVo, request);
+
+            result = mainService.mainRankingPage(request, apiData);
+        }else {
+            MainTimeRankingPageVo mainTimeRankingPageVo = new MainTimeRankingPageVo();
+            mainTimeRankingPageVo.setRankSlct(1);
+            mainTimeRankingPageVo.setPage(1);
+            mainTimeRankingPageVo.setRecords(10);
+            mainTimeRankingPageVo.setRankingDate(now);
+
+            P_MainTimeRankingPageVo apiData = new P_MainTimeRankingPageVo(mainTimeRankingPageVo, request);
+
+            result = mainService.mainTimeRankingPage(request, apiData);
+        }
+
+        return result;
     }
 }
