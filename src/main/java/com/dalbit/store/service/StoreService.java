@@ -44,7 +44,7 @@ public class StoreService {
     @Autowired
     UserDao userDao;
 
-    int testOs = 2;
+    int testOs = 1;
 
     public List<StoreChargeVo> getStoreChargeList(HttpServletRequest request){
         DeviceVo deviceVo = new DeviceVo(request);
@@ -56,14 +56,9 @@ public class StoreService {
     }
 
     public StoreChargeVo getStoreChargeListByParam(HttpServletRequest request){
-        String platform = "110";
         String itemNo = request.getParameter("itemNo");
-        if("2".equals(request.getParameter("os"))){
-            platform = "001";
-        }
         PayChargeVo payChargeVo = new PayChargeVo();
         payChargeVo.setItemNo(itemNo);
-        payChargeVo.setPlatform(platform);
         return storeDao.selectPayChargeItem(payChargeVo);
     }
 
@@ -83,6 +78,15 @@ public class StoreService {
         }
         return dalCnt;
     }
+    public String getDalCntJsonStr(HttpServletRequest request){
+        Map<String, Object> returnMap = new HashMap<>();
+        try{
+            returnMap.put("dalCnt", this.getDalCnt(request));
+        } catch (Exception e) {
+            log.error("StoreService getDalCntJsonStr Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+    }
 
     private P_ProfileInfoVo getMemberInfo(HttpServletRequest request) {
         String myMemNo = MemberVo.getMyMemNo(request);
@@ -95,8 +99,6 @@ public class StoreService {
         return new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
     }
 
-
-
     public String getIndexData(HttpServletRequest request) {
         Map<String, Object> returnMap = new HashMap<>();
         try{
@@ -105,13 +107,8 @@ public class StoreService {
                 return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회_회원정보없음, returnMap));
             }
 //            Device device = new LiteDeviceResolver().resolveDevice(request);
-
+            returnMap.put("memberInfo", memberInfo);
             DeviceVo deviceVo = new DeviceVo(request);
-
-            String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
-            customHeader = java.net.URLDecoder.decode(customHeader);
-            HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
-            int os = DalbitUtil.getIntMap(headers,"os");
 
             // fixme test code
             deviceVo.setOs(testOs);

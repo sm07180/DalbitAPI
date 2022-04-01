@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -50,8 +51,13 @@ public class StoreController {
     public Object getIndexData(HttpServletRequest request){
         return storeService.getIndexData(request);
     }
+
     @PostMapping("/store/getDalPriceList")
     public Object getDalPriceList(@RequestParam(value = "platform") String platform, HttpServletRequest request){
         return storeService.getDalPriceList(platform, request);
+    }
+    @PostMapping("/store/getDalCnt")
+    public Object getDalCnt(HttpServletRequest request){
+        return storeService.getDalCntJsonStr(request);
     }
 }
