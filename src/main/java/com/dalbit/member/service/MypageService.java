@@ -792,7 +792,6 @@ public class MypageService {
         return result;
     }
 
-
     /**
      * 마이페이지 공지사항 조회
      */
@@ -800,37 +799,27 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypagNoticeSelectVo);
         List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
 
-        HashMap mypageNoticeList = new HashMap();
-        //mypageNoticeList.put("count", getMemberBoardCount(pMypagNoticeSelectVo));
+        ProcedureOutputVo procedureOutputVo;
         if(DalbitUtil.isEmpty(mypageNoticeListVo)){
-            mypageNoticeList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, mypageNoticeList));
+            procedureOutputVo = null;
+        }else{
+            List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
+            for (int i=0; i<mypageNoticeListVo.size(); i++){
+                outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
+            }
+            procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         }
 
-        List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
-        BanWordVo banWordVo = new BanWordVo();
-        banWordVo.setMemNo(pMypagNoticeSelectVo.getTarget_mem_no());
-        String systemBanWord = commonService.banWordSelect();
-        String banWord = commonService.broadcastBanWordSelect(banWordVo);
-        for (int i=0; i<mypageNoticeListVo.size(); i++){
-            //사이트+방송방 금지어 조회 마이페이지 공지사항 제목, 내용 마스킹 처리
-            if(!DalbitUtil.isEmpty(banWord)){
-                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, mypageNoticeListVo.get(i).getTitle()));
-                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, mypageNoticeListVo.get(i).getContents()));
-            }else if (!DalbitUtil.isEmpty(systemBanWord)){
-                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord, mypageNoticeListVo.get(i).getTitle()));
-                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, mypageNoticeListVo.get(i).getContents()));
-            }
-            outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
-        }
-        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+        HashMap mypageNoticeList = new HashMap();
         mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
         mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result;
+        String result ="";
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, mypageNoticeList));
+        } else if (procedureVo.getRet().equals(Status.공지조회_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음));
         } else if (procedureVo.getRet().equals(Status.공지조회_요청회원번호_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_요청회원번호_회원아님));
         } else if (procedureVo.getRet().equals(Status.공지조회_대상회원번호_회원아님.getMessageCode())) {
@@ -840,6 +829,97 @@ public class MypageService {
         }
         return result;
     }
+
+
+    /**
+     * 방송방 방송공지 불러오기 시
+     */
+    public String mobileBroadcastNoticeSelect(BroadcastNoticeSelVo noticeSelVo, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        List<BroadcastNoticeListOutVo> noticeRow = null;
+        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        int cnt = 0;
+
+        paramMap.put("memNo", memNo);
+        noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
+
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(noticeRow)) {
+            if(DalbitUtil.isEmpty(noticeRow)) {
+                resultMap.put("list", new ArrayList());
+                resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+            }
+        }
+        BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(noticeSelVo.getMemNo());
+        String systemBanWord = commonService.banWordSelect();
+        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+
+        for(int i = 0; i < noticeRow.size(); i++) {
+            if(!DalbitUtil.isEmpty(banWord)) {
+                noticeRow.get(i).setConts(DalbitUtil.replaceMaskString(systemBanWord + "|" + banWord, noticeRow.get(i).getConts()));
+            } else if(!DalbitUtil.isEmpty(systemBanWord)) {
+                noticeRow.get(i).setConts(DalbitUtil.replaceMaskString(systemBanWord, noticeRow.get(i).getConts()));
+            }
+        }
+
+        String contents = noticeRow.get(0).getConts();
+        HashMap map = new HashMap();
+        map.put("contents", contents);
+        map.put("noticeIdx", noticeRow.get(0).getAuto_no());
+
+        ArrayList arrayList = new ArrayList();
+        arrayList.add(map);
+
+        resultMap.put("list", arrayList);
+        return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
+    }
+
+//    public String callMypageNoticeSelect(P_MypageNoticeSelectVo pMypagNoticeSelectVo) {
+//        ProcedureVo procedureVo = new ProcedureVo(pMypagNoticeSelectVo);
+//        List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
+//
+//        HashMap mypageNoticeList = new HashMap();
+//        //mypageNoticeList.put("count", getMemberBoardCount(pMypagNoticeSelectVo));
+//        if(DalbitUtil.isEmpty(mypageNoticeListVo)){
+//            mypageNoticeList.put("list", new ArrayList<>());
+//            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, mypageNoticeList));
+//        }
+//
+//        List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
+//        BanWordVo banWordVo = new BanWordVo();
+//        banWordVo.setMemNo(pMypagNoticeSelectVo.getTarget_mem_no());
+//        String systemBanWord = commonService.banWordSelect();
+//        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+//        for (int i=0; i<mypageNoticeListVo.size(); i++){
+//            //사이트+방송방 금지어 조회 마이페이지 공지사항 제목, 내용 마스킹 처리
+//            if(!DalbitUtil.isEmpty(banWord)){
+//                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, mypageNoticeListVo.get(i).getTitle()));
+//                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, mypageNoticeListVo.get(i).getContents()));
+//            }else if (!DalbitUtil.isEmpty(systemBanWord)){
+//                mypageNoticeListVo.get(i).setTitle(DalbitUtil.replaceMaskString(systemBanWord, mypageNoticeListVo.get(i).getTitle()));
+//                mypageNoticeListVo.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, mypageNoticeListVo.get(i).getContents()));
+//            }
+//            outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
+//        }
+//        ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
+//        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+//        mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
+//        mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+//
+//        String result;
+//        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, mypageNoticeList));
+//        } else if (procedureVo.getRet().equals(Status.공지조회_요청회원번호_회원아님.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_요청회원번호_회원아님));
+//        } else if (procedureVo.getRet().equals(Status.공지조회_대상회원번호_회원아님.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_대상회원번호_회원아님));
+//        }else{
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+//        }
+//        return result;
+//    }
 
     //임시경로 room_1 에서 room_0으로 변경
     public List<ProfileFeedPhotoOutVo> replacePhotoPrefix (List<ProfileFeedPhotoOutVo> list) {

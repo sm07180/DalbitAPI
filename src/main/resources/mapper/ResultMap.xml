@@ -65,6 +65,7 @@
 
     <!-- 리브랜딩 방송방공지 -->
     <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
+    <resultMap id="MobileBroadcastNoticeListOutVo" type="com.dalbit.member.vo.MobileBroadcastNoticeListOutVo"/>
 
     <!-- 리브랜딩 피드 -->
     <resultMap id="MyPageFeedOutVo" type="com.dalbit.member.vo.MyPageFeedOutVo" />

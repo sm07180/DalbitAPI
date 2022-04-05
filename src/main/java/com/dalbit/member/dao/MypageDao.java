@@ -46,6 +46,26 @@ public interface MypageDao {
     ProcedureVo callMypageNoticeDel(ProcedureVo procedureVo);
     ProcedureVo callMypageNoticeRead(ProcedureVo procedureVo);
 
+    /**
+     * 모바일용 방송방공지 정보
+     *
+     * @param
+     * memNo            BIGINT  -- 회원번호
+     *
+     * @Return
+     * auto_no          INT         -- 자동증가 번호
+     * mem_no           BIGINT      -- 회원 번호
+     * conts            VARCHAR     -- 회원 아이디
+     * ins_date         DATETIME    -- 등록 일자
+     * upd_date         DATETIME    -- 수정 일자
+     */
+    @ResultMap({"ResultMap.MobileBroadcastNoticeListOutVo"})
+    @Select("CALL rd_data.p_broadcast_room_notice_sel(#{memNo})")
+    List<Object> pMobileBroadcastNoticeListSel(Map<String, Object> param);
+
+
+
+
     @Transactional(readOnly = true)
     List<P_MypageNoticeSelectVo> callMypageNoticeSelect(ProcedureVo procedureVo);
 

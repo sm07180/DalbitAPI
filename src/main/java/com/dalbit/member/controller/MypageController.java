@@ -395,15 +395,23 @@ public class MypageController {
     /**
      * 마이페이지 공지사항 조회
      */
+//    @GetMapping("/notice")
+//    public String noticeView(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//        P_MypageNoticeSelectVo apiData = new P_MypageNoticeSelectVo(mypageNoticeSelectVo, request);
+//
+//        String result = mypageService.callMypageNoticeSelect(apiData);
+//
+//        return result;
+//    }
+
     @GetMapping("/notice")
-    public String noticeView(@Valid MypageNoticeSelectVo mypageNoticeSelectVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String noticeView(@Valid BroadcastNoticeSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
 
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MypageNoticeSelectVo apiData = new P_MypageNoticeSelectVo(mypageNoticeSelectVo, request);
 
-        String result = mypageService.callMypageNoticeSelect(apiData);
-
-        return result;
+        return mypageService.mobileBroadcastNoticeSelect(noticeSelVo, request);
     }
 
     /**
@@ -1064,7 +1072,7 @@ public class MypageController {
      * 설정 방송공지 삭제
      */
     @DeleteMapping("/broad/del")
-    public String broadcastNoticedel(@Valid BroadcastNoticeDelVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+    public String broadcastNoticeDel(@Valid BroadcastNoticeDelVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         return mypageService.broadcastNoticeDel(param, request);
     }

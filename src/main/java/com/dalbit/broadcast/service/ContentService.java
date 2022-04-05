@@ -1,22 +1,28 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ContentDao;
+import com.dalbit.broadcast.vo.BroadcastNoticeAddVo;
+import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.RoomStoryListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
-import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.dao.MypageDao;
+import com.dalbit.member.vo.*;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang.StringUtils;
+import org.jose4j.lang.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -34,81 +40,154 @@ public class ContentService {
     SocketService socketService;
     @Autowired
     CommonService commonService;
+    @Autowired
+    MypageDao mypageDao;
 
 
     /**
-     *  방송방 공지사항 조회
+     *  방송방 공지사항 조회(입장시)
      */
-    public String callBroadCastRoomNoticeSelect(P_RoomNoticeVo pRoomNoticeSelectVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeSelectVo);
-        contentDao.callBroadCastRoomNoticeSelect(procedureVo);
+//    public String callBroadCastRoomNoticeSelect(P_RoomNoticeVo pRoomNoticeSelectVo) {
+//        ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeSelectVo);
+//        contentDao.callBroadCastRoomNoticeSelect(procedureVo);
+//
+//        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+//        String notice = DalbitUtil.getStringMap(resultMap, "notice");
+//
+//        System.out.println("!@!#!#" + notice);
+//
+//        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
+//        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+//
+//        HashMap returnMap = new HashMap();
+//        //사이트+방송방 금지어 조회 공지사항 마스킹 처리
+//        BanWordVo banWordVo = new BanWordVo();
+//        String systemBanWord = commonService.banWordSelect();
+//        banWordVo.setRoomNo(pRoomNoticeSelectVo.getRoom_no());
+//        String banWord = commonService.broadcastBanWordSelect(banWordVo);
+//        if(!DalbitUtil.isEmpty(banWord)){
+//            notice = DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, notice);
+//        }else if(!DalbitUtil.isEmpty(systemBanWord)){
+//            notice = DalbitUtil.replaceMaskString(systemBanWord, notice);
+//        }
+//        returnMap.put("notice", notice);
+//        procedureVo.setData(returnMap);
+//
+//        String result ="";
+//        if(procedureVo.getRet().equals(Status.공지가져오기성공.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기성공, procedureVo.getData()));
+//        } else if(procedureVo.getRet().equals(Status.공지가져오기실패_정상회원이아님.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님));
+//        } else if(procedureVo.getRet().equals(Status.공지가져오기실패_해당방이없음.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님));
+//        } else if(procedureVo.getRet().equals(Status.공지가져오기실패_방참가자가아님.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_방참가자가아님));
+//        } else {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_조회에러));
+//        }
+//         return result;
+//    }
 
-        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        String notice = DalbitUtil.getStringMap(resultMap, "notice");
+    public String mobileBroadcastNoticeSelect(BroadcastNoticeSelVo noticeSelVo, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        List<BroadcastNoticeListOutVo> noticeRow = null;
+        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        int cnt = 0;
 
-        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
-        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
+        paramMap.put("memNo", memNo);
+        noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
 
-        HashMap returnMap = new HashMap();
-        //사이트+방송방 금지어 조회 공지사항 마스킹 처리
+        HashMap resultMap = new HashMap();
+        if(DalbitUtil.isEmpty(noticeRow)) {
+            if(DalbitUtil.isEmpty(noticeRow)) {
+                resultMap.put("notice", new ArrayList());
+                resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+            }
+        }
         BanWordVo banWordVo = new BanWordVo();
+        banWordVo.setMemNo(noticeSelVo.getMemNo());
         String systemBanWord = commonService.banWordSelect();
-        banWordVo.setRoomNo(pRoomNoticeSelectVo.getRoom_no());
         String banWord = commonService.broadcastBanWordSelect(banWordVo);
-        if(!DalbitUtil.isEmpty(banWord)){
-            notice = DalbitUtil.replaceMaskString(systemBanWord+"|"+banWord, notice);
-        }else if(!DalbitUtil.isEmpty(systemBanWord)){
-            notice = DalbitUtil.replaceMaskString(systemBanWord, notice);
-        }
-        returnMap.put("notice", notice);
-        procedureVo.setData(returnMap);
 
-        String result ="";
-        if(procedureVo.getRet().equals(Status.공지가져오기성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기성공, procedureVo.getData()));
-        } else if(procedureVo.getRet().equals(Status.공지가져오기실패_정상회원이아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님));
-        } else if(procedureVo.getRet().equals(Status.공지가져오기실패_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_정상회원이아님));
-        } else if(procedureVo.getRet().equals(Status.공지가져오기실패_방참가자가아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_방참가자가아님));
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지가져오기실패_조회에러));
+        for(int i = 0; i < noticeRow.size(); i++) {
+            if(!DalbitUtil.isEmpty(banWord)) {
+                noticeRow.get(i).setConts(DalbitUtil.replaceMaskString(systemBanWord + "|" + banWord, noticeRow.get(i).getConts()));
+            } else if(!DalbitUtil.isEmpty(systemBanWord)) {
+                noticeRow.get(i).setConts(DalbitUtil.replaceMaskString(systemBanWord, noticeRow.get(i).getConts()));
+            }
         }
-         return result;
+
+        String notice = noticeRow.get(0).getConts();
+
+        resultMap.put("notice", notice);
+        return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
     }
 
 
     /**
      *  방송방 공지사항 입력/수정
      */
-    public String callBroadCastRoomNoticeEdit(P_RoomNoticeEditVo pRoomNoticeEditVo, HttpServletRequest request) {
-        ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeEditVo);
-        contentDao.callBroadCastRoomNoticeEdit(procedureVo);
+//    public String callBroadCastRoomNoticeEdit(P_RoomNoticeEditVo pRoomNoticeEditVo, HttpServletRequest request) {
+//        ProcedureVo procedureVo = new ProcedureVo(pRoomNoticeEditVo);
+//        contentDao.callBroadCastRoomNoticeEdit(procedureVo);
+//
+//        String result;
+//        if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
+//            try{
+//                SocketVo vo = socketService.getSocketVo(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+//                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+//                vo.resetData();
+//            }catch(Exception e){
+//                log.info("Socket Service sendNotice Exception {}", e);
+//            }
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정성공));
+//        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_정상회원이아님.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_정상회원이아님));
+//        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_해당방이없음.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_해당방이없음));
+//        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_방참가자가아님.getMessageCode())) {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_방참가자가아님));
+//        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_공지권한없음.getMessageCode())){
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_공지권한없음));
+//        } else {
+//            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_입력수정에러));
+//        }
+//
+//        return result;
+//    }
 
-        String result;
-        if(procedureVo.getRet().equals(Status.공지입력수정성공.getMessageCode())) {
-            try{
-                SocketVo vo = socketService.getSocketVo(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
-                socketService.sendNotice(pRoomNoticeEditVo.getRoom_no(), MemberVo.getMyMemNo(request), pRoomNoticeEditVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-                vo.resetData();
-            }catch(Exception e){
-                log.info("Socket Service sendNotice Exception {}", e);
+    public String mobileBroadcastNoticeUpd(BroadcastNoticeUpdVo noticeUpdVo, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        List<BroadcastNoticeListOutVo> noticeRow = null;
+        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        paramMap.put("memNo", memNo);
+        noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
+
+        if(noticeRow.size() != 0) {
+            HashMap updMap = new HashMap();
+            updMap.put("roomNoticeNo", noticeRow.get(0).getAuto_no());
+            updMap.put("memNo", memNo);
+            updMap.put("roomNo", noticeUpdVo.getRoomNo());
+            updMap.put("notice", StringUtils.equals(noticeUpdVo.getNotice(), "") ? "default" : noticeUpdVo.getNotice());
+            Integer result = contentDao.pMemberBroadcastNoticeUpd(updMap);
+            if(result > 0) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
+            } else {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정성공));
-        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_정상회원이아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_정상회원이아님));
-        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_해당방이없음));
-        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_방참가자가아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_방참가자가아님));
-        } else if(procedureVo.getRet().equals(Status.공지입력수정실패_공지권한없음.getMessageCode())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_공지권한없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지입력수정실패_입력수정에러));
+            HashMap addMap = new HashMap();
+            addMap.put("memNo", memNo);
+            addMap.put("roomNo", noticeUpdVo.getRoomNo());
+            addMap.put("notice", StringUtils.equals(noticeUpdVo.getNotice(), "") ? "default" : noticeUpdVo.getNotice());
+            Integer result = contentDao.pMemberBroadcastNoticeIns(addMap);
+            if(result > 0) {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
+            } else {
+                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+            }
         }
-
-        return result;
     }
 
 
