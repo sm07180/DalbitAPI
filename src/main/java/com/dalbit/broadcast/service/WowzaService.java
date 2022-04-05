@@ -443,7 +443,11 @@ public class WowzaService {
             RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors, moonLandEvent);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
-            badgeService.setBadgeInfo(target.getBjMemNo(), 4);
+
+            if(badgeService.setBadgeInfo(target.getBjMemNo(), 4)){
+                log.error("NULL ====> doCreateBroadcast 4 : getBjMemNo {}", target.getBjMemNo());
+            }
+
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             //네이티브에서 사용하는 방생성시 DJ의 설정
@@ -1064,7 +1068,10 @@ public class WowzaService {
         }
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors, moonLandEvent);
-        badgeService.setBadgeInfo(target.getBjMemNo(), 4);
+
+        if(badgeService.setBadgeInfo(target.getBjMemNo(), 4)){
+            log.error("NULL ====> getRoomInfo 4 : getTarget_mem_no {}", target.getBjMemNo());
+        }
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
         roomInfoVo.setJoinDate(DalbitUtil.getStringMap(resultMap, "joinDate"));
