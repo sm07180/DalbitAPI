@@ -760,7 +760,11 @@ public class RoomService {
         }else{
             returnMap.put("fanBadge", fanBadgeVo);
         }
-        badgeService.setBadgeInfo(pRoomMemberInfoVo.getTarget_mem_no(), -1);
+
+        if(badgeService.setBadgeInfo(pRoomMemberInfoVo.getTarget_mem_no(), -1)){
+            log.error("NULL ====> getBroadCastRoomMemberInfo -1 : getTarget_mem_no {}", pRoomMemberInfoVo.getTarget_mem_no());
+        }
+
         returnMap.put("liveBadgeList", badgeService.getCommonBadge());
         returnMap.put("commonBadgeList", badgeService.getCommonBadge());
         returnMap.put("fanBadgeList", new ArrayList());
