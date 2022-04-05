@@ -179,7 +179,6 @@ public class WelcomeEventController {
             log.error("putWelcomeDayConfirmChecker => {}", e);
             result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
         }
-        result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, 1));
         return result;
     }
 }
