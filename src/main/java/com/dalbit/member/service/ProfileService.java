@@ -81,7 +81,10 @@ public class ProfileService {
             List fanRankList = memberService.fanRank3(pFanRankVo);
 
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList, adminService.isAdmin(request));
-            badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1);
+
+            if(badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1)){
+                log.error("NULL ====> callMemberInfo -1 : getTarget_mem_no {}", pProfileInfo.getTarget_mem_no());
+            }
             profileInfoOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             profileInfoOutVo.setCommonBadgeList(badgeService.getCommonBadge());
 //            profileInfoOutVo.setFanBadgeList(new ArrayList());

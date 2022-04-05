@@ -40,7 +40,7 @@ public class BadgeService {
     //@Value("${redis.socket.rank.time.fan}")
     //private String rankTimeFan;
 
-    public void setBadgeInfo(String mem_no, int type){
+    public boolean setBadgeInfo(String mem_no, int type){
         try{
             RedisHashCommands redisHashCommands = redisTemplateSocket.getConnectionFactory().getConnection().hashCommands();
             Date now = new Date();
@@ -88,8 +88,10 @@ public class BadgeService {
             param.put("fanRank", fanRank);
             param.put("by", "api");
             badgeList = commonDao.callMemberBadgeListServer(param);
+            return false;
         }catch (Exception e){
             log.error("BadgeService setBadgeInfo Error => {}", e.getMessage());
+            return true;
         }
 
     }
