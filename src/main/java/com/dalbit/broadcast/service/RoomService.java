@@ -762,7 +762,15 @@ public class RoomService {
         }
 
         if(badgeService.setBadgeInfo(pRoomMemberInfoVo.getTarget_mem_no(), -1)){
-            log.error("NULL ====> getBroadCastRoomMemberInfo -1 : getTarget_mem_no {}", pRoomMemberInfoVo.getTarget_mem_no());
+            try {
+                log.error("NULL ====> getBroadCastRoomMemberInfo -1 : getTarget_mem_no {}", pRoomMemberInfoVo.getTarget_mem_no());
+                String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+                customHeader = java.net.URLDecoder.decode(customHeader);
+                log.error(" NULL ====> getBroadCastRoomMemberInfo  customHeader : {}", customHeader );
+                String referer = request.getHeader("Referer");
+                log.error(" NULL ====> getBroadCastRoomMemberInfo  referer : {}", referer );
+            } catch (Exception e) {
+            }
         }
 
         returnMap.put("liveBadgeList", badgeService.getCommonBadge());

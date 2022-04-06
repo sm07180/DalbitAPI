@@ -83,7 +83,15 @@ public class ProfileService {
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList, adminService.isAdmin(request));
 
             if(badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1)){
-                log.error("NULL ====> callMemberInfo -1 : getTarget_mem_no {}", pProfileInfo.getTarget_mem_no());
+                try {
+                    log.error("NULL ====> callMemberInfo -1 : getTarget_mem_no {}", pProfileInfo.getTarget_mem_no());
+                    String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+                    customHeader = java.net.URLDecoder.decode(customHeader);
+                    log.error(" NULL ====> callMemberInfo  customHeader : {}", customHeader );
+                    String referer = request.getHeader("Referer");
+                    log.error(" NULL ====> callMemberInfo  referer : {}", referer );
+                } catch (Exception e) {
+                }
             }
             profileInfoOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             profileInfoOutVo.setCommonBadgeList(badgeService.getCommonBadge());
