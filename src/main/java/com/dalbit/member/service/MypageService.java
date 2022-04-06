@@ -837,10 +837,11 @@ public class MypageService {
     public String mobileBroadcastNoticeSelect(BroadcastNoticeSelVo noticeSelVo, HttpServletRequest request) {
         HashMap paramMap = new HashMap();
         List<BroadcastNoticeListOutVo> noticeRow = null;
-        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        Long memNo = Long.parseLong(noticeSelVo.getMemNo());
         int cnt = 0;
 
         paramMap.put("memNo", memNo);
+        paramMap.put("roomNo", noticeSelVo.getRoomNo());
         noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
 
         HashMap resultMap = new HashMap();
@@ -1004,9 +1005,10 @@ public class MypageService {
     public String broadcastNoticeSel(BroadcastNoticeSelVo noticeSelVo, HttpServletRequest request) {
         HashMap paramMap = new HashMap();
         List<BroadcastNoticeListOutVo> noticeRow = null;
-        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+        Long memNo = Long.parseLong(noticeSelVo.getMemNo());
 
         paramMap.put("memNo", memNo);
+        paramMap.put("roomNo", noticeSelVo.getRoomNo());
         noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
 
         HashMap resultMap = new HashMap();
@@ -1034,7 +1036,10 @@ public class MypageService {
             arrList.add(vo);
         }
 
+        String notice = noticeRow.get(0).getConts();
+
         resultMap.put("list", arrList);
+        resultMap.put("notice", notice);
         return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
     }
 
@@ -1750,7 +1755,6 @@ public class MypageService {
                     delParam.put("photoNo", oldPhotoVo.getPhoto_no());
                     delParam.put("imageName", oldPhotoVo.getImg_name());
                     oldResult = mypageDao.pMemberFeedPhotoDel(delParam);
-                    System.out.println("oldResult 결과는 ? " + oldResult);
                     if (oldResult == 0 || oldResult == null){
                         error = true;
                         log.error("MypageService.java / feed photo update fail oldResult:{}", oldResult);
@@ -1762,7 +1766,6 @@ public class MypageService {
                     delParam.put("memNo", MemberVo.getMyMemNo(request));
                     delParam.put("imgName", newPhotoVo.getImg_name());
                     newResult = mypageDao.pMemberFeedPhotoIns(delParam);
-                    System.out.println("newResult 결과는 ? " + newResult);
 
                     if (newResult == 0 || newResult == null) {
                         error = true;
@@ -1785,7 +1788,6 @@ public class MypageService {
             paramMap.put("noticeContents", vo.getNoticeContents());
 //            paramMap.put("imgName", vo.getImgName());
             paramMap.put("noticeTopFix", vo.getNoticeTopFix());
-            System.out.println("이게 왜 null 값이야 " + mypageDao.pMemberFeedUpd(paramMap) + " param값이 뭔데 " + paramMap);
 
             int result = mypageDao.pMemberFeedUpd(paramMap);
             if(result > 0) {

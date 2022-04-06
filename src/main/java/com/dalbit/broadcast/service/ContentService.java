@@ -54,8 +54,6 @@ public class ContentService {
 //        HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
 //        String notice = DalbitUtil.getStringMap(resultMap, "notice");
 //
-//        System.out.println("!@!#!#" + notice);
-//
 //        log.info("프로시저 응답 코드: {}", procedureVo.getRet());
 //        log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
 //
@@ -92,9 +90,11 @@ public class ContentService {
         HashMap paramMap = new HashMap();
         List<BroadcastNoticeListOutVo> noticeRow = null;
         Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
+
         int cnt = 0;
 
         paramMap.put("memNo", memNo);
+        paramMap.put("roomNo", noticeSelVo.getRoomNo());
         noticeRow = mypageDao.pMemberBroadcastNoticeList(paramMap);
 
         HashMap resultMap = new HashMap();
@@ -172,6 +172,13 @@ public class ContentService {
             updMap.put("notice", StringUtils.equals(noticeUpdVo.getNotice(), "") ? "default" : noticeUpdVo.getNotice());
             Integer result = contentDao.pMemberBroadcastNoticeUpd(updMap);
             if(result > 0) {
+                try{
+                    SocketVo vo = socketService.getSocketVo(noticeUpdVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                    socketService.sendNotice(noticeUpdVo.getRoomNo(), MemberVo.getMyMemNo(request), noticeUpdVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    vo.resetData();
+                } catch (Exception e) {
+                    log.info("Socket Service sendNotice Exception {}", e);
+                }
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
             } else {
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
@@ -183,6 +190,13 @@ public class ContentService {
             addMap.put("notice", StringUtils.equals(noticeUpdVo.getNotice(), "") ? "default" : noticeUpdVo.getNotice());
             Integer result = contentDao.pMemberBroadcastNoticeIns(addMap);
             if(result > 0) {
+                try{
+                    SocketVo vo = socketService.getSocketVo(noticeUpdVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                    socketService.sendNotice(noticeUpdVo.getRoomNo(), MemberVo.getMyMemNo(request), noticeUpdVo.getNotice(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    vo.resetData();
+                } catch (Exception e) {
+                    log.info("Socket Service sendNotice Exception {}", e);
+                }
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
             } else {
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));

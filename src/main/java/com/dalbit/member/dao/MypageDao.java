@@ -773,6 +773,6 @@ public interface MypageDao {
      * upd_date         DATETIME    -- 수정 일자
      */
     @ResultMap({"ResultMap.BroadcastNoticeListOutVo"})
-    @Select("CALL rd_data.p_broadcast_room_notice_sel(#{memNo})")
+    @Select("CALL rd_data.p_broadcast_room_notice_sel(#{memNo}, #{roomNo})")
     List<Object> pMemberBroadcastNoticeList(Map<String, Object> param);
 }
