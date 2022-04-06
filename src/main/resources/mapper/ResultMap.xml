@@ -62,4 +62,8 @@
 
     <!--star-->
     <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
+
+    <resultMap id="TeamParamVo" type="com.dalbit.team.vo.TeamParamVo"/>
+    <resultMap id="TeamResultVo" type="com.dalbit.team.vo.TeamResultVo"/>
+    <resultMap id="TeamBadgeVo" type="com.dalbit.team.vo.TeamBadgeVo"/>
 </mapper>

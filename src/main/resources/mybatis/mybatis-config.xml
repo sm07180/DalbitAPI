@@ -88,6 +88,8 @@
 		<typeAlias type="com.dalbit.socket.vo.P_RoomMemberInfoSelectVo" alias="P_RoomMemberInfoSelectVo" />
 
 		<typeAlias type="com.dalbit.broadcast.vo.request.VoteRequestVo" alias="VoteRequestVo" />
+
+		<typeAlias type="com.dalbit.team.vo.TeamParamVo" alias="TeamVo" />
 	</typeAliases>
 
 	<mappers>

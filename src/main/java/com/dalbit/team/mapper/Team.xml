@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.team.dao.TeamDao" >
+    <select id="selectChargeItem" statementType="CALLABLE" parameterType="TeamVo" resultType="INTEGER">
+        CALL rd_data.p_dalla_team_ins_chk (#{memNo, mode=IN, jdbcType=INTEGER})
+    </select>
+
+    <select id="selectPayChargeItem" statementType="CALLABLE" parameterType="PayChargeVo" resultType="StoreChargeVo">
+        CALL sp_store_item_select(NULL, #{itemNo, mode=IN, jdbcType=VARCHAR})
+    </select>
+
+    <insert id="selectPayChargeItem" statementType="CALLABLE" parameterType="PayChargeVo">
+        CALL sp_store_item_select(NULL, #{itemNo, mode=IN, jdbcType=VARCHAR})
+    </insert>
+
+</mapper>
