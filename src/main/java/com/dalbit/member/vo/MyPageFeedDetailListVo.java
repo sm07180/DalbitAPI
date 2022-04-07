@@ -5,11 +5,13 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
-public class ProfileFeedDetailSelVo {
+@Getter @Setter
+public class MyPageFeedDetailListVo {
     @NotNull
-    private Integer noticeNo;
+    private Integer feedNo;
     @NotNull
     private String memNo;
+    @NotNull
+    private Long viewMemNo;
+
 }
