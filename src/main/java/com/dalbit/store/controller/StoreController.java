@@ -33,10 +33,10 @@ public class StoreController {
 
     @GetMapping("/store/charge")
     public String getChargeList(HttpServletRequest request){
-        List<StoreChargeVo> list = storeService.getStoreChargeList(request);
-        HashMap data = new HashMap();
+        // List<StoreChargeVo> list = storeService.getStoreChargeList(request);
+        Map<String, Object> data = new HashMap<>();
         data.put("dalCnt", storeService.getDalCnt(request));
-        data.put("dalPriceList", list == null ? new ArrayList<>() : list);
+        data.put("dalPriceList", new ArrayList<>());
         data.put("defaultNum", 2); //IOS 스토어 기본값 설정 위한 값
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
@@ -54,7 +54,7 @@ public class StoreController {
 
     @PostMapping("/store/getDalPriceList")
     public Object getDalPriceList(@RequestParam(value = "platform") String platform, HttpServletRequest request){
-        return storeService.getDalPriceList(platform, request);
+        return storeService.selectChargeItem(platform, request);
     }
     @PostMapping("/store/getDalCnt")
     public Object getDalCnt(HttpServletRequest request){

@@ -26,4 +26,8 @@ public class MainControllerV2 {
     public String main(HttpServletRequest request) {
         return mainServiceV2.main(request);
     }
+    @GetMapping("/etcData")
+    public String etcData() {
+        return mainServiceV2.getEtcData();
+    }
 }

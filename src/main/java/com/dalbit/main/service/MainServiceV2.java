@@ -7,6 +7,7 @@ import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
+import com.dalbit.main.etc.MainEtc;
 import com.dalbit.main.proc.MainPage;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
@@ -37,6 +38,12 @@ public class MainServiceV2 {
     @Autowired MypageDao mypageDao;
     @Autowired MainPage mainPage;
 
+    public String getEtcData() {
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("aos", MainEtc.IN_APP_UPDATE_VERSION.AOS);
+        returnMap.put("ios", MainEtc.IN_APP_UPDATE_VERSION.IOS);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+    }
     /**
      * 메인 페이지
      */
