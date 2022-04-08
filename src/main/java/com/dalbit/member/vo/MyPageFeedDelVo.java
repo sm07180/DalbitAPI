@@ -5,16 +5,15 @@ import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 
-@Getter
-@Setter
-public class ProfileFeedDelVo {
+@Getter @Setter
+public class MyPageFeedDelVo {
     @NotNull(message = "{\"ko_KR\" : \"공지번호를\"}")
-    private Long noticeNo;             // 글번호
+    private Integer feedNo;
     @NotNull(message = "{\"ko_KR\" : \"유저명을\"}")
-    private String delChrgrName;        // 삭제한 유저명
+    private String delChrgrName;
 
-    public ProfileFeedDelVo(Long noticeNo, String delChrgrName) {
-        this.noticeNo = noticeNo;
+    public MyPageFeedDelVo(Integer feedNo, String delChrgrName) {
+        this.feedNo = feedNo;
         this.delChrgrName = delChrgrName;
     }
 }

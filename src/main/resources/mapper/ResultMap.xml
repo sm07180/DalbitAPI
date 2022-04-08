@@ -63,6 +63,14 @@
     <!--star-->
     <resultMap id="P_MainStarVo" type="com.dalbit.main.vo.procedure.P_MainStarVo"/>
 
+    <!-- 리브랜딩 방송방공지 -->
+    <resultMap id="BroadcastNoticeListOutVo" type="com.dalbit.member.vo.BroadcastNoticeListOutVo"/>
+    <resultMap id="MobileBroadcastNoticeListOutVo" type="com.dalbit.member.vo.MobileBroadcastNoticeListOutVo"/>
+
+    <!-- 리브랜딩 피드 -->
+    <resultMap id="MyPageFeedOutVo" type="com.dalbit.member.vo.MyPageFeedOutVo" />
+    <resultMap id="MyPageFeedReplyOutVo" type="com.dalbit.member.vo.MyPageFeedReplyOutVo" />
+
     <resultMap id="TeamParamVo" type="com.dalbit.team.vo.TeamParamVo"/>
     <resultMap id="TeamResultVo" type="com.dalbit.team.vo.TeamResultVo"/>
     <resultMap id="TeamBadgeVo" type="com.dalbit.team.vo.TeamBadgeVo"/>
