@@ -102,6 +102,25 @@ public class StoreService {
             returnMap.put("memberInfo", memberInfo);
             DeviceVo deviceVo = new DeviceVo(request);
             log.error("deviceVo.getOs > {}", deviceVo.getOs());
+
+            String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+            customHeader = java.net.URLDecoder.decode(customHeader);
+            HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
+            int os = DalbitUtil.getIntMap(headers,"os");
+            String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
+            log.error("@@os:{}, isHybrid> {}", os, isHybrid);
+//            if(os == 1){
+//                setPlatform("Android-Mobile");
+//            }else if(os == 2){
+//                setPlatform("IOS-Mobile");
+//            } else if(os == 3){
+//                setPlatform("PC");
+//            } else if(isHybrid.equals("Y")){
+//                setPlatform("Web-Mobile");
+//            } else {
+//                setPlatform("PC");
+//            }
+
             // test code
 //             deviceVo.setOs(testOs);
 
