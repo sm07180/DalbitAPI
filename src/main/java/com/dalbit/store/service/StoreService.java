@@ -103,7 +103,7 @@ public class StoreService {
             DeviceVo deviceVo = new DeviceVo(request);
 
             // test code
-            // deviceVo.setOs(testOs);
+//             deviceVo.setOs(1);
 
             // 1. 외부결제 설정 정보 조회(어드민 설정 조회)
             StoreResultVo paymentSetting = storeDao.pPaymentSetSel();
@@ -122,12 +122,17 @@ public class StoreService {
             LocalDateTime localDateTime = LocalDateTime.now();
             String platform = Store.Platform.UNKNOWN;
             String mode = Store.ModeType.IN_APP;
-            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
-//            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
+//            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
+            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
             int hourRangeResult = hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
 
+            boolean isWeekEnd = localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
+
             if(deviceVo.getOs() == 1){
+//                String testVersion = "1.10.2";
+                // 구버전이라면
                 if(DalbitUtil.versionCompare(MainEtc.IN_APP_UPDATE_VERSION.AOS, deviceVo.getAppVersion())){
+//                if(DalbitUtil.versionCompare(MainEtc.IN_APP_UPDATE_VERSION.AOS, testVersion)){
                     mode = Store.ModeType.OTHER;
                     platform = Store.Platform.OTHER;
                 }else if("n".equals(paymentSetting.getAosPaymentSet())){// 어드민 외부결제 활성화 체크
@@ -140,22 +145,24 @@ public class StoreService {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.AOS_IN_APP;
                 }else if("y".equals(paymentSetting.getAosPaymentSet())){
-                    if(localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+                    if(isWeekEnd){
                         // 주말 : 외부결제 노출
                         mode = Store.ModeType.ALL;
-                        platform = Store.Platform.AOS_IN_APP;
-                    }else if(hourRangeResult > 0){
-                        // 평일 18:00 ~ 24:00, 00:00 ~ 06:00 : 외부결제 노출
-                        mode = Store.ModeType.ALL;
-                        platform = Store.Platform.AOS_IN_APP;
-                    }else if(paymentSetMemberChk == 1){
+                    }else {
+                        if(hourRangeResult > 0){
+                            // 평일 18:00 ~ 24:00, 00:00 ~ 06:00 : 외부결제 노출
+                            mode = Store.ModeType.ALL;
+                        }else{
+                            mode = Store.ModeType.IN_APP;
+                        }
+                    }
+                    if(paymentSetMemberChk == 1){
                         // 안드로이드 & IOS 공통 : DAO 주석 참고
                         mode = Store.ModeType.ALL;
-                        platform = Store.Platform.AOS_IN_APP;
                     }else{
                         mode = Store.ModeType.IN_APP;
-                        platform = Store.Platform.AOS_IN_APP;
                     }
+                    platform = Store.Platform.AOS_IN_APP;
                 }else{
                     mode = Store.ModeType.NONE;
                     platform = Store.Platform.UNKNOWN;
@@ -175,19 +182,21 @@ public class StoreService {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
                 }else if("y".equals(paymentSetting.getIosPaymentSet())){
-                    if(localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
+                    if(isWeekEnd){
                         mode = Store.ModeType.ALL;
-                        platform = Store.Platform.IOS_IN_APP;
-                    }else if(hourRangeResult > 0){
+                    }else {
+                        if (hourRangeResult > 0) {
+                            mode = Store.ModeType.ALL;
+                        }else{
+                            mode = Store.ModeType.IN_APP;
+                        }
+                    }
+                    if(paymentSetMemberChk == 1){
                         mode = Store.ModeType.ALL;
-                        platform = Store.Platform.IOS_IN_APP;
-                    }else if(paymentSetMemberChk == 1){
-                        mode = Store.ModeType.ALL;
-                        platform = Store.Platform.IOS_IN_APP;
                     }else{
                         mode = Store.ModeType.IN_APP;
-                        platform = Store.Platform.IOS_IN_APP;
                     }
+                    platform = Store.Platform.IOS_IN_APP;
                 }else{
                     mode = Store.ModeType.NONE;
                     platform = Store.Platform.UNKNOWN;
