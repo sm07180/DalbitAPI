@@ -63,6 +63,14 @@ public class ProfileService {
         return procedureVo;
     }
 
+    /**********************************************************************************************
+     * @Method 설명 : 프로필 수정 페이지 (프로필 사진 순서 변경하기)
+     * @작성일 : 2022-04-08
+     * @작성자 : 박용훈
+     * @변경이력 :
+     * @Parameter : { imageList: [ "/profile_0/21440390400/20220407140339284013.png", ... ] }
+     * @Return :
+     **********************************************************************************************/
     public String profileImageUpdate(Map param, HttpServletRequest request){
         try {
             String memNo = MemberVo.getMyMemNo(request);
@@ -103,7 +111,7 @@ public class ProfileService {
             }
 
             // 이미지 순서변경 완료
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, callProfImgList(memNo, request)));
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, null));
         } catch (Exception e) {
             log.error("ProfileService.java / profileImageUpdate() => Exception {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
