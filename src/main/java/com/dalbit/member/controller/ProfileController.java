@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -313,6 +314,19 @@ public class ProfileController {
         P_ProfileImgLeaderVo apiData = new P_ProfileImgLeaderVo(profileImgLeaderVo, request);
         String result = profileService.callProfileImgLeader(apiData);
         return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 프로필 수정 페이지 (프로필 사진 순서 변경하기)
+     * @작성일 : 2022-04-08
+     * @작성자 : 박용훈
+     * @변경이력 :
+     * @Parameter : { imageList: [ "/profile_0/21440390400/20220407140339284013.png", ... ] }
+     * @Return :
+     **********************************************************************************************/
+    @PostMapping("/update/img")
+    public String profileImgUpdate(@RequestBody Map param, HttpServletRequest request){
+        return profileService.profileImageUpdate(param, request);
     }
 
     /**
