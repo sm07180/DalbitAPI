@@ -127,6 +127,7 @@ public class StoreService {
             int hourRangeResult = hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
 
             boolean isWeekEnd = localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
+            log.error("deviceVo.getOs > {}", deviceVo.getOs());
 
             if(deviceVo.getOs() == 1){
 //                String testVersion = "1.10.2";
