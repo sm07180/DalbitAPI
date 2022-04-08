@@ -45,7 +45,7 @@ public class StoreService {
     @Autowired
     UserDao userDao;
 
-    // int testOs = 1;
+     int testOs = 1;
 
     public StoreChargeVo getStoreChargeListByParam(HttpServletRequest request){
         String itemNo = request.getParameter("itemNo");
@@ -103,7 +103,7 @@ public class StoreService {
             DeviceVo deviceVo = new DeviceVo(request);
 
             // test code
-//             deviceVo.setOs(1);
+//             deviceVo.setOs(testOs);
 
             // 1. 외부결제 설정 정보 조회(어드민 설정 조회)
             StoreResultVo paymentSetting = storeDao.pPaymentSetSel();
@@ -145,6 +145,10 @@ public class StoreService {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.AOS_IN_APP;
                 }else if("y".equals(paymentSetting.getAosPaymentSet())){
+                    if(paymentSetMemberChk == 1){
+                        // 안드로이드 & IOS 공통 : DAO 주석 참고
+                        mode = Store.ModeType.ALL;
+                    }
                     if(isWeekEnd){
                         // 주말 : 외부결제 노출
                         mode = Store.ModeType.ALL;
@@ -155,12 +159,6 @@ public class StoreService {
                         }else{
                             mode = Store.ModeType.IN_APP;
                         }
-                    }
-                    if(paymentSetMemberChk == 1){
-                        // 안드로이드 & IOS 공통 : DAO 주석 참고
-                        mode = Store.ModeType.ALL;
-                    }else{
-                        mode = Store.ModeType.IN_APP;
                     }
                     platform = Store.Platform.AOS_IN_APP;
                 }else{
@@ -182,6 +180,9 @@ public class StoreService {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
                 }else if("y".equals(paymentSetting.getIosPaymentSet())){
+                    if(paymentSetMemberChk == 1){
+                        mode = Store.ModeType.ALL;
+                    }
                     if(isWeekEnd){
                         mode = Store.ModeType.ALL;
                     }else {
@@ -190,11 +191,6 @@ public class StoreService {
                         }else{
                             mode = Store.ModeType.IN_APP;
                         }
-                    }
-                    if(paymentSetMemberChk == 1){
-                        mode = Store.ModeType.ALL;
-                    }else{
-                        mode = Store.ModeType.IN_APP;
                     }
                     platform = Store.Platform.IOS_IN_APP;
                 }else{
