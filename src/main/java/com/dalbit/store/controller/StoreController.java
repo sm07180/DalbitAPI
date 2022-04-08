@@ -2,6 +2,7 @@ package com.dalbit.store.controller;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.store.etc.Store;
 import com.dalbit.store.service.StoreService;
 import com.dalbit.store.vo.StoreChargeVo;
 import com.dalbit.util.DalbitUtil;
@@ -31,12 +32,17 @@ public class StoreController {
     @Autowired
     GsonUtil gsonUtil;
 
+    /*
+    * [ios inApp 결제 전용] native -> api
+    * 충전시 아이템 목록 불러옴
+    * dalCnt, list, defaultNum 바꾸려면 강업해야함
+    * */
     @GetMapping("/store/charge")
     public String getChargeList(HttpServletRequest request){
         // List<StoreChargeVo> list = storeService.getStoreChargeList(request);
         Map<String, Object> data = new HashMap<>();
         data.put("dalCnt", storeService.getDalCnt(request));
-        data.put("dalPriceList", new ArrayList<>());
+        data.put("list", storeService.getDalPriceList(Store.ModeType.IN_APP, request));
         data.put("defaultNum", 2); //IOS 스토어 기본값 설정 위한 값
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
