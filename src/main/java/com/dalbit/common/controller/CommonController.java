@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,8 @@ public class CommonController {
 
     @Autowired EmailService emailService;
 
+    @Value("${agora.app.id}") String AGORA_APP_ID;
+
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
@@ -69,6 +72,8 @@ public class CommonController {
         }else{
             resultMap = commonService.getCodeCache2("splash", request);
         }
+
+        resultMap.put("agoraAppId", AGORA_APP_ID);
 
         return gsonUtil.toJson(new JsonOutputVo(조회, commonService.getItemVersion(resultMap, request)));
     }

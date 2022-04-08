@@ -15,9 +15,9 @@ public class RoomListVo {
     @Min(message = "{\"ko_KR\" : \"페이지를\"}", value = 1)
     private Integer page;
     @Min(message = "{\"ko_KR\" : \"조회 건수를\"}", value = 1)
-    private Integer records;
+    private Integer records = 50;
 
-    private Integer searchType;
+    private Integer searchType = 1;
 
     private String gender;
 

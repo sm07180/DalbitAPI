@@ -119,16 +119,16 @@ public class MainServiceV2 {
 
 
         /* 일간 랭킹 */
-        HashMap<String, Object> dayRankingMap = new HashMap<>();
+//        HashMap<String, Object> dayRankingMap = new HashMap<>();
 /*        dayRankingMap.put("djRank", getMainDayDjRank(mainRankingPageVoList)); // dj
         dayRankingMap.put("fanRank", getMainDayFanRank(mainFanRankingVoList)); // fan
         dayRankingMap.put("loverRank", getMainDayLoverRank(mainLoverRankingVoList)); // lover*/
-        mainMap.put("dayRanking", dayRankingMap);
+//        mainMap.put("dayRanking", dayRankingMap);
 
-        mainMap.put("popupLevel", 0); // ???
+//        mainMap.put("popupLevel", 0); // ???
 
         /* 방금 착륙한 NEW 달둥스 (신입 BJ) */
-        List<P_RoomListVo> newBjList = new ArrayList<>();
+        /*List<P_RoomListVo> newBjList = new ArrayList<>();
         try {
             RoomListVo roomListVo = new RoomListVo();
             roomListVo.setMediaType("");
@@ -143,7 +143,7 @@ public class MainServiceV2 {
         } catch (Exception e) {
             log.error("MainServiceV2 / main / newBjList", e);
             mainMap.put("newBjList", newBjList);
-        }
+        }*/
 
         /* 메인 center 배너 */
         mainMap.put("centerBanner", mainService.selectBanner("9", request));
