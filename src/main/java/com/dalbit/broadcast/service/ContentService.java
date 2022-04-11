@@ -100,7 +100,7 @@ public class ContentService {
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(noticeRow)) {
             if(DalbitUtil.isEmpty(noticeRow)) {
-                resultMap.put("notice", new ArrayList());
+                resultMap.put("notice", "");
                 resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
                 return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
             }
