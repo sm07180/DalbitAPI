@@ -53,6 +53,16 @@ public class UserController {
         return result;
     }
 
+    /**
+     * #7853
+     * 방송방 : 차단후 강퇴하기
+     * */
+    @PostMapping("/black/add")
+    public String roomBlackAddKickOut(@Valid BlackAddKickOutVO vo, HttpServletRequest request){
+
+        //return userService.roomBlackAddKickOut();
+        return null;
+    }
 
     /**
      * 방송방 강퇴하기
