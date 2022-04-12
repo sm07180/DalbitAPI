@@ -1496,12 +1496,4 @@ public class ClipService {
 
         return result;
     }
-
-    private String getMonday() {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
-        return simpleDateFormat.format(c.getTime());
-    }
 }
