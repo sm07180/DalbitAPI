@@ -10,10 +10,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -59,7 +56,7 @@ public class StoreController {
     }
 
     @PostMapping("/store/getDalPriceList")
-    public Object getDalPriceList(@RequestParam(value = "platform") String platform, HttpServletRequest request){
+    public Object getDalPriceList(@RequestParam(value = "platform", required = false) String platform, HttpServletRequest request){
         return storeService.selectChargeItem(platform, request);
     }
     @PostMapping("/store/getDalCnt")

@@ -45,7 +45,6 @@ public class StoreService {
     @Autowired
     UserDao userDao;
 
-     int testOs = 1;
 
     public StoreChargeVo getStoreChargeListByParam(HttpServletRequest request){
         String itemNo = request.getParameter("itemNo");
@@ -98,31 +97,8 @@ public class StoreService {
             if(memberInfo == null || StringUtils.isEmpty(memberInfo.getMemId())){
                 return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회_회원정보없음, returnMap));
             }
-//            Device device = new LiteDeviceResolver().resolveDevice(request);
             returnMap.put("memberInfo", memberInfo);
             DeviceVo deviceVo = new DeviceVo(request);
-            log.error("deviceVo.getOs > {}", deviceVo.getOs());
-
-            String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
-            customHeader = java.net.URLDecoder.decode(customHeader);
-            HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
-            int os = DalbitUtil.getIntMap(headers,"os");
-            String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
-            log.error("@@os:{}, isHybrid> {}", os, isHybrid);
-//            if(os == 1){
-//                setPlatform("Android-Mobile");
-//            }else if(os == 2){
-//                setPlatform("IOS-Mobile");
-//            } else if(os == 3){
-//                setPlatform("PC");
-//            } else if(isHybrid.equals("Y")){
-//                setPlatform("Web-Mobile");
-//            } else {
-//                setPlatform("PC");
-//            }
-
-            // test code
-//             deviceVo.setOs(testOs);
 
             // 1. 외부결제 설정 정보 조회(어드민 설정 조회)
             StoreResultVo paymentSetting = storeDao.pPaymentSetSel();
@@ -139,8 +115,8 @@ public class StoreService {
             returnMap.put("nationCode", nationCode);
 
             LocalDateTime localDateTime = LocalDateTime.now();
-            String platform = Store.Platform.UNKNOWN;
-            String mode = Store.ModeType.IN_APP;
+            String platform;
+            String mode;
 //            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
             List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
             int hourRangeResult = hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
@@ -155,97 +131,76 @@ public class StoreService {
 //                if(DalbitUtil.versionCompare(MainEtc.IN_APP_UPDATE_VERSION.AOS, testVersion)){
                     mode = Store.ModeType.OTHER;
                     platform = Store.Platform.OTHER;
-                    log.error("1");
                 }else if("n".equals(paymentSetting.getAosPaymentSet())){// 어드민 외부결제 활성화 체크
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.AOS_IN_APP;
-                    log.error("2");
                 }else if(Store.Screen.aosMemberId.equals(memberInfo.getMemId())){// 심사 아이디 체크
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.AOS_IN_APP;
-                    log.error("3");
                 }else if(!Store.NationCodeType.KR.equals(nationCode)){// 해외 아이피 체크
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.AOS_IN_APP;
-                    log.error("4");
                 }else if("y".equals(paymentSetting.getAosPaymentSet())){
-                    if(paymentSetMemberChk == 1){
-                        // 안드로이드 & IOS 공통 : DAO 주석 참고
-                        mode = Store.ModeType.ALL;
-                        log.error("5");
-                    }
                     if(isWeekEnd){
                         // 주말 : 외부결제 노출
                         mode = Store.ModeType.ALL;
-                        log.error("6");
                     }else {
                         if(hourRangeResult > 0){
                             // 평일 18:00 ~ 24:00, 00:00 ~ 06:00 : 외부결제 노출
                             mode = Store.ModeType.ALL;
-                            log.error("7");
                         }else{
                             mode = Store.ModeType.IN_APP;
-                            log.error("8");
                         }
+                    }
+                    if(Store.ModeType.IN_APP.equals(mode) && paymentSetMemberChk == 1){
+                        // 안드로이드 & IOS 공통 : DAO 주석 참고
+                        mode = Store.ModeType.ALL;
                     }
                     platform = Store.Platform.AOS_IN_APP;
                 }else{
                     mode = Store.ModeType.NONE;
                     platform = Store.Platform.UNKNOWN;
-                    log.error("9");
                 }
             } else if(deviceVo.getOs() == 2){ // aos 조건과 동일, 주석 참고
                 // 기존 소스에 IOS는 스토어 페이지에 접근하지 않지만 방어 코드 용도
                 if(DalbitUtil.versionCompare(MainEtc.IN_APP_UPDATE_VERSION.IOS, deviceVo.getAppVersion())){
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
-                    log.error("10");
                 }else if("n".equals(paymentSetting.getIosPaymentSet())){
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
-                    log.error("11");
                 }else if(Store.Screen.iosMemberId.equals(memberInfo.getMemId())){
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
-                    log.error("12");
                 }else if(!Store.NationCodeType.KR.equals(nationCode)) {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
-                    log.error("13");
                 }else if("y".equals(paymentSetting.getIosPaymentSet())){
-                    if(paymentSetMemberChk == 1){
-                        mode = Store.ModeType.ALL;
-                        log.error("14");
-                    }
                     if(isWeekEnd){
                         mode = Store.ModeType.ALL;
-                        log.error("15");
                     }else {
                         if (hourRangeResult > 0) {
                             mode = Store.ModeType.ALL;
-                            log.error("16");
                         }else{
                             mode = Store.ModeType.IN_APP;
-                            log.error("17");
                         }
+                    }
+                    if(Store.ModeType.IN_APP.equals(mode) && paymentSetMemberChk == 1){
+                        mode = Store.ModeType.ALL;
                     }
                     platform = Store.Platform.IOS_IN_APP;
                 }else{
                     mode = Store.ModeType.NONE;
                     platform = Store.Platform.UNKNOWN;
-                    log.error("18");
                 }
             } else if(deviceVo.getOs() == 3){
                 mode = Store.ModeType.OTHER;
                 platform = Store.Platform.OTHER;
-                log.error("19");
             } else {
                 mode = Store.ModeType.NONE;
                 platform = Store.Platform.UNKNOWN;
-                log.error("20");
             }
 
-            log.error("result => mode:{}, platform:{}", mode, platform);
             /**
              * mode, platform 스토어 페이지 접근 시 탭 초기화랑 연관되어있음
              * mode: inapp | other | all(탭 생성 됨)
@@ -307,15 +262,10 @@ public class StoreService {
             return false;
         }
         DeviceVo deviceVo = new DeviceVo(request);
-        // test code
-        // deviceVo.setOs(testOs);
 
         if(platform.equals(Store.ModeType.IN_APP) && !(deviceVo.getOs() == Store.OS.ANDROID || deviceVo.getOs() == Store.OS.IOS)){
             return false;
         }
-        if(!(platform.equals(Store.ModeType.IN_APP) || platform.equals(Store.ModeType.OTHER))){
-            return false;
-        }
-        return true;
+        return platform.equals(Store.ModeType.IN_APP) || platform.equals(Store.ModeType.OTHER);
     }
 }
