@@ -48,6 +48,7 @@ public class StoreController {
     @GetMapping("/store/getOtherPriceList")
     public String getTargetPriceList(HttpServletRequest request){
         Map<String, Object> data = new HashMap<>();
+        data.put("dalCnt", storeService.getDalCnt(request));
         data.put("list", storeService.getTargetPriceList(Store.Platform.OTHER));
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
