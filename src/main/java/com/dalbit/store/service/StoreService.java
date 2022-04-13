@@ -250,6 +250,16 @@ public class StoreService {
         return dalPriceList;
     }
 
+    public List<StoreChargeVo> getTargetPriceList(String target) {
+        List<StoreChargeVo> dalPriceList = null;
+        try{
+            dalPriceList = storeDao.selectChargeItem(target);
+        } catch (Exception e) {
+            log.error("StoreService getTargetPriceList Error => {}", e.getMessage());
+        }
+        return dalPriceList;
+    }
+
     private String platformTarget(String platform, HttpServletRequest request){
         DeviceVo deviceVo = new DeviceVo(request);
 

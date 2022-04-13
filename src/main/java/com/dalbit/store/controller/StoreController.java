@@ -44,6 +44,14 @@ public class StoreController {
         return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
     }
 
+    // 버전분기 처리용
+    @GetMapping("/store/getOtherPriceList")
+    public String getTargetPriceList(HttpServletRequest request){
+        Map<String, Object> data = new HashMap<>();
+        data.put("list", storeService.getTargetPriceList(Store.Platform.OTHER));
+        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
+    }
+
     @PostMapping("/paycall/store")
     public String getChargeListByParam(HttpServletRequest request){
         StoreChargeVo storeChargeVo = storeService.getStoreChargeListByParam(request);
