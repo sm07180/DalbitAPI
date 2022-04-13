@@ -3,12 +3,17 @@ package com.dalbit.broadcast.controller;
 import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
+import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.P_MypageBlackAddVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -30,7 +36,10 @@ public class UserController {
     RestService restService;
     @Autowired
     CommonService commonService;
-
+    @Autowired
+    MypageService mypageService;
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 방송방 참여자 리스트
@@ -58,10 +67,32 @@ public class UserController {
      * 방송방 : 차단후 강퇴하기
      * */
     @PostMapping("/black/add")
-    public String roomBlackAddKickOut(@Valid BlackAddKickOutVO vo, HttpServletRequest request){
+    public String roomBlackAddKickOut(@Valid KickOutVo vo, HttpServletRequest request){
+        try {
+            // 차단
+            P_MypageBlackAddVo param1 = new P_MypageBlackAddVo();
+            param1.setBlack_mem_no(vo.getBlockNo());
+            param1.setMem_no(MemberVo.getMyMemNo(request));
+            mypageService.callMypageBlackListAdd(param1, request);
 
-        //return userService.roomBlackAddKickOut();
-        return null;
+            // 강퇴
+            P_RoomKickoutVo param2 = new P_RoomKickoutVo();
+            param2.setMem_no(MemberVo.getMyMemNo(request));
+            param2.setRoom_no(vo.getRoomNo());
+            param2.setBlocked_mem_no(vo.getBlockNo());
+
+            String result = userService.callBroadCastRoomKickout(param2, request);
+
+            return result;
+        } catch (Exception e) {
+            HashMap map = new HashMap();
+            map.put("roomNo", vo.getRoomNo());
+            map.put("reqMemNo", MemberVo.getMyMemNo(request));
+            map.put("blockMemNo", vo.getBlockNo());
+
+            log.error("UserController / roomBlackAddKickOut => Exception, param: {} \n Error: {}", gsonUtil.toJson(map) ,e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_실패));
+        }
     }
 
     /**
