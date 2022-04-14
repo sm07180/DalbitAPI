@@ -2,7 +2,9 @@ package com.dalbit.team.proc;
 
 
 import com.dalbit.team.vo.TeamParamVo;
+import com.dalbit.team.vo.TeamRankVo;
 import com.dalbit.team.vo.TeamResultVo;
+import com.dalbit.team.vo.TeamSymbolVo;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -249,7 +251,7 @@ public interface TeamProc {
      * @변경이력   :
      **********************************************************************************************/
     @ResultMap({"ResultMap.integer", "ResultMap.TeamResultVo"})
-    @Select("CALL rd_data.p_dalla_team_invitation_sel (#{teamNo},#{pageNo},#{pagePerCnt})")
+    @Select("CALL rd_data.p_dalla_team_invitation_sel (#{memNo},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamInvitationSel(TeamParamVo param);
 
     /**********************************************************************************************
@@ -293,7 +295,6 @@ public interface TeamProc {
     @Select("CALL rd_data.p_dalla_team_attendance_ins (#{memNo})")
     Integer pDallaTeamAttendanceIns(TeamParamVo param);
 
-
     /**********************************************************************************************
      * @Method    : 팀 활동배지 전체 리스트
      * @Date      : 2022-03-30
@@ -303,7 +304,7 @@ public interface TeamProc {
      * pageNo INT UNSIGNED		-- 페이지 번호
      * pagePerCnt INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
      * @return    :
-     *# RETURN [Multi Rows]
+     * # RETURN [Multi Rows]
      *
      * #1
      * tot_bg_cnt	INT		-- 총 활동배지수
@@ -331,7 +332,7 @@ public interface TeamProc {
      * upd_date		DATETIME		-- 수정일자
      * @변경이력   :
      **********************************************************************************************/
-    @ResultMap({"ResultMap.integer","ResultMap.integer", "ResultMap.TeamResultVo"})
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamBadgeVo"})
     @Select("CALL rd_data.p_dalla_team_badge_list (#{teamNo},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamBadgeList(TeamParamVo param);
 
@@ -375,5 +376,97 @@ public interface TeamProc {
     @Select("CALL rd_data.p_dalla_team_badge_upd (#{teamNo},#{memNo},#{updSlct},#{bgCode})")
     Integer pDallaTeamBadgeUpd(TeamParamVo param);
 
+    /**********************************************************************************************
+     * @Method    : 내팀 심볼
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * memNo BIGINT			-- 회원번호
+     * @return    :
+     * team_no			BIGINT			-- 팀번호
+     * team_name		VARCHAR(15)		-- 팀명
+     * team_medal_code		CHAR(4)			-- 팀메달
+     * team_edge_code		CHAR(4)			-- 팀테두리
+     * team_bg_code		CHAR(4)			-- 팀배경
+     * req_cnt			INT			-- 초대내역
+     * @변경이력   :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_team_mem_my_sel (#{memNo})")
+    TeamSymbolVo pDallaTeamMemMySel(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팀 초대/신청내역 읽음처리
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * s_return			INT		-- 0: 에러, 1:정상
+     * @변경이력   :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_team_mem_req_upd (#{memNo},#{reqSlct})")
+    Integer pDallaTeamMemReqUpd(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팀 대표활동배지 리스트
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * teamNo BIGINT			-- 팀번호
+     * @return    :
+     *# RETURN [Multi Rows]
+     * #1
+     * cnt			INT		-- 총건수
+     *
+     * #2
+     * the_week_date		DATE		-- 집계일자
+     * team_no			BIGINT		-- 팀번호
+     * team_name		VARCHAR(15)	-- 팀이름
+     * team_conts		VARCHAR(200)	-- 팀소개
+     * team_medal_code		CHAR(4)		-- 팀메달코드
+     * team_edge_code		CHAR(4)		-- 팀 테두리코드
+     * team_bg_code		CHAR(4)		-- 팀 배경코드
+     * rank_pt			INT		-- 랭킹점수
+     * send_dal_cnt		BIGINT		-- 보낸달수
+     * rcv_byeol_cnt		BIGINT		-- 받은별수
+     * new_fan_cnt		BIGINT		-- 신규팬수
+     * play_time			BIGINT		-- 총방송시간
+     * @변경이력   :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_team_rank_week_list (#{tDate},#{memNo},#{pageNo},#{pagePerCnt})")
+    List<Object> pDallaTeamRankWeekList(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팀 심볼 리스트
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * symbolSlct CHAR(1)		-- 심볼구분 [b:배경, e:테두리, m:메달]
+     * ordSlct CHAR(1)		-- 정렬구분 [f:선호도, c:코드순, i:갱신일순]
+     * pageNo INT 			-- 페이지 번호
+     * pagePerCnt INT 		-- 페이지 당 노출 건수 (Limit)
+     * @return    :
+     *
+     * # RETURN [Multi Rows]
+     *
+     * #1
+     * cnt		INT		-- 총건
+     *
+     * #2
+     * auto_no			BIGINT		-- 고유번호
+     * bg_slct			CHAR(1)		-- 배지구분[b:배경, e:테두리, m:메달]
+     * bg_slct_name		VARCHAR(15)	-- 배지구분명
+     * bg_code			CHAR(4)		-- 팀 배지 코드(x000 형식)
+     * bg_name			VARCHAR(15)	-- 배지 이름
+     * bg_conts		VARCHAR(200)	-- 소개
+     * bg_url			VARCHAR(500)	-- 배지 URL
+     * bg_cnt			BIGINT		-- 사용중인팀수
+     * use_yn			CHAR(1)		-- 사용여부
+     * chrgr_name		VARCHAR(40)	-- 등록관리자명
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * @변경이력   :
+     **********************************************************************************************/
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamSymbolVo"})
+    @Select("CALL rd_data.p_dalla_team_symbol_list (#{symbolSlct},#{ordSlct},#{pageNo},#{pagePerCnt})")
+    List<Object> pDallaTeamSymbolList(TeamParamVo param);
 
 }

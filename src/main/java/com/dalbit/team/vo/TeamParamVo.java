@@ -6,7 +6,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TeamParamVo {
-    Integer memNo;              //BIGINT		-- 개설자 회원번호
+    Long memNo;                 //BIGINT		-- 개설자 회원번호
     String teamName;            //VARCHAR(15)	-- 팀이름
     String teamConts;           //VARCHAR(200)	-- 팀소개내용
     String teamMedalCode;       //CHAR(4)		-- 팀 메달 코드(m000 형식)
@@ -21,4 +21,9 @@ public class TeamParamVo {
     String delSclt;             //CHAR(1)		-- 탈퇴구분 [ m:팀장탈퇴, t:본인탈퇴, c:관리자탈퇴, e:회원탈퇴 ]
     Integer tmMemNo;            //BIGINT		-- 팀원 회원번호
     String bgCode;              //CHAR(4)		-- 배지코드
+    Integer pageNo=1;           //INT UNSIGNED		-- 페이지 번호
+    Integer pagePerCnt=100;     //INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+    String symbolSlct;          //CHAR(1)		-- 심볼구분 [b:배경, e:테두리, m:메달]
+    String ordSlct;             //CHAR(1)		-- 정렬구분 [f:선호도, c:코드순, i:갱신일순]
+
 }

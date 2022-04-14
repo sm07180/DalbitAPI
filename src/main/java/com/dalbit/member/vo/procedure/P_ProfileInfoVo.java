@@ -26,6 +26,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
 
     private int memLogin;                       //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;                      //회원번호
+    private String team_no;                     //
     private String target_mem_no;               //대상회원번호
 
     private String  nickName;     				//닉네임
