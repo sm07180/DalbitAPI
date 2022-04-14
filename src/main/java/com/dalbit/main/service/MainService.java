@@ -973,4 +973,16 @@ public class MainService {
         return result;
     }
 
+    /**********************************************************************************************
+     * @Method 설명 : 랭킹 참여/비참여 여부
+     * @작성일 : 2022-04-13
+     * @작성자 : 강알찬
+     * @변경이력 :
+     **********************************************************************************************/
+    public String getRankingApply(HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        RankingApplyVO result = rankPage.getRankingApply(memNo);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+    }
+
 }
