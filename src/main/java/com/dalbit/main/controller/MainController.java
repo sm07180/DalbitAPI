@@ -218,4 +218,9 @@ public class MainController {
     public String getMyRank(HttpServletRequest request){
         return mainService.getMyRank(request);
     }
+
+    @RequestMapping("/rank/getRankingApply")
+    public String getRankingApply(HttpServletRequest request){
+        return mainService.getRankingApply(request);
+    }
 }
