@@ -602,7 +602,7 @@ public class CommonController {
             log.error("test map =>{}", map);
 
             // 미성년자는 법정대리인에게 메일 발송
-//            commonService.sendPayMailManager(memNo, orderId);
+            commonService.sendPayMailManager(memNo, orderId);
 
             return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
         }else {
