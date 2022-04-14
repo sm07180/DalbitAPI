@@ -1,5 +1,6 @@
 package com.dalbit.common.controller;
 
+import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -650,5 +651,10 @@ public class CommonController {
         }
 
         return resVO;
+    }
+
+    @PostMapping("/getNationCode")
+    public Object getNationCode(HttpServletRequest request){
+        return commonService.getNationCode(request);
     }
 }
