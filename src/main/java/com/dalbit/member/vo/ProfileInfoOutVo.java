@@ -88,7 +88,7 @@ public class ProfileInfoOutVo extends BaseVo {
     }
     public void setProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank, boolean isAdmin) {
         this.memNo = target_mem_no;
-        this.teamNo = target.getTeam_no();
+        this.teamNo = target.getTeamNo();
         this.nickNm = target.getNickName();
         this.gender = target.getMemSex();
         this.age = target.getAge();
