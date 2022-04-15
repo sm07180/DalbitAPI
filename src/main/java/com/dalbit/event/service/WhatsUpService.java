@@ -124,12 +124,22 @@ public class WhatsUpService {
         return gsonUtil.toJson(new JsonOutputVo(Status.와썹맨_신입_조회, whatsUpResultVo));
     }
 
+
     public String pEvtWassupManNoSel() {
         WhatsUpResultVo whatsUpResultVo = null;
         try {
             whatsUpResultVo = whatsUpDao.pEvtWassupManNoSel();
         } catch (Exception e) {
             log.error("WhatsUpService pEvtWassupManNoSel Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(Status.와썹맨_회차_조회, whatsUpResultVo));
+    }
+    public String pEvtWassupManLastNoSel() {
+        WhatsUpResultVo whatsUpResultVo = null;
+        try {
+            whatsUpResultVo = whatsUpDao.pEvtWassupManLastNoSel();
+        } catch (Exception e) {
+            log.error("WhatsUpService pEvtWassupManLastNoSel Error => {}", e.getMessage());
         }
         return gsonUtil.toJson(new JsonOutputVo(Status.와썹맨_회차_조회, whatsUpResultVo));
     }
