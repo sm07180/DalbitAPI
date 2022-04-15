@@ -126,6 +126,9 @@ public interface WhatsUpDao {
     WhatsUpResultVo pEvtWassupManNoSel();
 
     @Transactional(readOnly = true)
+    WhatsUpResultVo pEvtWassupManLastNoSel();
+
+    @Transactional(readOnly = true)
     List<WhatsUpResultVo> pEvtWassupManNoList();
 
 }
