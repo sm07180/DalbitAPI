@@ -23,6 +23,7 @@ public class ProfileFeedOutVo {
     private Long replyCnt;               //         BIGINT		-- 댓글수
     private Long rcv_like_cnt;           //         BIGINT		-- 좋아요수
     private Long rcv_like_cancel_cnt;    //         BIGINT		-- 취소 좋아요수
+    private String like_yn;              //         CHAR        -- 좋아요 확인[y, n]
 
     private List<ProfileFeedPhotoOutVo> photoInfoList;
     private ImageVo profImg;

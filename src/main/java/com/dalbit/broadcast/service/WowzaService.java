@@ -443,7 +443,17 @@ public class WowzaService {
             RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, deviceVo, miniGameList, ttsActors, moonLandEvent);
             roomInfoVo.setIsGuest(false);
             roomInfoVo.changeBackgroundImg(deviceVo);
-            badgeService.setBadgeInfo(target.getBjMemNo(), 4);
+
+            if(badgeService.setBadgeInfo(target.getBjMemNo(), 4)){
+                try {
+                    log.error("NULL ====> doCreateBroadcast 4 : getBjMemNo {}", target.getBjMemNo());
+                    log.error(" NULL ====> doCreateBroadcast  customHeader : {}", customHeader );
+                    String referer = request.getHeader("Referer");
+                    log.error(" NULL ====> doCreateBroadcast  referer : {}", referer );
+                } catch (Exception e) {
+                }
+            }
+
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
             roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             //네이티브에서 사용하는 방생성시 DJ의 설정
@@ -1064,7 +1074,18 @@ public class WowzaService {
         }
 
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors, moonLandEvent);
-        badgeService.setBadgeInfo(target.getBjMemNo(), 4);
+
+        if(badgeService.setBadgeInfo(target.getBjMemNo(), 4)){
+            try {
+                log.error("NULL ====> getRoomInfo 4 : getTarget_mem_no {}", target.getBjMemNo());
+                String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+                customHeader = java.net.URLDecoder.decode(customHeader);
+                log.error(" NULL ====> getRoomInfo  customHeader : {}", customHeader );
+                String referer = request.getHeader("Referer");
+                log.error(" NULL ====> getRoomInfo  referer : {}", referer );
+            } catch (Exception e) {
+            }
+        }
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
         roomInfoVo.setJoinDate(DalbitUtil.getStringMap(resultMap, "joinDate"));

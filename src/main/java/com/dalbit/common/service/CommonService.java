@@ -1353,6 +1353,12 @@ public class CommonService {
     public ResVO parentsAuthIns(ParentCertInputVo agreeInfo) {
         ResVO result = new ResVO();
         try {
+            String memNo = agreeInfo.getMemNo();
+            ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(memNo);
+            String email = parentsAuthSel.getParents_mem_email();
+            agreeInfo.setPMemEmail(email);
+            agreeInfo.setAgreementDate(parentsAuthSel.getAgreement_date());
+
             Integer insResult = common.parentsAuthIns(agreeInfo);
             // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
             switch (insResult) {
@@ -1365,13 +1371,13 @@ public class CommonService {
                 case 1:
                     try {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
-                        ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
-                        emailVo.setEmail(agreeInfo.getPMemEmail());
-                        emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
+                        emailVo.setMemNo(memNo);
+                        emailVo.setEmail(email);
+                        emailVo.setAgreeAllowUserName(agreeInfo.getPMemName());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
                         emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
-                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
+                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replaceAll("-", "."));
 
                         sendPayAgreeEmail(emailVo); // 메일 발송
                         result.setSuccessResVO(insResult);
@@ -1416,7 +1422,7 @@ public class CommonService {
             String rcvUserName = parentsAgreeEmailVo.getAgreeRcvUserName();
             String rcvUserLastLetterReplace = rcvUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
             String allowUserName = parentsAgreeEmailVo.getAgreeAllowUserName();
-            String allowUserLastLetterReplace = allowUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+            String allowUserLastLetterReplace = allowUserName.substring(0, allowUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
 
             msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", allowUserLastLetterReplace);
             msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", rcvUserLastLetterReplace);
@@ -1426,12 +1432,12 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@agreeExpireDate@@", parentsAgreeEmailVo.getAgreeExpireDate());
             msgCont = msgCont.replaceAll("@@agreeScope@@", "결제(달 충전, 아이템 선물)");
 
-            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", email, msgCont);
+            EmailVo emailVo = new EmailVo("달라 보호자(법정대리인) 동의 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
             JSONObject mailEtcInfo = new JSONObject();
-            mailEtcInfo.put("agreeAllowUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeAllowUserName", allowUserLastLetterReplace);
             mailEtcInfo.put("agreeRcvUserName", rcvUserLastLetterReplace);
             mailEtcInfo.put("agreeRcvUserId", parentsAgreeEmailVo.getAgreeRcvUserId());
             mailEtcInfo.put("agreeDate", today);
@@ -1446,8 +1452,7 @@ public class CommonService {
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
             }
-        }
-        catch(Exception e){
+        } catch(Exception e){
             log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러", e);
         }
     }
@@ -1488,12 +1493,18 @@ public class CommonService {
             int birthMonth = Integer.parseInt(birthSplit[1]);
             int birthDay = Integer.parseInt(birthSplit[2]);
             if(birthToAmericanAge(birthYear, birthMonth, birthDay) < 19) {
+                ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(memNo);
+                String email = parentsAuthSel.getParents_mem_email();
+
                 String[] accountInfo = accountInfo(paySuccSelVo);
-                DecimalFormat format = new DecimalFormat("###,###");
-                String priceComma = format.format(paySuccSelVo.getPay_amt());
+                DecimalFormat formatter = new DecimalFormat("###,###");
+                int payPrice = (int)Double.parseDouble(paySuccSelVo.getPay_amt());
+                String priceComma = formatter.format(payPrice);
                 ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
                 parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
                 parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+                parentsPayEmailVo.setEmail(email);
+                parentsPayEmailVo.setPaymentUserName(parentsAuthSel.getParents_mem_name());
 
                 parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
                 parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
@@ -1619,7 +1630,7 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@paymentQuantity@@", parentsPayEmailVo.getPaymentQuantity());
             msgCont = msgCont.replaceAll("@@paymentPrice@@", parentsPayEmailVo.getPaymentPrice());
 
-            EmailVo emailVo = new EmailVo("달빛라이브 결제 알림", email, msgCont);
+            EmailVo emailVo = new EmailVo("달라 결제 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그

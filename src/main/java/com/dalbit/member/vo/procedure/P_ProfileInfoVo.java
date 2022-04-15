@@ -56,6 +56,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private int receivedGoodTotal;              //총 좋아요 받은 수
     private int badge_specialdj;
     private int badge_partnerdj;
+    private String playMakerYn;                //플레이메이커
     private String fanBadgeText;
     private String fanBadgeIcon;
     private String fanBadgeStartColor;

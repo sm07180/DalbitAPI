@@ -1,11 +1,17 @@
 package com.dalbit.broadcast.controller;
 
 import com.dalbit.broadcast.service.ContentService;
+import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
+import com.dalbit.common.code.Status;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.BroadcastNoticeSelVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
@@ -14,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+@Slf4j
 @RestController
 @RequestMapping("/broad")
 @Scope("prototype")
@@ -21,41 +28,65 @@ public class ContentController {
 
     @Autowired
     ContentService contentService;
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 방송방 공지조회
      */
+//    @GetMapping("/notice")
+//    public String noticeSelect(@Valid NoticeViewVo noticeViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//
+//        P_RoomNoticeVo apiData = new P_RoomNoticeVo();
+//        apiData.setMem_no(MemberVo.getMyMemNo(request));
+//        apiData.setRoom_no(noticeViewVo.getRoomNo());
+//
+//        String result = contentService.callBroadCastRoomNoticeSelect(apiData);
+//
+//        return result;
+//    }
+
     @GetMapping("/notice")
-    public String noticeSelect(@Valid NoticeViewVo noticeViewVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
+    public String noticeSelect(@Valid BroadcastNoticeSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return contentService.mobileBroadcastNoticeSelect(noticeSelVo, request);
+        } catch (Exception e) {
+            log.error("noticeSelect Error : {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+        }
 
-        P_RoomNoticeVo apiData = new P_RoomNoticeVo();
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setRoom_no(noticeViewVo.getRoomNo());
-
-        String result = contentService.callBroadCastRoomNoticeSelect(apiData);
-
-        return result;
     }
-
 
     /**
      * 공지사항 입력/수정
      */
+//    @PostMapping("/notice")
+//    public String noticeEdit(@Valid NoticeEditVo noticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+//
+//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+//
+//        P_RoomNoticeEditVo apiData = new P_RoomNoticeEditVo();
+//        apiData.setMem_no(MemberVo.getMyMemNo(request));
+//        apiData.setRoom_no(noticeEditVo.getRoomNo());
+//        apiData.setNotice(noticeEditVo.getNotice());
+//
+//        String result = contentService.callBroadCastRoomNoticeEdit(apiData, request);
+//
+//        return result;
+//    }
+
     @PostMapping("/notice")
-    public String noticeEdit(@Valid NoticeEditVo noticeEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-
+    public String noticeEdit(@Valid BroadcastNoticeUpdVo param, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-
-        P_RoomNoticeEditVo apiData = new P_RoomNoticeEditVo();
-        apiData.setMem_no(MemberVo.getMyMemNo(request));
-        apiData.setRoom_no(noticeEditVo.getRoomNo());
-        apiData.setNotice(noticeEditVo.getNotice());
-
-        String result = contentService.callBroadCastRoomNoticeEdit(apiData, request);
-
-        return result;
+        try {
+            return contentService.mobileBroadcastNoticeUpd(param, request);
+        } catch (Exception e) {
+            log.error("noticeEdit Error : {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+        }
     }
 
 

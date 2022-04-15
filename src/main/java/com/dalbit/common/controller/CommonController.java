@@ -18,6 +18,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
@@ -57,6 +58,8 @@ public class CommonController {
 
     @Autowired EmailService emailService;
 
+    @Value("${agora.app.id}") String AGORA_APP_ID;
+
     @GetMapping("/splash")
     public String getSplash(HttpServletRequest request){
         //return gsonUtil.toJson(new SplashVo(Status.조회, commonService.getCodeCache("splash"), commonService.getJwtTokenInfo(request).get("tokenVo")));
@@ -69,6 +72,8 @@ public class CommonController {
         }else{
             resultMap = commonService.getCodeCache2("splash", request);
         }
+
+        resultMap.put("agoraAppId", AGORA_APP_ID);
 
         return gsonUtil.toJson(new JsonOutputVo(조회, commonService.getItemVersion(resultMap, request)));
     }
@@ -330,14 +335,17 @@ public class CommonController {
         if (selfAuthSaveVo.getMsg().equals("정상")) {
             P_SelfAuthVo apiData = new P_SelfAuthVo();
             String[] plusInfo = selfAuthSaveVo.getPlusInfo().split("_");
+            String birthYear = selfAuthSaveVo.getBirthDay().substring(0, 4);
+            String birthMonth = selfAuthSaveVo.getBirthDay().substring(4, 6);
+            String birthDay = selfAuthSaveVo.getBirthDay().substring(6, 8);
 
             apiData.setMem_no(plusInfo[0]); //요청시 보낸 회원번호 (추가정보)
             apiData.setName(selfAuthSaveVo.getName());
             apiData.setPhoneNum(selfAuthSaveVo.getPhoneNo());
             apiData.setMemSex(selfAuthSaveVo.getGender());
-            apiData.setBirthYear(selfAuthSaveVo.getBirthDay().substring(0, 4));
-            apiData.setBirthMonth(selfAuthSaveVo.getBirthDay().substring(4, 6));
-            apiData.setBirthDay(selfAuthSaveVo.getBirthDay().substring(6, 8));
+            apiData.setBirthYear(birthYear);
+            apiData.setBirthMonth(birthMonth);
+            apiData.setBirthDay(birthDay);
             apiData.setCommCompany(selfAuthSaveVo.getPhoneCorp());
             apiData.setForeignYN(selfAuthSaveVo.getNation());
             apiData.setCertCode(selfAuthSaveVo.getCI());
@@ -348,9 +356,9 @@ public class CommonController {
             apiData.setAgreePeriod(plusInfo[5]);
 
             int manAge = commonService.birthToAmericanAge(
-                Integer.parseInt(apiData.getBirthYear()),
-                Integer.parseInt(apiData.getBirthMonth()),
-                Integer.parseInt(apiData.getBirthDay())
+                Integer.parseInt(birthYear),
+                Integer.parseInt(birthMonth),
+                Integer.parseInt(birthDay)
             );
 
             if(selfAuthSaveVo.getPlusInfo().split("_")[4].equals("0")){
@@ -368,9 +376,11 @@ public class CommonController {
                 String memNo = selfAuthSaveVo.getPlusInfo().split("_")[0]; // 유저 번호
                 String parentName = selfAuthSaveVo.getName(); // 대리인 이름
                 String parentSex = selfAuthSaveVo.getGender(); // 대리인 성별
-                String parentBirthYear = selfAuthSaveVo.getBirthDay().substring(0, 4); // 대리인 생년
-                String parentBirthDay = selfAuthSaveVo.getBirthDay().substring(6, 8); // 대리인 월일
-                String parentPhoneNo = selfAuthSaveVo.getPhoneNo(); // 대리인 휴대폰 번호
+                String parentBirthYear = birthYear; // 생년
+                int parentBirthMonthInt = Integer.parseInt(birthMonth);
+                String parentBirthMonth = parentBirthMonthInt < 10 ? "0" + parentBirthMonthInt : "" + parentBirthMonthInt;
+                String parentBirthDay = parentBirthMonth + birthDay; // 월일
+                String parentPhoneNo = apiData.getPhoneNum();
 
                 ParentCertInputVo parentCertInputVo = new ParentCertInputVo(
                     memNo, parentName, parentSex, parentBirthYear, parentBirthDay, parentPhoneNo
