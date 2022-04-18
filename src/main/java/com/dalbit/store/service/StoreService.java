@@ -117,8 +117,8 @@ public class StoreService {
             LocalDateTime localDateTime = LocalDateTime.now();
             String platform;
             String mode;
-            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
-//            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
+//            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,18,19,20,21,22,23);
+            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
             int hourRangeResult = hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
 
             boolean isWeekEnd = localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
