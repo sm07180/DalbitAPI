@@ -16,11 +16,11 @@ public class TeamParamVo {
     private String updSlct;             //CHAR(1)		-- 수정구분[a:심볼및이름, b:소개수정] -- 뱃지[y:대표 설정, n:대표해제]
     private Integer teamNo;             //BIGINT		-- 팀번호
     private String reqMemYn;            //CHAR(1)		-- 가입신청 허용여부
-    private Integer masterMemNo;        //BIGINT		-- 팀장 회원번호
+    private Long masterMemNo;        //BIGINT		-- 팀장 회원번호
     private String chrgrName;           //VARCHAR(40)	-- 삭제 관리자명 (관리자 삭제시)
     private String reqSlct;             //CHAR(1)		-- 신청구분 [r:가입신청, i:초대]
     private String delSclt;             //CHAR(1)		-- 탈퇴구분 [ m:팀장탈퇴, t:본인탈퇴, c:관리자탈퇴, e:회원탈퇴 ]
-    private Integer tmMemNo;            //BIGINT		-- 팀원 회원번호
+    private Long tmMemNo;            //BIGINT		-- 팀원 회원번호
     private String bgCode;              //CHAR(4)		-- 배지코드
     private Integer pageNo=1;           //INT UNSIGNED		-- 페이지 번호
     private Integer pagePerCnt=100;     //INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)

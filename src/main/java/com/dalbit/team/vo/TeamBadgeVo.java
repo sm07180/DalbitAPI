@@ -19,12 +19,15 @@ public class TeamBadgeVo {
   String bg_black_url;		//VARCHAR(500)		-- 배지URL(미획득)
   Integer bg_bonus;		    //INT			-- 배지경험치
   Integer bg_objective;		//INT			-- 목표수치(활동배지용)
+  Integer bg_achieve;		//INT			-- 달성수치(활동배지용)
   Integer bg_cnt;			//BIGINT			-- 사용중인팀수
   String use_yn;			//CHAR(1)			-- 사용여부
   String bg_achieve_yn;		//CHAR(1)			-- 획득여부
   String chrgr_name;		//VARCHAR(40)		-- 등록관리자
   String ins_date;		    //DATETIME		-- 등록일자
   String upd_date;		    //DATETIME		-- 수정일자
+
+
 
 
 }
