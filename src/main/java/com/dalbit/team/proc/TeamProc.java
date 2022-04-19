@@ -10,7 +10,8 @@ import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
+
 
 @Component
 @Repository
@@ -278,7 +279,7 @@ public interface TeamProc {
      * upd_date		DATETIME	-- 수정일자
      * @변경이력   :
      **********************************************************************************************/
-    @ResultMap({"ResultMap.integer", "ResultMap.TeamResultVo"})
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamMemVo"})
     @Select("CALL rd_data.p_dalla_team_request_sel (#{teamNo},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamRequestSel(TeamParamVo param);
 
@@ -324,6 +325,7 @@ public interface TeamProc {
      * bg_black_url		VARCHAR(500)		-- 배지URL(미획득)
      * bg_bonus		INT			-- 배지경험치
      * bg_objective		INT			-- 목표수치(활동배지용)
+     * bg_achieve		INT			-- 달성수치(활동배지용)
      * bg_cnt			BIGINT			-- 사용중인팀수
      * use_yn			CHAR(1)			-- 사용여부
      * bg_achieve_yn		CHAR(1)			-- 획득여부
@@ -332,7 +334,7 @@ public interface TeamProc {
      * upd_date		DATETIME		-- 수정일자
      * @변경이력   :
      **********************************************************************************************/
-    @ResultMap({"ResultMap.integer", "ResultMap.TeamBadgeVo"})
+    @ResultMap({"ResultMap.integer","ResultMap.integer", "ResultMap.TeamBadgeVo"})
     @Select("CALL rd_data.p_dalla_team_badge_list (#{teamNo},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamBadgeList(TeamParamVo param);
 
@@ -468,5 +470,109 @@ public interface TeamProc {
     @ResultMap({"ResultMap.integer", "ResultMap.TeamSymbolVo"})
     @Select("CALL rd_data.p_dalla_team_symbol_list (#{symbolSlct},#{ordSlct},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamSymbolList(TeamParamVo param);
+
+
+    /**********************************************************************************************
+     * @Method    : 팀 심볼 리스트
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * teamNo BIGINT			-- 팀번호
+     * @return    :
+     *
+     *# RETURN [Multi Rows]
+     *
+     * #1
+     * team_no			BIGINT		-- 팀번호
+     * master_mem_no		BIGINT		-- 팀장회원번호
+     * team_name		VARCHAR(15)	-- 팀명
+     * team_conts		VARCHAR(200)	-- 팀소개
+     * team_medal_code		CHAR(4)		-- 팀메달
+     * team_edge_code		CHAR(4)		-- 팀테두리
+     * team_bg_code		CHAR(4)		-- 팀배경
+     * team_mem_cnt		TINYINT		-- 팀원수
+     * team_req_mem_cnt	TINYINT		-- 가입신청수
+     * team_ivt_mem_cnt	TINYINT		-- 가입초대수
+     * team_tot_score		BIGINT		-- 팀점수
+     * rank_no			INT		-- 팀랭킹
+     * rank_pt			INT		-- 팀랭킹 점수
+     * team_chnge_cnt		TINYINT		-- 팀정보 수정횟수
+     * req_mem_yn		CHAR(1)		-- 가입신청 허용여부
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     *
+     * #2
+     * tot_badge_cnt		INT		-- 달성한 활동배지수
+     *
+     * #3
+     * auto_no			BIGINT			-- 고유번호
+     * team_no			BIGINT			-- 팀번호
+     * bg_slct			CHAR(1)			-- 배지구분[a:활동배지, b:배경, e:테두리, m:메달]
+     * bg_code			CHAR(4)			-- 배지코드
+     * bg_name			VARCHAR(15)		-- 배지이름
+     * bg_conts		VARCHAR(200)		-- 배지설명
+     * bg_color_url		VARCHAR(500)		-- 배지URL(획득)
+     * bg_black_url		VARCHAR(500)		-- 배지URL(미획득)
+     * bg_achieve_yn		CHAR(1)			-- 획득여부
+     * ins_date		DATETIME		-- 등록일자
+     * upd_date		DATETIME		-- 수정일자
+     *
+     * #4
+     * team_no			BIGINT		-- 팀번호
+     * tm_mem_no		BIGINT		-- 팀원회원번호
+     * tm_mem_nick		VARCHAR(20)	-- 팀원대화명
+     * tm_image_background	VARCHAR(256)	-- 프로필 배경사진
+     * tm_mem_score		BIGINT		-- 팀 기여점수
+     * team_mem_type		CHAR(1)		-- 팀 멤버 구분[m:개설자 ,t:일반멤버]
+     * ins_date		DATETIME	-- 등록일자
+     * upd_date		DATETIME	-- 수정일자
+     * @변경이력   :
+     **********************************************************************************************/
+    @ResultMap({"ResultMap.TeamInfoVo","ResultMap.integer", "ResultMap.TeamSymbolVo","ResultMap.TeamMemVo", "ResultMap.map"})
+    @Select("CALL rd_data.p_dalla_team_detail_sel (#{teamNo},#{memNo})")
+    List<Object> pDallaTeamDetailSel(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팀 번호 확인 프로시져
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * memNo BIGINT			-- 신청자 회원번호
+     * @return    :
+     * s_return			INT		-- 0: 팂없음,그외번호:팀번호
+     * @변경이력   :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_team_mem_ins_chk (#{memNo})")
+    Integer pDallaTeamMemInsChk(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팀 가입신청/초대 체크
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * teamNo BIGINT			-- 팀번호
+     * memNo BIGINT			-- 신청자 회원번호
+     * reqSlct CHAR(1)		-- 신청구분 [r:가입신청, i:초대]
+     * @return    :
+     * s_return			INT		-- 0: 팂없음,그외번호:팀번호
+     * @변경이력   :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_team_mem_req_ins_chk (#{teamNo},#{memNo},#{reqSlct})")
+    Integer pDallaTeamMemReqInsChk(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팀원 상태체크
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * teamNo BIGINT			-- 팀번호
+     * memNo BIGINT			-- 신청자 회원번호
+     * @return    :
+     * s_teamMemType		CHAR(1)		-- 팀 멤버 구분[m:개설자 ,t:일반멤버, n:미가입]
+     * @변경이력   :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_team_mem_stat_chk (#{teamNo},#{memNo})")
+    String pDallaTeamMemStatChk(TeamParamVo param);
+
 
 }

@@ -33,8 +33,23 @@ public class TeamService {
     public ResVO getTeamInsChk(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamInsChk(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamInsChk(vo);
+            if(result == -4){
+                resVO.setResVO(ResMessage.C60001.getCode(), ResMessage.C60001.getCodeNM(), result);
+            }else if(result == -3){
+                resVO.setResVO(ResMessage.C60002.getCode(), ResMessage.C60002.getCodeNM(), result);
+            }else if(result == -2){
+                resVO.setResVO(ResMessage.C60003.getCode(), ResMessage.C60003.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60004.getCode(), ResMessage.C60004.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
+
         } catch (Exception e) {
             log.error("getTeamInsChk error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -52,8 +67,26 @@ public class TeamService {
     public ResVO getTeamIns(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamIns(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamIns(vo);
+            if(result == -4){
+                resVO.setResVO(ResMessage.C60005.getCode(), ResMessage.C60005.getCodeNM(), result);
+            }else if(result == -3){
+                resVO.setResVO(ResMessage.C60002.getCode(), ResMessage.C60002.getCodeNM(), result);
+            }else if(result == -2){
+                resVO.setResVO(ResMessage.C60003.getCode(), ResMessage.C60003.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60004.getCode(), ResMessage.C60004.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                int teamNo =  teamProc.pDallaTeamMemInsChk(vo);
+                HashMap<String, Object> resultMap = new HashMap<>();
+                resultMap.put("teamNo", teamNo);
+                resultMap.put("result", result);
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultMap);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamIns error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -70,8 +103,22 @@ public class TeamService {
     public ResVO getTeamUpd(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamUpd(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamUpd(vo);
+            if(result == -4){
+                resVO.setResVO(ResMessage.C60005.getCode(), ResMessage.C60005.getCodeNM(), result);
+            }else if(result == -3){
+                resVO.setResVO(ResMessage.C60020.getCode(), ResMessage.C60020.getCodeNM(), result);
+            }else if(result == -2){
+                resVO.setResVO(ResMessage.C60008.getCode(), ResMessage.C60008.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60007.getCode(), ResMessage.C60007.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamUpd error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -88,8 +135,18 @@ public class TeamService {
     public ResVO getTeamDel(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamDel(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamDel(vo);
+            if(result == -2){
+                resVO.setResVO(ResMessage.C60009.getCode(), ResMessage.C60009.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60010.getCode(), ResMessage.C60010.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamDel error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -106,8 +163,28 @@ public class TeamService {
     public ResVO getTeamMemReqIns(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamMemReqIns(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamMemReqIns(vo);
+            if(result == -7){
+                resVO.setResVO(ResMessage.C60011.getCode(), ResMessage.C60011.getCodeNM(), result);
+            }else if(result == -6){
+                resVO.setResVO(ResMessage.C60012.getCode(), ResMessage.C60012.getCodeNM(), result);
+            }else if(result == -5){
+                resVO.setResVO(ResMessage.C60013.getCode(), ResMessage.C60013.getCodeNM(), result);
+            }else if(result == -4){
+                resVO.setResVO(ResMessage.C60014.getCode(), ResMessage.C60014.getCodeNM(), result);
+            }else if(result == -3){
+                resVO.setResVO(ResMessage.C60015.getCode(), ResMessage.C60015.getCodeNM(), result);
+            }else if(result == -2){
+                resVO.setResVO(ResMessage.C60007.getCode(), ResMessage.C60007.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60004.getCode(), ResMessage.C60004.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamMemReqIns error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -123,8 +200,24 @@ public class TeamService {
     public ResVO getTeamMemIns(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamMemIns(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamMemIns(vo);
+             if(result == -5){
+                resVO.setResVO(ResMessage.C60011.getCode(), ResMessage.C60011.getCodeNM(), result);
+            }else if(result == -4){
+                resVO.setResVO(ResMessage.C60016.getCode(), ResMessage.C60016.getCodeNM(), result);
+            }else if(result == -3){
+                resVO.setResVO(ResMessage.C60003.getCode(), ResMessage.C60003.getCodeNM(), result);
+            }else if(result == -2){
+                resVO.setResVO(ResMessage.C60007.getCode(), ResMessage.C60007.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60004.getCode(), ResMessage.C60004.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamMemReqIns error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -142,8 +235,18 @@ public class TeamService {
     public ResVO getTeamMemDel(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamMemDel(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamMemDel(vo);
+            if(result == -2){
+                resVO.setResVO(ResMessage.C60017.getCode(), ResMessage.C60017.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60010.getCode(), ResMessage.C60010.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamMemReqIns error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -159,8 +262,16 @@ public class TeamService {
     public ResVO getTeamMasterUpd(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamMasterUpd(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamMasterUpd(vo);
+            if(result == -1){
+                resVO.setResVO(ResMessage.C60010.getCode(), ResMessage.C60010.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamMasterUpd error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -177,8 +288,18 @@ public class TeamService {
     public ResVO getTeamMemReqDel(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamMemReqDel(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            Integer result = teamProc.pDallaTeamMemReqDel(vo);
+            if(result == -2){
+                resVO.setResVO(ResMessage.C60016.getCode(), ResMessage.C60016.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60017.getCode(), ResMessage.C60017.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamMemReqDel error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -257,7 +378,7 @@ public class TeamService {
         try {
             List<Object> object =   teamProc.pDallaTeamRequestSel(vo);
             Integer listCnt = DBUtil.getData(object, 0, Integer.class);
-            List<TeamResultVo> list = DBUtil.getList(object, 1, TeamResultVo.class);
+            List<TeamMemVo> list = DBUtil.getList(object, 1, TeamMemVo.class);
             HashMap<String, Object> resultMap = new HashMap<>();
             resultMap.put("listCnt", listCnt);
             resultMap.put("list", list);
@@ -279,7 +400,17 @@ public class TeamService {
         ResVO resVO = new ResVO();
         try {
             int result = teamProc.pDallaTeamAttendanceIns(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            if(result == -2){
+                resVO.setResVO(ResMessage.C60018.getCode(), ResMessage.C60018.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60021.getCode(), ResMessage.C60021.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamAttendanceIns error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -300,10 +431,12 @@ public class TeamService {
             Integer totCnt = DBUtil.getData(object, 0, Integer.class);
             Integer cnt = DBUtil.getData(object, 1, Integer.class);
             List<TeamBadgeVo> list = DBUtil.getList(object, 2, TeamBadgeVo.class);
+            String statChk = teamProc.pDallaTeamMemStatChk(vo);
             HashMap<String, Object> resultMap = new HashMap<>();
             resultMap.put("totCnt", totCnt);
             resultMap.put("cnt", cnt);
             resultMap.put("list", list);
+            resultMap.put("statChk", statChk);
             resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultMap);
         } catch (Exception e) {
             log.error("getTeamBadgeList error ===> {}", e);
@@ -340,7 +473,19 @@ public class TeamService {
         ResVO resVO = new ResVO();
         try {
             int result = teamProc.pDallaTeamBadgeUpd(vo);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            if(result == -3){
+                resVO.setResVO(ResMessage.C60019.getCode(), ResMessage.C60019.getCodeNM(), result);
+            }else if(result == -2){
+                resVO.setResVO(ResMessage.C60022.getCode(), ResMessage.C60022.getCodeNM(), result);
+            }else if(result == -1){
+                resVO.setResVO(ResMessage.C60017.getCode(), ResMessage.C60017.getCodeNM(), result);
+            }else if(result == 0){
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
+            }else if(result == 1){
+                resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+            }else{
+                resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+            }
         } catch (Exception e) {
             log.error("getTeamBadgeUpd error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -428,6 +573,41 @@ public class TeamService {
         }
         return resVO;
     }
+
+    /**********************************************************************************************
+     * @Method 설명 : 팀 정보(상세)
+     * @작성일   : 2022-03-31
+     * @작성자   : 이승재
+     * @변경이력  :
+     **********************************************************************************************/
+    public ResVO getTeamDetailSel(TeamParamVo vo){
+        ResVO resVO = new ResVO();
+        try {
+            List<Object> object = teamProc.pDallaTeamDetailSel(vo);
+            HashMap<String, Object> resultMap = new HashMap<>();
+            int reqInsChk =  teamProc.pDallaTeamMemReqInsChk(vo);
+            String statChk = teamProc.pDallaTeamMemStatChk(vo);
+            TeamInfoVo teamInfo = DBUtil.getData(object, 0, TeamInfoVo.class);
+            Integer badgeTotCnt = DBUtil.getData(object, 1, Integer.class);
+            List<TeamBadgeVo> badgeList = DBUtil.getList(object, 2, TeamBadgeVo.class);
+            List<TeamMemVo> teamMemList = DBUtil.getList(object, 3, TeamMemVo.class);
+            HashMap<String, Object> loginYn = DBUtil.getData(object, 4, HashMap.class);
+            resultMap.put("reqInsChk", reqInsChk);
+            resultMap.put("statChk", statChk);
+            resultMap.put("listCnt", badgeTotCnt);
+            resultMap.put("teamInfo", teamInfo);
+            resultMap.put("badgeList", badgeList);
+            resultMap.put("teamMemList", teamMemList);
+            resultMap.put("loginYn", loginYn.get("s_loginYn"));
+
+            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultMap);
+        } catch (Exception e) {
+            log.error("getTeamDetailSel error ===> {}", e);
+            resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+        }
+        return resVO;
+    }
+
 
 
 }

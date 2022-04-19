@@ -404,5 +404,24 @@ public class TeamController {
         }
         return  result;
     }
+    /**********************************************************************************************
+     * @Method 설명 :팀 정보(상세)
+     * @작성일   : 2022-03-31
+     * @작성자   : 이승재
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/teamDetailSel")
+    public ResVO getTeamDetailSel(@RequestBody TeamParamVo vo){
+        ResVO result = new ResVO();
+        try {
+            result = teamService.getTeamDetailSel(vo);
+        } catch (Exception e) {
+            log.error("TeamController / getTeamDetailSel => {}", e);
+            result.setFailResVO();
+        }
+        return  result;
+    }
+
+
 
 }
