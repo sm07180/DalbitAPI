@@ -78,6 +78,7 @@
     <resultMap id="TeamSymbolVo" type="com.dalbit.team.vo.TeamSymbolVo"/>
     <resultMap id="TeamMemVo" type="com.dalbit.team.vo.TeamMemVo"/>
     <resultMap id="TeamInfoVo" type="com.dalbit.team.vo.TeamInfoVo"/>
+    <resultMap id="TeamRankVo" type="com.dalbit.team.vo.TeamRankVo"/>
     <resultMap id="TeamFanStarVo" type="com.dalbit.team.vo.TeamFanStarVo"/>
 
 

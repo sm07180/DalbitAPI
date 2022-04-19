@@ -32,6 +32,7 @@ import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.team.service.TeamService;
 import com.dalbit.team.vo.TeamParamVo;
 import com.dalbit.team.vo.TeamResultVo;
+import com.dalbit.team.proc.TeamProc;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -88,6 +89,9 @@ public class RoomService {
     ProfileService profileService;
     @Autowired
     TeamService teamService;
+
+    @Autowired
+    private TeamProc teamProc;
 
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
@@ -833,6 +837,9 @@ public class RoomService {
         returnMap.put("profImgList", imgListMap.get("list"));
 
         returnMap.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
+
+        // 내 팀뱃지 정보
+        returnMap.put("teamBadgeInfo", teamProc.pDallaTeamMemMySel(pRoomMemberInfoVo.getTarget_mem_no()));
 
         procedureVo.setData(returnMap);
         return procedureVo;

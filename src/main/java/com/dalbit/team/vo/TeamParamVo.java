@@ -1,5 +1,6 @@
 package com.dalbit.team.vo;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -27,4 +28,6 @@ public class TeamParamVo {
     String ordSlct;             //CHAR(1)		-- 정렬구분 [f:선호도, c:코드순, i:갱신일순]
     String listSlct;            //CHAR(1)		-- 리스트구분[s:스타, f:팬]
 
+    @JsonProperty("tDate")
+    private String tDate;
 }
