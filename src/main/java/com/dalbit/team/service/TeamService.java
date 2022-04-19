@@ -316,13 +316,30 @@ public class TeamService {
     public ResVO getTeamSel(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            List<TeamResultVo> result = teamProc.pDallaTeamSel(vo);
+            TeamResultVo result = teamProc.pDallaTeamSel(vo);
             resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
         } catch (Exception e) {
             log.error("getTeamSel error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
         }
         return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 회원 팀 정보 (내부 서비스용)
+     * @작성일   : 2022-03-31
+     * @작성자   : 이승재
+     * @변경이력  :
+     **********************************************************************************************/
+    public TeamResultVo getTeamSelService(TeamParamVo vo){
+        ResVO resVO = new ResVO();
+        TeamResultVo result = new TeamResultVo();
+        try {
+            result = teamProc.pDallaTeamSel(vo);
+        } catch (Exception e) {
+            log.error("getTeamSel error ===> {}", e);
+        }
+        return result;
     }
 
 
@@ -607,6 +624,46 @@ public class TeamService {
         }
         return resVO;
     }
+
+    /**********************************************************************************************
+     * @Method 설명 : 팬,스타 리스트(팀용)
+     * @작성일   : 2022-03-31
+     * @작성자   : 이승재
+     * @변경이력  :
+     **********************************************************************************************/
+    public ResVO getTeamMemFanstarList(TeamParamVo vo){
+        ResVO resVO = new ResVO();
+        try {
+            List<Object> object =   teamProc.pDallaTeamMemFanstarList(vo);
+            Integer listCnt = DBUtil.getData(object, 0, Integer.class);
+            List<TeamFanStarVo> list = DBUtil.getList(object, 1, TeamFanStarVo.class);
+            HashMap<String, Object> resultMap = new HashMap<>();
+            resultMap.put("listCnt", listCnt);
+            resultMap.put("list", list);
+            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultMap);
+        } catch (Exception e) {
+            log.error("getTeamSymbolList error ===> {}", e);
+            resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
+        }
+        return resVO;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 팀번호 리턴용
+     * @작성일   : 2022-03-31
+     * @작성자   : 이승재
+     * @변경이력  :
+     **********************************************************************************************/
+    public int getTeamMemInsChk(TeamParamVo vo){
+        int teamNo = 0;
+        try {
+            teamNo =  teamProc.pDallaTeamMemInsChk(vo);
+        } catch (Exception e) {
+            log.error("getTeamMemInsChk error ===> {}", e);
+        }
+        return teamNo;
+    }
+
 
 
 

@@ -208,6 +208,8 @@ public enum Status {
     방송시작알림_OFF("0", "mypage.member.notify.edit.broadcast.start.off.success", "방송 시작 알림 OFF"),
     메시지알림_ON("0", "mypage.member.notify.edit.mailbox.on.success", "메시지 알림 ON"),
     메시지알림_OFF("0", "mypage.member.notify.edit.mailbox.off.success", "메시지 알림 OFF"),
+    팀알림_ON("0", "mypage.member.notify.edit.team.on.success", "팀 알림 ON"),
+    팀알림_OFF("0", "mypage.member.notify.edit.team.off.success", "팀 알림 OFF"),
 
 
     //회원 방송방 빠른말 가져오기

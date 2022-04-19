@@ -1,10 +1,7 @@
 package com.dalbit.team.proc;
 
 
-import com.dalbit.team.vo.TeamParamVo;
-import com.dalbit.team.vo.TeamRankVo;
-import com.dalbit.team.vo.TeamResultVo;
-import com.dalbit.team.vo.TeamSymbolVo;
+import com.dalbit.team.vo.*;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -191,7 +188,7 @@ public interface TeamProc {
      * @변경이력   :
      **********************************************************************************************/
     @Select("CALL rd_data.p_dalla_team_sel (#{teamNo},#{memNo})")
-    List<TeamResultVo> pDallaTeamSel(TeamParamVo param);
+    TeamResultVo pDallaTeamSel(TeamParamVo param);
 
     /**********************************************************************************************
      * @Method    : 팀 멤버 정보
@@ -573,6 +570,40 @@ public interface TeamProc {
      **********************************************************************************************/
     @Select("CALL rd_data.p_dalla_team_mem_stat_chk (#{teamNo},#{memNo})")
     String pDallaTeamMemStatChk(TeamParamVo param);
+
+    /**********************************************************************************************
+     * @Method    : 팬,스타 리스트(팀용)
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * memNo BIGINT 			-- 회원번호
+     * listSlct CHAR(1)		-- 리스트구분[s:스타, f:팬]
+     * pageNo INT 			-- 페이지 번호
+     * pagePerCnt INT 		-- 페이지 당 노출 건수 (Limit)
+     * @return    :
+     * #1
+     * cnt			INT		-- 총건수
+     *
+     * #2 (s 일때)
+     * mem_no			BIGINT		-- 회원번호
+     * mem_no_star		BIGINT		-- 회원번호 (나의스타)
+     * mem_nick_star		VARCHAR(20)	-- 회원닉네임 (나의스타)
+     * mem_level_star		SMALLINT	-- 회원레벨 (나의스타)
+     * team_yn			CHAR(1)		-- 팀가입여부
+     * team_req_yn		CHAR(1)		-- 팀가입 초대 (미초대:n, 가입신청:r, 초대:i)
+     *
+     * OR (f 일때)
+     * mem_no			BIGINT		-- 회원번호
+     * mem_no_star		BIGINT		-- 회원번호 (나의팬)
+     * mem_nick_star		VARCHAR(20)	-- 회원닉네임 (나의팬)
+     * mem_level_star		SMALLINT	-- 회원레벨 (나의팬)
+     * team_yn			CHAR(1)		-- 팀가입여부
+     * team_req_yn		CHAR(1)		-- 팀가입 초대 (미초대:n, 가입신청:r, 초대:i)
+     * @변경이력   :
+     **********************************************************************************************/
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamFanStarVo"})
+    @Select("CALL rd_data.p_dalla_team_mem_fanstar_list (#{memNo},#{listSlct},#{pageNo},#{pagePerCnt})")
+    List<Object> pDallaTeamMemFanstarList(TeamParamVo param);
 
 
 }

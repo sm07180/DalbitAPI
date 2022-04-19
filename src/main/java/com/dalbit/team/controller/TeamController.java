@@ -421,6 +421,23 @@ public class TeamController {
         }
         return  result;
     }
+    /**********************************************************************************************
+     * @Method 설명 :팬,스타 리스트(팀용)
+     * @작성일   : 2022-03-31
+     * @작성자   : 이승재
+     * @변경이력  :
+     **********************************************************************************************/
+    @PostMapping("/teamMemFanstarList")
+    public ResVO getTeamMemFanstarList(@RequestBody TeamParamVo vo){
+        ResVO result = new ResVO();
+        try {
+            result = teamService.getTeamMemFanstarList(vo);
+        } catch (Exception e) {
+            log.error("TeamController / getTeamMemFanstarList => {}", e);
+            result.setFailResVO();
+        }
+        return  result;
+    }
 
 
 
