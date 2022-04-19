@@ -38,5 +38,5 @@ public class P_ClipMainPopListVo extends P_ApiVo {
     private int badge_newdj;
     private int count_play;
     private int isConDj;
-
+    // private String mem_no; 등록자 memNo
 }
