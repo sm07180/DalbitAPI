@@ -75,5 +75,6 @@
     <resultMap id="TeamResultVo" type="com.dalbit.team.vo.TeamResultVo"/>
     <resultMap id="TeamBadgeVo" type="com.dalbit.team.vo.TeamBadgeVo"/>
     <resultMap id="TeamSymbolVo" type="com.dalbit.team.vo.TeamSymbolVo"/>
+    <resultMap id="TeamRankVo" type="com.dalbit.team.vo.TeamRankVo"/>
 
 </mapper>

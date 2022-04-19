@@ -356,7 +356,7 @@ public class TeamService {
     public ResVO getTeamMemMySel(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            TeamSymbolVo result = teamProc.pDallaTeamMemMySel(vo);
+            TeamSymbolVo result = teamProc.pDallaTeamMemMySel(vo.getMemNo().toString());
             resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
         } catch (Exception e) {
             log.error("getTeamMemMySel error ===> {}", e);
@@ -392,7 +392,7 @@ public class TeamService {
     public ResVO getTeamRankWeekList(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            List<Object> object =   teamProc.pDallaTeamRankWeekList(vo);
+            List<Object> object = teamProc.pDallaTeamRankWeekList(vo);
             Integer listCnt = DBUtil.getData(object, 0, Integer.class);
             List<TeamRankVo> list = DBUtil.getList(object, 1, TeamRankVo.class);
             HashMap<String, Object> resultMap = new HashMap<>();

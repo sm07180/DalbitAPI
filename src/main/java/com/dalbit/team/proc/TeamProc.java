@@ -5,6 +5,7 @@ import com.dalbit.team.vo.TeamParamVo;
 import com.dalbit.team.vo.TeamRankVo;
 import com.dalbit.team.vo.TeamResultVo;
 import com.dalbit.team.vo.TeamSymbolVo;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -391,8 +392,8 @@ public interface TeamProc {
      * req_cnt			INT			-- 초대내역
      * @변경이력   :
      **********************************************************************************************/
-    @Select("CALL rd_data.p_dalla_team_mem_my_sel (#{memNo})")
-    TeamSymbolVo pDallaTeamMemMySel(TeamParamVo param);
+    @Select("CALL rd_data.p_dalla_team_mem_my_sel(#{memNo})")
+    TeamSymbolVo pDallaTeamMemMySel(@Param(value = "memNo") String memNo);
 
     /**********************************************************************************************
      * @Method    : 팀 초대/신청내역 읽음처리
@@ -406,7 +407,7 @@ public interface TeamProc {
     Integer pDallaTeamMemReqUpd(TeamParamVo param);
 
     /**********************************************************************************************
-     * @Method    : 팀 대표활동배지 리스트
+     * @Method    : 팀 랭킹 리스트
      * @Date      : 2022-03-30
      * @Author    : 이승재
      * @param     :
@@ -431,7 +432,8 @@ public interface TeamProc {
      * play_time			BIGINT		-- 총방송시간
      * @변경이력   :
      **********************************************************************************************/
-    @Select("CALL rd_data.p_dalla_team_rank_week_list (#{tDate},#{memNo},#{pageNo},#{pagePerCnt})")
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamRankVo"})
+    @Select("CALL rd_data.p_dalla_team_rank_week_list(#{tDate},#{memNo},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamRankWeekList(TeamParamVo param);
 
     /**********************************************************************************************
