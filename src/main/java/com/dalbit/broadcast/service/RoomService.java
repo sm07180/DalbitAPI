@@ -90,9 +90,6 @@ public class RoomService {
     @Autowired
     TeamService teamService;
 
-    @Autowired
-    private TeamProc teamProc;
-
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
 
@@ -837,9 +834,6 @@ public class RoomService {
         returnMap.put("profImgList", imgListMap.get("list"));
 
         returnMap.put("isMailboxOn", DalbitUtil.getIntMap(resultMap, "mailboxOnOff") == 1);
-
-        // 내 팀뱃지 정보
-        returnMap.put("teamBadgeInfo", teamProc.pDallaTeamMemMySel(pRoomMemberInfoVo.getTarget_mem_no()));
 
         procedureVo.setData(returnMap);
         return procedureVo;
