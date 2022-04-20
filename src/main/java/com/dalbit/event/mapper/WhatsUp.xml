@@ -43,6 +43,10 @@
         { CALL p_evt_wassup_man_no_sel('1') }
     </select>
 
+    <select id="pEvtWassupManLastNoSel" statementType="CALLABLE" resultMap="WhatsUpResultVo">
+        { CALL p_evt_wassup_man_no_sel('3') }
+    </select>
+
     <select id="pEvtWassupManNoList" statementType="CALLABLE" resultMap="WhatsUpResultVo">
         { CALL p_evt_wassup_man_no_sel('2') }
     </select>
