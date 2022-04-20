@@ -65,7 +65,7 @@ public interface TeamProc {
      * INT		-- -4:팀이름 중복, -3:재생성 시간 미경과, -2: 이미생성됨, -1: 팀없음, 0: 에러, 1:정상
      * @변경이력   :
      **********************************************************************************************/
-    @Select("CALL rd_data.p_dalla_team_upd (#{memNo},#{updSlct},#{teamName},#{teamConts},#{teamMedalCode},#{teamEdgeCode},#{teamBgCode},#{reqMemYn})")
+    @Select("CALL rd_data.p_dalla_team_upd (#{memNo},#{updSlct},#{teamNo},#{teamName},#{teamConts},#{teamMedalCode},#{teamEdgeCode},#{teamBgCode},#{reqMemYn})")
     Integer pDallaTeamUpd(TeamParamVo param);
 
     /**********************************************************************************************

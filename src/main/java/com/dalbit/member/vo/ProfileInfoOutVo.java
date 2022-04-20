@@ -80,6 +80,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private String memJoinYn;
     private int listenOpen;
     private String masterMemYn;
+    private String memLoginId;
 
     private TeamSymbolVo teamSymbolvo;
 
@@ -150,6 +151,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isMailboxOn = target.getMailboxOnOff() == 1;
         this.memJoinYn = target.getMemJoinYn();
         this.listenOpen = target.getListenOpen();
+        this.memLoginId = target.getMemLoginId();
         this.masterMemYn = target.getMasterMemYn();
     }
 }

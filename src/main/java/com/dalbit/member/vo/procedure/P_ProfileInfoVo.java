@@ -33,6 +33,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private String  memSex;                     //성별
     private int     age;                        //나이대
     private String  memId;                      //자동생성된아이디8자
+    private String  memLoginId;                 //로그인 아이디
     private String  profileImage;               //프로필이미지
     private String  profileMsg;                 //프로필메세지
     private int     level;                      //레벨

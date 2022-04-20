@@ -50,12 +50,15 @@ public class ContentController {
 
     @GetMapping("/notice")
     public String noticeSelect(@Valid BroadcastNoticeSelVo noticeSelVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return contentService.mobileBroadcastNoticeSelect(noticeSelVo, request);
+        } catch (Exception e) {
+            log.error("noticeSelect Error : {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+        }
 
-        return contentService.mobileBroadcastNoticeSelect(noticeSelVo, request);
     }
-
 
     /**
      * 공지사항 입력/수정
