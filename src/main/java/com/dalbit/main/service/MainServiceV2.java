@@ -24,8 +24,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -474,13 +479,8 @@ public class MainServiceV2 {
         swiperList.addAll(adminBanner);
         cnt = swiperList.size();
 
-        swiperList.addAll(mainPage.getMainPartnerList(bannerMap));
+        swiperList.addAll(mainPage.getMainStarList(bannerMap));
         cnt = swiperList.size();
-
-        if (cnt < 10){
-            swiperList.addAll(mainPage.getMainStarList(bannerMap));
-            cnt = swiperList.size();
-        }
 
         if (cnt < 10){
             swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
@@ -505,7 +505,8 @@ public class MainServiceV2 {
             swiperList = swiperList.subList(0, 10);
         }
 
-        resultMap.put("swiperList", swiperList);
+        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().distinct().collect(Collectors.toList()));
+        resultMap.put("swiperList", swiperList2);
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
     }
 }
