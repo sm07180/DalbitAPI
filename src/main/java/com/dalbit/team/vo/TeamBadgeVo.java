@@ -23,6 +23,7 @@ public class TeamBadgeVo {
   Integer bg_cnt;			//BIGINT			-- 사용중인팀수
   String use_yn;			//CHAR(1)			-- 사용여부
   String bg_achieve_yn;		//CHAR(1)			-- 획득여부
+  String bg_represent_yn;   //CHAR(1)			-- 대표뱃지 설정여부
   String chrgr_name;		//VARCHAR(40)		-- 등록관리자
   String ins_date;		    //DATETIME		-- 등록일자
   String upd_date;		    //DATETIME		-- 수정일자
