@@ -609,6 +609,14 @@ public class TeamService {
             List<TeamBadgeVo> badgeList = DBUtil.getList(object, 2, TeamBadgeVo.class);
             List<TeamMemVo> teamMemList = DBUtil.getList(object, 3, TeamMemVo.class);
             HashMap<String, Object> loginYn = DBUtil.getData(object, 4, HashMap.class);
+
+
+
+            if(teamInfo.getTeam_chnge_cnt()> 0){
+                resultMap.put("editChk", false);
+            }
+
+
             resultMap.put("reqInsChk", reqInsChk);
             resultMap.put("statChk", statChk);
             resultMap.put("listCnt", badgeTotCnt);
