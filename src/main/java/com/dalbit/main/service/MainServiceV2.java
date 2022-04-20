@@ -512,8 +512,14 @@ public class MainServiceV2 {
             swiperList = swiperList.subList(0, 10);
         }
 
-        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().distinct().collect(Collectors.toList()));
+        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
         resultMap.put("swiperList", swiperList2);
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
+
+    //중복 제거 함수
+    public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 }

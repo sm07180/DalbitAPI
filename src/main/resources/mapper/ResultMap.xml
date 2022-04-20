@@ -73,4 +73,7 @@
 
     <!--partner-->
     <resultMap id="PartnerDjVO" type="com.dalbit.rank.vo.PartnerDjVO"/>
+
+    <!--starDj-->
+    <resultMap id="StarDjLogVO" type="com.dalbit.rank.vo.StarDjLogVO"/>
 </mapper>

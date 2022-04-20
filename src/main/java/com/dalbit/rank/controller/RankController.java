@@ -48,4 +48,15 @@ public class RankController {
     public String starDjIns(Map map, HttpServletRequest request){
         return rankService.starDjIns(map, request);
     }
+
+    /**********************************************************************************************
+     * @Method 설명 : 스타디제이 약력
+     * @작성일 : 2022-04-20
+     * @작성자 : 강알찬
+     * @변경이력 :
+     **********************************************************************************************/
+    @PostMapping("/getStarDjLog")
+    public String getStarDjLog(@RequestBody Map map, HttpServletRequest request){
+        return rankService.getStarDjLog(map, request);
+    }
 }

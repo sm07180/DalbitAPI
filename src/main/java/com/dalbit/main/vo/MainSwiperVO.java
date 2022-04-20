@@ -16,7 +16,7 @@ public class MainSwiperVO {
     private Integer is_title_view;
     private Integer is_button_view;
     private String buttonNm;
-    private String mem_no;
+    private String mem_no = "0";
     private String room_no;
     private String mem_nick;
     private String mem_sex;
@@ -24,5 +24,6 @@ public class MainSwiperVO {
     private String subject_type;
     private String image_background;
     private String is_wowza;
-
+    private Integer badgeSpecial;
+    private Integer isConDj;
 }

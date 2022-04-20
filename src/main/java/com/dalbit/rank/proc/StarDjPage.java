@@ -1,10 +1,12 @@
 package com.dalbit.rank.proc;
 
 import com.dalbit.rank.vo.StarDjPointVO;
+import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -51,5 +53,33 @@ public interface StarDjPage {
      */
     @Select("CALL rd_data.sp_member_special_dj_apply(#{memNo}, '', '', '', '', '', '')")
     void starDjIns(Map map);
+
+    /**********************************************************************************************
+     * @프로시저 설명   	: 회원 스타 dj 약력
+     * @Date   		        : 2022-04-20
+     * @Author   		    : 강알찬
+     * @param	 	        :
+     *  memNo		BIGINT		-- 회원번호
+     * ,pageNo 		INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     * @return              :
+    Multi Rows
+
+    #1
+    cnt		BIGINT		-- 총수
+
+
+
+    #2
+    mem_no		BIGINT		-- 회원 번호
+    select_year	CHAR		-- 스페셜DJ 선정년도
+    select_month	CHAR		-- 스페셜DJ 선정월
+    mem_nick	VARCHAR	-- 회원 번호
+    round_no		BIGINT		-- 기수
+     **********************************************************************************************
+     */
+    @ResultMap({"ResultMap.integer", "ResultMap.StarDjLogVO"})
+    @Select("CALL rd_data.p_star_dj_mem_log_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
+    List<Object> getStarDjLog(Map map);
 
 }

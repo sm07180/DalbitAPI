@@ -80,4 +80,18 @@ public class RankService {
         }
         return result;
     }
+
+    /**********************************************************************************************
+     * @Method 설명 : 스타디제이 약력
+     * @작성일 : 2022-04-20
+     * @작성자 : 강알찬
+     * @변경이력 :
+     **********************************************************************************************/
+    public String getStarDjLog(Map map, HttpServletRequest request){
+        String memNo = MemberVo.getMyMemNo(request);
+        map.put("memNo", memNo);
+        List<Object> result = starDjPage.getStarDjLog(map);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+    }
+
 }
