@@ -47,4 +47,6 @@ public class MemberInfoVo {
     private String last_op_name;
     private String device_uuid;
     private String ip;
+
+    private String nickName;
 }
