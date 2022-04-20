@@ -14,6 +14,8 @@ import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
+import com.dalbit.team.proc.TeamProc;
+import com.dalbit.team.vo.TeamParamVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
@@ -52,6 +54,8 @@ public class ProfileService {
     AdminService adminService;
     @Autowired
     RestService restService;
+    @Autowired
+    private TeamProc teamProc;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -164,6 +168,15 @@ public class ProfileService {
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
 
+            // 팀 뱃지 정보
+            profileInfoOutVo.setTeamInfo(teamProc.pDallaTeamMemMySel(pProfileInfo.getTarget_mem_no()));
+            if (!pProfileInfo.getTarget_mem_no().equals(pProfileInfo.getMem_no())) {
+                TeamParamVo teamParamVo = new TeamParamVo();
+                teamParamVo.setMemNo(Long.parseLong(pProfileInfo.getMem_no()));
+                teamParamVo.setTeamNo(profileInfoOutVo.getTeamInfo().getTeam_no());
+                teamParamVo.setReqSlct("r");
+                profileInfoOutVo.setTeamJoinCheck(teamProc.pDallaTeamMemReqInsChk(teamParamVo));
+            }
 
             HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no(), request);
             profileInfoOutVo.setProfImgList((List) imgListMap.get("list"));
