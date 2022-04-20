@@ -82,7 +82,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private String masterMemYn;
     private String memLoginId;
 
-    private TeamSymbolVo teamSymbolvo;
+    private TeamSymbolVo teamInfo;
+    private Integer teamJoinCheck = -999;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
