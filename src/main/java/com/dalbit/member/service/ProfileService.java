@@ -14,6 +14,7 @@ import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
+import com.dalbit.team.proc.TeamProc;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
@@ -52,6 +53,8 @@ public class ProfileService {
     AdminService adminService;
     @Autowired
     RestService restService;
+    @Autowired
+    private TeamProc teamProc;
 
     public ProcedureVo getProfile(P_ProfileInfoVo pProfileInfo){
 
@@ -164,6 +167,7 @@ public class ProfileService {
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
 
+            profileInfoOutVo.setTeamSymbolvo(teamProc.pDallaTeamMemMySel(pProfileInfo.getTarget_mem_no()));
 
             HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no(), request);
             profileInfoOutVo.setProfImgList((List) imgListMap.get("list"));

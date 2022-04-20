@@ -4,6 +4,7 @@ import com.dalbit.common.vo.BaseVo;
 import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
+import com.dalbit.team.vo.TeamSymbolVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -80,6 +81,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private int listenOpen;
     private String masterMemYn;
     private String memLoginId;
+
+    private TeamSymbolVo teamSymbolvo;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
