@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dalbit.store.dao.StoreDao" >
+
+    <resultMap id="StoreResultVo" type="com.dalbit.store.vo.StoreResultVo">
+        <result property="iosPaymentSet" column="ios_payment_set"/>
+        <result property="aosPaymentSet" column="aos_payment_set"/>
+    </resultMap>
+    <resultMap id="integer" type="Integer" />
+
     <select id="selectChargeItem" statementType="CALLABLE" parameterType="String" resultType="StoreChargeVo">
         CALL sp_store_item_select(#{value, mode=IN, jdbcType=VARCHAR}, NULL)
     </select>
@@ -9,4 +16,7 @@
         CALL sp_store_item_select(NULL, #{itemNo, mode=IN, jdbcType=VARCHAR})
     </select>
 
+    <select id="pPaymentSetSel" statementType="CALLABLE" resultMap="StoreResultVo">
+        { CALL p_payment_set_sel() }
+    </select>
 </mapper>

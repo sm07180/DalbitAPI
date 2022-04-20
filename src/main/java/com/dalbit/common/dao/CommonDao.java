@@ -80,4 +80,7 @@ public interface CommonDao {
 
     @Transactional(readOnly = true)
     List<String> getPreLoad();
+
+    @Transactional(readOnly = true)
+    String getNationCode(String ip);
 }

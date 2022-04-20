@@ -1,5 +1,6 @@
 package com.dalbit.common.controller;
 
+import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
 import com.dalbit.common.code.Status;
@@ -589,25 +590,20 @@ public class CommonController {
 
     @PostMapping("/pay/result/callback")
     public String payRestAPITest(HttpServletRequest request){
-        String clientIP = ipUtil.getClientIP(request);
-        if (ipUtil.validationInnerIP(clientIP) || ipUtil.isInnerIP(clientIP)) {
-            String memNo = request.getParameter("memNo");
-            String orderId = request.getParameter("orderId");
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("memNo", memNo);
-            map.put("orderId", orderId);
-            map.put("clientIP", clientIP);
-            map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
-            map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
-            log.error("test map =>{}", map);
+        String memNo = request.getParameter("memNo");
+        String orderId = request.getParameter("orderId");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("memNo", memNo);
+        map.put("orderId", orderId);
+//        map.put("clientIP", clientIP);
+//        map.put("validationInnerIP", ipUtil.validationInnerIP(clientIP));
+//        map.put("isInnerIP", ipUtil.isInnerIP(clientIP));
+//        log.error("test map =>{}", map);
 
-            // 미성년자는 법정대리인에게 메일 발송
-//            commonService.sendPayMailManager(memNo, orderId);
+        // 미성년자는 법정대리인에게 메일 발송
+        //commonService.sendPayMailManager(memNo, orderId);
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
-        }else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.차단_이용제한));
-        }
+        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
     }
 
     @PostMapping("/sleep/member/update")
@@ -650,5 +646,10 @@ public class CommonController {
         }
 
         return resVO;
+    }
+
+    @PostMapping("/getNationCode")
+    public Object getNationCode(HttpServletRequest request){
+        return commonService.getNationCode(request);
     }
 }

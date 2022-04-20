@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface CustomerCenterDao {
@@ -30,5 +31,5 @@ public interface CustomerCenterDao {
     ProcedureVo callQnaDel(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    HashMap selectAppVersion();
+    Map<String, Object> selectAppVersion();
 }

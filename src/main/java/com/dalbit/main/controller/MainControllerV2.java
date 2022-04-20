@@ -37,6 +37,10 @@ public class MainControllerV2 {
     public String nowTop10(@RequestParam(value = "callType", defaultValue = "DJ") String callType, HttpServletRequest request) {
         return mainServiceV2.nowTop10(callType, request);
     }
+    @GetMapping("/etcData")
+    public String etcData() {
+        return mainServiceV2.getEtcData();
+    }
 
     @RequestMapping("/getMainSwiper")
     public String getMainSwiper(HttpServletRequest request) {
