@@ -16,7 +16,9 @@ public class OwnerController {
     OwnerService ownerService;
 
     @PostMapping("/sel")
-    public Object insVote(@RequestParam(value = "roomNo") String roomNo, HttpServletRequest request){
-        return ownerService.pDallaRoomMasterSel(roomNo, request);
+    public Object insVote(@RequestParam(value = "roomNo") String roomNo,
+                          @RequestParam(value = "memNo") String memNo,
+                          HttpServletRequest request){
+        return ownerService.pDallaRoomMasterSel(roomNo, memNo, request);
     }
 }
