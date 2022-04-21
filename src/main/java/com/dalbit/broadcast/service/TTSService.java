@@ -295,4 +295,17 @@ public class TTSService {
 
         return successYn;
     }
+
+    // tts actorSlct
+    public String[] getTtsActorSlct(String actorId) {
+        // return [actorSlct, actorName]
+        switch (actorId) {
+            case "6063252471850cc8f04c7600": return new String[] {"a", "빠다가이"}; // 빠다가이
+            case "61659cc118732016a95fe7c6": return new String[] {"b", "하나"}; // 하나
+            default:
+        }
+
+        log.error("getTtsActorSlct - 해당하는 actor slct가 없음 / actorId: {}", actorId);
+        return null;
+    }
 }
