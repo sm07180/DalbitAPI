@@ -766,8 +766,8 @@ public class RoomService {
             if(resTeam.getTeam_no() >0){
                 teamMap.put("teamName",resTeam.getTeam_name());
                 teamMap.put("medalUrl",teamImgUrl+"/M/"+resTeam.getTeam_medal_code()+".png");
-                teamMap.put("borderUrl",teamImgUrl+"/B/"+resTeam.getTeam_edge_code()+".png");
-                teamMap.put("backgroundUrl",teamImgUrl+"/E/"+resTeam.getTeam_bg_code()+".png");
+                teamMap.put("borderUrl",teamImgUrl+"/E/"+resTeam.getTeam_edge_code()+".png");
+                teamMap.put("backgroundUrl",teamImgUrl+"/B/"+resTeam.getTeam_bg_code()+".png");
                 teamMap.put("pageLink","/team/detail/"+resTeam.getTeam_no());
                 returnMap.put("teamInfo",teamMap);
             }
