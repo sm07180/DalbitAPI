@@ -1114,6 +1114,8 @@ public class MypageService {
         Long viewMemNo = Long.parseLong(MemberVo.getMyMemNo(request)); //요청자
         int cnt = 0;
 
+        System.out.println(ownerMemNo + "asdfasdfasdf" + param.getMemNo());
+
         paramMap.put("memNo", ownerMemNo);
         paramMap.put("viewMemNo", viewMemNo);
         paramMap.put("pageNo", param.getPageNo());

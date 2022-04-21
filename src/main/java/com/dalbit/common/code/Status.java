@@ -766,6 +766,12 @@ public enum Status {
     레벨업확인_레벨업_없음("-2", "member.levelup.check.no", "레벨업 없을 시"),
     레벨업확인_실패("C006", "member.levelup.check.fail", "레벨 업 확인 실패 시"),
 
+    //공지사항 읽음 표시
+    공지사항_읽음확인_성공("C001", "customer.center.notice.read.success", "공지사항 읽음 확인 성공 시"),
+    공지사항_읽음확인_실패("0", "customer.center.notice.read.fail", "공지사항 읽음 확인 실패 시"),
+    공지사항_읽음확인_이미읽음("-1", "customer.center.notice.read.error", "공지사항 읽음 확인 이미 읽음 시"),
+
+
     //고객센터 공지사항 목록 조회
     고객센터_공지사항조회_성공("C001", "customer.center.notice.select.success", "고객센터 공지사항 조회 성공 시"),
     고객센터_공지사항조회_없음("0", "customer.center.notice.no.success", "고객센터 공지사항 목록 없을 시"),
