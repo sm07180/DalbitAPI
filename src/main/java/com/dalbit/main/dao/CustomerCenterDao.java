@@ -2,7 +2,6 @@ package com.dalbit.main.dao;
 
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.main.vo.procedure.*;
-import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 //import org.springframework.transaction.annotation.Transactional;
@@ -32,7 +31,7 @@ public interface CustomerCenterDao {
     ProcedureVo callQnaDel(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
-    HashMap selectAppVersion();
+    Map<String, Object> selectAppVersion();
 
     /**
      * 서비스 공지 읽음 표시

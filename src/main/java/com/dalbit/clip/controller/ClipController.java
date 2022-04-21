@@ -1,6 +1,7 @@
 package com.dalbit.clip.controller;
 
 import com.dalbit.clip.service.ClipService;
+import com.dalbit.clip.vo.ClipRankCombineListVo;
 import com.dalbit.clip.vo.procedure.*;
 import com.dalbit.clip.vo.request.*;
 import com.dalbit.common.code.Status;
@@ -14,10 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -398,4 +396,11 @@ public class ClipController {
         return result;
     }
 
+    /**
+     * 클립랭킹 어제(지난주) + 오늘(이번주) - native
+     */
+    @GetMapping("/rank/combine/list")
+    public String clipRankingBindList(@Valid ClipRankCombineListVo clipRankCombineListVo, HttpServletRequest request) {
+        return clipService.clipRankingBindList(clipRankCombineListVo, request);
+    }
 }

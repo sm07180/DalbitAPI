@@ -2439,6 +2439,19 @@ public enum Status {
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
     공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
     공통_기본_DB_실패("C007", "common.select.fail", "기본 조회 실패 db null"),
+
+
+    아이피_조회("C001", "common.nation.sel", "아이피_조회"),
+    아이피_조회_결과없음("C002", "common.nation.sel.none", "아이피_조회_결과없음"),
+
+
+    스토어_홈_데이터_조회_회원정보없음("EM001", "store.home.data.sel.member", "스토어_홈_데이터_조회_회원정보없음"),
+    스토어_홈_데이터_조회_파라미터("EP001", "store.home.data.sel.parameter", "스토어_홈_데이터_조회_파라미터"),
+    스토어_홈_데이터_조회("C001", "store.home.data.sel", "스토어_홈_데이터_조회"),
+
+    스토어_아이템_조회_파라미터("EP002", "store.item.data.list.parameter", "스토어_아이템_조회_파라미터"),
+    스토어_아이템_조회_오류("EI001", "store.item.data.list.error", "스토어_아이템_조회_오류"),
+    스토어_아이템_조회("C002", "store.item.data.list", "스토어_아이템_조회"),
     ;
 
 

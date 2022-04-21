@@ -5,6 +5,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.dao.CustomerCenterDao;
+import com.dalbit.main.etc.MainEtc;
 import com.dalbit.main.vo.FaqListOutVo;
 import com.dalbit.main.vo.NoticeListOutVo;
 import com.dalbit.main.vo.NoticeReadUpdVo;
@@ -340,26 +341,31 @@ public class CustomerCenterService {
         return result;
     }
 
-    public HashMap checkAppVersion(HttpServletRequest request){
-        HashMap data = new HashMap();
-        data.put("lastVersion", "");
-        data.put("nowVersion", "");
-        data.put("storeUrl", "");
-        data.put("isUpdate", false);
-        DeviceVo deviceVo = new DeviceVo(request);
-        if(deviceVo.getOs() != 3){
-            HashMap ver = customerCenterDao.selectAppVersion();
-            if(ver != null && !ver.isEmpty() && ver.containsKey("iosVersion") && ver.containsKey("aosVersion")){
-                String lastVersion = (String)ver.get("iosVersion");
-                data.put("storeUrl", "https://apps.apple.com/kr/app/id1490208806");
-                if(deviceVo.getOs() == 1){
-                    lastVersion = (String)ver.get("aosVersion");
-                    data.put("storeUrl", "https://play.google.com/store/apps/details?id=kr.co.inforexseoul.radioproject");
-                }
-                data.put("lastVersion", lastVersion);
-                data.put("nowVersion", deviceVo.getAppVersion());
-                data.put("isUpdate", DalbitUtil.versionCompare(lastVersion, deviceVo.getAppVersion()));
+    public Map<String, Object> checkAppVersion(HttpServletRequest request){
+        Map<String, Object> data = new HashMap<>();
+        try{
+            data.put("lastVersion", "");
+            data.put("nowVersion", "");
+            data.put("storeUrl", "");
+            data.put("isUpdate", false);
+            DeviceVo deviceVo = new DeviceVo(request);
+            if(!(deviceVo.getOs() == 1 || deviceVo.getOs() == 2)){
+                return data;
             }
+            Map<String, Object> appVersion = customerCenterDao.selectAppVersion();
+            if(appVersion == null || appVersion.isEmpty()){
+                return data;
+            }
+            if(!appVersion.containsKey("iosVersion") || !appVersion.containsKey("aosVersion")){
+                return data;
+            }
+            String lastVersion = (String)appVersion.get("iosVersion");
+            data.put("lastVersion", deviceVo.getOs() == 1 ? appVersion.get("aosVersion") : appVersion.get("iosVersion"));
+            data.put("nowVersion", deviceVo.getAppVersion());
+            data.put("storeUrl", deviceVo.getOs() == 1 ? MainEtc.AOS_STORE_URL : MainEtc.IOS_STORE_URL);
+            data.put("isUpdate", DalbitUtil.versionCompare(lastVersion, deviceVo.getAppVersion()));
+        }catch (Exception e){
+            log.error("CustomerCenterService checkAppVersion Error => {}", e.getMessage());
         }
         return data;
     }

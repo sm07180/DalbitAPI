@@ -15,9 +15,9 @@ public class ParentCertInputVo {
     public ParentCertInputVo(String memNo, String pMemName, String pMemSex, String pMemBirthYear, String pMemBirthDay, String pMemHphone) {
         this.memNo = memNo;
         this.pMemName = pMemName;
-        this.pMemSex = pMemSex;
+        this.pMemSex = pMemSex.equals("0") ? "m" : "f";
         this.pMemBirthYear = pMemBirthYear;
-        this.pMemBirthDay = pMemBirthDay;
+        this.pMemBirthDay = pMemBirthDay; // 월일 (ex: 0101)
         this.pMemHphone = pMemHphone;
     }
 
