@@ -26,10 +26,10 @@ public class TeamService {
 
     /**********************************************************************************************
     * @Method 설명 : 팀 등록 체크
-    * @작성일   : 2022-03-31   
+    * @작성일   : 2022-03-31
     * @작성자   : 이승재
-    * @변경이력  :  
-    **********************************************************************************************/ 
+    * @변경이력  :
+    **********************************************************************************************/
     public ResVO getTeamInsChk(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
@@ -489,7 +489,8 @@ public class TeamService {
     public ResVO getTeamBadgeUpd(TeamParamVo vo){
         ResVO resVO = new ResVO();
         try {
-            int result = teamProc.pDallaTeamBadgeUpd(vo);
+            Integer result = teamProc.pDallaTeamBadgeUpd(vo);
+
             if(result == -3){
                 resVO.setResVO(ResMessage.C60019.getCode(), ResMessage.C60019.getCodeNM(), result);
             }else if(result == -2){
@@ -504,7 +505,7 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
             }
         } catch (Exception e) {
-            log.error("getTeamBadgeUpd error ===> {}", e);
+            log.error("getTeamBadgeUpd error ===> {}", e.getMessage());
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
         }
         return resVO;

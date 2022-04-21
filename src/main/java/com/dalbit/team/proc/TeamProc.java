@@ -373,7 +373,7 @@ public interface TeamProc {
      * s_return		INT		-- -3:대표설정 배지수 초과, -2:배지 미달성, -1: 팀장아님, 0: 에러, 1:정상
      * @변경이력   :
      **********************************************************************************************/
-    @Select("CALL rd_data.p_dalla_team_badge_upd (#{teamNo},#{memNo},#{updSlct},#{bgCode})")
+    @Select("CALL rd_data.p_dalla_team_badge_upd(#{teamNo},#{memNo},#{updSlct},#{bgCode})")
     Integer pDallaTeamBadgeUpd(TeamParamVo param);
 
     /**********************************************************************************************
@@ -527,8 +527,8 @@ public interface TeamProc {
      * upd_date		DATETIME	-- 수정일자
      * @변경이력   :
      **********************************************************************************************/
-    @ResultMap({"ResultMap.TeamInfoVo","ResultMap.integer", "ResultMap.TeamSymbolVo","ResultMap.TeamMemVo", "ResultMap.map"})
-    @Select("CALL rd_data.p_dalla_team_detail_sel (#{teamNo},#{memNo})")
+    @ResultMap({"ResultMap.TeamInfoVo","ResultMap.integer", "ResultMap.TeamBadgeVo","ResultMap.TeamMemVo", "ResultMap.map"})
+    @Select("CALL rd_data.p_dalla_team_detail_sel(#{teamNo},#{memNo})")
     List<Object> pDallaTeamDetailSel(TeamParamVo param);
 
     /**********************************************************************************************
