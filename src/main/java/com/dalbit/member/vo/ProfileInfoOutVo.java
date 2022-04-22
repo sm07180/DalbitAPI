@@ -44,6 +44,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private Boolean isNew;
     private Boolean isSpecial;
     private int badgeSpecial;
+    private int badgePartner;
     private String playMakerYn;
     private String roomNo;
     private long broadTotTime;
@@ -127,6 +128,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.isNewListener = target.getBadge_new() == 1;
         this.isSpecial = (target.getBadge_specialdj() > 0);
         this.badgeSpecial = (target.getBadge_specialdj());
+        this.badgePartner = (target.getBadge_partnerdj());
         this.playMakerYn = (target.getPlayMakerYn());
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
@@ -140,7 +142,8 @@ public class ProfileInfoOutVo extends BaseVo {
 
         this.specialDjCnt = target.getSpecialDjCnt();
         this.memState = target.getMemState();
-        this.listenRoomNo = DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin);
+//        this.listenRoomNo = DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin);
+        this.listenRoomNo = target.getListenRoomNo();
         this.isReceive = target.getAlertYn() == 1;
         this.isMailboxOn = target.getMailboxOnOff() == 1;
         this.memJoinYn = target.getMemJoinYn();
