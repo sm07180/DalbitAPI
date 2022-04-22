@@ -168,7 +168,7 @@ public class ProfileService {
             profileInfoOutVo.setBirth(DalbitUtil.getBirth(profileInfo.getBirthYear(), profileInfo.getBirthMonth(), profileInfo.getBirthDay()));
             profileInfoOutVo.setCount(mypageService.getMemberBoardCount(pProfileInfo));
 
-            // 팀 뱃지 정보
+            // 팀 배지 정보
             profileInfoOutVo.setTeamInfo(teamProc.pDallaTeamMemMySel(pProfileInfo.getTarget_mem_no()));
             if (!pProfileInfo.getTarget_mem_no().equals(pProfileInfo.getMem_no())) {
                 TeamParamVo teamParamVo = new TeamParamVo();

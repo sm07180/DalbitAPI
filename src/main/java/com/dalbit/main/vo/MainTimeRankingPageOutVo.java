@@ -43,7 +43,7 @@ public class MainTimeRankingPageOutVo {
     private int liveTime;
     private List<FanBadgeVo> liveBadgeList = new ArrayList<>();
     private String listenRoomNo;
-
+    private int listenOpen;
     public MainTimeRankingPageOutVo(){}
     public MainTimeRankingPageOutVo(P_MainTimeRankingPageVo target, boolean isAdmin) {
         setRank(target.getRank());
@@ -73,7 +73,9 @@ public class MainTimeRankingPageOutVo {
         if(!DalbitUtil.isEmpty(target.getLiveBadgeText()) && !DalbitUtil.isEmpty(target.getLiveBadgeIcon())){
             this.liveBadgeList.add(new FanBadgeVo(target.getLiveBadgeText(), target.getLiveBadgeIcon(), target.getLiveBadgeStartColor(), target.getLiveBadgeEndColor(), target.getLiveBadgeImage(), target.getLiveBadgeImageSmall()));
         }
-        setListenRoomNo(DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin));
+        setListenOpen(target.getListenOpen());
+//        setListenRoomNo(DalbitUtil.getListenRoomNo(target.getListenRoomNo(), target.getListenOpen(), isAdmin));
+        setListenRoomNo(target.getListenRoomNo());
         setLiveTime(target.getLiveTime());
     }
 }

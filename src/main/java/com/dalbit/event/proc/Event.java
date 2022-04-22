@@ -445,13 +445,13 @@ public interface Event {
     GganbuBettingStatSelVo gganbuBettingStatSel(String gganbuNo);
 
     /**********************************************************************************************
-     * @Method 설명 : 깐부 뱃지 초기화
+     * @Method 설명 : 깐부 배지 초기화
      * @작성일   : 2021-12-07
      * @작성자   : 박성민
      * @param  :
      *   gganbuNo - 회차번호
      *   memNo - 회원버호(신청자)
-     *   badgeSlct - 뱃지구분 [p:주머니, r: 깐부신청]
+     *   badgeSlct - 배지구분 [p:주머니, r: 깐부신청]
      * @return
      *  s_return: -1: 이벤트기간 아님, 0: 에러, 1:정상
      **********************************************************************************************/
@@ -459,15 +459,15 @@ public interface Event {
     int gganbuMemBadgeUpd(GganbuMemBadgeUpdVo param);
 
     /**********************************************************************************************
-     * @Method 설명 : 깐부 나의 뱃지 내역
+     * @Method 설명 : 깐부 나의 배지 내역
      * @작성일   : 2021-12-07
      * @작성자   : 박성민
      * @param  :
      *   gganbuNo - 회차번호
      *   memNo - 회원버호(신청자)
      * @return
-     *  pocket_cnt - 뱃지수
-     *  req_cnt - 깐부 신청 뱃지
+     *  pocket_cnt - 배지수
+     *  req_cnt - 깐부 신청 배지
      **********************************************************************************************/
     @Select("CALL rd_data.p_evt_gganbu_mem_badge_sel(#{gganbuNo}, #{memNo})")
     GganbuMemBadgeSelVo gganbuMemBadgeSel(GganbuMemBadgeUpdVo param);

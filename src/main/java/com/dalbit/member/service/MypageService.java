@@ -2674,7 +2674,7 @@ public class MypageService {
         var specialDjCondition = new SpecialDjConditionVo();
         ArrayList<HashMap<String,String>> conditionList = new ArrayList<>();
 
-        //스페셜DJ 조건 확인
+        //스페셜DJ 조건 확인 #7794 스타DJ용으로 변경됨
         SpecialDjRegManageVo getSpecialDjRegManageVo = mypageDao.selectSpecialDjReqManage(specialDjRegManageVo);
         if(DalbitUtil.isEmpty(getSpecialDjRegManageVo)){
             return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_없음_종료));
@@ -2786,6 +2786,7 @@ public class MypageService {
                 resultMap.put("title", "누적방송시간");
                 resultMap.put("subtitle", "(팬 방송 제외)");
                 resultMap.put("value", "최소 " + value + "시간 방송");
+                resultMap.put("point", broadcastAirtime);
                 break;
             case 2:
                 //90분 이상 방송(기간)
@@ -2800,6 +2801,7 @@ public class MypageService {
                 resultMap.put("condition", djLikeCnt < value ? 0 : 1);
                 resultMap.put("title", "받은 좋아요");
                 resultMap.put("value", "최소 " + value + "개 이상");
+                resultMap.put("point", djLikeCnt);
                 break;
             case 4:
                 //레벨 체크(현재 상태)
@@ -2821,6 +2823,7 @@ public class MypageService {
                 resultMap.put("condition", listenCnt < value ? 0 : 1);
                 resultMap.put("title", "누적 청취자 수");
                 resultMap.put("value", "최소 " + value + "명 이상");
+                resultMap.put("point", listenCnt);
                 break;
             case 7:
                 //누적 받은 별
@@ -2828,6 +2831,7 @@ public class MypageService {
                 resultMap.put("condition", listenCnt7 < value ? 0 : 1);
                 resultMap.put("title", "누적 받은 별");
                 resultMap.put("value", "최소 " + value + "개 이상");
+                resultMap.put("point", listenCnt7);
                 break;
 //            case 8:
             //누적 방송시간(팬 방송 제외)

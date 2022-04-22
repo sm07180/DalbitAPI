@@ -624,15 +624,23 @@ public class AdminService {
             // 신고자
             declarationVo.setMem_no(myInfo.getMem_no());
             declarationVo.setMem_userid(myInfo.getMem_userid());
-            declarationVo.setMem_nick(myInfo.getMem_nick());
+            if(!StringUtils.isEmpty(myInfo.getMem_nick())) {
+                declarationVo.setMem_nick(myInfo.getMem_nick());
+            }else {
+                declarationVo.setMem_nick(myInfo.getNickName());
+            }
             // 신고 대상자
             declarationVo.setReported_mem_no(reportedInfo.getMem_no());
             declarationVo.setReported_userid(reportedInfo.getMem_userid());
-            declarationVo.setReported_nick(reportedInfo.getMem_nick());
             declarationVo.setReported_phone(reportedInfo.getMem_phone());
             declarationVo.setReported_level(reportedInfo.getLevel());
             declarationVo.setReported_grade(reportedInfo.getGrade());
             declarationVo.setStatus(1);
+            if(!StringUtils.isEmpty(reportedInfo.getMem_nick())) {
+                declarationVo.setReported_nick(reportedInfo.getMem_nick());
+            }else {
+                declarationVo.setReported_nick(reportedInfo.getNickName());
+            }
 
             if(0 < declarationVo.getReportIdx()){
                 adminDao.declarationResponseOperate(declarationVo);
