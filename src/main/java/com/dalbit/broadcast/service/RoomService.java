@@ -768,7 +768,7 @@ public class RoomService {
                 teamMap.put("medalUrl",teamImgUrl+"/M/"+resTeam.getTeam_medal_code()+".png");
                 teamMap.put("borderUrl",teamImgUrl+"/E/"+resTeam.getTeam_edge_code()+".png");
                 teamMap.put("backgroundUrl",teamImgUrl+"/B/"+resTeam.getTeam_bg_code()+".png");
-                teamMap.put("pageLink","/team/detail/"+resTeam.getTeam_no());
+                teamMap.put("pageLink","/team/detail/"+resTeam.getTeam_no()+"?webview=new");
                 returnMap.put("teamInfo",teamMap);
             }
         }
