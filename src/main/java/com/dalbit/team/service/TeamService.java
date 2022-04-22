@@ -1,7 +1,9 @@
 package com.dalbit.team.service;
 
 import com.dalbit.common.code.Status;
+import com.dalbit.common.dao.PushDao;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.team.proc.TeamProc;
@@ -9,12 +11,14 @@ import com.dalbit.team.vo.*;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.sun.javafx.collections.MappingChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -23,6 +27,8 @@ public class TeamService {
     private GsonUtil gsonUtil;
     @Autowired
     private TeamProc teamProc;
+    @Autowired
+    PushDao pushDao;
 
     /**********************************************************************************************
     * @Method 설명 : 팀 등록 체크
@@ -182,6 +188,26 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+                // 팀 초대일 경우, 푸시 받은 사람에게 푸시 알림 전송
+                if (vo.getReqSlct().equals("i")) {
+                    TeamParamVo param = new TeamParamVo();
+                    param.setTeamNo(vo.getTeamNo());
+                    TeamResultVo teamInfo = teamProc.pDallaTeamMemSel(param);
+
+                    Map<String,Object> pushVo = new HashMap<>();
+                    pushVo.put("mem_no", vo.getMemNo());
+                    pushVo.put("slctPush", 0);
+                    pushVo.put("push_slct", 100);
+                    pushVo.put("title", "나를 초대한 팀이 있어요.");
+                    pushVo.put("contents", teamInfo.getTeam_name() + "팀에서 나를 초대했어요.");
+                    pushVo.put("imageUrl", "");
+                    pushVo.put("push_type", "71");
+                    pushVo.put("room_no", "0");
+                    pushVo.put("image_type", "101");
+                    pushVo.put("target_mem_no", vo.getMemNo());
+                    ProcedureVo procedureVo = new ProcedureVo(pushVo);
+                    pushDao.callStmpPushAdd(procedureVo);
+                }
             }else{
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
             }
