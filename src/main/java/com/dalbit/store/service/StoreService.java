@@ -121,7 +121,9 @@ public class StoreService {
 //            List<Integer> hourRange = Arrays.asList(0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23);
             int hourRangeResult = hourRange.stream().filter(f->f.equals(localDateTime.getHour())).findFirst().orElse(-1);
 
-            boolean isWeekEnd = localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) || localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
+            boolean isWeekEnd =
+                    localDateTime.getDayOfWeek().equals(DayOfWeek.SATURDAY) ||
+                    localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY);
 
 
             if(deviceVo.getOs() == 1){
@@ -141,16 +143,17 @@ public class StoreService {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.AOS_IN_APP;
                 }else if("y".equals(paymentSetting.getAosPaymentSet())){
-                    if(isWeekEnd){
-                        // 주말 : 외부결제 노출
+//                    if(isWeekEnd){// 주말 : 외부결제 노출
+                    if(localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){ // 일요일 : 외부결제 노출
                         mode = Store.ModeType.ALL;
                     }else {
-                        if(hourRangeResult > 0){
-                            // 평일 18:00 ~ 24:00, 00:00 ~ 06:00 : 외부결제 노출
-                            mode = Store.ModeType.ALL;
-                        }else{
-                            mode = Store.ModeType.IN_APP;
-                        }
+//                        if(hourRangeResult > 0){
+//                            // 평일 18:00 ~ 24:00, 00:00 ~ 06:00 : 외부결제 노출
+//                            mode = Store.ModeType.ALL;
+//                        }else{
+//                            mode = Store.ModeType.IN_APP;
+//                        }
+                        mode = Store.ModeType.IN_APP;
                     }
                     if(Store.ModeType.IN_APP.equals(mode) && paymentSetMemberChk == 1){
                         // 안드로이드 & IOS 공통 : DAO 주석 참고
@@ -176,14 +179,16 @@ public class StoreService {
                     mode = Store.ModeType.IN_APP;
                     platform = Store.Platform.IOS_IN_APP;
                 }else if("y".equals(paymentSetting.getIosPaymentSet())){
-                    if(isWeekEnd){
+//                    if(isWeekEnd){
+                    if(localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){
                         mode = Store.ModeType.ALL;
                     }else {
-                        if (hourRangeResult > 0) {
-                            mode = Store.ModeType.ALL;
-                        }else{
-                            mode = Store.ModeType.IN_APP;
-                        }
+//                        if (hourRangeResult > 0) {
+//                            mode = Store.ModeType.ALL;
+//                        }else{
+//                            mode = Store.ModeType.IN_APP;
+//                        }
+                        mode = Store.ModeType.IN_APP;
                     }
                     if(Store.ModeType.IN_APP.equals(mode) && paymentSetMemberChk == 1){
                         mode = Store.ModeType.ALL;
