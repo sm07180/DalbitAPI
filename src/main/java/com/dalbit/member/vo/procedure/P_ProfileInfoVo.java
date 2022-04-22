@@ -50,9 +50,9 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private String  fanRank1;                   //팬랭킹1위 정보
     private String  fanRank2;                   //팬랭킹2위 정보
     private String  fanRank3;                   //팬랭킹3위 정보
-    private int badge_recomm;                   //추천뱃지
-    private int badge_popular;                  //인기뱃지
-    private int badge_newdj;                    //신입뱃지
+    private int badge_recomm;                   //추천배지
+    private int badge_popular;                  //인기배지
+    private int badge_newdj;                    //신입배지
     private long broadcastingTime;              //총 방송시간(초 단위)
     private long listeningTime;                 //총 청취시간(초 단위)
     private int receivedGoodTotal;              //총 좋아요 받은 수
@@ -66,7 +66,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private String cupidNickNm;
     private String cupidMemSex;
     private String cupidProfileImage;
-    private int badge_new;                      // 신입청취자 뱃지
+    private int badge_new;                      // 신입청취자 배지
     private String birthYear;           //생 년
     private String birthMonth;          //생 월
     private String birthDay;            //생 일

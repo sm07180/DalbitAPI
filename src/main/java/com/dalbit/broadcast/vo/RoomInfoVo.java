@@ -87,7 +87,7 @@ public class RoomInfoVo {
     private List guests = new ArrayList();
     private boolean useGuest = true;
 
-    /* 뱃지 정책 변경에 따른 데이터 20.11.25 이재은 */
+    /* 배지 정책 변경에 따른 데이터 20.11.25 이재은 */
     private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private BadgeFrameVo badgeFrame = new BadgeFrameVo();
 
