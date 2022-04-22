@@ -68,7 +68,9 @@ public class TeamService {
         ResVO resVO = new ResVO();
         try {
             Integer result = teamProc.pDallaTeamIns(vo);
-            if(result == -4){
+            if(result == -5){
+                resVO.setResVO(ResMessage.C60023.getCode(), ResMessage.C60023.getCodeNM(), result);
+            }else if(result == -4){
                 resVO.setResVO(ResMessage.C60005.getCode(), ResMessage.C60005.getCodeNM(), result);
             }else if(result == -3){
                 resVO.setResVO(ResMessage.C60002.getCode(), ResMessage.C60002.getCodeNM(), result);
