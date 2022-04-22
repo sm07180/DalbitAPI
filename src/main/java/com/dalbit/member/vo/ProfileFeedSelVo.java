@@ -14,5 +14,5 @@ public class ProfileFeedSelVo {
     @NotNull
     private Integer pageNo;
     @NotNull
-    private Integer pagePerCnt;
+    private Integer pageCnt;
 }

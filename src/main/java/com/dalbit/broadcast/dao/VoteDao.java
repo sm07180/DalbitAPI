@@ -125,7 +125,7 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     List<Object> pRoomVoteList(VoteRequestVo voteRequestVo);
 
     /**
@@ -154,7 +154,7 @@ public interface VoteDao {
      * upd_date	datetime(6)	-- 변경일자
      */
     // insert 후 바로 조회 => Master
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     VoteResultVo pRoomVoteSel(VoteRequestVo voteRequestVo);
 
     /**
@@ -177,7 +177,7 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     List<VoteResultVo> pRoomVoteDetailList(VoteRequestVo voteRequestVo);
 
 

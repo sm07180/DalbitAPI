@@ -23,6 +23,7 @@ public class ClipMainPopListOutVo {
     private int goodCnt;                //좋아요 수
     private int playCnt;
     private Boolean isConDj;             //컨텐츠dj 여부
+    private String memNo;                // 클립 등록자 memNo
 
     public ClipMainPopListOutVo(P_ClipMainPopListVo target){
         setClipNo(target.getCast_no());
@@ -39,5 +40,6 @@ public class ClipMainPopListOutVo {
         setGoodCnt(target.getCount_good());
         setPlayCnt(target.getCount_play());
         setIsConDj(target.getIsConDj() > 0);
+        setMemNo(target.getMem_no());
     }
 }

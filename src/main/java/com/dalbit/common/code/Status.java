@@ -402,11 +402,14 @@ public enum Status {
 
     //방송좋아요
     좋아요("0", "broadcast.like.success", "좋아요 성공 시"),
+    좋아요_취소("0", "broadcast.cancel.success", "좋아요 취소 성공 시"),
     좋아요_회원아님("-1", "broadcast.like.member.no", "회원이 아닐 시"),
     좋아요_해당방송없음("-2", "broadcast.like.room.no", "해당 방송이 없을 시"),
     좋아요_방송참가자아님("-3", "broadcast.like.room.in.no", "방송 참가자가 아닐 시"),
     좋아요_이미했음("-4", "broadcast.like.already", "좋아요 이미 했을 시"),
+    좋아요_하지않음("-4", "broadcast.cancel.already", "좋아요 하지 않았을 시"),
     좋아요_실패("C006", "broadcast.like.fail", "좋아요 실패 시"),
+    좋아요_취소실패("C006", "broadcast.cancel.fail", "좋아요 취소 실패 시"),
 
     //방송방 공유하기 링크체크
     링크체크_성공("0", "broadcast.share.link.success", "링크체크 성공 시"),
@@ -2430,6 +2433,19 @@ public enum Status {
     공통_기본_요청회원_정보없음("-1", "common.select.member.number.error", "memNo 없음"),
     공통_기본_실패("C006", "common.select.fail", "기본 조회 실패 시"),
     공통_기본_DB_실패("C007", "common.select.fail", "기본 조회 실패 db null"),
+
+
+    아이피_조회("C001", "common.nation.sel", "아이피_조회"),
+    아이피_조회_결과없음("C002", "common.nation.sel.none", "아이피_조회_결과없음"),
+
+
+    스토어_홈_데이터_조회_회원정보없음("EM001", "store.home.data.sel.member", "스토어_홈_데이터_조회_회원정보없음"),
+    스토어_홈_데이터_조회_파라미터("EP001", "store.home.data.sel.parameter", "스토어_홈_데이터_조회_파라미터"),
+    스토어_홈_데이터_조회("C001", "store.home.data.sel", "스토어_홈_데이터_조회"),
+
+    스토어_아이템_조회_파라미터("EP002", "store.item.data.list.parameter", "스토어_아이템_조회_파라미터"),
+    스토어_아이템_조회_오류("EI001", "store.item.data.list.error", "스토어_아이템_조회_오류"),
+    스토어_아이템_조회("C002", "store.item.data.list", "스토어_아이템_조회"),
     ;
 
 

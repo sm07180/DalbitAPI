@@ -83,6 +83,7 @@ public class UserService {
                 roomMemberList.put("paging", new PagingVo(0, pRoomMemberListVo.getPageNo(), pRoomMemberListVo.getPageCnt()));
             }
 
+            log.error("로그체크 TODO 방송방 참여자 리스트 프로시저 응답 : {} || 파라메터 : {}", procedureVo, pRoomMemberListVo);
             if(Status.방송참여자리스트_참여자아님.getMessageCode().equals(procedureVo.getRet())) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_참여자아님));
             }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureVo.getRet())) {
@@ -115,10 +116,13 @@ public class UserService {
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_조회, roomMemberList));
         }else if(Status.방송참여자리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            log.error("2 로그체크 TODO 방송방 참여자 리스트 프로시저 응답 : {} || 파라메터 : {}", procedureVo, pRoomMemberListVo);
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_회원아님));
         }else if(Status.방송참여자리스트_방없음.getMessageCode().equals(procedureVo.getRet())) {
+            log.error("2 로그체크 TODO 방송방 참여자 리스트 프로시저 응답 : {} || 파라메터 : {}", procedureVo, pRoomMemberListVo);
             return gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트_방없음));
         }else{
+            log.error("2 로그체크 TODO 방송방 참여자 리스트 프로시저 응답 : {} || 파라메터 : {}", procedureVo, pRoomMemberListVo);
             result = gsonUtil.toJson(new JsonOutputVo(Status.방송참여자리스트조회_실패));
         }
 

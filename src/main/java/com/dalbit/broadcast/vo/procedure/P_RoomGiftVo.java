@@ -19,4 +19,5 @@ public class P_RoomGiftVo extends P_ApiVo {
 
     private String ttsText = "";         // tts 음성 내용
     private String actorId = "";         // 배우 id
+    private String ttsYn = ""; // tts 아이템 yn
 }

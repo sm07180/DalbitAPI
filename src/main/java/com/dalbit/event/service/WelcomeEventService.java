@@ -3,21 +3,16 @@ package com.dalbit.event.service;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.proc.WelcomeEvent;
-import com.dalbit.event.vo.WelcomItemListVO;
-import com.dalbit.event.vo.WelcomListVO;
-import com.dalbit.event.vo.WelcomeUserItemVO;
-import com.dalbit.event.vo.WelcomeUserVO;
+import com.dalbit.event.vo.*;
 import com.dalbit.util.DBUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -37,11 +32,17 @@ public class WelcomeEventService {
         ResVO result = new ResVO();
         List<WelcomListVO> userListInfo = new ArrayList<>();
         List<WelcomItemListVO> rewardListInfo = new ArrayList<>();
+        List<WelcomeCondVO> condListInfo = new ArrayList<>();
         Map<String, Object> resultInfo = new HashMap<>();
+        String theMonth = "";
+        SimpleDateFormat yyyyMM = new SimpleDateFormat("yyyy-MM");
 
         try {
-            userListInfo = welcomeEvent.getUserListInfo(memNo, memSlct);
-            rewardListInfo = welcomeEvent.getItemListInfo(memSlct);
+            Date today = new Date();
+            theMonth = yyyyMM.format(today);
+            userListInfo = welcomeEvent.getUserListInfo(memNo, memSlct); // 유저가 받은 선물 목록
+            rewardListInfo = welcomeEvent.getItemListInfo(memSlct); // 보상 목록
+            condListInfo = welcomeEvent.getWelcomeContList(memSlct, theMonth + "-01"); // 보상 조건 목록
 
             List<Object> temp = new ArrayList<>();
             ObjectMapper objectMapper = new ObjectMapper();
@@ -50,15 +51,35 @@ public class WelcomeEventService {
                 Map<String, Object> tempMap = new HashMap<>();
                 List<WelcomItemListVO> itemList = new ArrayList<>();
 
+                // 보상 정보 SET
                 for (int j = 0; j < rewardListInfo.size(); j++) {
                     if (rewardListInfo.get(j).getGiftStepNo().equals(i + 1)) {
                         itemList.add(rewardListInfo.get(j));
                     }
                 }
 
+                // 조건 정보 SET
+                // 어드민을 서비스와 연계하지 않고 설계하여 이렇게 됨
+                for (int t = 0; t < condListInfo.size(); t++) {
+                    if (condListInfo.get(t).getQualifyStepNo().equals(i + 1)) {
+                        Integer setVal = condListInfo.get(t).getQualifyVal();
+                        if (condListInfo.get(t).getQualifyName().equals("방송시청")) {
+                            tempMap.put("maxMemTime", setVal * 3600);
+                        }
+                        if (condListInfo.get(t).getQualifyName().equals("좋아요")) {
+                            tempMap.put("maxLikeCnt", setVal);
+                        }
+                        if (condListInfo.get(t).getQualifyName().equals("달충전")) {
+                            tempMap.put("maxDalCnt", setVal);
+                        }
+                    }
+                }
+
+                // 선물을 받았다면, tempMap에 받은 선물 정보 Set
                 if (userListInfo.size() >= (i + 1)) {
                     Map<String, Object> map = objectMapper.convertValue(userListInfo.get(i), Map.class);
                     tempMap.putAll(map);
+                // 선물을 안받았다면, tempMap에 기본 정보 Set
                 } else {
                     WelcomListVO tempItem = new WelcomListVO();
                     tempItem.setStep_no(i + 1);
@@ -67,34 +88,17 @@ public class WelcomeEventService {
                     tempMap.putAll(map);
                 }
 
+                // 선물을 받았다면, 선물받은 자리에 해당하는 item 정보를 선물 받은 정보로 변경한다.
+                // 받은 선물 정보가 있는지, 선물을 받았는지, 선물 순번이 0보다 큰지 확인 필요
                 if (userListInfo.size() >= (i + 1) && userListInfo.get(i).getGiftReqYn().equals("y") && userListInfo.get(i).getGiftOrd() > 0) {
                     itemList.get(userListInfo.get(i).getGiftOrd() - 1).setGift_code(userListInfo.get(i).getGiftCode());
                     itemList.get(userListInfo.get(i).getGiftOrd() - 1).setGift_dal_cnt(userListInfo.get(i).getDalCnt());
                     itemList.get(userListInfo.get(i).getGiftOrd() - 1).setGift_name(userListInfo.get(i).getGiftName());
                     itemList.get(userListInfo.get(i).getGiftOrd() - 1).setGift_step_no(userListInfo.get(i).getStepNo());
+                    itemList.get(userListInfo.get(i).getGiftOrd() - 1).setGift_ord(userListInfo.get(i).getGiftOrd());
                 }
 
                 tempMap.put("itemList", itemList);
-
-
-                // 1,2,3단계 미션 달성 조건 (하드코딩)
-                switch (i) {
-                    case 0:
-                        tempMap.put("maxMemTime", 3600); // 3600
-                        tempMap.put("maxLikeCnt", 3); // 3
-                        tempMap.put("maxDalCnt", 0); // 0
-                        break;
-                    case 1:
-                        tempMap.put("maxMemTime", 18000); // 3600 * 5
-                        tempMap.put("maxLikeCnt", 10); // 10
-                        tempMap.put("maxDalCnt", (memSlct.equals("1") ? 50 : 0)); // (memSlct.equals(1) ? 50 : 0)
-                        break;
-                    case 2:
-                        tempMap.put("maxMemTime", 36000); // 3600 * 10
-                        tempMap.put("maxLikeCnt", 20); // 20
-                        tempMap.put("maxDalCnt", (memSlct.equals("1") ? 200 : 30)); // (memSlct.equals(1) ? 200 : 30)
-                        break;
-                }
 
                 if (i == 3) {
                     resultInfo.put("clearItem", tempMap);
@@ -194,34 +198,50 @@ public class WelcomeEventService {
             }
 
             List<WelcomListVO> userListInfo = welcomeEvent.getUserListInfo(memNo, (String)params.get("giftSlct"));
+            String theMonth = "";
+            SimpleDateFormat yyyyMM = new SimpleDateFormat("yyyy-MM");
+            Date today = new Date();
+            theMonth = yyyyMM.format(today);
+            List<WelcomeCondVO> condListInfo = welcomeEvent.getWelcomeContList((String)params.get("giftSlct"), theMonth + "-01"); // 보상 조건 목록
+            WelcomListVO target = userListInfo.get(userListInfo.size() - 1);
+            Integer maxMemTime = 0;
+            Integer maxLikeCnt = 0;
+            Integer maxDalCnt = 0;
 
-            if (userListInfo.size() > 0) {
-                WelcomListVO temp = userListInfo.get(userListInfo.size() - 1);
-                Integer maxMemTime = 0;
-                Integer maxLikeCnt = 0;
-                Integer maxDalCnt = 0;
-                // 1,2,3단계 미션 달성 조건 (하드코딩)
-                switch (temp.getStepNo()) {
-                    case 1:
-                        maxMemTime = 3600;
-                        maxLikeCnt = 3;
-                        maxDalCnt = 0;
-                        break;
-                    case 2:
-                        maxMemTime = 18000;
-                        maxLikeCnt = 10;
-                        maxDalCnt = params.get("giftSlct").equals("1") ? 50 : 0;
-                        break;
-                    case 3:
-                        maxMemTime = 36000;
-                        maxLikeCnt = 20;
-                        maxDalCnt = params.get("giftSlct").equals("1") ? 200 : 30;
-                        break;
+            for (int i = 0; i < condListInfo.size(); i++) {
+                if (condListInfo.get(i).getQualifyStepNo().equals(target.getStepNo())) {
+                    Integer setVal = condListInfo.get(i).getQualifyVal();
+                    if (condListInfo.get(i).getQualifyName().equals("방송시청")) {
+                        maxMemTime = setVal * 3600;
+                    }
+                    if (condListInfo.get(i).getQualifyName().equals("좋아요")) {
+                        maxLikeCnt = setVal;
+                    }
+                    if (condListInfo.get(i).getQualifyName().equals("달충전")) {
+                        maxDalCnt = setVal;
+                    }
                 }
-                if (temp.getMemTime() < maxMemTime || temp.getLikeCnt() < maxLikeCnt || temp.getDalCnt() < maxDalCnt) {
-                    result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
-                    return result;
-                }
+            }
+                
+            // 조건 체크
+            if ( maxMemTime != 0 && target.getMemTime() < maxMemTime ) {
+                result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
+                return result;
+            }
+
+            if (maxLikeCnt != 0 && target.getLikeCnt() < maxLikeCnt) {
+                result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
+                return result;
+            }
+
+            if (maxDalCnt != 0 && target.getDalCnt() < maxDalCnt) {
+                result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
+                return result;
+            }
+
+            if (maxMemTime.equals(0) && maxLikeCnt.equals(0) && maxDalCnt.equals(0)) {
+                result.setResVO(ResMessage.C39005.getCode(), ResMessage.C39005.getCodeNM(), null);
+                return result;
             }
 
             // 선물 받기 처리

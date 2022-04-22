@@ -69,4 +69,5 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private int server_state;               //와우자 상태
     private int video_state;               //영상 상태
     private int count_fan;                  //신규팬수
+    private int badge_partner;              //파트너DJ여부 1: O 0: X
 }
