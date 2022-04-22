@@ -38,4 +38,5 @@ public class P_SpecialHistoryVo extends P_ApiVo {
     private int minute_broadcast;
     private String room_no;
     private int isNew;
+    private String fanYn;
 }

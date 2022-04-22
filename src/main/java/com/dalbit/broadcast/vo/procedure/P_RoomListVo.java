@@ -99,6 +99,7 @@ public class P_RoomListVo extends P_ApiVo {
     private String guest_play_tokenid;     //guest play토큰
     private int is_wowza;                  // 와우자여
 
+    private int badge_partner;
     private int badge_recomm;                   //추천배지
     private int badge_popular;                  //인기배지
     private int badge_newdj;                    //신입배지

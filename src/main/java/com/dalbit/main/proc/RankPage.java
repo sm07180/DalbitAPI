@@ -27,7 +27,7 @@ public interface RankPage {
     List<MyRankVO> getMyRank(String memNo);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: myRank(DJ/FAN/GOOD)
+     * @프로시저 설명   	: 랭킹 참여 여부(DJ/FAN/GOOD)
      * @Date   		        : 2022-04-13
      * @Author   		    : 강알찬
      * @param	 	        : memNo BIGINT			-- 회원번호
