@@ -46,4 +46,5 @@ public interface CustomerCenterDao {
      */
     @Select("CALL p_service_center_notice_read_upd(#{memNo}, #{notiNo})")
     Integer callNoticeReadUpd(Map<String, Object> param);
+
 }
