@@ -24,6 +24,7 @@ public class SpecialDjHistoryOutVo {
     private String roomNo;
     private String[] levelColor;
     private boolean isNew;
+    private String fanYn;
 
     public SpecialDjHistoryOutVo(){}
     public SpecialDjHistoryOutVo(P_SpecialHistoryVo pSpecialHistoryVo){
@@ -42,5 +43,6 @@ public class SpecialDjHistoryOutVo {
         this.broadMin = pSpecialHistoryVo.getMinute_broadcast();
         this.roomNo = pSpecialHistoryVo.getRoom_no();
         this.isNew = pSpecialHistoryVo.getIsNew() == 1;
+        this.fanYn = pSpecialHistoryVo.getFanYn();
     }
 }

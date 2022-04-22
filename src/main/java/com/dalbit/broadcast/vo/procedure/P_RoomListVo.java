@@ -103,6 +103,7 @@ public class P_RoomListVo extends P_ApiVo {
     private int badge_popular;                  //인기뱃지
     private int badge_newdj;                    //신입뱃지
     private int badge_special;                  //스페셜뱃지
+    private int badge_partner;
     private int os_type;
     private int totalCnt;
     private int isConDj;                    //컨텐츠뱃지
