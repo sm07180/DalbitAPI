@@ -25,7 +25,6 @@ import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.BroadcastOptionAddVo;
-import com.dalbit.member.vo.request.BroadcastSettingEditVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -45,7 +44,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -473,7 +471,7 @@ public class WowzaService {
             roomInfoVo.setStoneEventInfo(dallagersEventService.getBroadcastEventScheduleCheck(request, roomInfoVo.getBjMemNo()));
 
             /* 시그니처 아이템 정보 */
-            roomInfoVo.setSignatureItem(getSignatureItems(target.getBjMemNo(), MemberVo.getMyMemNo(request)));
+            roomInfoVo.setSignatureItem(getSignatureItems(target.getBjMemNo(), MemberVo.getMyMemNo(request), deviceVo));
 
             roomInfoVo.setAgoraToken(agoraToken);
             roomInfoVo.setAgoraAppId(AGORA_APP_ID);
@@ -686,7 +684,7 @@ public class WowzaService {
             }
 
             /* 시그니처 아이템 정보 */
-            roomInfoVo.setSignatureItem(getSignatureItems(target.getBjMemNo(), MemberVo.getMyMemNo(request)));
+            roomInfoVo.setSignatureItem(getSignatureItems(target.getBjMemNo(), MemberVo.getMyMemNo(request), deviceVo));
 
             //애드브릭스 전달을 위한 데이터 생성
             //adbrixService("roomJoin", "1151231231312")
@@ -940,7 +938,7 @@ public class WowzaService {
                     }
 
                     /* 시그니처 아이템 정보 */
-                    roomInfoVo.setSignatureItem(getSignatureItems(target.getBjMemNo(), MemberVo.getMyMemNo(request)));
+                    roomInfoVo.setSignatureItem(getSignatureItems(target.getBjMemNo(), MemberVo.getMyMemNo(request), deviceVo));
 
                     result.put("status", Status.방정보보기);
                     result.put("data", roomInfoVo);
@@ -1194,7 +1192,7 @@ public class WowzaService {
     }
 
     /* 시그니처 정보 세팅 */
-    public HashMap getSignatureItems(String bjMemNo, String userMemNo) {
+    public HashMap getSignatureItems(String bjMemNo, String userMemNo, DeviceVo deviceVo) {
         HashMap map = new HashMap();
         try {
             if (!StringUtils.equals(bjMemNo, "") && !StringUtils.equals(bjMemNo, null)) {
@@ -1204,8 +1202,22 @@ public class WowzaService {
                 List<ItemVo> items = broadcast.spSignatureItemSelect(param);
 
                 if (!items.equals(null)) {
-                    ArrayList<itemCategoryVo> list = new ArrayList();
-                    list.add(new itemCategoryVo("signature", "시그니처", false));
+                    ArrayList<ItemCategoryVo> list = new ArrayList();
+                    ItemCategoryVo itemCategoryVo = new ItemCategoryVo("signature", "시그니처", false);
+
+                    if(!DalbitUtil.isEmpty(items)){
+                        for(int i = 0; i < items.size(); i++){
+                            if(deviceVo.getOs() == 3){
+                                items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
+                            }
+                            if(items.get(i).isNew()){
+                                itemCategoryVo.setIsNew(true);
+                            }
+                        }
+                        list.add(itemCategoryVo);
+                    }
+
+
                     map.put("itemCategories", list);
                     map.put("items", items);
                 } else {

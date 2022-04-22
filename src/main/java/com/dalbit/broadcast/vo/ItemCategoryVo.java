@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class itemCategoryVo {
+public class ItemCategoryVo {
     String code;
     String value;
     Boolean isNew;
 
-    public itemCategoryVo(){}
+    public ItemCategoryVo(){}
 
-    public itemCategoryVo(String code, String value, Boolean isNew){
+    public ItemCategoryVo(String code, String value, Boolean isNew){
         this.code = code;
         this.value = value;
         this.isNew = isNew;
