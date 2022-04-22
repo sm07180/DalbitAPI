@@ -305,30 +305,7 @@ public class TTSService {
         switch (actorId) {
             case "6063252471850cc8f04c7600": return new String[] {"a", "빠다가이"}; // 빠다가이
             case "61659cc118732016a95fe7c6": return new String[] {"b", "하나"}; // 하나
-            default:
-        }
-
-        log.error("getTtsActorSlct - 해당하는 actor slct가 없음 / actorId: {}, client: {}", actorId, getClient(request));
-        return null;
-    }
-
-    public String getClient(HttpServletRequest request) {
-        String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
-        customHeader = java.net.URLDecoder.decode(customHeader);
-        HashMap<String, Object> headers = new Gson().fromJson(customHeader, HashMap.class);
-        int os = DalbitUtil.getIntMap(headers,"os");
-        String isHybrid = DalbitUtil.getStringMap(headers,"isHybrid");
-
-        if(os == 1){
-            return "Android-Mobile";
-        }else if(os == 2){
-            return "IOS-Mobile";
-        } else if(os == 3){
-            return "PC";
-        } else if(isHybrid.equals("Y")){
-            return "Web-Mobile";
-        } else {
-            return "PC";
+            default: return new String[] {"a", "빠다가이"}; // 빠다가이
         }
     }
 }
