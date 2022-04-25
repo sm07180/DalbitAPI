@@ -110,6 +110,9 @@ public class ContentController {
 
     /**
      * 방송방 사연 등록
+     *
+     * djMemNo
+     * ,plusYn : 플러스 아이템 여부 [y, n]
      */
     @PostMapping("/story")
     public String insertStory(@Valid StoryAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{

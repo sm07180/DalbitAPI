@@ -1636,6 +1636,11 @@ public enum Status {
     방송방사연_조회_회원아님("-1", "mypage.broad.story.select.member.number.error", "요청회원번호가 회원 아닐 시"),
     방송방사연_조회_실패("C006", "mypage.broad.story.list.select.fail", "방송방 사연 조회 실패 시"),
 
+    //사연보관함 내역 조회
+    사연보관함_조회_성공("C001", "mypage.broad.story.history.list.select.success", "방송방 사연 조회 성공 시"),
+    사연보관함_조회_없음("0", "mypage.broad.story.history.list.select.no.success", "방송방 사연 없을 시"),
+    사연보관함_조회_실패("C006", "mypage.broad.story.history.list.select.fail", "방송방 사연 조회 실패 시"),
+
     //내지갑 내역 조회
     내지갑_내역조회_성공("C001", "mypage.wallet.list.select.success", "내지갑 내역 조회 성공 시"),
     내지갑_내역조회_없음("0", "mypage.wallet.list.select.no", "내지갑 내역 없을 시"),

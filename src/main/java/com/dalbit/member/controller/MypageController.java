@@ -1,5 +1,6 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.broadcast.vo.request.StoryHistoryVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
@@ -1422,6 +1423,14 @@ public class MypageController {
             log.error("MypageController.java / noticeLikeCancel Exception {}", e);
             return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_취소실패));
         }
+    }
+
+    /**
+     * 마이페이지 사연 보관함 조회 (new)
+     */
+    @GetMapping("/story/history")
+    public String getStoryHistory(@Valid StoryHistoryVo vo, HttpServletRequest request){
+        return mypageService.getStoryHistory(vo, request);
     }
 
 }
