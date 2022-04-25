@@ -498,6 +498,7 @@ public class WowzaService {
                 socketMap.put("profImg", target.getBjProfImg());
                 socketMap.put("roomNo", roomNo + "");
                 socketMap.put("msg", roomInfoVo.getBjNickNm()+"님이 방송을 시작했습니다.");
+                socketMap.put("memNo", roomInfoVo.getBjMemNo()); // 네이티브팀 요청으로 추가
 
                 P_FanNumberVo fanNumberVo = new P_FanNumberVo();
                 fanNumberVo.setMem_no(MemberVo.getMyMemNo(request));

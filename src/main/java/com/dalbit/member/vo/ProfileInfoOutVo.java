@@ -4,6 +4,7 @@ import com.dalbit.common.vo.BaseVo;
 import com.dalbit.common.vo.FanBadgeVo;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
+import com.dalbit.team.vo.TeamSymbolVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private static final long serialVersionUID = 1L;
 
     private String  memNo;
+    private String  teamNo;
     private String  nickNm;
     private String  gender;
     private int     age;
@@ -78,7 +80,11 @@ public class ProfileInfoOutVo extends BaseVo {
     private boolean isMailboxOn;
     private String memJoinYn;
     private int listenOpen;
+    private String masterMemYn;
     private String memLoginId;
+
+    private TeamSymbolVo teamInfo;
+    private Integer teamJoinCheck = -999;
 
     public ProfileInfoOutVo(){}
     public ProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank) {
@@ -89,6 +95,7 @@ public class ProfileInfoOutVo extends BaseVo {
     }
     public void setProfileInfoOutVo(P_ProfileInfoVo target, String target_mem_no, String mem_no, List fanRank, boolean isAdmin) {
         this.memNo = target_mem_no;
+        this.teamNo = target.getTeamNo();
         this.nickNm = target.getNickName();
         this.gender = target.getMemSex();
         this.age = target.getAge();
@@ -149,5 +156,6 @@ public class ProfileInfoOutVo extends BaseVo {
         this.memJoinYn = target.getMemJoinYn();
         this.listenOpen = target.getListenOpen();
         this.memLoginId = target.getMemLoginId();
+        this.masterMemYn = target.getMasterMemYn();
     }
 }
