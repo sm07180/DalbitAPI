@@ -362,9 +362,10 @@ public class SocketService {
         log.info("Socket Start : changeRoomState {}, {}, {}, {}", roomNo, memNo, state, isLogin);
 
         if("join".equals(type)){
-            try{
+            /*try{
                 Thread.sleep(500);
-            }catch(InterruptedException e){}
+            }catch(InterruptedException e){}*/
+            System.out.println("여기인가");
         }
 
         roomNo = roomNo == null ? "" : roomNo.trim();
@@ -1102,10 +1103,12 @@ public class SocketService {
         log.info("Socket Start : roomStateEdit {}, {}, {}, {}, {}", roomNo, memNo, stateEditVo, isLogin);
 
         if("join".equals(type)){
+/*
             try{
                 Thread.sleep(500);
             }catch(InterruptedException e){}
-
+*/
+            System.out.println("여기일수도");
             vo.setRecvMemNo(memNo);
         }
 

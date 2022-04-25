@@ -20,7 +20,7 @@ public class ClipListOutVo {
     private double total;               //순위점수
     private String filePlayTime;        //재생시간
     private int os;                     //1: aos, 2: ios, 3: pc
-    private Boolean isNew;              //신입뱃지(1)
+    private Boolean isNew;              //신입배지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
     private Boolean isConDj;            //컨텐츠Dj
     private int badgeSpecial;
