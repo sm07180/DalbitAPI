@@ -7,10 +7,13 @@ import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
+import com.dalbit.main.etc.MainEtc;
 import com.dalbit.main.proc.MainPage;
 import com.dalbit.main.vo.*;
 import com.dalbit.main.vo.procedure.*;
+import com.dalbit.main.vo.request.MainRankingPageVo;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
+import com.dalbit.main.vo.request.MainTimeRankingPageVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DBUtil;
@@ -22,7 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Array;
+import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -37,6 +46,12 @@ public class MainServiceV2 {
     @Autowired MypageDao mypageDao;
     @Autowired MainPage mainPage;
 
+    public String getEtcData() {
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("aos", MainEtc.IN_APP_UPDATE_VERSION.AOS);
+        returnMap.put("ios", MainEtc.IN_APP_UPDATE_VERSION.IOS);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+    }
     /**
      * 메인 페이지
      */
@@ -116,16 +131,16 @@ public class MainServiceV2 {
 
 
         /* 일간 랭킹 */
-        HashMap<String, Object> dayRankingMap = new HashMap<>();
+//        HashMap<String, Object> dayRankingMap = new HashMap<>();
 /*        dayRankingMap.put("djRank", getMainDayDjRank(mainRankingPageVoList)); // dj
         dayRankingMap.put("fanRank", getMainDayFanRank(mainFanRankingVoList)); // fan
         dayRankingMap.put("loverRank", getMainDayLoverRank(mainLoverRankingVoList)); // lover*/
-        mainMap.put("dayRanking", dayRankingMap);
+//        mainMap.put("dayRanking", dayRankingMap);
 
-        mainMap.put("popupLevel", 0); // ???
+//        mainMap.put("popupLevel", 0); // ???
 
         /* 방금 착륙한 NEW 달둥스 (신입 BJ) */
-        List<P_RoomListVo> newBjList = new ArrayList<>();
+        /*List<P_RoomListVo> newBjList = new ArrayList<>();
         try {
             RoomListVo roomListVo = new RoomListVo();
             roomListVo.setMediaType("");
@@ -140,7 +155,7 @@ public class MainServiceV2 {
         } catch (Exception e) {
             log.error("MainServiceV2 / main / newBjList", e);
             mainMap.put("newBjList", newBjList);
-        }
+        }*/
 
         /* 메인 center 배너 */
         mainMap.put("centerBanner", mainService.selectBanner("9", request));
@@ -408,5 +423,103 @@ public class MainServiceV2 {
         }
 
         return loverRank;
+    }
+
+    /**
+     *  메인 페이지 NOW TOP 10
+     */
+    public String nowTop10(String callType, HttpServletRequest request) {
+        String result;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH");
+        String now = dateFormat.format(new Date()) + ":00:00"; // yyyy-MM-dd HH:00:00
+
+        if(StringUtils.equals(callType, "FAN") || StringUtils.equals(callType, "CUPID")) {
+            MainRankingPageVo mainRankingPageVo = new MainRankingPageVo();
+            mainRankingPageVo.setRankSlct(StringUtils.equals(callType, "FAN") ? 2 : 3);
+            mainRankingPageVo.setRankType(1);
+            mainRankingPageVo.setRankingDate(now);
+            mainRankingPageVo.setPage(1);
+            mainRankingPageVo.setRecords(10);
+
+            P_MainRankingPageVo apiData = new P_MainRankingPageVo(mainRankingPageVo, request);
+
+            result = mainService.mainRankingPage(request, apiData);
+        }else {
+            MainTimeRankingPageVo mainTimeRankingPageVo = new MainTimeRankingPageVo();
+            mainTimeRankingPageVo.setRankSlct(1);
+            mainTimeRankingPageVo.setPage(1);
+            mainTimeRankingPageVo.setRecords(10);
+            mainTimeRankingPageVo.setRankingDate(now);
+
+            P_MainTimeRankingPageVo apiData = new P_MainTimeRankingPageVo(mainTimeRankingPageVo, request);
+
+            result = mainService.mainTimeRankingPage(request, apiData);
+        }
+
+        return result;
+    }
+
+    public String getMainSwiper(HttpServletRequest request){
+        String memNo = MemberVo.getMyMemNo(request);
+
+        String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
+
+        Map resultMap = new HashMap();
+
+        resultMap.put("photoSvrUrl", photoSvrUrl);
+
+        Map bannerMap = new HashMap();
+        bannerMap.put("memNo", memNo);
+        bannerMap.put("device", "3");
+        bannerMap.put("platform", "1__");
+        bannerMap.put("position", 1);
+
+        int cnt = 0;
+
+        List<MainSwiperVO> swiperList = new ArrayList<>();
+
+        List<MainSwiperVO> adminBanner = mainPage.getAdminBanner(bannerMap);
+        for (MainSwiperVO vo: adminBanner) {
+            vo.setImage_profile(vo.getBannerUrl());
+        }
+
+        swiperList.addAll(adminBanner);
+        cnt = swiperList.size();
+
+        swiperList.addAll(mainPage.getMainStarList(bannerMap));
+        cnt = swiperList.size();
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getTopViewList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getTopLikeList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 3){
+            swiperList.addAll(mainPage.getTopLiveList(bannerMap));
+        }
+
+        if (cnt > 10){
+            swiperList = swiperList.subList(0, 10);
+        }
+
+        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
+        resultMap.put("swiperList", swiperList2);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
+
+    //중복 제거 함수
+    public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 }

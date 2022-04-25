@@ -27,6 +27,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import java.text.SimpleDateFormat;
 import java.util.Collections;
 
 import javax.servlet.http.HttpServletRequest;
@@ -1347,6 +1349,149 @@ public class ClipService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_수정권한없음));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(Status.내클립현황_클립공개여부수정_실패));
+        }
+
+        return result;
+    }
+
+    /**
+     * 클립랭킹 어제(지난주) + 오늘(이번주) - native
+     */
+    public String clipRankingBindList(ClipRankCombineListVo clipRankCombineListVo, HttpServletRequest request) {
+        String result = "";
+
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            Date now = new Date();
+
+            P_ClipRankListVo apiData;
+            ProcedureVo procedureVo;
+            List<P_ClipRankListVo> clipRankingList = new ArrayList<>();
+            List<P_ClipRankListVo> clipRankingList2 = new ArrayList<>();
+
+            P_ClipRankListVo apiData2;
+            ProcedureVo procedureVo2;
+
+            String callType = clipRankCombineListVo.getCallType();
+            if(StringUtils.equals(callType, "0")) { // 어제 + 오늘
+                // 오늘
+                String today = simpleDateFormat.format(now);
+                clipRankCombineListVo.setRankingDate(today);
+                apiData = new P_ClipRankListVo(clipRankCombineListVo, request);
+                procedureVo = new ProcedureVo(apiData);
+                clipRankingList = clipDao.callClipRank(procedureVo);
+
+                // 어제
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(now);
+                cal.add(Calendar.DATE, -1);
+                String yesterday = simpleDateFormat.format(cal.getTime());
+                clipRankCombineListVo.setRankingDate(yesterday);
+                clipRankCombineListVo.setRecords(3);
+
+                apiData2 = new P_ClipRankListVo(clipRankCombineListVo, request);
+                procedureVo2 = new ProcedureVo(apiData2);
+                clipRankingList2 = clipDao.callClipRank(procedureVo2);
+
+                // 같은 클립이 있으면 삭제
+                for(P_ClipRankListVo vo : clipRankingList2) {
+                    for(int i=0; i < clipRankingList.size(); i++) {
+                        if(StringUtils.equals(vo.getCast_no(), clipRankingList.get(i).getCast_no())) {
+                            clipRankingList.remove(i);
+                            break;
+                        }
+                    }
+                }
+
+                clipRankingList2.addAll(clipRankingList); // 어제 + 오늘
+            }else if(StringUtils.equals(callType, "1")) { // 오늘
+                String today = simpleDateFormat.format(now);
+                clipRankCombineListVo.setRankingDate(today);
+                apiData = new P_ClipRankListVo(clipRankCombineListVo, request);
+                procedureVo = new ProcedureVo(apiData);
+
+                clipRankingList = clipDao.callClipRank(procedureVo);
+                clipRankingList2.addAll(clipRankingList);
+            }else if(StringUtils.equals(callType, "2")) { // 저번주 + 이번주
+                // 이번주(월요일 기준)
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+                String monday = simpleDateFormat.format(c.getTime());
+                clipRankCombineListVo.setRankingDate(monday);
+                apiData = new P_ClipRankListVo(clipRankCombineListVo, request);
+                procedureVo = new ProcedureVo(apiData);
+
+                clipRankingList = clipDao.callClipRank(procedureVo);
+
+                // 저번주
+                c.add(Calendar.DATE, -7);
+                String lastWeek = simpleDateFormat.format(c.getTime());
+                clipRankCombineListVo.setRankingDate(lastWeek);
+                clipRankCombineListVo.setRecords(3);
+
+                apiData2 = new P_ClipRankListVo(clipRankCombineListVo, request);
+                procedureVo2 = new ProcedureVo(apiData2);
+                clipRankingList2 = clipDao.callClipRank(procedureVo2);
+
+                // 같은 클립이 있으면 삭제
+                for(P_ClipRankListVo vo : clipRankingList2) {
+                    for(int i=0; i < clipRankingList.size(); i++) {
+                        if(StringUtils.equals(vo.getCast_no(), clipRankingList.get(i).getCast_no())) {
+                            clipRankingList.remove(i);
+                            break;
+                        }
+                    }
+                }
+
+                clipRankingList2.addAll(clipRankingList); // 저번주 + 이번주
+            }else { // 이번주
+                // 이번주(월요일 기준)
+                Calendar c = Calendar.getInstance();
+                c.set(Calendar.DAY_OF_WEEK,Calendar.MONDAY);
+                String monday = simpleDateFormat.format(c.getTime());
+                clipRankCombineListVo.setRankingDate(monday);
+                apiData = new P_ClipRankListVo(clipRankCombineListVo, request);
+                procedureVo = new ProcedureVo(apiData);
+
+                clipRankingList = clipDao.callClipRank(procedureVo);
+                clipRankingList2.addAll(clipRankingList);
+            }
+
+            if(Integer.parseInt(procedureVo.getRet()) > -1) {
+                HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                HashMap clipRankingInfo = new HashMap();
+                List<ClipRankListOutVo> outVoList = new ArrayList<>();
+
+                if(!DalbitUtil.isEmpty(clipRankingList2)){
+                    for (int i=0; i<clipRankingList2.size(); i++){
+                        outVoList.add(new ClipRankListOutVo(clipRankingList2.get(i)));
+                    }
+                }
+                ClipRankMyInfoVo clipRankMyInfoVo = new Gson().fromJson(procedureVo.getExt(), ClipRankMyInfoVo.class);
+
+                clipRankingInfo.put("myRank", clipRankMyInfoVo.getMyRank());
+                clipRankingInfo.put("myUpDown", clipRankMyInfoVo.getMyUpDown());
+                clipRankingInfo.put("myClipPoint", clipRankMyInfoVo.getMyClipPoint());
+                clipRankingInfo.put("myGiftPoint", clipRankMyInfoVo.getMyGiftPoint());
+                clipRankingInfo.put("myGoodPoint", clipRankMyInfoVo.getMyGoodPoint());
+                clipRankingInfo.put("myListenPoint", clipRankMyInfoVo.getMyListenPoint());
+                clipRankingInfo.put("subjectType", clipRankMyInfoVo.getSubjectType());
+                clipRankingInfo.put("subjectName", clipRankMyInfoVo.getSubjectName());
+                clipRankingInfo.put("title", clipRankMyInfoVo.getTitle());
+                clipRankingInfo.put("bgImg", new ImageVo(clipRankMyInfoVo.getBackgroundImage(), DalbitUtil.getProperty("server.photo.url")));
+                clipRankingInfo.put("myClipNo", clipRankMyInfoVo.getMyClipNo());
+                clipRankingInfo.put("myGender", clipRankMyInfoVo.getMyGender());
+                clipRankingInfo.put("myProfImg", new ImageVo(clipRankMyInfoVo.getMyProfileImage(), clipRankMyInfoVo.getMyGender(), DalbitUtil.getProperty("server.photo.url")));
+                clipRankingInfo.put("list", outVoList);
+                clipRankingInfo.put("paging", new PagingVo(Integer.valueOf(procedureVo.getRet()), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+
+                result = gsonUtil.toJson(new JsonOutputVo(Status.클립랭킹조회_성공, clipRankingInfo));
+            }else{
+                result = gsonUtil.toJson(new JsonOutputVo(Status.클립랭킹조회_실패));
+            }
+        } catch (Exception e) {
+            log.error("ClipService / clipRankingBindList", e);
+            result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
         }
 
         return result;

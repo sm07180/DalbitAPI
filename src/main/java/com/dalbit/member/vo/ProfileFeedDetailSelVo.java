@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class ProfileFeedDetailSelVo {
     @NotNull
-    private Integer feedNo;
+    private Integer noticeNo;
     @NotNull
     private String memNo;
 }

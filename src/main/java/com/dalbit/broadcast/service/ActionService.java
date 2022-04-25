@@ -2,10 +2,8 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ActionDao;
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.broadcast.vo.MoonLandCoinDataVO;
-import com.dalbit.broadcast.vo.RoomOutVo;
-import com.dalbit.broadcast.vo.RoomShareLinkOutVo;
-import com.dalbit.broadcast.vo.TTSSpeakVo;
+import com.dalbit.broadcast.proc.Broadcast;
+import com.dalbit.broadcast.vo.*;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.BoosterVo;
 import com.dalbit.broadcast.vo.request.GoodVo;
@@ -77,6 +75,8 @@ public class ActionService {
     @Autowired UserService userService;
 
     @Autowired DallagersEventService dallaEvent;
+
+    @Autowired Broadcast broadcast;
 
     @Value("${item.direct.code}")
     private String[] ITEM_DIRECT_CODE;
@@ -387,13 +387,29 @@ public class ActionService {
                 itemMap.put("actorId", actorId);
                 returnMap.put("message", itemMap.get("nickNm") + sendItemSuccessMsg);
 
-                // 깐부 이벤트
-                GganbuMarbleExchangeInputVo gganbuInputVo = new GganbuMarbleExchangeInputVo(
-                    pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(),
-                    pRoomGiftVo.getRoom_no(), item.getByeol() * pRoomGiftVo.getItem_cnt()
-                );
-                GganbuPocketStatInsVo statIns = eventService.gganbuMarblePocketStatIns(gganbuInputVo);
-                returnMap.put("gganbuPocketCnt", statIns);
+                try {
+                    // tts 로그
+                    String ttsYn = pRoomGiftVo.getTtsYn();
+                    TtsLogVo ttsLogVo = new TtsLogVo();
+
+                    ttsLogVo.setTtsYn(ttsYn); // tts 아이템 사용 여부
+                    ttsLogVo.setMemNo(pRoomGiftVo.getMem_no()); // 보낸이
+                    ttsLogVo.setPmemNo(pRoomGiftVo.getGifted_mem_no()); // 받은이
+                    ttsLogVo.setItemCode(pRoomGiftVo.getItem_code());
+                    ttsLogVo.setTtsMsg(ttsText); // 메세지 내용
+                    ttsLogVo.setSendItemCnt(isDirect ? 1 : pRoomGiftVo.getItem_cnt()); // 아이템 선물수
+                    ttsLogVo.setSendDalCnt(item.getByeol() * pRoomGiftVo.getItem_cnt()); // 선물 달수
+
+                    if(StringUtils.equals(ttsYn, "y")) {
+                        String[] actorInfo = ttsService.getTtsActorSlct(pRoomGiftVo.getActorId(), request);
+                        ttsLogVo.setItemName(actorInfo[1]); // 아이템 이름
+                        ttsLogVo.setTtsCrtSlct(actorInfo[0]); // actor 구분(a: 빠다가이, b: 하나)
+                    }
+
+                    broadcast.ttsLogIns(ttsLogVo);
+                } catch (Exception e) {
+                    log.error("ActionService/callBroadCastRoomGift tts 로그 ins 에러", e);
+                }
 
                 //달나라 이벤트
                 MoonLandCoinDataVO coinDataVO = null;
@@ -484,7 +500,6 @@ public class ActionService {
 
         return result;
     }
-
 
     /**
      * 부스터 사용하기

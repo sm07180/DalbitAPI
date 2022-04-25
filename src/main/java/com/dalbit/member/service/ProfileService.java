@@ -6,6 +6,7 @@ import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
+import com.dalbit.event.vo.MoonLandMissionSelResultVO;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.*;
@@ -22,9 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 
 @Slf4j
@@ -64,6 +63,60 @@ public class ProfileService {
         return procedureVo;
     }
 
+    /**********************************************************************************************
+     * @Method 설명 : 프로필 수정 페이지 (프로필 사진 순서 변경하기)
+     * @작성일 : 2022-04-08
+     * @작성자 : 박용훈
+     * @변경이력 :
+     * @Parameter : { imageList: [ "/profile_0/21440390400/20220407140339284013.png", ... ] }
+     * @Return :
+     **********************************************************************************************/
+    public String profileImageUpdate(Map param, HttpServletRequest request){
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
+            List<String> addList = (List) param.get("imageList");
+
+            if(memNo == null){
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_요청회원_정보없음));
+            }
+            if(addList == null || addList.size() == 0){
+                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            }
+
+            // 기존 이미지 리스트 조회
+            HashMap imgListMap = callProfImgList(memNo, request);
+            List<ProfileImgListOutVo> originList = (List) imgListMap.get("list");
+
+            // 전체 삭제
+            for(ProfileImgListOutVo imgVO : originList){
+                P_ProfileImgDeleteVo deleteVo = new P_ProfileImgDeleteVo();
+                deleteVo.setIdx(imgVO.getIdx());
+                deleteVo.setMem_no(memNo);
+                String result = callProfileImgDelete(deleteVo);
+            }
+
+            // 등록
+            if(addList.size() > 0){
+                // 대표 사진 등록
+                P_ProfileImgAddVo addVO = new P_ProfileImgAddVo();
+                addVO.setMem_no(memNo);
+                addVO.setProfileImage(addList.get(0));
+                callProfileImgAdd(addVO, request);
+
+                // 역순 등록 (순서 때문)
+                for (int i = addList.size() - 1; i > 0; i--) {
+                    addVO.setProfileImage(addList.get(i));
+                    callProfileImgAdd(addVO, request);
+                }
+            }
+
+            // 이미지 순서변경 완료
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, null));
+        } catch (Exception e) {
+            log.error("ProfileService.java / profileImageUpdate() => Exception {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+        }
+    }
 
     /**
      * 정보 조회
@@ -83,7 +136,15 @@ public class ProfileService {
             ProfileInfoOutVo profileInfoOutVo = new ProfileInfoOutVo(profileInfo, pProfileInfo.getTarget_mem_no(), pProfileInfo.getMem_no(), fanRankList, adminService.isAdmin(request));
 
             if(badgeService.setBadgeInfo(pProfileInfo.getTarget_mem_no(), -1)){
-                log.error("NULL ====> callMemberInfo -1 : getTarget_mem_no {}", pProfileInfo.getTarget_mem_no());
+                try {
+                    log.error("NULL ====> callMemberInfo -1 : getTarget_mem_no {}", pProfileInfo.getTarget_mem_no());
+                    String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+                    customHeader = java.net.URLDecoder.decode(customHeader);
+                    log.error(" NULL ====> callMemberInfo  customHeader : {}", customHeader );
+                    String referer = request.getHeader("Referer");
+                    log.error(" NULL ====> callMemberInfo  referer : {}", referer );
+                } catch (Exception e) {
+                }
             }
             profileInfoOutVo.setLiveBadgeList(badgeService.getCommonBadge());
             profileInfoOutVo.setCommonBadgeList(badgeService.getCommonBadge());

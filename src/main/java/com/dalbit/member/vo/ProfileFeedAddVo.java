@@ -19,6 +19,8 @@ public class ProfileFeedAddVo {
     @NotNull
     private Integer topFix;
 
+    private String imgName;
+
     private List<ProfileFeedPhotoOutVo> photoInfoList = null;
     private String title;
 }

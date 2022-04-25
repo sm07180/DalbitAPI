@@ -140,4 +140,9 @@
     <select id="getPreLoad" statementType="CALLABLE" resultType="java.lang.String">
         CALL sp_app_splash_preload()
     </select>
+
+    <select id="getNationCode" statementType="CALLABLE" parameterType="java.lang.String" resultType="java.lang.String">
+        { CALL p_ip_nation_sel(#{value1}) }
+    </select>
+
 </mapper>

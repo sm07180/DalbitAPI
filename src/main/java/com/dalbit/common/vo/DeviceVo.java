@@ -14,7 +14,7 @@ import java.util.HashMap;
 @Getter
 @Setter
 public class DeviceVo {
-    private int os;
+    private int os; // Aos-1, Ios-2, pc-3,
     private String deviceUuid;
     private String deviceToken;
     private String appVersion;

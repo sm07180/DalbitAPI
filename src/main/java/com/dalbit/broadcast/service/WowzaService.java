@@ -445,7 +445,13 @@ public class WowzaService {
             roomInfoVo.changeBackgroundImg(deviceVo);
 
             if(badgeService.setBadgeInfo(target.getBjMemNo(), 4)){
-                log.error("NULL ====> doCreateBroadcast 4 : getBjMemNo {}", target.getBjMemNo());
+                try {
+                    log.error("NULL ====> doCreateBroadcast 4 : getBjMemNo {}", target.getBjMemNo());
+                    log.error(" NULL ====> doCreateBroadcast  customHeader : {}", customHeader );
+                    String referer = request.getHeader("Referer");
+                    log.error(" NULL ====> doCreateBroadcast  referer : {}", referer );
+                } catch (Exception e) {
+                }
             }
 
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
@@ -1070,7 +1076,15 @@ public class WowzaService {
         RoomInfoVo roomInfoVo = new RoomInfoVo(target, memberInfoVo, WOWZA_PREFIX, settingMap, attendanceCheckMap, new DeviceVo(request), miniGameMap, ttsActors, moonLandEvent);
 
         if(badgeService.setBadgeInfo(target.getBjMemNo(), 4)){
-            log.error("NULL ====> getRoomInfo 4 : getTarget_mem_no {}", target.getBjMemNo());
+            try {
+                log.error("NULL ====> getRoomInfo 4 : getTarget_mem_no {}", target.getBjMemNo());
+                String customHeader = request.getHeader(DalbitUtil.getProperty("rest.custom.header.name"));
+                customHeader = java.net.URLDecoder.decode(customHeader);
+                log.error(" NULL ====> getRoomInfo  customHeader : {}", customHeader );
+                String referer = request.getHeader("Referer");
+                log.error(" NULL ====> getRoomInfo  referer : {}", referer );
+            } catch (Exception e) {
+            }
         }
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
         roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
