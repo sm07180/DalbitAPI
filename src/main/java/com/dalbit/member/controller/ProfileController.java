@@ -82,7 +82,7 @@ public class ProfileController {
             String result = profileService.callMemberFanboardList(fanboardListVo);
             return result;
         }catch(Exception e){
-            log.error("ProfileController.java / fanboardList () => {}", e);
+            log.error("ProfileController.java / fanboardList () => Exception : param: {} / error: {}", gsonUtil.toJson(fanboardViewVo), e);
             HashMap fanBoardList = new HashMap();
             fanBoardList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
