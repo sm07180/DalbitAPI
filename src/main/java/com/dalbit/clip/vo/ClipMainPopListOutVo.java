@@ -15,7 +15,7 @@ public class ClipMainPopListOutVo {
     private String subjectType;
     private String title;
     private String filePlayTime;        //재생시간
-    private Boolean isNew;              //신입뱃지(1)
+    private Boolean isNew;              //신입배지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
     private int badgeSpecial;
     private String gender;              //성별

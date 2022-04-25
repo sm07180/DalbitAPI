@@ -29,6 +29,10 @@ import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
+import com.dalbit.team.service.TeamService;
+import com.dalbit.team.vo.TeamParamVo;
+import com.dalbit.team.vo.TeamResultVo;
+import com.dalbit.team.proc.TeamProc;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -83,6 +87,8 @@ public class RoomService {
     BadgeService badgeService;
     @Autowired
     ProfileService profileService;
+    @Autowired
+    TeamService teamService;
 
     @Value("${room.bg.count}")
     int ROOM_BG_COUNT;
@@ -746,6 +752,26 @@ public class RoomService {
         returnMap.put("auth", DalbitUtil.getIntMap(resultMap, "auth"));
         returnMap.put("ctrlRole", DalbitUtil.getStringMap(resultMap, "controlRole"));
         returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
+
+        //팀제도 정보관련
+        TeamParamVo vo = new TeamParamVo();
+        TeamResultVo resTeam = new TeamResultVo();
+        HashMap teamMap = new HashMap();
+        vo.setMemNo(Long.parseLong(pRoomMemberInfoVo.getTarget_mem_no()));
+        int teamNo =  teamService.getTeamMemInsChk(vo);
+        if(teamNo > 0){
+            String teamImgUrl = "https://image.dalbitlive.com/team/parts";
+            vo.setTeamNo(teamNo);
+            resTeam = teamService.getTeamSelService(vo);
+            if(resTeam.getTeam_no() >0){
+                teamMap.put("teamName",resTeam.getTeam_name());
+                teamMap.put("medalUrl",teamImgUrl+"/M/"+resTeam.getTeam_medal_code()+".png");
+                teamMap.put("borderUrl",teamImgUrl+"/E/"+resTeam.getTeam_edge_code()+".png");
+                teamMap.put("backgroundUrl",teamImgUrl+"/B/"+resTeam.getTeam_bg_code()+".png");
+                teamMap.put("pageLink","/team/detail/"+resTeam.getTeam_no()+"?webview=new");
+                returnMap.put("teamInfo",teamMap);
+            }
+        }
 
         //팬랭킹 1,2,3 조회 프로시저 분리
         P_FanRankVo pFanRankVo = new P_FanRankVo();

@@ -8,8 +8,10 @@ import com.dalbit.main.dao.CustomerCenterDao;
 import com.dalbit.main.etc.MainEtc;
 import com.dalbit.main.vo.FaqListOutVo;
 import com.dalbit.main.vo.NoticeListOutVo;
+import com.dalbit.main.vo.NoticeReadUpdVo;
 import com.dalbit.main.vo.QnaListOutVo;
 import com.dalbit.main.vo.procedure.*;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.slack.service.SlackSenderService;
 import com.dalbit.util.DalbitUtil;
@@ -70,6 +72,23 @@ public class CustomerCenterService {
         return result;
     }
 
+    /**
+     * 공지사항 읽음 확인
+     */
+    public String callNoticeReadUpd(NoticeReadUpdVo noticeReadUpdVo, HttpServletRequest request) {
+        HashMap paramMap = new HashMap();
+        paramMap.put("memNo", MemberVo.getMyMemNo(request));
+        paramMap.put("notiNo", noticeReadUpdVo.getNotiNo());
+        Integer result = customerCenterDao.callNoticeReadUpd(paramMap);
+
+        if(result > 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지사항_읽음확인_성공));
+        } else if(result == 0) {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지사항_읽음확인_실패));
+        } else {
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지사항_읽음확인_이미읽음));
+        }
+    }
 
     /**
      * 고객센터 공지사항 내용(상세) 조회

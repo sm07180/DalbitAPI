@@ -4,6 +4,7 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.CustomerCenterService;
+import com.dalbit.main.vo.NoticeReadUpdVo;
 import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.*;
 import com.dalbit.member.service.MemberService;
@@ -57,6 +58,17 @@ public class CustomerCenterController {
         String result = customerCenterService.callNoticeList(apiData);
 
         return result;
+    }
+
+    @PostMapping("center/notice/read")
+    public String callNoticeReadUpd(@Valid NoticeReadUpdVo noticeReadUpdVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        try {
+            return customerCenterService.callNoticeReadUpd(noticeReadUpdVo, request);
+        } catch (Exception e) {
+            log.error("callNoticeReadUpd failed : {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.공지사항_읽음확인_실패));
+        }
     }
 
     /**

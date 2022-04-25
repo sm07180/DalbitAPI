@@ -2,6 +2,8 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.vo.TTSCallbackVo;
 import com.dalbit.broadcast.vo.TTSSpeakVo;
+import com.dalbit.util.DalbitUtil;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStreamReader;
@@ -297,15 +300,12 @@ public class TTSService {
     }
 
     // tts actorSlct
-    public String[] getTtsActorSlct(String actorId) {
+    public String[] getTtsActorSlct(String actorId, HttpServletRequest request) {
         // return [actorSlct, actorName]
         switch (actorId) {
             case "6063252471850cc8f04c7600": return new String[] {"a", "빠다가이"}; // 빠다가이
             case "61659cc118732016a95fe7c6": return new String[] {"b", "하나"}; // 하나
-            default:
+            default: return new String[] {"a", "빠다가이"}; // 빠다가이
         }
-
-        log.error("getTtsActorSlct - 해당하는 actor slct가 없음 / actorId: {}", actorId);
-        return null;
     }
 }

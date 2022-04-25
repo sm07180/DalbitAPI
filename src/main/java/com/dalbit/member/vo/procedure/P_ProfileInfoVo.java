@@ -26,6 +26,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
 
     private int memLogin;                       //회원 로그인 상태(1: 회원, 0: 비회원)
     private String mem_no;                      //회원번호
+    private String teamNo;                     // 팀 번호
     private String target_mem_no;               //대상회원번호
 
     private String  nickName;     				//닉네임
@@ -49,13 +50,14 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private String  fanRank1;                   //팬랭킹1위 정보
     private String  fanRank2;                   //팬랭킹2위 정보
     private String  fanRank3;                   //팬랭킹3위 정보
-    private int badge_recomm;                   //추천뱃지
-    private int badge_popular;                  //인기뱃지
-    private int badge_newdj;                    //신입뱃지
+    private int badge_recomm;                   //추천배지
+    private int badge_popular;                  //인기배지
+    private int badge_newdj;                    //신입배지
     private long broadcastingTime;              //총 방송시간(초 단위)
     private long listeningTime;                 //총 청취시간(초 단위)
     private int receivedGoodTotal;              //총 좋아요 받은 수
     private int badge_specialdj;
+    private int badge_partnerdj;
     private String playMakerYn;                //플레이메이커
     private String fanBadgeText;
     private String fanBadgeIcon;
@@ -65,7 +67,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private String cupidNickNm;
     private String cupidMemSex;
     private String cupidProfileImage;
-    private int badge_new;                      // 신입청취자 뱃지
+    private int badge_new;                      // 신입청취자 배지
     private String birthYear;           //생 년
     private String birthMonth;          //생 월
     private String birthDay;            //생 일
@@ -78,4 +80,5 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private int alertYn;
     private int mailboxOnOff;
     private String memJoinYn; // 21.10.25 이전 가입자 (o, n)
+    private String masterMemYn;
 }
