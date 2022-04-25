@@ -2159,7 +2159,7 @@ public class EventService {
         gganbuRankListInputVo.setPagePerCnt(50);
         result.put("rankList", gganbuRankList(gganbuRankListInputVo));
 
-        // 구슬주머니 new 뱃지
+        // 구슬주머니 new 배지
         GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo = new GganbuMemBadgeUpdVo(gganbuNo, memNo);
         GganbuMemBadgeSelVo gganbuMemBadgeSelVo = event.gganbuMemBadgeSel(gganbuMemBadgeUpdVo);
         result.put("badgeCnt", gganbuMemBadgeSelVo);
@@ -2383,7 +2383,7 @@ public class EventService {
     }
 
     /**
-     * 깐부 뱃지 초기화
+     * 깐부 배지 초기화
      */
     public int gganbuMemBadgeUpd(GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo) {
         return event.gganbuMemBadgeUpd(gganbuMemBadgeUpdVo);

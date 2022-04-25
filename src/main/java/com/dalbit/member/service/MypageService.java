@@ -378,6 +378,7 @@ public class MypageService {
         returnMap.put("isMyClip", DalbitUtil.getIntMap(resultMap, "set_10"));
         returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "set_11"));        //알림받기 방송시작 알림
         returnMap.put("isMailbox", DalbitUtil.getIntMap(resultMap, "set_12"));        //메시지 알림받기
+        returnMap.put("isTeam", DalbitUtil.getIntMap(resultMap, "set_15"));        //팀제도 알림받기
         returnMap.put("alimType", DalbitUtil.getStringMap(resultMap, "alim_slct")); //알림음구분(n:무음,s:소리,v:진동)
         procedureVo.setData(returnMap);
 
@@ -442,6 +443,8 @@ public class MypageService {
                 status = pMemberNotifyEditVo.getSet_11() == 1 ? Status.방송시작알림_ON : Status.방송시작알림_OFF;
             }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_12()) && DalbitUtil.getIntMap(resultMap, "set_12") != pMemberNotifyEditVo.getSet_12()){
                 status = pMemberNotifyEditVo.getSet_12() == 1 ? Status.메시지알림_ON : Status.메시지알림_OFF;
+            }else if(!DalbitUtil.isEmpty(pMemberNotifyEditVo.getSet_15()) && DalbitUtil.getIntMap(resultMap, "set_15") != pMemberNotifyEditVo.getSet_15()){
+                status = pMemberNotifyEditVo.getSet_15() == 1 ? Status.팀알림_ON : Status.팀알림_OFF;
             }else{
                 status = Status.알림설정수정_성공;
             }

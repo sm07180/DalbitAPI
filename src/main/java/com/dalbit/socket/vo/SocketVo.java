@@ -30,10 +30,10 @@ import java.util.HashMap;
  * recvPosition : 메세지표시영역(top1, top2, top3, chat)
  * recvLevel : 메세지레이어번호(0(채팅),1~4)
  * recvTime : 메세지노출시간(초)
- * fanBadgeText : 뱃지명
- * fanBadgeIcon : 뱃지 아이콘 url
- * fanBadgeStartColor : 뱃지 bg 시작값
- * fanBadgeEndColor : 뱃지 bg 종료값
+ * fanBadgeText : 배지명
+ * fanBadgeIcon : 배지 아이콘 url
+ * fanBadgeStartColor : 배지 bg 시작값
+ * fanBadgeEndColor : 배지 bg 종료값
  */
 @Setter @Getter @ToString @Scope("prototype")
 public class SocketVo {
