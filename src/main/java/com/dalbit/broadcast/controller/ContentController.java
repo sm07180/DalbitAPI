@@ -123,7 +123,8 @@ public class ContentController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(storyAddVo.getRoomNo());
         apiData.setContents(storyAddVo.getContents());
-
+        apiData.setDj_mem_no("51641514108721");
+        apiData.setPlus_yn("n");
         String result = contentService.callInsertStory(apiData, request);
 
         return result;
