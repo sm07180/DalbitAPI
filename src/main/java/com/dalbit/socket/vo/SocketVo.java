@@ -6,6 +6,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 
 import java.util.HashMap;
@@ -85,8 +86,14 @@ public class SocketVo {
             }else if(this.auth == 1){
                 this.authName = "매니저";
             }
-            ImageVo img = new ImageVo(DalbitUtil.getStringMap(memInfo, "profileImage"), DalbitUtil.getStringMap(memInfo, "memSex"), DalbitUtil.getProperty("server.photo.url"));
-            this.memImg = img.getUrl() + (img.getUrl().endsWith("webp") ? "" : "?120x120");
+            Object path = DalbitUtil.getStringMap(memInfo, "profileImage");
+            String gender = DalbitUtil.getStringMap(memInfo, "memSex");
+            String photoServerUrl = DalbitUtil.getProperty("server.photo.url");
+
+            ImageVo img = new ImageVo(path, gender, photoServerUrl);
+            if(!StringUtils.isEmpty(img.getUrl())){
+                this.memImg = img.getUrl() + (img.getUrl().endsWith("webp") ? "" : "?120x120");
+            }
             this.login = isLogin ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
             this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
@@ -113,7 +120,9 @@ public class SocketVo {
                 this.authName = "매니저";
             }
             ImageVo img = new ImageVo(memInfo.getImage_profile(), memInfo.getMem_sex(), DalbitUtil.getProperty("server.photo.url"));
-            this.memImg = img.getUrl() + (img.getUrl().endsWith("webp") ? "" : "?120x120");
+            if(!StringUtils.isEmpty(img.getUrl())){
+                this.memImg = img.getUrl() + (img.getUrl().endsWith("webp") ? "" : "?120x120");
+            }
             this.login = isLogin ? 1 : 0;
             this.ctrlRole = memInfo.getControl();
             this.memNk = memInfo.getMem_nick();
