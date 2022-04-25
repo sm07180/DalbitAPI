@@ -36,8 +36,8 @@ public class P_ClipMainSubjectTop3ListVo extends P_ApiVo {
     private String subject_type;
     private String filePlayTime;
     private String memSex;
-    private int badge_newdj;                //신입뱃지
-    private int badge_special;              //스페셜뱃지
+    private int badge_newdj;                //신입배지
+    private int badge_special;              //스페셜배지
     private int count_play;
     private int count_good;
     private int replyCnt;

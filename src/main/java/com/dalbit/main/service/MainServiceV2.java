@@ -25,8 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -452,5 +457,69 @@ public class MainServiceV2 {
         }
 
         return result;
+    }
+
+    public String getMainSwiper(HttpServletRequest request){
+        String memNo = MemberVo.getMyMemNo(request);
+
+        String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
+
+        Map resultMap = new HashMap();
+
+        resultMap.put("photoSvrUrl", photoSvrUrl);
+
+        Map bannerMap = new HashMap();
+        bannerMap.put("memNo", memNo);
+        bannerMap.put("device", "3");
+        bannerMap.put("platform", "1__");
+        bannerMap.put("position", 1);
+
+        int cnt = 0;
+
+        List<MainSwiperVO> swiperList = new ArrayList<>();
+
+        List<MainSwiperVO> adminBanner = mainPage.getAdminBanner(bannerMap);
+        for (MainSwiperVO vo: adminBanner) {
+            vo.setImage_profile(vo.getBannerUrl());
+        }
+
+        swiperList.addAll(adminBanner);
+        cnt = swiperList.size();
+
+        swiperList.addAll(mainPage.getMainStarList(bannerMap));
+        cnt = swiperList.size();
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getTopViewList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 10){
+            swiperList.addAll(mainPage.getTopLikeList(bannerMap));
+            cnt = swiperList.size();
+        }
+
+        if (cnt < 3){
+            swiperList.addAll(mainPage.getTopLiveList(bannerMap));
+        }
+
+        if (cnt > 10){
+            swiperList = swiperList.subList(0, 10);
+        }
+
+        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
+        resultMap.put("swiperList", swiperList2);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+    }
+
+    //중복 제거 함수
+    public static <T> Predicate<T> distinctByKey(Function<? super T,Object> keyExtractor) {
+        Map<Object,Boolean> seen = new ConcurrentHashMap<>();
+        return t -> seen.putIfAbsent(keyExtractor.apply(t), Boolean.TRUE) == null;
     }
 }

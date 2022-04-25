@@ -13,7 +13,7 @@ public class TeamParamVo {
     String teamMedalCode;       //CHAR(4)		-- 팀 메달 코드(m000 형식)
     String teamEdgeCode;        //CHAR(4)		-- 팀 테두리 코드(e000 형식)
     String teamBgCode;          //CHAR(4)		-- 팀 배경 코드(b000 형식)
-    String updSlct;             //CHAR(1)		-- 수정구분[a:심볼및이름, b:소개수정] -- 뱃지[y:대표 설정, n:대표해제]
+    String updSlct;             //CHAR(1)		-- 수정구분[a:심볼및이름, b:소개수정] -- 배지[y:대표 설정, n:대표해제]
     Integer teamNo;             //BIGINT		-- 팀번호
     String reqMemYn;            //CHAR(1)		-- 가입신청 허용여부
     Long masterMemNo;        //BIGINT		-- 팀장 회원번호

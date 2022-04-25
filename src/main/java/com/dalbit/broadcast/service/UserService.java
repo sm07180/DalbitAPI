@@ -254,7 +254,7 @@ public class UserService {
             returnMap.put("dalCnt", profileInfoOutVo.getDalCnt());
             returnMap.put("byeolCnt", profileInfoOutVo.getByeolCnt());
             returnMap.put("expRate", DalbitUtil.getExpRate(profileInfoOutVo.getExp(), profileInfoOutVo.getExpBegin(), profileInfoOutVo.getExpNext()));
-            // 내 팀뱃지 정보
+            // 내 팀배지 정보
             returnMap.put("teamInfo", teamProc.pDallaTeamMemMySel(profileInfoOutVo.getMemNo()));
             result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, returnMap));
         }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {

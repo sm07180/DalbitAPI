@@ -1237,7 +1237,7 @@ public class MypageController {
         try {
             return mypageService.feedReplyList(param, request);
         } catch (Exception e) {
-            log.error("MypageController.java / feedReplyList Exception : {}", e);
+            log.error("MypageController.java / feedReplyList Exception / pararm: {}, error: {}", gsonUtil.toJson(param) ,e);
             return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_실패));
         }
     }

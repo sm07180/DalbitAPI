@@ -768,6 +768,12 @@ public enum Status {
     레벨업확인_레벨업_없음("-2", "member.levelup.check.no", "레벨업 없을 시"),
     레벨업확인_실패("C006", "member.levelup.check.fail", "레벨 업 확인 실패 시"),
 
+    //공지사항 읽음 표시
+    공지사항_읽음확인_성공("C001", "customer.center.notice.read.success", "공지사항 읽음 확인 성공 시"),
+    공지사항_읽음확인_실패("0", "customer.center.notice.read.fail", "공지사항 읽음 확인 실패 시"),
+    공지사항_읽음확인_이미읽음("-1", "customer.center.notice.read.error", "공지사항 읽음 확인 이미 읽음 시"),
+
+
     //고객센터 공지사항 목록 조회
     고객센터_공지사항조회_성공("C001", "customer.center.notice.select.success", "고객센터 공지사항 조회 성공 시"),
     고객센터_공지사항조회_없음("0", "customer.center.notice.no.success", "고객센터 공지사항 목록 없을 시"),
@@ -1816,10 +1822,10 @@ public enum Status {
     이어하기_청취중_방송생성("-7", "broadcast.continue.already.listener", "청취중 방송 생성시 에러코드"),
     이어하기_실패("C006", "broadcast.continue.fail", "이어하기 실패 시"),
 
-    //방송방 뱃지 교체 체크
-    뱃지교체대상체크_없음("0", "broadcast.badge.change.checnk.no.success", "뱃지 교체 체크대상 없을 시"),
-    뱃지교체대상체크_성공("C001", "broadcast.badge.change.check.success", "뱃지 교체대상 체크 성공 시"),
-    뱃지교체대상체크_실패("C006", "broadcast.badge.change.check.fail", "뱃지 교체대상 체크 실패 시"),
+    //방송방 배지 교체 체크
+    배지교체대상체크_없음("0", "broadcast.badge.change.checnk.no.success", "배지 교체 체크대상 없을 시"),
+    배지교체대상체크_성공("C001", "broadcast.badge.change.check.success", "배지 교체대상 체크 성공 시"),
+    배지교체대상체크_실패("C006", "broadcast.badge.change.check.fail", "배지 교체대상 체크 실패 시"),
 
     //회원 휴면,탈퇴 예정일 조회
     휴면탈퇴_일자조회_성공("0", "sleep.withdrawal.select.date.success", "휴면탈퇴 일자조회 성공 시"),
@@ -2495,11 +2501,11 @@ public enum Status {
     팀_출석체크_에러("0", "team.att.ins.error", "팀 삭제 에러"),
     팀_출석체크_성공("1", "team.att.ins.success", "팀 삭제 정상"),
 
-    팀_활동뱃지_갯수초과("-3", "team.badge.upd.fail", "대표설정 배지수 초과"),
-    팀_활동뱃지_미달성("-2", "team.badge.upd.fail", "출석완료"),
-    팀_활동뱃지_팀장아님("-1", "team.badge.upd.fail", "팀 미가입"),
-    팀_활동뱃지_에러("0", "team.badge.upd.error", "팀 삭제 에러"),
-    팀_활동뱃지_성공("1", "team.badge.upd.success", "팀 삭제 정상"),
+    팀_활동배지_갯수초과("-3", "team.badge.upd.fail", "대표설정 배지수 초과"),
+    팀_활동배지_미달성("-2", "team.badge.upd.fail", "출석완료"),
+    팀_활동배지_팀장아님("-1", "team.badge.upd.fail", "팀 미가입"),
+    팀_활동배지_에러("0", "team.badge.upd.error", "팀 삭제 에러"),
+    팀_활동배지_성공("1", "team.badge.upd.success", "팀 삭제 정상"),
 
     //공통
     공통_기본_성공("C001", "common.select.success", "기본 조회 시"),

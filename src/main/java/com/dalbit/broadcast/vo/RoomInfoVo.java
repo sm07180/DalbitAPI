@@ -52,6 +52,7 @@ public class RoomInfoVo {
     private boolean isNew;
     private boolean isSpecial;
     private int badgeSpecial;
+    private int badge_partner;
     private boolean isAttendCheck;  //출석체크 여부
     private String isAttendUrl;  //출석체크 이벤트 URL
     private int liveDjRank;
@@ -87,7 +88,7 @@ public class RoomInfoVo {
     private List guests = new ArrayList();
     private boolean useGuest = true;
 
-    /* 뱃지 정책 변경에 따른 데이터 20.11.25 이재은 */
+    /* 배지 정책 변경에 따른 데이터 20.11.25 이재은 */
     private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private BadgeFrameVo badgeFrame = new BadgeFrameVo();
 
@@ -158,6 +159,7 @@ public class RoomInfoVo {
         this.isNew = target.getIsNew();
         this.isSpecial = target.getIsSpecial();
         this.badgeSpecial = target.getBadgeSpecial();
+        this.badge_partner = target.getBadge_partner();
         this.startDt = target.getStartDt();
         this.startTs = target.getStartTs();
         this.hasNotice = this.auth == 3 ? false : !DalbitUtil.isEmpty(target.getNotice());
