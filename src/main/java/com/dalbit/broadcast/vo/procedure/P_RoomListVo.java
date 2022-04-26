@@ -107,6 +107,7 @@ public class P_RoomListVo extends P_ApiVo {
     private int os_type;
     private int totalCnt;
     private int isConDj;                    //컨텐츠배지
+    private int isContents;                 //컨텐츠 배지(new)
 
     private int liveDjRank;                 //실시간 DJ 순위
     private String liveBadgeText;
