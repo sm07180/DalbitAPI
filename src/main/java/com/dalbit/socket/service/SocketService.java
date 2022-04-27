@@ -747,8 +747,11 @@ public class SocketService {
 
     public SocketVo getSocketVo(String roomNo, String memNo, boolean isLogin){
         try{
-            return new SocketVo(memNo, getUserInfo(roomNo, memNo, isLogin), isLogin);
-        }catch(Exception e){}
+            HashMap memInfo = getUserInfo(roomNo, memNo, isLogin);
+            return new SocketVo(memNo, memInfo, isLogin);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -768,7 +771,9 @@ public class SocketService {
             ProcedureVo procedureVo = new ProcedureVo(pRoomMemberInfoVo);
             socketDao.callBroadcastMemberInfo(procedureVo);
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        }catch(Exception e){}
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         return null;
     }
 
@@ -1055,7 +1060,7 @@ public class SocketService {
         authToken = authToken == null ? "" : authToken.trim();
 
         if(!"".equals(memNo) && !"".equals(chatNo) && !"".equals(authToken) && item != null){
-            if(vo != null || vo.getMemNo() != null) {
+            if(vo != null && vo.getMemNo() != null) {
                 vo.setCommand("reqMailBoxGiftImg");
                 vo.setMessage(item);
                 if (giftedMemNo != null && !"".equals(giftedMemNo.trim())) {
