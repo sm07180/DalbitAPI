@@ -41,7 +41,7 @@ public class P_ClipUploadListVo extends P_ApiVo {
     private int replyCnt;               //댓글 수
     private String filePlayTime;
     private String memSex;
-    private int badge_newdj;                //신입뱃지
-    private int badge_special;              //스페셜뱃지
+    private int badge_newdj;                //신입배지
+    private int badge_special;              //스페셜배지
 
 }

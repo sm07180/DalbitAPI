@@ -1110,7 +1110,7 @@ public class MypageController {
         try {
             return mypageService.feedSelect(feedListVo, request);
         } catch (Exception e) {
-            log.error("MypageController.java / feedSelect() => {}", e);
+            log.error("MypageController.java / feedSelect() => params: {}, error: {}, memNo: {}", gsonUtil.toJson(feedListVo), e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             HashMap resultMap = new HashMap();
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(0, 0, 0));
@@ -1238,7 +1238,7 @@ public class MypageController {
         try {
             return mypageService.feedReplyList(param, request);
         } catch (Exception e) {
-            log.error("MypageController.java / feedReplyList Exception : {}", e);
+            log.error("MypageController.java / feedReplyList Exception / pararm: {}, error: {}, memNo: {}", gsonUtil.toJson(param) ,e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_실패));
         }
     }
@@ -1300,7 +1300,7 @@ public class MypageController {
         try {
             return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPageCnt(), request);
         } catch (Exception e) {
-            log.error("MypageController.java / noticeSelect() => {}", e);
+            log.error("MypageController.java / noticeSelect() => params: {}, error: {}, memNo: {}", gsonUtil.toJson(noticeSelVo), e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             HashMap resultMap = new HashMap();
 //            resultMap.put("fixList", new ArrayList());
             resultMap.put("list", new ArrayList());
@@ -1318,7 +1318,7 @@ public class MypageController {
         try {
             return mypageService.noticeFixSelect(noticeFixSelVo.getMemNo(), noticeFixSelVo.getPageNo(), noticeFixSelVo.getPageCnt(), request);
         } catch (Exception e) {
-            log.error("MypageController.java / noticeFixSelect() => {}", e);
+            log.error("MypageController.java / noticeFixSelect() => params: {}, error: {}, memNo: {}", gsonUtil.toJson(noticeFixSelVo), e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             HashMap resultMap = new HashMap();
             resultMap.put("fixList", new ArrayList());
             resultMap.put("paging", new PagingVo(0, 0, 0));

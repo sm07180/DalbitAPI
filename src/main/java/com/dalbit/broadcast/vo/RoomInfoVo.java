@@ -88,7 +88,7 @@ public class RoomInfoVo {
     private List guests = new ArrayList();
     private boolean useGuest = true;
 
-    /* 뱃지 정책 변경에 따른 데이터 20.11.25 이재은 */
+    /* 배지 정책 변경에 따른 데이터 20.11.25 이재은 */
     private List<BadgeVo> commonBadgeList = new ArrayList<>();
     private BadgeFrameVo badgeFrame = new BadgeFrameVo();
 
@@ -132,6 +132,9 @@ public class RoomInfoVo {
     /* 누적선물 달 : ( 달나라 이벤트 - 요청한 유저, roomNo 기준)  */
     private int sendDalCnt;
     private int sendDalFix;
+
+    /* 시그니처 아이템 관련 ( { itemCategories: [{code, value, isNew}], items: [] }) */
+    private Map<String, Object> signatureItem;
 
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,

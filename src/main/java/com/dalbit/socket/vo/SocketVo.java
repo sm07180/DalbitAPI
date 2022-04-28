@@ -6,6 +6,7 @@ import com.dalbit.util.GsonUtil;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.context.annotation.Scope;
 
 import java.util.HashMap;
@@ -30,10 +31,10 @@ import java.util.HashMap;
  * recvPosition : 메세지표시영역(top1, top2, top3, chat)
  * recvLevel : 메세지레이어번호(0(채팅),1~4)
  * recvTime : 메세지노출시간(초)
- * fanBadgeText : 뱃지명
- * fanBadgeIcon : 뱃지 아이콘 url
- * fanBadgeStartColor : 뱃지 bg 시작값
- * fanBadgeEndColor : 뱃지 bg 종료값
+ * fanBadgeText : 배지명
+ * fanBadgeIcon : 배지 아이콘 url
+ * fanBadgeStartColor : 배지 bg 시작값
+ * fanBadgeEndColor : 배지 bg 종료값
  */
 @Setter @Getter @ToString @Scope("prototype")
 public class SocketVo {
@@ -85,8 +86,14 @@ public class SocketVo {
             }else if(this.auth == 1){
                 this.authName = "매니저";
             }
-            ImageVo img = new ImageVo(DalbitUtil.getStringMap(memInfo, "profileImage"), DalbitUtil.getStringMap(memInfo, "memSex"), DalbitUtil.getProperty("server.photo.url"));
-            this.memImg = img.getThumb120x120();
+            Object path = DalbitUtil.getStringMap(memInfo, "profileImage");
+            String gender = DalbitUtil.getStringMap(memInfo, "memSex");
+            String photoServerUrl = DalbitUtil.getProperty("server.photo.url");
+
+            ImageVo img = new ImageVo(path, gender, photoServerUrl);
+            if(!StringUtils.isEmpty(img.getUrl())){
+                this.memImg = img.getUrl() + (img.getUrl().endsWith("webp") ? "" : "?120x120");
+            }
             this.login = isLogin ? 1 : 0;
             this.ctrlRole = DalbitUtil.getStringMap(memInfo, "controlRole");
             this.memNk = DalbitUtil.getStringMap(memInfo, "nickName");
@@ -113,7 +120,9 @@ public class SocketVo {
                 this.authName = "매니저";
             }
             ImageVo img = new ImageVo(memInfo.getImage_profile(), memInfo.getMem_sex(), DalbitUtil.getProperty("server.photo.url"));
-            this.memImg = img.getThumb120x120();
+            if(!StringUtils.isEmpty(img.getUrl())){
+                this.memImg = img.getUrl() + (img.getUrl().endsWith("webp") ? "" : "?120x120");
+            }
             this.login = isLogin ? 1 : 0;
             this.ctrlRole = memInfo.getControl();
             this.memNk = memInfo.getMem_nick();
