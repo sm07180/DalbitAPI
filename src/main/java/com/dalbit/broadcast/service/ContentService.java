@@ -414,8 +414,8 @@ public class ContentService {
     }
 
     /**
-     * 방 정보 조회하기
-     * 사연 등록에 dj_mem_no 필요 (네이티브 업데이트 안한 경우에만 사용)
+     * 방 정보 조회하기 (네이티브 업데이트 안한 경우에만 사용)
+     * 사연 등록시 dj_mem_no 값 (필수)
     * */
     public P_RoomInfoViewVo getRoomInfo(int isLogin, String reqMemNo, String roomNo){
         P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();

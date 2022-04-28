@@ -4113,6 +4113,19 @@ public class MypageService {
             Integer cnt = DBUtil.getData(list,0, Integer.class);
             List<StoryResultVo> resultList = DBUtil.getList(list,1, StoryResultVo.class);
 
+            // 남, 녀 디폴트 이미지
+            String mImg = new ImageVo("", "m", DalbitUtil.getProperty("server.photo.url")).getPath();
+            String fImg = new ImageVo("", "f", DalbitUtil.getProperty("server.photo.url")).getPath();
+            for( StoryResultVo storyResultVo : resultList){
+                if (StringUtils.equals(storyResultVo.getWriter_mem_profile(), "")) {
+                    if (StringUtils.equals(storyResultVo.getWriter_mem_sex(), "m")) {
+                        storyResultVo.setWriter_mem_profile(mImg);
+                    } else {
+                        storyResultVo.setWriter_mem_profile(fImg);
+                    }
+                }
+            }
+
             result.put("paing", new PagingVo(cnt, vo.getPageNo(), vo.getPagePerCnt()));
             result.put("list", resultList);
 
