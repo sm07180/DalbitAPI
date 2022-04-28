@@ -16,6 +16,7 @@ public class NoticeListOutVo {
     private String writeDt;
     private Long writeTs;
     private boolean isNew;
+    private String read_yn;
 
     public NoticeListOutVo() {}
     public NoticeListOutVo(P_NoticeListVo target) {
@@ -26,6 +27,7 @@ public class NoticeListOutVo {
         setTop(target.getTopFix() == 1);
         setWriteDt(DalbitUtil.getUTCFormat(target.getWriteDate()));
         setWriteTs(DalbitUtil.getUTCTimeStamp(target.getWriteDate()));
+        setRead_yn(target.getRead_yn());
         this.isNew = target.getIsNew() == 1;
     }
 }

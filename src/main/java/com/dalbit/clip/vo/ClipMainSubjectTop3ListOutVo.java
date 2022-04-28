@@ -16,7 +16,7 @@ public class ClipMainSubjectTop3ListOutVo {
     private String subjectType;
     private String gender;              //성별
     private String filePlayTime;        //재생시간
-    private Boolean isNew;              //신입뱃지(1)
+    private Boolean isNew;              //신입배지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
     private int badgeSpecial;
     private int replyCnt;               //클립 댓글 수

@@ -908,7 +908,7 @@ public class MainService {
                 list.add(new ServerListVO("실서버", "https://m.dalbitlive.com", "https://api.dalbitlive.com/", "https://photo.dalbitlive.com/", realWebRtcSocketURI));
                 list.add(new ServerListVO("개발서버", "https://devm.dalbitlive.com", "https://devapi.dalbitlive.com/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("내부서버", "https://devm2.dalbitlive.com", "https://devapi2.dalbitlive.com/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
-                list.add(new ServerListVO("강알찬", "https://devm-aaasss86.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
+                list.add(new ServerListVO("강알찬", "https://devm-aaasss86.dalbitlive.com", "https://devm-aaasss86.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("김한호", "https://devm-hhk2745.dalbitlive.com", "https://devm-hhk2745.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("김훈", "https://devm-ironynet.dalbitlive.com", "https://devm-ironynet.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("김현진", "https://devm-khj.dalbitlive.com", "https://devm-khj.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
@@ -971,6 +971,18 @@ public class MainService {
             result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
         }
         return result;
+    }
+
+    /**********************************************************************************************
+     * @Method 설명 : 랭킹 참여/비참여 여부
+     * @작성일 : 2022-04-13
+     * @작성자 : 강알찬
+     * @변경이력 :
+     **********************************************************************************************/
+    public String getRankingApply(HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        RankingApplyVO result = rankPage.getRankingApply(memNo);
+        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
     }
 
 }

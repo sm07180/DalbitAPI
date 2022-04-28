@@ -39,6 +39,10 @@ public class WhatsUpController {
     public Object pEvtWassupManNoSel(){
         return whatsUpService.pEvtWassupManNoSel();
     }
+    @PostMapping("/pEvtWassupManLastNoSel")
+    public Object pEvtWassupManLastNoSel(){
+        return whatsUpService.pEvtWassupManLastNoSel();
+    }
     @PostMapping("/pEvtWassupManNoList")
     public Object pEvtWassupManNoList(){
         return whatsUpService.pEvtWassupManNoList();

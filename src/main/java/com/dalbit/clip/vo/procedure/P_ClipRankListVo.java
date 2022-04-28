@@ -1,5 +1,6 @@
 package com.dalbit.clip.vo.procedure;
 
+import com.dalbit.clip.vo.ClipRankCombineListVo;
 import com.dalbit.clip.vo.request.ClipRankListVo;
 import com.dalbit.common.vo.P_ApiVo;
 import com.dalbit.main.vo.request.MainRankingPageVo;
@@ -21,6 +22,18 @@ public class P_ClipRankListVo extends P_ApiVo {
         setMem_no(MemberVo.getMyMemNo(request));
         setSlct_type(clipRankListVo.getRankType());
         setRankingDate(clipRankListVo.getRankingDate());
+        setPageNo(pageNo);
+        setPageCnt(pageCnt);
+    }
+
+    public P_ClipRankListVo(ClipRankCombineListVo clipRankCombineListVo, HttpServletRequest request){
+        int pageNo = DalbitUtil.isEmpty(clipRankCombineListVo.getPage()) ? 1 : clipRankCombineListVo.getPage();
+        int pageCnt = DalbitUtil.isEmpty(clipRankCombineListVo.getRecords()) ? 10 : clipRankCombineListVo.getRecords();
+
+        setMemLogin(DalbitUtil.isLogin(request) ? 1 : 0);
+        setMem_no(MemberVo.getMyMemNo(request));
+        setSlct_type(clipRankCombineListVo.getRankType());
+        setRankingDate(clipRankCombineListVo.getRankingDate());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
     }

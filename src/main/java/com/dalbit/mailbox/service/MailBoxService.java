@@ -193,9 +193,15 @@ public class MailBoxService {
 
             //선물 소켓발송
             if(pMailBoxSendVo.getChatType() == 3){
-                SocketVo vo = socketService.getSocketVo(pMailBoxSendVo.getChat_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
-                    socketService.chatGiftItem(pMailBoxSendVo.getChat_no(), MemberVo.getMyMemNo(request), DalbitUtil.getStringMap(resultMap, "target_mem_no"), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                    String roomNo = pMailBoxSendVo.getChat_no();
+                    String memNo = MemberVo.getMyMemNo(request);
+                    boolean isLogin = DalbitUtil.isLogin(request);
+                    SocketVo vo = socketService.getSocketVo(roomNo, memNo, isLogin);
+                    String chatNo = pMailBoxSendVo.getChat_no();
+                    String giftedMemNo = DalbitUtil.getStringMap(resultMap, "target_mem_no");
+                    String authToken = DalbitUtil.getAuthToken(request);
+                    socketService.chatGiftItem(chatNo, memNo, giftedMemNo, returnMap, authToken, isLogin, vo);
                     vo.resetData();
                 }catch(Exception e){
                     log.info("Socket Service chatGiftItem Exception {}", e);

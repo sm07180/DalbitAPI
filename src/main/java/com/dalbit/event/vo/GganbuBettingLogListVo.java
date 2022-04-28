@@ -18,7 +18,7 @@ public class GganbuBettingLogListVo {
     private int mem_state; // 회원상태(1:정상3:블럭, 4:탈퇴, 5:영구정지...) (신청자)
     private String win_slct; // 승패여부[w:승, l:패]
     private Date ins_date; // 등록일자
-    private String isNewYn; // n 뱃지
+    private String isNewYn; // n 배지
     private ImageVo mem_profile;
     private String mem_sex;
 }
