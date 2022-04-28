@@ -426,7 +426,6 @@ public class ContentService {
             ProcedureVo procedureInfoViewVo = new ProcedureVo(pRoomInfoViewVo);
             P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
             if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())) {
-                log.error("P_RoomInfoViewVo => {}", gsonUtil.toJson(roomInfoViewVo));
                 return roomInfoViewVo;
             } else {
                 log.error("contentService.java / getRoomInfo Fail =>  param: {}", gsonUtil.toJson(pRoomInfoViewVo));
