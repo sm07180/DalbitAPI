@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-@Getter @Setter
-public class StoryAddVo {
+@Getter
+@Setter
+public class StoryNewAddVo {
 
     @NotBlank(message = "{\"ko_KR\" : \"방번호를\"}")
     @NotNull(message = "{\"ko_KR\" : \"방번호를\"}")
@@ -18,4 +20,14 @@ public class StoryAddVo {
     @NotNull(message = "{\"ko_KR\" : \"사연 내용을\"}")
     @Size(message = "{\"ko_KR\" : \"사연 내용을\"}", max = 500)
     private String contents;
+
+    @NotNull
+    @NotBlank
+    @NotEmpty
+    private String djMemNo;
+
+    @NotNull
+    @NotBlank
+    @NotEmpty
+    private String plusYn;
 }

@@ -109,10 +109,9 @@ public class ContentController {
 
 
     /**
-     * 방송방 사연 등록
-     *
-     * djMemNo
-     * ,plusYn : 플러스 아이템 여부 [y, n]
+     * 방송방 사연 등록 (old)
+     * roomNo : 방번호
+     * ,contents : 사연내용
      */
     @PostMapping("/story")
     public String insertStory(@Valid StoryAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
@@ -123,13 +122,35 @@ public class ContentController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(storyAddVo.getRoomNo());
         apiData.setContents(storyAddVo.getContents());
-        apiData.setDj_mem_no("51641514108721");
+        apiData.setDj_mem_no("");
         apiData.setPlus_yn("n");
-        String result = contentService.callInsertStory(apiData, request);
+        String result = contentService.callInsertStory(apiData, request, true);
 
         return result;
     }
 
+    /**
+     * 방송방 사연 등록 (new)
+     * roomNo : 방번호
+     * ,contents : 사연내용
+     * ,djMemNo : 방장 memNo              (new)
+     * ,plusYn : 플러스 아이템 여부 [y, n]  (new)
+     */
+    @PostMapping("/story/new")
+    public String insertStoryNew(@Valid StoryNewAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_RoomStoryAddVo apiData = new P_RoomStoryAddVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(storyAddVo.getRoomNo());
+        apiData.setContents(storyAddVo.getContents());
+        apiData.setDj_mem_no(storyAddVo.getDjMemNo());
+        apiData.setPlus_yn(storyAddVo.getPlusYn());
+        String result = contentService.callInsertStory(apiData, request, false);
+
+        return result;
+    }
 
     /**
      * 방송방 사연 조회

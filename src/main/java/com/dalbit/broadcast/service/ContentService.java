@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ContentDao;
+import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.BroadcastNoticeAddVo;
 import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.RoomStoryListOutVo;
@@ -42,7 +43,8 @@ public class ContentService {
     CommonService commonService;
     @Autowired
     MypageDao mypageDao;
-
+    @Autowired
+    RoomDao roomDao;
 
     /**
      *  방송방 공지사항 조회(입장시)
@@ -242,7 +244,36 @@ public class ContentService {
     /**
      * 방송방 사연 등록
      */
-    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request) {
+    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request, boolean isOldVersion) {
+        // -----------------------------사연 플러스 일감 -----------------------------
+        /* 네이티브 업데이트 안한 경우 => plusYn, djMemNo 값 세팅 */
+        if(isOldVersion) {
+            HashMap returnMap = new HashMap();
+            returnMap.put("passTime", 0);
+            
+            /* 방장 memNo 알아내기 */
+            P_RoomInfoViewVo roomInfoVo = getRoomInfo(1, pRoomStoryAddVo.getMem_no(), pRoomStoryAddVo.getRoom_no());
+
+            /* Fail or Exception */
+            if(roomInfoVo.equals(null)){
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
+            } else if (StringUtils.equals(roomInfoVo.getBj_mem_no(), "") || StringUtils.equals(roomInfoVo.getBj_mem_no(), null)) {
+                log.error("ContentService.java / callInsertStory => roomInfoVo : {}", gsonUtil.toJson(roomInfoVo));
+                return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
+            }
+
+            pRoomStoryAddVo.setDj_mem_no(roomInfoVo.getBj_mem_no());
+        }
+
+        /* param check */
+        if (!(StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "n") || StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y"))
+            || StringUtils.equals(pRoomStoryAddVo.getDj_mem_no(), "")) {
+            HashMap returnMap = new HashMap();
+            returnMap.put("passTime", 0);
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_파라미터_에러, returnMap));
+        }
+        // -------------------------------------------------------------------------
+        
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
@@ -380,5 +411,30 @@ public class ContentService {
         }
 
         return result;
+    }
+
+    /**
+     * 방 정보 조회하기
+     * 사연 등록에 dj_mem_no 필요 (네이티브 업데이트 안한 경우에만 사용)
+    * */
+    public P_RoomInfoViewVo getRoomInfo(int isLogin, String reqMemNo, String roomNo){
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        try {
+            pRoomInfoViewVo.setMemLogin(isLogin);
+            pRoomInfoViewVo.setMem_no(reqMemNo);
+            pRoomInfoViewVo.setRoom_no(roomNo);
+            ProcedureVo procedureInfoViewVo = new ProcedureVo(pRoomInfoViewVo);
+            P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
+            if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+                log.error("P_RoomInfoViewVo => {}", gsonUtil.toJson(roomInfoViewVo));
+                return roomInfoViewVo;
+            } else {
+                log.error("contentService.java / getRoomInfo Fail =>  param: {}", gsonUtil.toJson(pRoomInfoViewVo));
+                return null;
+            }
+        }catch (Exception e){
+            log.error("contentService.java / getRoomInfo Exception =>  param: {}, error: {}", gsonUtil.toJson(pRoomInfoViewVo), e);
+            return null;
+        }
     }
 }

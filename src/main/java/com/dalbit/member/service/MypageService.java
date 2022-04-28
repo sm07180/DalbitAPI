@@ -4092,12 +4092,12 @@ public class MypageService {
             String memNo = MemberVo.getMyMemNo(requeset);
 
             /* memNo */
-            if(StringUtils.equals(memNo, null)){
+            if(StringUtils.equals(memNo, null) || StringUtils.equals(memNo, "")){
                 return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요, returnDefault));
             }
 
             /* db 조회 */
-            map.put("memNo", 0);
+            map.put("memNo", Long.parseLong(memNo));
             map.put("pageNo", vo.getPageNo());
             map.put("pagePerCnt", vo.getPagePerCnt());
             List<Object> list = mypageDao.pBroadcastRoomStoryMemList(map);
