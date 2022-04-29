@@ -579,7 +579,7 @@ public class WowzaService {
         pRoomJoinVo.setDeviceToken(deviceVo.getDeviceToken());
         pRoomJoinVo.setIsHybrid(deviceVo.getIsHybrid());
 
-        log.info("callBroadCastRoomJoin prev data >>>> {}", pRoomJoinVo.toString());
+        log.error("callBroadCastRoomJoin prev data(WowzaService) >>>> {}", pRoomJoinVo.toString());
         ProcedureVo procedureVo = new ProcedureVo(pRoomJoinVo);
         roomDao.callBroadCastRoomJoin(procedureVo);
 
@@ -604,7 +604,7 @@ public class WowzaService {
                     apiData.setIsHybrid(deviceVo.getIsHybrid());
                     roomService.callBroadCastRoomExit(apiData, request);
                     ProcedureVo exitVo = new ProcedureVo(apiData);
-                    log.info("callBroadcastRoomExit prev data(WowzaService) >>>> {} {} {}", apiData.getMemLogin(), apiData.getMem_no(), apiData.getRoom_no());
+                    log.error("callBroadcastRoomExit prev data(WowzaService) >>>> {} {} {}", apiData.getMemLogin(), apiData.getMem_no(), apiData.getRoom_no());
                     roomDao.callBroadCastRoomExit(exitVo);
 
                     result.put("status", CommonStatus.최신버전_업데이트_필요);
