@@ -117,7 +117,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
                         exitData.setDeviceToken(deviceVo.getDeviceToken());
                         exitData.setIsHybrid(deviceVo.getIsHybrid());
                         ProcedureVo procedureExitVo = new ProcedureVo(exitData);
-                        log.info("callBroadcastRoomExit prev data(logOut) >>>> {} {} {}", exitData.getMemLogin(), exitData.getMem_no(), exitData.getRoom_no());
+                        log.error("callBroadcastRoomExit prev data(logOut) >>>> {} {} {}", exitData.getMemLogin(), exitData.getMem_no(), exitData.getRoom_no());
                         roomDao.callBroadCastRoomExit(procedureExitVo);
                     }catch(Exception e){}
 
@@ -137,7 +137,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
                         joinData.setDeviceToken(deviceVo.getDeviceToken());
                         joinData.setIsHybrid(deviceVo.getIsHybrid());
                         ProcedureVo procedureJoinVo = new ProcedureVo(joinData);
-                        log.info("callBroadCastRoomJoin prev data(logout) >>>> {}", joinData.toString());
+                        log.error("callBroadCastRoomJoin prev data(logout) >>>> {}", joinData.toString());
                         roomDao.callBroadCastRoomJoin(procedureJoinVo);
                     }catch(Exception e){}
                 }

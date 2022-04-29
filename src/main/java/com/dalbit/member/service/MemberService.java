@@ -455,7 +455,7 @@ public class MemberService {
 
                     exitData.setRoom_no(guestRoomInfoVo.getRoomNo());
                     ProcedureVo procedureVo = new ProcedureVo(exitData);
-                    log.info("callBroadcastRoomExit prev data(MemberService) >>>> {} {} {}", exitData.getMemLogin(), exitData.getMem_no(), exitData.getRoom_no());
+                    log.error("callBroadcastRoomExit prev data(MemberService) >>>> {} {} {}", exitData.getMemLogin(), exitData.getMem_no(), exitData.getRoom_no());
                     roomDao.callBroadCastRoomExit(procedureVo);
 
                     try{
