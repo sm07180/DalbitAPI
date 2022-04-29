@@ -222,6 +222,7 @@ public class AdminService {
 
         //방 나가기 처리
         if(DalbitUtil.isEmpty(pRoomForceExitInputVo.getRoomExit()) || pRoomForceExitInputVo.getRoomExit().equals("Y")) {
+            log.info("callBroadcastRoomExit prev data(AdminService) >>>> {} {} {}", pRoomForceExitInputVo.getMemLogin(), pRoomForceExitInputVo.getMem_no(), pRoomForceExitInputVo.getRoom_no());
             adminDao.callBroadcastRoomExit(procedureVo);
             if (Status.방송강제종료_회원아님.getMessageCode().equals(procedureVo.getRet())) {
                 return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_회원아님));

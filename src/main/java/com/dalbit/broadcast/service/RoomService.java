@@ -124,6 +124,7 @@ public class RoomService {
         returnMap.put("getMarbleInfo", new GganbuMemMarbleInsInputVo());
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
+        log.info("callBroadcastRoomExit prev data(RoomService => callBroadCastRoomExit1) >>>> {} {} {}", pRoomExitVo.getMemLogin(), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no());
         roomDao.callBroadCastRoomExit(procedureVo);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -261,6 +262,7 @@ public class RoomService {
 
                 //DB LOCK 걸렸을 경우 나가기 재시도 (서비스 그대로 호출 시 -> 무한루프(세션X, 서비스호출 시 카운트 불가))
                 if (DalbitUtil.getStringMap(resultMap, "desc").indexOf("Deadlock") > -1) {
+                    log.info("callBroadcastRoomExit prev data(RoomService => callBroadCastRoomExit2) >>>> {} {} {}", pRoomExitVo.getMemLogin(), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no());
                     roomDao.callBroadCastRoomExit(procedureVo);
                     if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
                         returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
