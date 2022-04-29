@@ -4,6 +4,7 @@ import com.dalbit.broadcast.service.WowzaService;
 import com.dalbit.broadcast.vo.request.RoomCreateVo;
 import com.dalbit.broadcast.vo.request.RoomJoinVo;
 import com.dalbit.broadcast.vo.request.RoomTokenVo;
+import com.dalbit.common.code.BroadcastStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
@@ -52,7 +53,7 @@ public class WowzaController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         if("A000000000".equals(roomJoinVo.getRoomNo())){ //일반회원 참여시 따라가기 비공개일 경우
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방조인따라가기비공개));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방조인따라가기비공개));
         }
 
         HashMap result = wowzaService.doJoinBroadcast(roomJoinVo, request);

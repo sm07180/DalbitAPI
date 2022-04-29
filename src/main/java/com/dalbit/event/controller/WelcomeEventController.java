@@ -1,6 +1,6 @@
 package com.dalbit.event.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
@@ -166,18 +166,18 @@ public class WelcomeEventController {
                 Integer dbResultCode = welcomeEventService.putWelcomeDayConfirmChecker(memNo);
 
                 if(dbResultCode == 1) { // DB result값이 정상
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, dbResultCode));
+                    result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, dbResultCode));
 
                 } else {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                    result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
                 }
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
 
         }catch(Exception e){
             log.error("putWelcomeDayConfirmChecker => {}", e);
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
         return result;
     }

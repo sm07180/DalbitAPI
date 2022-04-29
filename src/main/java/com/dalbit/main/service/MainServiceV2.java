@@ -2,9 +2,7 @@ package com.dalbit.main.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.RoomService;
-import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
-import com.dalbit.broadcast.vo.request.RoomListVo;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
 import com.dalbit.main.etc.MainEtc;
@@ -25,7 +23,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -50,7 +47,7 @@ public class MainServiceV2 {
         Map<String, Object> returnMap = new HashMap<>();
         returnMap.put("aos", MainEtc.IN_APP_UPDATE_VERSION.AOS);
         returnMap.put("ios", MainEtc.IN_APP_UPDATE_VERSION.IOS);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, returnMap));
     }
     /**
      * 메인 페이지
@@ -174,7 +171,7 @@ public class MainServiceV2 {
             mainMap.put("newAlarmCnt", 0);
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, mainMap));
     }
 
     /**
@@ -514,7 +511,7 @@ public class MainServiceV2 {
 
         ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
         resultMap.put("swiperList", swiperList2);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
     }
 
     //중복 제거 함수

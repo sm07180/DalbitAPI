@@ -1,14 +1,13 @@
 package com.dalbit.exception.conrtoller;
 
 import com.dalbit.broadcast.vo.RoomInfoVo;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.util.CookieUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -44,7 +42,7 @@ public class CommonErrorController {
      * true : 로그 적재
      */
     public boolean isSaveLog(GlobalException globalException, HttpServletResponse response, HttpServletRequest request){
-        if(globalException.getStatus() == Status.벨리데이션체크) return false;
+        if(globalException.getStatus() == CommonStatus.벨리데이션체크) return false;
         if(request.getRequestURL().toString().endsWith("/error/log")) return false;
         if(request.getRequestURL().toString().endsWith("/ctrl/check/service")) return false;
 
@@ -99,7 +97,7 @@ public class CommonErrorController {
         }else{
             if(globalException.isCustomMessage()){
                 JsonOutputVo jsonOutputVo = new JsonOutputVo();
-                jsonOutputVo.setStatus(Status.벨리데이션체크);
+                jsonOutputVo.setStatus(CommonStatus.벨리데이션체크);
                 String msg = "";
 
                 try{
@@ -155,13 +153,13 @@ public class CommonErrorController {
 
         HashMap map = new HashMap();
         map.put("message", exception.getMessage());
-        return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, map, null, request.getMethod() + ""));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류, map, null, request.getMethod() + ""));
     }
 
     @ExceptionHandler(ClientAbortException.class)
     public String exceptionHandle(ClientAbortException exception, HttpServletResponse response, HttpServletRequest request){
         DalbitUtil.setHeader(request, response);
-        return gsonUtil.toJson(new JsonOutputVo(Status.사용자요청취소));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.사용자요청취소));
     }
 
 }

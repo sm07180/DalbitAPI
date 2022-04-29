@@ -9,13 +9,12 @@ import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.GuestService;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.RoomListVo;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.*;
 import com.dalbit.common.service.EmailService;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_pushInsertVo;
 import com.dalbit.event.service.EventService;
-import com.dalbit.event.vo.GganbuMemViewStatInsVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
@@ -110,13 +109,13 @@ public class AdminService {
         var resultMap = new HashMap();
         if(tokenVo != null && tokenVo.isAdmin()){
             resultMap.put("isAdmin", true);
-            return gsonUtil.toJson(new JsonOutputVo(Status.관리자로그인성공, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.관리자로그인성공, resultMap));
         }
         try{
             String mem_no = MemberVo.getMyMemNo(request);
             if(DalbitUtil.isEmpty(mem_no)){
                 resultMap.put("isAdmin", false);
-                return gsonUtil.toJson(new JsonOutputVo(Status.로그인오류, resultMap));
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그인오류, resultMap));
             }
 
             searchVo.setMem_no(mem_no);
@@ -124,15 +123,15 @@ public class AdminService {
             ArrayList<AdminMenuVo> menuList = adminDao.callMobileAdminMenuAuth(procedureVo);
             if (DalbitUtil.isEmpty(menuList)) {
                 resultMap.put("isAdmin", false);
-                return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음, resultMap));
+                return gsonUtil.toJson(new JsonOutputVo(AdminStatus.관리자메뉴조회_권한없음, resultMap));
             }
 
             resultMap.put("isAdmin", true);
-            return gsonUtil.toJson(new JsonOutputVo(Status.관리자로그인성공, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.관리자로그인성공, resultMap));
 
         }catch (Exception e){
             resultMap.put("isAdmin", false);
-            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류, resultMap));
         }
 
     }
@@ -167,10 +166,10 @@ public class AdminService {
         List<AdminMenuVo> adminMenuList = adminCommonService.getAdminMenuInSession(request);
 
         if(DalbitUtil.isEmpty(adminMenuList) || 0 == adminMenuList.size()) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음));
+            return gsonUtil.toJson(new JsonOutputVo(AdminStatus.관리자메뉴조회_권한없음));
         }
         map.put(menuJsonKey, adminCommonService.getAdminMenuInSession(request));
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     /**
@@ -193,12 +192,12 @@ public class AdminService {
         map.put("isEndPage", broadcastVo.isEndPage());
         map.put("broadList", broadList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     public String selectBroadcastDetail(SearchVo searchVo){
         BroadcastDetailVo broadInfo = adminDao.selectBroadcastSimpleInfo(searchVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, broadInfo));
     }
 
     public String selectBroadcastDetailWowza(SearchVo searchVo){
@@ -210,7 +209,7 @@ public class AdminService {
             broadInfo.setStreamName(WOWZA_PREFIX + searchVo.getRoom_no() + "_opus");
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, broadInfo));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, broadInfo));
     }
 
     /**
@@ -223,14 +222,14 @@ public class AdminService {
         //방 나가기 처리
         if(DalbitUtil.isEmpty(pRoomForceExitInputVo.getRoomExit()) || pRoomForceExitInputVo.getRoomExit().equals("Y")) {
             adminDao.callBroadcastRoomExit(procedureVo);
-            if (Status.방송강제종료_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_회원아님));
+            if (AdminStatus.방송강제종료_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(AdminStatus.방송강제종료_회원아님));
 
-            } else if (Status.방송강제종료_존재하지않는방.getMessageCode().equals(procedureVo.getRet())) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_존재하지않는방));
+            } else if (AdminStatus.방송강제종료_존재하지않는방.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(AdminStatus.방송강제종료_존재하지않는방));
 
-            } else if (Status.방송강제종료_이미종료된방.getMessageCode().equals(procedureVo.getRet())) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_이미종료된방));
+            } else if (AdminStatus.방송강제종료_이미종료된방.getMessageCode().equals(procedureVo.getRet())) {
+                return gsonUtil.toJson(new JsonOutputVo(AdminStatus.방송강제종료_이미종료된방));
             }
         }
 
@@ -267,7 +266,7 @@ public class AdminService {
         SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
         socketService.chatEnd(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), jwtUtil.generateToken(pRoomForceExitInputVo.getMem_no(), true), 3, DalbitUtil.isLogin(request), vo);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.방송강제종료_성공));
+        return gsonUtil.toJson(new JsonOutputVo(AdminStatus.방송강제종료_성공));
     }
 
     /**
@@ -298,9 +297,9 @@ public class AdminService {
 
         String result;
         if(hide > 0){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방_숨김_해제_성공));
+            result = gsonUtil.toJson(new JsonOutputVo(AdminStatus.회원방송방_숨김_해제_성공));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원방송방_숨김_해제_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(AdminStatus.회원방송방_숨김_해제_실패));
         }
 
         return result;
@@ -325,7 +324,7 @@ public class AdminService {
         map.put("isEndPage", profileVo.isEndPage());
         map.put("profileList", profileList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     /**
@@ -400,10 +399,10 @@ public class AdminService {
                 log.error("[모바일어드민] 소켓통신 실패 - 프로필 이미지 초기화");
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지초기화_성공));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필이미지초기화_성공));
 
         }catch (Exception e){
-            throw new GlobalException(Status.프로필이미지초기화_실패, "프로필이미지초기화_실패");
+            throw new GlobalException(MemberStatus.프로필이미지초기화_실패, "프로필이미지초기화_실패");
         }
 
 
@@ -457,10 +456,10 @@ public class AdminService {
                 log.error("[모바일어드민] 소켓통신 실패 - 방송방 이미지 초기화");
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방이미지초기화_성공));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방이미지초기화_성공));
 
         }catch (Exception e){
-            throw new GlobalException(Status.방송방이미지초기화_실패, "방송방이미지초기화_실패");
+            throw new GlobalException(BroadcastStatus.방송방이미지초기화_실패, "방송방이미지초기화_실패");
         }
     }
 
@@ -540,10 +539,10 @@ public class AdminService {
                 log.error("[모바일어드민] 소켓통신 실패 - 닉네임 초기화");
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임초기화_성공));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.닉네임초기화_성공));
 
         }catch(Exception e) {
-            throw new GlobalException(Status.닉네임초기화_실패, "닉네임초기화_실패");
+            throw new GlobalException(MemberStatus.닉네임초기화_실패, "닉네임초기화_실패");
         }
     }
 
@@ -596,10 +595,10 @@ public class AdminService {
                 log.error("[모바일어드민] 소켓통신 실패 - 방송 제목 초기화");
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송제목초기화_성공));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송제목초기화_성공));
 
         }catch(Exception e) {
-            throw new GlobalException(Status.방송제목초기화_실패, "방송제목초기화_실패");
+            throw new GlobalException(BroadcastStatus.방송제목초기화_실패, "방송제목초기화_실패");
         }
     }
 
@@ -759,10 +758,10 @@ public class AdminService {
                     log.error("[모바일어드민] PUSH 발송 실패 - 신고처리");
                 }
             }
-            return gsonUtil.toJson(new JsonOutputVo(Status.신고처리_성공));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.신고처리_성공));
 
             }catch (Exception e) {
-               throw new GlobalException(Status.신고처리_에러, "신고처리_에러");
+               throw new GlobalException(MemberStatus.신고처리_에러, "신고처리_에러");
         }
     }
 
@@ -792,12 +791,12 @@ public class AdminService {
             ArrayList<LiveChatOutputVo> liveChatList = adminDao.selectBroadcastLiveChatInfo(liveChatInputVo);
 
             if(DalbitUtil.isEmpty(liveChatList)) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_성공_데이터없음));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방송메시지조회_성공_데이터없음));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_성공, liveChatList));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방송메시지조회_성공, liveChatList));
             }
         }catch (Exception e){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방송메시지조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방송메시지조회_실패));
         }
         return result;
     }
@@ -807,7 +806,7 @@ public class AdminService {
      */
     public String getLiveChatProfile(LiveChatProfileVo liveChatProfileVo) {
         LiveChatProfileVo profile = adminDao.getLiveChatProfile(liveChatProfileVo);
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, profile));
 
         return result;
     }
@@ -852,8 +851,8 @@ public class AdminService {
         adminDao.callForceLeave(procedureVo);
 
         String result = "";
-        if(Status.생방청취자강제퇴장_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_성공));
+        if(BroadcastStatus.생방청취자강제퇴장_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방청취자강제퇴장_성공));
 
             //청취자 강제 퇴장
             HashMap<String,Object> param = new HashMap<>();
@@ -882,16 +881,16 @@ public class AdminService {
 
             adminSocketUtil.setSocket(param,"reqKickOut", message,jwtUtil.generateToken(forcedOutVo.getMem_no(), true));
 
-        }else if(Status.생방청취자강제퇴장_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_회원아님));
-        } else if(Status.생방청취자강제퇴장_방없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_방없음));
-        } else if(Status.생방청취자강제퇴장_종료된방.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_종료된방));
-        } else if(Status.생방청취자강제퇴장_청취자아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_청취자아님));
-        } else if(Status.생방청취자강제퇴장_퇴장한회원.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.생방청취자강제퇴장_퇴장한회원));
+        }else if(BroadcastStatus.생방청취자강제퇴장_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방청취자강제퇴장_회원아님));
+        } else if(BroadcastStatus.생방청취자강제퇴장_방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방청취자강제퇴장_방없음));
+        } else if(BroadcastStatus.생방청취자강제퇴장_종료된방.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방청취자강제퇴장_종료된방));
+        } else if(BroadcastStatus.생방청취자강제퇴장_청취자아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방청취자강제퇴장_청취자아님));
+        } else if(BroadcastStatus.생방청취자강제퇴장_퇴장한회원.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.생방청취자강제퇴장_퇴장한회원));
         }
 
         return result;
@@ -928,7 +927,7 @@ public class AdminService {
             }
 
             if(messageInsertVo.getSend_cnt().equals("0")){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_타겟미지정));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방메시지발송_타겟미지정));
             }
 
             messageInsertVo.setTitle("모바일 관리자 발송");
@@ -937,12 +936,12 @@ public class AdminService {
             if(insertResult > 0){
                 result = sendSplashApi(messageInsertVo);
             }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_에러));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방메시지발송_에러));
             }
 
         }catch (Exception e){
             e.printStackTrace();
-            throw new GlobalException(Status.방송방메시지발송_에러, "AdminService.insertContentsMessageAdd");
+            throw new GlobalException(BroadcastStatus.방송방메시지발송_에러, "AdminService.insertContentsMessageAdd");
         }
 
         return result;
@@ -973,9 +972,9 @@ public class AdminService {
             String inforexLoginResult = response.body().string();
             log.debug(inforexLoginResult);
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방메시지발송_성공));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방메시지발송_성공));
         }catch (IOException | GlobalException e){
-            throw new GlobalException(Status.방송방메시지발송_에러, "AdminService.sendSplashApi");
+            throw new GlobalException(BroadcastStatus.방송방메시지발송_에러, "AdminService.sendSplashApi");
         }
     }
 
@@ -989,7 +988,7 @@ public class AdminService {
         var map = new HashMap<>();
         map.put("listenerList", listenerList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     /**
@@ -1004,7 +1003,7 @@ public class AdminService {
         var result = new HashMap<String, Object>();
         result.put("totalInfo", totalInfo);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
     /**
@@ -1015,12 +1014,12 @@ public class AdminService {
         ArrayList<P_NewBroadcastTimeNewOutVo> detailList = adminDao.callNewBroadcastTimeNew(procedureVo);
         P_NewBroadcastTimeNewOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_NewBroadcastTimeNewOutVo.class);
         if(Integer.parseInt(procedureVo.getRet()) <= 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
         var result = new HashMap<String, Object>();
         result.put("totalInfo", totalInfo);
         result.put("detailList", detailList);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
     /**
@@ -1031,7 +1030,7 @@ public class AdminService {
         adminDao.callUserCurrentTotal(procedureVo);
         P_UserTotalOutDetailVo detailList = new Gson().fromJson(procedureVo.getExt(), P_UserTotalOutDetailVo.class);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, detailList));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, detailList));
     }
 
     /**
@@ -1051,7 +1050,7 @@ public class AdminService {
         result.put("genderInfo", genderInfo);
         result.put("ageList", ageList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
     /**
@@ -1066,7 +1065,7 @@ public class AdminService {
 
         result.put("info", info);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
     /**
@@ -1080,13 +1079,13 @@ public class AdminService {
         P_ItemTotalOutVo totalInfo = new Gson().fromJson(procedureVo.getExt(), P_ItemTotalOutVo.class);
 
         if(Integer.parseInt(procedureVo.getRet()) <= 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
 
         var result = new HashMap<String, Object>();
         result.put("totalInfo", totalInfo);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, totalInfo));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, totalInfo));
     }
 
     /**
@@ -1102,9 +1101,9 @@ public class AdminService {
 
         String result;
         if(-1 < Integer.parseInt(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의내역조회_성공, map));
+            result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.고객센터_문의내역조회_성공, map));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의내역조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.고객센터_문의내역조회_실패));
         }
 
         return result;
@@ -1136,12 +1135,12 @@ public class AdminService {
 
         String result;
 
-        if(Status.고객센터_문의상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의상세조회_성공, questionDetail));
-        } else if(Status.고객센터_문의상세조회_문의번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의상세조회_문의번호없음));
+        if(CustomerStatus.고객센터_문의상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.고객센터_문의상세조회_성공, questionDetail));
+        } else if(CustomerStatus.고객센터_문의상세조회_문의번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.고객센터_문의상세조회_문의번호없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.고객센터_문의상세조회_에러));
+            result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.고객센터_문의상세조회_에러));
         }
 
         return result;
@@ -1169,7 +1168,7 @@ public class AdminService {
             ProcedureVo procedureVo = new ProcedureVo(pQuestionOperateVo,true);
             adminDao.callServiceCenterQnaOperate(procedureVo);
 
-            if(Status.일대일문의처리_성공.getMessageCode().equals(procedureVo.getRet())) {
+            if(CustomerStatus.일대일문의처리_성공.getMessageCode().equals(procedureVo.getRet())) {
 
                 adminDao.callServiceCenterQnaDetail(procedureVo);
                 P_QuestionDetailOutputVo questionDetail = new Gson().fromJson(procedureVo.getExt(), P_QuestionDetailOutputVo.class);
@@ -1202,24 +1201,24 @@ public class AdminService {
                     log.error("[NOTI 발송 실패 - 일대일문의처리]");
                 }
 
-                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_성공));
-            } else if(Status.일대일문의처리_문의번호없음.getMessageCode().equals((procedureVo.getRet()))) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_문의번호없음));
-            } else if(Status.일대일문의처리_이미처리됐음.getMessageCode().equals(procedureVo.getRet())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_이미처리됐음));
+                result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의처리_성공));
+            } else if(CustomerStatus.일대일문의처리_문의번호없음.getMessageCode().equals((procedureVo.getRet()))) {
+                result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의처리_문의번호없음));
+            } else if(CustomerStatus.일대일문의처리_이미처리됐음.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의처리_이미처리됐음));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_에러));
+                result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의처리_에러));
             }
         }else{
             if(outVo.getState() == 1){
                 int updateResult = adminDao.updateServiceCenterQnaUpdate(pQuestionOperateVo);
                 if(updateResult == 1) {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의수정_성공));
+                    result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의수정_성공));
                 } else {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_에러));
+                    result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의처리_에러));
                 }
             }else if(outVo.getState() == 2){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.일대일문의처리_이미_진행중));
+                result = gsonUtil.toJson(new JsonOutputVo(CustomerStatus.일대일문의처리_이미_진행중));
             }
         }
 
@@ -1329,9 +1328,9 @@ public class AdminService {
         String result;
 
         if(Integer.parseInt(procedureVo.getRet()) > -1) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_성공, map));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.신고목록조회_성공, map));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.신고목록조회_에러));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.신고목록조회_에러));
         }
 
         return result;
@@ -1349,12 +1348,12 @@ public class AdminService {
 
         String result;
 
-        if(Status.신고상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.신고상세조회_성공, declarationDetail));
-        } else if(Status.신고상세조회_공지번호없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.신고상세조회_공지번호없음));
+        if(MemberStatus.신고상세조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.신고상세조회_성공, declarationDetail));
+        } else if(MemberStatus.신고상세조회_공지번호없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.신고상세조회_공지번호없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.신고상세조회_에러));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.신고상세조회_에러));
         }
 
         return result;
@@ -1365,7 +1364,7 @@ public class AdminService {
      */
     public String selectUserProfile(LiveChatProfileVo liveChatProfileVo) {
         LiveChatProfileVo profile = adminDao.selectUserProfile(liveChatProfileVo);
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, profile));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, profile));
 
         return result;
     }
@@ -1386,9 +1385,9 @@ public class AdminService {
         ArrayList<P_MemberEditHistOutputVo> editList = adminDao.callMemberEditHistory(procedureVo);
         String result;
         if (Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.조회, editList));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, editList));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
         return result;
 
@@ -1406,7 +1405,7 @@ public class AdminService {
         HashMap data = new HashMap();
         data.put("last", adminDao.selectLast());
         data.put("list", adminDao.selectVersion());
-        result.put("status", Status.조회);
+        result.put("status", CommonStatus.조회);
         result.put("data", data);
         return result;
     }
@@ -1415,13 +1414,13 @@ public class AdminService {
         HashMap result = new HashMap();
         HashMap data = new HashMap();
         data.put("list", adminDao.selectApp(request.getParameter("ver")));
-        result.put("status", Status.조회);
+        result.put("status", CommonStatus.조회);
         result.put("data", data);
         return result;
     }
 
     public Status doInsert(HttpServletRequest request){
-        Status result = Status.비즈니스로직오류;
+        Status result = CommonStatus.비즈니스로직오류;
         HashMap params = new HashMap();
         params.put("opName", MemberVo.getMyMemNo());
         params.put("verName", request.getParameter("verName"));
@@ -1429,18 +1428,18 @@ public class AdminService {
         params.put("dirName", request.getParameter("dirName"));
         params.put("description", request.getParameter("description"));
         if(1 == adminDao.insertApp(params)){
-            result = Status.생성;
+            result = CommonStatus.생성;
         }
         return result;
     }
 
     public Status doDelete(HttpServletRequest request){
-        Status result = Status.비즈니스로직오류;
+        Status result = CommonStatus.비즈니스로직오류;
         HashMap params = new HashMap();
         params.put("opName", MemberVo.getMyMemNo());
         params.put("idx", request.getParameter("idx"));
         if(1 == adminDao.deleteApp(params)){
-            result = Status.삭제;
+            result = CommonStatus.삭제;
         }
         return result;
     }
@@ -1464,7 +1463,7 @@ public class AdminService {
         map.put("isEndPage", clipHistoryVo.isEndPage());
         map.put("clipList", clipList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     /**
@@ -1479,7 +1478,7 @@ public class AdminService {
         var map = new HashMap<>();
         map.put("clipDetail", clipDetail);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     /**
@@ -1491,29 +1490,29 @@ public class AdminService {
         adminDao.callClipEdit(procedureVo);
 
         Status status;
-        if (procedureVo.getRet().equals(Status.클립수정_성공.getMessageCode())) {
-            status = Status.클립수정_성공;
+        if (procedureVo.getRet().equals(ClipStatus.클립수정_성공.getMessageCode())) {
+            status = ClipStatus.클립수정_성공;
 
-        } else if(procedureVo.getRet().equals(Status.클립수정_클립번호없음.getMessageCode())){
-            status = Status.클립수정_클립번호없음;
+        } else if(procedureVo.getRet().equals(ClipStatus.클립수정_클립번호없음.getMessageCode())){
+            status = ClipStatus.클립수정_클립번호없음;
 
-        }else if(procedureVo.getRet().equals(Status.클립수정_수정변화없음.getMessageCode())){
-            status = Status.클립수정_수정변화없음;
+        }else if(procedureVo.getRet().equals(ClipStatus.클립수정_수정변화없음.getMessageCode())){
+            status = ClipStatus.클립수정_수정변화없음;
 
-        }else if(procedureVo.getRet().equals(Status.클립수정_잘못된구분값.getMessageCode())){
-            status = Status.클립수정_잘못된구분값;
+        }else if(procedureVo.getRet().equals(ClipStatus.클립수정_잘못된구분값.getMessageCode())){
+            status = ClipStatus.클립수정_잘못된구분값;
 
-        }else if(procedureVo.getRet().equals(Status.클립수정_이미삭제.getMessageCode())){
-            status = Status.클립수정_이미삭제;
+        }else if(procedureVo.getRet().equals(ClipStatus.클립수정_이미삭제.getMessageCode())){
+            status = ClipStatus.클립수정_이미삭제;
 
-        }else if(procedureVo.getRet().equals(Status.클립수정_이미확인.getMessageCode())){
-            status = Status.클립수정_이미확인;
+        }else if(procedureVo.getRet().equals(ClipStatus.클립수정_이미확인.getMessageCode())){
+            status = ClipStatus.클립수정_이미확인;
 
-        }else if(procedureVo.getRet().equals(Status.클립수정_닉네임중복.getMessageCode())){
-            status = Status.클립수정_닉네임중복;
+        }else if(procedureVo.getRet().equals(ClipStatus.클립수정_닉네임중복.getMessageCode())){
+            status = ClipStatus.클립수정_닉네임중복;
 
         }else{
-            status = Status.비즈니스로직오류;
+            status = CommonStatus.비즈니스로직오류;
         }
 
         return gsonUtil.toJson(new JsonOutputVo(status));
@@ -1525,7 +1524,7 @@ public class AdminService {
     public String selectReplyList(ClipHistoryReplyVo clipHistoryReplyVo) {
         ArrayList<ClipHistoryReplyVo> list = adminDao.selectReplyList(clipHistoryReplyVo);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, list));
     }
 
     /**
@@ -1534,7 +1533,7 @@ public class AdminService {
     public String deleteReply(ClipHistoryReplyVo clipHistoryReplyVo) {
         clipHistoryReplyVo.setStatus("2");
         adminDao.deleteReply(clipHistoryReplyVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.삭제));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.삭제));
     }
 
     /**
@@ -1543,9 +1542,9 @@ public class AdminService {
     public String selectSettingList(SettingListVo settingListVo) {
         ArrayList<SettingListVo> list = adminDao.selectSettingList(settingListVo);
         if(DalbitUtil.isEmpty(list) || list.size() == 0) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.조회, new ArrayList<>()));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, new ArrayList<>()));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.조회, list));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, list));
         }
 
 
@@ -1560,9 +1559,9 @@ public class AdminService {
             int status = adminDao.updateSetting(settingListVo);
 
             if (status > 0) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.수정));
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.수정));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류));
             }
         }
         return result;
@@ -1577,7 +1576,7 @@ public class AdminService {
         //SocketVo vo = socketService.getSocketVo(pRoomForceExitInputVo.getRoom_no(), pRoomForceExitInputVo.getMem_no(), true);
         socketService.memberForceLogout(DalbitUtil.getStringMap(paramMap, "memNo"), DalbitUtil.getStringMap(paramMap, "message"));
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.로그아웃성공));
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그아웃성공));
     }
 
 }

@@ -1,6 +1,6 @@
 package com.dalbit.tnk.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.tnk.service.TnkCallbackService;
@@ -28,11 +28,11 @@ public class TnkCallbackController {
     @PostMapping("/{os}/callback")
     public String callback(TnkCallbackVo tnkCallbackVo, @PathVariable("os") String os, HttpServletResponse response) throws GlobalException {
         tnkCallbackService.callbackTnk(tnkCallbackVo, os, response);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회));
     }
 
     @PostMapping("/confirm")
     public String confirm(HttpServletRequest request) throws GlobalException {
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, tnkCallbackService.callTnkConfirm(request)));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, tnkCallbackService.callTnkConfirm(request)));
     }
 }

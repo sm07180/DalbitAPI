@@ -1,7 +1,8 @@
 package com.dalbit.util;
 
 import com.dalbit.common.code.Code;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_ErrorLogVo;
@@ -714,7 +715,7 @@ public class DalbitUtil {
                 bindingMessageList.add(message);
             }
             validationResultVo.setValidationMessageDetail(bindingMessageList);
-            throw new GlobalException(Status.벨리데이션체크, null, validationResultVo == null ? new ArrayList() : validationResultVo.getValidationMessageDetail(), methodName, true);
+            throw new GlobalException(CommonStatus.벨리데이션체크, null, validationResultVo == null ? new ArrayList() : validationResultVo.getValidationMessageDetail(), methodName, true);
         }
 
     }
@@ -1095,7 +1096,7 @@ public class DalbitUtil {
         encMsg2  = seed.getMsg(encPara);
 
         if(!encMsg2.equals(encMsg1)){
-            throw new GlobalException(Status.본인인증검증_비정상접근, Thread.currentThread().getStackTrace()[1].getMethodName());
+            throw new GlobalException(MemberStatus.본인인증검증_비정상접근, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
 
         //05. 2차 복호화

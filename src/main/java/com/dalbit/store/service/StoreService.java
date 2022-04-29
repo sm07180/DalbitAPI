@@ -1,7 +1,8 @@
 package com.dalbit.store.service;
 
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.StoreStatus;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -76,7 +77,7 @@ public class StoreService {
         } catch (Exception e) {
             log.error("StoreService getDalCntJsonStr Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, returnMap));
     }
 
     private P_ProfileInfoVo getMemberInfo(HttpServletRequest request) {
@@ -95,7 +96,7 @@ public class StoreService {
         try{
             P_ProfileInfoVo memberInfo = this.getMemberInfo(request);
             if(memberInfo == null || StringUtils.isEmpty(memberInfo.getMemId())){
-                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회_회원정보없음, returnMap));
+                return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_홈_데이터_조회_회원정보없음, returnMap));
             }
             returnMap.put("memberInfo", memberInfo);
             DeviceVo deviceVo = new DeviceVo(request);
@@ -221,7 +222,7 @@ public class StoreService {
         } catch (Exception e) {
             log.error("StoreService getIndexData Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_홈_데이터_조회, returnMap));
     }
 
     public String selectChargeItem(String platform, HttpServletRequest request) {
@@ -229,7 +230,7 @@ public class StoreService {
 
         try{
             if(!isValidPlatformData(platform,request)){
-                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회_파라미터, returnMap));
+                return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_아이템_조회_파라미터, returnMap));
             }
             String target = this.platformTarget(platform,request);
             List<StoreChargeVo> dalPriceList = storeDao.selectChargeItem(target);
@@ -237,7 +238,7 @@ public class StoreService {
         } catch (Exception e) {
             log.error("StoreService selectChargeItem Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_아이템_조회, returnMap));
     }
 
     public List<StoreChargeVo> getDalPriceList(String platform, HttpServletRequest request) {
