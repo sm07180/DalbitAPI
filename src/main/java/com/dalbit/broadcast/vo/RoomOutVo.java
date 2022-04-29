@@ -264,4 +264,8 @@ public class RoomOutVo {
     public void setIsVote(boolean isVote){
         this.isVote = isVote;
     }
+
+    public void setIsConDj(boolean isConDj){
+        this.isConDj = isConDj;
+    }
 }

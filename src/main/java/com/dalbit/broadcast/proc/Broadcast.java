@@ -1,9 +1,13 @@
 package com.dalbit.broadcast.proc;
 
 import com.dalbit.broadcast.vo.TtsLogVo;
+import com.dalbit.common.vo.ItemVo;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
+import java.util.Map;
 
 @Component
 @Repository
@@ -23,4 +27,11 @@ public interface Broadcast {
      */
     @Select("CALL rd_data.p_dalla_tts_log_ins(#{ttsYn}, #{memNo}, #{pmemNo}, #{itemCode}, #{itemName}, #{ttsCrtSlct}, #{ttsMsg}, #{sendItemCnt}, #{sendDalCnt})")
     Integer ttsLogIns(TtsLogVo ttsLogVo);
+
+    /**
+     * 특정 회원이 소유한 시그니처 아이템 목록 조회
+     * */
+    @Select("CALL rd_data.sp_signature_item_select(#{memNo}, '')")
+    List<ItemVo> spSignatureItemSelect(Map<String, Object> param);
+
 }
