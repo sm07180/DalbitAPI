@@ -58,7 +58,7 @@ public class P_pushStmpInsertVo extends BaseVo {
     private String contents;        //푸시 내용
     private String etc_contents;        //팝업 푸시 내용
     private String imageUrl;			// 푸시에 노출되는 이미지 경로
-    private String push_type;			//푸시타입
+    private String push_type;			//푸시타입 50 : 직접입력 URL
     private String room_no;				// DJ방생성시 방송방 번호
     private String target_mem_no;		// 타겟회원의 마이페이지 이동할 경우
     private String board_idx;			// 해당 게시판 이동할 경우
@@ -137,19 +137,21 @@ public class P_pushStmpInsertVo extends BaseVo {
             96 : 운영자 (지정회원)
             97 : 무통장 푸쉬 구분
 
+            100: 팀 랭킹 달성 (DB 처리)
             101: 팀 초대 도착
             102: 팀 초대 승낙
             103: 팀 초대 거절
             104: 팀 가입 신청 도착
             105: 팀 가입 신청 수락
             106: 팀 가입 신청 거절
-            107: 팀 랭킹 달성 (DB 처리)
-            108: 팀 배지 획득 (스케쥴러 처리)
-            109: 팀 삭제
-            110: 팀 강퇴 알림
+            107: 팀 배지 획득 (스케쥴러 처리)
+            108: 팀 삭제
+            109: 팀 강퇴 알림
     */
     private String push_slct;
     private String push_idx;  //요청 push_idx
+
+    private String redirect_url = ""; // 페이지 이동 URL, push_type = 50일때만 사용 가능하도록 DB 프로시저 내에 처리 되어 있음.
 
 }
 

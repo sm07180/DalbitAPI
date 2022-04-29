@@ -2,6 +2,7 @@ package com.dalbit.team.service;
 
 import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.PushDao;
+import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.ResMessage;
@@ -29,6 +30,8 @@ public class TeamService {
     private TeamProc teamProc;
     @Autowired
     PushDao pushDao;
+    @Autowired
+    PushService pushService;
 
     /**********************************************************************************************
     * @Method 설명 : 팀 등록 체크
@@ -152,6 +155,10 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+                // 팀 삭제할 경우, 팀원 전체에게 삭제 푸시 알림 전송.
+                for(Long value : vo.getMemNoList()) {
+                    pushService.reqPushData(Long.toString(value), "", vo.getTeamName() + "팀이 해체되었어요.", "108", "");
+                };
             }else{
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
             }
@@ -190,25 +197,12 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
-                // 팀 초대일 경우, 푸시 받은 사람에게 푸시 알림 전송
+                // 팀 초대일 경우, 초대 받은 사람에게 푸시 알림 전송
                 if (vo.getReqSlct().equals("i")) {
-                    TeamParamVo param = new TeamParamVo();
-                    param.setTeamNo(vo.getTeamNo());
-                    TeamResultVo teamInfo = teamProc.pDallaTeamMemSel(param);
-
-                    Map<String,Object> pushVo = new HashMap<>();
-                    pushVo.put("mem_no", vo.getMemNo());
-                    pushVo.put("slctPush", 0);
-                    pushVo.put("push_slct", 100);
-                    pushVo.put("title", "나를 초대한 팀이 있어요.");
-                    pushVo.put("contents", teamInfo.getTeam_name() + "팀에서 나를 초대했어요.");
-                    pushVo.put("imageUrl", "");
-                    pushVo.put("push_type", "71");
-                    pushVo.put("room_no", "0");
-                    pushVo.put("image_type", "101");
-                    pushVo.put("target_mem_no", vo.getMemNo());
-                    ProcedureVo procedureVo = new ProcedureVo(pushVo);
-                    pushDao.callStmpPushAdd(procedureVo);
+                    pushService.reqPushData(Long.toString(vo.getMemNo()), "", vo.getTeamName() + "팀에서 나를 초대했어요.", "101", "");
+                // 팀 가입신청일 경우, 팀장에게 푸시 알림 전송
+                } else if (vo.getReqSlct().equals("r")) {
+                    pushService.reqPushData(Long.toString(vo.getMasterMemNo()), "", vo.getName() + "님이 우리팀에 가입을 신청했어요.", "104", "/team/detail/" + vo.getTeamNo());
                 }
             }else{
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
@@ -243,32 +237,18 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
-                // fixme push_slct 팀 초대 도착
-                // 팀 초대일 경우, 푸시 받은 사람에게 푸시 알림 전송
-                if (vo.getReqSlct().equals("i")) {
-                    TeamParamVo param = new TeamParamVo();
-                    param.setTeamNo(vo.getTeamNo());
-                    TeamResultVo teamInfo = teamProc.pDallaTeamMemSel(param);
-
-                    Map<String,Object> pushVo = new HashMap<>();
-                    pushVo.put("mem_no", vo.getMemNo());
-                    pushVo.put("slctPush", 0);
-                    pushVo.put("push_slct", 100);
-                    pushVo.put("title", "나를 초대한 팀이 있어요.");
-                    pushVo.put("contents", teamInfo.getTeam_name() + "팀에서 나를 초대했어요.");
-                    pushVo.put("imageUrl", "");
-                    pushVo.put("push_type", "71");
-                    pushVo.put("room_no", "0");
-                    pushVo.put("image_type", "101");
-                    pushVo.put("target_mem_no", vo.getMemNo());
-                    ProcedureVo procedureVo = new ProcedureVo(pushVo);
-                    pushDao.callStmpPushAdd(procedureVo);
-                }
+                 // fixme 팀 초대 승낙, 팀 가입 신청 수락 푸시 처리 push_slct 102, 105 구분값 파라미터로 추가로 받아야함
+                 // 팀 초대 승낙일 경우, 팀장에게 푸시 알림 전송
+                 if (vo.getReqSlct().equals("i")) {
+                     pushService.reqPushData(Long.toString(vo.getMasterMemNo()), "", vo.getName() + "님이 우리팀의 멤버가 되었어요.", "102", "/team/detail/" + vo.getTeamNo());
+                 // 팀 가입신청 수락일 경우, 신청자에게 푸시 알림 전송
+                 } else if (vo.getReqSlct().equals("r")) {
+                     pushService.reqPushData(Long.toString(vo.getMemNo()), "", vo.getTeamName() + "팀에 가입했어요.", "105", "/team/detail/" + vo.getTeamNo());
+                 }
             }else{
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
             }
 
-             // fixme 팀 초대 승낙, 팀 가입 신청 수락 푸시 처리 push_slct 102, 105 구분값 파라미터로 추가로 받아야함
 
         } catch (Exception e) {
             log.error("getTeamMemReqIns error ===> {}", e);
@@ -296,6 +276,11 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
+                // fixme 팀 강퇴시, 강퇴 당한 회원에게 푸시 전송
+                // 팀 초대 승낙일 경우, 팀장에게 푸시 알림 전송
+                if (vo.getDelSclt().equals("m")) {
+                    pushService.reqPushData(Long.toString(vo.getTmMemNo()), "", vo.getMasterName() + "님에 의해 팀에서 탈퇴되었어요.", "109", "");
+                }
             }else{
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
             }
@@ -354,6 +339,13 @@ public class TeamService {
             }
 
             // fixme 팀 초대 거절, 팀 가입 신청 거절 푸시 처리 push_slct 103, 106 구분값 파라미터로 추가로 받아야함
+            // 팀 초대 거절일 경우, 팀장에게 푸시 알림 전송
+            if (vo.getReqSlct().equals("i")) {
+                pushService.reqPushData(Long.toString(vo.getMasterMemNo()), "", vo.getName() + "님에게 보낸 초대가 거절되었어요.", "103", "/team/detail/" + vo.getTeamNo());
+            // 팀 가입신청 거절일 경우, 신청자에게 푸시 알림 전송
+            } else if (vo.getReqSlct().equals("r")) {
+                pushService.reqPushData(Long.toString(vo.getMemNo()), "", vo.getTeamName() + "팀 가입 신청이 거절되었어요.", "106", "");
+            }
         } catch (Exception e) {
             log.error("getTeamMemReqDel error ===> {}", e);
             resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
