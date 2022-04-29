@@ -2439,31 +2439,48 @@ public class MypageService {
     /**
      * 방송설정 블랙리스트 등록
      */
-    public String callMypageBlackListAdd(P_MypageBlackAddVo pMypageBlackAddVo, HttpServletRequest request) {
+    public <T> T callMypageBlackListAdd(P_MypageBlackAddVo pMypageBlackAddVo, HttpServletRequest request, boolean returnJsonFormat) {
         ProcedureVo procedureVo = new ProcedureVo(pMypageBlackAddVo);
         mypageDao.callMypageBlackListAdd(procedureVo);
 
         String result;
+        Status messageCode;
         if(procedureVo.getRet().equals(Status.블랙리스트등록_성공.getMessageCode())) {
 
             //메시지 체크
             SocketVo vo = socketService.getSocketVo(DalbitUtil.getProperty("socket.global.room"), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             socketService.chatBlack(DalbitUtil.getProperty("socket.global.room"), pMypageBlackAddVo.getMem_no(), pMypageBlackAddVo.getBlack_mem_no(), DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
 
+            messageCode = Status.블랙리스트등록_성공;
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_성공));
         }else if(procedureVo.getRet().equals(Status.블랙리스트등록_요청회원번호_회원아님.getMessageCode())) {
+
+            messageCode = Status.블랙리스트등록_요청회원번호_회원아님;
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_요청회원번호_회원아님));
         }else if(procedureVo.getRet().equals(Status.블랙리스트등록_블랙회원번호_회원아님.getMessageCode())) {
+
+            messageCode = Status.블랙리스트등록_블랙회원번호_회원아님;
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_블랙회원번호_회원아님));
         }else if(procedureVo.getRet().equals(Status.블랙리스트등록_이미블랙등록.getMessageCode())) {
+
+            messageCode = Status.블랙리스트등록_이미블랙등록;
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_이미블랙등록));
         }else if(procedureVo.getRet().equals(Status.블랙리스트등록_본인등록안됨.getMessageCode())) {
+
+            messageCode = Status.블랙리스트등록_본인등록안됨;
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_본인등록안됨));
         }else{
+
+            messageCode = Status.블랙리스트등록_실패;
             result = gsonUtil.toJson(new JsonOutputVo(Status.블랙리스트등록_실패));
         }
 
-        return result;
+        /* jsonFormat */
+        if (returnJsonFormat) {
+            return (T) result;
+        }
+        /* DB result Code */
+        return (T) messageCode;
     }
 
 

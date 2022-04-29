@@ -11,8 +11,10 @@ import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.procedure.P_MypageBlackAddVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -21,6 +23,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,6 +56,10 @@ public class UserService {
     RoomService roomService;
     @Autowired
     private TeamProc teamProc;
+    @Autowired
+    UserService userService;
+    @Autowired
+    MypageService mypageService;
 
     public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
@@ -493,5 +500,18 @@ public class UserService {
             log.error("UserService getListenerList => {}", e);
         }
         return null;
+    }
+
+    /** 방송방에서 차단시 강퇴하기 */
+    public String broadCastBlackAndKick(P_MypageBlackAddVo param1, P_RoomKickoutVo  param2, HttpServletRequest request ) {
+        String result;
+        Status messageCode = mypageService.callMypageBlackListAdd(param1, request, false);
+
+        if(StringUtils.equals(messageCode.getMessageCode(), Status.블랙리스트등록_성공.getMessageCode())) {
+            result = userService.callBroadCastRoomKickout(param2, request);
+        } else {
+            result = gsonUtil.toJson(new JsonOutputVo(messageCode));
+        }
+        return result;
     }
 }

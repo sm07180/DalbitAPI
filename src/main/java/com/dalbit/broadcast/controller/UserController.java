@@ -69,21 +69,20 @@ public class UserController {
     @PostMapping("/black/add")
     public String roomBlackAddKickOut(@Valid KickOutVo vo, HttpServletRequest request){
         try {
-            // 차단
             P_MypageBlackAddVo param1 = new P_MypageBlackAddVo();
+            P_RoomKickoutVo param2 = new P_RoomKickoutVo();
+
+            // 차단
             param1.setBlack_mem_no(vo.getBlockNo());
             param1.setMem_no(MemberVo.getMyMemNo(request));
-            mypageService.callMypageBlackListAdd(param1, request);
 
             // 강퇴
-            P_RoomKickoutVo param2 = new P_RoomKickoutVo();
             param2.setMem_no(MemberVo.getMyMemNo(request));
             param2.setRoom_no(vo.getRoomNo());
             param2.setBlocked_mem_no(vo.getBlockNo());
 
-            String result = userService.callBroadCastRoomKickout(param2, request);
+            return userService.broadCastBlackAndKick(param1, param2, request);
 
-            return result;
         } catch (Exception e) {
             HashMap map = new HashMap();
             map.put("roomNo", vo.getRoomNo());
