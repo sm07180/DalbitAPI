@@ -462,6 +462,10 @@ public class RoomService {
         DeviceVo deviceVo = new DeviceVo(request);
         for (int i=0; i<roomVoList.size(); i++){
             RoomOutVo roomOutVo = new RoomOutVo(roomVoList.get(i), deviceVo);
+
+            /* main 방송리스트에서만 isContents 값으로 isConDj 값을 변경 */
+            roomOutVo.setIsConDj(roomVoList.get(i).getIsContents() > 0);
+
             outVoList.add(roomOutVo);
         }
         log.debug("set list time {} ms", ((new Date()).getTime() - st));

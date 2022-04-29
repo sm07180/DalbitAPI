@@ -133,6 +133,9 @@ public class RoomInfoVo {
     private int sendDalCnt;
     private int sendDalFix;
 
+    /* 시그니처 아이템 관련 ( { itemCategories: [{code, value, isNew}], items: [] }) */
+    private Map<String, Object> signatureItem;
+
     public RoomInfoVo(){}
     public RoomInfoVo(RoomOutVo target, RoomMemberInfoVo memberInfoVo, String wowza_prefix, HashMap settingMap,
                       HashMap attendanceCheckMap, DeviceVo deviceVo, HashMap miniGameMap, ArrayList<Map<String, String>> ttsActors, boolean moonLandEvent){

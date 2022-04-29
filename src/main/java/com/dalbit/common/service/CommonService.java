@@ -167,6 +167,7 @@ public class CommonService {
         pItemVo.setVisibilityDirects((Arrays.stream(ITEM_DIRECT_CODE).filter(s->!s.equals(mainDirectCode))).toArray(String[]::new));
 
         List<ItemVo> items = commonDao.selectItemList(pItemVo);
+        List<ItemVo> newItems = new ArrayList<>();
         HashMap itemIsNew = new HashMap();
         itemIsNew.put("normal", false);
         itemIsNew.put("combo", false);
@@ -175,15 +176,20 @@ public class CommonService {
 
         if(!DalbitUtil.isEmpty(items)){
             for(int i = 0; i < items.size(); i++){
-                if(deviceVo.getOs() == 3){
-                    items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
-                }
-                if(items.get(i).isNew()){
-                    itemIsNew.put(items.get(i).getCategory(), true);
+                // 시그니처 아이템 제외
+                if (!StringUtils.equals(items.get(i).getCategory(), "signature")) {
+                    if (deviceVo.getOs() == 3) {
+                        items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
+                    }
+                    if (items.get(i).isNew()) {
+                        itemIsNew.put(items.get(i).getCategory(), true);
+                    }
+
+                    newItems.add(items.get(i));
                 }
             }
         }
-        resultMap.put("items", items);
+        resultMap.put("items", newItems);
         //pItemVo.setItem_slct(2);
 
         StringBuffer sbf = new StringBuffer("'");

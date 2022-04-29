@@ -1113,7 +1113,6 @@ public class SocketService {
                 Thread.sleep(500);
             }catch(InterruptedException e){}
 */
-            System.out.println("여기일수도");
             vo.setRecvMemNo(memNo);
         }
 
