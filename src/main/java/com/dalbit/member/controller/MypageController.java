@@ -48,7 +48,7 @@ public class MypageController {
         int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), MemberVo.getMyMemNo(request));
 
-        String result = profileService.callMemberInfo(apiData, request);
+        String result = profileService.callMemberInfo(apiData, request, false);
 
         return result;
     }
