@@ -1,6 +1,6 @@
 package com.dalbit.event.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.PoemEvent;
@@ -34,24 +34,24 @@ public class PoemService {
         HashMap<String, Object> resultMap = new HashMap<>();
         resultMap.put("listCnt", listCnt);
         resultMap.put("list", list);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
     }
 
 
     public String savePoem(PoemEventReqVo poemEventReqVo){
         Integer result = event.pTbEventRbdTailIns(poemEventReqVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.생성, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.생성, result));
     }
 
 
     public String deletePoem(String tailNo, String tailMemNo){
         Integer result = event.pTbEventRbdTailDel(tailNo, tailMemNo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.삭제, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.삭제, result));
     }
 
     public String editPoem(PoemEventReqVo poemEventReqVo){
         Integer result = event.pTbEventRbdTailUpd(poemEventReqVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.수정, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.수정, result));
     }
 
 }

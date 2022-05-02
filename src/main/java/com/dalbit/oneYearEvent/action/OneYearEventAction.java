@@ -1,6 +1,6 @@
 package com.dalbit.oneYearEvent.action;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
@@ -45,7 +45,7 @@ public class OneYearEventAction {
             tailVO.setMemNo("0");
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.댓글목록조회_성공, oneYearEventService.getTailList(tailVO)));
+        return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글목록조회_성공, oneYearEventService.getTailList(tailVO)));
     }
 
     @PostMapping("/tail/ins")
@@ -58,20 +58,20 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             setMemTokenInfo(tailVO, request, tokenCheckVo);
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글등록_실패));
         }
 
         // 금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), tailVO.getTailConts())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글등록_금지어));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글등록_금지어));
         }
 
         int result = oneYearEventService.insertTail(tailVO);
 
         if (result > 0) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글등록_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글등록_성공, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글등록_실패));
         }
     }
 
@@ -92,20 +92,20 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             setMemTokenInfo(tailVO, request, tokenCheckVo);
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글수정_실패));
         }
 
         // 금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), tailVO.getTailConts())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글등록_금지어));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글등록_금지어));
         }
 
         int result = oneYearEventService.updateTail(tailVO);
 
         if (result > 0) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글수정_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글수정_성공, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글수정_실패));
         }
     }
 
@@ -119,15 +119,15 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             tailVO.setTailMemNo(tokenCheckVo.getMem_no());
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글삭제_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글삭제_실패));
         }
 
         int result = oneYearEventService.deleteTail(tailVO);
 
         if (result > 0) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글삭제_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글삭제_성공, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.댓글삭제_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.댓글삭제_실패));
         }
     }
 
@@ -141,21 +141,21 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             dalVO.setMemNo(tokenCheckVo.getMem_no());
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_실패, 0));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급조회_실패, 0));
         }
 
         int result = dalVO.getMemLevel() < 5 ? -2 : oneYearEventService.dalRcvCheck(dalVO);
 
         if (result == 1) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급조회_성공, result));
         } else if (result == -1) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_이미받음, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급조회_이미받음, result));
         } else if (result == -2) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_레벨안됨, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급조회_레벨안됨, result));
         } else if (result == -3) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_인증안됨, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급조회_인증안됨, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급조회_실패, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급조회_실패, result));
         }
     }
 
@@ -169,22 +169,22 @@ public class OneYearEventAction {
         if(!DalbitUtil.isEmpty(tokenCheckVo)){
             dalVO.setMemNo(tokenCheckVo.getMem_no());
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_실패, 0));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급처리및로그기록_실패, 0));
         }
 
         Map<String, Object> result = oneYearEventService.dalInsAndLogIns(dalVO);
         int sReturn = Integer.parseInt(String.valueOf(result.get("s_return")));
 
         if (sReturn == 1) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급처리및로그기록_성공, result));
         } else if (sReturn == -1) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_이미받음, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급처리및로그기록_이미받음, result));
         } else if (sReturn == -2) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_레벨안됨, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급처리및로그기록_레벨안됨, result));
         } else if (sReturn == -3) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_인증안됨, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급처리및로그기록_인증안됨, result));
         } else {
-            return gsonUtil.toJson(new JsonOutputVo(Status.달지급처리및로그기록_실패, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달지급처리및로그기록_실패, result));
         }
     }
 }

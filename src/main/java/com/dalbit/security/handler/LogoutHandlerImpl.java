@@ -6,7 +6,7 @@ import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinVo;
 import com.dalbit.common.code.Code;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -65,13 +65,13 @@ public class LogoutHandlerImpl implements LogoutHandler {
         String state = DalbitUtil.getStringMap(broadcastingInfo, "state");
         boolean isBroadcast = state.equals(Code.방송중체크_방송중.getCode());
 
-        if(DalbitUtil.isLogin(request) && procedureVo.getRet().equals(Status.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
+        if(DalbitUtil.isLogin(request) && procedureVo.getRet().equals(MemberStatus.방송중인DJ체크_방송중.getMessageCode()) && isBroadcast){
             DeviceVo deviceVo = new DeviceVo(request);
             String device_uuid = DalbitUtil.getStringMap(broadcastingInfo, "device_uuid");
             device_uuid = device_uuid == null ? "" : device_uuid;
             if(device_uuid.equals(deviceVo.getDeviceUuid())){
                 try {
-                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃실패_진행중인방송));
+                    gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberStatus.로그아웃실패_진행중인방송));
 
                 }catch (Exception e){
                     log.error("LogoutHandlerImpl.logout : {}", e.getMessage());
@@ -93,7 +93,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
             memberService.refreshAnonymousSecuritySession("anonymousUser");
 
             HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
-            gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃성공, result.get("tokenVo")));
+            gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberStatus.로그아웃성공, result.get("tokenVo")));
             String newMemNo = MemberVo.getMyMemNo(request);
 
             //회원으로 청취중인 방 퇴장 후 비회원으로 조인
@@ -117,6 +117,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
                         exitData.setDeviceToken(deviceVo.getDeviceToken());
                         exitData.setIsHybrid(deviceVo.getIsHybrid());
                         ProcedureVo procedureExitVo = new ProcedureVo(exitData);
+                        log.error("callBroadcastRoomExit prev data(logOut) >>>> {} {} {}", exitData.getMemLogin(), exitData.getMem_no(), exitData.getRoom_no());
                         roomDao.callBroadCastRoomExit(procedureExitVo);
                     }catch(Exception e){}
 
@@ -136,6 +137,7 @@ public class LogoutHandlerImpl implements LogoutHandler {
                         joinData.setDeviceToken(deviceVo.getDeviceToken());
                         joinData.setIsHybrid(deviceVo.getIsHybrid());
                         ProcedureVo procedureJoinVo = new ProcedureVo(joinData);
+                        log.error("callBroadCastRoomJoin prev data(logout) >>>> {}", joinData.toString());
                         roomDao.callBroadCastRoomJoin(procedureJoinVo);
                     }catch(Exception e){}
                 }

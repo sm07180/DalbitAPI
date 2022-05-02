@@ -7,8 +7,7 @@ import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.RoomExitVo;
 import com.dalbit.broadcast.vo.request.StateEditVo;
 import com.dalbit.broadcast.vo.request.StateVo;
-import com.dalbit.common.code.Code;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.*;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
@@ -21,10 +20,8 @@ import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.procedure.P_BroadcastSettingEditVo;
 import com.dalbit.member.vo.procedure.P_BroadcastSettingVo;
 import com.dalbit.member.vo.procedure.P_FanRankVo;
-import com.dalbit.member.vo.request.BroadcastSettingEditVo;
 import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -32,8 +29,6 @@ import com.dalbit.socket.vo.SocketVo;
 import com.dalbit.team.service.TeamService;
 import com.dalbit.team.vo.TeamParamVo;
 import com.dalbit.team.vo.TeamResultVo;
-import com.dalbit.team.proc.TeamProc;
-import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -116,7 +111,7 @@ public class RoomService {
                 }
             }
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기_회원아님));
         }
 
         HashMap returnMap = new HashMap();
@@ -124,6 +119,7 @@ public class RoomService {
         returnMap.put("getMarbleInfo", new GganbuMemMarbleInsInputVo());
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
+        log.error("callBroadcastRoomExit prev data(RoomService => callBroadCastRoomExit1) >>>> {} {} {}", pRoomExitVo.getMemLogin(), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no());
         roomDao.callBroadCastRoomExit(procedureVo);
 
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -132,7 +128,7 @@ public class RoomService {
 
         String result;
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
+        if(procedureVo.getRet().equals(BroadcastStatus.방송나가기.getMessageCode())) {
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
             SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
@@ -204,14 +200,14 @@ public class RoomService {
 
             }
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기, returnMap));
         }else{
             returnMap.put("isLevelUp", false);
             if (isBj) {
-                if (procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())) {
+                if (procedureVo.getRet().equals(BroadcastStatus.방송나가기_회원아님.getMessageCode())) {
                     roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
-                } else if (procedureVo.getRet().equals(Status.방송나가기_해당방이없음.getMessageCode()) || procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode()) || procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기_회원아님));
+                } else if (procedureVo.getRet().equals(BroadcastStatus.방송나가기_해당방이없음.getMessageCode()) || procedureVo.getRet().equals(BroadcastStatus.방송나가기_종료된방송.getMessageCode()) || procedureVo.getRet().equals(BroadcastStatus.방송나가기_방참가자아님.getMessageCode())) {
                     SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                     try {
                         socketService.chatEnd(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.getAuthToken(request), 3, DalbitUtil.isLogin(request), vo);
@@ -219,19 +215,19 @@ public class RoomService {
                     } catch (Exception e) {
                         log.info("Socket Service changeCount Exception {}", e);
                     }
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기));
                     //result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_해당방이없음));
                 //} else if (procedureVo.getRet().equals(Status.방송나가기_종료된방송.getMessageCode())) {
                     //result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_종료된방송));
-                } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+                } else if (procedureVo.getRet().equals(BroadcastStatus.방송나가기_방참가자아님.getMessageCode())) {
                     roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님));
-                } else if (procedureVo.getRet().equals(Status.방송나가기실패.getMessageCode())) {
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기_방참가자아님));
+                } else if (procedureVo.getRet().equals(BroadcastStatus.방송나가기실패.getMessageCode())) {
                     roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기실패));
                 } else {
                     roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방참가실패));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방참가실패));
                 }
             }else{
                 //게스트 퇴장일 경우 소켓 추가
@@ -261,8 +257,9 @@ public class RoomService {
 
                 //DB LOCK 걸렸을 경우 나가기 재시도 (서비스 그대로 호출 시 -> 무한루프(세션X, 서비스호출 시 카운트 불가))
                 if (DalbitUtil.getStringMap(resultMap, "desc").indexOf("Deadlock") > -1) {
+                    log.error("callBroadcastRoomExit prev data(RoomService => callBroadCastRoomExit2) >>>> {} {} {}", pRoomExitVo.getMemLogin(), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no());
                     roomDao.callBroadCastRoomExit(procedureVo);
-                    if(procedureVo.getRet().equals(Status.방송나가기.getMessageCode())) {
+                    if(procedureVo.getRet().equals(BroadcastStatus.방송나가기.getMessageCode())) {
                         returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
                         SocketVo vo = socketService.getSocketVo(pRoomExitVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                         if (isBj) {
@@ -327,18 +324,18 @@ public class RoomService {
                             }
 
                         }
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기, returnMap));
-                    } else if(procedureVo.getRet().equals(Status.방송나가기_회원아님.getMessageCode())){
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_회원아님));
-                    } else if (procedureVo.getRet().equals(Status.방송나가기_방참가자아님.getMessageCode())) {
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기, returnMap));
+                    } else if(procedureVo.getRet().equals(BroadcastStatus.방송나가기_회원아님.getMessageCode())){
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기_회원아님));
+                    } else if (procedureVo.getRet().equals(BroadcastStatus.방송나가기_방참가자아님.getMessageCode())) {
                         roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기_방참가자아님));
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기_방참가자아님));
                     } else {
                         roomDao.callUpdateExitTry(pRoomExitVo.getRoom_no());
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기실패));
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기실패));
                     }
                 }else{
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기));
                 }
             }
         }
@@ -352,7 +349,7 @@ public class RoomService {
             try{
                 socketService.chatEndRed(MemberVo.getMyMemNo(request), pRoomExitVo.getRoom_no(), request, DalbitUtil.getAuthToken(request));
             }catch(Exception e){}
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송나가기));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기));
         }
     }
 
@@ -366,17 +363,17 @@ public class RoomService {
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(pRoomEditVo.getTitle())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.부적절한문자열));
         }
 
         //금지어 체크(제목)
         if(DalbitUtil.isStringMatchCheck(titleBanWord, pRoomEditVo.getTitle())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정제목금지));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.방송방수정제목금지));
         }
 
         //금지어 체크(인사말)
         if(DalbitUtil.isStringMatchCheck(systemBanWord, pRoomEditVo.getWelcomMsg())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방수정인사말금지));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.방송방수정인사말금지));
         }
 
         Boolean isDone = false;
@@ -396,7 +393,7 @@ public class RoomService {
         //mypageService.callBroadcastSettingEdit(pBroadcastSettingEditVo, request, "edit");
 
         String result;
-        if(procedureVo.getRet().equals(Status.방송정보수정성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(BroadcastStatus.방송정보수정성공.getMessageCode())) {
             if(DalbitUtil.isEmpty(pRoomEditOutVo.getImage_background())){
                 pRoomEditOutVo.setImage_background(Code.포토_배경_디폴트_PREFIX.getCode()+"/"+Code.배경이미지_파일명_PREFIX.getCode()+"200410.jpg");
             }
@@ -431,15 +428,15 @@ public class RoomService {
             }catch(Exception e){
                 log.info("Socket Service changeRoomInfo Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정성공, returnMap));
-        } else if (procedureVo.getRet().equals(Status.방송정보수정_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_회원아님));
-        } else if (procedureVo.getRet().equals(Status.방송정보수정_해당방에없는회원번호.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_해당방에없는회원번호));
-        } else if (procedureVo.getRet().equals(Status.방송정보수정_수정권한없는회원.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정_수정권한없는회원));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송정보수정성공, returnMap));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송정보수정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송정보수정_회원아님));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송정보수정_해당방에없는회원번호.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송정보수정_해당방에없는회원번호));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송정보수정_수정권한없는회원.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송정보수정_수정권한없는회원));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송정보수정실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송정보수정실패));
         }
 
         return result;
@@ -459,7 +456,7 @@ public class RoomService {
         HashMap roomList = new HashMap();
         if(DalbitUtil.isEmpty(roomVoList)){
             roomList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송리스트없음, roomList));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송리스트없음, roomList));
         }
 
         st = (new Date()).getTime();
@@ -487,11 +484,11 @@ public class RoomService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회, roomList));
-        }else if(Status.방송리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송리스트조회, roomList));
+        }else if(BroadcastStatus.방송리스트_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송리스트_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송리스트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송리스트조회_실패));
         }
         return result;
     }
@@ -556,16 +553,16 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pMemberBroadcastingCheckVo);
         roomDao.callMemberBroadcastingCheck(procedureVo);
         String result = "";
-        if(Status.방송진행여부체크_방송방없음.getMessageCode().equals(procedureVo.getRet())) {
+        if(BroadcastStatus.방송진행여부체크_방송방없음.getMessageCode().equals(procedureVo.getRet())) {
             //이어하기 체크
             ProcedureVo continueVo = new ProcedureVo(pMemberBroadcastingCheckVo);
             roomDao.callBroadCastRoomContinueCheck(continueVo);
             if("0".equals(continueVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.이어하기가능));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.이어하기가능));
             }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송방없음));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송진행여부체크_방송방없음));
             }
-        }else if(Status.방송진행여부체크_방송중.getMessageCode().equals(procedureVo.getRet())) {
+        }else if(BroadcastStatus.방송진행여부체크_방송중.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             /*if(DalbitUtil.getIntMap(resultMap, "mem_state") != 0 && DalbitUtil.getIntMap(resultMap, "mem_state") != 2){ //방송중인 방이 있으나 tb_broadcast_room_member 테이블에 방장으로 없거나 종료 했을 경우
@@ -579,12 +576,12 @@ public class RoomService {
                 returnMap.put("roomNo", DalbitUtil.getStringMap(resultMap, "roomNo"));
                 returnMap.put("state", DalbitUtil.getIntMap(resultMap, "state"));
                 returnMap.put("isWowza", DalbitUtil.getIntMap(resultMap, "isWowza"));
-                result = (DalbitUtil.getIntMap(resultMap, "state") == 5) ? gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_비정상, returnMap)) : gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_방송중, returnMap));
+                result = (DalbitUtil.getIntMap(resultMap, "state") == 5) ? gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송진행여부체크_비정상, returnMap)) : gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송진행여부체크_방송중, returnMap));
             //}
-        }else if(Status.방송진행여부체크_요청회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_요청회원아님));
+        }else if(BroadcastStatus.방송진행여부체크_요청회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송진행여부체크_요청회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송진행여부체크_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송진행여부체크_실패));
         }
 
         return result;
@@ -598,7 +595,7 @@ public class RoomService {
         roomDao.callBroadCastRoomLiveRankInfo(procedureVo);
 
         String result="";
-        if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(BroadcastStatus.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             int roomCnt = DalbitUtil.getIntMap(resultMap, "totalRoomCnt");
@@ -618,21 +615,37 @@ public class RoomService {
             returnMap.put("boostWebp", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.webp");
             returnMap.put("boostItemCnt", DalbitUtil.getIntMap(resultMap, "haveItemCnt"));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공, returnMap));
-        }else if(Status.순위아이템사용_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_번호비정상));
-        }else if(Status.순위아이템사용_해당방없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_해당방없음));
-        }else if(Status.순위아이템사용_해당방종료.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_해당방종료));
-        }else if(Status.순위아이템사용_요청회원_해당방청취자아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_요청회원_해당방청취자아님));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_조회성공, returnMap));
+        }else if(BroadcastStatus.순위아이템사용_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_요청회원_번호비정상));
+        }else if(BroadcastStatus.순위아이템사용_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_해당방없음));
+        }else if(BroadcastStatus.순위아이템사용_해당방종료.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_해당방종료));
+        }else if(BroadcastStatus.순위아이템사용_요청회원_해당방청취자아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_요청회원_해당방청취자아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_조회실패));
         }
 
         return result;
     }
+
+    private String getStatusString(ArrayList<Status> statusArrayList ,Status error , String ret) {
+        String result = "";
+        for(Status status :statusArrayList){
+            String messageCode = status.getMessageCode();
+            if(messageCode.equals(ret)){
+                result = gsonUtil.toJson(new JsonOutputVo(status));
+                break;
+            }
+        }
+        if(result.equals("")){
+            gsonUtil.toJson(new JsonOutputVo(error));
+        }
+        return result;
+    }
+
 
     /**
      * 방송방 현재 순위, 좋아요수 팬랭킹 조회
@@ -641,8 +654,8 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomLiveRankInfoVo);
         roomDao.callBroadCastRoomChangeCount(procedureVo);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회실패));
-        if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+        String result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_조회실패));
+        if(BroadcastStatus.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
             try{
                 HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
 
@@ -665,9 +678,9 @@ public class RoomService {
             }catch(Exception e){
                 log.info("Socket Service changeCount Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_조회성공));
-        }else if(Status.순위아이템사용_해당방없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.순위아이템사용_해당방없음));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_조회성공));
+        }else if(BroadcastStatus.순위아이템사용_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_해당방없음));
         }
 
         return result;
@@ -692,7 +705,7 @@ public class RoomService {
             giftHistoryList.put("totalGold", 0);
             giftHistoryList.put("paging", new PagingVo(0, pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역없음, giftHistoryList));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.선물받은내역없음, giftHistoryList));
         }else if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
             HashMap giftHistoryList = new HashMap();
             for (int i=0; i<giftHistoryListVo.size(); i++){
@@ -705,13 +718,13 @@ public class RoomService {
             giftHistoryList.put("list", procedureOutputVo.getOutputBox());
             giftHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGiftHistoryVo.getPageNo(), pRoomGiftHistoryVo.getPageCnt()));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역조회, giftHistoryList));
-        }else if(Status.선물내역조회_회원번호정상아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물내역조회_회원번호정상아님));
-        }else if(Status.선물내역조회_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물내역조회_해당방없음));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.선물받은내역조회, giftHistoryList));
+        }else if(BroadcastStatus.선물내역조회_회원번호정상아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.선물내역조회_회원번호정상아님));
+        }else if(BroadcastStatus.선물내역조회_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.선물내역조회_해당방없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받은내역조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.선물받은내역조회_실패));
         }
 
         return result;
@@ -850,20 +863,20 @@ public class RoomService {
         ProcedureVo procedureVo = getBroadCastRoomMemberInfo(pRoomMemberInfoVo, request);
 
         String result="";
-        if(Status.방송방회원정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_성공, procedureVo.getData()));
-        }else if(Status.방송방회원정보조회_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_요청회원_번호비정상));
-        }else if(Status.방송방회원정보조회_대상회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_번호비정상));
-        }else if(Status.방송방회원정보조회_종료된방.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_종료된방));
-        }else if(Status.방송방회원정보조회_대상회원_방에없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_대상회원_방에없음));
-        }else if(Status.방송방회원정보조회_차단회원_접근불가.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_차단회원_접근불가));
+        if(BroadcastStatus.방송방회원정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_성공, procedureVo.getData()));
+        }else if(BroadcastStatus.방송방회원정보조회_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_요청회원_번호비정상));
+        }else if(BroadcastStatus.방송방회원정보조회_대상회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_대상회원_번호비정상));
+        }else if(BroadcastStatus.방송방회원정보조회_종료된방.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_종료된방));
+        }else if(BroadcastStatus.방송방회원정보조회_대상회원_방에없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_대상회원_방에없음));
+        }else if(BroadcastStatus.방송방회원정보조회_차단회원_접근불가.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_차단회원_접근불가));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방회원정보조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방회원정보조회_실패));
         }
 
         return result;
@@ -877,7 +890,7 @@ public class RoomService {
         roomDao.callBroadcastRoomStreamSelect(procedureVo);
 
         String result = "";
-        if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(BroadcastStatus.스트림아이디_조회성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             int auth = DalbitUtil.getIntMap(resultMap, "auth");
             String bjStreamId = DalbitUtil.getStringMap(resultMap, "bj_streamid");
@@ -901,7 +914,7 @@ public class RoomService {
             //토큰 업데이트
             roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
 
-            if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
+            if(BroadcastStatus.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                 HashMap resultUpdateMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
 
                 log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -914,7 +927,7 @@ public class RoomService {
 
                 //방송방 정보 조회
                 ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
-                if(Status.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
+                if(BroadcastStatus.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
                     log.info(" 방송방 정보 조회 {}", roomInfoVo.getOutputBox());
                     RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
 
@@ -999,31 +1012,31 @@ public class RoomService {
 
                     log.info("returnMap: {}", returnMap);
 
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
-                }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
-                }else if(Status.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기, returnMap));
+                }else if(BroadcastStatus.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_회원번호아님));
+                }else if(BroadcastStatus.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_해당방없음));
                 }else{
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_실패));
                 }
-            }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
-            }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
-            }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+            }else if(BroadcastStatus.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_회원아님));
+            }else if(BroadcastStatus.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_해당방없음));
+            }else if(BroadcastStatus.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_요청회원_방소속아님));
             }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_조회실패));
             }
-        }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
-        }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
-        }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+        }else if(BroadcastStatus.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_회원아님));
+        }else if(BroadcastStatus.스트림아이디_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_해당방없음));
+        }else if(BroadcastStatus.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_요청회원_방소속아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_조회실패));
         }
 
         return result;
@@ -1040,7 +1053,7 @@ public class RoomService {
         ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
 
         String result="";
-        if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+        if(procedureOutputVo.getRet().equals(BroadcastStatus.방정보보기.getMessageCode())) {
             RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();
             int old_state = target.getState();
             P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
@@ -1057,7 +1070,7 @@ public class RoomService {
             pRoomStateUpdateVo.setState(state);
 
             if(old_state == state){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
             }
 
             ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
@@ -1067,7 +1080,7 @@ public class RoomService {
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
 
-            if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
+            if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_성공.getMessageCode())) {
                 SocketVo vo = socketService.getSocketVo(stateVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
                     DeviceVo deviceVo = new DeviceVo(request);
@@ -1087,26 +1100,26 @@ public class RoomService {
                 }catch(Exception e){
                     log.info("Socket Service changeRoomState Exception {}", e);
                 }
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_해당방이없음.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_해당방이없음));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_방이종료되었음.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_방이종료되었음));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방소속아님));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방장아님.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방장아님));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_회원아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_회원아님));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_해당방이없음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_해당방이없음));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_방이종료되었음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_방이종료되었음));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_요청회원_방소속아님));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_요청회원_방장아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_요청회원_방장아님));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_실패));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_실패));
             }
-        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
-        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else if(BroadcastStatus.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_회원번호아님));
+        }else if(BroadcastStatus.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_해당방없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_실패));
         }
 
         return result;
@@ -1121,11 +1134,11 @@ public class RoomService {
         pRoomInfoViewVo.setRoom_no(pRoomStreamVo.getRoom_no());
         ProcedureOutputVo roomInfoVo =  roomService.callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
 
-        if(Status.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
+        if(BroadcastStatus.방정보보기.getMessageCode().equals(roomInfoVo.getRet())) {
             ProcedureVo procedureVo = new ProcedureVo(pRoomStreamVo);
             roomDao.callBroadcastRoomStreamSelect(procedureVo);
 
-            if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+            if(BroadcastStatus.스트림아이디_조회성공.getMessageCode().equals(procedureVo.getRet())) {
                 RoomOutVo target = (RoomOutVo) roomInfoVo.getOutputBox();
                 HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
                 int auth = DalbitUtil.getIntMap(resultMap, "auth");
@@ -1209,7 +1222,7 @@ public class RoomService {
 
                     //토큰 업데이트
                     roomDao.callBroadcastRoomTokenUpdate(procedureUpdateVo);
-                    if(Status.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
+                    if(BroadcastStatus.스트림아이디_조회성공.getMessageCode().equals(procedureUpdateVo.getRet())) {
                         HashMap resultUpdateMap = new Gson().fromJson(procedureUpdateVo.getExt(), HashMap.class);
 
                         returnMap.put("likes", DalbitUtil.getIntMap(resultUpdateMap, "good"));
@@ -1223,15 +1236,15 @@ public class RoomService {
                         returnMap.put("kingAge", fanRankMap.get("kingAge"));
                         returnMap.put("kingProfImg", fanRankMap.get("kingProfImg"));
 
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
-                    }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
-                    }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
-                    }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기, returnMap));
+                    }else if(BroadcastStatus.스트림아이디_회원아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_회원아님));
+                    }else if(BroadcastStatus.스트림아이디_해당방없음.getMessageCode().equals(procedureUpdateVo.getRet())){
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_해당방없음));
+                    }else if(BroadcastStatus.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureUpdateVo.getRet())){
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_요청회원_방소속아님));
                     }else{
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+                        result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_조회실패));
                     }
                 }catch(Exception e){
                     bjPubToken = DalbitUtil.getStringMap(resultMap, "bj_publish_tokenid");
@@ -1253,7 +1266,7 @@ public class RoomService {
                     ProcedureVo procedureExceptionVo = new ProcedureVo(pRoomLiveRankInfoVo);
                     roomDao.callBroadCastRoomChangeCount(procedureExceptionVo);
 
-                    if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureExceptionVo.getRet())) {
+                    if(BroadcastStatus.순위아이템사용_조회성공.getMessageCode().equals(procedureExceptionVo.getRet())) {
                         HashMap resultCountMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
 
                         returnMap.put("likes", DalbitUtil.getIntMap(resultCountMap, "good"));
@@ -1271,23 +1284,23 @@ public class RoomService {
                         returnMap.put("fanRank", new ArrayList<>());
                     }
 
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기, returnMap));
+                    result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기, returnMap));
                 }
-            }else if(Status.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_회원아님));
-            }else if(Status.스트림아이디_해당방없음.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_해당방없음));
-            }else if(Status.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_요청회원_방소속아님));
+            }else if(BroadcastStatus.스트림아이디_회원아님.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_회원아님));
+            }else if(BroadcastStatus.스트림아이디_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_해당방없음));
+            }else if(BroadcastStatus.스트림아이디_요청회원_방소속아님.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_요청회원_방소속아님));
             }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스트림아이디_조회실패));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.스트림아이디_조회실패));
             }
-        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
-        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else if(BroadcastStatus.방정보보기_회원번호아님.getMessageCode().equals(roomInfoVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_회원번호아님));
+        }else if(BroadcastStatus.방정보보기_해당방없음.getMessageCode().equals(roomInfoVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_해당방없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_실패));
         }
         return result;
     }
@@ -1303,7 +1316,7 @@ public class RoomService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomLiveRankInfoVo);
         roomDao.callBroadCastRoomLiveRankInfo(procedureVo);
 
-        if(Status.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(BroadcastStatus.순위아이템사용_조회성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             return DalbitUtil.getIntMap(resultMap, "usedItemCnt") > 0;
         }
@@ -1344,7 +1357,7 @@ public class RoomService {
         P_SummaryListenerVo pSummaryListenerVo = new P_SummaryListenerVo(roomExitVo, request);
         ProcedureVo procedureVo = new ProcedureVo(pSummaryListenerVo);
         List<P_SummaryListenerVo> recommList = roomDao.callBroadcastSummaryListener(procedureVo);
-        if(Status.방송종료요약_성공.getMessageCode().equals(procedureVo.getRet())){
+        if(BroadcastStatus.방송종료요약_성공.getMessageCode().equals(procedureVo.getRet())){
             HashMap data = new HashMap();
             HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             List<SummaryListenerOutVo> recommends = new ArrayList<>();
@@ -1370,14 +1383,14 @@ public class RoomService {
             }
             data.put("recommends", recommends);
             data.put("myStars", myStars);
-            result.put("status", Status.방송종료요약_성공);
+            result.put("status", BroadcastStatus.방송종료요약_성공);
             result.put("data", data);
-        }else if(Status.방송종료요약_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result.put("status", Status.방송종료요약_회원아님);
-        }else if(Status.방송종료요약_방없음.getMessageCode().equals(procedureVo.getRet())) {
-            result.put("status", Status.방송종료요약_방없음);
+        }else if(BroadcastStatus.방송종료요약_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result.put("status", BroadcastStatus.방송종료요약_회원아님);
+        }else if(BroadcastStatus.방송종료요약_방없음.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", BroadcastStatus.방송종료요약_방없음);
         }else{
-            result.put("status", Status.방송종료요약_실패);
+            result.put("status", BroadcastStatus.방송종료요약_실패);
         }
         return result;
     }
@@ -1390,7 +1403,7 @@ public class RoomService {
         P_SummaryListenerVo pSummaryListenerVo = new P_SummaryListenerVo(roomExitVo, request);
         ProcedureVo procedureVo = new ProcedureVo(pSummaryListenerVo);
         List<P_SummaryDjVo> resultSet = roomDao.callBroadcastSummaryDj(procedureVo);
-        if(Status.방송종료요약_성공.getMessageCode().equals(procedureVo.getRet())){
+        if(BroadcastStatus.방송종료요약_성공.getMessageCode().equals(procedureVo.getRet())){
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap data = new HashMap();
             data.put("roomNo", DalbitUtil.getStringMap(resultMap, "room_no"));
@@ -1413,14 +1426,14 @@ public class RoomService {
                 list.add(new SummaryDjOutVo(item, DalbitUtil.getProperty("server.photo.url")));
             }
             data.put("list", list);
-            result.put("status", Status.방송종료요약_성공);
+            result.put("status", BroadcastStatus.방송종료요약_성공);
             result.put("data", data);
-        }else if(Status.방송종료요약_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result.put("status", Status.방송종료요약_회원아님);
-        }else if(Status.방송종료요약_방없음.getMessageCode().equals(procedureVo.getRet())) {
-            result.put("status", Status.방송종료요약_방없음);
+        }else if(BroadcastStatus.방송종료요약_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result.put("status", BroadcastStatus.방송종료요약_회원아님);
+        }else if(BroadcastStatus.방송종료요약_방없음.getMessageCode().equals(procedureVo.getRet())) {
+            result.put("status", BroadcastStatus.방송종료요약_방없음);
         }else{
-            result.put("status", Status.방송종료요약_실패);
+            result.put("status", BroadcastStatus.방송종료요약_실패);
         }
         return result;
     }
@@ -1457,7 +1470,7 @@ public class RoomService {
                 goodHistoryList.put("paging", new PagingVo(totalCnt, pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
             }
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_없음, goodHistoryList));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_없음, goodHistoryList));
         }else if(Integer.parseInt(procedureVo.getRet()) > 0) {
             List<RoomGoodHistoryOutVo> outVoList = new ArrayList<>();
             ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
@@ -1471,17 +1484,17 @@ public class RoomService {
             goodHistoryList.put("list", procedureOutputVo.getOutputBox());
             goodHistoryList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomGoodHistoryVo.getPageNo(), pRoomGoodHistoryVo.getPageCnt()));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_성공, goodHistoryList));
-        }else if(Status.좋아요내역조회_회원번호정상아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_회원번호정상아님));
-        }else if(Status.좋아요내역조회_해당방없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_해당방없음));
-        }else if(Status.좋아요내역조회_미참여중.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_미참여중));
-        }else if(Status.좋아요내역조회_권한없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_권한없음));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_성공, goodHistoryList));
+        }else if(BroadcastStatus.좋아요내역조회_회원번호정상아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_회원번호정상아님));
+        }else if(BroadcastStatus.좋아요내역조회_해당방없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_해당방없음));
+        }else if(BroadcastStatus.좋아요내역조회_미참여중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_미참여중));
+        }else if(BroadcastStatus.좋아요내역조회_권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_권한없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.좋아요내역조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요내역조회_실패));
         }
 
         return result;
@@ -1498,7 +1511,7 @@ public class RoomService {
         ProcedureOutputVo procedureOutputVo = callBroadCastRoomInfoViewReturnVo(pRoomInfoViewVo, request);
 
         String result="";
-        if(procedureOutputVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+        if(procedureOutputVo.getRet().equals(BroadcastStatus.방정보보기.getMessageCode())) {
             RoomOutVo target = (RoomOutVo) procedureOutputVo.getOutputBox();
             P_RoomStateUpdateVo pRoomStateUpdateVo = new P_RoomStateUpdateVo();
             pRoomStateUpdateVo.setMem_no(MemberVo.getMyMemNo(request));
@@ -1523,22 +1536,22 @@ public class RoomService {
             }else{
                 if("mic".equals(stateEditVo.getMediaState().toLowerCase())){
                     if(target.isMic() == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                        return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                        return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
                     }
                     state = ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn())) ? 1 : 2;
                 }else if("call".equals(stateEditVo.getMediaState().toLowerCase())){
                     if(target.isCall() == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                        return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                        return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
                     }
                     state = ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn())) ? 3 : 6;
                 }else if("video".equals(stateEditVo.getMediaState().toLowerCase())){
                     if(target.isVideo() == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                        return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                        return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
                     }
                     state = ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn())) ? 8 : 9;
                 }else if("server".equals(stateEditVo.getMediaState().toLowerCase())){
                     if(target.isServer() == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                        return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                        return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
                     }
                     state = ("FALSE".equals(stateEditVo.getMediaOn().toUpperCase()) || "0".equals(stateEditVo.getMediaOn())) ? 0 : 7;
                 }
@@ -1546,7 +1559,7 @@ public class RoomService {
             pRoomStateUpdateVo.setState(state);
             ProcedureVo procedureVo = new ProcedureVo(pRoomStateUpdateVo);
             roomDao.callBroadCastRoomStateEdit(procedureVo);
-            if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
+            if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_성공.getMessageCode())) {
                 SocketVo vo = socketService.getSocketVo(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 try{
                     socketService.roomStateEdit(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, isGuest, "edit");
@@ -1554,26 +1567,26 @@ public class RoomService {
                 }catch(Exception e){
                     log.info("Socket Service roomStateEdit Exception {}", e);
                 }
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_해당방이없음.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_해당방이없음));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_방이종료되었음.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_방이종료되었음));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방소속아님));
-            } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방장아님.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방장아님));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_회원아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_회원아님));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_해당방이없음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_해당방이없음));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_방이종료되었음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_방이종료되었음));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_요청회원_방소속아님));
+            } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_요청회원_방장아님.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_요청회원_방장아님));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_실패));
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_실패));
             }
-        }else if(Status.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_회원번호아님));
-        }else if(Status.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_해당방없음));
+        }else if(BroadcastStatus.방정보보기_회원번호아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_회원번호아님));
+        }else if(BroadcastStatus.방정보보기_해당방없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_해당방없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방정보보기_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방정보보기_실패));
         }
 
         return result;
@@ -1608,19 +1621,19 @@ public class RoomService {
 
         if("mic".equals(stateEditVo.getMediaState().toLowerCase())){
             if(isMic == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
             }
         }else if("call".equals(stateEditVo.getMediaState().toLowerCase())){
             if(isCall == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
             }
         }else if("video".equals(stateEditVo.getMediaState().toLowerCase())){
             if(isVideo == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
             }
         }else if("server".equals(stateEditVo.getMediaState().toLowerCase())){
             if(isServer == ("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn()))){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
             }
         }
 
@@ -1628,7 +1641,7 @@ public class RoomService {
         pRoomGuestStateUpdateVo.setState(("TRUE".equals(stateEditVo.getMediaOn().toUpperCase()) || "1".equals(stateEditVo.getMediaOn())) ? 1 : 0);
         ProcedureVo procedureVo = new ProcedureVo(pRoomGuestStateUpdateVo);
         roomDao.callRoomStateGuestEdit(procedureVo);
-        if (procedureVo.getRet().equals(Status.방송방상태변경_성공.getMessageCode())) {
+        if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_성공.getMessageCode())) {
             SocketVo vo = socketService.getSocketVo(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
             try{
                 socketService.roomStateEdit(stateEditVo.getRoomNo(), MemberVo.getMyMemNo(request), stateEditVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo, true, "edit");
@@ -1636,15 +1649,15 @@ public class RoomService {
             }catch(Exception e){
                 log.info("Socket Service roomStateEdit Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_성공));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_회원아님));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_방이종료되었음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_방이종료되었음));
-        } else if (procedureVo.getRet().equals(Status.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_요청회원_방소속아님));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_성공));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_회원아님));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_방이종료되었음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_방이종료되었음));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송방상태변경_요청회원_방소속아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_요청회원_방소속아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방상태변경_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방상태변경_실패));
         }
 
         return result;

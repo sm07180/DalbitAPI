@@ -2,7 +2,7 @@ package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.OwnerDao;
 import com.dalbit.broadcast.vo.OwnerResultVo;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.member.dao.MypageDao;
@@ -35,7 +35,7 @@ public class OwnerService {
 
     public String pDallaRoomMasterSel(String roomNo, String memNo, HttpServletRequest request) {
         if (StringUtils.isEmpty(roomNo)) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, roomNo));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.파라미터오류, roomNo));
         }
 
         Map<String, String> returnMap = new HashMap<>();
@@ -49,11 +49,11 @@ public class OwnerService {
             returnMap = new Gson().fromJson(beforeSettingVo.getExt(), HashMap.class);
             returnMap.putAll(BeanUtils.describe(pDallaRoomMasterSel));
             if(pDallaRoomMasterSel == null){
-                return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음, null));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음, null));
             }
         } catch (Exception e) {
             log.error("BroadcastService pDallaRoomMasterSel Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, returnMap));
     }
 }

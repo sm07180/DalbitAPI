@@ -1,6 +1,7 @@
 package com.dalbit.event.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.dao.RouletteDao;
 import com.dalbit.event.vo.RouletteApplyListOutVo;
@@ -40,17 +41,17 @@ public class RouletteService {
         rouletteDao.callCouponSelect(procedureVo);
 
         String result;
-        if (Status.응모권조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if (EventStatus.응모권조회_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("couponCnt", DalbitUtil.getIntMap(resultMap, "couponCnt"));
             returnMap.put("eventCouponCnt", DalbitUtil.getIntMap(resultMap, "eventCoupon"));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.응모권조회_성공, returnMap));
-        } else if (Status.응모권조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.응모권조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.응모권조회_성공, returnMap));
+        } else if (EventStatus.응모권조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.응모권조회_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.응모권조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.응모권조회_실패));
         }
         return result;
     }
@@ -63,7 +64,7 @@ public class RouletteService {
         rouletteDao.rouletteStart(procedureVo);
 
         String result;
-        if (Status.스타트_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if (EventStatus.스타트_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("giftiCon", DalbitUtil.getIntMap(resultMap, "giftiCon"));
@@ -78,13 +79,13 @@ public class RouletteService {
             returnMap.put("itemWinMsg", DalbitUtil.getStringMap(resultMap, "itemWinMsg"));
             returnMap.put("imageUrl", DalbitUtil.getStringMap(resultMap, "imageUrl"));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타트_성공, returnMap));
-        } else if (Status.스타트_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타트_회원아님));
-        } else if (Status.스타트_응모권부족.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타트_응모권부족));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스타트_성공, returnMap));
+        } else if (EventStatus.스타트_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스타트_회원아님));
+        } else if (EventStatus.스타트_응모권부족.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스타트_응모권부족));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타트_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스타트_실패));
         }
         return result;
     }
@@ -97,16 +98,16 @@ public class RouletteService {
         rouletteDao.inputPhone(procedureVo);
 
         String result;
-        if (Status.전화번호입력_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.전화번호입력_성공));
-        } else if (Status.전화번호입력_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.전화번호입력_회원아님));
-        } else if (Status.전화번호입력_당첨내역없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.전화번호입력_당첨내역없음));
-        } else if (Status.전화번호입력_자리수이상.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.전화번호입력_자리수이상));
+        if (EventStatus.전화번호입력_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.전화번호입력_성공));
+        } else if (EventStatus.전화번호입력_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.전화번호입력_회원아님));
+        } else if (EventStatus.전화번호입력_당첨내역없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.전화번호입력_당첨내역없음));
+        } else if (EventStatus.전화번호입력_자리수이상.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.전화번호입력_자리수이상));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.전화번호입력_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.전화번호입력_실패));
         }
         return result;
     }
@@ -122,7 +123,7 @@ public class RouletteService {
         if(DalbitUtil.isEmpty(applyListVo)){
             applyList.put("list", new ArrayList<>());
             applyList.put("paging", new PagingVo(0, pRouletteApplyVo.getPageNo(), pRouletteApplyVo.getPageCnt()));
-            return gsonUtil.toJson(new JsonOutputVo(Status.참여이력조회_없음, applyList));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.참여이력조회_없음, applyList));
         }
 
         List<RouletteApplyListOutVo> outVoList = new ArrayList<>();
@@ -137,11 +138,11 @@ public class RouletteService {
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.참여이력조회_성공, applyList));
-        } else if(Status.참여이력조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.참여이력조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.참여이력조회_성공, applyList));
+        } else if(EventStatus.참여이력조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.참여이력조회_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.참여이력조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.참여이력조회_실패));
         }
 
         return result;
@@ -158,7 +159,7 @@ public class RouletteService {
         if(DalbitUtil.isEmpty(winListVo)){
             winList.put("list", new ArrayList<>());
             winList.put("paging", new PagingVo(0, pRouletteWinListVo.getPageNo(), pRouletteWinListVo.getPageCnt()));
-            return gsonUtil.toJson(new JsonOutputVo(Status.당첨자조회_없음, winList));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.당첨자조회_없음, winList));
         }
 
         List<RouletteWinListOutVo> outVoList = new ArrayList<>();
@@ -173,9 +174,9 @@ public class RouletteService {
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.당첨자조회_성공, winList));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.당첨자조회_성공, winList));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.당첨자조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.당첨자조회_실패));
         }
 
         return result;
@@ -184,7 +185,7 @@ public class RouletteService {
     public String selectRouletteInfo(RouletteInfoVo rouletteInfoVo){
         List<RouletteInfoVo> rouletteInfoList = rouletteDao.selectRouletteInfo(rouletteInfoVo);
         if(DalbitUtil.isEmpty(rouletteInfoList)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
 
         var resultMap = new HashMap();
@@ -193,7 +194,7 @@ public class RouletteService {
         resultMap.put("info", infoData);
         resultMap.put("itemList", itemList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
     }
 
     public String callCouponHistory(HttpServletRequest request, P_RouletteCouponVo pRouletteCouponVo){
@@ -201,7 +202,7 @@ public class RouletteService {
         ProcedureVo procedureVo = new ProcedureVo(pRouletteCouponVo);
         List<RouletteCouponHistVo> rouletteCouponList = rouletteDao.callCouponHistory(procedureVo);
         if(DalbitUtil.isEmpty(rouletteCouponList)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
 
         rouletteCouponList.parallelStream().forEach(couponHistVo -> {
@@ -212,6 +213,6 @@ public class RouletteService {
 
         HashMap map = new HashMap();
         map.put("list", rouletteCouponList);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 }

@@ -1,5 +1,6 @@
 package com.dalbit.exception;
 
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.code.ErrorStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -108,7 +109,7 @@ public class GlobalException extends Exception {
     }
 
     public void printErrorLog(Status status, Object data, ArrayList validationMessageDetail, String methodName, boolean isCustomMessage){
-        if(status.getMessageCode().equals(Status.벨리데이션체크.getMessageCode())){
+        if(status.getMessageCode().equals(CommonStatus.벨리데이션체크.getMessageCode())){
 
             if(methodName.equals("saveErrorLog")){
                return;
@@ -122,14 +123,14 @@ public class GlobalException extends Exception {
                     log.error("validation message : {}", list.toString());
                 });
             }
-        }else if(status.getMessageCode().equals(Status.비즈니스로직오류.getMessageCode())){
+        }else if(status.getMessageCode().equals(CommonStatus.비즈니스로직오류.getMessageCode())){
             log.error("messageCode : {}", status.getMessageCode());
             log.error("messageKey : {}", status.getMessageKey());
             log.error("desc : {}", status.getDesc());
             log.error("methodName : {}", methodName);
             log.error("{}", super.getStackTrace());
 
-        }else if(status.getMessageCode().equals(Status.부적절한문자열.getMessageCode())){
+        }else if(status.getMessageCode().equals(CommonStatus.부적절한문자열.getMessageCode())){
             log.error("messageCode : {}", status.getMessageCode());
             log.error("messageKey : {}", status.getMessageKey());
             log.error("desc : {}", status.getDesc());

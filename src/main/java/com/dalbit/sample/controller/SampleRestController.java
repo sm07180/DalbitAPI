@@ -1,6 +1,6 @@
 package com.dalbit.sample.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -45,7 +45,7 @@ public class SampleRestController {
         }
 
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, tokenVo));
     }
 
     @PostMapping("getRedisData")
@@ -59,7 +59,7 @@ public class SampleRestController {
         }
 
         MemberVo memberVo = null;
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, memberVo));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, memberVo));
     }
 
     @GetMapping("validation")
@@ -67,14 +67,14 @@ public class SampleRestController {
             @RequestParam("param") @NotNull int param
     )throws GlobalException {
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, param));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, param));
     }
 
     @GetMapping("validation2")
     public String validation2(
             @RequestParam("param") @Min(4) String param
     )throws GlobalException {
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, param));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, param));
     }
 
     @GetMapping("checkMe")
@@ -86,23 +86,23 @@ public class SampleRestController {
         if(jwtUtil.validateToken(authToken)){
             TokenVo tokenVo = jwtUtil.getTokenVoFromJwt(authToken);
             if(tokenVo.getMemNo().equals(memberVo.getMemNo())){
-                return gsonUtil.toJson(new JsonOutputVo(Status.조회, "본인입니다."));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, "본인입니다."));
             }
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, "본인이 아닙니다."));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, "본인이 아닙니다."));
     }
 
     @GetMapping("nameCheck")
     public String nameCheck(@Valid SampleVo sampleVo, BindingResult bindingResult){
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회));
     }
 
     @Secured("ROLE_USER")
     @GetMapping("roleCheck")
     public String roleCheck(){
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회));
     }
 
     @GetMapping("/session/test")
@@ -120,6 +120,6 @@ public class SampleRestController {
         result.put("param", request.getParameter("session"));
         result.put("isMake", isMake);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 }

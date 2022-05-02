@@ -1,9 +1,9 @@
 package com.dalbit.common.controller;
 
-import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import com.dalbit.common.annotation.NoLogging;
 import com.dalbit.common.code.Code;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.service.EmailService;
 import com.dalbit.common.vo.*;
@@ -32,10 +32,9 @@ import java.io.IOException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.HashMap;
 
-import static com.dalbit.common.code.Status.조회;
+import static com.dalbit.common.code.CommonStatus.조회;
 
 @Slf4j
 @RestController
@@ -119,7 +118,7 @@ public class CommonController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         if(!DalbitUtil.isSmsPhoneNoChk(smsVo.getPhoneNo())){
-            throw new GlobalException(Status.인증번호요청_유효하지않은번호, Thread.currentThread().getStackTrace()[1].getMethodName());
+            throw new GlobalException(MemberStatus.인증번호요청_유효하지않은번호, Thread.currentThread().getStackTrace()[1].getMethodName());
         }
         //휴대폰번호 '-' 치환
         smsVo.setPhoneNo(smsVo.getPhoneNo().replaceAll("-",""));
@@ -145,7 +144,7 @@ public class CommonController {
         log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
         log.debug("결과코드 : {}", LoginProcedureVo.getRet());
 
-        boolean isJoin = LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode());
+        boolean isJoin = LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_회원가입필요.getMessageCode());
         //boolean isPassword = LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode());  추후 이전 비밀번호 체크시...
         int authType = smsVo.getAuthType();
         int code = DalbitUtil.getSmscode();
@@ -170,10 +169,10 @@ public class CommonController {
         }else{
             // 이미 가입된 회원이 회원가입 할 경우
             if (DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.join")) == authType){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원가입실패_중복가입));
             // 비회원이 패스워드 변경을 요청한 경우
             } else if(DalbitUtil.isStringToNumber(DalbitUtil.getProperty("sms.send.authType.password")) == authType) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경_인증요청_회원아님));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.비밀번호변경_인증요청_회원아님));
             // 예외
             } else {
                 try {
@@ -181,7 +180,7 @@ public class CommonController {
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청실패));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증번호요청실패));
             }
         }
 
@@ -204,7 +203,7 @@ public class CommonController {
             SmsOutVo smsOutVo = new SmsOutVo();
             smsOutVo.setCMID(smsVo.getCMID());
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청, smsOutVo));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증번호요청, smsOutVo));
         }
         return result;
 
@@ -224,7 +223,7 @@ public class CommonController {
         CookieUtil cookieUtil = new CookieUtil(request);
         Cookie smsCookie = cookieUtil.getCookie("smsCookie");
         if (DalbitUtil.isEmpty(smsCookie)) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증실패));
         }else{
             cookieResMap = new Gson().fromJson(URLDecoder.decode(smsCookie.getValue()), HashMap.class);
         }
@@ -241,15 +240,15 @@ public class CommonController {
             if(id == smsCheckVo.getCMID()){
                 if(code == smsCheckVo.getCode()){
                     if(DalbitUtil.isSeconds(reqTime, checkTime)){
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증확인));
+                        result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증확인));
                     }else {
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.인증시간초과));
+                        result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증시간초과));
                     }
                 } else {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호불일치));
+                    result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증번호불일치));
                 }
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.인증CMID불일치));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증CMID불일치));
             }
         } else {
             try {
@@ -257,7 +256,7 @@ public class CommonController {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증실패));
         }
 
         log.debug("인증상태 확인 authYn: {}", new Gson().toJson(smsCookie));
@@ -320,7 +319,7 @@ public class CommonController {
 
         log.info("URL CODE: {}", selfAuthVo.getUrlCode());
         log.info("[API] #### selfAuthVo: {}", selfAuthVo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증요청, selfAuthOutVo));
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증요청, selfAuthOutVo));
     }
 
     /**
@@ -366,7 +365,7 @@ public class CommonController {
 
                 // 만 14세 미만 이용불가
                 if(manAge < 14){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.본인인증14세미만, apiData));
+                    return gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증14세미만, apiData));
                 }
 
                 log.info("##### 본인인증 DB저장 #####");
@@ -390,12 +389,12 @@ public class CommonController {
                 // -5:부모미성년, -4:미인증, -3:나이 안맞음, -2:이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
                 ResVO insRes = commonService.parentsAuthIns(parentCertInputVo);
                 apiData.setParentAuth(insRes);
-                result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, apiData));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.보호자인증성공, apiData));
             } else { // 법정대리인 인증(환전)
 
                 // 만 19세 미만 이용불가
                 if(manAge < 19){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.보호자인증20세미만, apiData));
+                    return gsonUtil.toJson(new JsonOutputVo(MemberStatus.보호자인증20세미만, apiData));
                 }
 
                 log.info("##### 보호자인증 DB업데이트 #####");
@@ -406,7 +405,7 @@ public class CommonController {
             }
 
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증실패, selfAuthSaveVo.getMsg()));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증실패, selfAuthSaveVo.getMsg()));
         }
         return  result;
     }
@@ -447,13 +446,13 @@ public class CommonController {
     @PostMapping("/security/log")
     public String saveAppErrorLog(@Valid AppErrorLogVO appErrorLogVO, HttpServletRequest request, HttpServletResponse response) {
         DalbitUtil.setHeader(request, response);
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_성공));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.앱보안_로그저장_성공));
         try {
             if (StringUtils.equals(appErrorLogVO.getUid(), null)) {
                 appErrorLogVO.setUid("null");
             }
             if (StringUtils.equals(appErrorLogVO.getReason(), null)) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_실패));
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.앱보안_로그저장_실패));
                 appErrorLogVO.setReason("null");
             }
             String errorMsg = "UID : \"" + appErrorLogVO.getUid() + "\" / Reason : \"" + appErrorLogVO.getReason() + "\"";
@@ -461,7 +460,7 @@ public class CommonController {
 
             return result;
         } catch (Exception e) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.앱보안_로그저장_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.앱보안_로그저장_실패));
             String errorMsg = "UID : \"" + appErrorLogVO.getUid() + "\"/ Reason : \"" + appErrorLogVO.getReason() + "\"";
             log.error("app security log error Fail => {} {}", errorMsg, e);
 
@@ -603,7 +602,7 @@ public class CommonController {
         // 미성년자는 법정대리인에게 메일 발송
         //commonService.sendPayMailManager(memNo, orderId);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.본인인증확인, map));
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증확인, map));
     }
 
     @PostMapping("/sleep/member/update")

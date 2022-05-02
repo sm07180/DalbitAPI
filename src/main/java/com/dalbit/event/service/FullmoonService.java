@@ -1,6 +1,7 @@
 package com.dalbit.event.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -36,10 +37,10 @@ public class FullmoonService {
 
         String result = "";
         if(DalbitUtil.isEmpty(eventInfoMap)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_진행중인이벤트없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_진행중인이벤트없음));
         }
 
-        result = gsonUtil.toJson(new JsonOutputVo(Status.조회, eventInfoMap));
+        result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, eventInfoMap));
         return result;
     }
 
@@ -51,7 +52,7 @@ public class FullmoonService {
         int slct_type = DalbitUtil.getIntMap(paramMap, "slct_type");
         int fullmoon_idx = DalbitUtil.getIntMap(paramMap, "fullmoon_idx");
         if(!(slct_type == 1 || slct_type == 2) || fullmoon_idx <= 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.파라미터오류));
         }
 
         paramMap.put("mem_no", MemberVo.getMyMemNo());
@@ -61,14 +62,14 @@ public class FullmoonService {
 
         String result = "";
         if(DalbitUtil.isEmpty(rankList)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
 
         rankList.parallelStream().forEach(data -> {
             data.put("profileImage", new ImageVo(DalbitUtil.getStringMap(data, "profileImage"), DalbitUtil.getStringMap(data, "memSex"), DalbitUtil.getProperty("server.photo.url")));
         });
 
-        result = gsonUtil.toJson(new JsonOutputVo(Status.조회, rankList));
+        result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, rankList));
         return result;
     }
 }

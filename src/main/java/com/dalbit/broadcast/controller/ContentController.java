@@ -4,7 +4,7 @@ import com.dalbit.broadcast.service.ContentService;
 import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MypageStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.BroadcastNoticeSelVo;
@@ -55,7 +55,7 @@ public class ContentController {
             return contentService.mobileBroadcastNoticeSelect(noticeSelVo, request);
         } catch (Exception e) {
             log.error("noticeSelect Error : {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
         }
 
     }
@@ -85,7 +85,7 @@ public class ContentController {
             return contentService.mobileBroadcastNoticeUpd(param, request);
         } catch (Exception e) {
             log.error("noticeEdit Error : {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
         }
     }
 

@@ -41,9 +41,4 @@ public class MainControllerV2 {
     public String etcData() {
         return mainServiceV2.getEtcData();
     }
-
-    @RequestMapping("/getMainSwiper")
-    public String getMainSwiper(HttpServletRequest request) {
-        return mainServiceV2.getMainSwiper(request);
-    }
 }
