@@ -1,7 +1,10 @@
 package com.dalbit.store.service;
 
+import com.dalbit.admin.dao.AdminDao;
+import com.dalbit.admin.vo.SettingListVo;
 import com.dalbit.broadcast.dao.UserDao;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.StoreStatus;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
@@ -44,6 +47,8 @@ public class StoreService {
     CommonDao commonDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    AdminDao adminDao;
 
 
     public StoreChargeVo getStoreChargeListByParam(HttpServletRequest request){
@@ -76,7 +81,7 @@ public class StoreService {
         } catch (Exception e) {
             log.error("StoreService getDalCntJsonStr Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, returnMap));
     }
 
     private P_ProfileInfoVo getMemberInfo(HttpServletRequest request) {
@@ -95,7 +100,7 @@ public class StoreService {
         try{
             P_ProfileInfoVo memberInfo = this.getMemberInfo(request);
             if(memberInfo == null || StringUtils.isEmpty(memberInfo.getMemId())){
-                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회_회원정보없음, returnMap));
+                return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_홈_데이터_조회_회원정보없음, returnMap));
             }
             returnMap.put("memberInfo", memberInfo);
             DeviceVo deviceVo = new DeviceVo(request);
@@ -127,42 +132,34 @@ public class StoreService {
 
 
             if(deviceVo.getOs() == 1){
-//                String testVersion = "1.10.2";
-                // 구버전이라면
-                if(DalbitUtil.versionCompare(MainEtc.IN_APP_UPDATE_VERSION.AOS, deviceVo.getAppVersion())){
-//                if(DalbitUtil.versionCompare(MainEtc.IN_APP_UPDATE_VERSION.AOS, testVersion)){
+                SettingListVo settingListVo = new SettingListVo();
+                settingListVo.setIs_use(1);
+                settingListVo.setType("system_config");
+                ArrayList<SettingListVo> settingListVos = adminDao.selectSettingList(settingListVo);
+                SettingListVo aosSetting = settingListVos.stream().filter(settingListVo1 -> {
+                    if(!StringUtils.isEmpty(settingListVo1.getCode())){
+                        return settingListVo1.getCode().contains("AOS");
+                    }
+                    return false;
+                }).findFirst().orElse(null);
+                if(aosSetting != null){
+                    if("Y".equals(aosSetting.getValue())){
+                        // 심사중
+                        mode = Store.ModeType.IN_APP;
+                        platform = Store.Platform.AOS_IN_APP;
+                    }else if("N".equals(aosSetting.getValue())){
+                        // 심사중이 아니라면
+                        mode = Store.ModeType.OTHER;
+                        platform = Store.Platform.OTHER;
+                    }else{
+                        // DB 확인 필요
+                        mode = Store.ModeType.OTHER;
+                        platform = Store.Platform.OTHER;
+                    }
+                }else{
+                    // DB 확인 필요
                     mode = Store.ModeType.OTHER;
                     platform = Store.Platform.OTHER;
-                }else if("n".equals(paymentSetting.getAosPaymentSet())){// 어드민 외부결제 활성화 체크
-                    mode = Store.ModeType.IN_APP;
-                    platform = Store.Platform.AOS_IN_APP;
-                }else if(Store.Screen.aosMemberId.equals(memberInfo.getMemId())){// 심사 아이디 체크
-                    mode = Store.ModeType.IN_APP;
-                    platform = Store.Platform.AOS_IN_APP;
-                }else if(!Store.NationCodeType.KR.equals(nationCode)){// 해외 아이피 체크
-                    mode = Store.ModeType.IN_APP;
-                    platform = Store.Platform.AOS_IN_APP;
-                }else if("y".equals(paymentSetting.getAosPaymentSet())){
-//                    if(isWeekEnd){// 주말 : 외부결제 노출
-                    if(localDateTime.getDayOfWeek().equals(DayOfWeek.SUNDAY)){ // 일요일 : 외부결제 노출
-                        mode = Store.ModeType.ALL;
-                    }else {
-//                        if(hourRangeResult > 0){
-//                            // 평일 18:00 ~ 24:00, 00:00 ~ 06:00 : 외부결제 노출
-//                            mode = Store.ModeType.ALL;
-//                        }else{
-//                            mode = Store.ModeType.IN_APP;
-//                        }
-                        mode = Store.ModeType.IN_APP;
-                    }
-                    if(Store.ModeType.IN_APP.equals(mode) && paymentSetMemberChk == 1){
-                        // 안드로이드 & IOS 공통 : DAO 주석 참고
-                        mode = Store.ModeType.ALL;
-                    }
-                    platform = Store.Platform.AOS_IN_APP;
-                }else{
-                    mode = Store.ModeType.NONE;
-                    platform = Store.Platform.UNKNOWN;
                 }
             } else if(deviceVo.getOs() == 2){ // aos 조건과 동일, 주석 참고
                 // 기존 소스에 IOS는 스토어 페이지에 접근하지 않지만 방어 코드 용도
@@ -221,7 +218,7 @@ public class StoreService {
         } catch (Exception e) {
             log.error("StoreService getIndexData Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.스토어_홈_데이터_조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_홈_데이터_조회, returnMap));
     }
 
     public String selectChargeItem(String platform, HttpServletRequest request) {
@@ -229,7 +226,7 @@ public class StoreService {
 
         try{
             if(!isValidPlatformData(platform,request)){
-                return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회_파라미터, returnMap));
+                return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_아이템_조회_파라미터, returnMap));
             }
             String target = this.platformTarget(platform,request);
             List<StoreChargeVo> dalPriceList = storeDao.selectChargeItem(target);
@@ -237,7 +234,7 @@ public class StoreService {
         } catch (Exception e) {
             log.error("StoreService selectChargeItem Error => {}", e.getMessage());
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.스토어_아이템_조회, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(StoreStatus.스토어_아이템_조회, returnMap));
     }
 
     public List<StoreChargeVo> getDalPriceList(String platform, HttpServletRequest request) {

@@ -1,6 +1,8 @@
 package com.dalbit.search.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.BroadcastStatus;
+import com.dalbit.common.code.ClipStatus;
+import com.dalbit.common.code.MypageStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
@@ -44,7 +46,7 @@ public class SearchService {
         HashMap memberSearchList = new HashMap();
         if(DalbitUtil.isEmpty(memberSearchVoList)){
             memberSearchList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_결과없음, memberSearchList));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.회원닉네임검색_결과없음, memberSearchList));
         }
 
         List<MemberSearchOutVo> outVoList = new ArrayList<>();
@@ -58,9 +60,9 @@ public class SearchService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_성공, memberSearchList));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.회원닉네임검색_성공, memberSearchList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원닉네임검색_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.회원닉네임검색_실패));
         }
         return result;
     }
@@ -76,7 +78,7 @@ public class SearchService {
         HashMap roomSearchList = new HashMap();
         if(DalbitUtil.isEmpty(liveRoomSearchVoList)){
             roomSearchList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_결과없음, roomSearchList));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.라이브방송검색_결과없음, roomSearchList));
         }
         List<RoomSearchOutVo> outVoList = new ArrayList<>();
         for (int i=0; i<liveRoomSearchVoList.size(); i++){
@@ -89,9 +91,9 @@ public class SearchService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_성공, roomSearchList));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.라이브방송검색_성공, roomSearchList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.라이브방송검색_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.라이브방송검색_실패));
         }
         return result;
     }
@@ -109,7 +111,7 @@ public class SearchService {
             roomRecommandOutList.put("list", new ArrayList<>());
             roomRecommandOutList.put("totalCnt", 0);
             roomRecommandOutList.put("paging", new PagingVo(0, pRoomRecommandListVo.getPageNo(), pRoomRecommandListVo.getPageCnt()));
-            return gsonUtil.toJson(new JsonOutputVo(Status.추천방송검색_결과없음, roomRecommandOutList));
+            return gsonUtil.toJson(new JsonOutputVo(ClipStatus.추천방송검색_결과없음, roomRecommandOutList));
         }
         List<RoomRecommandListOutVo> outVoList = new ArrayList<>();
         for (int i=0; i<roomRecommandList.size(); i++){
@@ -122,9 +124,9 @@ public class SearchService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추천방송검색_성공, roomRecommandOutList));
+            result = gsonUtil.toJson(new JsonOutputVo(ClipStatus.추천방송검색_성공, roomRecommandOutList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추천방송검색_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(ClipStatus.추천방송검색_실패));
         }
         return result;
     }

@@ -1,6 +1,6 @@
 package com.dalbit.common.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.dao.PushDao;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -79,14 +79,14 @@ public class PushService {
                 // 지정 일 경우 푸시 발송
                 resultHash = callSendPush(pPushInsertVo);
 
-                result = gsonUtil.toJson(new JsonOutputVo(Status.푸시등록_성공, resultHash));
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시등록_성공, resultHash));
 
             }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.푸시등록_에러));
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시등록_에러));
             }
         }catch (Exception e){
             e.printStackTrace();
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시등록_에러));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시등록_에러));
         }
 
         return result;
@@ -115,13 +115,13 @@ public class PushService {
 
                     pushDao.callStmpPushAdd(procedureVo);
 
-                    if(Status.푸시성공.getMessageCode().equals(procedureVo.getRet())){
+                    if(CommonStatus.푸시성공.getMessageCode().equals(procedureVo.getRet())){
                         log.debug("[PUSH_SEND] 푸시 발송 성공 (" + target + ")");
                         sucCnt++;
-                    }else if(Status.푸시_디바이스토큰없음.getMessageCode().equals(procedureVo.getRet())){
+                    }else if(CommonStatus.푸시_디바이스토큰없음.getMessageCode().equals(procedureVo.getRet())){
                         log.error("[PUSH_SEND] ERROR 디바이스토큰 미존재 (" + target + ")");
                         notTokenCnt++;
-                    }else if(Status.푸시_회원아님.getMessageCode().equals(procedureVo.getRet())){
+                    }else if(CommonStatus.푸시_회원아님.getMessageCode().equals(procedureVo.getRet())){
                         log.error("[PUSH_SEND] ERROR mem_no 미존재 (" + target + ")");
                         notMemNoCnt++;
                     } else {
@@ -136,7 +136,7 @@ public class PushService {
 
             pushDao.callStmpPushAdd(procedureVo);
 
-            if(Status.푸시성공.getMessageCode().equals(procedureVo.getRet())){
+            if(CommonStatus.푸시성공.getMessageCode().equals(procedureVo.getRet())){
                 //log.debug("[PUSH_SEND] 푸시 발송 성공 (" + MemberVo.getUserInfo().getEmp_no() + ")");
                 sucCnt++;
             } else {

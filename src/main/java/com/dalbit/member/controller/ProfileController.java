@@ -1,6 +1,7 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
@@ -82,10 +83,10 @@ public class ProfileController {
             String result = profileService.callMemberFanboardList(fanboardListVo);
             return result;
         }catch(Exception e){
-            log.error("ProfileController.java / fanboardList () => {}", e);
+            log.error("ProfileController.java / fanboardList () => Exception : param: {} / error: {}", gsonUtil.toJson(fanboardViewVo), e);
             HashMap fanBoardList = new HashMap();
             fanBoardList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글없음, fanBoardList));
         }
     }
 
@@ -168,7 +169,7 @@ public class ProfileController {
     @GetMapping("/star")
     public String starRanking(@Valid StarRankingVo starRankingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, profileService.selectStarRanking(starRankingVo, request)));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, profileService.selectStarRanking(starRankingVo, request)));
     }
 
 
@@ -373,13 +374,13 @@ public class ProfileController {
             ProfileBoardDetailOutVo result = profileService.boardDetailSel(vo, request);
 
             if(result != null) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회성공, result));
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드상세조회성공, result));
             } else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회정보없음));
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드상세조회정보없음));
             }
         } catch(Exception e) {
             log.error("ProfileController / boardDetailSel => {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드상세조회실패));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드상세조회실패));
         }
     }
 

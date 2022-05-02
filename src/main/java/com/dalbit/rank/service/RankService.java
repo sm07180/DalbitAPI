@@ -1,13 +1,13 @@
 package com.dalbit.rank.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rank.proc.Rank;
 import com.dalbit.rank.proc.StarDjPage;
 import com.dalbit.rank.vo.StarDjPointVO;
-import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +36,7 @@ public class RankService {
         String memNo = MemberVo.getMyMemNo(request);
         map.put("memNo", memNo);
         List<Object> djResult = rank.getPartnerDjList(map);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, djResult));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, djResult));
     }
 
     /**********************************************************************************************
@@ -49,7 +49,7 @@ public class RankService {
         String memNo = MemberVo.getMyMemNo(request);
         map.put("memNo", memNo);
         StarDjPointVO result = starDjPage.getStarDjScore(map);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
     /**********************************************************************************************
@@ -59,7 +59,7 @@ public class RankService {
      * @변경이력 :
      **********************************************************************************************/
     public String starDjIns(Map map, HttpServletRequest request){
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청실패));
+        String result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ_신청실패));
         String memNo = MemberVo.getMyMemNo(request);
         map.put("memNo", memNo);
         try{
@@ -67,12 +67,12 @@ public class RankService {
             if (starMap.get("is_already") != null){
                 if (Integer.parseInt(starMap.get("is_already").toString()) < 1){
                     starDjPage.starDjIns(map);
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청성공));
+                    result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ_신청성공));
                 } else {
-                    result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청실패));
+                    result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ_신청실패));
                 }
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ_신청실패));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ_신청실패));
             }
 
         }catch(Exception e){
@@ -91,7 +91,7 @@ public class RankService {
         String memNo = MemberVo.getMyMemNo(request);
         map.put("memNo", memNo);
         List<Object> result = starDjPage.getStarDjLog(map);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
 }

@@ -1,9 +1,8 @@
 package com.dalbit.star.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.main.proc.MainPage;
-import com.dalbit.main.vo.MyRankVO;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -30,11 +29,11 @@ public class StarService {
         mystar.add(photoSvrUrl);
 
         if (memNo == null) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_요청회원_정보없음));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_요청회원_정보없음));
         } else if (mystar.size() > 0){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, mystar));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, mystar));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
         return result;
     }

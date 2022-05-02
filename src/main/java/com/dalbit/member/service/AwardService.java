@@ -1,6 +1,7 @@
 package com.dalbit.member.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MainStatus;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
@@ -56,11 +57,11 @@ public class AwardService {
             mailBoxList.put("dj2_memNo", DalbitUtil.getStringMap(resultMap, "dj2_memNo"));
             mailBoxList.put("dj3_memNo", DalbitUtil.getStringMap(resultMap, "dj3_memNo"));
             mailBoxList.put("list", outVoList);
-            result = gsonUtil.toJson(new JsonOutputVo(Status.어워드DJ조회_성공, mailBoxList));
-        } else if (procedureVo.getRet().equals(Status.어워드DJ조회_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.어워드DJ조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.어워드DJ조회_성공, mailBoxList));
+        } else if (procedureVo.getRet().equals(MainStatus.어워드DJ조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.어워드DJ조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.어워드DJ조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.어워드DJ조회_실패));
         }
         return result;
     }
@@ -74,18 +75,18 @@ public class AwardService {
         awardDao.callAwardVote(procedureVo);
 
         String result="";
-        if(Status.투표_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표_성공));
-        }else if(Status.투표_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표_회원아님));
-        }else if(Status.투표_이미함.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표_이미함));
-        }else if(Status.투표_10레벨미만.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표_10레벨미만));
-        }else if(Status.투표_동일번호.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표_동일번호));
+        if(MainStatus.투표_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표_성공));
+        }else if(MainStatus.투표_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표_회원아님));
+        }else if(MainStatus.투표_이미함.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표_이미함));
+        }else if(MainStatus.투표_10레벨미만.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표_10레벨미만));
+        }else if(MainStatus.투표_동일번호.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표_동일번호));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표_실패));
         }
         return result;
     }
@@ -108,11 +109,11 @@ public class AwardService {
                 }
             }
             mailBoxList.put("list", outVoList);
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표결과조회_성공, mailBoxList));
-        } else if (procedureVo.getRet().equals(Status.투표결과조회_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표결과조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표결과조회_성공, mailBoxList));
+        } else if (procedureVo.getRet().equals(MainStatus.투표결과조회_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표결과조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.투표결과조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.투표결과조회_실패));
         }
         return result;
     }
@@ -148,9 +149,9 @@ public class AwardService {
             honorList.put("joinDt", DalbitUtil.getUTCFormat(DalbitUtil.getStringMap(resultMap, "joinDate")));
             honorList.put("joinTs", DalbitUtil.getUTCTimeStamp(DalbitUtil.getStringMap(resultMap, "joinDate")));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.명예의전당_조회_성공, honorList));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.명예의전당_조회_성공, honorList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.명예의전당_조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.명예의전당_조회_실패));
         }
         return result;
     }

@@ -1,6 +1,6 @@
 package com.dalbit.security.handler;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.util.GsonUtil;
@@ -34,7 +34,7 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
 
             HashMap<String, Object> result = commonService.getJwtTokenInfo(request);
 
-            gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(Status.로그아웃성공, result.get("tokenVo")));
+            gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberStatus.로그아웃성공, result.get("tokenVo")));
 
         }catch (Exception e){
             log.error(e.getMessage());
