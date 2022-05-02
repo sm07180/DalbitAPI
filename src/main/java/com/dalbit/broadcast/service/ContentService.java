@@ -6,6 +6,7 @@ import com.dalbit.broadcast.vo.BroadcastNoticeAddVo;
 import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.RoomStoryListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.broadcast.vo.request.GiftVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
 import org.jose4j.lang.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -45,6 +47,8 @@ public class ContentService {
     MypageDao mypageDao;
     @Autowired
     RoomDao roomDao;
+    @Autowired
+    ActionService actionService;
 
     /**
      *  방송방 공지사항 조회(입장시)
@@ -242,11 +246,12 @@ public class ContentService {
 
 
     /**
-     * 방송방 사연 등록
+     * 방송방 사연 등록 (사연 플러스 아이템 추가)
+     * plus_yn : "y" 사연 아이템인 경우
      */
     public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request, boolean isOldVersion) {
         // -----------------------------사연 플러스 일감 -----------------------------
-        /* 네이티브 업데이트 안한 경우 => plusYn, djMemNo 값 세팅 */
+        /* 네이티브 업데이트 안한 경우 => 파라미터 세팅 (plusYn, djMemNo) */
         if(isOldVersion) {
             HashMap returnMap = new HashMap();
             returnMap.put("passTime", 0);
@@ -272,8 +277,27 @@ public class ContentService {
             returnMap.put("passTime", 0);
             return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_파라미터_에러, returnMap));
         }
+
+        /* 사연 플러스 선물 아이템 */
+        if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
+            try {
+                GiftVo giftVo = new GiftVo();
+                giftVo.setRoomNo(pRoomStoryAddVo.getRoom_no());
+                giftVo.setMemNo(pRoomStoryAddVo.getDj_mem_no());
+                giftVo.setItemNo( DalbitUtil.getProperty("item.code.story") );
+                giftVo.setItemCnt(1);
+                giftVo.setIsSecret("n");
+
+                /* 방송방 선물하기 호출 */
+                //todo "성공" 일때만 사연등록 시켜줘야 하지 않을까!!!!
+                return callBroadcastGift(giftVo, request);
+
+            } catch (Exception e) {
+                log.error("에러 발생 체크 !! => param: {} , Exception: {}", gsonUtil.toJson(pRoomStoryAddVo) ,e);
+            }
+        }
+
         // -------------------------------------------------------------------------
-        
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
@@ -435,5 +459,21 @@ public class ContentService {
             log.error("contentService.java / getRoomInfo Exception =>  param: {}, error: {}", gsonUtil.toJson(pRoomInfoViewVo), e);
             return null;
         }
+    }
+
+    /** 방송방 선물하기 호출 */
+    public String callBroadcastGift(GiftVo giftVo, HttpServletRequest request) {
+        P_RoomGiftVo apiData = new P_RoomGiftVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(giftVo.getRoomNo());
+        apiData.setGifted_mem_no(giftVo.getMemNo());
+        apiData.setItem_code(giftVo.getItemNo());
+        apiData.setItem_cnt(giftVo.getItemCnt());
+        apiData.setSecret("1".equals(giftVo.getIsSecret()) || "TRUE".equals(giftVo.getIsSecret().toUpperCase()) ? "1" : "0");
+        apiData.setTtsText(giftVo.getTtsText());
+        apiData.setActorId(giftVo.getActorId());
+        apiData.setTtsYn(giftVo.getTtsYn());
+
+        return actionService.callBroadCastRoomGift(apiData, request);
     }
 }
