@@ -124,7 +124,7 @@ public class MainServiceV2 {
         }
 
         /* 상단 배너 */
-        mainMap.put("topBanner", getTopSlide(recommendVoList, bannerList, deviceVo, startUrl, photoSvrUrl));
+        mainMap.put("topBanner", getMainSwiper(request));
 
         /* 현재 방송중인 내가 등록한 스타 */
         mainMap.put("myStar", getMyStar(starVoList, isLogin, photoSvrUrl));
@@ -427,7 +427,16 @@ public class MainServiceV2 {
         return result;
     }
 
-    public String getMainSwiper(HttpServletRequest request){
+    /****************************************************************************
+     [우선순위]
+     1. 관리자 배너
+     2. 스타 DJ 라이브 방송
+     3. DJ 랭킹 일간 1등~10등 (순차적으로)
+     4. 동시 시청자 15명 이상 시 (높은 순으로)
+     5. 좋아요점수(부스트 포함) 100점 이상 시 (높은순으로)
+     6. 6번까지 하나도 없을 시 실시간 라이브 순위 높은순으로 2개 (최소 조건)
+     ****************************************************************************/
+    public ArrayList<MainSwiperVO> getMainSwiper(HttpServletRequest request){
         String memNo = MemberVo.getMyMemNo(request);
 
         String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
@@ -446,32 +455,36 @@ public class MainServiceV2 {
 
         List<MainSwiperVO> swiperList = new ArrayList<>();
 
+        // 관리자 배너
         List<MainSwiperVO> adminBanner = mainPage.getAdminBanner(bannerMap);
         for (MainSwiperVO vo: adminBanner) {
             vo.setImage_profile(vo.getBannerUrl());
         }
-
         swiperList.addAll(adminBanner);
-        cnt = swiperList.size();
 
+        // 스타 DJ 라이브 방송
         swiperList.addAll(mainPage.getMainStarList(bannerMap));
         cnt = swiperList.size();
 
+        // DJ 랭킹 일간 1등~10등 (순차적으로)
         if (cnt < 10){
             swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
             cnt = swiperList.size();
         }
 
+        // 동시 시청자 15명 이상 시 (높은 순으로)
         if (cnt < 10){
             swiperList.addAll(mainPage.getTopViewList(bannerMap));
             cnt = swiperList.size();
         }
 
+        // 좋아요점수(부스트 포함) 100점 이상 시 (높은순으로)
         if (cnt < 10){
             swiperList.addAll(mainPage.getTopLikeList(bannerMap));
             cnt = swiperList.size();
         }
 
+        // 하나도 없을 시 실시간 라이브 순위 높은순으로 2개
         if (cnt < 3){
             swiperList.addAll(mainPage.getTopLiveList(bannerMap));
         }
@@ -481,8 +494,7 @@ public class MainServiceV2 {
         }
 
         ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
-        resultMap.put("swiperList", swiperList2);
-        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
+        return swiperList2;
     }
 
     //중복 제거 함수
