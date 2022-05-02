@@ -209,7 +209,7 @@ public class ProfileService {
             /* 컨텐츠 DJ 확인용 */
             boolean isConDj = false;
             if(isProfile) {
-                isConDj = isContents(pProfileInfo.getMem_no());
+                isConDj = isContents(pProfileInfo.getTarget_mem_no());
             }
             profileInfoOutVo.setIsConDj(isConDj);
 
