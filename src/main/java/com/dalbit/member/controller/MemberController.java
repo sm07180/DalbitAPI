@@ -1,19 +1,18 @@
 package com.dalbit.member.controller;
 
 import com.dalbit.common.code.Code;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.AdbrixService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
-import com.dalbit.exception.CustomUsernameNotFoundException;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.main.vo.procedure.P_SpecialHistoryVo;
 import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.dao.MemberDao;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.ProfileInfoOutVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.*;
@@ -37,7 +36,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -80,7 +78,7 @@ public class MemberController {
             boolean isLogin = false;
             P_LoginVo pLoginVo = new P_LoginVo("a", deviceVo.getOs(), deviceVo.getDeviceUuid(), deviceVo.getDeviceToken(), deviceVo.getAppVersion(), deviceVo.getAdId(), locationVo == null ? "" : locationVo.getRegionName(), deviceVo.getIp(), browser);
             ProcedureOutputVo loginProcedureVo = memberService.callMemberLogin(pLoginVo);
-            if (loginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
+            if (loginProcedureVo.getRet().equals(MemberStatus.로그인성공.getMessageCode())) {
                 HashMap map = new Gson().fromJson(loginProcedureVo.getExt(), HashMap.class);
                 String memNo = DalbitUtil.getStringMap(map, "mem_no");
 
@@ -88,27 +86,27 @@ public class MemberController {
                 memberService.refreshAnonymousSecuritySession(memNo);
 
                 log.info("#### OverStack ##### tokenVo: {}", tokenVo);
-                return gsonUtil.toJson(new JsonOutputVo(Status.조회, tokenVo));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, tokenVo));
             }else{
-                return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_파라메터이상));
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그인실패_파라메터이상));
             }
         }
 
-        if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_회원가입필요));
+        if(((Status)result.get("Status")).getMessageCode().equals(MemberStatus.로그인실패_회원가입필요.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그인실패_회원가입필요));
 
-        }else if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_패스워드틀림));
+        }else if(((Status)result.get("Status")).getMessageCode().equals(MemberStatus.로그인실패_패스워드틀림.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그인실패_패스워드틀림));
 
-        }else if(((Status)result.get("Status")).getMessageCode().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_파라메터이상));
+        }else if(((Status)result.get("Status")).getMessageCode().equals(MemberStatus.로그인실패_파라메터이상.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그인실패_파라메터이상));
         }
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result.get("tokenVo")));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result.get("tokenVo")));
     }
 
     @GetMapping("/token/short")
     public String tokenShort(HttpServletRequest request) throws GlobalException{
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, jwtUtil.getTokenVoFromJwt(jwtUtil.generateToken(MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), 1000 * 60 * 5))));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, jwtUtil.getTokenVoFromJwt(jwtUtil.generateToken(MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), 1000 * 60 * 5))));
     }
 
     /**
@@ -166,7 +164,7 @@ public class MemberController {
         Cookie smsCookie = cookieUtil.getCookie("smsCookie");
         String s_phoneNo = "";
         if (DalbitUtil.isEmpty(smsCookie) && "p".equals(signUpVo.getMemType())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증번호요청_유효하지않은번호));
         }
 
         if("p".equals(signUpVo.getMemType())) {
@@ -177,20 +175,20 @@ public class MemberController {
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(memId)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.부적절한문자열));
         }
 
         //어드민 block 상태 체크
         int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo));
         if(0 < adminBlockCnt){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인실패_운영자차단));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.로그인실패_운영자차단));
         }
 
         if(!"p".equals(memType) || ("p".equals(memType) && s_phoneNo.equals(memId))){
             ProcedureVo procedureVo = memberService.signup(joinVo, request);
             //휴대폰 인증했던 번호와 일치여부 확인
 
-            if(Status.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
+            if(MemberStatus.회원가입성공.getMessageCode().equals(procedureVo.getRet())){
                 //로그인 처리
                 P_LoginVo pLoginVo = new P_LoginVo(memType, memId, memPwd, os, deviceId, deviceToken, appVer, appAdId, locationVo.getRegionName(), ip, browser, appBuild);
                 ProcedureOutputVo LoginProcedureVo = memberService.callMemberLogin(pLoginVo);
@@ -219,25 +217,25 @@ public class MemberController {
                 resultMap.put("adbrixData", adbrixData);
 
                 //result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, new TokenVo(jwtToken, memNo, true)));
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입성공, resultMap));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원가입성공, resultMap));
                 try {
                     response.addCookie(CookieUtil.deleteCookie("smsCookie", "", "/", 0));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-            }else if (Status.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_중복가입));
-            }else if (Status.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_닉네임중복));
-            }else if (Status.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
-            }else if (Status.회원가입실패_탈퇴회원.getMessageCode().equals(procedureVo.getRet())){
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입실패_탈퇴회원));
+            }else if (MemberStatus.회원가입실패_중복가입.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원가입실패_중복가입));
+            }else if (MemberStatus.회원가입실패_닉네임중복.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원가입실패_닉네임중복));
+            }else if (MemberStatus.회원가입실패_파라메터오류.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.파라미터오류));
+            }else if (MemberStatus.회원가입실패_탈퇴회원.getMessageCode().equals(procedureVo.getRet())){
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원가입실패_탈퇴회원));
             }else{
-                result = gsonUtil.toJson(new JsonOutputVo(Status.회원가입오류));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원가입오류));
             }
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.인증번호요청_유효하지않은번호));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.인증번호요청_유효하지않은번호));
         }
 
         return result;

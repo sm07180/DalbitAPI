@@ -23,7 +23,7 @@ public class ReplicationRoutingDataSource extends AbstractRoutingDataSource {
 
         }
 
-        dataSourceType = dataSourceType.equals("") ? (TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? "slave" : "master") : dataSourceType;
+        dataSourceType = dataSourceType.equals("") ? (TransactionSynchronizationManager.isCurrentTransactionReadOnly() ? "master" : "master") : dataSourceType;
         log.info("current dataSourceType : {}", dataSourceType);
         return dataSourceType;
     }

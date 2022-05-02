@@ -1,11 +1,9 @@
 package com.dalbit.event.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.service.MoonLandService;
 import com.dalbit.common.vo.ResVO;
-import com.dalbit.event.vo.MoonLandInfoVO;
-import com.dalbit.event.vo.MoonLandMissionSelVO;
 import com.dalbit.event.vo.MoonLandScoreInsVO;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.GsonUtil;
@@ -17,12 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -78,17 +71,17 @@ public class MoonLandController {
             if(!StringUtils.equals(null, roomNo) && MemberVo.getMyMemNo(request) != null) {
                 Map<String, Object> result = moonLandService.getMoonLandMissionData(roomNo, request);
                 if(result != null){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_성공, result));    
+                    return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_팝업조회_성공, result));
                 } else {    //db 에러로 list가 null 인 경우
-                    return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
+                    return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_팝업조회_실패));
                 }
             } else {
                 log.error("MoonLandController getMoonLandMissionData param is null roomNo: {}, memNo: {}", roomNo, MemberVo.getMyMemNo(request));
-                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_팝업조회_실패));
             }
         } catch (Exception e) {
             log.error("MoonLandController Exception getMoonLandPopUpData => {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.달나라_팝업조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_팝업조회_실패));
         }
     }
 
@@ -106,15 +99,15 @@ public class MoonLandController {
             Integer result = moonLandService.setMoonLandScoreIns(memNo, paramVO.getType(), paramVO.getScore(), roomNo, paramVO.getCoinKey() );
 
             if(result == 1) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_성공, result));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_점수등록_성공, result));
             } else {
                 log.error("MoonLandController.java / setMoonLandScoreIns DB result fail => resultCode: {}, memNo: {}, roomNo: {}, paramVo: {}",
                         result, memNo, roomNo, gsonUtil.toJson(paramVO));
-                return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_점수등록_실패));
             }
         } catch (Exception e) {
             log.error("MoonLandController / setMoonLandScore => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.달나라_점수등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_점수등록_실패));
         }
     }
 

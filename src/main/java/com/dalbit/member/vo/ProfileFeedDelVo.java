@@ -9,12 +9,12 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class ProfileFeedDelVo {
     @NotNull(message = "{\"ko_KR\" : \"공지번호를\"}")
-    private Long noticeIdx;             // 글번호
+    private Long noticeNo;             // 글번호
     @NotNull(message = "{\"ko_KR\" : \"유저명을\"}")
     private String delChrgrName;        // 삭제한 유저명
 
-    public ProfileFeedDelVo(Long noticeIdx, String delChrgrName) {
-        this.noticeIdx = noticeIdx;
+    public ProfileFeedDelVo(Long noticeNo, String delChrgrName) {
+        this.noticeNo = noticeNo;
         this.delChrgrName = delChrgrName;
     }
 }

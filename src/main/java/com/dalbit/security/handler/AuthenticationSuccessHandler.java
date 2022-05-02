@@ -1,6 +1,6 @@
 package com.dalbit.security.handler;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.TokenVo;
@@ -42,7 +42,7 @@ public class AuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccess
 
         String jwtToken = jwtUtil.generateToken(MemberVo.getMyMemNo(), true);
 
-        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberVo.isAdmin() ? Status.관리자로그인성공 : Status.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(), true, MemberVo.isAdmin())));
+        gsonUtil.responseJsonOutputVoToJson(response, new JsonOutputVo(MemberVo.isAdmin() ? MemberStatus.관리자로그인성공 : MemberStatus.로그인성공, new TokenVo(jwtToken, MemberVo.getMyMemNo(), true, MemberVo.isAdmin())));
     }
 
     /**

@@ -30,4 +30,5 @@ public class GiftVo {
 
     private String ttsText; // tts 내용
     private String actorId;    // tts 배우 id
+    private String ttsYn; // tts 아이템 yn
 }

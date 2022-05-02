@@ -13,5 +13,5 @@ public class GganbuMemBadgeUpdVo {
     }
     private String gganbuNo;
     private String memNo;
-    private String badgeSlct = "p"; // 뱃지구분 [p:주머니, r:깐부신청]
+    private String badgeSlct = "p"; // 배지구분 [p:주머니, r:깐부신청]
 }

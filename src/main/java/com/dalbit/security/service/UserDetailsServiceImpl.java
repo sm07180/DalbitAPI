@@ -1,7 +1,8 @@
 package com.dalbit.security.service;
 
 import com.dalbit.admin.service.AdminService;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.vo.BlockVo;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.ProcedureOutputVo;
@@ -63,7 +64,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         HashMap map = DalbitUtil.getParameterMap(request);
 
         if(DalbitUtil.isEmpty(map.get("memId"))) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상);
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_파라메터이상);
         }
 
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
@@ -78,7 +79,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         HashMap map = DalbitUtil.getParameterMap(request);
 
         if("p".equals(DalbitUtil.getStringMap(map, "memType")) && DalbitUtil.isEmpty(DalbitUtil.getStringMap(map, "memPwd"))){
-            throw new CustomUsernameNotFoundException(Status.파라미터오류);
+            throw new CustomUsernameNotFoundException(CommonStatus.파라미터오류);
         }
 
         DeviceVo deviceVo = new DeviceVo(request);
@@ -86,7 +87,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         int adminBlockCnt = memberDao.selectAdminBlock(new BlockVo(deviceVo));
         if(0 < adminBlockCnt){
-            throw new CustomUsernameNotFoundException(Status.로그인실패_운영자차단);
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_운영자차단);
         }
 
 
@@ -112,20 +113,20 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         HashMap loginExt = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
         String memNo = DalbitUtil.getStringMap(loginExt, "mem_no");
 
-        if(LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
+        if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_회원가입필요.getMessageCode())) {
             if("p".equals(DalbitUtil.getStringMap(map, "memType"))){
-                throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+                throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_패스워드틀림);
             }else{
-                throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+                throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_회원가입필요);
             }
 
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_패스워드틀림.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_패스워드틀림);
 
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_파라메터이상);
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_파라메터이상.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_파라메터이상);
 
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_블럭상태.getMessageCode())) {
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_블럭상태.getMessageCode())) {
 
             HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
             String blockDay = DalbitUtil.getStringMap(resultMap, "block_day");
@@ -146,12 +147,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
             }
 
-            throw new CustomUsernameNotFoundException(Status.로그인실패_블럭상태, returnMap);
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_블럭상태, returnMap);
 
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_탈퇴.getMessageCode())) {
-            throw new CustomUsernameNotFoundException(Status.로그인실패_탈퇴);
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_탈퇴.getMessageCode())) {
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_탈퇴);
 
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_영구정지.getMessageCode())) {
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_영구정지.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
 
             HashMap returnMap = new HashMap();
@@ -165,19 +166,19 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 returnMap.put("opMsg", memberReportInfoVo.getOp_msg());
             }
 
-            throw new CustomUsernameNotFoundException(Status.로그인실패_영구정지, returnMap);
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_청취방존재.getMessageCode())){
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_영구정지, returnMap);
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_청취방존재.getMessageCode())){
             HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
 
-            throw new CustomUsernameNotFoundException(Status.로그인실패_청취방존재, returnMap);
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인실패_휴면상태.getMessageCode())){
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_청취방존재, returnMap);
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_휴면상태.getMessageCode())){
             HashMap resultMap = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
             HashMap returnMap = new HashMap();
             returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
-            throw new CustomUsernameNotFoundException(Status.로그인실패_휴면상태, returnMap);
-        }else if(LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())){
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_휴면상태, returnMap);
+        }else if(LoginProcedureVo.getRet().equals(MemberStatus.로그인성공.getMessageCode())){
             MemberVo paramMemberVo = new MemberVo();
             paramMemberVo.setMemId(DalbitUtil.getStringMap(map, "memId"));
             paramMemberVo.setMemSlct(DalbitUtil.getStringMap(map, "memType"));
@@ -185,14 +186,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, memNo));
 
             MemberVo memberVo = null;
-            if(profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+            if(profileProcedureVo.getRet().equals(MemberStatus.회원정보보기_성공.getMessageCode())) {
 
                 P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
                 memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, memNo, memNo, null));
                 memberVo.setMemSlct(DalbitUtil.getStringMap(map, "memType"));
                 memberVo.setMemPasswd(DalbitUtil.getStringMap(map, "memPwd"));
             }else{
-                throw new CustomUsernameNotFoundException(Status.로그인오류);
+                throw new CustomUsernameNotFoundException(MemberStatus.로그인오류);
             }
 
             //todo - 프로시저에 관리자 구분 추가되어야함. 임시로 특정 아이디에 관리자 권한 부여
@@ -209,7 +210,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return securityUserVo;
 
         }else{
-            throw new CustomUsernameNotFoundException(Status.로그인오류);
+            throw new CustomUsernameNotFoundException(MemberStatus.로그인오류);
         }
     }
 

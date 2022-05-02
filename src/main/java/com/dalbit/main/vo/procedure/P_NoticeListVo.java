@@ -22,6 +22,7 @@ public class P_NoticeListVo extends P_ApiVo {
         setSlctType(noticeListVo.getNoticeType());
         setPageNo(pageNo);
         setPageCnt(pageCnt);
+        setMem_no(MemberVo.getMyMemNo(request));
 
         DeviceVo deviceVo = new DeviceVo(request);
         setOs(deviceVo.getOs());
@@ -54,6 +55,7 @@ public class P_NoticeListVo extends P_ApiVo {
     private int gender;
     private int pageNo;
     private int pageCnt;
+    private String mem_no;
 
     /* Output */
     private int noticeIdx;
@@ -62,4 +64,5 @@ public class P_NoticeListVo extends P_ApiVo {
     private int topFix;
     private Date writeDate;
     private int isNew;
+    private String read_yn;
 }

@@ -1,7 +1,7 @@
 package com.dalbit.security.filter;
 
 import com.dalbit.common.code.ErrorStatus;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.CustomUsernameNotFoundException;
@@ -168,7 +168,7 @@ public class SsoAuthenticationFilter implements Filter {
                     ProcedureVo profileProcedureVo = profileService.getProfile(new P_ProfileInfoVo(1, tokenVo.getMemNo()));
 
                     MemberVo memberVo = null;
-                    if (profileProcedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+                    if (profileProcedureVo.getRet().equals(MemberStatus.회원정보보기_성공.getMessageCode())) {
 
                         P_ProfileInfoVo profileInfo = new Gson().fromJson(profileProcedureVo.getExt(), P_ProfileInfoVo.class);
                         memberVo = new MemberVo(new ProfileInfoOutVo(profileInfo, tokenVo.getMemNo(), tokenVo.getMemNo(), null));
@@ -177,7 +177,7 @@ public class SsoAuthenticationFilter implements Filter {
 
                         userDetails = securityUserVo;
                     } else {
-                        new CustomUsernameNotFoundException(Status.로그인실패_패스워드틀림);
+                        new CustomUsernameNotFoundException(MemberStatus.로그인실패_패스워드틀림);
                     }
                 } else {
                     MemberVo memberVo = new MemberVo();

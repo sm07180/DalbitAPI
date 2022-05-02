@@ -4,8 +4,7 @@ import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.service.AdminService;
 import com.dalbit.broadcast.vo.procedure.P_RoomJoinTokenVo;
 import com.dalbit.common.annotation.NoLogging;
-import com.dalbit.common.code.Code;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.*;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.proc.Common;
 import com.dalbit.common.vo.*;
@@ -99,15 +98,15 @@ public class CommonService {
 
         String tokenFailData = "";
 
-        if (procedureVo.getRet().equals(Status.방송참여토큰_해당방이없음.getMessageCode())) {
-            throw new GlobalException(Status.방송참여토큰_해당방이없음, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        } else if (procedureVo.getRet().equals(Status.방송참여토큰_방장이없음.getMessageCode())) {
-            throw new GlobalException(Status.방송참여토큰_방장이없음, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
-        } else if(procedureVo.getRet().equals(Status.방송참여토큰발급_실패.getMessageCode())){
-            throw new GlobalException(Status.방송참여토큰발급_실패, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        if (procedureVo.getRet().equals(BroadcastStatus.방송참여토큰_해당방이없음.getMessageCode())) {
+            throw new GlobalException(BroadcastStatus.방송참여토큰_해당방이없음, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        } else if (procedureVo.getRet().equals(BroadcastStatus.방송참여토큰_방장이없음.getMessageCode())) {
+            throw new GlobalException(BroadcastStatus.방송참여토큰_방장이없음, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
+        } else if(procedureVo.getRet().equals(BroadcastStatus.방송참여토큰발급_실패.getMessageCode())){
+            throw new GlobalException(BroadcastStatus.방송참여토큰발급_실패, procedureVo.getData(), Thread.currentThread().getStackTrace()[1].getMethodName());
         }
 
-        boolean isTokenSuccess = procedureVo.getRet().equals(Status.방송참여토큰발급.getMessageCode());
+        boolean isTokenSuccess = procedureVo.getRet().equals(BroadcastStatus.방송참여토큰발급.getMessageCode());
         resultMap.put("isTokenSuccess", isTokenSuccess);
         resultMap.put("tokenFailData", tokenFailData);
 
@@ -168,6 +167,7 @@ public class CommonService {
         pItemVo.setVisibilityDirects((Arrays.stream(ITEM_DIRECT_CODE).filter(s->!s.equals(mainDirectCode))).toArray(String[]::new));
 
         List<ItemVo> items = commonDao.selectItemList(pItemVo);
+        List<ItemVo> newItems = new ArrayList<>();
         HashMap itemIsNew = new HashMap();
         itemIsNew.put("normal", false);
         itemIsNew.put("combo", false);
@@ -176,15 +176,20 @@ public class CommonService {
 
         if(!DalbitUtil.isEmpty(items)){
             for(int i = 0; i < items.size(); i++){
-                if(deviceVo.getOs() == 3){
-                    items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
-                }
-                if(items.get(i).isNew()){
-                    itemIsNew.put(items.get(i).getCategory(), true);
+                // 시그니처 아이템 제외
+                if (!StringUtils.equals(items.get(i).getCategory(), "signature")) {
+                    if (deviceVo.getOs() == 3) {
+                        items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
+                    }
+                    if (items.get(i).isNew()) {
+                        itemIsNew.put(items.get(i).getCategory(), true);
+                    }
+
+                    newItems.add(items.get(i));
                 }
             }
         }
-        resultMap.put("items", items);
+        resultMap.put("items", newItems);
         //pItemVo.setItem_slct(2);
 
         StringBuffer sbf = new StringBuffer("'");
@@ -404,7 +409,7 @@ public class CommonService {
             }
             if (isLogin) {
                 tokenVo = new TokenVo(jwtUtil.generateToken(dbSelectMemNo, isLogin), dbSelectMemNo, isLogin);
-                resultStatus = Status.로그인성공;
+                resultStatus = MemberStatus.로그인성공;
 
             } else {
                 //locationVo = DalbitUtil.getLocation(request);
@@ -419,31 +424,31 @@ public class CommonService {
                 }*/
                 log.debug("로그인 결과 : {}", new Gson().toJson(LoginProcedureVo));
                 if (DalbitUtil.isEmpty(LoginProcedureVo)) {
-                    throw new CustomUsernameNotFoundException(Status.로그인실패_회원가입필요);
+                    throw new CustomUsernameNotFoundException(MemberStatus.로그인실패_회원가입필요);
                 }
-                if (LoginProcedureVo.getRet().equals(Status.로그인실패_회원가입필요.getMessageCode())) {
-                    resultStatus = Status.로그인실패_회원가입필요;
-                } else if (LoginProcedureVo.getRet().equals(Status.로그인실패_패스워드틀림.getMessageCode())) {
-                    resultStatus = Status.로그인실패_패스워드틀림;
-                } else if (LoginProcedureVo.getRet().equals(Status.로그인실패_파라메터이상.getMessageCode())) {
-                    resultStatus = Status.로그인실패_파라메터이상;
-                } else if (LoginProcedureVo.getRet().equals(Status.로그인성공.getMessageCode())) {
+                if (LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_회원가입필요.getMessageCode())) {
+                    resultStatus = MemberStatus.로그인실패_회원가입필요;
+                } else if (LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_패스워드틀림.getMessageCode())) {
+                    resultStatus = MemberStatus.로그인실패_패스워드틀림;
+                } else if (LoginProcedureVo.getRet().equals(MemberStatus.로그인실패_파라메터이상.getMessageCode())) {
+                    resultStatus = MemberStatus.로그인실패_파라메터이상;
+                } else if (LoginProcedureVo.getRet().equals(MemberStatus.로그인성공.getMessageCode())) {
                     HashMap map = new Gson().fromJson(LoginProcedureVo.getExt(), HashMap.class);
                     String memNo = DalbitUtil.getStringMap(map, "mem_no");
                     if (DalbitUtil.isEmpty(memNo)) {
-                        resultStatus = Status.로그인실패_파라메터이상;
+                        resultStatus = MemberStatus.로그인실패_파라메터이상;
                     } else {
-                        resultStatus = Status.로그인성공;
+                        resultStatus = MemberStatus.로그인성공;
                         tokenVo = new TokenVo(jwtUtil.generateToken(memNo, isLogin), memNo, isLogin);
                         result.put("tokenVo", tokenVo);
                         memberService.refreshAnonymousSecuritySession(memNo);
                     }
                 } else {
-                    resultStatus = Status.로그인오류;
+                    resultStatus = MemberStatus.로그인오류;
                 }
             }
         }else{
-            resultStatus = Status.로그인성공;
+            resultStatus = MemberStatus.로그인성공;
         }
 
         if ((!DalbitUtil.isEmpty(tokenVo) && !tokenVo.getAuthToken().equals(headerToken)) || "Y".equals(deviceVo.getIsFirst())) {
@@ -621,16 +626,16 @@ public class CommonService {
             fanRankList.put("kingGender", DalbitUtil.getStringMap(resultMap, "king_memSex"));
             fanRankList.put("kingAge", DalbitUtil.getIntMap(resultMap, "m_king_age"));
             fanRankList.put("kingProfImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "m_king_profileImage"), DalbitUtil.getStringMap(resultMap, "king_memSex"), DalbitUtil.getProperty("server.photo.url")));
-            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_성공.getMessageCode());
+            fanRankList.put("msgCode", BroadcastStatus.방송방_팬랭킹조회_성공.getMessageCode());
 
-        } else if (Status.방송방_팬랭킹조회_팬없음.getMessageCode().equals(procedureOutputVo.getRet())) {
-            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_성공.getMessageCode());
-        } else if (Status.방송방_팬랭킹조회_방번호없음.getMessageCode().equals(procedureOutputVo.getRet())) {
-            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_방번호없음.getMessageCode());
-        } else if (Status.방송방_팬랭킹조회_방종료됨.getMessageCode().equals(procedureOutputVo.getRet())) {
-            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_방종료됨.getMessageCode());
+        } else if (BroadcastStatus.방송방_팬랭킹조회_팬없음.getMessageCode().equals(procedureOutputVo.getRet())) {
+            fanRankList.put("msgCode", BroadcastStatus.방송방_팬랭킹조회_성공.getMessageCode());
+        } else if (BroadcastStatus.방송방_팬랭킹조회_방번호없음.getMessageCode().equals(procedureOutputVo.getRet())) {
+            fanRankList.put("msgCode", BroadcastStatus.방송방_팬랭킹조회_방번호없음.getMessageCode());
+        } else if (BroadcastStatus.방송방_팬랭킹조회_방종료됨.getMessageCode().equals(procedureOutputVo.getRet())) {
+            fanRankList.put("msgCode", BroadcastStatus.방송방_팬랭킹조회_방종료됨.getMessageCode());
         } else {
-            fanRankList.put("msgCode", Status.방송방_팬랭킹조회_실패.getMessageCode());
+            fanRankList.put("msgCode", BroadcastStatus.방송방_팬랭킹조회_실패.getMessageCode());
         }
 
         return fanRankList;
@@ -734,18 +739,18 @@ public class CommonService {
         procedureVo.setData(pSelfAuthVo);
 
         String result ="";
-        if(procedureVo.getRet().equals(Status.본인인증성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(MemberStatus.본인인증성공.getMessageCode())) {
             pSelfAuthVo.setComment("본인인증 완료");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증성공, procedureVo.getData()));
-        } else if(procedureVo.getRet().equals(Status.본인인증_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증성공, procedureVo.getData()));
+        } else if(procedureVo.getRet().equals(MemberStatus.본인인증_회원아님.getMessageCode())) {
             pSelfAuthVo.setComment("본인인증 회원 오류");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_회원아님));
-        } else if(procedureVo.getRet().equals(Status.본인인증_중복.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증_회원아님));
+        } else if(procedureVo.getRet().equals(MemberStatus.본인인증_중복.getMessageCode())) {
             pSelfAuthVo.setComment("본인인증 중복");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증_중복));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증_중복));
         } else {
             pSelfAuthVo.setComment("본인인증 실패");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증저장실패, procedureVo.getData()));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증저장실패, procedureVo.getData()));
         }
         //개인정보 변경내역 저장
         try {
@@ -767,7 +772,7 @@ public class CommonService {
         HashMap returnMap = new HashMap();
 
         String result;
-        if(procedureVo.getRet().equals(Status.본인인증여부_확인.getMessageCode())) {
+        if(procedureVo.getRet().equals(MemberStatus.본인인증여부_확인.getMessageCode())) {
             //생년월일 조회 후 미성년자 여부 체크
             AdultCheckVo adultCheckVo = commonDao.getMembirth(pSelfAuthVo.getMem_no());
             int birthYear = Integer.parseInt(adultCheckVo.getMem_birth_year());
@@ -788,13 +793,13 @@ public class CommonService {
             returnMap.put("isSimplePay", DalbitUtil.getIntMap(resultMap, "simplePayCnt") > 0);
             procedureVo.setData(returnMap);
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_확인, procedureVo.getData()));
-        } else if(procedureVo.getRet().equals(Status.본인인증여부_안됨.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_안됨));
-        } else if(procedureVo.getRet().equals(Status.본인인증여부_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증여부_확인, procedureVo.getData()));
+        } else if(procedureVo.getRet().equals(MemberStatus.본인인증여부_안됨.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증여부_안됨));
+        } else if(procedureVo.getRet().equals(MemberStatus.본인인증여부_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증여부_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증여부_실패));
         }
         return result;
     }
@@ -821,10 +826,10 @@ public class CommonService {
         commonDao.saveErrorLog(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.에러로그저장_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_성공));
+        if(procedureVo.getRet().equals(CommonStatus.에러로그저장_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_성공));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.에러로그저장_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_실패));
         }
         return result;
     }
@@ -841,14 +846,14 @@ public class CommonService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
 
         String result;
-        if(procedureVo.getRet().equals(Status.푸시성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시성공));
-        } else if(procedureVo.getRet().equals(Status.푸시_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시_회원아님));
-        } else if(procedureVo.getRet().equals(Status.푸시_디바이스토큰없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시_디바이스토큰없음));
+        if(procedureVo.getRet().equals(CommonStatus.푸시성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시성공));
+        } else if(procedureVo.getRet().equals(CommonStatus.푸시_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시_회원아님));
+        } else if(procedureVo.getRet().equals(CommonStatus.푸시_디바이스토큰없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시_디바이스토큰없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시실패));
         }
         return result;
 
@@ -865,12 +870,12 @@ public class CommonService {
         log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
 
         String result;
-        if(procedureVo.getRet().equals(Status.푸시클릭성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시클릭성공));
-        } else if(procedureVo.getRet().equals(Status.푸시클릭_푸시번호없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시클릭_푸시번호없음));
+        if(procedureVo.getRet().equals(CommonStatus.푸시클릭성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시클릭성공));
+        } else if(procedureVo.getRet().equals(CommonStatus.푸시클릭_푸시번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시클릭_푸시번호없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.푸시클릭_에러));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.푸시클릭_에러));
         }
         return result;
 
@@ -960,13 +965,13 @@ public class CommonService {
 
         log.debug("Connect Google Login end : {}", result);
         if("success".equals(result)) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_성공, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.구글로그인_성공, resultMap));
         }else if("invalid token".equals(result)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_토큰인증실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.구글로그인_토큰인증실패));
         }else if("blank token".equals(result)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_토큰없음));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.구글로그인_토큰없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.구글로그인_오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.구글로그인_오류));
 
         }
         return result;
@@ -1061,13 +1066,13 @@ public class CommonService {
         setStateSession(request);
 
         if("success".equals(result)) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_성공, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.페이스북로그인_성공, resultMap));
         }else if("invalid token".equals(result)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_토큰인증실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.페이스북로그인_토큰인증실패));
         }else if("blank token".equals(result)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_토큰없음));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.페이스북로그인_토큰없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.페이스북로그인_오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.페이스북로그인_오류));
         }
 
         return result;
@@ -1077,7 +1082,7 @@ public class CommonService {
         String result = "";
         String access_token = request.getParameter("accessToken");
         if(DalbitUtil.isEmpty(access_token)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.소셜로그인_오류));
         }else {
             StringBuffer urlString = new StringBuffer();
             urlString.append("https://openapi.naver.com/v1/nid/me");
@@ -1118,12 +1123,12 @@ public class CommonService {
                             resultMap.put("profImgUrl", DalbitUtil.getStringMap(naverInfo, "profile_image"));
                         }
 
-                        result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_성공, resultMap));
+                        result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.소셜로그인_성공, resultMap));
                     }
                 }
             }catch(Exception e) {
                 log.error("============= naver connected error : {}", e.getMessage());
-                result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.소셜로그인_오류));
             }
         }
 
@@ -1136,7 +1141,7 @@ public class CommonService {
         String result = "";
         String access_token = request.getParameter("accessToken");
         if(DalbitUtil.isEmpty(access_token)){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.소셜로그인_오류));
         }else {
             StringBuffer urlString = new StringBuffer();
             urlString.append("https://kapi.kakao.com/v2/user/me");
@@ -1175,14 +1180,14 @@ public class CommonService {
                                     resultMap.put("profImgUrl", DalbitUtil.getStringMap(kakaoProfInfo, "profile_image_url"));
                                 }
 
-                                result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_성공, resultMap));
+                                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.소셜로그인_성공, resultMap));
                             }
                         }
                     }
                 }
             }catch(Exception e) {
                 log.error("============= kakao connected error : {}", e.getMessage());
-                result = gsonUtil.toJson(new JsonOutputVo(Status.소셜로그인_오류));
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.소셜로그인_오류));
             }
         }
 
@@ -1220,10 +1225,10 @@ public class CommonService {
         String result ="";
         if("0".equals(procedureVo.getRet())) {
             pSelfAuthVo.setComment("법정대리인 인증 완료");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증성공, pSelfAuthVo));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.보호자인증성공, pSelfAuthVo));
         } else {
             pSelfAuthVo.setComment("법정대리인 인증 실패");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.보호자인증실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.보호자인증실패));
         }
         //개인정보 변경내역 저장
         try {
@@ -1280,7 +1285,7 @@ public class CommonService {
 
         HashMap returnMap  = new HashMap<>();
         String result;
-        if(Status.클립등록_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(ClipStatus.클립등록_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
             returnMap.put("type", DalbitUtil.getIntMap(resultMap, "type"));
@@ -1293,11 +1298,11 @@ public class CommonService {
             } else {
                 returnMap.put("longTermDate", "");
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_성공, returnMap));
-        }else if(Status.클립등록_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_성공, returnMap));
+        }else if(ClipStatus.클립등록_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면탈퇴_일자조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_실패));
         }
 
         return result;
@@ -1310,15 +1315,15 @@ public class CommonService {
         String result = "";
         Integer procResult = common.sleepMemChkUpd(memNo, memPhone);
         if(procResult == 1) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면회원_본인인증_체크_성공));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면회원_본인인증_체크_성공));
         }else if(procResult == -1) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면회원_본인인증_결과없음));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면회원_본인인증_결과없음));
         }else if(procResult == -2) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.휴면회원_본인인증_휴면상태아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면회원_본인인증_휴면상태아님));
         }else if(procResult == -3) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.본인인증여부_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.본인인증여부_회원아님));
         }else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류));
         }
 
         return result;
@@ -1353,6 +1358,12 @@ public class CommonService {
     public ResVO parentsAuthIns(ParentCertInputVo agreeInfo) {
         ResVO result = new ResVO();
         try {
+            String memNo = agreeInfo.getMemNo();
+            ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(memNo);
+            String email = parentsAuthSel.getParents_mem_email();
+            agreeInfo.setPMemEmail(email);
+            agreeInfo.setAgreementDate(parentsAuthSel.getAgreement_date());
+
             Integer insResult = common.parentsAuthIns(agreeInfo);
             // -5:부모미성년,-4:미인증, -3:나이 안맞음, -2: 이메일 미등록, -1:이미 동의된 데이터, 0:에러, 1:정상
             switch (insResult) {
@@ -1365,13 +1376,13 @@ public class CommonService {
                 case 1:
                     try {
                         ParentsAgreeEmailVo emailVo = new ParentsAgreeEmailVo();
-                        ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(agreeInfo.getMemNo());
-                        emailVo.setEmail(agreeInfo.getPMemEmail());
-                        emailVo.setAgreeAllowUserName(parentsAuthSel.getParents_mem_name());
+                        emailVo.setMemNo(memNo);
+                        emailVo.setEmail(email);
+                        emailVo.setAgreeAllowUserName(agreeInfo.getPMemName());
                         emailVo.setAgreeRcvUserName(parentsAuthSel.getMem_name());
                         emailVo.setAgreeRcvUserId(parentsAuthSel.getMem_id());
                         emailVo.setAgreeDuration(parentsAuthSel.getAgreement_date() + "개월");
-                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replace("-", "."));
+                        emailVo.setAgreeExpireDate(parentsAuthSel.getExpire_date().substring(0,10).replaceAll("-", "."));
 
                         sendPayAgreeEmail(emailVo); // 메일 발송
                         result.setSuccessResVO(insResult);
@@ -1416,7 +1427,7 @@ public class CommonService {
             String rcvUserName = parentsAgreeEmailVo.getAgreeRcvUserName();
             String rcvUserLastLetterReplace = rcvUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
             String allowUserName = parentsAgreeEmailVo.getAgreeAllowUserName();
-            String allowUserLastLetterReplace = allowUserName.substring(0, rcvUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
+            String allowUserLastLetterReplace = allowUserName.substring(0, allowUserName.length()-1) + "*"; // 이름 마지막 글자 * 처리
 
             msgCont = mailContent.toString().replaceAll("@@agreeAllowUserName@@", allowUserLastLetterReplace);
             msgCont = msgCont.replaceAll("@@agreeRcvUserName@@", rcvUserLastLetterReplace);
@@ -1426,12 +1437,12 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@agreeExpireDate@@", parentsAgreeEmailVo.getAgreeExpireDate());
             msgCont = msgCont.replaceAll("@@agreeScope@@", "결제(달 충전, 아이템 선물)");
 
-            EmailVo emailVo = new EmailVo("달빛라이브 보호자(법정대리인) 동의 알림", email, msgCont);
+            EmailVo emailVo = new EmailVo("달라 보호자(법정대리인) 동의 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
             JSONObject mailEtcInfo = new JSONObject();
-            mailEtcInfo.put("agreeAllowUserName", rcvUserLastLetterReplace);
+            mailEtcInfo.put("agreeAllowUserName", allowUserLastLetterReplace);
             mailEtcInfo.put("agreeRcvUserName", rcvUserLastLetterReplace);
             mailEtcInfo.put("agreeRcvUserId", parentsAgreeEmailVo.getAgreeRcvUserId());
             mailEtcInfo.put("agreeDate", today);
@@ -1446,8 +1457,7 @@ public class CommonService {
             if(logInsRes != 1) {
                 log.error("CommonService / sendPayAgreeEmail 이메일 발송 로그 ins 에러 => memNo: {}", memNo);
             }
-        }
-        catch(Exception e){
+        } catch(Exception e){
             log.error("CommonService / sendPayAgreeEmail 이메일 발송 에러", e);
         }
     }
@@ -1488,12 +1498,18 @@ public class CommonService {
             int birthMonth = Integer.parseInt(birthSplit[1]);
             int birthDay = Integer.parseInt(birthSplit[2]);
             if(birthToAmericanAge(birthYear, birthMonth, birthDay) < 19) {
+                ParentsAuthSelVo parentsAuthSel = common.parentsAuthSel(memNo);
+                String email = parentsAuthSel.getParents_mem_email();
+
                 String[] accountInfo = accountInfo(paySuccSelVo);
-                DecimalFormat format = new DecimalFormat("###,###");
-                String priceComma = format.format(paySuccSelVo.getPay_amt());
+                DecimalFormat formatter = new DecimalFormat("###,###");
+                int payPrice = (int)Double.parseDouble(paySuccSelVo.getPay_amt());
+                String priceComma = formatter.format(payPrice);
                 ParentsPayEmailVo parentsPayEmailVo = new ParentsPayEmailVo();
                 parentsPayEmailVo.setOrderId(paySuccSelVo.getOrder_id());
                 parentsPayEmailVo.setMemNo(paySuccSelVo.getMem_no());
+                parentsPayEmailVo.setEmail(email);
+                parentsPayEmailVo.setPaymentUserName(parentsAuthSel.getParents_mem_name());
 
                 parentsPayEmailVo.setPaymentDate(paySuccSelVo.getPay_ok_date() + " " + paySuccSelVo.getPay_ok_time()); // 거래일시
                 parentsPayEmailVo.setPaymentMethod(getPayWay(paySuccSelVo.getPay_way())); // 결제 수단
@@ -1619,7 +1635,7 @@ public class CommonService {
             msgCont = msgCont.replaceAll("@@paymentQuantity@@", parentsPayEmailVo.getPaymentQuantity());
             msgCont = msgCont.replaceAll("@@paymentPrice@@", parentsPayEmailVo.getPaymentPrice());
 
-            EmailVo emailVo = new EmailVo("달빛라이브 결제 알림", email, msgCont);
+            EmailVo emailVo = new EmailVo("달라 결제 알림", email, msgCont);
             emailService.sendEmail(emailVo);
 
             // 이메일 발송 로그
@@ -1643,5 +1659,18 @@ public class CommonService {
         catch(Exception e){
             log.error("CommonService / sendPayMail 이메일 발송 에러 : ", e);
         }
+    }
+
+    public String getNationCode(HttpServletRequest request) {
+        String nationCode = null;
+        try {
+            nationCode = commonDao.getNationCode(request.getRemoteAddr());
+            if(nationCode == null){
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.아이피_조회_결과없음, null));
+            }
+        } catch (Exception e) {
+            log.error("CommonService getNationCode Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.아이피_조회, nationCode));
     }
 }

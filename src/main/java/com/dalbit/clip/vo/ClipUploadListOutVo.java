@@ -21,7 +21,7 @@ public class ClipUploadListOutVo {
     private int replyCnt;               //댓글 수
     private String gender;              //성별
     private String filePlayTime;        //재생시간
-    private Boolean isNew;              //신입뱃지(1)
+    private Boolean isNew;              //신입배지(1)
     private Boolean isSpecial;          //스페셜Dj(1)
     private int badgeSpecial;
 
