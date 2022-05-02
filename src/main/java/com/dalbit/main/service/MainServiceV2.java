@@ -2,8 +2,6 @@ package com.dalbit.main.service;
 
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.RoomService;
-import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
-import com.dalbit.broadcast.vo.request.RoomListVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.*;
 import com.dalbit.main.dao.MainDao;
@@ -15,17 +13,18 @@ import com.dalbit.main.vo.request.MainRankingPageVo;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.main.vo.request.MainTimeRankingPageVo;
 import com.dalbit.member.dao.MypageDao;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
+import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Array;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,8 +42,10 @@ public class MainServiceV2 {
 
     @Autowired MainDao mainDao;
     @Autowired RoomDao roomDao;
-    @Autowired MypageDao mypageDao;
+
     @Autowired MainPage mainPage;
+    @Autowired MypageService mypageService;
+    @Autowired MypageDao mypageDao;
 
     public String getEtcData() {
         Map<String, Object> returnMap = new HashMap<>();
@@ -129,49 +130,16 @@ public class MainServiceV2 {
         mainMap.put("myStar", getMyStar(starVoList, isLogin, photoSvrUrl));
         mainMap.put("myStarCnt", starCnt);
 
-
-        /* 일간 랭킹 */
-//        HashMap<String, Object> dayRankingMap = new HashMap<>();
-/*        dayRankingMap.put("djRank", getMainDayDjRank(mainRankingPageVoList)); // dj
-        dayRankingMap.put("fanRank", getMainDayFanRank(mainFanRankingVoList)); // fan
-        dayRankingMap.put("loverRank", getMainDayLoverRank(mainLoverRankingVoList)); // lover*/
-//        mainMap.put("dayRanking", dayRankingMap);
-
-//        mainMap.put("popupLevel", 0); // ???
-
-        /* 방금 착륙한 NEW 달둥스 (신입 BJ) */
-        /*List<P_RoomListVo> newBjList = new ArrayList<>();
-        try {
-            RoomListVo roomListVo = new RoomListVo();
-            roomListVo.setMediaType("");
-            roomListVo.setRecords(100);
-            roomListVo.setRoomType("");
-            roomListVo.setSearchType(1);
-            roomListVo.setDjType(3);
-            P_RoomListVo apiData = new P_RoomListVo(roomListVo, request);
-            ProcedureVo procedureVo = new ProcedureVo(apiData);
-            newBjList = roomDao.callBroadCastRoomList(procedureVo);
-            mainMap.put("newBjList", newBjList);
-        } catch (Exception e) {
-            log.error("MainServiceV2 / main / newBjList", e);
-            mainMap.put("newBjList", newBjList);
-        }*/
-
         /* 메인 center 배너 */
         mainMap.put("centerBanner", mainService.selectBanner("9", request));
 
         /* 알림 */
         try {
-            HashMap params = new HashMap();
-            params.put("memNo", memNo);
-            HashMap alarmMap = mypageDao.selectMyPageNew(params);
-            int newAlarmCnt = DalbitUtil.getIntMap(alarmMap, "alarm")
-                + DalbitUtil.getIntMap(alarmMap, "qna")
-                + DalbitUtil.getIntMap(alarmMap, "notice");
-            mainMap.put("newAlarmCnt", newAlarmCnt);
+            String alarmInfo = mypageService.getMyPageNew(request);
+            mainMap.put("alarmInfo", new JsonParser().parse(alarmInfo).getAsJsonObject().get("data"));
         } catch (Exception e) {
             log.error("MainServiceV2 / main / 알림", e);
-            mainMap.put("newAlarmCnt", 0);
+            mainMap.put("alarmInfo", null);
         }
 
         return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
