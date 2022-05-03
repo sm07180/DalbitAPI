@@ -22,6 +22,7 @@ import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -123,10 +124,33 @@ public class ProfileService {
         }
     }
 
+    // 컨텐츠 DJ 체크용 (추후 변경 필요)
+    private boolean isContents(String mem_no){
+        try {
+            HashMap param = new HashMap();
+            param.put("mem_no", mem_no);
+            param.put("type", 4);
+            param.put("timeDay", 0);
+            param.put("djRank", 0);
+            param.put("fanRank", 0);
+            param.put("by", "api");
+            List<FanBadgeVo> badgeList = commonDao.callMemberBadgeListServer(param);
+
+            for (FanBadgeVo vo : badgeList) {
+                if (StringUtils.equals("Content", vo.getText())) {
+                    return true;
+                }
+            }
+        }catch(Exception e){
+            log.error("ProfileService.java / isContentsDj => {}", e);
+        }
+        return false;
+    }
+
     /**
      * 정보 조회
      */
-    public String callMemberInfo(P_ProfileInfoVo pProfileInfo, HttpServletRequest request) {
+    public String callMemberInfo(P_ProfileInfoVo pProfileInfo, HttpServletRequest request, boolean isProfile) {
         ProcedureVo procedureVo = getProfile(pProfileInfo);
 
         String result;
@@ -181,6 +205,13 @@ public class ProfileService {
 
             HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no(), request);
             profileInfoOutVo.setProfImgList((List) imgListMap.get("list"));
+
+            /* 컨텐츠 DJ 확인용 */
+            boolean isConDj = false;
+            if(isProfile) {
+                isConDj = isContents(pProfileInfo.getTarget_mem_no());
+            }
+            profileInfoOutVo.setIsConDj(isConDj);
 
             //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo));
             //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo)); => 추가되지않고 수정 됨

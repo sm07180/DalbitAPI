@@ -49,7 +49,7 @@ public class ProfileController {
         int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), profileVo.getMemNo());
 
-        String result = profileService.callMemberInfo(apiData, request);
+        String result = profileService.callMemberInfo(apiData, request, true);
 
         return result;
     }

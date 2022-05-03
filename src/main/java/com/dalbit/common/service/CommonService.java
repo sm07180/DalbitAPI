@@ -761,6 +761,15 @@ public class CommonService {
         return result;
     }
 
+    private String isYnChk(String value){
+        // 값이 "y" 이거나 "n"이 아닌경우 "n"으로 변경
+        if(StringUtils.equals(value, "y") || StringUtils.equals(value, "n")){
+            return value;
+        }
+        
+        return "n";
+    }
+
     /**
      * 회원 본인 인증 여부 체크
      */
@@ -785,7 +794,7 @@ public class CommonService {
                 adultYn = "y";
             }*/
             returnMap.put("adultYn", adultYn);       //성인여부
-            returnMap.put("parentsAgreeYn", DalbitUtil.getStringMap(resultMap, "parents_agree_yn"));   //부모동의여부
+            returnMap.put("parentsAgreeYn", isYnChk(DalbitUtil.getStringMap(resultMap, "parents_agree_yn")));   //부모동의여부
             returnMap.put("phoneNo", DalbitUtil.getStringMap(resultMap, "mem_phone"));      //휴대폰번호
             returnMap.put("company", DalbitUtil.getStringMap(resultMap, "comm_company"));   //해외인증 판단 '기타'
             returnMap.put("ci", DalbitUtil.getStringMap(resultMap, "ci"));

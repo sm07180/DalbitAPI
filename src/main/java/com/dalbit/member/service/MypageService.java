@@ -101,7 +101,7 @@ public class MypageService {
                 }
                 int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
                 P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), MemberVo.getMyMemNo(request));
-                String resultProfile = profileService.callMemberInfo(apiData, request);
+                String resultProfile = profileService.callMemberInfo(apiData, request, false);
                 HashMap profileMap = new Gson().fromJson(resultProfile, HashMap.class);
 
                 try{
