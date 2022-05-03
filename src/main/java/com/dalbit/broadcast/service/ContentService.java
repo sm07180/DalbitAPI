@@ -250,8 +250,8 @@ public class ContentService {
      * plus_yn : "y" 사연 아이템인 경우
      */
     public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request, boolean isOldVersion) {
-        // -----------------------------사연 플러스 일감 -----------------------------
-        /* 네이티브 업데이트 안한 경우 => 파라미터 세팅 (plusYn, djMemNo) */
+        // ----------------------------- 사연 플러스 시작 -----------------------------
+        /* 네이티브 업데이트 안한 경우 => 파라미터 세팅 처리(plusYn, djMemNo) */
         if(isOldVersion) {
             HashMap returnMap = new HashMap();
             returnMap.put("passTime", 0);
@@ -260,9 +260,7 @@ public class ContentService {
             P_RoomInfoViewVo roomInfoVo = getRoomInfo(1, pRoomStoryAddVo.getMem_no(), pRoomStoryAddVo.getRoom_no());
 
             /* Fail or Exception */
-            if(roomInfoVo.equals(null)){
-                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
-            } else if (StringUtils.equals(roomInfoVo.getBj_mem_no(), "") || StringUtils.equals(roomInfoVo.getBj_mem_no(), null)) {
+            if (roomInfoVo.equals(null) || StringUtils.equals(roomInfoVo.getBj_mem_no(), "") || StringUtils.equals(roomInfoVo.getBj_mem_no(), null)) {
                 log.error("ContentService.java / callInsertStory => roomInfoVo : {}", gsonUtil.toJson(roomInfoVo));
                 return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
             }
@@ -279,8 +277,8 @@ public class ContentService {
         }
 
         /* 사연 플러스 선물 아이템 */
-        JsonOutputVo outputVo;
-        if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "n")) {
+        JsonOutputVo outputVo = new JsonOutputVo();
+        if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
             try {
                 GiftVo giftVo = new GiftVo();
                 giftVo.setRoomNo(pRoomStoryAddVo.getRoom_no());
@@ -290,20 +288,20 @@ public class ContentService {
                 giftVo.setIsSecret("n");
 
                 /* 방송방 선물하기 호출 */
-                //todo "성공" 일때만 사연등록 시켜줘야 하지 않을까!!!!
-                outputVo = new Gson().fromJson( callBroadcastGift(giftVo, request), JsonOutputVo.class);
+                String result = callBroadcastGift(giftVo, request);
+                outputVo = new Gson().fromJson( result, JsonOutputVo.class);
 
-                /* 선물하기 실패 */
-                if (!StringUtils.equals(outputVo.getResult(), BroadcastStatus.선물하기성공.getMessageCode())) {
-
+                /* 사연 플러스 아이템 선물하기 실패 */
+                if (!StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
+                    return result;
                 }
 
             } catch (Exception e) {
-                log.error("에러 발생 체크 !! => param: {} , Exception: {}", gsonUtil.toJson(pRoomStoryAddVo) ,e);
+                log.error("ContentService.java / callInsertStory / callBroadcastGift => param: {}, Exception: {}", gsonUtil.toJson(pRoomStoryAddVo), e);
             }
         }
+        // ----------------------------- 사연 플러스 끝 -----------------------------
 
-        // -------------------------------------------------------------------------
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
@@ -334,7 +332,16 @@ public class ContentService {
             }catch(Exception e){
                 log.info("Socket Service sendStory Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록성공, returnMap));
+
+        /* 사연 플러스 등록 성공 */
+            if (StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
+                returnMap.put("resultData", outputVo.getData());
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연플러스등록성공, returnMap));
+            } else {
+        /* 일반 사연 등록시 성공*/
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록성공, returnMap));
+            }
+
         }else if(BroadcastStatus.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_회원아님, returnMap));
         }else if(BroadcastStatus.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
