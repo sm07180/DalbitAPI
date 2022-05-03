@@ -10,7 +10,6 @@ import com.dalbit.common.vo.ResVO;
 import com.dalbit.team.proc.TeamProc;
 import com.dalbit.team.vo.*;
 import com.dalbit.util.DBUtil;
-import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
