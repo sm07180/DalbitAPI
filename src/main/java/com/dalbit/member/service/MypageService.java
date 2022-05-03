@@ -2,8 +2,10 @@ package com.dalbit.member.service;
 
 import com.dalbit.admin.vo.MemberInfoVo;
 import com.dalbit.broadcast.dao.RoomDao;
+import com.dalbit.broadcast.vo.StoryResultVo;
 import com.dalbit.broadcast.vo.procedure.P_MemberBroadcastingCheckVo;
 import com.dalbit.common.code.*;
+import com.dalbit.broadcast.vo.request.StoryHistoryVo;
 import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
 import com.dalbit.clip.vo.procedure.P_ClipUploadListVo;
 import com.dalbit.common.service.CommonService;
@@ -4049,5 +4051,88 @@ public class MypageService {
             result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전취소_실패));
         }
         return result;
+    }
+
+    /**
+     * ##### 회원 방송방에서 받은 사연 리스트 (마이페이지에서 사용)
+     *
+     * @param
+     * memNo 		BIGINT			-- 회원번호
+     * ,pageNo 		INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * Multi Rows
+     *
+     * #1
+     * cnt		BIGINT		-- 전체 수
+     *
+     * #2
+     * idx                  BIGINT          -- 자동등록 번호
+     * dj_mem_no            BIGINT          -- 회원 번호(방장)
+     * room_no              BIGINT          -- 방 번호
+     * contents             VARCHAR         -- 내용
+     * plus_yn              CHAR            -- 플러스[y,n]
+     * status               BIGINT          -- 상태 0 정상,1삭제
+     * writer_no            BIGINT          -- 회원 번호(보낸이)
+     * writer_mem_id        VARCHAR         -- 회원 아이디(보낸이)
+     * writer_mem_nick      VARCHAR         -- 회원 닉네임(보낸이)
+     * writer_mem_sex       CHAR            -- 회원성별(보낸이)
+     * writer_mem_profile   VARCHAR         -- 프로필(보낸이)
+     * write_date           DATETIME        -- 등록일자
+     */
+    public String getStoryHistory(StoryHistoryVo vo, HttpServletRequest requeset){
+        HashMap map = new HashMap();
+        HashMap returnDefault = new HashMap();
+        returnDefault.put("paing", new PagingVo(0, 0, 0));
+        returnDefault.put("list", new ArrayList<>());
+
+        try {
+            String memNo = MemberVo.getMyMemNo(requeset);
+
+            /* memNo */
+            if(StringUtils.equals(memNo, null) || StringUtils.equals(memNo, "")){
+                return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요, returnDefault));
+            }
+
+            /* db 조회 */
+            map.put("memNo", Long.parseLong(memNo));
+            map.put("pageNo", vo.getPageNo());
+            map.put("pagePerCnt", vo.getPagePerCnt());
+            List<Object> list = mypageDao.pBroadcastRoomStoryMemList(map);
+
+            /* 결과 없음 */
+            if(list.equals(null)){
+                log.error("ContentService.java / getStoryHistory => DB return null", gsonUtil.toJson(map));
+                return gsonUtil.toJson(new JsonOutputVo(Status.사연보관함_조회_실패, returnDefault));
+            }
+
+            /* 정상 */
+            HashMap result = new HashMap();
+            Integer cnt = DBUtil.getData(list,0, Integer.class);
+            List<StoryResultVo> resultList = DBUtil.getList(list,1, StoryResultVo.class);
+
+            // 남, 녀 디폴트 이미지
+            String mImg = new ImageVo("", "m", DalbitUtil.getProperty("server.photo.url")).getPath();
+            String fImg = new ImageVo("", "f", DalbitUtil.getProperty("server.photo.url")).getPath();
+            for( StoryResultVo storyResultVo : resultList){
+                if (StringUtils.equals(storyResultVo.getWriter_mem_profile(), "")) {
+                    if (StringUtils.equals(storyResultVo.getWriter_mem_sex(), "m")) {
+                        storyResultVo.setWriter_mem_profile(mImg);
+                    } else {
+                        storyResultVo.setWriter_mem_profile(fImg);
+                    }
+                }
+            }
+
+            result.put("paing", new PagingVo(cnt, vo.getPageNo(), vo.getPagePerCnt()));
+            result.put("list", resultList);
+
+            return gsonUtil.toJson(new JsonOutputVo(Status.사연보관함_조회_성공, result));
+        } catch (Exception e) {
+            log.error("ContentService.java / getStoryHistory => {}", e);
+            return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연_조회_실패, returnDefault));
+        }
+
     }
 }
