@@ -10,22 +10,17 @@ import com.dalbit.common.vo.ResVO;
 import com.dalbit.team.proc.TeamProc;
 import com.dalbit.team.vo.*;
 import com.dalbit.util.DBUtil;
-import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
-import com.sun.javafx.collections.MappingChange;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
 public class TeamService {
-    @Autowired
-    private GsonUtil gsonUtil;
     @Autowired
     private TeamProc teamProc;
     @Autowired
