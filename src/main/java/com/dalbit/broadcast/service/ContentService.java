@@ -279,7 +279,8 @@ public class ContentService {
         }
 
         /* 사연 플러스 선물 아이템 */
-        if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
+        JsonOutputVo outputVo;
+        if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "n")) {
             try {
                 GiftVo giftVo = new GiftVo();
                 giftVo.setRoomNo(pRoomStoryAddVo.getRoom_no());
@@ -290,7 +291,12 @@ public class ContentService {
 
                 /* 방송방 선물하기 호출 */
                 //todo "성공" 일때만 사연등록 시켜줘야 하지 않을까!!!!
-                return callBroadcastGift(giftVo, request);
+                outputVo = new Gson().fromJson( callBroadcastGift(giftVo, request), JsonOutputVo.class);
+
+                /* 선물하기 실패 */
+                if (!StringUtils.equals(outputVo.getResult(), Status.선물하기성공.getMessageCode())) {
+
+                }
 
             } catch (Exception e) {
                 log.error("에러 발생 체크 !! => param: {} , Exception: {}", gsonUtil.toJson(pRoomStoryAddVo) ,e);
