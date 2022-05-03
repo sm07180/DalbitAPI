@@ -237,7 +237,6 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
-                 // fixme 팀 초대 승낙, 팀 가입 신청 수락 푸시 처리 push_slct 102, 105 구분값 파라미터로 추가로 받아야함
                  // 팀 초대 승낙일 경우, 팀장에게 푸시 알림 전송
                  if (vo.getReqSlct().equals("i")) {
                      pushService.reqPushData(Long.toString(vo.getMasterMemNo()), "", vo.getName() + "님이 우리팀의 멤버가 되었어요.", "102", "/team/detail/" + vo.getTeamNo());
@@ -276,7 +275,6 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), result);
             }else if(result == 1){
                 resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), result);
-                // fixme 팀 강퇴시, 강퇴 당한 회원에게 푸시 전송
                 // 팀 초대 승낙일 경우, 팀장에게 푸시 알림 전송
                 if (vo.getDelSclt().equals("m")) {
                     pushService.reqPushData(Long.toString(vo.getTmMemNo()), "", vo.getMasterName() + "님에 의해 팀에서 탈퇴되었어요.", "109", "");
@@ -338,7 +336,6 @@ public class TeamService {
                 resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
             }
 
-            // fixme 팀 초대 거절, 팀 가입 신청 거절 푸시 처리 push_slct 103, 106 구분값 파라미터로 추가로 받아야함
             // 팀 초대 거절일 경우, 팀장에게 푸시 알림 전송
             if (vo.getReqSlct().equals("i")) {
                 pushService.reqPushData(Long.toString(vo.getMasterMemNo()), "", vo.getName() + "님에게 보낸 초대가 거절되었어요.", "103", "/team/detail/" + vo.getTeamNo());
