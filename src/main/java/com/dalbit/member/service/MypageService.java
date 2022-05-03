@@ -4054,7 +4054,7 @@ public class MypageService {
     }
 
     /**
-     * ##### 회원 방송방에서 받은 사연 리스트 (마이페이지에서 사용)
+     * ##### 회원 방송방에서 받은 사연 리스트
      *
      * @param
      * memNo 		BIGINT			-- 회원번호
@@ -4092,7 +4092,7 @@ public class MypageService {
 
             /* memNo */
             if(StringUtils.equals(memNo, null) || StringUtils.equals(memNo, "")){
-                return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요, returnDefault));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요, returnDefault));
             }
 
             /* db 조회 */
@@ -4104,7 +4104,7 @@ public class MypageService {
             /* 결과 없음 */
             if(list.equals(null)){
                 log.error("ContentService.java / getStoryHistory => DB return null", gsonUtil.toJson(map));
-                return gsonUtil.toJson(new JsonOutputVo(Status.사연보관함_조회_실패, returnDefault));
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.사연보관함_조회_실패, returnDefault));
             }
 
             /* 정상 */
@@ -4128,10 +4128,10 @@ public class MypageService {
             result.put("paing", new PagingVo(cnt, vo.getPageNo(), vo.getPagePerCnt()));
             result.put("list", resultList);
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.사연보관함_조회_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.사연보관함_조회_성공, result));
         } catch (Exception e) {
             log.error("ContentService.java / getStoryHistory => {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연_조회_실패, returnDefault));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.사연보관함_조회_실패, returnDefault));
         }
 
     }

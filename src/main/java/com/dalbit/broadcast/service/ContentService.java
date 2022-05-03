@@ -261,10 +261,10 @@ public class ContentService {
 
             /* Fail or Exception */
             if(roomInfoVo.equals(null)){
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
             } else if (StringUtils.equals(roomInfoVo.getBj_mem_no(), "") || StringUtils.equals(roomInfoVo.getBj_mem_no(), null)) {
                 log.error("ContentService.java / callInsertStory => roomInfoVo : {}", gsonUtil.toJson(roomInfoVo));
-                return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
             }
 
             pRoomStoryAddVo.setDj_mem_no(roomInfoVo.getBj_mem_no());
@@ -275,7 +275,7 @@ public class ContentService {
             || StringUtils.equals(pRoomStoryAddVo.getDj_mem_no(), "")) {
             HashMap returnMap = new HashMap();
             returnMap.put("passTime", 0);
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_파라미터_에러, returnMap));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_파라미터에러, returnMap));
         }
 
         /* 사연 플러스 선물 아이템 */
@@ -294,7 +294,7 @@ public class ContentService {
                 outputVo = new Gson().fromJson( callBroadcastGift(giftVo, request), JsonOutputVo.class);
 
                 /* 선물하기 실패 */
-                if (!StringUtils.equals(outputVo.getResult(), Status.선물하기성공.getMessageCode())) {
+                if (!StringUtils.equals(outputVo.getResult(), BroadcastStatus.선물하기성공.getMessageCode())) {
 
                 }
 
@@ -455,7 +455,7 @@ public class ContentService {
             pRoomInfoViewVo.setRoom_no(roomNo);
             ProcedureVo procedureInfoViewVo = new ProcedureVo(pRoomInfoViewVo);
             P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
-            if (procedureInfoViewVo.getRet().equals(Status.방정보보기.getMessageCode())) {
+            if (procedureInfoViewVo.getRet().equals(BroadcastStatus.방정보보기.getMessageCode())) {
                 return roomInfoViewVo;
             } else {
                 log.error("contentService.java / getRoomInfo Fail =>  param: {}", gsonUtil.toJson(pRoomInfoViewVo));
