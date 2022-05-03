@@ -1411,7 +1411,7 @@ public class CommonService {
         StringBuffer mailContent = new StringBuffer();
         BufferedReader in = null;
         try{
-            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/agreeInfo.txt");
+            URL url = new URL("http://image.dallalive.com/resource/mailForm/agreeInfo.txt");
             URLConnection urlconn = url.openConnection();
             in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 
@@ -1611,7 +1611,7 @@ public class CommonService {
         StringBuffer mailContent = new StringBuffer();
         BufferedReader in = null;
         try{
-            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/payInfo.txt");
+            URL url = new URL("http://image.dallalive.com/resource/mailForm/payInfo.txt");
             URLConnection urlconn = url.openConnection();
             in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 

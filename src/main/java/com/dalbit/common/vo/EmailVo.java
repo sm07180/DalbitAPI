@@ -21,7 +21,7 @@ public class EmailVo {
     private String title;       //제목
     private String rcvMemId;    //수신자 아이디
     private String rcvMail;     //수신자 메일주소
-    private String sendMail = "help@dalbitlive.com";    //발신자
+    private String sendMail = "help@dallalive.com";    //발신자
     private String msgCont;     //내용
     private String sendType = "1";    //발송구분 [코드표참고]
 }

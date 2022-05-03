@@ -611,8 +611,8 @@ public class RoomService {
             returnMap.put("boostCode", DalbitUtil.getProperty("item.code.boost"));
             returnMap.put("boostPrice", item.getCost());
             returnMap.put("boostByeul", item.getByeol());
-            returnMap.put("boostLottie", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.json");
-            returnMap.put("boostWebp", "https://image.dalbitlive.com/ani/booster/booster_popup_200519.webp");
+            returnMap.put("boostLottie", "https://image.dallalive.com/ani/booster/booster_popup_200519.json");
+            returnMap.put("boostWebp", "https://image.dallalive.com/ani/booster/booster_popup_200519.webp");
             returnMap.put("boostItemCnt", DalbitUtil.getIntMap(resultMap, "haveItemCnt"));
 
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.순위아이템사용_조회성공, returnMap));
@@ -777,7 +777,7 @@ public class RoomService {
         vo.setMemNo(Long.parseLong(pRoomMemberInfoVo.getTarget_mem_no()));
         int teamNo =  teamService.getTeamMemInsChk(vo);
         if(teamNo > 0){
-            String teamImgUrl = "https://image.dalbitlive.com/team/parts";
+            String teamImgUrl = "https://image.dallalive.com/team/parts";
             vo.setTeamNo(teamNo);
             resTeam = teamService.getTeamSelService(vo);
             if(resTeam.getTeam_no() >0){

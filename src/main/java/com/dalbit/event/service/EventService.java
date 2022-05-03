@@ -2513,7 +2513,7 @@ public class EventService {
                 break;
         }
 
-        resultMap.put("imgURL", "https://image.dalbitlive.com/event/welcome/floatingBtn.png");
+        resultMap.put("imgURL", "https://image.dallalive.com/event/welcome/floatingBtn.png");
         resultMap.put("pageLink", link);
         resultMap.put("positionX", 1);
         resultMap.put("positionY", 1);

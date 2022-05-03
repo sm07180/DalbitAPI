@@ -152,28 +152,28 @@ public class MoonLandService {
                         completeYn = missionSelVO.getS_rocketItemYn();
                         idx++;
                         sortKey = 0;
-                        itemImg = "https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-item1.png";
+                        itemImg = "https://image.dallalive.com/broadcast/event/gotomoon/pop_gotomoon-item1.png";
                         break;
                     case "열기구":
                         included = true;
                         completeYn = missionSelVO.getS_balloonItemYn();
                         idx++;
                         sortKey = 1;
-                        itemImg = "https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-item2.png";
+                        itemImg = "https://image.dallalive.com/broadcast/event/gotomoon/pop_gotomoon-item2.png";
                         break;
                     case "풍등":
                         included = true;
                         completeYn = missionSelVO.getS_lanternsItemYn();
                         idx++;
                         sortKey = 2;
-                        itemImg = "https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-item3.png";
+                        itemImg = "https://image.dallalive.com/broadcast/event/gotomoon/pop_gotomoon-item3.png";
                         break;
                     case "별똥별":
                         included = true;
                         completeYn = missionSelVO.getS_starItemYn();
                         idx++;
                         sortKey = 3;
-                        itemImg = "https://image.dalbitlive.com/broadcast/event/gotomoon/pop_gotomoon-item4.png";
+                        itemImg = "https://image.dallalive.com/broadcast/event/gotomoon/pop_gotomoon-item4.png";
                         break;
                     default:
                         break;
@@ -448,7 +448,7 @@ public class MoonLandService {
             vo = new MoonLandMyRankVO();
             vo.setTot_score(0);
             vo.setNext_reward(0);
-            vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_1st_ani.webp");
+            vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_1st_ani.webp");
             return vo;
         }
 
@@ -456,38 +456,38 @@ public class MoonLandService {
             case 1:
                 vo.setTot_score(20000);
                 vo.setNext_reward(1);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_1st_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_1st_ani.webp");
                 break;
             case 2:
                 vo.setTot_score(50000);
                 vo.setNext_reward(3);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_2nd_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_2nd_ani.webp");
                 break;
             case 3:
                 vo.setTot_score(100000);
                 vo.setNext_reward(5);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_3rd_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_3rd_ani.webp");
                 break;
             case 4:
                 vo.setTot_score(150000);
                 vo.setNext_reward(10);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_4th_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_4th_ani.webp");
                 break;
             case 5:
                 vo.setTot_score(200000);
                 vo.setNext_reward(20);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_5th_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_5th_ani.webp");
                 break;
             case 6:
                 vo.setTot_score(200000);
                 vo.setNext_reward(0);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_6th_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_6th_ani.webp");
                 vo.setRank_step(0); //마지막 단계 보상 미표기 처리용
                 break;
             default:
                 vo.setTot_score(0);
                 vo.setNext_reward(0);
-                vo.setAnimationUrl("https://image.dalbitlive.com/ani/webp/to_the_moon/step_1st_ani.webp");
+                vo.setAnimationUrl("https://image.dallalive.com/ani/webp/to_the_moon/step_1st_ani.webp");
                 break;
         }
 

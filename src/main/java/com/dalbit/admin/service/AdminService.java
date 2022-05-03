@@ -1228,7 +1228,7 @@ public class AdminService {
             StringBuffer mailContent = new StringBuffer();
             BufferedReader in = null;
             try{
-                URL url = new URL("http://image.dalbitlive.com/resource/mailForm/mailing.txt");
+                URL url = new URL("http://image.dallalive.com/resource/mailForm/mailing.txt");
                 URLConnection urlconn = url.openConnection();
                 in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 
