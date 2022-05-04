@@ -300,7 +300,7 @@ public class TTSService {
     }
 
     // tts actorSlct
-    public String[] getTtsActorSlct(String actorId, HttpServletRequest request) {
+    public String[] getTtsActorSlct(String actorId) {
         // return [actorSlct, actorName]
         switch (actorId) {
             case "6063252471850cc8f04c7600": return new String[] {"a", "빠다가이"}; // 빠다가이

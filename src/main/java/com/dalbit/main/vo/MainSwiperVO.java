@@ -1,5 +1,6 @@
 package com.dalbit.main.vo;
 
+import com.dalbit.common.vo.ImageVo;
 import lombok.Data;
 
 @Data
@@ -21,6 +22,7 @@ public class MainSwiperVO {
     private String mem_nick;
     private String mem_sex;
     private String image_profile;
+    private ImageVo imageProfile;
     private String subject_type;
     private String image_background;
     private String is_wowza;
