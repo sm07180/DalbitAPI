@@ -12,11 +12,13 @@ import com.dalbit.util.DalbitUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.web.HttpRequestHandler;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Slf4j
@@ -107,7 +109,7 @@ public class TeamController {
      * @변경이력  :
      **********************************************************************************************/
     @PostMapping("/memReqIns")
-    public ResVO getTeamMemReqIns(@RequestBody TeamParamVo vo){
+    public ResVO getTeamMemReqIns(@RequestBody TeamParamVo vo, HttpServletRequest request){
         ResVO result = new ResVO();
         try {
             result = teamService.getTeamMemReqIns(vo);

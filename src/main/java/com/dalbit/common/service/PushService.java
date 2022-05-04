@@ -157,4 +157,78 @@ public class PushService {
 
         return resultMap;
     }
+
+
+    public void reqPushData(String memNo, String title, String contents, String push_slct, String redirect_url) {
+
+        // 회원 번호 없으면 return 처리
+        if (memNo.equals("") || memNo == null) {
+            return;
+        }
+
+        try {
+            P_pushStmpInsertVo paramVo = new P_pushStmpInsertVo();
+            paramVo.setMem_no(memNo);
+            paramVo.setTarget_mem_no(memNo);
+            paramVo.setPush_slct(push_slct);
+            paramVo.setSlctPush("0");
+            paramVo.setPush_type("50"); // 프론트에서 처리하는 구분값
+            paramVo.setImage_type("101"); // 사진 없음
+
+
+            if (!"".equals(redirect_url)) {
+                paramVo.setRedirect_url(redirect_url); // push_type이 50일때만 DB/프론트에서 동작하도록 되어 있음.
+            }
+
+            if (!"".equals(title)) {
+                paramVo.setTitle(title);
+            }
+
+            if (!"".equals(contents)) {
+                paramVo.setContents(contents);
+            }
+
+            switch (push_slct) {
+                case "101": // 팀 초대 도착
+                    paramVo.setTitle("나를 초대한 팀이 있어요.");
+                    paramVo.setRedirect_url("/team");
+                    break;
+                case "102": // 팀 초대 승낙
+                    paramVo.setTitle("새로운 팀 메버가 들어왔어요.");
+                    break;
+                case "103": // 팀 초대 거절
+                    paramVo.setTitle("팀 초대가 거절되었어요.");
+                    break;
+                case "104": // 팀 초대 신청 도착
+                    paramVo.setTitle("팀 가입 신청이 도착했어요.");
+                    break;
+                case "105": // 팀 초대 신청 수락
+                    paramVo.setTitle("팀에 가입했어요.");
+                    break;
+                case "106": // 팀 초대 신청 거절
+                    paramVo.setTitle("팀 가입 신청이 거절되었어요.");
+                    paramVo.setRedirect_url("/team");
+                    break;
+                case "107": // 팀 배지 획득
+                    paramVo.setTitle("새로운 팀 배지 획득!");
+                    break;
+                case "108": // 팀 삭제
+                    paramVo.setTitle("팀이 해체되었어요.");
+                    paramVo.setRedirect_url("/mypage");
+                    break;
+                case "109": // 팀 강퇴 알림
+                    paramVo.setTitle("팀에서 탈퇴되었어요.");
+                    paramVo.setRedirect_url("/mypage");
+                    break;
+                default:
+                    break;
+            }
+
+            ProcedureVo procedureVo = new ProcedureVo(paramVo);
+            pushDao.callStmpPushAdd(procedureVo);
+            //log.info("PushService callStmpPushAdd Execute Fail => {}", procedureVo.getExt());
+        } catch (Exception e) {
+            log.error("PushService Error => {}", e);
+        }
+    }
 }
