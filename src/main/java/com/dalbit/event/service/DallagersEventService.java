@@ -1,9 +1,8 @@
 package com.dalbit.event.service;
 
 import com.dalbit.broadcast.service.UserService;
-import com.dalbit.broadcast.vo.procedure.P_RoomGiftVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomMemberListVo;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.ImageVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.DallagersEvent;
@@ -247,13 +246,13 @@ public class DallagersEventService {
 
             if (result == null) {
                 log.error("DallagersEventService.java / getReqNo() => Db result null");
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, result));
         } catch (Exception e) {
             log.error("DallagersEventService.java / getReqNo() => Exception {}",e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
     }
 
@@ -386,7 +385,7 @@ public class DallagersEventService {
                 aStone = (Integer) param.get("slot2");
                 lStone = (Integer) param.get("slot3");
             } catch(Exception e) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
 
             if(!seqNo.equals(0) && !StringUtils.equals(memNo, null) &&
@@ -428,14 +427,14 @@ public class DallagersEventService {
                 resultData.put("resultStone", resultStoneVO);
                 resultData.put("myInfo", mySelVo);
 
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultData));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, resultData));
             } else {
                 log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => param Error {}", gsonUtil.toJson(param));
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
         } catch (Exception e) {
             log.error("DallagersEventService.java / pEvtDallaCollectBbopgiIns() => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
     }
 
@@ -472,20 +471,20 @@ public class DallagersEventService {
                 param.put("seqNo", seqNo);
                 DallagersEventMySelVo resultVo = dallagersEvent.pEvtDallaCollectMemberRankMySel(param);
                 if(resultVo == null){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                    return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
                 }
 
                 //프로필 이미지 obj set
                 resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
 
 
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, resultVo));
             } else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
         } catch (Exception e) {
             log.error("DallagersEventService.java / getMyRankInfo() => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
     }
 
@@ -534,14 +533,14 @@ public class DallagersEventService {
                     vo.setProfImg(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
                 }
 
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, list));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, list));
             } else {
                 log.error("DallagersEventService.java / getRankList() => param Error {}", gsonUtil.toJson(param));
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
         } catch (Exception e) {
             log.error("DallagersEventService.java / getRankList() => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
     }
 
@@ -571,20 +570,20 @@ public class DallagersEventService {
             if(!StringUtils.equals(memNo, null)) {
                 DallagersEventSpecialMySelVo resultVo = dallagersEvent.pEvtDallaCollectMemberSpecialRankMySel(Long.parseLong(memNo));
                 if(resultVo == null){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                    return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
                 }
                 
                 //프로필 이미지 obj 생성
                 resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
 
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultVo));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, resultVo));
             } else {
                 log.error("DallagersEventService.java / getSpecialMyRankInfo() => param Error {}", memNo);
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
         } catch (Exception e) {
             log.error("DallagersEventService.java / getSpecialMyRankInfo() => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
     }
 
@@ -631,14 +630,14 @@ public class DallagersEventService {
                     vo.setProfImg(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
                 }
 
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, resultMap));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, resultMap));
             } else {
                 log.error("DallagersEventService.java / getSpecialRankList() => param Error {}", gsonUtil.toJson(param));
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
         } catch (Exception e) {
             log.error("DallagersEventService.java / getSpecialRankList() => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
     }
     /**

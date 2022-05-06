@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.broadcast.dao.OwnerDao" >
+
+    <resultMap id="OwnerResultVo1" type="com.dalbit.broadcast.vo.OwnerResultVo">
+        <result property="roomNo" column="room_no"/>
+        <result property="memNo" column="mem_no"/>
+        <result property="memNick" column="mem_nick"/>
+    </resultMap>
+
+    <select id="pDallaRoomMasterSel" statementType="CALLABLE" parameterType="String" resultMap="OwnerResultVo1">
+        { CALL p_dalla_room_master_sel(#{roomNo}) }
+    </select>
+
+</mapper>

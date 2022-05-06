@@ -45,6 +45,8 @@ public class MemberNotifyEditVo {
     private Integer isReceive;
 
     private Integer isMailbox;
+
+    private Integer isTeam;
     /*@NotBlank(message = "{\"ko_KR\" : \"알림음을\"}")
     @NotNull(message = "{\"ko_KR\" : \"알림음을\"}")*/
     private String alimType;    //알림음구분(n:무음,s:소리,v:진동)

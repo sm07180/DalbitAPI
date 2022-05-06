@@ -64,4 +64,5 @@ public class P_NoticeListVo extends P_ApiVo {
     private int topFix;
     private Date writeDate;
     private int isNew;
+    private String read_yn;
 }

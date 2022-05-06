@@ -45,11 +45,11 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private Object guest_profileImage;      //게스트프로필이미지
     private int guest_level;                //게스트 나이대
     private String ext;
-    private int badge_recomm;               //추천뱃지
-    private int badge_popular;              //인기뱃지
-    private int badge_newdj;                //신입뱃지
-    private int badge_special;              //스페셜뱃지
-    private int isConDj;                    //컨텐츠뱃지
+    private int badge_recomm;               //추천배지
+    private int badge_popular;              //인기배지
+    private int badge_newdj;                //신입배지
+    private int badge_special;              //스페셜배지
+    private int isConDj;                    //컨텐츠배지
     private int freezeMsg;                  //채팅상태(0:정상,1: DJ얼리기, 2: 관리자얼리기)
     private int liveDjRank;                 //실시간 DJ 순위
     private String liveBadgeText;
@@ -69,4 +69,5 @@ public class P_RoomInfoViewVo extends P_ApiVo {
     private int server_state;               //와우자 상태
     private int video_state;               //영상 상태
     private int count_fan;                  //신규팬수
+    private int badge_partner;              //파트너DJ여부 1: O 0: X
 }

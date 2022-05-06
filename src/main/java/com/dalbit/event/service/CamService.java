@@ -1,7 +1,8 @@
 package com.dalbit.event.service;
 
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.code.EventCode;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.dao.CamDao;
@@ -50,18 +51,18 @@ public class CamService {
         EventCode eventCode = EventCode.웹캠;
         int eventCheck = eventService.eventDateCheck(eventCode.getEventIdx());
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         if(!DalbitUtil.isLogin(pCamCheckVo.getMem_no())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
         var specialDjConditionSearchVo = new SpecialDjConditionSearchVo();
         specialDjConditionSearchVo.setMem_no(pCamCheckVo.getMem_no());
         HashMap map = getBroadcastAirTime(specialDjConditionSearchVo);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     public HashMap<String, Object> getBroadcastAirTime(SpecialDjConditionSearchVo specialDjConditionSearchVo){
@@ -92,11 +93,11 @@ public class CamService {
 
         int eventCheck = eventService.eventDateCheck(eventCode.getEventIdx());
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         if(!DalbitUtil.isLogin(pCamCheckVo.getMem_no())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
         if(!eventCode.isMulti()){
@@ -107,7 +108,7 @@ public class CamService {
             eventDao.selectPhotoList(checkDuplJoin);
             int totCnt = checkDuplJoin.getTotalCnt();
             if(0 < totCnt){
-                return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_이미참여));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_이미참여));
             }
         }
 
@@ -119,7 +120,7 @@ public class CamService {
         int isOk = 10 <= DalbitUtil.getIntMap(map, "airTime") ? 1 : 0;
         map.put("isOk", isOk);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
 
@@ -133,18 +134,18 @@ public class CamService {
 
         int eventCheck = eventService.eventDateCheck(eventCode.getEventIdx());
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         if(!DalbitUtil.isLogin(mem_no)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
         var specialDjConditionSearchVo = new SpecialDjConditionSearchVo();
         specialDjConditionSearchVo.setMem_no(mem_no);
         HashMap map = getBroadcastAirTime(specialDjConditionSearchVo);
         if(DalbitUtil.getIntMap(map, "airTime") < 10){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_체크_자격안됨, map));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_체크_자격안됨, map));
         }
 
         if(!eventCode.isMulti()){
@@ -155,7 +156,7 @@ public class CamService {
             eventDao.selectPhotoList(checkDuplJoin);
             int totCnt = checkDuplJoin.getTotalCnt();
             if(0 < totCnt){
-                return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_이미참여));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_이미참여));
             }
         }
 
@@ -181,7 +182,7 @@ public class CamService {
 
         eventDao.insertPhoto(photoEventInputVo);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여));
+        String result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여));
         return result;
     }
 }

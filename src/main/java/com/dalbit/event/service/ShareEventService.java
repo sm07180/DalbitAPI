@@ -1,6 +1,6 @@
 package com.dalbit.event.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.event.proc.ShareEvent;
 import com.dalbit.event.vo.ShareEventInputVo;
@@ -8,7 +8,6 @@ import com.dalbit.event.vo.ShareEventVo;
 import com.dalbit.util.DBUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.dalbit.util.GsonUtil;
 
@@ -38,10 +37,10 @@ public class ShareEventService {
             result.put("listCnt", listCnt);
             result.put("list", list);
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_조회_성공, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_조회_성공, result));
         } catch (Exception e) {
             log.error("ShareEventService shareTailList Error : ", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_조회_실패, result));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_조회_실패, result));
         }
     }
 
@@ -55,13 +54,13 @@ public class ShareEventService {
         try {
             procResult = shareEvent.shareTailDel(shareEventInputVo);
             if(procResult == 1) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_삭제_성공, procResult));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_삭제_성공, procResult));
             }else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_삭제_실패, procResult));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_삭제_실패, procResult));
             }
         } catch (Exception e) {
             log.error("ShareEventService shareTailDel Error : ", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_삭제_실패, procResult));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_삭제_실패, procResult));
         }
     }
 
@@ -75,18 +74,18 @@ public class ShareEventService {
         try {
             Integer chk = shareEvent.shareTailChk(shareEventInputVo);
             if(chk > 0) { // 이미 참여한 url
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글여부_체크_실패, procResult));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글여부_체크_실패, procResult));
             }else {
                 procResult = shareEvent.shareTailIns(shareEventInputVo);
                 if(procResult == 1) {
-                    return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_성공, procResult));
+                    return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_등록_성공, procResult));
                 }else {
-                    return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_실패, procResult));
+                    return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_등록_실패, procResult));
                 }
             }
         } catch (Exception e) {
             log.error("ShareEventService shareTailIns Error : ", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_등록_실패, procResult));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_등록_실패, procResult));
         }
     }
 
@@ -100,13 +99,13 @@ public class ShareEventService {
         try {
             procResult = shareEvent.shareTailUpd(shareEventInputVo);
             if(procResult == 1) {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_수정_성공, procResult));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_수정_성공, procResult));
             }else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_수정_실패, procResult));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_수정_실패, procResult));
             }
         } catch (Exception e) {
             log.error("ShareEventService shareTailUpd Error : ", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공유이벤트_댓글목록_수정_실패, procResult));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.공유이벤트_댓글목록_수정_실패, procResult));
         }
     }
 }

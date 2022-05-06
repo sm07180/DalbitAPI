@@ -1,9 +1,12 @@
 package com.dalbit.event.controller;
 
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.event.service.WelcomeEventService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -21,6 +24,8 @@ public class WelcomeEventController {
     @Autowired
     WelcomeEventService welcomeEventService;
 
+    @Autowired
+    GsonUtil gsonUtil;
     /**********************************************************************************************
      * @Method 설명 : 웰컴 DJ 정보 가져오기
      * @작성일 : 2021-12-24
@@ -152,8 +157,8 @@ public class WelcomeEventController {
      * @Return :    s_return		INT		--   -1: 이상, 0: 에러, 1:정상
      **********************************************************************************************/
     @PostMapping("/chkInfoUpd")
-    public ResVO putWelcomeDayConfirmChecker(HttpServletRequest request){
-        ResVO result = new ResVO();
+    public String putWelcomeDayConfirmChecker(HttpServletRequest request){
+        String result;
         try {
             String memNo = MemberVo.getMyMemNo(request);
 
@@ -161,21 +166,19 @@ public class WelcomeEventController {
                 Integer dbResultCode = welcomeEventService.putWelcomeDayConfirmChecker(memNo);
 
                 if(dbResultCode == 1) { // DB result값이 정상
-                    result.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), dbResultCode);
-                } else if(dbResultCode == -1){ // 이미 오늘 봤어요 (클라이언트 로직 오류)
-                    result.setResVO(ResMessage.C39006.getCode(), ResMessage.C39006.getCodeNM(), dbResultCode);
-                } else { // DB result값이 에러
-                    result.setResVO(ResMessage.C99997.getCode(), ResMessage.C99997.getCodeNM(), dbResultCode);
+                    result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, dbResultCode));
+
+                } else {
+                    result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
                 }
             } else {
-                result.setResVO(ResMessage.C10001.getCode(), ResMessage.C10001.getCodeNM(), null);
+                result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
 
         }catch(Exception e){
             log.error("putWelcomeDayConfirmChecker => {}", e);
-            result.setResVO(ResMessage.C99998.getCode(), ResMessage.C99998.getCodeNM(), null);
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
-
         return result;
     }
 }

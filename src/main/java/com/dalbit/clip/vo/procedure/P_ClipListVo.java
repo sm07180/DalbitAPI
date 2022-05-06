@@ -53,7 +53,7 @@ public class P_ClipListVo extends P_ApiVo {
     private double total;               //순위점수
     private String filePlayTime;        //재생시간
     private int os_type;                //1: aos, 2: ios, 3: pc
-    private int badge_newdj;            //신입뱃지(1)
+    private int badge_newdj;            //신입배지(1)
     private int badge_special;          //스페셜Dj(1)
     private String nickName;            //닉네임
     private String memSex;              //성별

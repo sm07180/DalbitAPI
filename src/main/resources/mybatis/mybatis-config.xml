@@ -89,6 +89,8 @@
 
 		<typeAlias type="com.dalbit.broadcast.vo.request.VoteRequestVo" alias="VoteRequestVo" />
 		<typeAlias type="com.dalbit.event.vo.request.WhatsUpRequestVo" alias="WhatsUpRequestVo" />
+
+		<typeAlias type="com.dalbit.team.vo.TeamParamVo" alias="TeamVo" />
 	</typeAliases>
 
 	<mappers>

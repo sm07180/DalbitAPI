@@ -23,6 +23,29 @@ public class P_RoomJoinVo extends P_ApiVo {
     private String deviceUuid;
     private String ip;
     private String appVersion;
+
+    @Override
+    public String toString() {
+        return "P_RoomJoinVo{" +
+                "memLogin=" + memLogin +
+                ", mem_no='" + mem_no + '\'' +
+                ", room_no='" + room_no + '\'' +
+                ", guest_streamid='" + guest_streamid + '\'' +
+                ", guest_publish_tokenid='" + guest_publish_tokenid + '\'' +
+                ", guest_play_tokenid='" + guest_play_tokenid + '\'' +
+                ", bj_streamid='" + bj_streamid + '\'' +
+                ", bj_publish_tokenid='" + bj_publish_tokenid + '\'' +
+                ", bj_play_tokenid='" + bj_play_tokenid + '\'' +
+                ", shadow=" + shadow +
+                ", os=" + os +
+                ", deviceUuid='" + deviceUuid + '\'' +
+                ", ip='" + ip + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                ", deviceToken='" + deviceToken + '\'' +
+                ", isHybrid='" + isHybrid + '\'' +
+                '}';
+    }
+
     private String deviceToken;
     private String isHybrid;
 }

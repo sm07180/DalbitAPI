@@ -99,13 +99,15 @@ public class P_RoomListVo extends P_ApiVo {
     private String guest_play_tokenid;     //guest play토큰
     private int is_wowza;                  // 와우자여
 
-    private int badge_recomm;                   //추천뱃지
-    private int badge_popular;                  //인기뱃지
-    private int badge_newdj;                    //신입뱃지
-    private int badge_special;                  //스페셜뱃지
+    private int badge_partner;
+    private int badge_recomm;                   //추천배지
+    private int badge_popular;                  //인기배지
+    private int badge_newdj;                    //신입배지
+    private int badge_special;                  //스페셜배지
     private int os_type;
     private int totalCnt;
-    private int isConDj;                    //컨텐츠뱃지
+    private int isConDj;                    //컨텐츠배지
+    private int isContents;                 //컨텐츠 배지(new)
 
     private int liveDjRank;                 //실시간 DJ 순위
     private String liveBadgeText;
@@ -123,9 +125,9 @@ public class P_RoomListVo extends P_ApiVo {
     private String fanBadgeImageSmall;
 
     private int type_image;                 //스페셜DJ일 경우 실시간live 이미지 노출선택(1:프로필, 2:배경)
-    private int goodMem;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
-    private int goodMem2;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
-    private int goodMem3;                    //좋아요 뱃지 회원 여부 ( 1이상: 있음, 0:없음)
+    private int goodMem;                    //좋아요 배지 회원 여부 ( 1이상: 있음, 0:없음)
+    private int goodMem2;                    //좋아요 배지 회원 여부 ( 1이상: 있음, 0:없음)
+    private int goodMem3;                    //좋아요 배지 회원 여부 ( 1이상: 있음, 0:없음)
     private boolean isShining = false;
 
     public void setBj_profileImage(String bj_profileImage) {

@@ -1,11 +1,11 @@
 package com.dalbit.member.controller;
 
+import com.dalbit.common.code.*;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.member.service.ProfileService;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.P_WalletPopupListVo;
 import com.dalbit.member.vo.request.WalletPopupListVo;
-import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.DeviceVo;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
@@ -17,7 +17,6 @@ import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
-import org.springframework.http.MediaType;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,6 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -50,7 +48,7 @@ public class MypageController {
         int memLogin = DalbitUtil.isLogin(request) ? 1 : 0;
         P_ProfileInfoVo apiData = new P_ProfileInfoVo(memLogin, MemberVo.getMyMemNo(request), MemberVo.getMyMemNo(request));
 
-        String result = profileService.callMemberInfo(apiData, request);
+        String result = profileService.callMemberInfo(apiData, request, false);
 
         return result;
     }
@@ -268,7 +266,7 @@ public class MypageController {
             for (int i=0; i<bindingResult.getErrorCount(); i++) {
                 FieldError fieldError = (FieldError) errorList.get(i);
                 if("text".equals(fieldError.getField())){
-                    return gsonUtil.toJson(new JsonOutputVo(Status.회원방송방빠른말수정_텍스트오류));
+                    return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정_텍스트오류));
                 }
             }
         }
@@ -783,7 +781,7 @@ public class MypageController {
      */
     @PostMapping("/click/update")
     public String msgClickUpdate(@Valid MsgClickUpdateVo msgClickUpdateVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        return gsonUtil.toJson(new JsonOutputVo(Status.메시지클릭업데이트_성공));
+        return gsonUtil.toJson(new JsonOutputVo(MypageStatus.메시지클릭업데이트_성공));
 
         /*DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
@@ -856,13 +854,13 @@ public class MypageController {
         String result;
         if(broadcastOptionAddVo.getOptionType() == 1){
             if(broadcastOptionAddVo.getContents().length() > 20){
-                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.벨리데이션체크));
             }
             P_BroadcastTitleAddVo apiData = new P_BroadcastTitleAddVo(broadcastOptionAddVo, request);
             result = mypageService.callBroadcastTitleAdd(apiData);
         }else{
             if(broadcastOptionAddVo.getContents().length() > 100){
-                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.벨리데이션체크));
             }
             P_BroadcastWelcomeMsgAddVo apiData = new P_BroadcastWelcomeMsgAddVo(broadcastOptionAddVo, request);
             result = mypageService.callBroadcastWelcomeMsgAdd(apiData);
@@ -882,13 +880,13 @@ public class MypageController {
         String result;
         if(broadcastOptionEditVo.getOptionType() == 1){
             if(broadcastOptionEditVo.getContents().length() > 20){
-                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.벨리데이션체크));
             }
             P_BroadcastTitleEditVo apiData = new P_BroadcastTitleEditVo(broadcastOptionEditVo, request);
             result = mypageService.callBroadcastTitleEdit(apiData);
         }else{
             if(broadcastOptionEditVo.getContents().length() > 100){
-                return gsonUtil.toJson(new JsonOutputVo(Status.벨리데이션체크));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.벨리데이션체크));
             }
             P_BroadcastWelcomeMsgEditVo apiData = new P_BroadcastWelcomeMsgEditVo(broadcastOptionEditVo, request);
            result = mypageService.callBroadcastWelcomeMsgEdit(apiData);
@@ -1050,7 +1048,7 @@ public class MypageController {
             return mypageService.broadcastNoticeAdd(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / broadcastNoticeAdd Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
         }
     }
 
@@ -1064,7 +1062,7 @@ public class MypageController {
             return mypageService.broadcastNoticeUpd(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / broadcastNoticeUpd Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지수정_실패));
         }
     }
 
@@ -1096,7 +1094,7 @@ public class MypageController {
             return mypageService.feedAdd(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedAdd Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
         }
     }
 
@@ -1109,11 +1107,11 @@ public class MypageController {
         try {
             return mypageService.feedSelect(feedListVo, request);
         } catch (Exception e) {
-            log.error("MypageController.java / feedSelect() => {}", e);
+            log.error("MypageController.java / feedSelect() => params: {}, error: {}, memNo: {}", gsonUtil.toJson(feedListVo), e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             HashMap resultMap = new HashMap();
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(0, 0, 0));
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음, resultMap));
         }
     }
 
@@ -1127,7 +1125,7 @@ public class MypageController {
             return mypageService.feedUpdate(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedUpdate Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지수정_실패));
         }
     }
 
@@ -1141,7 +1139,7 @@ public class MypageController {
             return mypageService.feedDelete(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedDelete Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지삭제_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지삭제_실패));
         }
     }
 
@@ -1154,7 +1152,7 @@ public class MypageController {
             return mypageService.feedDetailSelect(feedDetailListVo, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedDetailSelect Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
         }
     }
 
@@ -1168,7 +1166,7 @@ public class MypageController {
             return mypageService.feedLike(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedLike Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요_실패));
         }
     }
 
@@ -1182,7 +1180,7 @@ public class MypageController {
             return mypageService.feedLikeCancel(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedLikeCancel Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_취소실패));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요_취소실패));
         }
     }
 
@@ -1196,7 +1194,7 @@ public class MypageController {
             return mypageService.feedReplyAdd(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedReplyAdd Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지댓글등록_실패));
         }
     }
 
@@ -1210,7 +1208,7 @@ public class MypageController {
             return mypageService.feedReplyUpd(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedReplyUpd Exception: {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지댓글수정_실패));
         }
     }
 
@@ -1224,7 +1222,7 @@ public class MypageController {
             return mypageService.feedReplyDel(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / feedReplyDelete Exception: {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글삭제_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지댓글삭제_실패));
         }
     }
 
@@ -1237,8 +1235,7 @@ public class MypageController {
         try {
             return mypageService.feedReplyList(param, request);
         } catch (Exception e) {
-            log.error("MypageController.java / feedReplyList Exception : {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지댓글보기_실패));
+            log.error("MypageController.java / feedReplyList Exception / pararm: {}, error: {}, memNo: {}", gsonUtil.toJson(param) ,e, gsonUtil.toJson(MemberVo.getMyMemNo(request))); return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지댓글보기_실패));
         }
     }
 
@@ -1259,7 +1256,7 @@ public class MypageController {
             return mypageService.noticeAdd(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / noticeAdd Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
         }
     }
 
@@ -1299,12 +1296,12 @@ public class MypageController {
         try {
             return mypageService.noticeSelect(noticeSelVo.getMemNo(), noticeSelVo.getPageNo(), noticeSelVo.getPageCnt(), request);
         } catch (Exception e) {
-            log.error("MypageController.java / noticeSelect() => {}", e);
+            log.error("MypageController.java / noticeSelect() => params: {}, error: {}, memNo: {}", gsonUtil.toJson(noticeSelVo), e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             HashMap resultMap = new HashMap();
 //            resultMap.put("fixList", new ArrayList());
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(0, 0, 0));
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음, resultMap));
         }
     }
 
@@ -1317,11 +1314,11 @@ public class MypageController {
         try {
             return mypageService.noticeFixSelect(noticeFixSelVo.getMemNo(), noticeFixSelVo.getPageNo(), noticeFixSelVo.getPageCnt(), request);
         } catch (Exception e) {
-            log.error("MypageController.java / noticeFixSelect() => {}", e);
+            log.error("MypageController.java / noticeFixSelect() => params: {}, error: {}, memNo: {}", gsonUtil.toJson(noticeFixSelVo), e, gsonUtil.toJson(MemberVo.getMyMemNo(request)));
             HashMap resultMap = new HashMap();
             resultMap.put("fixList", new ArrayList());
             resultMap.put("paging", new PagingVo(0, 0, 0));
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음, resultMap));
         }
     }
 
@@ -1344,7 +1341,7 @@ public class MypageController {
             return mypageService.noticeUpdate(param, request);
         } catch (Exception e) {
             log.error("MypageController.java / noticeUpdate Error {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지수정_실패));
         }
     }
 
@@ -1392,7 +1389,7 @@ public class MypageController {
             return mypageService.noticeDetailSelect(noticeSelVo, request);
         } catch (Exception e) {
             log.error("MypageController.java / noticeDetailSelect Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
         }
     }
 
@@ -1406,7 +1403,7 @@ public class MypageController {
             return mypageService.noticeLike(feedLikeVo, request);
         } catch (Exception e) {
             log.error("MypageController.java / noticeLike Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_실패));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요_실패));
         }
     }
 
@@ -1420,7 +1417,7 @@ public class MypageController {
             return mypageService.noticeLikeCancel(feedLikeCancelVo, request);
         } catch (Exception e) {
             log.error("MypageController.java / noticeLikeCancel Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.좋아요_취소실패));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요_취소실패));
         }
     }
 

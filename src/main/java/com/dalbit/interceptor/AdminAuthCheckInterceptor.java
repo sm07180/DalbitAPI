@@ -3,7 +3,8 @@ package com.dalbit.interceptor;
 import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.vo.AdminMenuVo;
 import com.dalbit.admin.vo.SearchVo;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.AdminStatus;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.member.vo.TokenVo;
 import com.dalbit.util.DalbitUtil;
@@ -12,7 +13,6 @@ import com.dalbit.util.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -57,7 +57,7 @@ public class AdminAuthCheckInterceptor extends HandlerInterceptorAdapter {
             searchVo.setMem_no(tokenVo.getMemNo());
             ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
             if(DalbitUtil.isEmpty(menuList)){
-                responseJson(response, gsonUtil.toJson(new JsonOutputVo(Status.관리자메뉴조회_권한없음)));
+                responseJson(response, gsonUtil.toJson(new JsonOutputVo(AdminStatus.관리자메뉴조회_권한없음)));
                 return false;
             }
 
@@ -68,7 +68,7 @@ public class AdminAuthCheckInterceptor extends HandlerInterceptorAdapter {
 
         }
 
-        responseJson(response, gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류)));
+        responseJson(response, gsonUtil.toJson(new JsonOutputVo(CommonStatus.파라미터오류)));
         return false;
 
     }

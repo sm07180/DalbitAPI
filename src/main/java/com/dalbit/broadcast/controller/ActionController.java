@@ -103,6 +103,7 @@ public class ActionController {
         apiData.setSecret("1".equals(giftVo.getIsSecret()) || "TRUE".equals(giftVo.getIsSecret().toUpperCase()) ? "1" : "0");
         apiData.setTtsText(giftVo.getTtsText());
         apiData.setActorId(giftVo.getActorId());
+        apiData.setTtsYn(giftVo.getTtsYn());
 
         String result = actionService.callBroadCastRoomGift(apiData, request);
 

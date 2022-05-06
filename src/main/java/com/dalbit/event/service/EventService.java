@@ -3,9 +3,7 @@ package com.dalbit.event.service;
 import com.dalbit.admin.dao.AdminDao;
 import com.dalbit.admin.vo.AdminMenuVo;
 import com.dalbit.admin.vo.SearchVo;
-import com.dalbit.common.code.Code;
-import com.dalbit.common.code.EventCode;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.*;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.service.PushService;
 import com.dalbit.common.vo.*;
@@ -122,7 +120,7 @@ public class EventService {
         data.put("nowRound", nowRound);
         data.put("terms", eventTerm);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, data));
     }
 
     /**
@@ -138,7 +136,7 @@ public class EventService {
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         if(DalbitUtil.isEmpty(rankingLiveVoList)){
             resultMap.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트실시간순위리스트없음, resultMap));
         }
 
 
@@ -157,9 +155,9 @@ public class EventService {
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트조회, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트실시간순위리스트조회, resultMap));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트실시간순위리스트_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트실시간순위리스트_실패));
         }
         return result;
     }
@@ -178,7 +176,7 @@ public class EventService {
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         if(DalbitUtil.isEmpty(rankingResultVoList)){
             resultMap.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트결과없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트결과없음, resultMap));
         }
 
 
@@ -197,9 +195,9 @@ public class EventService {
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트결과조회, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트결과조회, resultMap));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹이벤트결과_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트결과_실패));
         }
         return result;
     }
@@ -219,7 +217,7 @@ public class EventService {
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(replyVoList)){
             resultMap.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글리스트없음, resultMap));
         }
 
         String result;
@@ -232,9 +230,9 @@ public class EventService {
 
             resultMap.put("list", outList);
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트조회, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글리스트조회, resultMap));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트댓글리스트_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글리스트_실패));
         }
         return result;
     }
@@ -246,16 +244,16 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(pReplyAddInputVo);
 
         if(pReplyAddInputVo.getMemLogin() == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_회원아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글달기실패_회원아님));
         }
 
         int insertResult = eventDao.callEventReplyAdd(pReplyAddInputVo);
 
         String result;
-        if(Status.이벤트_댓글달기성공.getMessageCode().equals(insertResult+"")){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기성공));
+        if(EventStatus.이벤트_댓글달기성공.getMessageCode().equals(insertResult+"")){
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글달기성공));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글달기실패_등록오류));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글달기실패_등록오류));
         }
 
         return result;
@@ -269,18 +267,18 @@ public class EventService {
 
         int checkAuth = eventDao.callEventAuthCheck(pReplyDeleteInputVo);
         if(checkAuth <= 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제실패_삭제권한없음));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제실패_삭제권한없음));
         }
 
         int insertResult = eventDao.callEventReplyDelete(pReplyDeleteInputVo);
 
         String result;
         if(insertResult > 0){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제성공));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제성공));
         }else if(insertResult == 0){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제정보없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제정보없음));
         }else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_댓글삭제실패_등록오류));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제실패_등록오류));
         }
 
         return result;
@@ -352,7 +350,7 @@ public class EventService {
     public String attendanceCheckStatus(HttpServletRequest request){
 
         if(!DalbitUtil.isLogin(request)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요_성공, AnonymousUserDummyData()));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요_성공, AnonymousUserDummyData()));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
@@ -385,16 +383,16 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckLoad(procedureVo);
 
-        if(procedureVo.getRet().equals(Status.출석체크이벤트_상태조회_실패_회원아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_실패_회원아님));
+        if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_상태조회_실패_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_상태조회_실패_회원아님));
 
-        }else if (procedureVo.getRet().equals(Status.출석체크이벤트_상태조회_성공.getMessageCode())){
+        }else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_상태조회_성공.getMessageCode())){
 
             var returnMap = attendanceResultMap(procedureVo, dateList);
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_성공, returnMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_상태조회_성공, returnMap));
 
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_상태조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_상태조회_실패));
         }
     }
 
@@ -472,7 +470,7 @@ public class EventService {
     public String attendanceCheckIn(HttpServletRequest request){
 
         if(!DalbitUtil.isLogin(request)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
@@ -518,38 +516,38 @@ public class EventService {
 
         }*/
 
-        if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_회원아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_회원아님));
+        if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_회원아님));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_이미받음.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_이미받음));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_이미받음.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_이미받음));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_필요시간부족.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_필요시간부족));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_필요시간부족.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_필요시간부족));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_보상테이블없음.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_보상테이블없음));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_보상테이블없음.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_보상테이블없음));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_동일기기중복불가.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_동일기기중복불가));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_동일기기중복불가.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_동일기기중복불가));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_실패_동일아이피중복불가.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패_동일아이피중복불가));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_동일아이피중복불가.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_동일아이피중복불가));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_출석_성공.getMessageCode())){
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_성공.getMessageCode())){
 
             var returnMap = attendanceResultMap(procedureVo, dateList);
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_성공, returnMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_성공, returnMap));
 
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_출석_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패));
         }
     }
 
     public String attendanceRandomGift(HttpServletRequest request){
 
         if(!DalbitUtil.isLogin(request)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.로그인필요));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
@@ -580,16 +578,16 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckBonus(procedureVo);
 
-        if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_회원아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_회원아님));
+        if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패_회원아님));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_이미받음.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_이미받음));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_이미받음.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패_이미받음));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_실패_대상아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패_대상아님));
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_대상아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패_대상아님));
 
-        }else if(procedureVo.getRet().equals(Status.출석체크이벤트_더줘_성공.getMessageCode())){
+        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_성공.getMessageCode())){
 
             int attendanceDays = 0;
             int totalExp = 0;
@@ -613,10 +611,10 @@ public class EventService {
             returnMap.put("dateList", dateList);
             returnMap.put("summary", summary);
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_성공, returnMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_성공, returnMap));
 
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석체크이벤트_더줘_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패));
         }
     }
 
@@ -748,14 +746,14 @@ public class EventService {
                 map.put("risingList", risingList);
                 map.put("risingOutput", risingOutput);
 
-                result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_조회_성공, map));
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_실시간순위_조회_성공, map));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음, map));
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_실시간순위_데이터없음, map));
             }
         }else {
             map.put("risingList", new ArrayList());
             map.put("risingOutput", new HashMap());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_실시간순위_데이터없음, map));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_실시간순위_데이터없음, map));
         }
         return result;
     }
@@ -776,9 +774,9 @@ public class EventService {
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_결과_조회_성공, map));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_결과_조회_성공, map));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.라이징이벤트_결과_데이터없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_결과_데이터없음));
         }
         return result;
     }
@@ -794,7 +792,7 @@ public class EventService {
             var resultMap = new HashMap();
             resultMap.put("isCheck", true);
             resultMap.put("attendanceCheck", 0);
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_성공, resultMap));
         }
         ProcedureVo procedureVo = new ProcedureVo(pAttendanceCheckVo);
         eventDao.callAttendanceCheck(procedureVo);
@@ -861,12 +859,12 @@ public class EventService {
         returnMap.put("userEventCheck", userEventCheck);
         returnMap.put("eventIconUrl", eventIconUrl);
 
-        if(procedureVo.getRet().equals(Status.출석완료체크_성공.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_성공, returnMap));
-        }else if(procedureVo.getRet().equals(Status.출석완료체크_회원아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_회원아님));
+        if(procedureVo.getRet().equals(EventStatus.출석완료체크_성공.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_성공, returnMap));
+        }else if(procedureVo.getRet().equals(EventStatus.출석완료체크_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_회원아님));
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.출석완료체크_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_실패));
         }
 
     }
@@ -878,20 +876,20 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(pPhoneInputVo);
         eventDao.callPhoneInput(procedureVo);
 
-        if(procedureVo.getRet().equals(Status.휴대폰입력_성공.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_성공, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(Status.휴대폰입력_회원아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_회원아님));
-        }else if(procedureVo.getRet().equals(Status.휴대폰입력_당첨자아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_당첨자아님));
-        }else if(procedureVo.getRet().equals(Status.휴대폰입력_자리수11미만.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_자리수11미만));
-        }else if(procedureVo.getRet().equals(Status.휴대폰입력_입력종료시간지남.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_입력종료시간지남));
-        }else if(procedureVo.getRet().equals(Status.휴대폰입력_이미입력된번호.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_이미입력된번호));
+        if(procedureVo.getRet().equals(EventStatus.휴대폰입력_성공.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_성공, procedureVo.getData()));
+        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_회원아님));
+        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_당첨자아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_당첨자아님));
+        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_자리수11미만.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_자리수11미만));
+        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_입력종료시간지남.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_입력종료시간지남));
+        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_이미입력된번호.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_이미입력된번호));
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.휴대폰입력_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_실패));
         }
     }
 
@@ -907,7 +905,7 @@ public class EventService {
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(gifticonWinList)){
             resultMap.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트없음, resultMap));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트없음, resultMap));
         }
 
         String result;
@@ -919,11 +917,11 @@ public class EventService {
             }
             resultMap.put("list", outList);
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트조회, resultMap));
-        }else if(procedureVo.getRet().equals(Status.기프티콘_당첨자리스트조회_회원아님.getMessageCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트조회, resultMap));
+        }else if(procedureVo.getRet().equals(EventStatus.기프티콘_당첨자리스트조회_회원아님.getMessageCode())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.기프티콘_당첨자리스트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트조회_실패));
         }
         return result;
     }
@@ -935,7 +933,7 @@ public class EventService {
         HashMap resultMap = new HashMap();
         var lunarVo = eventDao.selectLunarDate();
         resultMap.put("lunarDt", lunarVo.getLunarDate());
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
     }
 
     public String selectPhotoList(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
@@ -960,7 +958,7 @@ public class EventService {
         map.put("list", list);
         map.put("totCnt", totCnt);
         map.put("isAdmin", isAdmin(request));
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
         return result;
     }
 
@@ -968,7 +966,7 @@ public class EventService {
 
         int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         if(!EventCode.인증샷.isMulti()){
@@ -979,7 +977,7 @@ public class EventService {
             eventDao.selectPhotoList(checkDuplJoin);
             int totCnt = checkDuplJoin.getTotalCnt();
             if(0 < totCnt){
-                return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_이미참여));
+                return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_이미참여));
             }
         }
 
@@ -998,7 +996,7 @@ public class EventService {
         photoEventInputVo.setEvent_member_idx(eventMemberVo.getEvent_member_idx());
         eventDao.insertPhoto(photoEventInputVo);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.생성));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.생성));
         return result;
     }
 
@@ -1006,7 +1004,7 @@ public class EventService {
 
         int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
@@ -1014,7 +1012,7 @@ public class EventService {
 
         eventDao.updatePhoto(photoEventInputVo);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.수정));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.수정));
         return result;
     }
 
@@ -1022,7 +1020,7 @@ public class EventService {
 
         int eventCheck = eventDateCheck(photoEventInputVo.getEvent_idx());
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
@@ -1032,7 +1030,7 @@ public class EventService {
         eventDao.deleteEventMemberPhoto(photoEventInputVo);
         eventDao.deletePhoto(photoEventInputVo);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.삭제));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.삭제));
         return result;
     }
 
@@ -1057,7 +1055,7 @@ public class EventService {
         map.put("status", status);
         map.put("pcCheck", pcCheck);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
         return result;
     }
 
@@ -1113,7 +1111,7 @@ public class EventService {
         map.put("totCnt", totCnt);
         map.put("myCnt", myCnt);
         map.put("isAdmin", isAdmin(request));
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
         return result;
     }
 
@@ -1126,19 +1124,19 @@ public class EventService {
         if(DalbitUtil.isLogin(request)){
             ProcedureVo procedureVo = new ProcedureVo(new P_Apply003Vo(new ApplyVo(EventCode.노하우.getEventIdx()), knowhowEventInputVo, request));
             eventDao.callEventApply003(procedureVo);
-            if(Status.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
-                status = Status.이벤트_참여;
-            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
-                status = Status.이벤트_체크_이미참여;
-            }else if(Status.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
-                status = Status.이벤트_체크_자격안됨;
-            }else if(Status.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
-                status = Status.이벤트_없음_종료;
-            }else if(Status.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
-                status = Status.이벤트_에러;
+            if(EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+                status = EventStatus.이벤트_참여;
+            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                status = EventStatus.이벤트_체크_이미참여;
+            }else if(EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+                status = EventStatus.이벤트_체크_자격안됨;
+            }else if(EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+                status = EventStatus.이벤트_없음_종료;
+            }else if(EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+                status = EventStatus.이벤트_에러;
             }
         }else{
-            status = Status.이벤트_비회원;
+            status = EventStatus.이벤트_비회원;
         }
         String result = gsonUtil.toJson(new JsonOutputVo(status));
         return result;
@@ -1151,7 +1149,7 @@ public class EventService {
         knowhowEventInputVo.setEvent_idx(event_idx);
         int eventCheck = eventDateCheck(event_idx);
         if(eventCheck == 0){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_참여날짜아님));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
         String mem_no = MemberVo.getMyMemNo(request);
@@ -1186,9 +1184,9 @@ public class EventService {
         int updateResult = eventDao.updateKnowhow(knowhowEventInputVo);
         String result = null;
         if(updateResult == 0){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.수정));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.수정));
         }
 
         return result;
@@ -1208,7 +1206,7 @@ public class EventService {
 
         KnowhowEventOutputVo detail = eventDao.selectKnowhowDetail(knowhowEventInputVo);
         if(DalbitUtil.isEmpty(detail)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
 
         detail.setProfImg(new ImageVo(detail.getImage_profile(), "n", DalbitUtil.getProperty("server.photo.url")));
@@ -1216,7 +1214,7 @@ public class EventService {
         resultMap.put("isAdmin", isAdmin(request));
         resultMap.put("detail", detail);
 
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.조회, resultMap));
+        String result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
         return result;
     }
 
@@ -1231,16 +1229,16 @@ public class EventService {
         var resultMap = new HashMap();
         resultMap.put("good_cnt", DalbitUtil.getIntMap(procedureResult, "good_cnt"));
 
-        if(Status.노하우_이벤트_좋아요.getMessageCode().equals(procedureVo.getRet())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_좋아요, resultMap));
-        }else if(Status.노하우_이벤트_좋아요취소.getMessageCode().equals(procedureVo.getRet())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_좋아요취소, resultMap));
-        }else if(Status.노하우_이벤트_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_회원아님));
-        }else if(Status.노하우_이벤트_이벤트없음.getMessageCode().equals(procedureVo.getRet())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.노하우_이벤트_이벤트없음));
+        if(EventStatus.노하우_이벤트_좋아요.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_좋아요, resultMap));
+        }else if(EventStatus.노하우_이벤트_좋아요취소.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_좋아요취소, resultMap));
+        }else if(EventStatus.노하우_이벤트_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_회원아님));
+        }else if(EventStatus.노하우_이벤트_이벤트없음.getMessageCode().equals(procedureVo.getRet())){
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_이벤트없음));
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류));
         }
     }
 
@@ -1261,15 +1259,15 @@ public class EventService {
         if(DalbitUtil.isLogin(request)){
             ProcedureVo procedureVo = new ProcedureVo(new P_CheckVo(checkVo, request));
             eventDao.callEventApplyCheck(procedureVo);
-            if(Status.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_참여);
-            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_이미참여);
-            }else if(Status.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_자격안됨);
+            if(EventStatus.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_참여);
+            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_이미참여);
+            }else if(EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_자격안됨);
             }
         }else{
-            resultMap.put("status", Status.이벤트_비회원);
+            resultMap.put("status", EventStatus.이벤트_비회원);
         }
 
         return resultMap;
@@ -1282,19 +1280,19 @@ public class EventService {
             checkVo.setEventIdx(4);
             ProcedureVo procedureVo = new ProcedureVo(new P_CheckVo(checkVo, request));
             eventDao.callEventApplyCheck004(procedureVo);
-            if(Status.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_참여);
-            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_이미참여);
-            }else if(Status.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
+            if(EventStatus.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_참여);
+            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_이미참여);
+            }else if(EventStatus.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
                 HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
                 HashMap data = new HashMap();
                 data.put("airHour", returnMap.get("airhour"));
-                resultMap.put("status", Status.이벤트_체크_자격안됨04);
+                resultMap.put("status", EventStatus.이벤트_체크_자격안됨04);
                 resultMap.put("data", data);
             }
         }else{
-            resultMap.put("status", Status.이벤트_비회원);
+            resultMap.put("status", EventStatus.이벤트_비회원);
         }
 
         return resultMap;
@@ -1305,19 +1303,19 @@ public class EventService {
         if(DalbitUtil.isLogin(request)){
             ProcedureVo procedureVo = new ProcedureVo(new P_ApplyVo(applyVo, request));
             eventDao.callEventApplySP(procedureVo);
-            if(Status.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_참여);
-            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_이미참여);
-            }else if(Status.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_자격안됨);
-            }else if(Status.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_없음_종료);
-            }else if(Status.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_에러);
+            if(EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_참여);
+            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_이미참여);
+            }else if(EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_자격안됨);
+            }else if(EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_없음_종료);
+            }else if(EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_에러);
             }
         }else{
-            resultMap.put("status", Status.이벤트_비회원);
+            resultMap.put("status", EventStatus.이벤트_비회원);
         }
         return resultMap;
     }
@@ -1328,21 +1326,21 @@ public class EventService {
             applyVo.setEventIdx(4);
             ProcedureVo procedureVo = new ProcedureVo(new P_ApplyVo(applyVo, request));
             eventDao.callEventApply004(procedureVo);
-            if(Status.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_참여);
-            }else if(Status.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_이미참여);
-            }else if(Status.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_체크_자격안됨04);
-            }else if(Status.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_없음_종료);
-            }else if(Status.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_에러);
-            }else if(Status.이벤트_비회원.getMessageCode().equals(procedureVo.getRet())){
-                resultMap.put("status", Status.이벤트_비회원);
+            if(EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_참여);
+            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_이미참여);
+            }else if(EventStatus.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_체크_자격안됨04);
+            }else if(EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_없음_종료);
+            }else if(EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_에러);
+            }else if(EventStatus.이벤트_비회원.getMessageCode().equals(procedureVo.getRet())){
+                resultMap.put("status", EventStatus.이벤트_비회원);
             }
         }else{
-            resultMap.put("status", Status.이벤트_비회원);
+            resultMap.put("status", EventStatus.이벤트_비회원);
         }
         return resultMap;
     }
@@ -1379,11 +1377,11 @@ public class EventService {
         String result="";
 
         if(eventList.size() > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_리스트조회_성공, eventList));
-        } else if (Status.이벤트_리스트조회_실패.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_리스트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_리스트조회_성공, eventList));
+        } else if (EventStatus.이벤트_리스트조회_실패.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_리스트조회_실패));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_리스트조회_데이터없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_리스트조회_데이터없음));
         }
 
         return result;
@@ -1427,13 +1425,13 @@ public class EventService {
         map.put("rankList", rankList);
 
         if(winList.size() > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_성공, map));
-        } else if (Status.이벤트_당첨자명단조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_이벤트번호없음));
-        } else if (Status.이벤트_당첨자명단조회_실패.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자명단조회_성공, map));
+        } else if (EventStatus.이벤트_당첨자명단조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자명단조회_이벤트번호없음));
+        } else if (EventStatus.이벤트_당첨자명단조회_실패.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자명단조회_실패));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자명단조회_결과없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자명단조회_결과없음));
         }
 
         return result;
@@ -1450,17 +1448,17 @@ public class EventService {
         String result;
 
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_성공, resultList));
-        } else if (Status.이벤트_당첨여부조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_당첨자아님));
-        } else if (Status.이벤트_당첨여부조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_회원아님));
-        } else if (Status.이벤트_당첨여부조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_이벤트번호없음));
-        } else if (Status.이벤트_당첨여부조회_결과없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_결과없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_성공, resultList));
+        } else if (EventStatus.이벤트_당첨여부조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_당첨자아님));
+        } else if (EventStatus.이벤트_당첨여부조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_회원아님));
+        } else if (EventStatus.이벤트_당첨여부조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_이벤트번호없음));
+        } else if (EventStatus.이벤트_당첨여부조회_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_결과없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨여부조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_실패));
         }
 
         return result;
@@ -1475,26 +1473,26 @@ public class EventService {
 
         String result;
 
-        if(Status.이벤트_경품수령방법입력_경품받기_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_경품받기_성공));
-        } else if (Status.이벤트_경품수령방법입력_달로받기_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_달로받기_성공));
-        } else if (Status.이벤트_경품수령방법입력_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_회원아님));
-        } else if (Status.이벤트_경품수령방법입력_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_이벤트번호없음));
-        } else if (Status.이벤트_경품수령방법입력_결과없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_결과없음));
-        } else if (Status.이벤트_경품수령방법입력_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_당첨자아님));
-        } else if (Status.이벤트_경품수령방법입력_이미경품선택함_입력불가능.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_이미경품선택함_입력불가능));
-        } else if (Status.이벤트_경품수령방법입력_수령방법_오류.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_수령방법_오류));
-        } else if (Status.이벤트_경품수령방법입력_입금확인후_수정불가능.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_입금확인후_수정불가능));
+        if(EventStatus.이벤트_경품수령방법입력_경품받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_경품받기_성공));
+        } else if (EventStatus.이벤트_경품수령방법입력_달로받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_달로받기_성공));
+        } else if (EventStatus.이벤트_경품수령방법입력_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_회원아님));
+        } else if (EventStatus.이벤트_경품수령방법입력_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_이벤트번호없음));
+        } else if (EventStatus.이벤트_경품수령방법입력_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_결과없음));
+        } else if (EventStatus.이벤트_경품수령방법입력_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_당첨자아님));
+        } else if (EventStatus.이벤트_경품수령방법입력_이미경품선택함_입력불가능.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_이미경품선택함_입력불가능));
+        } else if (EventStatus.이벤트_경품수령방법입력_수령방법_오류.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_수령방법_오류));
+        } else if (EventStatus.이벤트_경품수령방법입력_입금확인후_수정불가능.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_입금확인후_수정불가능));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_경품수령방법입력_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_실패));
         }
 
         return result;
@@ -1510,20 +1508,20 @@ public class EventService {
 
         String result;
 
-        if(Status.이벤트_당첨자등록정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_성공, addInfoOutput));
-        } else if (Status.이벤트_당첨자등록정보조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_회원아님));
-        } else if (Status.이벤트_당첨자등록정보조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_이벤트번호없음));
-        } else if (Status.이벤트_당첨자등록정보조회_결과없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_결과없음));
-        } else if (Status.이벤트_당첨자등록정보조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_당첨자아님));
-        } else if (Status.이벤트_당첨자등록정보조회_경품번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_경품번호없음));
+        if(EventStatus.이벤트_당첨자등록정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_성공, addInfoOutput));
+        } else if (EventStatus.이벤트_당첨자등록정보조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_회원아님));
+        } else if (EventStatus.이벤트_당첨자등록정보조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_이벤트번호없음));
+        } else if (EventStatus.이벤트_당첨자등록정보조회_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_결과없음));
+        } else if (EventStatus.이벤트_당첨자등록정보조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_당첨자아님));
+        } else if (EventStatus.이벤트_당첨자등록정보조회_경품번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_경품번호없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_실패));
         }
 
         return result;
@@ -1539,9 +1537,9 @@ public class EventService {
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
             log.debug(info.toString());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.조회, info));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, info));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류));
         }
 
         return result;
@@ -1581,7 +1579,7 @@ public class EventService {
 
         String result;
 
-        if(Status.이벤트_당첨자등록정보수정_등록성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(EventStatus.이벤트_당첨자등록정보수정_등록성공.getMessageCode().equals(procedureVo.getRet())) {
             if(isDone) {
                 if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1()), request);
@@ -1590,8 +1588,8 @@ public class EventService {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2()), request);
                 }
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_등록성공));
-        } else if (Status.이벤트_당첨자등록정보수정_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_등록성공));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_성공.getMessageCode().equals(procedureVo.getRet())) {
             if(isDone) {
                 if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1()), request);
@@ -1600,21 +1598,21 @@ public class EventService {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2()), request);
                 }
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_성공));
-        } else if (Status.이벤트_당첨자등록정보수정_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_회원아님));
-        } else if (Status.이벤트_당첨자등록정보수정_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_이벤트번호없음));
-        } else if (Status.이벤트_당첨자등록정보수정_결과없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_결과없음));
-        } else if (Status.이벤트_당첨자등록정보수정_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_당첨자아님));
-        } else if (Status.이벤트_당첨자등록정보수정_입금확인후_수정불가능.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_입금확인후_수정불가능));
-        } else if (Status.이벤트_당첨자등록정보수정_경품번호없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_경품번호없음));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_성공));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_회원아님));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_이벤트번호없음));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_결과없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_결과없음));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_당첨자아님));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_입금확인후_수정불가능.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_입금확인후_수정불가능));
+        } else if (EventStatus.이벤트_당첨자등록정보수정_경품번호없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_경품번호없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이벤트_당첨자등록정보수정_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_실패));
         }
 
         return result;
@@ -1626,10 +1624,10 @@ public class EventService {
     public String selectTimeEventInfo(TimeEventVo timeEventVo){
         TimeEventVo timeEventInfo = eventDao.selectTimeEventInfo(timeEventVo);
         if(DalbitUtil.isEmpty(timeEventInfo)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.이벤트_진행중인이벤트없음));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_진행중인이벤트없음));
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, timeEventInfo));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, timeEventInfo));
     }
 
 
@@ -1667,9 +1665,9 @@ public class EventService {
             rankInfo.put("list", outVoList);
             //openEventExtVo.setList(outVoList);
 
-            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.오픈이벤트조회_성공, rankInfo));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.오픈이벤트조회_성공, rankInfo));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.오픈이벤트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.오픈이벤트조회_실패));
         }
         return result;
     }
@@ -1695,9 +1693,9 @@ public class EventService {
 
             bestList.put("list", outVoList);
 
-            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.일간최고조회_성공, bestList));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.일간최고조회_성공, bestList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.일간최고조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.일간최고조회_실패));
         }
         return result;
     }
@@ -1733,11 +1731,11 @@ public class EventService {
             specialLeague.put("nowRoundNo", DalbitUtil.getIntMap(resultMap, "nowRoundNo"));
             specialLeague.put("isSpecial", DalbitUtil.getIntMap(resultMap, "isSpecial") == 1);
 
-            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.스페셜리그_조회_성공, specialLeague));
-        } else if (Status.스페셜리그_조회_기수오버.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜리그_조회_기수오버));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.스페셜리그_조회_성공, specialLeague));
+        } else if (EventStatus.스페셜리그_조회_기수오버.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스페셜리그_조회_기수오버));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜리그_조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스페셜리그_조회_실패));
         }
         return result;
     }
@@ -1778,9 +1776,9 @@ public class EventService {
             rankInfo.put("nowEventNo", DalbitUtil.getIntMap(resultMap, "now_event_no"));
             rankInfo.put("list", outVoList);
 
-            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.챔피언십조회_성공, rankInfo));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.챔피언십조회_성공, rankInfo));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.챔피언십조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.챔피언십조회_실패));
         }
         return result;
     }
@@ -1821,9 +1819,9 @@ public class EventService {
 
             rankInfo.put("list", outVoList);
 
-            result = gsonUtil.toJsonAdm(new JsonOutputVo(Status.챔피언십_승점조회_성공, rankInfo));
+            result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.챔피언십_승점조회_성공, rankInfo));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.챔피언십_승점조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.챔피언십_승점조회_실패));
         }
         return result;
     }
@@ -1837,16 +1835,16 @@ public class EventService {
         eventDao.callChampionshipGift(procedureVo);
 
         String result;
-        if(Status.선물받기_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_성공));
-        } else if (Status.선물받기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_회원아님));
-        } else if (Status.선물받기_이미받음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_이미받음));
-        } else if (Status.선물받기_10점안됨.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_10점안됨));
+        if(EventStatus.선물받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_성공));
+        } else if (EventStatus.선물받기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_회원아님));
+        } else if (EventStatus.선물받기_이미받음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_이미받음));
+        } else if (EventStatus.선물받기_10점안됨.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_10점안됨));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.선물받기_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_실패));
         }
 
         return result;
@@ -2159,7 +2157,7 @@ public class EventService {
         gganbuRankListInputVo.setPagePerCnt(50);
         result.put("rankList", gganbuRankList(gganbuRankListInputVo));
 
-        // 구슬주머니 new 뱃지
+        // 구슬주머니 new 배지
         GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo = new GganbuMemBadgeUpdVo(gganbuNo, memNo);
         GganbuMemBadgeSelVo gganbuMemBadgeSelVo = event.gganbuMemBadgeSel(gganbuMemBadgeUpdVo);
         result.put("badgeCnt", gganbuMemBadgeSelVo);
@@ -2383,7 +2381,7 @@ public class EventService {
     }
 
     /**
-     * 깐부 뱃지 초기화
+     * 깐부 배지 초기화
      */
     public int gganbuMemBadgeUpd(GganbuMemBadgeUpdVo gganbuMemBadgeUpdVo) {
         return event.gganbuMemBadgeUpd(gganbuMemBadgeUpdVo);

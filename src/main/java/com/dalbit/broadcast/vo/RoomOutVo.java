@@ -60,6 +60,7 @@ public class RoomOutVo {
     private Boolean isNew;
     private Boolean isSpecial;
     private int badgeSpecial;
+    private int badgePartner;
     private Boolean isAttendCheck;
     private String isAttendUrl;
     private int os;
@@ -87,6 +88,7 @@ public class RoomOutVo {
     private boolean isMinigame;
     private boolean isConDj;
     private boolean isVote;
+    private int badge_partner;
 
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
@@ -141,6 +143,7 @@ public class RoomOutVo {
         this.isSpecial = target.getBadge_special() > 0;
         this.isConDj = target.getIsConDj() > 0;
         this.badgeSpecial = target.getBadge_special();
+        this.badgePartner = target.getBadge_partner();
         this.boostCnt = target.getCount_boost();
         this.rank = target.getRank();
         this.os = target.getOs_type();
@@ -223,6 +226,7 @@ public class RoomOutVo {
         this.isSpecial = target.getBadge_special() > 0;
         this.isConDj = target.getIsConDj() > 0;
         this.badgeSpecial = target.getBadge_special();
+        this.badge_partner = target.getBadge_partner();
         //TODO 출석체크이벤트 종료 시 구분 처리 필요
         this.isAttendCheck = (Boolean) attendanceCheckMap.get("isCheck");
         this.isAttendUrl = DalbitUtil.getProperty("server.mobile.url") + "/event/attend_event?webview=new";
@@ -259,5 +263,9 @@ public class RoomOutVo {
 
     public void setIsVote(boolean isVote){
         this.isVote = isVote;
+    }
+
+    public void setIsConDj(boolean isConDj){
+        this.isConDj = isConDj;
     }
 }

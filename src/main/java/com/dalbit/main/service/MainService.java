@@ -1,7 +1,8 @@
 package com.dalbit.main.service;
 
 import com.dalbit.admin.service.AdminService;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MainStatus;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.dao.JoinDao;
@@ -13,7 +14,6 @@ import com.dalbit.main.vo.procedure.*;
 import com.dalbit.main.vo.request.MainRecommandOutVo;
 import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -294,7 +294,7 @@ public class MainService {
         //mainMap.put("popupLevel", Integer.parseInt((String) checkMap.get("level")));
         mainMap.put("popupLevel", 0);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, mainMap));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, mainMap));
     }
 
 
@@ -328,7 +328,7 @@ public class MainService {
             mainFanRankingList.put("myListenPoint", 0);
             mainFanRankingList.put("myUpDown", "");
             mainFanRankingList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_내역없음, mainFanRankingList));
+            return gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_팬랭킹조회_내역없음, mainFanRankingList));
         }
         List<MainFanRankingOutVo> outVoList = new ArrayList<>();
         for (int i=0; i<mainFanRankingVoList.size(); i++){
@@ -350,11 +350,11 @@ public class MainService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_성공, mainFanRankingList));
-        } else if (procedureVo.getRet().equals(Status.메인_팬랭킹조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_요청회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_팬랭킹조회_성공, mainFanRankingList));
+        } else if (procedureVo.getRet().equals(MainStatus.메인_팬랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_팬랭킹조회_요청회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_팬랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_팬랭킹조회_실패));
         }
         return result;
     }
@@ -392,7 +392,7 @@ public class MainService {
             mainDjRankingList.put("myLikePoint", 0);
             mainDjRankingList.put("myUpDown", 0);
             mainDjRankingList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_내역없음, mainDjRankingList));
+            return gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_DJ랭킹조회_내역없음, mainDjRankingList));
         }
 
         List<MainDjRankingOutVo> outVoList = new ArrayList<>();
@@ -418,11 +418,11 @@ public class MainService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_성공, mainDjRankingList));
-        } else if (procedureVo.getRet().equals(Status.메인_DJ랭킹조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_요청회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_DJ랭킹조회_성공, mainDjRankingList));
+        } else if (procedureVo.getRet().equals(MainStatus.메인_DJ랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_DJ랭킹조회_요청회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_DJ랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_DJ랭킹조회_실패));
         }
         return result;
     }
@@ -439,7 +439,7 @@ public class MainService {
 
         if(DalbitUtil.isEmpty(mainLevelRankingVoList)){
             mainLevelRankingList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.메인_Level랭킹조회_내역없음, mainLevelRankingVoList));
+            return gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_Level랭킹조회_내역없음, mainLevelRankingVoList));
         }
 
         List<MainLevelRankingOutVo> outVoList = new ArrayList<>();
@@ -454,9 +454,9 @@ public class MainService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_Level랭킹조회_성공, mainLevelRankingList));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_Level랭킹조회_성공, mainLevelRankingList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_Level랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_Level랭킹조회_실패));
         }
         return result;
     }
@@ -464,7 +464,7 @@ public class MainService {
     public String selectBanner(HttpServletRequest request){
         String position = request.getParameter("position");
         List<BannerVo> bannerList = selectBanner(position, request);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, bannerList == null ? new ArrayList() : bannerList));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, bannerList == null ? new ArrayList() : bannerList));
     }
 
     public List<BannerVo> selectBanner(String position, HttpServletRequest request){
@@ -521,18 +521,18 @@ public class MainService {
         mainRewardPopupVo.put("isRandomBox", DalbitUtil.getStringMap(resultMap, "exp_random_box").equals("1"));
 
         String result;
-        if(procedureVo.getRet().equals(Status.랭킹보상팝업조회_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_성공, mainRewardPopupVo));
-        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_요청회원_회원아님));
-        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_TOP3_아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_TOP3_아님));
-        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_보상테이블_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_보상테이블_없음));
-        }else if (procedureVo.getRet().equals(Status.랭킹보상팝업조회_없는구분타입.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_없는구분타입));
+        if(procedureVo.getRet().equals(MainStatus.랭킹보상팝업조회_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랭킹보상팝업조회_성공, mainRewardPopupVo));
+        }else if (procedureVo.getRet().equals(MainStatus.랭킹보상팝업조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랭킹보상팝업조회_요청회원_회원아님));
+        }else if (procedureVo.getRet().equals(MainStatus.랭킹보상팝업조회_TOP3_아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랭킹보상팝업조회_TOP3_아님));
+        }else if (procedureVo.getRet().equals(MainStatus.랭킹보상팝업조회_보상테이블_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랭킹보상팝업조회_보상테이블_없음));
+        }else if (procedureVo.getRet().equals(MainStatus.랭킹보상팝업조회_없는구분타입.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랭킹보상팝업조회_없는구분타입));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹보상팝업조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랭킹보상팝업조회_실패));
         }
        return result;
     }
@@ -553,20 +553,20 @@ public class MainService {
         randomBoxVo.put("rewardImg", DalbitUtil.getProperty("server.img.url")+"/event/attend/lottie/"+DalbitUtil.getStringMap(resultMap, "reward_exp")+".json");
 
         String result;
-        if(procedureVo.getRet().equals(Status.랜덤박스열기_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_성공, randomBoxVo));
-        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_요청회원_회원아님));
-        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_TOP3_아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_TOP3_아님));
-        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_보상대상_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_보상대상_회원아님));
-        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_이미받음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_이미받음));
-        }else if (procedureVo.getRet().equals(Status.랜덤박스열기_없는구분타입.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_없는구분타입));
+        if(procedureVo.getRet().equals(MainStatus.랜덤박스열기_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_성공, randomBoxVo));
+        }else if (procedureVo.getRet().equals(MainStatus.랜덤박스열기_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_요청회원_회원아님));
+        }else if (procedureVo.getRet().equals(MainStatus.랜덤박스열기_TOP3_아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_TOP3_아님));
+        }else if (procedureVo.getRet().equals(MainStatus.랜덤박스열기_보상대상_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_보상대상_회원아님));
+        }else if (procedureVo.getRet().equals(MainStatus.랜덤박스열기_이미받음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_이미받음));
+        }else if (procedureVo.getRet().equals(MainStatus.랜덤박스열기_없는구분타입.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_없는구분타입));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랜덤박스열기_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.랜덤박스열기_실패));
         }
         return result;
     }
@@ -605,7 +605,7 @@ public class MainService {
             mainRankingList.put("myUpDown", "");
             mainRankingList.put("list", new ArrayList<>());
             mainRankingList.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1 ? true : false);
-            return gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_내역없음, mainRankingList));
+            return gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_랭킹조회_내역없음, mainRankingList));
         }
 
         List<MainRankingPageOutVo> outVoList = new ArrayList<>();
@@ -667,11 +667,11 @@ public class MainService {
 
         String result;
         if(procedureVo.getRet() != null && Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_성공, mainRankingList));
-        } else if (procedureVo.getRet() != null && procedureVo.getRet().equals(Status.메인_랭킹조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_요청회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_랭킹조회_성공, mainRankingList));
+        } else if (procedureVo.getRet() != null && procedureVo.getRet().equals(MainStatus.메인_랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_랭킹조회_요청회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_랭킹조회_실패));
         }
         return result;
     }
@@ -688,7 +688,7 @@ public class MainService {
 
         if(DalbitUtil.isEmpty(mainGoodRankingVoList)){
             mainGoodRankingList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_내역없음, mainGoodRankingVoList));
+            return gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_좋아요랭킹조회_내역없음, mainGoodRankingVoList));
         }
 
         List<MainGoodRankingOutVo> outVoList = new ArrayList<>();
@@ -703,9 +703,9 @@ public class MainService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_성공, mainGoodRankingList));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_좋아요랭킹조회_성공, mainGoodRankingList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_좋아요랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_좋아요랭킹조회_실패));
         }
         return result;
     }
@@ -718,7 +718,7 @@ public class MainService {
         P_SpecialHistoryVo pSpecialHistoryVo = new P_SpecialHistoryVo(specialHistoryVo, request);
         ProcedureVo procedureVo = new ProcedureVo(pSpecialHistoryVo);
         List<P_SpecialHistoryVo> list = mainDao.callSpecialDjHistory(procedureVo);
-        result.put("status", Status.조회);
+        result.put("status", CommonStatus.조회);
         List<SpecialDjHistoryOutVo> outList = new ArrayList<>();
         if(!DalbitUtil.isEmpty(list)){
             for(P_SpecialHistoryVo dj : list){
@@ -784,13 +784,13 @@ public class MainService {
         HashMap data = new HashMap();
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result.put("status", Status.조회);
+            result.put("status", CommonStatus.조회);
             data.put("list", list);
             data.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
         }else if(Integer.parseInt(procedureVo.getRet()) == 0){
-            result.put("status", Status.데이터없음);
+            result.put("status", CommonStatus.데이터없음);
         }else{
-            result.put("status", Status.비즈니스로직오류);
+            result.put("status", CommonStatus.비즈니스로직오류);
         }
 
         result.put("data", data);
@@ -808,10 +808,10 @@ public class MainService {
         HashMap data = new HashMap();
 
         if(Integer.parseInt(procedureVo.getRet()) == 0){
-            result.put("status", Status.조회);
+            result.put("status", CommonStatus.조회);
             data.put("detail", new Gson().fromJson(procedureVo.getExt(), HashMap.class));
         }else{
-            result.put("status", Status.데이터없음);
+            result.put("status", CommonStatus.데이터없음);
         }
 
         result.put("data", data);
@@ -877,11 +877,11 @@ public class MainService {
             mainTimeRankingList.put("list", outVoList);
             mainTimeRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_타임랭킹조회_성공, mainTimeRankingList));
-        }else if (procedureVo.getRet().equals(Status.메인_타임랭킹조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_타임랭킹조회_요청회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_타임랭킹조회_성공, mainTimeRankingList));
+        }else if (procedureVo.getRet().equals(MainStatus.메인_타임랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_타임랭킹조회_요청회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.메인_타임랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.메인_타임랭킹조회_실패));
         }
         return result;
     }
@@ -908,7 +908,7 @@ public class MainService {
                 list.add(new ServerListVO("실서버", "https://m.dalbitlive.com", "https://api.dalbitlive.com/", "https://photo.dalbitlive.com/", realWebRtcSocketURI));
                 list.add(new ServerListVO("개발서버", "https://devm.dalbitlive.com", "https://devapi.dalbitlive.com/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("내부서버", "https://devm2.dalbitlive.com", "https://devapi2.dalbitlive.com/", "https://devphoto2.dalbitlive.com/", devWebRtcSocketURI));
-                list.add(new ServerListVO("강알찬", "https://devm-aaasss86.dalbitlive.com", "https://devm-parkyh.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
+                list.add(new ServerListVO("강알찬", "https://devm-aaasss86.dalbitlive.com", "https://devm-aaasss86.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("김한호", "https://devm-hhk2745.dalbitlive.com", "https://devm-hhk2745.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("김훈", "https://devm-ironynet.dalbitlive.com", "https://devm-ironynet.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
                 list.add(new ServerListVO("김현진", "https://devm-khj.dalbitlive.com", "https://devm-khj.dalbitlive.com:463/", devPhotoURI, devWebRtcSocketURI));
@@ -964,11 +964,11 @@ public class MainService {
         List<MyRankVO> list = rankPage.getMyRank(memNo);
 
         if (memNo == null) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_요청회원_정보없음));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_요청회원_정보없음));
         } else if (list.size() > 0){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, list));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, list));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
         return result;
     }
@@ -982,7 +982,7 @@ public class MainService {
     public String getRankingApply(HttpServletRequest request) {
         String memNo = MemberVo.getMyMemNo(request);
         RankingApplyVO result = rankPage.getRankingApply(memNo);
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, result));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
 
 }
