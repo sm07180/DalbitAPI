@@ -105,22 +105,22 @@ public class TTSService {
         ArrayList<Map<String, String>> result = new ArrayList<>();
         for(JsonElement vo : actorArray.getAsJsonArray()) {
             Map<String, String> data = new HashMap<>();
-            // String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
-            // String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
+             String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
+             String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
 
-            /*if(StringUtils.equals(actorName, "빠다가이") || StringUtils.equals(actorName, "하나")) {
+            if(StringUtils.equals(actorName, "찬구") || StringUtils.equals(actorName, "호빈이")) {
                 data.put("actorId", actorId);
                 data.put("actorName", actorName);
                 result.add(data);
-            }*/
-            if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
+            }
+            /*if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
                 String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
                 String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
 
                 data.put("actorId", actorId);
                 data.put("actorName", actorName);
                 result.add(data);
-            }
+            }*/
         }
 
         // actorName 오름차순 정렬
