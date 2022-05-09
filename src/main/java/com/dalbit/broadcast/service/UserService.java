@@ -504,14 +504,24 @@ public class UserService {
 
     /** 방송방에서 차단시 강퇴하기 */
     public String broadCastBlackAndKick(P_MypageBlackAddVo param1, P_RoomKickoutVo  param2, HttpServletRequest request ) {
-        String result;
-        Status messageCode = mypageService.callMypageBlackListAdd(param1, request, false);
+        // 차단 등록
+        String blackAddResult = mypageService.callMypageBlackListAdd(param1, request);
+        JsonOutputVo jsonOutputVo = new Gson().fromJson(blackAddResult, JsonOutputVo.class);
 
-        if(StringUtils.equals(messageCode.getMessageCode(), Status.블랙리스트등록_성공.getMessageCode())) {
-            result = userService.callBroadCastRoomKickout(param2, request);
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(messageCode));
+        // 요청자의 유저 정보 ( 방장, 매니저 체크용도 )
+        HashMap useInfoMap = socketService.getUserInfo(param2.getRoom_no(), param1.getMem_no(), DalbitUtil.isLogin(request));
+
+        if(StringUtils.equals(jsonOutputVo.getCode(), Status.블랙리스트등록_성공.getMessageCode())) {
+
+            String auth = DalbitUtil.getStringMap(useInfoMap, "auth");
+
+            // 방장, 매니저 여부 체크 ("0":청취자, "1": 매니저, "2": 게스트, "3": 방장)
+            if(StringUtils.equals(auth, "1") || StringUtils.equals(auth, "3")) {
+                // 강퇴 처리
+                return userService.callBroadCastRoomKickout(param2, request);
+            }
         }
-        return result;
+
+        return blackAddResult;
     }
 }

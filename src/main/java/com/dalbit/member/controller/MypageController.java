@@ -626,7 +626,7 @@ public class MypageController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         P_MypageBlackAddVo apiData = new P_MypageBlackAddVo(mypageBlackAddVo, request);
-        String result = mypageService.callMypageBlackListAdd(apiData, request, true);
+        String result = mypageService.callMypageBlackListAdd(apiData, request);
 
         return result;
     }
