@@ -105,24 +105,22 @@ public class TTSService {
         ArrayList<Map<String, String>> result = new ArrayList<>();
         for(JsonElement vo : actorArray.getAsJsonArray()) {
             Map<String, String> data = new HashMap<>();
-            String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
-            String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
+            // String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
+            // String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
 
-            if(StringUtils.equals(actorName, "빠다가이") || StringUtils.equals(actorName, "하나")) {
+            /*if(StringUtils.equals(actorName, "빠다가이") || StringUtils.equals(actorName, "하나")) {
+                data.put("actorId", actorId);
+                data.put("actorName", actorName);
+                result.add(data);
+            }*/
+            if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
+                String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
+                String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
+
                 data.put("actorId", actorId);
                 data.put("actorName", actorName);
                 result.add(data);
             }
-            /*if(StringUtils.equals(vo.getAsJsonObject().get("hidden").toString(), "false")) {
-                String actorId = vo.getAsJsonObject().get("actor_id").toString().replaceAll("\"", "");
-                String actorName = vo.getAsJsonObject().get("name").getAsJsonObject().get("ko").toString().replaceAll("\"", "");
-
-                if(StringUtils.equals(actorName, "다희") || StringUtils.equals(actorName, "준기")) {
-                    data.put("actorId", actorId);
-                    data.put("actorName", actorName);
-                    result.add(data);
-                }
-            }*/
         }
 
         // actorName 오름차순 정렬
@@ -305,7 +303,9 @@ public class TTSService {
         switch (actorId) {
             case "6063252471850cc8f04c7600": return new String[] {"a", "빠다가이"}; // 빠다가이
             case "61659cc118732016a95fe7c6": return new String[] {"b", "하나"}; // 하나
-            default: return new String[] {"a", "빠다가이"}; // 빠다가이
+            case "5c547544fcfee90007fed455": return new String[] {"c", "찬구"}; // 찬구
+            case "5ffda49bcba8f6d3d46fc447": return new String[] {"d", "호빈이"}; // 호빈이
+            default: return new String[] {"c", "찬구"}; // 찬구
         }
     }
 }
