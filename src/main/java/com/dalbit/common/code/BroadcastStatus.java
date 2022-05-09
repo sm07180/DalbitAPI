@@ -80,10 +80,12 @@ public enum BroadcastStatus implements Status {
     방송진행여부체크_실패("C006", "broadcasting.fail", "방송중인 방이없음"),
     //방송방 사연 등록
     방송방사연등록성공("0", "broadcast.room.story.add.success", "방송방 사연 등록 성공 시"),
+    방송방사연플러스등록성공("0", "broadcast.room.story.plus.add.success", "방송방 사연 플러스 등록 성공 시"),
     방송방사연등록_회원아님("-1", "broadcast.room.story.add.no", "방송방 사연 등록 회원이 아닐 시"),
     방송방사연등록_해당방이없음("-2", "broadcast.room.story.add.room.no", "방송방 사연등록 해당 방이 없을 시"),
     방송방사연등록_방참가자가아님("-3", "broadcast.room.story.add.member.no", "방송방 사연등록 방참가자가 아닐 시"),
     방송방사연등록_1분에한번등록가능("-4", "broadcast.room.story.add.time", "방송방 사연등록 1분에 한번 씩 등록 가능"),
+    방송방사연등록_파라미터에러("-5", "broadcast.room.story.add.param", "방송방 사연등록 실패 시"),
     방송방사연등록오류("C006", "broadcast.room.story.add.fail", "방송방 사연등록 실패 시"),
     //방송방 사연 조회
     방송방사연조회성공("C001", "broadcast.room.story.sel.success", "방송방 사연조회 성공 시"),
