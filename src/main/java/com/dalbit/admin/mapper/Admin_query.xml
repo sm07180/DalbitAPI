@@ -108,13 +108,13 @@
                     AND a.mem_userid = #{searchText}
                 </if>
                 <if test='searchSlct != null and searchSlct == "2"'>
-                    AND a.mem_nick LIKE '${searchText}%'
+                    AND a.mem_nick LIKE CONCAT(#{searchText}, '%')
                 </if>
                 <if test='searchSlct != null and searchSlct == "3"'>
                     AND a.mem_no = #{searchText}
                 </if>
                 <if test='searchSlct != null and searchSlct == "4"'>
-                    AND a.mem_phone LIKE '${searchText}%'
+                    AND a.mem_phone LIKE CONCAT(#{searchText}, '%')
                 </if>
             </if>
         </where>
