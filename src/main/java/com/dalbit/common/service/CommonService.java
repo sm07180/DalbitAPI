@@ -1294,7 +1294,7 @@ public class CommonService {
 
         HashMap returnMap  = new HashMap<>();
         String result;
-        if(ClipStatus.클립등록_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(MemberStatus.휴면탈퇴_일자조회_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
             returnMap.put("type", DalbitUtil.getIntMap(resultMap, "type"));
@@ -1308,7 +1308,7 @@ public class CommonService {
                 returnMap.put("longTermDate", "");
             }
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_성공, returnMap));
-        }else if(ClipStatus.클립등록_성공.getMessageCode().equals(procedureVo.getRet())){
+        }else if(MemberStatus.휴면탈퇴_일자조회_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_실패));

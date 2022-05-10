@@ -1203,7 +1203,7 @@ public class WowzaService {
 
                 List<ItemVo> items = broadcast.spSignatureItemSelect(param);
 
-                if (!items.equals(null)) {
+                if (items != null) {
                     ArrayList<ItemCategoryVo> list = new ArrayList();
                     ItemCategoryVo itemCategoryVo = new ItemCategoryVo("signature", "시그니처", false);
 

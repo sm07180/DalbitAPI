@@ -910,7 +910,7 @@ public class ActionService {
                 }
             }
             Status status = null;
-            if(procedureVo.getRet().equals(EventStatus.보름달_완성.getMessageCode())){
+            if(procedureVo.getRet().equals(EventStatus.슈퍼문_완성.getMessageCode())){
                 status = EventStatus.슈퍼문_완성;
             }else if(procedureVo.getRet().equals(EventStatus.보름달_완성.getMessageCode())){
                 status = EventStatus.보름달_완성;

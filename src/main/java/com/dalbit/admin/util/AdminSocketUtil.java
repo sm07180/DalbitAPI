@@ -49,7 +49,7 @@ public class AdminSocketUtil {
     private String SERVER_SOCKET_GLOBAL_ROOM;
 
     public Map<String, Object> setSocket(HashMap<String,Object> param ,String command, String message, String authToken){
-        if(!"".equals(param) && !"".equals(authToken)) {
+        if(!"".equals(authToken)) {
             if(command.equals("chatEnd")){
 
                 HashMap<String,String> map = new HashMap<>();

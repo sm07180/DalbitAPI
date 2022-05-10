@@ -108,7 +108,15 @@ public class RoomService {
                     isBj = DalbitUtil.getIntMap((HashMap)procedureInfoVo.getData(), "auth") == 3;
                     isGuest = DalbitUtil.getBooleanMap((HashMap)procedureInfoVo.getData(), "isGuest");
                     nickNm = DalbitUtil.getStringMap((HashMap)procedureInfoVo.getData(), "nickNm");
+                }else{
+                    isBj = false;
+                    isGuest = false;
+                    nickNm ="";
                 }
+            }else{
+                isBj = false;
+                isGuest = false;
+                nickNm ="";
             }
         }else{
             return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송나가기_회원아님));

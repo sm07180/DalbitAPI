@@ -260,7 +260,7 @@ public class UserService {
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_성공, returnMap));
         }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_회원아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_회원아님));
-        }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_회원아님.getMessageCode())) {
+        }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_대상아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_대상아님));
         }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_차단회원불가.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_차단회원불가));

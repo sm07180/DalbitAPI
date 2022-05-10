@@ -2,6 +2,7 @@ package com.dalbit.admin.vo;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.apache.commons.lang3.StringUtils;
 
 @Getter
 @Setter
@@ -49,4 +50,14 @@ public class MemberInfoVo {
     private String ip;
 
     private String nickName;
+
+
+    // 신고 get memNick
+    public String getDeclarationMemNick() {
+        if(!StringUtils.isEmpty(mem_nick)) {
+            return this.mem_nick;
+        }else {
+            return this.nickName;
+        }
+    }
 }
