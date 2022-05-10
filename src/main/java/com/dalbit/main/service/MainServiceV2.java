@@ -494,6 +494,11 @@ public class MainServiceV2 {
         }
 
         ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
+
+        for(MainSwiperVO vo : swiperList2) {
+            vo.setImageProfile(new ImageVo(vo.getImage_profile(), DalbitUtil.getProperty("server.photo.url")));
+        }
+
         return swiperList2;
     }
 

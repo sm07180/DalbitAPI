@@ -287,8 +287,10 @@ public enum MypageStatus implements Status {
     영상대화_알림소리("0", "mypage.member.video.edit.all.sound.success", "알림 모드 소리"),
     영상대화_알림진동("0", "mypage.member.video.edit.all.vibration.success", "알림 모드 진동"),
     영상대화_수신설정수정_회원아님("-1", "mypage.member.video.edit.memer.number.error", "요청회원번호가 회원 아닐 시"),
-    영상대화_수신설정수정_오류("C006", "mypage.video.setting.edit.fail", "영상대화 수신설정 수정 실패 시");
-
+    영상대화_수신설정수정_오류("C006", "mypage.video.setting.edit.fail", "영상대화 수신설정 수정 실패 시"),
+    //사연 보관함 조회
+    사연보관함_조회_성공("0", "mypage.story.select.success", "사연 보관함 내역 조회 성공 시"),
+    사연보관함_조회_실패("C006","mypage.story.select.fail", "사연 보관함 내역 조회 실패 시");
 
 
     final private String RESULT_SUCCESS = "success";
