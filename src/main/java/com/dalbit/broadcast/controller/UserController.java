@@ -3,7 +3,7 @@ package com.dalbit.broadcast.controller;
 import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.BroadcastStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
@@ -68,13 +68,12 @@ public class UserController {
      * */
     @PostMapping("/black/add")
     public String roomBlackAddKickOut(@Valid KickOutVo vo, HttpServletRequest request){
+        P_MypageBlackAddVo param1 = new P_MypageBlackAddVo();
+        P_RoomKickoutVo param2 = new P_RoomKickoutVo();
         try {
-            P_MypageBlackAddVo param1 = new P_MypageBlackAddVo();
-            P_RoomKickoutVo param2 = new P_RoomKickoutVo();
-
             // 차단
-            param1.setBlack_mem_no(vo.getBlockNo());
             param1.setMem_no(MemberVo.getMyMemNo(request));
+            param1.setBlack_mem_no(vo.getBlockNo());
 
             // 강퇴
             param2.setMem_no(MemberVo.getMyMemNo(request));
@@ -84,13 +83,8 @@ public class UserController {
             return userService.broadCastBlackAndKick(param1, param2, request);
 
         } catch (Exception e) {
-            HashMap map = new HashMap();
-            map.put("roomNo", vo.getRoomNo());
-            map.put("reqMemNo", MemberVo.getMyMemNo(request));
-            map.put("blockMemNo", vo.getBlockNo());
-
-            log.error("UserController / roomBlackAddKickOut => Exception, param: {} \n Error: {}", gsonUtil.toJson(map) ,e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.강제퇴장_실패));
+            log.error("UserController / roomBlackAddKickOut => Exception, param: {} \n Error: {}", gsonUtil.toJson(param2) ,e);
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.강제퇴장_실패));
         }
     }
 

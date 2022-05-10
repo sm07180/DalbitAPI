@@ -9,6 +9,7 @@ import com.dalbit.broadcast.vo.RoomMemberOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.BroadcastStatus;
 import com.dalbit.common.code.MemberStatus;
+import com.dalbit.common.code.MypageStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
@@ -512,8 +513,7 @@ public class UserService {
         // 요청자의 유저 정보 ( 방장, 매니저 체크용도 )
         HashMap useInfoMap = socketService.getUserInfo(param2.getRoom_no(), param1.getMem_no(), DalbitUtil.isLogin(request));
 
-        if(StringUtils.equals(jsonOutputVo.getCode(), Status.블랙리스트등록_성공.getMessageCode())) {
-
+        if(StringUtils.equals(jsonOutputVo.getCode(), MypageStatus.블랙리스트등록_성공.getMessageCode())) {
             String auth = DalbitUtil.getStringMap(useInfoMap, "auth");
 
             // 방장, 매니저 여부 체크 ("0":청취자, "1": 매니저, "2": 게스트, "3": 방장)
