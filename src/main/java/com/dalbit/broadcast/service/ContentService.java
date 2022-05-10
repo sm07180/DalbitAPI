@@ -265,6 +265,7 @@ public class ContentService {
                 return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
             }
 
+            pRoomStoryAddVo.setPlus_yn("n");
             pRoomStoryAddVo.setDj_mem_no(roomInfoVo.getBj_mem_no());
         }
 
