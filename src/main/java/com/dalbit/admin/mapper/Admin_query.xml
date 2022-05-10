@@ -96,14 +96,14 @@
         <where>
             a.last_upd_date <![CDATA[>=]]> DATE_SUB(NOW(),INTERVAL 3 DAY)
             <if test='reportYn == "Y"'>
-                AND 0 <![CDATA[<]]> reportedCnt
+                AND 0 <![CDATA[<]]> (SELECT COUNT(*) FROM rd_data.tb_member_report WHERE `status` = 0 AND reported_mem_no = a.mem_no)
             </if>
             <if test='searchText != null and searchText != ""'>
                 AND (
-                mem_userid LIKE concat(#{searchText}, '%')
-                OR mem_nick LIKE concat(#{searchText}, '%')
-                OR mem_no LIKE concat(#{searchText}, '%')
-                OR mem_phone LIKE concat(#{searchText}, '%')
+                a.mem_userid LIKE concat(#{searchText}, '%')
+                OR a.mem_nick LIKE concat(#{searchText}, '%')
+                OR a.mem_no LIKE concat(#{searchText}, '%')
+                OR a.mem_phone LIKE concat(#{searchText}, '%')
                 )
             </if>
         </where>
