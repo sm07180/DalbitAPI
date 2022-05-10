@@ -4100,7 +4100,7 @@ public class MypageService {
             List<Object> list = mypageDao.pBroadcastRoomStoryMemList(map);
 
             /* 결과 없음 */
-            if(list.equals(null)){
+            if(list == null){
                 log.error("ContentService.java / getStoryHistory => DB return null", gsonUtil.toJson(map));
                 return gsonUtil.toJson(new JsonOutputVo(MypageStatus.사연보관함_조회_실패, returnDefault));
             }
