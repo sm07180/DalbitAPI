@@ -7,6 +7,9 @@ import com.dalbit.admin.vo.procedure.*;
 import com.dalbit.broadcast.service.ActionService;
 import com.dalbit.broadcast.service.GuestService;
 import com.dalbit.broadcast.vo.procedure.P_FreezeVo;
+import com.dalbit.common.code.BroadcastStatus;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MailBoxStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.MessageInsertVo;
@@ -301,7 +304,7 @@ public class AdminController {
         HashMap map = new HashMap();
         map.put("faqSubList", faqSubList);
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, map));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, map));
     }
 
     /**
@@ -429,17 +432,17 @@ public class AdminController {
 
         HashMap returnMap = new HashMap();
         returnMap.put("isFreeze", false);
-        String result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_성공, returnMap));
+        String result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.얼리기_성공, returnMap));
 
         //0:해제,  1:DJ , 2:관리자
         boolean isFreeze = !(pFreezeVo.getFreezeMsg() == 0);
         returnMap.put("isFreeze", isFreeze);
-        returnMap.put("msg", isFreeze ? messageUtil.get(Status.관리자_얼리기_성공.getMessageKey()) : messageUtil.get(Status.관리자_얼리기_해제.getMessageKey()));
+        returnMap.put("msg", isFreeze ? messageUtil.get(BroadcastStatus.관리자_얼리기_성공.getMessageKey()) : messageUtil.get(BroadcastStatus.관리자_얼리기_해제.getMessageKey()));
 
         socketService.changeRoomFreeze(pFreezeVo.getMem_no(), pFreezeVo.getRoom_no(), returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
 
         if(!isFreeze){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.얼리기_해제, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.얼리기_해제, returnMap));
         }
         return result;
     }
@@ -480,7 +483,7 @@ public class AdminController {
             socketService.sendChatImageDelete(chatNo, returnMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
         }catch(Exception e){}
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.대화방_이미지삭제_성공, returnMap));
+        return gsonUtil.toJson(new JsonOutputVo(MailBoxStatus.대화방_이미지삭제_성공, returnMap));
     }
 
     /**

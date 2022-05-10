@@ -1,6 +1,7 @@
 package com.dalbit.main.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.CustomerStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.service.CustomerCenterService;
@@ -67,7 +68,7 @@ public class CustomerCenterController {
             return customerCenterService.callNoticeReadUpd(noticeReadUpdVo, request);
         } catch (Exception e) {
             log.error("callNoticeReadUpd failed : {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지사항_읽음확인_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CustomerStatus.공지사항_읽음확인_실패));
         }
     }
 
@@ -155,6 +156,6 @@ public class CustomerCenterController {
      */
     @GetMapping("/center/version")
     public String checkVersion(HttpServletRequest request){
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회, customerCenterService.checkAppVersion(request)));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, customerCenterService.checkAppVersion(request)));
     }
 }

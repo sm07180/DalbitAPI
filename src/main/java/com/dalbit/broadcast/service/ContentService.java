@@ -1,10 +1,14 @@
 package com.dalbit.broadcast.service;
 
 import com.dalbit.broadcast.dao.ContentDao;
+import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.BroadcastNoticeAddVo;
 import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.RoomStoryListOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
+import com.dalbit.common.code.BroadcastStatus;
+import com.dalbit.common.code.MypageStatus;
+import com.dalbit.broadcast.vo.request.GiftVo;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
@@ -17,12 +21,11 @@ import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang.StringUtils;
-import org.jose4j.lang.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +45,10 @@ public class ContentService {
     CommonService commonService;
     @Autowired
     MypageDao mypageDao;
-
+    @Autowired
+    RoomDao roomDao;
+    @Autowired
+    ActionService actionService;
 
     /**
      *  방송방 공지사항 조회(입장시)
@@ -102,7 +108,7 @@ public class ContentService {
             if(DalbitUtil.isEmpty(noticeRow)) {
                 resultMap.put("notice", "");
                 resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
-                return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_없음, resultMap));
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음, resultMap));
             }
         }
         BanWordVo banWordVo = new BanWordVo();
@@ -121,7 +127,7 @@ public class ContentService {
         String notice = noticeRow.get(0).getConts();
 
         resultMap.put("notice", notice);
-        return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_성공, resultMap));
+        return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, resultMap));
     }
 
 
@@ -179,9 +185,9 @@ public class ContentService {
                 } catch (Exception e) {
                     log.info("Socket Service sendNotice Exception {}", e);
                 }
-                return gsonUtil.toJson(new JsonOutputVo(Status.공지수정_성공));
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지수정_성공));
             } else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
             }
         } else {
             HashMap addMap = new HashMap();
@@ -197,9 +203,9 @@ public class ContentService {
                 } catch (Exception e) {
                     log.info("Socket Service sendNotice Exception {}", e);
                 }
-                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_성공));
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_성공));
             } else {
-                return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
             }
         }
     }
@@ -213,7 +219,7 @@ public class ContentService {
         contentDao.callBroadCastRoomNoticeDelete(procedureVo);
 
         String result;
-        if (procedureVo.getRet().equals(Status.공지삭제하기성공.getMessageCode())) {
+        if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기성공.getMessageCode())) {
             try{
                 SocketVo vo = socketService.getSocketVo(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
                 socketService.sendNotice(pRoomNoticeSelectVo.getRoom_no(), MemberVo.getMyMemNo(request), "", DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
@@ -221,17 +227,17 @@ public class ContentService {
             }catch(Exception e){
                 log.info("Socket Service sendNotice Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기성공));
-        } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_정상회원이아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_정상회원이아님));
-        } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_해당방이없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_해당방이없음));
-        } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_방참가자가아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_방참가자가아님));
-        } else if (procedureVo.getRet().equals(Status.공지삭제하기실패_공지삭제권한없음)) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_공지삭제권한없음));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기성공));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_정상회원이아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_정상회원이아님));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_해당방이없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_해당방이없음));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_방참가자가아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_방참가자가아님));
+        } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_공지삭제권한없음)) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_공지삭제권한없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.공지삭제하기실패_삭제에러));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_삭제에러));
         }
 
         return result;
@@ -240,9 +246,62 @@ public class ContentService {
 
 
     /**
-     * 방송방 사연 등록
+     * 방송방 사연 등록 (사연 플러스 아이템 추가)
+     * plus_yn : "y" 사연 아이템인 경우
      */
-    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request) {
+    public String callInsertStory(P_RoomStoryAddVo pRoomStoryAddVo, HttpServletRequest request, boolean isOldVersion) {
+        // ----------------------------- 사연 플러스 시작 -----------------------------
+        /* 네이티브 업데이트 안한 경우 => 파라미터 세팅 처리(plusYn, djMemNo) */
+        if(isOldVersion) {
+            HashMap returnMap = new HashMap();
+            returnMap.put("passTime", 0);
+
+            /* 방장 memNo 알아내기 */
+            P_RoomInfoViewVo roomInfoVo = getRoomInfo(1, pRoomStoryAddVo.getMem_no(), pRoomStoryAddVo.getRoom_no());
+
+            /* Fail or Exception */
+            if (roomInfoVo.equals(null) || StringUtils.equals(roomInfoVo.getBj_mem_no(), "") || StringUtils.equals(roomInfoVo.getBj_mem_no(), null)) {
+                log.error("ContentService.java / callInsertStory => roomInfoVo : {}", gsonUtil.toJson(roomInfoVo));
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
+            }
+
+            pRoomStoryAddVo.setDj_mem_no(roomInfoVo.getBj_mem_no());
+        }
+
+        /* param check */
+        if (!(StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "n") || StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y"))
+            || StringUtils.equals(pRoomStoryAddVo.getDj_mem_no(), "")) {
+            HashMap returnMap = new HashMap();
+            returnMap.put("passTime", 0);
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_파라미터에러, returnMap));
+        }
+
+        /* 사연 플러스 선물 아이템 */
+        JsonOutputVo outputVo = new JsonOutputVo();
+        if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
+            try {
+                GiftVo giftVo = new GiftVo();
+                giftVo.setRoomNo(pRoomStoryAddVo.getRoom_no());
+                giftVo.setMemNo(pRoomStoryAddVo.getDj_mem_no());
+                giftVo.setItemNo( DalbitUtil.getProperty("item.code.story") );
+                giftVo.setItemCnt(1);
+                giftVo.setIsSecret("n");
+
+                /* 방송방 선물하기 호출 */
+                String result = callBroadcastGift(giftVo, request);
+                outputVo = new Gson().fromJson( result, JsonOutputVo.class);
+
+                /* 사연 플러스 아이템 선물하기 실패 */
+                if (!StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
+                    return result;
+                }
+
+            } catch (Exception e) {
+                log.error("ContentService.java / callInsertStory / callBroadcastGift => param: {}, Exception: {}", gsonUtil.toJson(pRoomStoryAddVo), e);
+            }
+        }
+        // ----------------------------- 사연 플러스 끝 -----------------------------
+
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
@@ -257,7 +316,7 @@ public class ContentService {
         returnMap.put("passTime", passTime);
 
         String result;
-        if(Status.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(BroadcastStatus.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
             try{
                 HashMap socketMap = new HashMap();
                 socketMap.put("storyIdx", DalbitUtil.getIntMap(resultMap, "story_idx"));
@@ -273,17 +332,26 @@ public class ContentService {
             }catch(Exception e){
                 log.info("Socket Service sendStory Exception {}", e);
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록성공, returnMap));
-        }else if(Status.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_회원아님, returnMap));
-        }else if(Status.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_해당방이없음, returnMap));
-        }else if(Status.방송방사연등록_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_방참가자가아님, returnMap));
-        }else if(Status.방송방사연등록_1분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록_1분에한번등록가능, returnMap));
+
+        /* 사연 플러스 등록 성공 */
+            if (StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
+                returnMap.put("resultData", outputVo.getData());
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연플러스등록성공, returnMap));
+            } else {
+        /* 일반 사연 등록시 성공*/
+                result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록성공, returnMap));
+            }
+
+        }else if(BroadcastStatus.방송방사연등록_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_회원아님, returnMap));
+        }else if(BroadcastStatus.방송방사연등록_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_해당방이없음, returnMap));
+        }else if(BroadcastStatus.방송방사연등록_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_방참가자가아님, returnMap));
+        }else if(BroadcastStatus.방송방사연등록_1분에한번등록가능.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_1분에한번등록가능, returnMap));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연등록오류, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류, returnMap));
         }
 
         return result;
@@ -308,7 +376,7 @@ public class ContentService {
             }else{
                 storyList.put("paging", new PagingVo(0, pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
             }
-            return gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_등록된사연없음, storyList));
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연조회_등록된사연없음, storyList));
         }
 
         List<RoomStoryListOutVo> outVoList = new ArrayList<>();
@@ -335,15 +403,15 @@ public class ContentService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회성공, storyList));
-        }else if(Status.방송방사연조회_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_회원아님));
-        }else if(Status.방송방사연조회_해당방이없음.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_해당방이없음));
-        }else if(Status.방송방사연조회_방참가자가아님.getMessageCode().equals(procedureOutputVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회_방참가자가아님));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연조회성공, storyList));
+        }else if(BroadcastStatus.방송방사연조회_회원아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연조회_회원아님));
+        }else if(BroadcastStatus.방송방사연조회_해당방이없음.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연조회_해당방이없음));
+        }else if(BroadcastStatus.방송방사연조회_방참가자가아님.getMessageCode().equals(procedureOutputVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연조회_방참가자가아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연조회오류));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연조회오류));
         }
         return result;
     }
@@ -363,22 +431,62 @@ public class ContentService {
 
         String result;
 
-        if(Status.방송방사연삭제성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제성공));
-        }else if(Status.방송방사연삭제_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_회원아님));
-        }else if(Status.방송방사연삭제_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_해당방이없음));
-        }else if(Status.방송방사연삭제_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_방참가자가아님));
-        }else if(Status.방송방사연삭제_삭제권한없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_삭제권한없음));
-        }else if(Status.방송방사연삭제_사연인덱스오류.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제_사연인덱스오류));
+        if(BroadcastStatus.방송방사연삭제성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제성공));
+        }else if(BroadcastStatus.방송방사연삭제_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제_회원아님));
+        }else if(BroadcastStatus.방송방사연삭제_해당방이없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제_해당방이없음));
+        }else if(BroadcastStatus.방송방사연삭제_방참가자가아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제_방참가자가아님));
+        }else if(BroadcastStatus.방송방사연삭제_삭제권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제_삭제권한없음));
+        }else if(BroadcastStatus.방송방사연삭제_사연인덱스오류.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제_사연인덱스오류));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.방송방사연삭제오류));
+            result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연삭제오류));
         }
 
         return result;
+    }
+
+    /**
+     * 방 정보 조회하기 (네이티브 업데이트 안한 경우에만 사용)
+     * 사연 등록시 dj_mem_no 값 (필수)
+    * */
+    public P_RoomInfoViewVo getRoomInfo(int isLogin, String reqMemNo, String roomNo){
+        P_RoomInfoViewVo pRoomInfoViewVo = new P_RoomInfoViewVo();
+        try {
+            pRoomInfoViewVo.setMemLogin(isLogin);
+            pRoomInfoViewVo.setMem_no(reqMemNo);
+            pRoomInfoViewVo.setRoom_no(roomNo);
+            ProcedureVo procedureInfoViewVo = new ProcedureVo(pRoomInfoViewVo);
+            P_RoomInfoViewVo roomInfoViewVo = roomDao.callBroadCastRoomInfoView(procedureInfoViewVo);
+            if (procedureInfoViewVo.getRet().equals(BroadcastStatus.방정보보기.getMessageCode())) {
+                return roomInfoViewVo;
+            } else {
+                log.error("contentService.java / getRoomInfo Fail =>  param: {}", gsonUtil.toJson(pRoomInfoViewVo));
+                return null;
+            }
+        }catch (Exception e){
+            log.error("contentService.java / getRoomInfo Exception =>  param: {}, error: {}", gsonUtil.toJson(pRoomInfoViewVo), e);
+            return null;
+        }
+    }
+
+    /** 방송방 선물하기 호출 */
+    public String callBroadcastGift(GiftVo giftVo, HttpServletRequest request) {
+        P_RoomGiftVo apiData = new P_RoomGiftVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(giftVo.getRoomNo());
+        apiData.setGifted_mem_no(giftVo.getMemNo());
+        apiData.setItem_code(giftVo.getItemNo());
+        apiData.setItem_cnt(giftVo.getItemCnt());
+        apiData.setSecret("1".equals(giftVo.getIsSecret()) || "TRUE".equals(giftVo.getIsSecret().toUpperCase()) ? "1" : "0");
+        apiData.setTtsText(giftVo.getTtsText());
+        apiData.setActorId(giftVo.getActorId());
+        apiData.setTtsYn(giftVo.getTtsYn());
+
+        return actionService.callBroadCastRoomGift(apiData, request);
     }
 }

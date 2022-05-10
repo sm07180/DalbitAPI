@@ -1,12 +1,13 @@
 package com.dalbit.member.service;
 
 import com.dalbit.admin.service.AdminService;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.MemberStatus;
+import com.dalbit.common.code.MypageStatus;
 import com.dalbit.common.dao.CommonDao;
 import com.dalbit.common.service.BadgeService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
-import com.dalbit.event.vo.MoonLandMissionSelResultVO;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.dao.ProfileDao;
 import com.dalbit.member.vo.*;
@@ -21,6 +22,7 @@ import com.dalbit.util.GsonUtil;
 import com.dalbit.util.JwtUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -81,10 +83,10 @@ public class ProfileService {
             List<String> addList = (List) param.get("imageList");
 
             if(memNo == null){
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_요청회원_정보없음));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_요청회원_정보없음));
             }
             if(addList == null || addList.size() == 0){
-                return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
             }
 
             // 기존 이미지 리스트 조회
@@ -115,21 +117,44 @@ public class ProfileService {
             }
 
             // 이미지 순서변경 완료
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_성공, null));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_성공, null));
         } catch (Exception e) {
             log.error("ProfileService.java / profileImageUpdate() => Exception {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공통_기본_실패));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.공통_기본_실패));
         }
+    }
+
+    // 컨텐츠 DJ 체크용 (추후 변경 필요)
+    private boolean isContents(String mem_no){
+        try {
+            HashMap param = new HashMap();
+            param.put("mem_no", mem_no);
+            param.put("type", 4);
+            param.put("timeDay", 0);
+            param.put("djRank", 0);
+            param.put("fanRank", 0);
+            param.put("by", "api");
+            List<FanBadgeVo> badgeList = commonDao.callMemberBadgeListServer(param);
+
+            for (FanBadgeVo vo : badgeList) {
+                if (StringUtils.equals("Content", vo.getText())) {
+                    return true;
+                }
+            }
+        }catch(Exception e){
+            log.error("ProfileService.java / isContentsDj => {}", e);
+        }
+        return false;
     }
 
     /**
      * 정보 조회
      */
-    public String callMemberInfo(P_ProfileInfoVo pProfileInfo, HttpServletRequest request) {
+    public String callMemberInfo(P_ProfileInfoVo pProfileInfo, HttpServletRequest request, boolean isProfile) {
         ProcedureVo procedureVo = getProfile(pProfileInfo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.회원정보보기_성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(MemberStatus.회원정보보기_성공.getMessageCode())) {
             P_ProfileInfoVo profileInfo = new Gson().fromJson(procedureVo.getExt(), P_ProfileInfoVo.class);
 
             //팬랭킹 1,2,3 조회 프로시저 분리
@@ -181,19 +206,26 @@ public class ProfileService {
             HashMap imgListMap = callProfImgList(pProfileInfo.getTarget_mem_no(), request);
             profileInfoOutVo.setProfImgList((List) imgListMap.get("list"));
 
+            /* 컨텐츠 DJ 확인용 */
+            boolean isConDj = false;
+            if(isProfile) {
+                isConDj = isContents(pProfileInfo.getTarget_mem_no());
+            }
+            profileInfoOutVo.setIsConDj(isConDj);
+
             //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo));
             //stringStringListOperations.put(redisProfileKey, profileInfoOutVo.getMemNo(), gsonUtil.toJson(profileInfoOutVo)); => 추가되지않고 수정 됨
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_성공, profileInfoOutVo));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_성공, profileInfoOutVo));
 
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_회원아님));
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_대상아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_대상아님));
-        }else if(procedureVo.getRet().equals(Status.회원정보보기_차단회원불가.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_차단회원불가));
+        }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_회원아님));
+        }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_대상아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_대상아님));
+        }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_차단회원불가.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_차단회원불가));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원정보보기_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_실패));
         }
         return result;
     }
@@ -211,22 +243,22 @@ public class ProfileService {
         returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
 
         String result;
-        if(Status.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
+        if(MemberStatus.팬보드_댓글달기성공.getMessageCode().equals(procedureVo.getRet())){
 
             HashMap socketMap = new HashMap();
             //TODO - 레벨업 유무 소켓추가 추후 확인
             //socketMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기성공, returnMap));
-        }else if (Status.팬보드_댓글달기실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_스타회원번호_회원아님));
-        }else if (Status.팬보드_댓글달기실패_작성자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_작성자회원번호_회원아님));
-        }else if (Status.팬보드_댓글달기실패_잘못된댓글그룹번호.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_잘못된댓글그룹번호));
-        }else if (Status.팬보드_댓글달기실패_depth값_오류.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_depth값_오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글달기성공, returnMap));
+        }else if (MemberStatus.팬보드_댓글달기실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글달기실패_스타회원번호_회원아님));
+        }else if (MemberStatus.팬보드_댓글달기실패_작성자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글달기실패_작성자회원번호_회원아님));
+        }else if (MemberStatus.팬보드_댓글달기실패_잘못된댓글그룹번호.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글달기실패_잘못된댓글그룹번호));
+        }else if (MemberStatus.팬보드_댓글달기실패_depth값_오류.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글달기실패_depth값_오류));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글달기실패_등록오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글달기실패_등록오류));
         }
 
         return result;
@@ -244,7 +276,7 @@ public class ProfileService {
         //fanBoardList.put("count", mypageService.getMemberBoardCount(pFanboardListVo));
         if(DalbitUtil.isEmpty(fanboardVoList)){
             fanBoardList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글없음, fanBoardList));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글없음, fanBoardList));
         }
 
         List<BoardVo> outVoList = new ArrayList<>();
@@ -273,13 +305,13 @@ public class ProfileService {
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드조회성공, fanBoardList));
-        } else if(Status.팬보드_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_요청회원번호_회원아님));
-        } else if(Status.팬보드_스타회원번호_회원아님.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_스타회원번호_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드조회성공, fanBoardList));
+        } else if(MemberStatus.팬보드_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_요청회원번호_회원아님));
+        } else if(MemberStatus.팬보드_스타회원번호_회원아님.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_스타회원번호_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_조회오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_조회오류));
         }
 
         return result;
@@ -294,22 +326,22 @@ public class ProfileService {
         profileDao.callMemberFanboardDelete(procedureVo);
 
         String result;
-        if(Status.팬보드_댓글삭제성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status. 팬보드_댓글삭제성공));
-        } else if(Status.팬보드_댓글삭제실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_스타회원번호_회원아님));
-        } else if(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제자회원번호_회원아님));
-        } else if(Status.팬보드_댓글삭제실패_댓글인덱스번호_잘못된번호.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
-        } else if(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
-        } else if(Status.팬보드_댓글삭제실패_이미삭제됨.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_이미삭제됨));
-        } else if(Status.팬보드_댓글삭제실패_삭제권한없음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제실패_삭제권한없음));
+        if(MemberStatus.팬보드_댓글삭제성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus. 팬보드_댓글삭제성공));
+        } else if(MemberStatus.팬보드_댓글삭제실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제실패_스타회원번호_회원아님));
+        } else if(MemberStatus.팬보드_댓글삭제실패_삭제자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제실패_삭제자회원번호_회원아님));
+        } else if(MemberStatus.팬보드_댓글삭제실패_댓글인덱스번호_잘못된번호.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
+        } else if(MemberStatus.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제실패_요청인덱스번호_스타회원번호가다름));
+        } else if(MemberStatus.팬보드_댓글삭제실패_이미삭제됨.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제실패_이미삭제됨));
+        } else if(MemberStatus.팬보드_댓글삭제실패_삭제권한없음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제실패_삭제권한없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글삭제오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글삭제오류));
         }
 
         return result;
@@ -326,7 +358,7 @@ public class ProfileService {
         HashMap fanboardReplyList = new HashMap();
         if(DalbitUtil.isEmpty(fanboardVoReplyList)){
             fanboardReplyList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회실패_대댓글없음, fanboardReplyList));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_대댓글조회실패_대댓글없음, fanboardReplyList));
         }
 
         List<BoardVo> outVoList = new ArrayList<>();
@@ -352,13 +384,13 @@ public class ProfileService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_대댓글조회성공, fanboardReplyList));
-        } else if(Status.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
-            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_요청회원번호_회원아님)));
-        } else if(Status.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
-            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회실패_스타회원번호_회원아님)));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_대댓글조회성공, fanboardReplyList));
+        } else if(MemberStatus.팬보드_대댓글조회실패_요청회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
+            result = gsonUtil.toJson((new JsonOutputVo(MemberStatus.팬보드_대댓글조회실패_요청회원번호_회원아님)));
+        } else if(MemberStatus.팬보드_대댓글조회실패_스타회원번호_회원아님.getMessageCode().equals(procedureOutputVo.getRet())) {
+            result = gsonUtil.toJson((new JsonOutputVo(MemberStatus.팬보드_대댓글조회실패_스타회원번호_회원아님)));
         } else {
-            result = gsonUtil.toJson((new JsonOutputVo(Status.팬보드_대댓글조회오류)));
+            result = gsonUtil.toJson((new JsonOutputVo(MemberStatus.팬보드_대댓글조회오류)));
         }
 
         return result;
@@ -383,9 +415,9 @@ public class ProfileService {
                 fanRankingList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
             }
             if(2 == deviceVo.getOs() && !DalbitUtil.versionCompare(deviceVo.getAppVersion(), "1.3.3")){ //IOS crash 대응 20.11.10 이재은
-                return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_실패, fanRankingList));
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬랭킹조회_실패, fanRankingList));
             }else{
-                return gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_팬없음, fanRankingList));
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬랭킹조회_팬없음, fanRankingList));
             }
         }
 
@@ -400,13 +432,13 @@ public class ProfileService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_성공, fanRankingList));
-        } else if (procedureVo.getRet().equals(Status.팬랭킹조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.팬랭킹조회_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_대상회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬랭킹조회_성공, fanRankingList));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬랭킹조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬랭킹조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬랭킹조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬랭킹조회_대상회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬랭킹조회_실패));
         }
         return result;
     }
@@ -427,14 +459,14 @@ public class ProfileService {
         returnMap.put("newGrade", DalbitUtil.getStringMap(resultMap, "newGrade"));
 
         String result;
-        if(procedureVo.getRet().equals(Status.레벨업확인_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_성공, returnMap));
-        }else if(procedureVo.getRet().equals(Status.레벨업확인_요청회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_요청회원번호_회원아님));
-        }else if(procedureVo.getRet().equals(Status.레벨업확인_레벨업_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_레벨업_없음));
+        if(procedureVo.getRet().equals(MemberStatus.레벨업확인_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.레벨업확인_성공, returnMap));
+        }else if(procedureVo.getRet().equals(MemberStatus.레벨업확인_요청회원번호_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.레벨업확인_요청회원번호_회원아님));
+        }else if(procedureVo.getRet().equals(MemberStatus.레벨업확인_레벨업_없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.레벨업확인_레벨업_없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.레벨업확인_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.레벨업확인_실패));
         }
         return result;
     }
@@ -448,22 +480,22 @@ public class ProfileService {
         profileDao.callMemberFanboardEdit(procedureVo);
 
         String result;
-        if(Status.팬보드_댓글수정성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정성공));
-        }else if (Status.팬보드_댓글수정실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_스타회원번호_회원아님));
-        }else if (Status.팬보드_댓글수정실패_수정자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_수정자회원번호_회원아님));
-        }else if (Status.팬보드_댓글수정실패_잘못된댓글인덱스번호.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_잘못된댓글인덱스번호));
-        }else if (Status.팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름));
-        }else if (Status.팬보드_댓글수정실패_삭제댓글_수정불가.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_삭제댓글_수정불가));
-        }else if (Status.팬보드_댓글수정실패_수정권한없음.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패_수정권한없음));
+        if(MemberStatus.팬보드_댓글수정성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정성공));
+        }else if (MemberStatus.팬보드_댓글수정실패_스타회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패_스타회원번호_회원아님));
+        }else if (MemberStatus.팬보드_댓글수정실패_수정자회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패_수정자회원번호_회원아님));
+        }else if (MemberStatus.팬보드_댓글수정실패_잘못된댓글인덱스번호.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패_잘못된댓글인덱스번호));
+        }else if (MemberStatus.팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패_댓글인덱스번호_스타회원번호다름));
+        }else if (MemberStatus.팬보드_댓글수정실패_삭제댓글_수정불가.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패_삭제댓글_수정불가));
+        }else if (MemberStatus.팬보드_댓글수정실패_수정권한없음.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패_수정권한없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬보드_댓글수정실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬보드_댓글수정실패));
         }
 
         return result;
@@ -499,7 +531,7 @@ public class ProfileService {
         HashMap fanList = new HashMap();
         if(DalbitUtil.isEmpty(fanListVoList)){
             fanList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬조회_팬없음, fanList));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_팬없음, fanList));
         }
 
         List<FanListOutVo> outVoList = new ArrayList<>();
@@ -513,13 +545,13 @@ public class ProfileService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_성공, fanList));
-        } else if (procedureVo.getRet().equals(Status.팬조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.팬조회_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_대상회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_성공, fanList));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_대상회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_실패));
         }
         return result;
     }
@@ -535,7 +567,7 @@ public class ProfileService {
         HashMap fanList = new HashMap();
         if(DalbitUtil.isEmpty(fanListNewVoList)){
             fanList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.팬조회_팬없음, fanList));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_팬없음, fanList));
         }
 
         List<FanListNewOutVo> outVoList = new ArrayList<>();
@@ -549,13 +581,13 @@ public class ProfileService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_성공, fanList));
-        } else if (procedureVo.getRet().equals(Status.팬조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.팬조회_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_대상회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_성공, fanList));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_대상회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬조회_실패));
         }
         return result;
     }
@@ -573,16 +605,16 @@ public class ProfileService {
         returnMap.put("fanMemo", DalbitUtil.getStringMap(resultMap, "fanMemo"));
 
         String result;
-        if(Status.팬메모조회_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_성공, returnMap));
-        } else if (procedureVo.getRet().equals(Status.팬메모조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.팬메모조회_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_대상회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.팬메모조회_대상회원_팬아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_대상회원_팬아님));
+        if(MemberStatus.팬메모조회_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모조회_성공, returnMap));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬메모조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬메모조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모조회_대상회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬메모조회_대상회원_팬아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모조회_대상회원_팬아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모조회_실패));
         }
         return result;
     }
@@ -596,14 +628,14 @@ public class ProfileService {
         profileDao.callFanMemoSave(procedureVo);
 
         String result;
-        if(Status.팬메모저장_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_성공));
-        } else if (procedureVo.getRet().equals(Status.팬메모저장_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.팬메모저장_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_대상회원_회원아님));
+        if(MemberStatus.팬메모저장_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모저장_성공));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬메모저장_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모저장_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬메모저장_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모저장_대상회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬메모저장_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬메모저장_실패));
         }
         return result;
     }
@@ -617,12 +649,12 @@ public class ProfileService {
         profileDao.callFanEdit(procedureVo);
 
         String result;
-        if(Status.팬리스트편집_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬리스트편집_성공));
-        } else if (procedureVo.getRet().equals(Status.팬리스트편집_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬리스트편집_요청회원_회원아님));
+        if(MemberStatus.팬리스트편집_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬리스트편집_성공));
+        } else if (procedureVo.getRet().equals(MemberStatus.팬리스트편집_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬리스트편집_요청회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.팬리스트편집_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.팬리스트편집_실패));
         }
         return result;
     }
@@ -638,7 +670,7 @@ public class ProfileService {
         HashMap starList = new HashMap();
         if(DalbitUtil.isEmpty(starListNewVoList)){
             starList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_없음, starList));
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타리스트조회_없음, starList));
         }
 
         List<StarListNewOutVo> outVoList = new ArrayList<>();
@@ -652,13 +684,13 @@ public class ProfileService {
 
         String result;
         if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_성공, starList));
-        } else if (procedureVo.getRet().equals(Status.스타리스트조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.스타리스트조회_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_대상회원_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타리스트조회_성공, starList));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타리스트조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타리스트조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타리스트조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타리스트조회_대상회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타리스트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타리스트조회_실패));
         }
         return result;
     }
@@ -676,16 +708,16 @@ public class ProfileService {
         returnMap.put("starMemo", DalbitUtil.getStringMap(resultMap, "starMemo"));
 
         String result;
-        if(Status.스타메모조회_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_성공, returnMap));
-        } else if (procedureVo.getRet().equals(Status.스타메모조회_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.스타메모조회_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_대상회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.스타메모조회_대상회원_팬아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_대상회원_팬아님));
+        if(MemberStatus.스타메모조회_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모조회_성공, returnMap));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타메모조회_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모조회_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타메모조회_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모조회_대상회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타메모조회_대상회원_팬아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모조회_대상회원_팬아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모조회_실패));
         }
         return result;
     }
@@ -699,14 +731,14 @@ public class ProfileService {
         profileDao.callStarMemoSave(procedureVo);
 
         String result;
-        if(Status.스타메모저장_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_성공));
-        } else if (procedureVo.getRet().equals(Status.스타메모저장_요청회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_요청회원_회원아님));
-        } else if (procedureVo.getRet().equals(Status.스타메모저장_대상회원_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_대상회원_회원아님));
+        if(MemberStatus.스타메모저장_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모저장_성공));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타메모저장_요청회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모저장_요청회원_회원아님));
+        } else if (procedureVo.getRet().equals(MemberStatus.스타메모저장_대상회원_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모저장_대상회원_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스타메모저장_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스타메모저장_실패));
         }
         return result;
     }
@@ -723,17 +755,17 @@ public class ProfileService {
         profileDao.callProfileImgAdd(procedureVo);
 
         String result;
-        if(Status.프로필이미지_추가등록_성공.getMessageCode().equals(procedureVo.getRet())){
+        if(MypageStatus.프로필이미지_추가등록_성공.getMessageCode().equals(procedureVo.getRet())){
             restService.imgDone(DalbitUtil.replaceDonePath(profImg), request);
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_성공));
-        } else if (procedureVo.getRet().equals(Status.프로필이미지_추가등록_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_회원아님));
-        } else if (procedureVo.getRet().equals(Status.프로필이미지_추가등록_이미지없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_이미지없음));
-        } else if (procedureVo.getRet().equals(Status.프로필이미지_추가등록_10개초과.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_10개초과));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_추가등록_성공));
+        } else if (procedureVo.getRet().equals(MypageStatus.프로필이미지_추가등록_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_추가등록_회원아님));
+        } else if (procedureVo.getRet().equals(MypageStatus.프로필이미지_추가등록_이미지없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_추가등록_이미지없음));
+        } else if (procedureVo.getRet().equals(MypageStatus.프로필이미지_추가등록_10개초과.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_추가등록_10개초과));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_추가등록_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_추가등록_실패));
         }
         return result;
     }
@@ -747,14 +779,14 @@ public class ProfileService {
         profileDao.callProfileImgDelete(procedureVo);
 
         String result;
-        if(Status.프로필이미지_삭제_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_성공));
-        } else if (procedureVo.getRet().equals(Status.프로필이미지_삭제_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_회원아님));
-        } else if (procedureVo.getRet().equals(Status.프로필이미지_삭제_이미지없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_이미지없음));
+        if(MypageStatus.프로필이미지_삭제_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_삭제_성공));
+        } else if (procedureVo.getRet().equals(MypageStatus.프로필이미지_삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_삭제_회원아님));
+        } else if (procedureVo.getRet().equals(MypageStatus.프로필이미지_삭제_이미지없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_삭제_이미지없음));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_삭제_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_삭제_실패));
         }
         return result;
     }
@@ -768,12 +800,12 @@ public class ProfileService {
         profileDao.callProfileImgLeader(procedureVo);
 
         String result;
-        if(Status.프로필이미지_대표지정_성공.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_대표지정_성공));
-        } else if (procedureVo.getRet().equals(Status.프로필이미지_대표지정_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_대표지정_회원아님));
+        if(MypageStatus.프로필이미지_대표지정_성공.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_대표지정_성공));
+        } else if (procedureVo.getRet().equals(MypageStatus.프로필이미지_대표지정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_대표지정_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.프로필이미지_대표지정_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.프로필이미지_대표지정_실패));
         }
         return result;
     }

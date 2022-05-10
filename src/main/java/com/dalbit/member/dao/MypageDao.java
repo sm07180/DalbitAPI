@@ -775,4 +775,36 @@ public interface MypageDao {
     @ResultMap({"ResultMap.BroadcastNoticeListOutVo"})
     @Select("CALL rd_data.p_broadcast_room_notice_sel(#{memNo}, #{roomNo})")
     List<Object> pMemberBroadcastNoticeList(Map<String, Object> param);
+
+    /**
+     * ##### 회원 방송방에서 받은 사연 리스트 (마이페이지에서 사용)
+     *
+     * @param
+     * memNo 		BIGINT			-- 회원번호
+     * ,pageNo 		INT UNSIGNED	-- 페이지 번호
+     * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
+     *
+     * @Return
+     * Multi Rows
+     *
+     * #1
+     * cnt		BIGINT		-- 전체 수
+     *
+     * #2
+     * idx                  BIGINT          -- 자동등록 번호
+     * dj_mem_no            BIGINT          -- 회원 번호(방장)
+     * room_no              BIGINT          -- 방 번호
+     * contents             VARCHAR         -- 내용
+     * plus_yn              CHAR            -- 플러스[y,n]
+     * status               BIGINT          -- 상태 0 정상,1삭제
+     * writer_no            BIGINT          -- 회원 번호(보낸이)
+     * writer_mem_id        VARCHAR         -- 회원 아이디(보낸이)
+     * writer_mem_nick      VARCHAR         -- 회원 닉네임(보낸이)
+     * writer_mem_sex       CHAR            -- 회원성별(보낸이)
+     * writer_mem_profile   VARCHAR         -- 프로필(보낸이)
+     * write_date           DATETIME        -- 등록일자
+     */
+    @ResultMap({"ResultMap.integer", "ResultMap.StoryResultVo"})
+    @Select("CALL rd_data.p_broadcast_room_story_mem_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
+    List<Object> pBroadcastRoomStoryMemList(Map<String, Object> param);
 }

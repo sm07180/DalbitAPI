@@ -45,6 +45,8 @@ public class ProfileInfoOutVo extends BaseVo {
     private Boolean isPop;
     private Boolean isNew;
     private Boolean isSpecial;
+    private Boolean isConDj; // 컨텐츠 DJ
+
     private int badgeSpecial;
     private int badgePartner;
     private String playMakerYn;

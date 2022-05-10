@@ -1,6 +1,6 @@
 package com.dalbit.store.controller;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.CommonStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.store.etc.Store;
 import com.dalbit.store.service.StoreService;
@@ -13,9 +13,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -41,7 +39,7 @@ public class StoreController {
         data.put("dalCnt", storeService.getDalCnt(request));
         data.put("list", storeService.getDalPriceList(Store.ModeType.IN_APP, request));
         data.put("defaultNum", 2); //IOS 스토어 기본값 설정 위한 값
-        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
+        return  gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, data));
     }
 
     // 버전분기 처리용
@@ -50,13 +48,13 @@ public class StoreController {
         Map<String, Object> data = new HashMap<>();
         data.put("dalCnt", storeService.getDalCnt(request));
         data.put("list", storeService.getTargetPriceList(Store.Platform.OTHER));
-        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, data));
+        return  gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, data));
     }
 
     @PostMapping("/paycall/store")
     public String getChargeListByParam(HttpServletRequest request){
         StoreChargeVo storeChargeVo = storeService.getStoreChargeListByParam(request);
-        return  gsonUtil.toJson(new JsonOutputVo(Status.조회, DalbitUtil.isEmpty(storeChargeVo) ? null : storeChargeVo));
+        return  gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, DalbitUtil.isEmpty(storeChargeVo) ? null : storeChargeVo));
     }
 
     @PostMapping("/store/getIndexData")

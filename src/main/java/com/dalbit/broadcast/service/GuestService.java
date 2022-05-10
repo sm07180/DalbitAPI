@@ -9,10 +9,12 @@ import com.dalbit.broadcast.vo.RoomOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.GuestListOutVo;
 import com.dalbit.broadcast.vo.request.GuestListVo;
+import com.dalbit.common.code.BroadcastStatus;
+import com.dalbit.common.code.CommonStatus;
+import com.dalbit.common.code.GuestStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
-import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -25,7 +27,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -67,7 +68,7 @@ public class GuestService {
         String mode = request.getParameter("mode");
 
         if(DalbitUtil.isEmpty(roomNo) || DalbitUtil.isEmpty(memNo) || DalbitUtil.isEmpty(mode)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류, null));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.파라미터오류, null));
         }
 
         Status status = null;
@@ -76,7 +77,7 @@ public class GuestService {
         selParams.put("room_no", roomNo);
         HashMap roomGuestInfo = userDao.selectGuestStreamInfo(selParams);
         if(roomGuestInfo == null){
-            return gsonUtil.toJson(new JsonOutputVo(Status.데이터없음, null));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음, null));
         }
 
         GuestInfoVo guestInfoVo = new GuestInfoVo();
@@ -105,7 +106,7 @@ public class GuestService {
                                 P_GuestInviteOkVo inviteOkVo = new P_GuestInviteOkVo(roomNo, 1, request);
                                 status = guestService.callGuestInviteOk(inviteOkVo);
 
-                                if(status.equals(Status.게스트초대수락_성공)){
+                                if(status.equals(GuestStatus.게스트초대수락_성공)){
                                     //게스트 지정을 위한 방송방 정보 조회
                                     RoomOutVo roomOutVo = wowzaService.getRoomInfo(roomNo, memNo, DalbitUtil.isLogin(request) ? 1 : 0, request);
                                     RoomInfoVo roomInfoVo = wowzaService.getRoomInfo(roomOutVo, request);
@@ -144,7 +145,7 @@ public class GuestService {
                                     P_RoomGuestVo roomGuestVo = new P_RoomGuestVo(DalbitUtil.getStringMap(roomGuestInfo, "dj_mem_no"), memNo, roomNo, webRtcStreamName, rtmpEdge, rtmpOrigin, gstWebRtcStreamName, gstRtmpEdge, gstRtmpOrigin, request);
                                     status = guestService.callBroadCastRoomGuestAdd(roomGuestVo, request);
 
-                                    if(status.equals(Status.게스트지정)){
+                                    if(status.equals(BroadcastStatus.게스트지정)){
                                         guestInfoVo.setNickNm(DalbitUtil.getStringMap(roomGuestInfo, "mem_nick"));
                                         guestInfoVo.setProfImg(new ImageVo(roomGuestInfo.get("image_profile"), (String)roomGuestInfo.get("mem_sex"), DalbitUtil.getProperty("server.photo.url")));
                                         guestInfoVo.setRtmpOrigin(gstRtmpOrigin);
@@ -155,7 +156,7 @@ public class GuestService {
                                     }
                                 }
                             }catch(Exception e){
-                                status = Status.비즈니스로직오류;
+                                status = CommonStatus.비즈니스로직오류;
                             }
                         }else if ("4".equals(mode)){ // 거절
                             P_GuestInviteOkVo inviteOkVo = new P_GuestInviteOkVo(roomNo, 0, request);
@@ -167,7 +168,7 @@ public class GuestService {
                             return guestService.callGuestPropose(proposeVo, memNo, roomNo, djMemNo, mode, guestInfoVo.getNickNm(), request, DalbitUtil.getAuthToken(request));
                         }
                     }else{
-                        status = Status.방송참여_해당방이없음;
+                        status = BroadcastStatus.방송참여_해당방이없음;
                     }
                 }else if("6".equals(mode) || "9".equals(mode)){ // 6:퇴장(게스트 취소) = 연결종료, 9:비정상종료
                     P_RoomGuestVo apiData = new P_RoomGuestVo(djMemNo, memNo, roomNo, "", "", "", "", "", "", request);
@@ -213,7 +214,7 @@ public class GuestService {
                     guestInfoVo.setWebRtcUrl(gstWebRtcUrl);
                     guestInfoVo.setWebRtcAppName(gstWebRtcAppName);
                     guestInfoVo.setWebRtcStreamName(gstWebRtcStreamName);
-                    status = Status.공백;
+                    status = CommonStatus.공백;
 
                 }else if("10".equals(mode)){    //게스트 통화중
                     P_RoomGuestVo apiData = new P_RoomGuestVo(djMemNo, memNo, roomNo, "", "", "", "", "", "", request);
@@ -233,10 +234,10 @@ public class GuestService {
                     }catch(Exception e){}
                 }
             }else{
-                status = Status.파라미터오류;
+                status = CommonStatus.파라미터오류;
             }
         }else{
-            status = Status.파라미터오류;
+            status = CommonStatus.파라미터오류;
         }
         return gsonUtil.toJson(new JsonOutputVo(status, guestInfoVo));
     }
@@ -258,31 +259,31 @@ public class GuestService {
         guestInfoVo.setNickNm(nickname);
         guestInfoVo.setProposeCnt(DalbitUtil.getIntMap(resultMap, "propose_count"));
 
-        if(procedureVo.getRet().equals(Status.게스트신청_성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(GuestStatus.게스트신청_성공.getMessageCode())) {
             try{
                 socketService.sendGuest(memNo, roomNo, djMemNo, mode, request, authToken, guestInfoVo);
             }catch(Exception e){}
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_성공, guestInfoVo));
-        }else if(procedureVo.getRet().equals(Status.게스트신청_회원아님.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_회원아님));
-        }else if(procedureVo.getRet().equals(Status.게스트신청_방번호없음.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_방번호없음));
-        }else if(procedureVo.getRet().equals(Status.게스트신청_종료된방번호.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_종료된방번호));
-        }else if(procedureVo.getRet().equals(Status.게스트신청_청취자아님.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_청취자아님));
-        }else if(procedureVo.getRet().equals(Status.게스트신청_신청불가상태.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_신청불가상태));
-        }else if(procedureVo.getRet().equals(Status.게스트신청_이미신청중.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_성공, guestInfoVo));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청_회원아님.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_회원아님));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청_방번호없음.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_방번호없음));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청_종료된방번호.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_종료된방번호));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청_청취자아님.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_청취자아님));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청_신청불가상태.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_신청불가상태));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청_이미신청중.getMessageCode())) {
             if(DalbitUtil.getIntMap(resultMap, "proposeState") == 2){
                 guestInfoVo.setMode(1);
-                return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_초대받은상태, guestInfoVo));
+                return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_초대받은상태, guestInfoVo));
             }else{
-                return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_이미신청중, guestInfoVo));
+                return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_이미신청중, guestInfoVo));
             }
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청_실패));
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청_실패));
         }
     }
 
@@ -302,26 +303,26 @@ public class GuestService {
         guestInfoVo.setProposeCnt(DalbitUtil.getIntMap(resultMap, "propose_count"));
 
         String result;
-        if(procedureVo.getRet().equals(Status.게스트신청취소_성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_성공.getMessageCode())) {
             try{
                 socketService.sendGuest(memNo, roomNo, djMemNo, mode, request, authToken, guestInfoVo);
             }catch(Exception e){}
 
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_성공, guestInfoVo));
-        }else if(procedureVo.getRet().equals(Status.게스트신청취소_회원아님.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_회원아님));
-        }else if(procedureVo.getRet().equals(Status.게스트신청취소_방번호없음.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_방번호없음));
-        }else if(procedureVo.getRet().equals(Status.게스트신청취소_종료된방번호.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_종료된방번호));
-        }else if(procedureVo.getRet().equals(Status.게스트신청취소_청취자아님.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_청취자아님));
-        }else if(procedureVo.getRet().equals(Status.게스트신청취소_불가상태.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_불가상태));
-        }else if(procedureVo.getRet().equals(Status.게스트신청취소_신청상태아님.getMessageCode())) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_신청상태아님));
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_성공, guestInfoVo));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_회원아님.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_회원아님));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_방번호없음.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_방번호없음));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_종료된방번호.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_종료된방번호));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_청취자아님.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_청취자아님));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_불가상태.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_불가상태));
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트신청취소_신청상태아님.getMessageCode())) {
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_신청상태아님));
         }else{
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트신청취소_실패));
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트신청취소_실패));
         }
     }
 
@@ -346,7 +347,7 @@ public class GuestService {
             }else{
                 guestVoList.put("paging", new PagingVo(0, pGuestManagementListVo.getPageNo(), pGuestManagementListVo.getPageCnt()));
             }
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트리스트_없음, guestVoList));
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트리스트_없음, guestVoList));
         }
 
         List<GuestListOutVo> outVoList = new ArrayList<>();
@@ -363,19 +364,19 @@ public class GuestService {
 
         String result;
         if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_성공, guestVoList));
-        } else if(Status.게스트관리조회_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_요청회원번호_회원아님));
-        } else if(Status.게스트관리조회_방번호없음.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_방번호없음));
-        } else if(Status.게스트관리조회_종료된방번호.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_종료된방번호));
-        } else if(Status.게스트관리조회_청취자아님.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_청취자아님));
-        } else if(Status.게스트관리조회_권한없음.getMessageCode().equals((procedureVo.getRet()))) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_권한없음));
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_성공, guestVoList));
+        } else if(GuestStatus.게스트관리조회_요청회원번호_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_요청회원번호_회원아님));
+        } else if(GuestStatus.게스트관리조회_방번호없음.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_방번호없음));
+        } else if(GuestStatus.게스트관리조회_종료된방번호.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_종료된방번호));
+        } else if(GuestStatus.게스트관리조회_청취자아님.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_청취자아님));
+        } else if(GuestStatus.게스트관리조회_권한없음.getMessageCode().equals((procedureVo.getRet()))) {
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_권한없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트관리조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트관리조회_실패));
         }
 
         return result;
@@ -390,32 +391,32 @@ public class GuestService {
         guestDao.callGuestInvite(procedureVo);
 
         Status status = null;
-        if(procedureVo.getRet().equals(Status.게스트초대_성공.getMessageCode())) {
-            status = Status.게스트초대_성공;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_회원아님.getMessageCode())) {
-            status = Status.게스트초대_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_초대대상_회원아님.getMessageCode())) {
-            status = Status.게스트초대_초대대상_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_방번호없음.getMessageCode())) {
-            status = Status.게스트초대_방번호없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_종료된방번호.getMessageCode())) {
-            status = Status.게스트초대_종료된방번호;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_요청회원_방에없음.getMessageCode())) {
-            status = Status.게스트초대_요청회원_방에없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_권한없음.getMessageCode())) {
-            status = Status.게스트초대_권한없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_초대회원_방에없음.getMessageCode())) {
-            status = Status.게스트초대_초대회원_방에없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_초대불가.getMessageCode())) {
-            status = Status.게스트초대_초대불가;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_이미초대중.getMessageCode())) {
-            status = Status.게스트초대_이미초대중;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_이미존재_제한.getMessageCode())) {
-            status = Status.게스트초대_이미존재_제한;
-        }else if(procedureVo.getRet().equals(Status.게스트초대_다른회원_초대중.getMessageCode())) {
-            status = Status.게스트초대_다른회원_초대중;
+        if(procedureVo.getRet().equals(GuestStatus.게스트초대_성공.getMessageCode())) {
+            status = GuestStatus.게스트초대_성공;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_회원아님.getMessageCode())) {
+            status = GuestStatus.게스트초대_회원아님;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_초대대상_회원아님.getMessageCode())) {
+            status = GuestStatus.게스트초대_초대대상_회원아님;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_방번호없음.getMessageCode())) {
+            status = GuestStatus.게스트초대_방번호없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_종료된방번호.getMessageCode())) {
+            status = GuestStatus.게스트초대_종료된방번호;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_요청회원_방에없음.getMessageCode())) {
+            status = GuestStatus.게스트초대_요청회원_방에없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_권한없음.getMessageCode())) {
+            status = GuestStatus.게스트초대_권한없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_초대회원_방에없음.getMessageCode())) {
+            status = GuestStatus.게스트초대_초대회원_방에없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_초대불가.getMessageCode())) {
+            status = GuestStatus.게스트초대_초대불가;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_이미초대중.getMessageCode())) {
+            status = GuestStatus.게스트초대_이미초대중;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_이미존재_제한.getMessageCode())) {
+            status = GuestStatus.게스트초대_이미존재_제한;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대_다른회원_초대중.getMessageCode())) {
+            status = GuestStatus.게스트초대_다른회원_초대중;
         }else{
-            status = Status.게스트초대_실패;
+            status = GuestStatus.게스트초대_실패;
         }
         return status;
     }
@@ -429,28 +430,28 @@ public class GuestService {
         guestDao.callGuestInviteCancel(procedureVo);
 
         Status status = null;
-        if(procedureVo.getRet().equals(Status.게스트초대취소_성공.getMessageCode())) {
-            status = Status.게스트초대취소_성공;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_회원아님.getMessageCode())) {
-            status = Status.게스트초대취소_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_초대대상_회원아님.getMessageCode())) {
-            status = Status.게스트초대취소_초대대상_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_방번호없음.getMessageCode())) {
-            status = Status.게스트초대취소_방번호없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_종료된방번호.getMessageCode())) {
-            status = Status.게스트초대취소_종료된방번호;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_요청회원_방에없음.getMessageCode())) {
-            status = Status.게스트초대취소_요청회원_방에없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_권한없음.getMessageCode())) {
-            status = Status.게스트초대취소_권한없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_초대회원_방에없음.getMessageCode())) {
-            status = Status.게스트초대취소_초대회원_방에없음;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_초대취소불가.getMessageCode())) {
-            status = Status.게스트초대취소_초대취소불가;
-        }else if(procedureVo.getRet().equals(Status.게스트초대취소_초대중아님.getMessageCode())) {
-            status = Status.게스트초대취소_초대중아님;
+        if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_성공.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_성공;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_회원아님.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_회원아님;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_초대대상_회원아님.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_초대대상_회원아님;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_방번호없음.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_방번호없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_종료된방번호.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_종료된방번호;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_요청회원_방에없음.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_요청회원_방에없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_권한없음.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_권한없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_초대회원_방에없음.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_초대회원_방에없음;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_초대취소불가.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_초대취소불가;
+        }else if(procedureVo.getRet().equals(GuestStatus.게스트초대취소_초대중아님.getMessageCode())) {
+            status = GuestStatus.게스트초대취소_초대중아님;
         }else{
-            status = Status.게스트초대취소_실패;
+            status = GuestStatus.게스트초대취소_실패;
         }
 
         return status;
@@ -466,46 +467,46 @@ public class GuestService {
 
         Status status = null;
         if(pGuestInviteOkVo.getYes_no() == 1) {
-            if(procedureVo.getRet().equals(Status.게스트초대수락_성공.getMessageCode())) {
-                status = Status.게스트초대수락_성공;
-            }else if(procedureVo.getRet().equals(Status.게스트초대수락_회원아님.getMessageCode())) {
-                status = Status.게스트초대수락_회원아님;
-            }else if(procedureVo.getRet().equals(Status.게스트초대수락_방번호없음.getMessageCode())) {
-                status = Status.게스트초대수락_방번호없음;
-            }else if(procedureVo.getRet().equals(Status.게스트초대수락_종료된방번호.getMessageCode())) {
-                status = Status.게스트초대수락_종료된방번호;
-            }else if(procedureVo.getRet().equals(Status.게스트초대수락_요청회원_방에없음.getMessageCode())) {
-                status = Status.게스트초대수락_요청회원_방에없음;
-            }else if(procedureVo.getRet().equals(Status.게스트초대수락_불가.getMessageCode())) {
-                status = Status.게스트초대수락_불가;
-            }else if(procedureVo.getRet().equals(Status.게스트초대수락_초대상태아님.getMessageCode())) {
-                status = Status.게스트초대수락_초대상태아님;
+            if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_성공.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_성공;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_회원아님.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_회원아님;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_방번호없음.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_방번호없음;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_종료된방번호.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_종료된방번호;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_요청회원_방에없음.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_요청회원_방에없음;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_불가.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_불가;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대수락_초대상태아님.getMessageCode())) {
+                status = GuestStatus.게스트초대수락_초대상태아님;
             }else{
-                status = Status.게스트초대수락_실패;
+                status = GuestStatus.게스트초대수락_실패;
             }
         } else {
-            if(procedureVo.getRet().equals(Status.게스트초대거절_성공.getMessageCode())) {
-                status = Status.게스트초대거절_성공;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_회원아님.getMessageCode())) {
-                status = Status.게스트초대거절_회원아님;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_초대대상_회원아님.getMessageCode())) {
-                status = Status.게스트초대거절_초대대상_회원아님;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_방번호없음.getMessageCode())) {
-                status = Status.게스트초대거절_방번호없음;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_종료된방번호.getMessageCode())) {
-                status = Status.게스트초대거절_종료된방번호;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_요청회원_방에없음.getMessageCode())) {
-                status = Status.게스트초대거절_요청회원_방에없음;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_권한없음.getMessageCode())) {
-                status = Status.게스트초대거절_권한없음;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_초대회원_방에없음.getMessageCode())) {
-                status = Status.게스트초대거절_초대회원_방에없음;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_초대취소불가.getMessageCode())) {
-                status = Status.게스트초대거절_초대취소불가;
-            }else if(procedureVo.getRet().equals(Status.게스트초대거절_초대중아님.getMessageCode())) {
-                status = Status.게스트초대거절_초대중아님;
+            if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_성공.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_성공;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_회원아님.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_회원아님;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_초대대상_회원아님.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_초대대상_회원아님;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_방번호없음.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_방번호없음;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_종료된방번호.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_종료된방번호;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_요청회원_방에없음.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_요청회원_방에없음;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_권한없음.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_권한없음;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_초대회원_방에없음.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_초대회원_방에없음;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_초대취소불가.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_초대취소불가;
+            }else if(procedureVo.getRet().equals(GuestStatus.게스트초대거절_초대중아님.getMessageCode())) {
+                status = GuestStatus.게스트초대거절_초대중아님;
             }else{
-                status = Status.게스트초대거절_실패;
+                status = GuestStatus.게스트초대거절_실패;
             }
         }
         return status;
@@ -521,26 +522,26 @@ public class GuestService {
         guestDao.callBroadCastRoomGuestAdd(procedureVo);
 
         Status status = null;
-        if(procedureVo.getRet().equals(Status.게스트지정.getMessageCode())){
-            status = Status.게스트지정;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_회원아님.getMessageCode())) {
-            status = Status.게스트지정_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_해당방이없음.getMessageCode())) {
-            status = Status.게스트지정_해당방이없음;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방이종료되었음.getMessageCode())) {
-            status = Status.게스트지정_방이종료되었음;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아님.getMessageCode())) {
-            status = Status.게스트지정_방소속_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방장아님.getMessageCode())) {
-            status = Status.게스트지정_방장아님;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_방소속_회원아이디아님.getMessageCode())) {
-            status = Status.게스트지정_방소속_회원아이디아님;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_불가.getMessageCode())) {
-            status = Status.게스트지정_불가;
-        }else if(procedureVo.getRet().equals(Status.게스트지정_초대수락상태아님.getMessageCode())) {
-            status = Status.게스트지정_초대수락상태아님;
+        if(procedureVo.getRet().equals(BroadcastStatus.게스트지정.getMessageCode())){
+            status = BroadcastStatus.게스트지정;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_회원아님.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_회원아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_해당방이없음.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_해당방이없음;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_방이종료되었음.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_방이종료되었음;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_방소속_회원아님.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_방소속_회원아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_방장아님.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_방장아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_방소속_회원아이디아님.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_방소속_회원아이디아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_불가.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_불가;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트지정_초대수락상태아님.getMessageCode())) {
+            status = BroadcastStatus.게스트지정_초대수락상태아님;
         }else{
-            status = Status.게스트지정_실패;
+            status = BroadcastStatus.게스트지정_실패;
         }
 
         return status;
@@ -559,24 +560,24 @@ public class GuestService {
         log.info(" ### 프로시저 호출결과 ###");
 
         Status status = null;
-        if(procedureVo.getRet().equals(Status.게스트취소.getMessageCode())){
-            status = Status.게스트취소;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_회원아님.getMessageCode())) {
-            status = Status.게스트취소_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_해당방이없음.getMessageCode())) {
-            status = Status.게스트취소_해당방이없음;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방이종료되었음.getMessageCode())) {
-            status = Status.게스트취소_방이종료되었음;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아님.getMessageCode())) {
-            status = Status.게스트취소_방소속_회원아님;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방장아님.getMessageCode())) {
-            status = Status.게스트취소_방장아님;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_방소속_회원아이디아님.getMessageCode())) {
-            status = Status.게스트취소_방소속_회원아이디아님;
-        }else if(procedureVo.getRet().equals(Status.게스트취소_불가.getMessageCode())) {
-            status = Status.게스트취소_불가;
+        if(procedureVo.getRet().equals(BroadcastStatus.게스트취소.getMessageCode())){
+            status = BroadcastStatus.게스트취소;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_회원아님.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_회원아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_해당방이없음.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_해당방이없음;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_방이종료되었음.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_방이종료되었음;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_방소속_회원아님.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_방소속_회원아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_방장아님.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_방장아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_방소속_회원아이디아님.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_방소속_회원아이디아님;
+        }else if(procedureVo.getRet().equals(BroadcastStatus.게스트취소_불가.getMessageCode())) {
+            status = BroadcastStatus.게스트취소_불가;
         }else{
-            status = Status.게스트취소_실패;
+            status = BroadcastStatus.게스트취소_실패;
         }
         return status;
     }
@@ -591,7 +592,7 @@ public class GuestService {
         HashMap guestList = new HashMap();
         if(DalbitUtil.isEmpty(pGuestListVo)){
             guestList.put("list", new ArrayList<>());
-            return gsonUtil.toJson(new JsonOutputVo(Status.게스트리스트조회_없음, guestList));
+            return gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트리스트조회_없음, guestList));
         }
 
         List<RoomGuestListOutVo> outVoList = new ArrayList<>();
@@ -604,9 +605,9 @@ public class GuestService {
 
         String result;
         if (pGuestListVo.size() > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트리스트조회_성공, guestList));
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트리스트조회_성공, guestList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.게스트리스트조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(GuestStatus.게스트리스트조회_실패));
         }
         return result;
     }

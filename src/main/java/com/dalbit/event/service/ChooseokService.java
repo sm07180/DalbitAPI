@@ -1,6 +1,6 @@
 package com.dalbit.event.service;
 
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.event.dao.ChooseokDao;
@@ -58,17 +58,17 @@ public class ChooseokService {
         if(state) {
             ProcedureVo procedureVo = new ProcedureVo(pChooseokCheckVo);
             chooseokDao.callChooseokCheck(procedureVo);
-            if (Status.추석이벤트체크_참여가능.getMessageCode().equals(procedureVo.getRet())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_참여가능, resultMap));
-            } else if (Status.추석이벤트체크_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_회원아님, resultMap));
-            } else if (Status.추석이벤트체크_이미받음.getMessageCode().equals(procedureVo.getRet())) {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_이미받음, resultMap));
+            if (EventStatus.추석이벤트체크_참여가능.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트체크_참여가능, resultMap));
+            } else if (EventStatus.추석이벤트체크_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트체크_회원아님, resultMap));
+            } else if (EventStatus.추석이벤트체크_이미받음.getMessageCode().equals(procedureVo.getRet())) {
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트체크_이미받음, resultMap));
             } else {
-                result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_실패, resultMap));
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트체크_실패, resultMap));
             }
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트체크_참여기간아님, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트체크_참여기간아님, resultMap));
         }
 
         return result;
@@ -87,18 +87,18 @@ public class ChooseokService {
         resultMap.put("freeDal", dal);
 
         String result;
-        if(Status.추석이벤트_무료달지급_지급성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_무료달지급_지급성공, resultMap));
-        } else if(Status.추석이벤트_무료달지급_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_무료달지급_회원아님));
-        } else if(Status.추석이벤트_무료달지급_이미지급받음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_무료달지급_이미지급받음));
-        } else if(Status.추석이벤트_무료달지급_레벨5미만.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_무료달지급_레벨5미만));
-        } else if(Status.추석이벤트_무료달지급_이벤트종료.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_무료달지급_이벤트종료));
+        if(EventStatus.추석이벤트_무료달지급_지급성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_무료달지급_지급성공, resultMap));
+        } else if(EventStatus.추석이벤트_무료달지급_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_무료달지급_회원아님));
+        } else if(EventStatus.추석이벤트_무료달지급_이미지급받음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_무료달지급_이미지급받음));
+        } else if(EventStatus.추석이벤트_무료달지급_레벨5미만.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_무료달지급_레벨5미만));
+        } else if(EventStatus.추석이벤트_무료달지급_이벤트종료.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_무료달지급_이벤트종료));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_무료달지급_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_무료달지급_실패));
         }
         return result;
     }
@@ -116,12 +116,12 @@ public class ChooseokService {
         resultMap.put("purchaseDal", purchaseDal);
 
         String result;
-        if(Status.추석이벤트_구매달조회_성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_구매달조회_성공, resultMap));
-        } else if(Status.추석이벤트_구매달조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_구매달조회_회원아님));
+        if(EventStatus.추석이벤트_구매달조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_구매달조회_성공, resultMap));
+        } else if(EventStatus.추석이벤트_구매달조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_구매달조회_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_구매달조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_구매달조회_실패));
         }
         return result;
     }
@@ -139,20 +139,20 @@ public class ChooseokService {
         resultMap.put("bonusDal", dal);
 
         String result;
-        if(Status.추석이벤트_보너스달지급_지급성공.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_지급성공, resultMap));
-        } else if(Status.추석이벤트_보너스달지급_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_회원아님));
-        } else if(Status.추석이벤트_보너스달지급_이미지급받음.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_이미지급받음));
-        } else if(Status.추석이벤트_보너스달지급_지급기간이아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_지급기간이아님));
-        } else if(Status.추석이벤트_보너스달지급_이벤트종료.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_이벤트종료));
-        } else if(Status.추석이벤트_보너스달지급_500달미만.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_500달미만));
+        if(EventStatus.추석이벤트_보너스달지급_지급성공.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_지급성공, resultMap));
+        } else if(EventStatus.추석이벤트_보너스달지급_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_회원아님));
+        } else if(EventStatus.추석이벤트_보너스달지급_이미지급받음.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_이미지급받음));
+        } else if(EventStatus.추석이벤트_보너스달지급_지급기간이아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_지급기간이아님));
+        } else if(EventStatus.추석이벤트_보너스달지급_이벤트종료.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_이벤트종료));
+        } else if(EventStatus.추석이벤트_보너스달지급_500달미만.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_500달미만));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추석이벤트_보너스달지급_지급실패));
+            result = gsonUtil.toJson(new JsonOutputVo(EventStatus.추석이벤트_보너스달지급_지급실패));
         }
         return result;
     }

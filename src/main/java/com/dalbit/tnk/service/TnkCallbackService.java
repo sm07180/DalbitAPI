@@ -1,7 +1,7 @@
 package com.dalbit.tnk.service;
 
 import com.dalbit.common.code.ErrorStatus;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.MemberVo;
@@ -54,12 +54,12 @@ public class TnkCallbackService {
 
         ProcedureVo procedureVo = new ProcedureVo(new DBTnkCallbackVo(tnkCallbackVo));
         tnkCallbackDao.callTnkCallback(procedureVo);
-        if(Status.TNK_성공.getMessageCode().equals(procedureVo.getRet())) {
-        } else if(Status.TNK_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-        } else if(Status.TNK_이미받음.getMessageCode().equals(procedureVo.getRet())) {
+        if(MemberStatus.TNK_성공.getMessageCode().equals(procedureVo.getRet())) {
+        } else if(MemberStatus.TNK_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+        } else if(MemberStatus.TNK_이미받음.getMessageCode().equals(procedureVo.getRet())) {
         } else {
             response.setStatus(503);
-            throw new GlobalException(Status.TNK_실패, "post");
+            throw new GlobalException(MemberStatus.TNK_실패, "post");
         }
     }
 

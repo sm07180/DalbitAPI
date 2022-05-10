@@ -4,7 +4,7 @@ import com.dalbit.broadcast.service.ContentService;
 import com.dalbit.broadcast.vo.BroadcastNoticeUpdVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.MypageStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.vo.BroadcastNoticeSelVo;
@@ -55,7 +55,7 @@ public class ContentController {
             return contentService.mobileBroadcastNoticeSelect(noticeSelVo, request);
         } catch (Exception e) {
             log.error("noticeSelect Error : {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
         }
 
     }
@@ -85,7 +85,7 @@ public class ContentController {
             return contentService.mobileBroadcastNoticeUpd(param, request);
         } catch (Exception e) {
             log.error("noticeEdit Error : {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.공지등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지등록_실패));
         }
     }
 
@@ -109,7 +109,9 @@ public class ContentController {
 
 
     /**
-     * 방송방 사연 등록
+     * 방송방 사연 등록 (old)
+     * roomNo : 방번호
+     * ,contents : 사연내용
      */
     @PostMapping("/story")
     public String insertStory(@Valid StoryAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
@@ -120,12 +122,35 @@ public class ContentController {
         apiData.setMem_no(MemberVo.getMyMemNo(request));
         apiData.setRoom_no(storyAddVo.getRoomNo());
         apiData.setContents(storyAddVo.getContents());
-
-        String result = contentService.callInsertStory(apiData, request);
+        apiData.setDj_mem_no("");
+        apiData.setPlus_yn("n");
+        String result = contentService.callInsertStory(apiData, request, true);
 
         return result;
     }
 
+    /**
+     * 방송방 사연 등록 (new)
+     * roomNo : 방번호
+     * ,contents : 사연내용
+     * ,djMemNo : 방장 memNo              (new)
+     * ,plusYn : 플러스 아이템 여부 [y, n]  (new)
+     */
+    @PostMapping("/story/new")
+    public String insertStoryNew(@Valid StoryNewAddVo storyAddVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+
+        P_RoomStoryAddVo apiData = new P_RoomStoryAddVo();
+        apiData.setMem_no(MemberVo.getMyMemNo(request));
+        apiData.setRoom_no(storyAddVo.getRoomNo());
+        apiData.setContents(storyAddVo.getContents());
+        apiData.setDj_mem_no(storyAddVo.getDjMemNo());
+        apiData.setPlus_yn(storyAddVo.getPlusYn());
+        String result = contentService.callInsertStory(apiData, request, false);
+
+        return result;
+    }
 
     /**
      * 방송방 사연 조회

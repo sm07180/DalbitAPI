@@ -5,16 +5,13 @@ import com.dalbit.admin.vo.ProImageInitVo;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.service.RoomService;
 import com.dalbit.broadcast.vo.GuestInfoVo;
-import com.dalbit.broadcast.vo.RoomShareLinkOutVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomExitVo;
-import com.dalbit.common.code.Code;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.*;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.common.vo.procedure.P_SelfAuthVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.main.dao.MainDao;
-import com.dalbit.main.service.MainService;
 import com.dalbit.main.vo.procedure.P_SpecialHistoryVo;
 import com.dalbit.main.vo.request.SpecialHistoryVo;
 import com.dalbit.member.dao.MemberDao;
@@ -23,7 +20,6 @@ import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.ExchangeReApplyVo;
 import com.dalbit.member.vo.request.SpecialDjHistoryVo;
 import com.dalbit.rest.service.RestService;
-import com.dalbit.search.vo.RoomRecommandListOutVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.util.AES;
 import com.dalbit.util.DalbitUtil;
@@ -42,7 +38,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -108,24 +103,24 @@ public class MemberService {
 
         // 부적절한문자열 체크 ( "\r", "\n", "\t")
         if(DalbitUtil.isCheckSlash(nickNm)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.부적절한문자열));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.부적절한문자열));
         }
 
         //금지어 체크
         if(DalbitUtil.isStringMatchCheck(commonService.banWordSelect(), nickNm)){
-            return gsonUtil.toJson(new JsonOutputVo(Status.닉네임금지));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.닉네임금지));
         }
 
         ProcedureVo procedureVo = new ProcedureVo(nickNm);
         memberDao.callNickNameCheck(procedureVo);
 
         String result;
-        if(Status.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임중복));
-        }else if(Status.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임사용가능));
+        if(MemberStatus.닉네임중복.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.닉네임중복));
+        }else if(MemberStatus.닉네임사용가능.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.닉네임사용가능));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.닉네임_파라메터오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.닉네임_파라메터오류));
         }
         return result;
     }
@@ -138,8 +133,8 @@ public class MemberService {
         memberDao.callChangePassword(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.비밀번호변경성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경성공));
+        if(procedureVo.getRet().equals(MemberStatus.비밀번호변경성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.비밀번호변경성공));
 
             try{
                 //회원정보수정 로그 쌓기 추가(cs요청)
@@ -154,10 +149,10 @@ public class MemberService {
                 log.error("MemberService - callChangePassword : 회원정보수정 로그 쌓기 오류");
             }
 
-        } else if(procedureVo.getRet().equals(Status.비밀번호변경실패_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경실패_회원아님));
+        } else if(procedureVo.getRet().equals(MemberStatus.비밀번호변경실패_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.비밀번호변경실패_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.비밀번호변경오류));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.비밀번호변경오류));
         }
         return result;
     }
@@ -194,16 +189,16 @@ public class MemberService {
         memberDao.callMemberWithdrawal(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.회원탈퇴_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_성공));
-        } else if(procedureVo.getRet().equals(Status.회원탈퇴_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_회원아님));
-        } else if(procedureVo.getRet().equals(Status.회원탈퇴_이미탈퇴.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_이미탈퇴));
-        } else if(procedureVo.getRet().equals(Status.회원탈퇴_방접속중.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_방접속중));
+        if(procedureVo.getRet().equals(MemberStatus.회원탈퇴_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원탈퇴_성공));
+        } else if(procedureVo.getRet().equals(MemberStatus.회원탈퇴_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원탈퇴_회원아님));
+        } else if(procedureVo.getRet().equals(MemberStatus.회원탈퇴_이미탈퇴.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원탈퇴_이미탈퇴));
+        } else if(procedureVo.getRet().equals(MemberStatus.회원탈퇴_방접속중.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원탈퇴_방접속중));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.회원탈퇴_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원탈퇴_실패));
         }
         return result;
     }
@@ -226,14 +221,14 @@ public class MemberService {
         procedureVo.setData(returnMap);
 
         String result;
-        if(procedureVo.getRet().equals(Status.환전계산성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산성공, procedureVo.getData()));
-        } else if(procedureVo.getRet().equals(Status.환전계산_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산_회원아님));
-        } else if(procedureVo.getRet().equals(Status.환전계산_별체크.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산_별체크));
+        if(procedureVo.getRet().equals(ExchangeStatus.환전계산성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전계산성공, procedureVo.getData()));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전계산_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전계산_회원아님));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전계산_별체크.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전계산_별체크));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전계산실패));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전계산실패));
         }
         return result;
 
@@ -288,7 +283,7 @@ public class MemberService {
         procedureVo.setData(returnMap);
 
         String result;
-        if(procedureVo.getRet().equals(Status.환전신청성공.getMessageCode())) {
+        if(procedureVo.getRet().equals(ExchangeStatus.환전신청성공.getMessageCode())) {
 
             if(isDone){
                 if(!DalbitUtil.isEmpty(pExchangeApplyVo.getAdd_file1())){
@@ -301,37 +296,37 @@ public class MemberService {
                     restService.imgDone(DalbitUtil.replaceDonePath(pExchangeApplyVo.getAdd_file3()), request);
                 }
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청성공, procedureVo.getData()));
-        } else if(procedureVo.getRet().equals(Status.환전신청_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_회원아님));
-        } else if(procedureVo.getRet().equals(Status.환전신청_별체크.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_별체크));
-        } else if(procedureVo.getRet().equals(Status.환전신청_예금주오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_예금주오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_은행코드오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_은행코드오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_계좌번호오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_계좌번호오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_주민번호오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_주민번호오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_전화번호오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_전화번호오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_주소1오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_주소1오류));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청성공, procedureVo.getData()));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_회원아님));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_별체크.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_별체크));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_예금주오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_예금주오류));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_은행코드오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_은행코드오류));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_계좌번호오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_계좌번호오류));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_주민번호오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_주민번호오류));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_전화번호오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_전화번호오류));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_주소1오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_주소1오류));
         /*} else if(procedureVo.getRet().equals(Status.환전신청_첨부파일1오류.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일1오류));
         } else if(procedureVo.getRet().equals(Status.환전신청_첨부파일2오류.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_첨부파일2오류));*/
-        } else if(procedureVo.getRet().equals(Status.환전신청_동의오류.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_동의오류));
-        } else if(procedureVo.getRet().equals(Status.환전신청_별부족.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_별부족));
-        } else if(procedureVo.getRet().equals(Status.환전신청_신청제한.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청_신청제한));
-        }else if(Status.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이전작업대기중));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_동의오류.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_동의오류));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_별부족.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_별부족));
+        } else if(procedureVo.getRet().equals(ExchangeStatus.환전신청_신청제한.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_신청제한));
+        }else if(CommonStatus.이전작업대기중.getMessageCode().equals(procedureVo.getRet())){
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.이전작업대기중));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전신청실패));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청실패));
         }
         return result;
 
@@ -381,9 +376,9 @@ public class MemberService {
                 log.error("환전 승인건 저장 오류: {}", e);
             }
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회성공, returnMap));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전승인조회성공, returnMap));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.환전승인조회없음));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전승인조회없음));
         }
         return result;
     }
@@ -396,7 +391,7 @@ public class MemberService {
 
         ExchangeSuccessVo exchangeSuccessVo = memberDao.exchangeReApprovalSelect(exchangeReApplyVo);
         if(exchangeSuccessVo.getAddFile1().startsWith(Code.포토_환전신청_임시_PREFIX.getCode()) || exchangeSuccessVo.getAddFile2().startsWith(Code.포토_환전신청_임시_PREFIX.getCode())){
-            return gsonUtil.toJson(new JsonOutputVo(Status.환전신청_기존신청정보오류));
+            return gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.환전신청_기존신청정보오류));
         }
 
         P_ExchangeApplyVo pExchangeApplyVo = new P_ExchangeApplyVo();
@@ -424,7 +419,7 @@ public class MemberService {
         }
 
         if(DalbitUtil.isEmpty(memNo)) {
-            return gsonUtil.toJson(new JsonOutputVo(Status.파라미터오류));
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.파라미터오류));
         }else{
             try{
                 DeviceVo deviceVo = new DeviceVo(request);
@@ -455,6 +450,7 @@ public class MemberService {
 
                     exitData.setRoom_no(guestRoomInfoVo.getRoomNo());
                     ProcedureVo procedureVo = new ProcedureVo(exitData);
+                    log.error("callBroadcastRoomExit prev data(MemberService) >>>> {} {} {}", exitData.getMemLogin(), exitData.getMem_no(), exitData.getRoom_no());
                     roomDao.callBroadCastRoomExit(procedureVo);
 
                     try{
@@ -462,11 +458,11 @@ public class MemberService {
                     }catch(Exception e){}
                 }
             }catch(Exception g1){
-                return gsonUtil.toJson(new JsonOutputVo(Status.비즈니스로직오류));
+                return gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류));
             }
         }
 
-        return gsonUtil.toJson(new JsonOutputVo(Status.조회));
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회));
     }
 
     public TokenCheckVo selectMemState(String mem_no){
@@ -510,7 +506,7 @@ public class MemberService {
             success = memberDao.callAccountAdd(pExchangeAccountAddVo);
         }catch (Exception e){
             log.error("계좌등록 오류: {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.계좌등록_실패));
+            return gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌등록_실패));
         }
 
         String result;
@@ -519,7 +515,7 @@ public class MemberService {
             apiData.setMem_no(pExchangeAccountAddVo.getMem_no());
             result = callAccountListSelect(apiData, "add");
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌등록_이미등록됨));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌등록_이미등록됨));
         }
         return result;
     }
@@ -535,7 +531,7 @@ public class MemberService {
         List<P_ExchangeAccountListVo> accountList = memberDao.selectExchangeHistory(exchangeAccountListVo);
         for (int i=0; i<accountList.size(); i++){
             if (pExchangeAccountEditVo.getBeforeAccountNo().equals(accountList.get(i).getAccountNo())){
-                return gsonUtil.toJson(new JsonOutputVo(Status.계좌수정_불가));
+                return gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌수정_불가));
             }
         }
 
@@ -544,7 +540,7 @@ public class MemberService {
             success = memberDao.callAccountEdit(pExchangeAccountEditVo);
         }catch (Exception e){
             log.error("계좌수정 오류: {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.계좌수정_실패));
+            return gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌수정_실패));
         }
 
         String result;
@@ -553,7 +549,7 @@ public class MemberService {
             apiData.setMem_no(pExchangeAccountEditVo.getMem_no());
             result = callAccountListSelect(apiData, "edit");
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌수정_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌수정_실패));
         }
         return result;
     }
@@ -569,7 +565,7 @@ public class MemberService {
         List<P_ExchangeAccountListVo> accountList = memberDao.selectExchangeHistory(exchangeAccountListVo);
         for (int i=0; i<accountList.size(); i++){
             if (pExchangeAccountDeleteVo.getBeforeAccountNo().equals(accountList.get(i).getAccountNo())){
-                return gsonUtil.toJson(new JsonOutputVo(Status.계좌삭제_불가));
+                return gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌삭제_불가));
             }
         }
 
@@ -578,7 +574,7 @@ public class MemberService {
             success = memberDao.callAccountDelete(pExchangeAccountDeleteVo);
         }catch (Exception e){
             log.error("계좌삭제 오류: {}", e);
-            return gsonUtil.toJson(new JsonOutputVo(Status.계좌삭제_실패));
+            return gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌삭제_실패));
         }
 
         String result;
@@ -587,7 +583,7 @@ public class MemberService {
             apiData.setMem_no(pExchangeAccountDeleteVo.getMemNo());
             result = callAccountListSelect(apiData, "delete");
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌삭제_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌삭제_실패));
         }
         return result;
     }
@@ -610,18 +606,18 @@ public class MemberService {
 
             Status status;
             if("add".equals(state)) {
-                status = Status.계좌등록_성공;
+                status = ExchangeStatus.계좌등록_성공;
             }else if("edit".equals(state)) {
-                status = Status.계좌수정_성공;
+                status = ExchangeStatus.계좌수정_성공;
             }else if("delete".equals(state)) {
-                status = Status.계좌삭제_성공;
+                status = ExchangeStatus.계좌삭제_성공;
             }else{
-                status = Status.계좌조회_성공;
+                status = ExchangeStatus.계좌조회_성공;
             }
             result = gsonUtil.toJson(new JsonOutputVo(status, resultMap));
         }else{
             resultMap.put("list", new ArrayList<>());
-            result = gsonUtil.toJson(new JsonOutputVo(Status.계좌조회_없음, resultMap));
+            result = gsonUtil.toJson(new JsonOutputVo(ExchangeStatus.계좌조회_없음, resultMap));
         }
         return result;
     }
@@ -638,7 +634,7 @@ public class MemberService {
             specialHistoryList.put("list", new ArrayList<>());
             specialHistoryList.put("specialDjCnt", 0);
             specialHistoryList.put("nickNm", "");
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ선정내역조회_없음, specialHistoryList));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ선정내역조회_없음, specialHistoryList));
 
         }else {
             List<SpecialDjHistoryOutVo> outVoList = new ArrayList<>();
@@ -649,7 +645,7 @@ public class MemberService {
             specialHistoryList.put("specialDjCnt", specialHistoryListVo.size());
             specialHistoryList.put("nickNm", specialHistoryListVo.get(0).getMemNick());
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.스페셜DJ선정내역조회_성공, specialHistoryList));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ선정내역조회_성공, specialHistoryList));
         }
 
         return result;
@@ -686,11 +682,11 @@ public class MemberService {
             specialPointOutList.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
             specialPointOutList.put("totalPoint", DalbitUtil.getDoubleMap(resultMap, "totalPoint"));
 
-            result = gsonUtil.toJson(new JsonOutputVo(Status.가산점조회_성공, specialPointOutList));
-        }else if(Status.가산점조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.가산점조회_회원아님));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.가산점조회_성공, specialPointOutList));
+        }else if(MemberStatus.가산점조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.가산점조회_회원아님));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.가산점조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.가산점조회_실패));
         }
         return result;
     }
@@ -704,21 +700,21 @@ public class MemberService {
         memberDao.callRankSetting(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.랭킹반영.getMessageCode())) {
+        if(procedureVo.getRet().equals(CommonStatus.랭킹반영.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             Status status = null;
             if(pMemberRankSettingVo.getApply_ranking() == 1){
-                status = Status.랭킹반영;
+                status = CommonStatus.랭킹반영;
             }else{
-                status = Status.랭킹미반영;
+                status = CommonStatus.랭킹미반영;
             }
             HashMap returnMap = new HashMap();
             returnMap.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1);
             result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
-        } else if(procedureVo.getRet().equals(Status.랭킹반영설정_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹반영설정_회원아님));
+        } else if(procedureVo.getRet().equals(CommonStatus.랭킹반영설정_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.랭킹반영설정_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.랭킹반영설정_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.랭킹반영설정_실패));
         }
         return result;
     }
@@ -732,21 +728,21 @@ public class MemberService {
         memberDao.callRecvEdit(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.알림_등록.getMessageCode())) {
+        if(procedureVo.getRet().equals(CommonStatus.알림_등록.getMessageCode())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             Status status = null;
             if(pMemberReceiveVo.getAlertYn() == 1){
-                status = Status.알림_등록;
+                status = CommonStatus.알림_등록;
             }else{
-                status = Status.알림_해제;
+                status = CommonStatus.알림_해제;
             }
             HashMap returnMap = new HashMap();
             returnMap.put("isReceive", DalbitUtil.getIntMap(resultMap, "alertYn") == 1);
             result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
-        } else if(procedureVo.getRet().equals(Status.알림_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림_회원아님));
+        } else if(procedureVo.getRet().equals(CommonStatus.알림_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림_실패));
         }
         return result;
     }
@@ -760,12 +756,12 @@ public class MemberService {
         memberDao.callRecvDelete(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.알림회원삭제_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원삭제_성공));
-        } else if(procedureVo.getRet().equals(Status.알림회원삭제_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원삭제_회원아님));
+        if(procedureVo.getRet().equals(CommonStatus.알림회원삭제_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림회원삭제_성공));
+        } else if(procedureVo.getRet().equals(CommonStatus.알림회원삭제_회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림회원삭제_회원아님));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원삭제_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림회원삭제_실패));
         }
         return result;
     }
@@ -788,9 +784,9 @@ public class MemberService {
                 }
             }
             specialPointOutList.put("list", outVoList);
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원조회_성공, specialPointOutList));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림회원조회_성공, specialPointOutList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.알림회원조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.알림회원조회_실패));
         }
         return result;
     }
@@ -816,9 +812,9 @@ public class MemberService {
             }
             djRecommendOutList.put("list", outVoList);
             //djRecommendOutList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추천DJ목록조회_성공, djRecommendOutList));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.추천DJ목록조회_성공, djRecommendOutList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.추천DJ목록조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.추천DJ목록조회_실패));
         }
         return result;
     }
@@ -831,20 +827,20 @@ public class MemberService {
         memberDao.callReportImage(procedureVo);
 
         String result;
-        if(procedureVo.getRet().equals(Status.이미지신고_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_성공));
-        } else if(procedureVo.getRet().equals(Status.이미지신고_요청회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_요청회원아님));
-        } else if(procedureVo.getRet().equals(Status.이미지신고_대상회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_대상회원아님));
-        } else if(procedureVo.getRet().equals(Status.이미지신고_이미신고.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_이미신고));
-        } else if(procedureVo.getRet().equals(Status.이미지신고_방번호없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_방번호없음));
-        } else if(procedureVo.getRet().equals(Status.이미지신고_이미지번호없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_이미지번호없음));
+        if(procedureVo.getRet().equals(MemberStatus.이미지신고_성공.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_성공));
+        } else if(procedureVo.getRet().equals(MemberStatus.이미지신고_요청회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_요청회원아님));
+        } else if(procedureVo.getRet().equals(MemberStatus.이미지신고_대상회원아님.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_대상회원아님));
+        } else if(procedureVo.getRet().equals(MemberStatus.이미지신고_이미신고.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_이미신고));
+        } else if(procedureVo.getRet().equals(MemberStatus.이미지신고_방번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_방번호없음));
+        } else if(procedureVo.getRet().equals(MemberStatus.이미지신고_이미지번호없음.getMessageCode())) {
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_이미지번호없음));
         } else {
-            result = gsonUtil.toJson(new JsonOutputVo(Status.이미지신고_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.이미지신고_실패));
         }
         return result;
     }
@@ -889,9 +885,9 @@ public class MemberService {
                     resultList.add(unitData);
                 }
             }
-            result = gsonUtil.toJson(new JsonOutputVo(Status.베스트DJ팬랭킹조회_성공, resultList));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.베스트DJ팬랭킹조회_성공, resultList));
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(Status.베스트DJ팬랭킹조회_실패));
+            result = gsonUtil.toJson(new JsonOutputVo(MainStatus.베스트DJ팬랭킹조회_실패));
         }
 
         return result;
