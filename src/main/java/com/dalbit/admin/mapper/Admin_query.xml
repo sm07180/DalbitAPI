@@ -94,15 +94,16 @@
         FROM rd_data.tb_member_basic AS a
         JOIN rd_data.tb_member_profile AS b ON a.mem_no = b.mem_no
         <where>
+            a.last_upd_date <![CDATA[>=]]> DATE_SUB(NOW(),INTERVAL 3 DAY)
             <if test='reportYn == "Y"'>
-                0 <![CDATA[<]]> reportedCnt
+                AND 0 <![CDATA[<]]> reportedCnt
             </if>
             <if test='searchText != null and searchText != ""'>
-                and (
-                mem_userid like concat('%', #{searchText}, '%')
-                or mem_nick like concat('%', #{searchText}, '%')
-                or mem_no like concat('%', #{searchText}, '%')
-                or mem_phone like concat('%', #{searchText}, '%')
+                AND (
+                mem_userid LIKE concat(#{searchText}, '%')
+                OR mem_nick LIKE concat(#{searchText}, '%')
+                OR mem_no LIKE concat(#{searchText}, '%')
+                OR mem_phone LIKE concat(#{searchText}, '%')
                 )
             </if>
         </where>
