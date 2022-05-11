@@ -89,4 +89,7 @@
 
 
 
+
+    <!-- 마이페이지 사연내역 -->
+    <resultMap id="StoryResultVo" type="com.dalbit.broadcast.vo.StoryResultVo"/>
 </mapper>

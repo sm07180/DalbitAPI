@@ -3,12 +3,17 @@ package com.dalbit.broadcast.controller;
 import com.dalbit.broadcast.service.UserService;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.broadcast.vo.request.*;
+import com.dalbit.common.code.BroadcastStatus;
 import com.dalbit.common.service.CommonService;
+import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
+import com.dalbit.member.vo.procedure.P_MypageBlackAddVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.util.DalbitUtil;
+import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashMap;
 
 @Slf4j
 @RestController
@@ -30,7 +36,10 @@ public class UserController {
     RestService restService;
     @Autowired
     CommonService commonService;
-
+    @Autowired
+    MypageService mypageService;
+    @Autowired
+    GsonUtil gsonUtil;
 
     /**
      * 방송방 참여자 리스트
@@ -53,6 +62,31 @@ public class UserController {
         return result;
     }
 
+    /**
+     * #7853
+     * 방송방 : 차단후 강퇴하기
+     * */
+    @PostMapping("/black/add")
+    public String roomBlackAddKickOut(@Valid KickOutVo vo, HttpServletRequest request){
+        P_MypageBlackAddVo param1 = new P_MypageBlackAddVo();
+        P_RoomKickoutVo param2 = new P_RoomKickoutVo();
+        try {
+            // 차단
+            param1.setMem_no(MemberVo.getMyMemNo(request));
+            param1.setBlack_mem_no(vo.getBlockNo());
+
+            // 강퇴
+            param2.setMem_no(MemberVo.getMyMemNo(request));
+            param2.setRoom_no(vo.getRoomNo());
+            param2.setBlocked_mem_no(vo.getBlockNo());
+
+            return userService.broadCastBlackAndKick(param1, param2, request);
+
+        } catch (Exception e) {
+            log.error("UserController / roomBlackAddKickOut => Exception, param: {} \n Error: {}", gsonUtil.toJson(param2) ,e);
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.강제퇴장_실패));
+        }
+    }
 
     /**
      * 방송방 강퇴하기
