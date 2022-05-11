@@ -1320,4 +1320,16 @@ public class SocketService {
         log.info("Socket vo to Query String: {}",vo.toQueryString());
         sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
     }
+
+    @Async("threadTaskExecutor")
+    public void reqStoryAni(String roomNo, String memNo, String message, String authToken, boolean isLogin){
+        log.error("Socket Start : reqStoryAni {}, {}, {}, {}, {}", roomNo, memNo, message, isLogin);
+
+        SocketVo vo = new SocketVo();
+        vo.setLogin(isLogin ? 1 : 0);
+        vo.setCommand("reqStoryAni");
+        vo.setMessage(message);
+
+        sendSocketApi(authToken, roomNo, vo.toQueryString());
+    }
 }
