@@ -302,6 +302,7 @@ public class ActionService {
 
         String item_code = pRoomGiftVo.getItem_code();
         boolean isDirect = false;
+        boolean isStory = !StringUtils.equals(pRoomGiftVo.getStoryText(), "");  // 사연 플러스 아이템
         int directItemCnt = 1;
         for(String direct : ITEM_DIRECT_CODE){
             if(direct.equals(pRoomGiftVo.getItem_code())){
@@ -366,7 +367,7 @@ public class ActionService {
                 itemMap.put("repeatCnt", isDirect ? directItemCnt : pRoomGiftVo.getItem_cnt());
                 itemMap.put("itemImg", itemThumbs);
                 itemMap.put("isSecret", "1".equals(pRoomGiftVo.getSecret()));
-                itemMap.put("itemType", isDirect ? "direct" : "items");
+                itemMap.put("itemType", isStory? "story" : isDirect ? "direct" : "items");
                 itemMap.put("authName", vo1.getAuthName());
                 itemMap.put("auth", vo1.getAuth());
                 itemMap.put("nickNm", vo1.getMemNk());

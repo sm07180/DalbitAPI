@@ -254,6 +254,13 @@ public class ContentService {
         String result;
         JsonOutputVo outputVo = new JsonOutputVo();
 
+        if(StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
+            String[] cr = pRoomStoryAddVo.getContents().split("\\n");
+            if (cr.length > 4 || pRoomStoryAddVo.getContents().length() > 50) {
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_파라미터에러));
+            }
+        }
+
         if(!DalbitUtil.isLogin(request)){
             return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류));
         }
@@ -281,6 +288,7 @@ public class ContentService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
+        log.error("asdfdassdf => {}", gsonUtil.toJson(procedureVo));
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         int passTime = DalbitUtil.getIntMap(resultMap, "passTime");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
@@ -291,25 +299,7 @@ public class ContentService {
         //returnMap.put("passTime", passTime);
 
         if(BroadcastStatus.방송방사연등록성공.getMessageCode().equals(procedureVo.getRet())) {
-            try{
-                HashMap socketMap = new HashMap();
-                socketMap.put("storyIdx", DalbitUtil.getIntMap(resultMap, "story_idx"));
-                socketMap.put("writerNo", DalbitUtil.getStringMap(resultMap, "writer_mem_no"));
-                socketMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
-                socketMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
-                socketMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
-                socketMap.put("writeDt", DalbitUtil.getUTCFormat((String)resultMap.get("writeDate")));
-                socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((String)resultMap.get("writeDate")));
-                SocketVo vo = socketService.getSocketVo(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
-                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-                vo.resetData();
-            }catch(Exception e){
-                log.error("Socket Service sendStory Exception {}", e);
-                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류));
-            }
-
-            // ----------------------------- 사연 플러스 시작 -----------------------------
-            /* 사연 플러스 선물 아이템 */
+            /* 사연 플러스 선물 */
             if (StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
                 try {
                     GiftVo giftVo = new GiftVo();
@@ -325,6 +315,16 @@ public class ContentService {
 
                     /* 사연 플러스 아이템 선물하기 실패 */
                     if (!StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
+                        // 등록한 사연 다시 삭제 처리
+                        int story_idx = DalbitUtil.getIntMap(resultMap, "story_idx");
+                        P_RoomStoryDeleteVo deleteVo = new P_RoomStoryDeleteVo();
+                        deleteVo.setMem_no(pRoomStoryAddVo.getMem_no());
+                        deleteVo.setRoom_no(pRoomStoryAddVo.getRoom_no());
+                        deleteVo.setStory_idx(story_idx);
+                        deleteVo.setPage(1);
+                        deleteVo.setRecords(10);
+
+                        callDeleteStory(deleteVo);
                         return result;
                     }
 
@@ -333,7 +333,23 @@ public class ContentService {
                     return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류));
                 }
             }
-            // ----------------------------- 사연 플러스 끝 -----------------------------
+            /* 사연 패킷 보내기 */
+            try {
+                HashMap socketMap = new HashMap();
+                socketMap.put("storyIdx", DalbitUtil.getIntMap(resultMap, "story_idx"));
+                socketMap.put("writerNo", DalbitUtil.getStringMap(resultMap, "writer_mem_no"));
+                socketMap.put("nickNm", DalbitUtil.getStringMap(resultMap, "nickName"));
+                socketMap.put("profImg", new ImageVo(DalbitUtil.getStringMap(resultMap, "profileImage"), DalbitUtil.getStringMap(resultMap, "memSex"), DalbitUtil.getProperty("server.photo.url")));
+                socketMap.put("contents", DalbitUtil.getStringMap(resultMap, "contents"));
+                socketMap.put("writeDt", DalbitUtil.getUTCFormat((String)resultMap.get("writeDate")));
+                socketMap.put("writeTs", DalbitUtil.getUTCTimeStamp((String)resultMap.get("writeDate")));
+                SocketVo vo = socketService.getSocketVo(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request));
+                socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
+                vo.resetData();
+            } catch (Exception e) {
+                log.error("Socket Service sendStory Exception {}", e);
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류));
+            }
 
             /* 사연 플러스 등록 성공 */
             if (StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
