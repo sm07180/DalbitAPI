@@ -392,7 +392,7 @@ public class ActionService {
                     ttsLogVo.setSendDalCnt(item.getByeol() * pRoomGiftVo.getItem_cnt()); // 선물 달수
 
                     if(StringUtils.equals(ttsYn, "y")) {
-                        String[] actorInfo = ttsService.getTtsActorSlct(pRoomGiftVo.getActorId(), request);
+                        String[] actorInfo = ttsService.getTtsActorSlct(pRoomGiftVo.getActorId());
                         ttsLogVo.setItemName(actorInfo[1]); // 아이템 이름
                         ttsLogVo.setTtsCrtSlct(actorInfo[0]); // actor 구분(a: 빠다가이, b: 하나)
                     }

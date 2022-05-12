@@ -489,11 +489,16 @@ public class MainServiceV2 {
             swiperList.addAll(mainPage.getTopLiveList(bannerMap));
         }
 
+        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
+
         if (cnt > 10){
-            swiperList = swiperList.subList(0, 10);
+            swiperList2 = (ArrayList<MainSwiperVO>) swiperList2.subList(0, 10);
         }
 
-        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
+        for(MainSwiperVO vo : swiperList2) {
+            vo.setImageProfile(new ImageVo(vo.getImage_profile(), DalbitUtil.getProperty("server.photo.url")));
+        }
+
         return swiperList2;
     }
 
