@@ -18,7 +18,7 @@ public interface Keyboard {
 
     //보상수령
     //-2:이미수령, -1:상품 최대지급수량 초과, 0:에러 , 1:정상
-    @Select("CALL rd_data.p_dalla_lucky_chat_com_ins(#{theDate}, #{theSeq}, #{memNo}, #{preCode}, #{preSlct})")
+    @Select("CALL rd_data.p_dalla_lucky_chat_dal_ins(#{theDate}, #{theSeq}, #{memNo}, #{preCode}, #{preSlct})")
     Integer keyboardReward(KeyboardRewardVO vo);
 
     //키보드히어로 보너스회원정보
