@@ -24,4 +24,5 @@ public class P_RoomStoryListVo extends P_ApiVo {
     private String memSex;                  //작성자 성별
     private Object profileImage;            //작성자 프로필이미지
     private Date writeDate;                 //작성일자
+    private String plus_yn;                 // 플러스 아이템 유무
 }

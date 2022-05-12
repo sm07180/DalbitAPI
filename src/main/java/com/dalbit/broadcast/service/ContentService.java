@@ -318,7 +318,7 @@ public class ContentService {
                     giftVo.setItemNo( DalbitUtil.getProperty("item.code.story") );
                     giftVo.setItemCnt(1);
                     giftVo.setIsSecret("n");
-
+                    giftVo.setStoryText(pRoomStoryAddVo.getContents());
                     /* 방송방 선물하기 호출 */
                     result = callBroadcastGift(giftVo, request);
                     outputVo = new Gson().fromJson( result, JsonOutputVo.class);
@@ -327,12 +327,6 @@ public class ContentService {
                     if (!StringUtils.equals(outputVo.getCode(), BroadcastStatus.선물하기성공.getMessageCode()) ) {
                         return result;
                     }
-
-                    /* 사연 아이템 reqStoryAni */
-                    StorySocketVo storySocketVo = new StorySocketVo();
-                    storySocketVo.setAniCode("https://image.dalbitlive.com/ani/webp/to_the_moon/coin_ani_01.webp");
-                    storySocketVo.setContent(pRoomStoryAddVo.getContents());
-                    socketService.reqStoryAni(pRoomStoryAddVo.getRoom_no(), storySocketVo, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request));
 
                 } catch (Exception e) {
                     log.error("ContentService.java / callInsertStory / callBroadcastGift => param: {}, Exception: {}", gsonUtil.toJson(pRoomStoryAddVo), e);
@@ -366,8 +360,9 @@ public class ContentService {
 
     /**
      * 방송방 사연 조회
+     * plusYn : ["y" : 사연플러스, "n" : 일반사연 , "" : 전체 ]
      */
-    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo, HttpServletRequest request) {
+    public String callGetStory(P_RoomStoryListVo pRoomStoryListVo, String plusYn, HttpServletRequest request) {
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryListVo);
         List<P_RoomStoryListVo> storyVoList = contentDao.callGetStory(procedureVo);
@@ -397,8 +392,16 @@ public class ContentService {
             }else if(!DalbitUtil.isEmpty(systemBanWord)){
                 storyVoList.get(i).setContents(DalbitUtil.replaceMaskString(systemBanWord, storyVoList.get(i).getContents()));
             }
-            outVoList.add(new RoomStoryListOutVo(storyVoList.get(i), pRoomStoryListVo.getMem_no()));
+            // plusYn 조건에 맡게 리턴
+            if(
+                StringUtils.equals(plusYn, "")
+                 || ( StringUtils.equals(plusYn, "y") && StringUtils.equals("y", storyVoList.get(i).getPlus_yn()) )
+                 || ( StringUtils.equals(plusYn, "n") && StringUtils.equals("n", storyVoList.get(i).getPlus_yn()) )
+            ) {
+                outVoList.add(new RoomStoryListOutVo(storyVoList.get(i), pRoomStoryListVo.getMem_no()));
+            }
         }
+
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         storyList.put("list", procedureOutputVo.getOutputBox());
         storyList.put("paging", new PagingVo(Integer.valueOf(procedureOutputVo.getRet()), pRoomStoryListVo.getPageNo(), pRoomStoryListVo.getPageCnt()));
@@ -492,6 +495,7 @@ public class ContentService {
         apiData.setTtsText(giftVo.getTtsText());
         apiData.setActorId(giftVo.getActorId());
         apiData.setTtsYn(giftVo.getTtsYn());
+        apiData.setStoryText(giftVo.getStoryText());
 
         return actionService.callBroadCastRoomGift(apiData, request);
     }

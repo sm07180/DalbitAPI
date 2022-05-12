@@ -1322,15 +1322,4 @@ public class SocketService {
         sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
     }
 
-    @Async("threadTaskExecutor")
-    public void reqStoryAni(String roomNo, StorySocketVo messageVo, String authToken, boolean isLogin){
-        log.error("Socket Start : reqStoryAni {}, {}, {}, {}, {}", roomNo, messageVo, isLogin);
-
-        SocketVo vo = new SocketVo();
-        vo.setLogin(isLogin ? 1 : 0);
-        vo.setCommand("reqStoryAni");
-        vo.setMessage(messageVo);
-
-        sendSocketApi(authToken, roomNo, vo.toQueryString());
-    }
 }

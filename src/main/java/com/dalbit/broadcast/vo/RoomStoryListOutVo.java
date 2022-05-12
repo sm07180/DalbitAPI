@@ -20,6 +20,7 @@ public class RoomStoryListOutVo {
     private ImageVo profImg;                    //작성자 프로필이미지
     private String writeDt;                     //작성일자
     private Long writeTs;                       //작성일자 timestamp
+    private String plusYn = "n";
 
     public RoomStoryListOutVo(P_RoomStoryListVo target, String mem_no){
         this.memNo = mem_no;
@@ -30,5 +31,6 @@ public class RoomStoryListOutVo {
         this.contents = target.getContents();
         this.writeDt = DalbitUtil.getUTCFormat(target.getWriteDate());
         this.writeTs = DalbitUtil.getUTCTimeStamp(target.getWriteDate());
+        this.plusYn = target.getPlus_yn();
     }
 }

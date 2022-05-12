@@ -372,6 +372,7 @@ public class ActionService {
                 itemMap.put("nickNm", vo1.getMemNk());
                 itemMap.put("memNo", vo1.getMemNo());
                 itemMap.put("dalCnt", item.getByeol() * pRoomGiftVo.getItem_cnt());
+                itemMap.put("storyText", pRoomGiftVo.getStoryText());
                 // tts 정보
                 itemMap.put("ttsText", ttsText);
                 itemMap.put("actorId", actorId);
@@ -409,10 +410,7 @@ public class ActionService {
                 //리브랜딩 스톤 모으기: itemMap - put {stoneInfo, feverInfo}
                 dallaEvent.getDallagersPacketData(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), pRoomGiftVo.getGifted_mem_no(), itemMap, "gift");
 
-                // 사연플러스 아이템은 reqGiftImg 패킷을 보내지 않음.
-                if(!StringUtils.equals(pRoomGiftVo.getItem_code(), DalbitUtil.getProperty("item.code.story"))) {
-                    socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
-                }
+                socketService.giftItem(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getMem_no(), "1".equals(pRoomGiftVo.getSecret()) ? pRoomGiftVo.getGifted_mem_no() : "", itemMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             }catch(Exception e){
                 log.info("Socket Service giftItem Exception {}", e);
