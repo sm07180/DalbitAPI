@@ -9,11 +9,14 @@ import com.dalbit.broadcast.vo.RoomMemberOutVo;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.code.BroadcastStatus;
 import com.dalbit.common.code.MemberStatus;
+import com.dalbit.common.code.MypageStatus;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.member.dao.ProfileDao;
+import com.dalbit.member.service.MypageService;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.member.vo.ProfileInfoOutVo;
+import com.dalbit.member.vo.procedure.P_MypageBlackAddVo;
 import com.dalbit.member.vo.procedure.P_ProfileInfoVo;
 import com.dalbit.socket.service.SocketService;
 import com.dalbit.socket.vo.SocketVo;
@@ -22,6 +25,7 @@ import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,6 +58,10 @@ public class UserService {
     RoomService roomService;
     @Autowired
     private TeamProc teamProc;
+    @Autowired
+    UserService userService;
+    @Autowired
+    MypageService mypageService;
 
     public P_RoomInfoViewVo getRoomInfo(P_RoomInfoViewVo pRoomInfoViewVo){
         ProcedureVo procedureVo = new ProcedureVo(pRoomInfoViewVo);
@@ -494,5 +502,27 @@ public class UserService {
             log.error("UserService getListenerList => {}", e);
         }
         return null;
+    }
+
+    /** 방송방에서 차단시 강퇴하기 */
+    public String broadCastBlackAndKick(P_MypageBlackAddVo param1, P_RoomKickoutVo  param2, HttpServletRequest request ) {
+        // 차단 등록
+        String blackAddResult = mypageService.callMypageBlackListAdd(param1, request);
+        JsonOutputVo jsonOutputVo = new Gson().fromJson(blackAddResult, JsonOutputVo.class);
+
+        // 요청자의 유저 정보 ( 방장, 매니저 체크용도 )
+        HashMap useInfoMap = socketService.getUserInfo(param2.getRoom_no(), param1.getMem_no(), DalbitUtil.isLogin(request));
+
+        if(StringUtils.equals(jsonOutputVo.getCode(), MypageStatus.블랙리스트등록_성공.getMessageCode())) {
+            String auth = DalbitUtil.getStringMap(useInfoMap, "auth");
+
+            // 방장, 매니저 여부 체크 ("0":청취자, "1": 매니저, "2": 게스트, "3": 방장)
+            if(StringUtils.equals(auth, "1") || StringUtils.equals(auth, "3")) {
+                // 강퇴 처리
+                return userService.callBroadCastRoomKickout(param2, request);
+            }
+        }
+
+        return blackAddResult;
     }
 }

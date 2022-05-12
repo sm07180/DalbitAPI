@@ -10,6 +10,7 @@ import lombok.ToString;
 public class ProfileVo extends AdminBaseVo{
 
     /* input */
+    private String searchSlct;
     private String searchText;
     private String reportYn;
 

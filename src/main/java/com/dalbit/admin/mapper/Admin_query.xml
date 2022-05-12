@@ -83,41 +83,43 @@
     </update>
 
     <select id="selectProfileList" parameterType="com.dalbit.admin.vo.SearchVo" resultType="com.dalbit.admin.vo.ProfileVo">
-        /* Admin.xml - selectProfileList */
-        select *
-        from (
-            select
-                session.last_upd_date as last_upd_date
-                , session.mem_no as mem_no
-                , profile.image_profile as image_profile
-                , basic.mem_nick as mem_nick
-                , basic.mem_userid as mem_userid
-                , basic.mem_join_date as mem_join_date
-                , basic.mem_phone as mem_phone
-                , (select count(*) from rd_data.tb_member_report where status = 0 and reported_mem_no = basic.mem_no) as reportedCnt
-                from rd_data.tb_member_basic basic
-                inner join rd_data.tb_member_profile profile on basic.mem_no = profile.mem_no
-                inner join (select mem_no, max(last_upd_date) last_upd_date
-                                from rd_data.tb_member_session
-                                group by mem_no
-                                order by max(last_upd_date) desc) session on basic.mem_no = session.mem_no
-                where session.mem_no is not null
-        ) list
+        SELECT
+        a.mem_no AS mem_no
+        ,b.image_profile AS image_profile
+        ,a.mem_nick AS mem_nick
+        ,a.mem_userid AS mem_userid
+        ,a.mem_join_date AS mem_join_date
+        ,a.mem_phone AS mem_phone
+        ,IFNULL(d.cnt, 0) AS reportedCnt
+        FROM rd_data.tb_member_basic AS a
+        JOIN rd_data.tb_member_profile AS b ON a.mem_no = b.mem_no
+        <choose>
+            <when test='reportYn == "Y"'>
+                JOIN (SELECT mem_no, COUNT(*) AS cnt FROM rd_data.tb_member_report WHERE `status` = 0 GROUP BY 1) AS d ON a.mem_no = d.mem_no
+            </when>
+            <otherwise>
+                LEFT JOIN (SELECT mem_no, COUNT(*) AS cnt FROM rd_data.tb_member_report WHERE `status` = 0 GROUP BY 1) AS d ON a.mem_no = d.mem_no
+            </otherwise>
+        </choose>
         <where>
-            <if test='reportYn == "Y"'>
-                0 <![CDATA[<]]> reportedCnt
-            </if>
+            a.last_upd_date <![CDATA[>=]]> DATE_SUB(NOW(),INTERVAL 3 DAY)
             <if test='searchText != null and searchText != ""'>
-              and (
-                mem_userid like concat('%', #{searchText}, '%')
-                or mem_nick like concat('%', #{searchText}, '%')
-                or mem_no like concat('%', #{searchText}, '%')
-                or mem_phone like concat('%', #{searchText}, '%')
-                )
+                <if test='searchSlct != null and searchSlct == "1"'>
+                    AND a.mem_userid = #{searchText}
+                </if>
+                <if test='searchSlct != null and searchSlct == "2"'>
+                    AND a.mem_nick LIKE CONCAT('%', #{searchText}, '%')
+                </if>
+                <if test='searchSlct != null and searchSlct == "3"'>
+                    AND a.mem_no = #{searchText}
+                </if>
+                <if test='searchSlct != null and searchSlct == "4"'>
+                    AND a.mem_phone LIKE CONCAT('%', #{searchText}, '%')
+                </if>
             </if>
         </where>
-        order by list.last_upd_date desc
-        limit #{searchStart}, #{searchEnd}
+        ORDER BY a.last_upd_date DESC
+        LIMIT #{searchStart}, #{searchEnd}
     </select>
 
     <update id="proImageInit" parameterType="com.dalbit.admin.vo.ProImageInitVo">
