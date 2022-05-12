@@ -493,7 +493,7 @@ public class MainServiceV2 {
 
             swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
 
-            if (cnt > 10){
+            if(swiperList2.size() > 10) {
                 swiperList2 = (ArrayList<MainSwiperVO>) swiperList2.subList(0, 10);
             }
 
