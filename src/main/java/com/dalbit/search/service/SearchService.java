@@ -109,7 +109,6 @@ public class SearchService {
         HashMap roomRecommandOutList = new HashMap();
         if(DalbitUtil.isEmpty(roomRecommandList)){
             roomRecommandOutList.put("list", new ArrayList<>());
-            roomRecommandOutList.put("totalCnt", 0);
             roomRecommandOutList.put("paging", new PagingVo(0, pRoomRecommandListVo.getPageNo(), pRoomRecommandListVo.getPageCnt()));
             return gsonUtil.toJson(new JsonOutputVo(ClipStatus.추천방송검색_결과없음, roomRecommandOutList));
         }
