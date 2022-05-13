@@ -255,8 +255,7 @@ public class ContentService {
         JsonOutputVo outputVo = new JsonOutputVo();
 
         if(StringUtils.equals(pRoomStoryAddVo.getPlus_yn(), "y")) {
-            String[] cr = pRoomStoryAddVo.getContents().split("\\n");
-            if (cr.length > 4 || pRoomStoryAddVo.getContents().length() > 50) {
+            if (pRoomStoryAddVo.getContents().length() > 50) {
                 return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록_파라미터에러));
             }
         }
