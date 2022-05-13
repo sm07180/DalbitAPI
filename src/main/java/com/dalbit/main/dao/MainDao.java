@@ -4,6 +4,7 @@ import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.main.vo.BannerVo;
 import com.dalbit.main.vo.procedure.*;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -37,7 +38,7 @@ public interface MainDao {
 
     ProcedureVo callMainRankRandomBox(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_MainRankingPageVo> callMainRankingPage(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
