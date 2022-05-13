@@ -14,10 +14,10 @@ import java.util.Map;
 @Repository
 public interface MainPage {
     /**********************************************************************************************
-     * @프로시저 설명   	: 메인 마이스타 리스트
-     * @Date   		        : 2022-03-14
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo   BIGINT 			-- 회차 번호
+     * @프로시저 설명    : 메인 마이스타 리스트
+     * @Date                : 2022-03-14
+     * @Author            : 강알찬
+     * @param                : memNo   BIGINT 			-- 회차 번호
      * ,pageNo INT UNSIGNED		-- 페이지 번호
      * ,pagePerCnt INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
      * @return              :
@@ -36,16 +36,16 @@ public interface MainPage {
     last_login_date	DATETIME	-- 접속일자
      **********************************************************************************************
      */
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     @ResultMap({"ResultMap.integer", "ResultMap.P_MainStarVo"})
     @Select("CALL rd_data.p_main_my_stat_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getMyStar(Map map);
-    
+
     /**********************************************************************************************
-     * @프로시저 설명   	: 메인 관리자 배너
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : IN `m_memNo` BIGINT UNSIGNED,
+     * @프로시저 설명    : 메인 관리자 배너
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : IN `m_memNo` BIGINT UNSIGNED,
      * IN `m_device` TINYINT,
      * IN `m_platform` CHAR(3),
      * IN `m_position` INT
@@ -56,10 +56,10 @@ public interface MainPage {
     List<MainSwiperVO> getAdminBanner(Map map);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: 파트너dj 리스트[메인]
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo 		BIGINT		-- 회원번호
+     * @프로시저 설명    : 파트너dj 리스트[메인]
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : memNo 		BIGINT		-- 회원번호
      * @return              :
      * mem_no		BIGINT		-- 회원 번호
      * room_no		BIGINT		-- 방송방 번호
@@ -76,10 +76,10 @@ public interface MainPage {
     List<MainSwiperVO> getMainPartnerList(Map map);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: 스타dj 리스트[메인]
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo 		BIGINT		-- 회원번호
+     * @프로시저 설명    : 스타dj 리스트[메인]
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : memNo 		BIGINT		-- 회원번호
      * @return              :
      * mem_no		BIGINT		-- 회원 번호
      * room_no		BIGINT		-- 방송방 번호
@@ -96,10 +96,10 @@ public interface MainPage {
     List<MainSwiperVO> getMainStarList(Map map);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: 일간dj 리스트[메인]
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo 		BIGINT		-- 회원번호
+     * @프로시저 설명    : 일간dj 리스트[메인]
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : memNo 		BIGINT		-- 회원번호
      * @return              :
      * mem_no		BIGINT		-- 회원 번호
      * room_no		BIGINT		-- 방송방 번호
@@ -114,10 +114,10 @@ public interface MainPage {
     List<MainSwiperVO> getDayRankDjList(Map map);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: 동시청취자 높은방 리스트[메인]
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo 		BIGINT		-- 회원번호
+     * @프로시저 설명    : 동시청취자 높은방 리스트[메인]
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : memNo 		BIGINT		-- 회원번호
      * @return              :
      * mem_no		BIGINT		-- 회원 번호
      * room_no		BIGINT		-- 방송방 번호
@@ -134,10 +134,10 @@ public interface MainPage {
     List<MainSwiperVO> getTopViewList(Map map);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: 동시청취자 높은방 리스트[메인]
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo 		BIGINT		-- 회원번호
+     * @프로시저 설명    : 동시청취자 높은방 리스트[메인]
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : memNo 		BIGINT		-- 회원번호
      * @return              :
      * mem_no		BIGINT		-- 회원 번호
      * room_no		BIGINT		-- 방송방 번호
@@ -154,10 +154,10 @@ public interface MainPage {
     List<MainSwiperVO> getTopLikeList(Map map);
 
     /**********************************************************************************************
-     * @프로시저 설명   	: 메인  실시간 라이브 순위
-     * @Date   		        : 2022-03-23
-     * @Author   		    : 강알찬
-     * @param	 	        : memNo 		BIGINT		-- 회원번호
+     * @프로시저 설명    : 메인  실시간 라이브 순위
+     * @Date                : 2022-03-23
+     * @Author            : 강알찬
+     * @param                : memNo 		BIGINT		-- 회원번호
      * @return              :
      **********************************************************************************************
      */

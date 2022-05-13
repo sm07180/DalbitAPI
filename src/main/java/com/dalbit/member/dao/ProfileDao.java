@@ -5,38 +5,42 @@ import com.dalbit.member.vo.ProfileBoardDetailOutVo;
 import com.dalbit.member.vo.procedure.*;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-//import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
 public interface ProfileDao {
-
-    //@Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     ProcedureVo callMemberInfo(ProcedureVo procedureVo);
+
     ProcedureVo callMemberFanboardAdd(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+
+    // @Transactional(readOnly = true)
     List<P_FanboardListVo> callMemberFanboardList(ProcedureVo procedureVo);
+
     ProcedureVo callMemberFanboardDelete(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+
+    // @Transactional(readOnly = true)
     List<P_FanboardReplyVo> callMemberFanboardReply(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+
+    // @Transactional(readOnly = true)
     List<P_FanRankingVo> callMemberFanRanking(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+
+    // @Transactional(readOnly = true)
     ProcedureVo callMemberLevelUpCheck(ProcedureVo procedureVo);
+
     ProcedureVo callMemberFanboardEdit(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_StarRankingVo> selectStarRanking(P_StarRankingVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_FanListVo> callFanList(ProcedureVo procedureVo);
 
     List<P_FanListNewVo> callFanListNew(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     P_FanMemoVo callFanMemo(ProcedureVo procedureVo);
 
     ProcedureVo callFanMemoSave(ProcedureVo procedureVo);
@@ -45,7 +49,7 @@ public interface ProfileDao {
 
     List<P_StarListNewVo> callStarListNew(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     P_StarMemoVo callStarMemo(ProcedureVo procedureVo);
 
     ProcedureVo callStarMemoSave(ProcedureVo procedureVo);
@@ -63,13 +67,10 @@ public interface ProfileDao {
     /**
      * 팬보드 상세 조회
      *
-     * @Param
-     * fanboardNo    INT		-- 팬보드번호
+     * @Param fanboardNo    INT		-- 팬보드번호
      * ,memNo 		BIGINT		-- 회원번호
      * ,viewMemNo 	BIGINT		-- 회원번호(접속자)
-     *
-     * @Return
-     * board_idx;                  //BIGINT		-- 번호
+     * @Return board_idx;                  //BIGINT		-- 번호
      * writer_mem_no;              //BIGINT		-- 회원번호(작성자)
      * nickName;                 //VARCHAR	--닉네임(작성자)
      * userId;                   //VARCHAR	--아이디(작성자)
@@ -82,8 +83,7 @@ public interface ProfileDao {
      * rcv_like_cnt;               //BIGINT		-- 좋아요수
      * rcv_like_cancel_cnt;        //BIGINT		-- 취소 좋아요수
      * like_yn;                  //CHAR		-- 좋아요 확인[y,n]
-     * */
-
+     */
     @Select("CALL p_member_fanboard_sel(#{fanboardNo}, #{memNo}, #{viewMemNo})")
     ProfileBoardDetailOutVo pMemberFanboardSel(Map<String, Object> param);
 }
