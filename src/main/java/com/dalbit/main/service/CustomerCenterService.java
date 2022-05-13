@@ -359,11 +359,11 @@ public class CustomerCenterService {
             if(!appVersion.containsKey("iosVersion") || !appVersion.containsKey("aosVersion")){
                 return data;
             }
-            String lastVersion = (String)appVersion.get("iosVersion");
+
             data.put("lastVersion", deviceVo.getOs() == 1 ? appVersion.get("aosVersion") : appVersion.get("iosVersion"));
             data.put("nowVersion", deviceVo.getAppVersion());
             data.put("storeUrl", deviceVo.getOs() == 1 ? MainEtc.AOS_STORE_URL : MainEtc.IOS_STORE_URL);
-            data.put("isUpdate", DalbitUtil.versionCompare(lastVersion, deviceVo.getAppVersion()));
+            data.put("isUpdate", DalbitUtil.versionCompare((String)data.get("lastVersion"), deviceVo.getAppVersion()));
         }catch (Exception e){
             log.error("CustomerCenterService checkAppVersion Error => {}", e.getMessage());
         }
