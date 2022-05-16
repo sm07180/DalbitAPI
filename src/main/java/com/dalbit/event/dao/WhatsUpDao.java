@@ -3,13 +3,11 @@ package com.dalbit.event.dao;
 import com.dalbit.event.vo.WhatsUpResultVo;
 import com.dalbit.event.vo.request.WhatsUpRequestVo;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public interface WhatsUpDao {
-
     /**
      * ##### 와썹맨 dj 리스트
      * CALL p_evt_wassup_man_dj_rank_list(
@@ -33,7 +31,7 @@ public interface WhatsUpDao {
      * ins_date        DATETIME    -- 등록일자
      * upd_date        DATETIME    -- 수정일자
      */
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<Object> pEvtWassupManDjRankList(WhatsUpRequestVo whatsUpRequestVo);
 
     /**
@@ -57,7 +55,7 @@ public interface WhatsUpDao {
      * ins_date        DATETIME    -- 등록일자
      * upd_date    DATETIME    -- 수정일자
      */
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     WhatsUpResultVo pEvtWassupManDjRankSel(WhatsUpRequestVo whatsUpRequestVo);
 
     /**
@@ -85,7 +83,7 @@ public interface WhatsUpDao {
      * ins_date        DATETIME    -- 등록일자
      * upd_date        DATETIME    -- 수정일자
      */
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<Object> pEvtWassupManNewMemRankList(WhatsUpRequestVo whatsUpRequestVo);
 
     /**
@@ -111,7 +109,7 @@ public interface WhatsUpDao {
      * ins_date        DATETIME    -- 등록일자
      * upd_date    DATETIME    -- 수정일자
      */
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     WhatsUpResultVo pEvtWassupManNewMemRankSel(WhatsUpRequestVo whatsUpRequestVo);
 
     /**
@@ -119,16 +117,15 @@ public interface WhatsUpDao {
      * CALL p_evt_wassup_man_no_sel(
      * noSlct INT	-- 일정구분[1:해당회차, 2,전체회차]
      * )
-     *
+     * <p>
      * seq_no, start_date, end_date
      */
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     WhatsUpResultVo pEvtWassupManNoSel();
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     WhatsUpResultVo pEvtWassupManLastNoSel();
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<WhatsUpResultVo> pEvtWassupManNoList();
-
 }

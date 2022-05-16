@@ -4,16 +4,14 @@ import com.dalbit.broadcast.vo.VoteResultVo;
 import com.dalbit.broadcast.vo.request.VoteRequestVo;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
 public interface VoteDao {
-
     /**
      * ##### 투표 정보 등록
-     *
+     * <p>
      * CALL p_room_vote_ins(
      * memNo BIGINT			-- 회원번호
      * ,roomNo BIGINT			-- 방번호
@@ -23,9 +21,9 @@ public interface VoteDao {
      * ,voteItemCnt SMALLINT		-- 투표항목수
      * ,endTime INT			-- 마감설정시간 (초)
      * )
-     *
+     * <p>
      * # RETURN
-     *
+     * <p>
      * s_return		INT		--  -1:투표개설수 초과 , 0:에러, 0이상: 개설된 투표번호
      */
     @Select("CALL p_room_vote_ins(#{memNo},#{roomNo},#{voteTitle},#{voteAnonyYn},#{voteDupliYn},#{voteItemCnt},#{endTime})")
@@ -33,16 +31,16 @@ public interface VoteDao {
 
     /**
      * ##### 투표 아이템 등록
-     *
+     * <p>
      * CALL p_room_vote_item_ins(
      * voteNo BIGINT			-- 투표번호
      * memNo BIGINT			-- 회원번호
      * ,roomNo BIGINT			-- 방번호
      * ,voteItemName VARCHAR(30)		-- 투표 아이템 제목
      * )
-     *
+     * <p>
      * # RETURN
-     *
+     * <p>
      * s_return		INT		--  -2: 투표항목수 초과, -1: 개설된 투표없음, 0: 에러, 1:정상
      */
     @Select("CALL p_room_vote_item_ins(#{param1},#{param2},#{param3},#{param4})")
@@ -50,7 +48,7 @@ public interface VoteDao {
 
     /**
      * ##### 투표하기
-     *
+     * <p>
      * CALL p_room_vote_mem_ins(
      * memNo BIGINT			-- 회원번호 (투표개설자)
      * ,pmemNo BIGINT			-- 회원번호 (투표자)
@@ -59,24 +57,25 @@ public interface VoteDao {
      * ,itemNo BIGINT			-- 투표항목번호
      * ,voteItemName VARCHAR(30)	-- 항목이름
      * )
-     *
+     * <p>
      * # RETURN
-     *
+     * <p>
      * s_return	INT		-- -1: 투표없음, 0: 에러, 1:정상
      */
     @Select("CALL p_room_vote_mem_ins(#{memNo},#{pmemNo},#{roomNo},#{voteNo},#{itemNo},#{voteItemName})")
     Integer pRoomVoteMemIns(VoteRequestVo voteRequestVo);
+
     /**
      * ##### 방송방 투표 삭제
-     *
+     * <p>
      * CALL p_room_vote_del(
      * memNo BIGINT			-- 회원번호
      * ,roomNo BIGINT			-- 방번호
      * ,voteNo BIGINT			-- 투표번호
      * )
-     *
+     * <p>
      * # RETURN
-     *
+     * <p>
      * s_return		INT		--  -1: 삭제할투표 없음, 0: 에러, 1:정상
      */
     @Select("CALL p_room_vote_del(#{memNo},#{roomNo},#{voteNo})")
@@ -84,16 +83,16 @@ public interface VoteDao {
 
     /**
      * ##### 방송방 투표 마감
-     *
+     * <p>
      * CALL p_room_vote_end(
      * memNo BIGINT			-- 회원번호
      * ,roomNo BIGINT		-- 방번호
      * ,voteNo BIGINT		-- 투표번호
      * ,endSlct CHAR(1)		-- 마감구분[a:전체마감, o:단일마감]
      * )
-     *
+     * <p>
      * # RETURN
-     *
+     * <p>
      * s_return		INT		--  0:에러, 1:정상
      */
     @Select("CALL p_room_vote_end(#{memNo},#{roomNo},#{voteNo},#{endSlct})")
@@ -101,15 +100,15 @@ public interface VoteDao {
 
     /**
      * ##### 방송방 투표 리스트
-     *
+     * <p>
      * CALL p_room_vote_list(
      * memNo BIGINT			-- 회원번호
      * ,roomNo BIGINT			-- 방번호
      * ,voteSlct CHAR(1)		-- 투표리스트 구분 [s:투표중, e:마감]
      * )
-     *
+     * <p>
      * # RETURN
-     *
+     * <p>
      * vote_no		bigint(20)	-- 투표번호
      * mem_no		bigint(20)	-- 투표개설자 회원번호
      * room_no		bigint(20)	-- 투표개설 방번호
@@ -125,18 +124,18 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-//    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<Object> pRoomVoteList(VoteRequestVo voteRequestVo);
 
     /**
      * ##### 투표 정보 조회
-     *
+     * <p>
      * CALL p_room_vote_sel(
      * memNo BIGINT			-- 회원번호
      * ,roomNo BIGINT			-- 방번호
      * ,voteNo BIGINT			-- 투표번호
      * )
-     *
+     * <p>
      * # RETURN
      * vote_no		bigint(20)	-- 투표번호
      * mem_no		bigint(20)	-- 투표개설자 회원번호
@@ -154,19 +153,19 @@ public interface VoteDao {
      * upd_date	datetime(6)	-- 변경일자
      */
     // insert 후 바로 조회 => Master
-//    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     VoteResultVo pRoomVoteSel(VoteRequestVo voteRequestVo);
 
     /**
      * ##### 투표 항목 리스트
-     *
+     * <p>
      * CALL p_room_vote_detail_list(
      * memNo BIGINT			-- 회원번호
      * ,pmemNo BIGINT			-- 회원번호(투표자)
      * ,roomNo BIGINT			-- 방번호
      * ,voteNo BIGINT			-- 투표번호
      * )
-     *
+     * <p>
      * #RETURN
      * item_no		bigint(20)	-- 투표항목번호
      * vote_no		bigint(20)	-- 투표번호
@@ -177,9 +176,6 @@ public interface VoteDao {
      * ins_date	datetime(6)	-- 등록일자
      * upd_date	datetime(6)	-- 변경일자
      */
-//    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<VoteResultVo> pRoomVoteDetailList(VoteRequestVo voteRequestVo);
-
-
-
 }

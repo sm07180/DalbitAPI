@@ -26,7 +26,6 @@ import lombok.var;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -51,10 +50,12 @@ public class EventService {
     @Autowired
     RestService restService;
 
-    @Autowired Event event;
-    @Autowired PushService pushService;
+    @Autowired
+    Event event;
+    @Autowired
+    PushService pushService;
 
-    public String event200608Term(){
+    public String event200608Term() {
         List<HashMap> eventTerm = new ArrayList<>();
         List<HashMap> eventTmp = new ArrayList<>();
         Calendar today = Calendar.getInstance();
@@ -62,7 +63,7 @@ public class EventService {
         HashMap term1 = new HashMap();
         Calendar srt1 = Calendar.getInstance();
         Calendar end1 = Calendar.getInstance();
-        srt1.set(2020, 5,8,0,0,0);
+        srt1.set(2020, 5, 8, 0, 0, 0);
         end1.set(2021, 5, 14, 23, 59, 59);
         term1.put("round", 1);
         term1.put("srtDt", srt1);
@@ -71,7 +72,7 @@ public class EventService {
         HashMap term2 = new HashMap();
         Calendar srt2 = Calendar.getInstance();
         Calendar end2 = Calendar.getInstance();
-        srt2.set(2020, 5,15,0,0,0);
+        srt2.set(2020, 5, 15, 0, 0, 0);
         end2.set(2021, 5, 21, 23, 59, 59);
         term2.put("round", 2);
         term2.put("srtDt", srt2);
@@ -80,7 +81,7 @@ public class EventService {
         HashMap term3 = new HashMap();
         Calendar srt3 = Calendar.getInstance();
         Calendar end3 = Calendar.getInstance();
-        srt3.set(2020, 5,22,0,0,0);
+        srt3.set(2020, 5, 22, 0, 0, 0);
         end3.set(2021, 5, 28, 23, 59, 59);
         term3.put("round", 3);
         term3.put("srtDt", srt3);
@@ -92,15 +93,15 @@ public class EventService {
 
         int nowRound = 1;
         SimpleDateFormat sdf = new SimpleDateFormat("M/d", Locale.KOREA);
-        for(HashMap term : eventTmp){
+        for (HashMap term : eventTmp) {
             String state = "ready";
-            Calendar srt = (Calendar)term.get("srtDt");
-            Calendar end = (Calendar)term.get("endDt");
+            Calendar srt = (Calendar) term.get("srtDt");
+            Calendar end = (Calendar) term.get("endDt");
 
-            if(srt.getTimeInMillis() <= today.getTimeInMillis() && end.getTimeInMillis() >= today.getTimeInMillis()) {
+            if (srt.getTimeInMillis() <= today.getTimeInMillis() && end.getTimeInMillis() >= today.getTimeInMillis()) {
                 state = "ing";
                 nowRound = DalbitUtil.getIntMap(term, "round");
-            }else if(end.getTimeInMillis() < today.getTimeInMillis()){
+            } else if (end.getTimeInMillis() < today.getTimeInMillis()) {
                 state = "finished";
             }
 
@@ -126,27 +127,27 @@ public class EventService {
     /**
      * 랭킹 이벤트 실시간 순위 리스트
      */
-    @Transactional(readOnly = true)
-    public String callEventRankingLive(P_RankingLiveInputVo pRankingLiveInputVo){
+    // @Transactional(readOnly = true)
+    public String callEventRankingLive(P_RankingLiveInputVo pRankingLiveInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRankingLiveInputVo);
         long st = (new Date()).getTime();
         List<P_RankingLiveOutputVo> rankingLiveVoList = eventDao.callEventRankingLive(procedureVo);
         log.debug("select time {} ms", ((new Date()).getTime() - st));
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        if(DalbitUtil.isEmpty(rankingLiveVoList)){
+        if (DalbitUtil.isEmpty(rankingLiveVoList)) {
             resultMap.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트실시간순위리스트없음, resultMap));
         }
 
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            for(int i = 0; i < rankingLiveVoList.size(); i++){
-                if(DalbitUtil.isEmpty(rankingLiveVoList.get(i).getProfileImage())){
+        if (Integer.parseInt(procedureVo.getRet()) > 0) {
+            for (int i = 0; i < rankingLiveVoList.size(); i++) {
+                if (DalbitUtil.isEmpty(rankingLiveVoList.get(i).getProfileImage())) {
                     rankingLiveVoList.get(i).setProfileImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingLiveVoList.get(i).getMemSex() + "_200327.jpg");
                 }
-                if(pRankingLiveInputVo.getSlct_type() == 1 && DalbitUtil.isEmpty(rankingLiveVoList.get(i).getFanImage())){
+                if (pRankingLiveInputVo.getSlct_type() == 1 && DalbitUtil.isEmpty(rankingLiveVoList.get(i).getFanImage())) {
                     rankingLiveVoList.get(i).setFanImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingLiveVoList.get(i).getFanSex() + "_200327.jpg");
                 }
             }
@@ -156,7 +157,7 @@ public class EventService {
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트실시간순위리스트조회, resultMap));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트실시간순위리스트_실패));
         }
         return result;
@@ -166,27 +167,27 @@ public class EventService {
     /**
      * 랭킹 이벤트 결과 보기
      */
-    @Transactional(readOnly = true)
-    public String callEventRankingResult(P_RankingResultInputVo pRankingResultInputVo){
+    // @Transactional(readOnly = true)
+    public String callEventRankingResult(P_RankingResultInputVo pRankingResultInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRankingResultInputVo);
         long st = (new Date()).getTime();
         List<P_RankingResultOutputVo> rankingResultVoList = eventDao.callEventRankingResult(procedureVo);
         log.debug("select time {} ms", ((new Date()).getTime() - st));
 
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-        if(DalbitUtil.isEmpty(rankingResultVoList)){
+        if (DalbitUtil.isEmpty(rankingResultVoList)) {
             resultMap.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트결과없음, resultMap));
         }
 
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
-            for(int i = 0; i < rankingResultVoList.size(); i++){
-                if(DalbitUtil.isEmpty(rankingResultVoList.get(i).getProfileImage())){
+        if (Integer.parseInt(procedureVo.getRet()) > 0) {
+            for (int i = 0; i < rankingResultVoList.size(); i++) {
+                if (DalbitUtil.isEmpty(rankingResultVoList.get(i).getProfileImage())) {
                     rankingResultVoList.get(i).setProfileImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingResultVoList.get(i).getMemSex() + "_200327.jpg");
                 }
-                if(pRankingResultInputVo.getSlct_type() == 1 && DalbitUtil.isEmpty(rankingResultVoList.get(i).getFanImage())){
+                if (pRankingResultInputVo.getSlct_type() == 1 && DalbitUtil.isEmpty(rankingResultVoList.get(i).getFanImage())) {
                     rankingResultVoList.get(i).setFanImage(Code.포토_프로필_디폴트_PREFIX.getCode() + "/" + Code.프로필이미지_파일명_PREFIX.getCode() + rankingResultVoList.get(i).getFanSex() + "_200327.jpg");
                 }
             }
@@ -196,34 +197,33 @@ public class EventService {
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());
             log.info(" ### 프로시저 호출결과 ###");
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트결과조회, resultMap));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.랭킹이벤트결과_실패));
         }
         return result;
     }
 
 
-
     /**
      * 이벤트 댓글 리스트 조회
      */
-    @Transactional(readOnly = true)
-    public String callEventReplyList(P_ReplyListInputVo pRankingLiveInputVo){
+    // @Transactional(readOnly = true)
+    public String callEventReplyList(P_ReplyListInputVo pRankingLiveInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pRankingLiveInputVo);
         long st = (new Date()).getTime();
         List<P_ReplyListOutputVo> replyVoList = eventDao.callEventReplyList(pRankingLiveInputVo);
         log.debug("select time {} ms", ((new Date()).getTime() - st));
 
         HashMap resultMap = new HashMap();
-        if(DalbitUtil.isEmpty(replyVoList)){
+        if (DalbitUtil.isEmpty(replyVoList)) {
             resultMap.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글리스트없음, resultMap));
         }
 
         String result;
-        if(replyVoList.size() > 0) {
+        if (replyVoList.size() > 0) {
             List<ReplyListOutputVo> outList = new ArrayList<>();
-            for(P_ReplyListOutputVo vo : replyVoList){
+            for (P_ReplyListOutputVo vo : replyVoList) {
                 ReplyListOutputVo outVo = new ReplyListOutputVo(vo);
                 outList.add(outVo);
             }
@@ -231,7 +231,7 @@ public class EventService {
             resultMap.put("list", outList);
 
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글리스트조회, resultMap));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트댓글리스트_실패));
         }
         return result;
@@ -243,14 +243,14 @@ public class EventService {
     public String callEventReplyAdd(P_ReplyAddInputVo pReplyAddInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pReplyAddInputVo);
 
-        if(pReplyAddInputVo.getMemLogin() == 0){
+        if (pReplyAddInputVo.getMemLogin() == 0) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글달기실패_회원아님));
         }
 
         int insertResult = eventDao.callEventReplyAdd(pReplyAddInputVo);
 
         String result;
-        if(EventStatus.이벤트_댓글달기성공.getMessageCode().equals(insertResult+"")){
+        if (EventStatus.이벤트_댓글달기성공.getMessageCode().equals(insertResult + "")) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글달기성공));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글달기실패_등록오류));
@@ -266,18 +266,18 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(pReplyDeleteInputVo);
 
         int checkAuth = eventDao.callEventAuthCheck(pReplyDeleteInputVo);
-        if(checkAuth <= 0){
+        if (checkAuth <= 0) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제실패_삭제권한없음));
         }
 
         int insertResult = eventDao.callEventReplyDelete(pReplyDeleteInputVo);
 
         String result;
-        if(insertResult > 0){
+        if (insertResult > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제성공));
-        }else if(insertResult == 0){
+        } else if (insertResult == 0) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제정보없음));
-        }else {
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_댓글삭제실패_등록오류));
         }
 
@@ -287,26 +287,26 @@ public class EventService {
     /**
      * 출석체크 비회원접근 시 dummy data 생성
      */
-    public HashMap AnonymousUserDummyData(){
+    public HashMap AnonymousUserDummyData() {
         List dateList = new ArrayList();
 
         Calendar cal = Calendar.getInstance();
         Calendar cal2 = Calendar.getInstance();
         int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        if(dayOfWeek == 1){
+        if (dayOfWeek == 1) {
             dayOfWeek += 7;
         }
         dayOfWeek--;
         cal2.add(Calendar.DATE, dayOfWeek * -1);
-        for(int i=0; i<dayOfWeek; i++){
+        for (int i = 0; i < dayOfWeek; i++) {
             cal2.add(Calendar.DATE, 1);
             String year = cal2.get(Calendar.YEAR) + "";
 
-            int calMonth = cal2.get(Calendar.MONTH)+1;
-            String month = calMonth < 10 ? "0" + calMonth : ""+calMonth;
+            int calMonth = cal2.get(Calendar.MONTH) + 1;
+            String month = calMonth < 10 ? "0" + calMonth : "" + calMonth;
 
             int calDate = cal2.get(Calendar.DATE);
-            String date = calDate < 10 ? "0" + calDate : ""+calDate;
+            String date = calDate < 10 ? "0" + calDate : "" + calDate;
 
             String dummyDate = year + "-" + month + "-" + date;
 
@@ -347,9 +347,9 @@ public class EventService {
     /**
      * 출석체크 상태 체크
      */
-    public String attendanceCheckStatus(HttpServletRequest request){
+    public String attendanceCheckStatus(HttpServletRequest request) {
 
-        if(!DalbitUtil.isLogin(request)){
+        if (!DalbitUtil.isLogin(request)) {
             return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요_성공, AnonymousUserDummyData()));
         }
 
@@ -383,20 +383,20 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckLoad(procedureVo);
 
-        if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_상태조회_실패_회원아님.getMessageCode())){
+        if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_상태조회_실패_회원아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_상태조회_실패_회원아님));
 
-        }else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_상태조회_성공.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_상태조회_성공.getMessageCode())) {
 
             var returnMap = attendanceResultMap(procedureVo, dateList);
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_상태조회_성공, returnMap));
 
-        }else{
+        } else {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_상태조회_실패));
         }
     }
 
-    public ArrayList setTestDateList(String type){
+    public ArrayList setTestDateList(String type) {
         var dateList = new ArrayList<>();
         var date = new P_AttendanceCheckLoadOutputVo();
         date.setThe_date("2020-08-03");
@@ -467,9 +467,9 @@ public class EventService {
     /**
      * 출석체크
      */
-    public String attendanceCheckIn(HttpServletRequest request){
+    public String attendanceCheckIn(HttpServletRequest request) {
 
-        if(!DalbitUtil.isLogin(request)){
+        if (!DalbitUtil.isLogin(request)) {
             return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
@@ -516,37 +516,37 @@ public class EventService {
 
         }*/
 
-        if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_회원아님.getMessageCode())){
+        if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_회원아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_회원아님));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_이미받음.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_이미받음.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_이미받음));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_필요시간부족.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_필요시간부족.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_필요시간부족));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_보상테이블없음.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_보상테이블없음.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_보상테이블없음));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_동일기기중복불가.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_동일기기중복불가.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_동일기기중복불가));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_동일아이피중복불가.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_실패_동일아이피중복불가.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패_동일아이피중복불가));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_성공.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_출석_성공.getMessageCode())) {
 
             var returnMap = attendanceResultMap(procedureVo, dateList);
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_성공, returnMap));
 
-        }else{
+        } else {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_출석_실패));
         }
     }
 
-    public String attendanceRandomGift(HttpServletRequest request){
+    public String attendanceRandomGift(HttpServletRequest request) {
 
-        if(!DalbitUtil.isLogin(request)){
+        if (!DalbitUtil.isLogin(request)) {
             return gsonUtil.toJson(new JsonOutputVo(CommonStatus.로그인필요));
         }
 
@@ -578,22 +578,22 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(paramMap);
         ArrayList<P_AttendanceCheckLoadOutputVo> dateList = eventDao.callAttendanceCheckBonus(procedureVo);
 
-        if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_회원아님.getMessageCode())){
+        if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_회원아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패_회원아님));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_이미받음.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_이미받음.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패_이미받음));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_대상아님.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_실패_대상아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패_대상아님));
 
-        }else if(procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_성공.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석체크이벤트_더줘_성공.getMessageCode())) {
 
             int attendanceDays = 0;
             int totalExp = 0;
             int dalCnt = 0;
 
-            for (P_AttendanceCheckLoadOutputVo pAttendanceCheckLoadOutputVo : dateList){
+            for (P_AttendanceCheckLoadOutputVo pAttendanceCheckLoadOutputVo : dateList) {
                 attendanceDays += pAttendanceCheckLoadOutputVo.getCheck_ok();
                 totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
                 dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
@@ -613,27 +613,27 @@ public class EventService {
 
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_성공, returnMap));
 
-        }else{
+        } else {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석체크이벤트_더줘_실패));
         }
     }
 
-    public HashMap attendanceResultMap(ProcedureVo procedureVo, ArrayList<P_AttendanceCheckLoadOutputVo> dateList){
+    public HashMap attendanceResultMap(ProcedureVo procedureVo, ArrayList<P_AttendanceCheckLoadOutputVo> dateList) {
         int attendanceDays = 0;
         int totalExp = 0;
         int dalCnt = 0;
 
-        for (P_AttendanceCheckLoadOutputVo pAttendanceCheckLoadOutputVo : dateList){
+        for (P_AttendanceCheckLoadOutputVo pAttendanceCheckLoadOutputVo : dateList) {
             attendanceDays += pAttendanceCheckLoadOutputVo.getCheck_ok();
             totalExp += pAttendanceCheckLoadOutputVo.getReward_exp();
             dalCnt += pAttendanceCheckLoadOutputVo.getReward_dal();
 
-            if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))){
+            if (pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("yyyy-MM-dd"))) {
                 //if(pAttendanceCheckLoadOutputVo.getThe_date().equals(DalbitUtil.getDate("2020-08-02"))){
 
                 pAttendanceCheckLoadOutputVo.setIs_today(1);
 
-                if(pAttendanceCheckLoadOutputVo.getCheck_ok() == 0){
+                if (pAttendanceCheckLoadOutputVo.getCheck_ok() == 0) {
                     pAttendanceCheckLoadOutputVo.setCheck_ok(2);
                 }
             }
@@ -653,10 +653,10 @@ public class EventService {
         status.put("gifticon_day", (today.equals(lunarVo.getDate()) || checkCnt == 7) ? "1" : "0");
 
         //월~토 중 1일 이상 출석 실패 한 자가 일요일에 출석할 시
-        if(!DalbitUtil.isEmpty(status.get("the_day")) && status.get("the_day").equals("6")){
-            if(status.get("bonus").equals("0")){
+        if (!DalbitUtil.isEmpty(status.get("the_day")) && status.get("the_day").equals("6")) {
+            if (status.get("bonus").equals("0")) {
                 status.put("sunday_all_day", "0");
-            }else{
+            } else {
                 status.put("sunday_all_day", "1");
             }
         }
@@ -666,7 +666,7 @@ public class EventService {
         var authCheck = commonService.selectCodeDefine(new CodeVo(code_define.getCode(), code_define.getDesc()));
         String authCheckYn = "N";
         if (!DalbitUtil.isEmpty(authCheck)) {
-            if("Y".equals(authCheck.getValue())) {
+            if ("Y".equals(authCheck.getValue())) {
                 authCheckYn = "Y";
             }
         }
@@ -689,30 +689,30 @@ public class EventService {
         Calendar end1 = Calendar.getInstance();
         Calendar dt_2nd = Calendar.getInstance();
 
-        if("real".equals(DalbitUtil.getActiveProfile())){
+        if ("real".equals(DalbitUtil.getActiveProfile())) {
             dt_2nd.set(2020, 6, 22, 23, 59, 59);
-        }else{
+        } else {
             dt_2nd.set(2020, 6, 22, 17, 59, 59);
         }
 
         int round = 1;
-        if(dt_2nd.getTimeInMillis() < today.getTimeInMillis()){
+        if (dt_2nd.getTimeInMillis() < today.getTimeInMillis()) {
             // 2차 : 23~29일
             round = 2;
-            if("real".equals(DalbitUtil.getActiveProfile())) {
-                srt1.set(2020, 6,23,0,0,0);
-            }else{
-                srt1.set(2020, 6,22,18,0,0);
+            if ("real".equals(DalbitUtil.getActiveProfile())) {
+                srt1.set(2020, 6, 23, 0, 0, 0);
+            } else {
+                srt1.set(2020, 6, 22, 18, 0, 0);
             }
             end1.set(2020, 6, 29, 23, 59, 59);
-        }else{
-            srt1.set(2020, 6,16,0,0,0);
+        } else {
+            srt1.set(2020, 6, 16, 0, 0, 0);
             end1.set(2020, 6, 22, 23, 59, 59);
         }
 
-        String state="finished";
+        String state = "finished";
 
-        if(srt1.getTimeInMillis() <= today.getTimeInMillis() && end1.getTimeInMillis() >= today.getTimeInMillis()) {
+        if (srt1.getTimeInMillis() <= today.getTimeInMillis() && end1.getTimeInMillis() >= today.getTimeInMillis()) {
             state = "ing";
         }
 
@@ -722,21 +722,21 @@ public class EventService {
 
         String result;
 
-        if("ing".equals(state)){
+        if ("ing".equals(state)) {
             pRisingLiveInputVo.setMem_no(MemberVo.getMyMemNo(request));
             ProcedureVo procedureVo = new ProcedureVo(pRisingLiveInputVo);
             ArrayList<P_RisingEventListOutputVo> risingList = eventDao.callRisingLive(procedureVo);
 
-            if(Integer.parseInt(procedureVo.getRet()) > 0) {
+            if (Integer.parseInt(procedureVo.getRet()) > 0) {
                 P_RisingEventOutputVo risingOutput = new Gson().fromJson(procedureVo.getExt(), P_RisingEventOutputVo.class);
 
-                if(DalbitUtil.isEmpty(risingList)){
+                if (DalbitUtil.isEmpty(risingList)) {
                     risingList = new ArrayList<>();
-                }else{
-                    for(int i = 0; i < risingList.size(); i++){
+                } else {
+                    for (int i = 0; i < risingList.size(); i++) {
                         ImageVo imageVo = new ImageVo(risingList.get(i).getProfileImage(), risingList.get(i).getMemSex(), DalbitUtil.getProperty("server.photo.url"));
                         risingList.get(i).setProfileImage(imageVo.getPath());
-                        if(pRisingLiveInputVo.getSlct_type() == 1){
+                        if (pRisingLiveInputVo.getSlct_type() == 1) {
                             ImageVo imageFanVo = new ImageVo(risingList.get(i).getFanImage(), risingList.get(i).getFanSex(), DalbitUtil.getProperty("server.photo.url"));
                             risingList.get(i).setFanImage(imageFanVo.getPath());
                         }
@@ -750,7 +750,7 @@ public class EventService {
             } else {
                 result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_실시간순위_데이터없음, map));
             }
-        }else {
+        } else {
             map.put("risingList", new ArrayList());
             map.put("risingOutput", new HashMap());
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_실시간순위_데이터없음, map));
@@ -773,7 +773,7 @@ public class EventService {
         map.put("risingOutput", risingOutput);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+        if (Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_결과_조회_성공, map));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.라이징이벤트_결과_데이터없음));
@@ -788,7 +788,7 @@ public class EventService {
     public String callAttendanceCheck(HttpServletRequest request, P_AttendanceCheckVo pAttendanceCheckVo) {
 
         //비로그인은 무조건 체크 false로 리턴
-        if(!DalbitUtil.isLogin(request)){
+        if (!DalbitUtil.isLogin(request)) {
             var resultMap = new HashMap();
             resultMap.put("isCheck", true);
             resultMap.put("attendanceCheck", 0);
@@ -805,53 +805,53 @@ public class EventService {
         String eventIconUrl;
         boolean iosAudit = false;   //ios 심사중 여부
         DeviceVo deviceVo = new DeviceVo(request);
-        if(deviceVo.getOs() == 2) {
+        if (deviceVo.getOs() == 2) {
             var iosCodeVo = commonService.selectCodeDefine(new CodeVo(Code.IOS심사중여부.getCode(), Code.IOS심사중여부.getDesc()));
             if (!DalbitUtil.isEmpty(iosCodeVo)) {
-                if("Y".equals(iosCodeVo.getValue())) {
+                if ("Y".equals(iosCodeVo.getValue())) {
                     iosAudit = true;
                 }
             }
         }
 
         //출석 불가 & 룰렛 불가
-        if(attendance_check == 1 && !isRoulette){
+        if (attendance_check == 1 && !isRoulette) {
             userEventCheck = 0;
-            eventIconUrl="";
-        //출석 불가 & 룰렛 가능
-        }else if(attendance_check == 1 && isRoulette){
-            if(iosAudit){   //ios심사중인 경우 출석기본
+            eventIconUrl = "";
+            //출석 불가 & 룰렛 가능
+        } else if (attendance_check == 1 && isRoulette) {
+            if (iosAudit) {   //ios심사중인 경우 출석기본
                 userEventCheck = 0;
-                eventIconUrl="";
-            }else{
+                eventIconUrl = "";
+            } else {
                 userEventCheck = 2;
-                eventIconUrl="";
+                eventIconUrl = "";
             }
-        //출석 가능 & 룰렛 불가
-        }else if(attendance_check == 2 && !isRoulette){
+            //출석 가능 & 룰렛 불가
+        } else if (attendance_check == 2 && !isRoulette) {
             userEventCheck = 1;
-            eventIconUrl="";
-        //출석 가능 & 룰렛 가능
-        }else if(attendance_check == 2 && isRoulette){
+            eventIconUrl = "";
+            //출석 가능 & 룰렛 가능
+        } else if (attendance_check == 2 && isRoulette) {
             userEventCheck = 1;
-            eventIconUrl="";
-        //출석 완료 & 룰렛 불가
-        }else if(attendance_check == 0 && !isRoulette){
+            eventIconUrl = "";
+            //출석 완료 & 룰렛 불가
+        } else if (attendance_check == 0 && !isRoulette) {
             userEventCheck = -1;
-            eventIconUrl="";
-        //출석 완료 & 룰렛 가능
-        }else if(attendance_check == 0 && isRoulette){
-            if(iosAudit){   //ios심사중인 경우 버튼없음
+            eventIconUrl = "";
+            //출석 완료 & 룰렛 가능
+        } else if (attendance_check == 0 && isRoulette) {
+            if (iosAudit) {   //ios심사중인 경우 버튼없음
                 userEventCheck = -1;
-                eventIconUrl="";
-            }else{
+                eventIconUrl = "";
+            } else {
                 userEventCheck = 2;
-                eventIconUrl="";
+                eventIconUrl = "";
             }
-        //나머지 버튼 없음
-        }else{
+            //나머지 버튼 없음
+        } else {
             userEventCheck = -1;
-            eventIconUrl="";
+            eventIconUrl = "";
         }
 
         returnMap.put("isCheck", attendance_check != 2);
@@ -859,11 +859,11 @@ public class EventService {
         returnMap.put("userEventCheck", userEventCheck);
         returnMap.put("eventIconUrl", eventIconUrl);
 
-        if(procedureVo.getRet().equals(EventStatus.출석완료체크_성공.getMessageCode())){
+        if (procedureVo.getRet().equals(EventStatus.출석완료체크_성공.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_성공, returnMap));
-        }else if(procedureVo.getRet().equals(EventStatus.출석완료체크_회원아님.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.출석완료체크_회원아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_회원아님));
-        }else{
+        } else {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.출석완료체크_실패));
         }
 
@@ -876,19 +876,19 @@ public class EventService {
         ProcedureVo procedureVo = new ProcedureVo(pPhoneInputVo);
         eventDao.callPhoneInput(procedureVo);
 
-        if(procedureVo.getRet().equals(EventStatus.휴대폰입력_성공.getMessageCode())){
+        if (procedureVo.getRet().equals(EventStatus.휴대폰입력_성공.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_성공, procedureVo.getData()));
-        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_회원아님.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.휴대폰입력_회원아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_회원아님));
-        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_당첨자아님.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.휴대폰입력_당첨자아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_당첨자아님));
-        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_자리수11미만.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.휴대폰입력_자리수11미만.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_자리수11미만));
-        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_입력종료시간지남.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.휴대폰입력_입력종료시간지남.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_입력종료시간지남));
-        }else if(procedureVo.getRet().equals(EventStatus.휴대폰입력_이미입력된번호.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.휴대폰입력_이미입력된번호.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_이미입력된번호));
-        }else{
+        } else {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.휴대폰입력_실패));
         }
     }
@@ -903,24 +903,24 @@ public class EventService {
         List<P_GifticonWinListOutputVo> gifticonWinList = eventDao.callGifticonWinList(procedureVo);
 
         HashMap resultMap = new HashMap();
-        if(DalbitUtil.isEmpty(gifticonWinList)){
+        if (DalbitUtil.isEmpty(gifticonWinList)) {
             resultMap.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트없음, resultMap));
         }
 
         String result;
-        if(gifticonWinList.size() > 0) {
+        if (gifticonWinList.size() > 0) {
             List<GifiticonWinListOutputVo> outList = new ArrayList();
-            for(P_GifticonWinListOutputVo vo : gifticonWinList){
+            for (P_GifticonWinListOutputVo vo : gifticonWinList) {
                 GifiticonWinListOutputVo outVo = new GifiticonWinListOutputVo(vo);
                 outList.add(outVo);
             }
             resultMap.put("list", outList);
 
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트조회, resultMap));
-        }else if(procedureVo.getRet().equals(EventStatus.기프티콘_당첨자리스트조회_회원아님.getMessageCode())){
+        } else if (procedureVo.getRet().equals(EventStatus.기프티콘_당첨자리스트조회_회원아님.getMessageCode())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트조회_회원아님));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.기프티콘_당첨자리스트조회_실패));
         }
         return result;
@@ -936,15 +936,15 @@ public class EventService {
         return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, resultMap));
     }
 
-    public String selectPhotoList(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+    public String selectPhotoList(HttpServletRequest request, PhotoEventInputVo photoEventInputVo) {
 
         String mem_no = MemberVo.getMyMemNo(request);
         photoEventInputVo.setMem_no(mem_no);
         photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
 
-        if(photoEventInputVo.getPage() <= 1){
+        if (photoEventInputVo.getPage() <= 1) {
             photoEventInputVo.setPage(0);
-        }else{
+        } else {
             photoEventInputVo.setPage((photoEventInputVo.getPage() - 1) * photoEventInputVo.getRecords());
         }
 
@@ -962,21 +962,21 @@ public class EventService {
         return result;
     }
 
-    public String insertPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+    public String insertPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo) {
 
         int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
-        if(eventCheck == 0){
+        if (eventCheck == 0) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
-        if(!EventCode.인증샷.isMulti()){
+        if (!EventCode.인증샷.isMulti()) {
             var checkDuplJoin = new PhotoEventInputVo();
             checkDuplJoin.setEvent_idx(EventCode.인증샷.getEventIdx());
             checkDuplJoin.setSlct_type(1);
             checkDuplJoin.setMem_no(MemberVo.getMyMemNo(request));
             eventDao.selectPhotoList(checkDuplJoin);
             int totCnt = checkDuplJoin.getTotalCnt();
-            if(0 < totCnt){
+            if (0 < totCnt) {
                 return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_이미참여));
             }
         }
@@ -1000,10 +1000,10 @@ public class EventService {
         return result;
     }
 
-    public String updatePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+    public String updatePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo) {
 
         int eventCheck = eventDateCheck(EventCode.인증샷.getEventIdx());
-        if(eventCheck == 0){
+        if (eventCheck == 0) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
@@ -1016,10 +1016,10 @@ public class EventService {
         return result;
     }
 
-    public String deletePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+    public String deletePhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo) {
 
         int eventCheck = eventDateCheck(photoEventInputVo.getEvent_idx());
-        if(eventCheck == 0){
+        if (eventCheck == 0) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
@@ -1034,7 +1034,7 @@ public class EventService {
         return result;
     }
 
-    public String statusPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo){
+    public String statusPhoto(HttpServletRequest request, PhotoEventInputVo photoEventInputVo) {
 
         String mem_no = MemberVo.getMyMemNo(request);
         photoEventInputVo.setEvent_idx(EventCode.인증샷.getEventIdx());
@@ -1059,21 +1059,21 @@ public class EventService {
         return result;
     }
 
-    public EventBasicVo getEventInfo(int idx){
+    public EventBasicVo getEventInfo(int idx) {
         EventBasicVo eventBasicVo = eventDao.selectEventBasic(idx);
         return eventBasicVo;
     }
 
-    public int eventDateCheck(EventBasicVo eventBasicVo){
+    public int eventDateCheck(EventBasicVo eventBasicVo) {
         long startDatetime = eventBasicVo.getStart_date().getTime();
         long endDatetime = eventBasicVo.getEnd_date().getTime();
         long currentDatetime = new Date().getTime();
         return currentDatetime < startDatetime || endDatetime < currentDatetime ? 0 : 1;
     }
 
-    public int eventDateCheck(int idx){
+    public int eventDateCheck(int idx) {
         EventBasicVo eventBasicVo = eventDao.selectEventBasic(idx);
-        if(eventBasicVo == null || eventBasicVo.getStart_date() == null || eventBasicVo.getEnd_date() == null) {
+        if (eventBasicVo == null || eventBasicVo.getStart_date() == null || eventBasicVo.getEnd_date() == null) {
             return 0;
         }
         long startDatetime = eventBasicVo.getStart_date().getTime();
@@ -1082,7 +1082,7 @@ public class EventService {
         return currentDatetime < startDatetime || endDatetime < currentDatetime ? 0 : 1;
     }
 
-    public String selectKnowhowList(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+    public String selectKnowhowList(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo) {
 
         int eventIdx = EventCode.노하우.getEventIdx();
 
@@ -1090,9 +1090,9 @@ public class EventService {
         knowhowEventInputVo.setMem_no(mem_no);
         knowhowEventInputVo.setEvent_idx(eventIdx);
 
-        if(knowhowEventInputVo.getPage() <= 1){
+        if (knowhowEventInputVo.getPage() <= 1) {
             knowhowEventInputVo.setPage(0);
-        }else{
+        } else {
             knowhowEventInputVo.setPage((knowhowEventInputVo.getPage() - 1) * knowhowEventInputVo.getRecords());
         }
 
@@ -1118,37 +1118,37 @@ public class EventService {
     /**
      * 노하우 이벤트 등록
      */
-    public String insertKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+    public String insertKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo) {
 
         Status status = null;
-        if(DalbitUtil.isLogin(request)){
+        if (DalbitUtil.isLogin(request)) {
             ProcedureVo procedureVo = new ProcedureVo(new P_Apply003Vo(new ApplyVo(EventCode.노하우.getEventIdx()), knowhowEventInputVo, request));
             eventDao.callEventApply003(procedureVo);
-            if(EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+            if (EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())) {
                 status = EventStatus.이벤트_참여;
-            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())) {
                 status = EventStatus.이벤트_체크_이미참여;
-            }else if(EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())) {
                 status = EventStatus.이벤트_체크_자격안됨;
-            }else if(EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())) {
                 status = EventStatus.이벤트_없음_종료;
-            }else if(EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())) {
                 status = EventStatus.이벤트_에러;
             }
-        }else{
+        } else {
             status = EventStatus.이벤트_비회원;
         }
         String result = gsonUtil.toJson(new JsonOutputVo(status));
         return result;
     }
 
-    public String updateKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+    public String updateKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo) {
 
         int event_idx = EventCode.노하우.getEventIdx();
 
         knowhowEventInputVo.setEvent_idx(event_idx);
         int eventCheck = eventDateCheck(event_idx);
-        if(eventCheck == 0){
+        if (eventCheck == 0) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_참여날짜아님));
         }
 
@@ -1156,43 +1156,43 @@ public class EventService {
         knowhowEventInputVo.setMem_no(mem_no);
 
         ArrayList<String> list = new ArrayList();
-        if(!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url())){
+        if (!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url())) {
             list.add(knowhowEventInputVo.getImage_url());
             knowhowEventInputVo.setImage_url("");
         }
 
-        if(!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url2())){
+        if (!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url2())) {
             list.add(knowhowEventInputVo.getImage_url2());
             knowhowEventInputVo.setImage_url2("");
         }
 
-        if(!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url3())){
+        if (!DalbitUtil.isEmpty(knowhowEventInputVo.getImage_url3())) {
             list.add(knowhowEventInputVo.getImage_url3());
             knowhowEventInputVo.setImage_url3("");
         }
 
-        for(int i=0 ; i<list.size(); i++){
-            if(i == 0){
+        for (int i = 0; i < list.size(); i++) {
+            if (i == 0) {
                 knowhowEventInputVo.setImage_url(list.get(i));
-            }else if(i == 1){
+            } else if (i == 1) {
                 knowhowEventInputVo.setImage_url2(list.get(i));
-            }else if(i == 2){
+            } else if (i == 2) {
                 knowhowEventInputVo.setImage_url3(list.get(i));
             }
         }
 
         int updateResult = eventDao.updateKnowhow(knowhowEventInputVo);
         String result = null;
-        if(updateResult == 0){
+        if (updateResult == 0) {
             result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.수정));
         }
 
         return result;
     }
 
-    public String detailKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo){
+    public String detailKnowhow(HttpServletRequest request, KnowhowEventInputVo knowhowEventInputVo) {
 
         int event_idx = EventCode.노하우.getEventIdx();
 
@@ -1200,12 +1200,12 @@ public class EventService {
         knowhowEventInputVo.setMem_no(MemberVo.getMyMemNo(request));
         var resultMap = new HashMap();
 
-        if(knowhowEventInputVo.getIs_detail() == 1){
+        if (knowhowEventInputVo.getIs_detail() == 1) {
             eventDao.updatePhotoViewCnt(knowhowEventInputVo.getIdx());
         }
 
         KnowhowEventOutputVo detail = eventDao.selectKnowhowDetail(knowhowEventInputVo);
-        if(DalbitUtil.isEmpty(detail)){
+        if (DalbitUtil.isEmpty(detail)) {
             return gsonUtil.toJson(new JsonOutputVo(CommonStatus.데이터없음));
         }
 
@@ -1218,7 +1218,7 @@ public class EventService {
         return result;
     }
 
-    public String eventGood(HttpServletRequest request, EventGoodVo eventGoodVo){
+    public String eventGood(HttpServletRequest request, EventGoodVo eventGoodVo) {
 
         eventGoodVo.setMem_no(MemberVo.getMyMemNo(request));
         ProcedureVo procedureVo = new ProcedureVo(eventGoodVo);
@@ -1229,22 +1229,22 @@ public class EventService {
         var resultMap = new HashMap();
         resultMap.put("good_cnt", DalbitUtil.getIntMap(procedureResult, "good_cnt"));
 
-        if(EventStatus.노하우_이벤트_좋아요.getMessageCode().equals(procedureVo.getRet())){
+        if (EventStatus.노하우_이벤트_좋아요.getMessageCode().equals(procedureVo.getRet())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_좋아요, resultMap));
-        }else if(EventStatus.노하우_이벤트_좋아요취소.getMessageCode().equals(procedureVo.getRet())){
+        } else if (EventStatus.노하우_이벤트_좋아요취소.getMessageCode().equals(procedureVo.getRet())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_좋아요취소, resultMap));
-        }else if(EventStatus.노하우_이벤트_회원아님.getMessageCode().equals(procedureVo.getRet())){
+        } else if (EventStatus.노하우_이벤트_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_회원아님));
-        }else if(EventStatus.노하우_이벤트_이벤트없음.getMessageCode().equals(procedureVo.getRet())){
+        } else if (EventStatus.노하우_이벤트_이벤트없음.getMessageCode().equals(procedureVo.getRet())) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.노하우_이벤트_이벤트없음));
-        }else{
+        } else {
             return gsonUtil.toJson(new JsonOutputVo(CommonStatus.비즈니스로직오류));
         }
     }
 
-    public int isAdmin(HttpServletRequest request){
+    public int isAdmin(HttpServletRequest request) {
         int isAdmin = 0;
-        if(DalbitUtil.isLogin(request)){
+        if (DalbitUtil.isLogin(request)) {
             SearchVo searchVo = new SearchVo();
             searchVo.setMem_no(MemberVo.getMyMemNo(request));
             ArrayList<AdminMenuVo> menuList = adminDao.selectMobileAdminMenuAuth(searchVo);
@@ -1253,93 +1253,93 @@ public class EventService {
         return isAdmin;
     }
 
-    public HashMap eventCheck(CheckVo checkVo, HttpServletRequest request){
+    public HashMap eventCheck(CheckVo checkVo, HttpServletRequest request) {
         HashMap resultMap = new HashMap();
 
-        if(DalbitUtil.isLogin(request)){
+        if (DalbitUtil.isLogin(request)) {
             ProcedureVo procedureVo = new ProcedureVo(new P_CheckVo(checkVo, request));
             eventDao.callEventApplyCheck(procedureVo);
-            if(EventStatus.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
+            if (EventStatus.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_참여);
-            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_이미참여);
-            }else if(EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_자격안됨);
             }
-        }else{
+        } else {
             resultMap.put("status", EventStatus.이벤트_비회원);
         }
 
         return resultMap;
     }
 
-    public HashMap eventCheck004(CheckVo checkVo, HttpServletRequest request){
+    public HashMap eventCheck004(CheckVo checkVo, HttpServletRequest request) {
         HashMap resultMap = new HashMap();
 
-        if(DalbitUtil.isLogin(request)){
+        if (DalbitUtil.isLogin(request)) {
             checkVo.setEventIdx(4);
             ProcedureVo procedureVo = new ProcedureVo(new P_CheckVo(checkVo, request));
             eventDao.callEventApplyCheck004(procedureVo);
-            if(EventStatus.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())){
+            if (EventStatus.이벤트_체크_참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_참여);
-            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_이미참여);
-            }else if(EventStatus.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())) {
                 HashMap returnMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
                 HashMap data = new HashMap();
                 data.put("airHour", returnMap.get("airhour"));
                 resultMap.put("status", EventStatus.이벤트_체크_자격안됨04);
                 resultMap.put("data", data);
             }
-        }else{
+        } else {
             resultMap.put("status", EventStatus.이벤트_비회원);
         }
 
         return resultMap;
     }
 
-    public HashMap eventApply(ApplyVo applyVo, HttpServletRequest request){
+    public HashMap eventApply(ApplyVo applyVo, HttpServletRequest request) {
         HashMap resultMap = new HashMap();
-        if(DalbitUtil.isLogin(request)){
+        if (DalbitUtil.isLogin(request)) {
             ProcedureVo procedureVo = new ProcedureVo(new P_ApplyVo(applyVo, request));
             eventDao.callEventApplySP(procedureVo);
-            if(EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+            if (EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_참여);
-            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_이미참여);
-            }else if(EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_자격안됨.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_자격안됨);
-            }else if(EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_없음_종료);
-            }else if(EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_에러);
             }
-        }else{
+        } else {
             resultMap.put("status", EventStatus.이벤트_비회원);
         }
         return resultMap;
     }
 
-    public HashMap eventApply004(Apply004Vo applyVo, HttpServletRequest request){
+    public HashMap eventApply004(Apply004Vo applyVo, HttpServletRequest request) {
         HashMap resultMap = new HashMap();
-        if(DalbitUtil.isLogin(request)){
+        if (DalbitUtil.isLogin(request)) {
             applyVo.setEventIdx(4);
             ProcedureVo procedureVo = new ProcedureVo(new P_ApplyVo(applyVo, request));
             eventDao.callEventApply004(procedureVo);
-            if(EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())){
+            if (EventStatus.이벤트_참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_참여);
-            }else if(EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_이미참여.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_이미참여);
-            }else if(EventStatus.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_체크_자격안됨04.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_체크_자격안됨04);
-            }else if(EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_없음_종료.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_없음_종료);
-            }else if(EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_에러.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_에러);
-            }else if(EventStatus.이벤트_비회원.getMessageCode().equals(procedureVo.getRet())){
+            } else if (EventStatus.이벤트_비회원.getMessageCode().equals(procedureVo.getRet())) {
                 resultMap.put("status", EventStatus.이벤트_비회원);
             }
-        }else{
+        } else {
             resultMap.put("status", EventStatus.이벤트_비회원);
         }
         return resultMap;
@@ -1374,9 +1374,9 @@ public class EventService {
     public String callEventPageList(P_EventPageListInputVo pEventPageListInputVo) {
         ProcedureVo procedureVo = new ProcedureVo(pEventPageListInputVo);
         ArrayList<P_EventPageListOutputVo> eventList = eventDao.callEventPageList(procedureVo);
-        String result="";
+        String result = "";
 
-        if(eventList.size() > 0) {
+        if (eventList.size() > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_리스트조회_성공, eventList));
         } else if (EventStatus.이벤트_리스트조회_실패.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_리스트조회_실패));
@@ -1398,23 +1398,23 @@ public class EventService {
         ArrayList rankList = new ArrayList();
 
         // 등수 (중복제거) 뽑아내기
-        if(!DalbitUtil.isEmpty(winList)) {
+        if (!DalbitUtil.isEmpty(winList)) {
             for (int i = 0; i < winList.size(); i++) {
                 HashMap rank = new HashMap();
                 rank.put("rank", winList.get(i).getPrizeRank());
                 rank.put("rankName", winList.get(i).getPrizeName());
                 rank.put("winnerCnt", winList.get(i).getPrizeCnt());
-                if(!rankList.contains(rank)) {
+                if (!rankList.contains(rank)) {
                     rankList.add(rank);
                 }
             }
         }
 
-        if(!DalbitUtil.isEmpty(winList) && !DalbitUtil.isEmpty(rankList)) {
+        if (!DalbitUtil.isEmpty(winList) && !DalbitUtil.isEmpty(rankList)) {
             for (int i = 0; i < rankList.size(); i++) {
                 List<P_EventPageWinListOutputVo> winnerList = new ArrayList<>();
                 for (int j = 0; j < winList.size(); j++) {
-                    if(DalbitUtil.getIntMap((HashMap) rankList.get(i), "rank") == winList.get(j).getPrizeRank()){
+                    if (DalbitUtil.getIntMap((HashMap) rankList.get(i), "rank") == winList.get(j).getPrizeRank()) {
                         winnerList.add(winList.get(j));
                     }
                 }
@@ -1424,7 +1424,7 @@ public class EventService {
         HashMap map = new HashMap();
         map.put("rankList", rankList);
 
-        if(winList.size() > 0) {
+        if (winList.size() > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자명단조회_성공, map));
         } else if (EventStatus.이벤트_당첨자명단조회_이벤트번호없음.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자명단조회_이벤트번호없음));
@@ -1447,7 +1447,7 @@ public class EventService {
 
         String result;
 
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+        if (Integer.parseInt(procedureVo.getRet()) > 0) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_성공, resultList));
         } else if (EventStatus.이벤트_당첨여부조회_당첨자아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨여부조회_당첨자아님));
@@ -1473,7 +1473,7 @@ public class EventService {
 
         String result;
 
-        if(EventStatus.이벤트_경품수령방법입력_경품받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if (EventStatus.이벤트_경품수령방법입력_경품받기_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_경품받기_성공));
         } else if (EventStatus.이벤트_경품수령방법입력_달로받기_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_경품수령방법입력_달로받기_성공));
@@ -1508,7 +1508,7 @@ public class EventService {
 
         String result;
 
-        if(EventStatus.이벤트_당첨자등록정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if (EventStatus.이벤트_당첨자등록정보조회_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_성공, addInfoOutput));
         } else if (EventStatus.이벤트_당첨자등록정보조회_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보조회_회원아님));
@@ -1535,7 +1535,7 @@ public class EventService {
         P_EventPageWinnerInfoFormatVo info = eventDao.callEventPageWinnerInfoFormat(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > 0) {
+        if (Integer.parseInt(procedureVo.getRet()) > 0) {
             log.debug(info.toString());
             result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, info));
         } else {
@@ -1567,7 +1567,7 @@ public class EventService {
             pSelfAuthVo.setMem_no(MemberVo.getMyMemNo(request));
             pSelfAuthVo.setAdd_file(addFile2);
             int success = commonService.updateMemberCertificationFile(pSelfAuthVo);
-            if(success > 0) {
+            if (success > 0) {
                 log.info("법정대리인(보호자) 서류 업데이트 성공");
             }
         }
@@ -1579,22 +1579,22 @@ public class EventService {
 
         String result;
 
-        if(EventStatus.이벤트_당첨자등록정보수정_등록성공.getMessageCode().equals(procedureVo.getRet())) {
-            if(isDone) {
-                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
+        if (EventStatus.이벤트_당첨자등록정보수정_등록성공.getMessageCode().equals(procedureVo.getRet())) {
+            if (isDone) {
+                if (!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1()), request);
                 }
-                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2())) {
+                if (!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2()), request);
                 }
             }
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_당첨자등록정보수정_등록성공));
         } else if (EventStatus.이벤트_당첨자등록정보수정_성공.getMessageCode().equals(procedureVo.getRet())) {
-            if(isDone) {
-                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
+            if (isDone) {
+                if (!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_1()), request);
                 }
-                if(!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2())) {
+                if (!DalbitUtil.isEmpty(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2())) {
                     restService.imgDone(DalbitUtil.replaceDonePath(pEventPageWinnerAddInfoEditVo.getWinner_add_file_2()), request);
                 }
             }
@@ -1621,9 +1621,9 @@ public class EventService {
     /**
      * 타임 이벤트 정보 조회
      */
-    public String selectTimeEventInfo(TimeEventVo timeEventVo){
+    public String selectTimeEventInfo(TimeEventVo timeEventVo) {
         TimeEventVo timeEventInfo = eventDao.selectTimeEventInfo(timeEventVo);
-        if(DalbitUtil.isEmpty(timeEventInfo)){
+        if (DalbitUtil.isEmpty(timeEventInfo)) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.이벤트_진행중인이벤트없음));
         }
 
@@ -1639,13 +1639,13 @@ public class EventService {
         List<P_OpenEventVo> openEventVoList = eventDao.callOpenEvent(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+        if (Integer.parseInt(procedureVo.getRet()) > -1) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap rankInfo = new HashMap();
             List<OpenEventOutVo> outVoList = new ArrayList<>();
 
-            if(!DalbitUtil.isEmpty(openEventVoList)){
-                for (int i=0; i<openEventVoList.size(); i++){
+            if (!DalbitUtil.isEmpty(openEventVoList)) {
+                for (int i = 0; i < openEventVoList.size(); i++) {
                     outVoList.add(new OpenEventOutVo(openEventVoList.get(i)));
                 }
             }
@@ -1666,7 +1666,7 @@ public class EventService {
             //openEventExtVo.setList(outVoList);
 
             result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.오픈이벤트조회_성공, rankInfo));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.오픈이벤트조회_실패));
         }
         return result;
@@ -1681,12 +1681,12 @@ public class EventService {
         List<P_OpenEventBestListVo> openEventBestListVo = eventDao.callOpenEventDailyBest(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+        if (Integer.parseInt(procedureVo.getRet()) > -1) {
             HashMap bestList = new HashMap();
             List<OpenEventBestListOutVo> outVoList = new ArrayList<>();
 
-            if(!DalbitUtil.isEmpty(openEventBestListVo)){
-                for (int i=0; i<openEventBestListVo.size(); i++){
+            if (!DalbitUtil.isEmpty(openEventBestListVo)) {
+                for (int i = 0; i < openEventBestListVo.size(); i++) {
                     outVoList.add(new OpenEventBestListOutVo(openEventBestListVo.get(i)));
                 }
             }
@@ -1694,7 +1694,7 @@ public class EventService {
             bestList.put("list", outVoList);
 
             result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.일간최고조회_성공, bestList));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.일간최고조회_실패));
         }
         return result;
@@ -1709,13 +1709,13 @@ public class EventService {
         List<P_SpecialLeagueVo> specialLeagueVoList = eventDao.callSpecialLeague(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+        if (Integer.parseInt(procedureVo.getRet()) > -1) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap specialLeague = new HashMap();
             List<SpecialLeagueListOutVo> outVoList = new ArrayList<>();
 
-            if(!DalbitUtil.isEmpty(specialLeagueVoList)){
-                for (int i=0; i<specialLeagueVoList.size(); i++){
+            if (!DalbitUtil.isEmpty(specialLeagueVoList)) {
+                for (int i = 0; i < specialLeagueVoList.size(); i++) {
                     outVoList.add(new SpecialLeagueListOutVo(specialLeagueVoList.get(i)));
                 }
             }
@@ -1734,7 +1734,7 @@ public class EventService {
             result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.스페셜리그_조회_성공, specialLeague));
         } else if (EventStatus.스페셜리그_조회_기수오버.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스페셜리그_조회_기수오버));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.스페셜리그_조회_실패));
         }
         return result;
@@ -1749,13 +1749,13 @@ public class EventService {
         List<P_ChampionshipVo> championshipList = eventDao.callChampionshipSelect(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+        if (Integer.parseInt(procedureVo.getRet()) > -1) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap rankInfo = new HashMap();
             List<ChampionshipOutVo> outVoList = new ArrayList<>();
 
-            if(!DalbitUtil.isEmpty(championshipList)){
-                for (int i=0; i<championshipList.size(); i++){
+            if (!DalbitUtil.isEmpty(championshipList)) {
+                for (int i = 0; i < championshipList.size(); i++) {
                     outVoList.add(new ChampionshipOutVo(championshipList.get(i)));
                 }
             }
@@ -1777,7 +1777,7 @@ public class EventService {
             rankInfo.put("list", outVoList);
 
             result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.챔피언십조회_성공, rankInfo));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.챔피언십조회_실패));
         }
         return result;
@@ -1791,13 +1791,13 @@ public class EventService {
         List<P_ChampionshipPointVo> championshipPointList = eventDao.callChampionshipPointSelect(procedureVo);
 
         String result;
-        if(Integer.parseInt(procedureVo.getRet()) > -1) {
+        if (Integer.parseInt(procedureVo.getRet()) > -1) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             HashMap rankInfo = new HashMap();
             List<ChampionshipPointOutVo> outVoList = new ArrayList<>();
 
-            if(!DalbitUtil.isEmpty(championshipPointList)){
-                for (int i=0; i<championshipPointList.size(); i++){
+            if (!DalbitUtil.isEmpty(championshipPointList)) {
+                for (int i = 0; i < championshipPointList.size(); i++) {
                     outVoList.add(new ChampionshipPointOutVo(championshipPointList.get(i)));
                 }
             }
@@ -1820,7 +1820,7 @@ public class EventService {
             rankInfo.put("list", outVoList);
 
             result = gsonUtil.toJsonAdm(new JsonOutputVo(EventStatus.챔피언십_승점조회_성공, rankInfo));
-        }else{
+        } else {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.챔피언십_승점조회_실패));
         }
         return result;
@@ -1835,7 +1835,7 @@ public class EventService {
         eventDao.callChampionshipGift(procedureVo);
 
         String result;
-        if(EventStatus.선물받기_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if (EventStatus.선물받기_성공.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_성공));
         } else if (EventStatus.선물받기_회원아님.getMessageCode().equals(procedureVo.getRet())) {
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.선물받기_회원아님));
@@ -1858,16 +1858,17 @@ public class EventService {
     }
 
     /* 깐부 이벤트~~~ */
+
     /**
      * 깐부 이벤트 회차 정보
      */
     public GganbuRoundInfoOutputVo getGganbuRoundInfo() {
         GganbuRoundInfoReqVo getData = event.getGganbuRoundInfo();
         return new GganbuRoundInfoOutputVo(
-            getData.getGganbu_no(),
-            getData.getStart_date(),
-            getData.getEnd_date(),
-            getData.getIns_date()
+                getData.getGganbu_no(),
+                getData.getStart_date(),
+                getData.getEnd_date(),
+                getData.getIns_date()
         );
     }
 
@@ -1875,8 +1876,8 @@ public class EventService {
      * 깐부 이벤트 회차 정보 예외처리
      */
     private String gganbuNoCheck(String gganbuNo) {
-        if(StringUtils.equals(gganbuNo, "1") || StringUtils.equals(gganbuNo, "2") ||
-            StringUtils.equals(gganbuNo, "3") || StringUtils.equals(gganbuNo, "4")
+        if (StringUtils.equals(gganbuNo, "1") || StringUtils.equals(gganbuNo, "2") ||
+                StringUtils.equals(gganbuNo, "3") || StringUtils.equals(gganbuNo, "4")
         ) {
             return gganbuNo;
         }
@@ -1925,10 +1926,10 @@ public class EventService {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuMemReqList(gganbuMemReqListInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuMemReqListOutputVo> list = DBUtil.getList(objList, 1, GganbuMemReqListOutputVo.class);
-        for(GganbuMemReqListOutputVo vo : list) {
+        for (GganbuMemReqListOutputVo vo : list) {
             vo.setAverage_level((vo.getMem_level() + vo.getPtr_mem_level()) / 2);
 
             vo.setMem_profile(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
@@ -1977,7 +1978,7 @@ public class EventService {
     public GganbuMemSelVo gganbuMemSel(GganbuMemSelInputVo gganbuMemSelInputVo) {
         gganbuMemSelInputVo.setGganbuNo(gganbuNoCheck(gganbuMemSelInputVo.getGganbuNo()));
         GganbuMemSelVo gganbuMemSelVo = event.gganbuMemSel(gganbuMemSelInputVo);
-        if(gganbuMemSelVo != null) {
+        if (gganbuMemSelVo != null) {
             int averageLevel = (gganbuMemSelVo.getMem_level() + gganbuMemSelVo.getPtr_mem_level()) / 2; // 소수점 버림
             gganbuMemSelVo.setAverage_level(averageLevel);
 
@@ -1999,34 +2000,34 @@ public class EventService {
     public GganbuMemMarbleInsInputVo gganbuMemViewStatIns(String memNo, String roomNo, boolean isBj) {
         GganbuMemViewStatInsVo viewStatVo = event.gganbuMemViewStatIns(memNo);
 
-        if(viewStatVo != null && viewStatVo.getS_return() == 1) {
+        if (viewStatVo != null && viewStatVo.getS_return() == 1) {
             String marbleInsType;
             int rMarbleCnt = 0;
             int yMarbleCnt = 0;
             int bMarbleCnt = 0;
             int pMarbleCnt = 0;
 
-            for(int i=0; i<viewStatVo.getS_rcvCnt(); i++) {
+            for (int i = 0; i < viewStatVo.getS_rcvCnt(); i++) {
                 int getMarble = getBroadExitMarble();
-                if(getMarble == 1) {
+                if (getMarble == 1) {
                     rMarbleCnt++;
-                }else if(getMarble == 2) {
+                } else if (getMarble == 2) {
                     yMarbleCnt++;
-                }else if(getMarble == 3) {
+                } else if (getMarble == 3) {
                     bMarbleCnt++;
-                }else {
+                } else {
                     pMarbleCnt++;
                 }
             }
 
-            if(isBj) {
+            if (isBj) {
                 marbleInsType = "r";
-            }else {
+            } else {
                 marbleInsType = "v";
             }
 
             GganbuMemMarbleInsInputVo marbleInsVo = new GganbuMemMarbleInsInputVo(
-                memNo, marbleInsType, roomNo, rMarbleCnt, yMarbleCnt, bMarbleCnt, pMarbleCnt
+                    memNo, marbleInsType, roomNo, rMarbleCnt, yMarbleCnt, bMarbleCnt, pMarbleCnt
             );
             marbleInsVo.setIsBjYn(isBj ? "y" : "n");
 
@@ -2043,13 +2044,13 @@ public class EventService {
         int yArea = rArea + 35;
         int bArea = yArea + 15;
 
-        if(randomValue <= rArea) {
+        if (randomValue <= rArea) {
             return 1;
-        }else if(randomValue <= yArea) {
+        } else if (randomValue <= yArea) {
             return 2;
-        }else if(randomValue <= bArea) {
+        } else if (randomValue <= bArea) {
             return 3;
-        }else {
+        } else {
             return 4;
         }
     }
@@ -2060,15 +2061,15 @@ public class EventService {
         int yArea = rArea + 25;
         int bArea = yArea + 25;
 
-        for(int i=0; i<marbleCnt; i++) {
+        for (int i = 0; i < marbleCnt; i++) {
             int randomValue = ThreadLocalRandom.current().nextInt(1, 101); // 1~100 난수
-            if(randomValue <= rArea) {
+            if (randomValue <= rArea) {
                 result[0]++;
-            }else if(randomValue <= yArea) {
+            } else if (randomValue <= yArea) {
                 result[1]++;
-            }else if(randomValue <= bArea) {
+            } else if (randomValue <= bArea) {
                 result[2]++;
-            }else {
+            } else {
                 result[3]++;
             }
         }
@@ -2079,23 +2080,23 @@ public class EventService {
     /**
      * 깐부 구슬 획득
      * param:
-     *   GganbuMemMarbleInsInputVo의 memNo, insSlct, marbleCnt를 넣어준다
-     *
-     *  추가 -> insSlct가 b일때 winSlct 넣어준다
-    */
+     * GganbuMemMarbleInsInputVo의 memNo, insSlct, marbleCnt를 넣어준다
+     * <p>
+     * 추가 -> insSlct가 b일때 winSlct 넣어준다
+     */
     public GganbuMemMarbleInsInputVo gganbuMemMarbleIns(GganbuMemMarbleInsInputVo gganbuMemMarbleInsInputVo) {
         // 구슬 -> 주머니 교환
         int escape = 0;
-        while(escape < 100) {
-            if(gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) != 1) {
+        while (escape < 100) {
+            if (gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) != 1) {
                 break;
             }
             escape++;
         }
 
         // 확률에 따라 구슬을 지급한다
-        if(StringUtils.equals(gganbuMemMarbleInsInputVo.getInsSlct(), "c") ||
-            StringUtils.equals(gganbuMemMarbleInsInputVo.getInsSlct(), "e")
+        if (StringUtils.equals(gganbuMemMarbleInsInputVo.getInsSlct(), "c") ||
+                StringUtils.equals(gganbuMemMarbleInsInputVo.getInsSlct(), "e")
         ) {
             int[] getMarbles = getMarble(gganbuMemMarbleInsInputVo.getMarbleCnt());
             gganbuMemMarbleInsInputVo.setRMarbleCnt(getMarbles[0]);
@@ -2108,10 +2109,10 @@ public class EventService {
         gganbuMemMarbleInsInputVo.setS_return(s_return);
 
         int pocketCnt = 0;
-        while(true) {
-            if(gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) == 1) {
+        while (true) {
+            if (gganbuMarbleExchange(gganbuMemMarbleInsInputVo.getMemNo()) == 1) {
                 pocketCnt++;
-            }else {
+            } else {
                 break;
             }
         }
@@ -2128,10 +2129,10 @@ public class EventService {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuMemMarbleLogList(gganbuMemMarbleLogListInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuMarbleLogListVo> list = DBUtil.getList(objList, 1, GganbuMarbleLogListVo.class);
-        for(GganbuMarbleLogListVo vo : list) {
+        for (GganbuMarbleLogListVo vo : list) {
             vo.setMem_profile(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
         }
 
@@ -2162,7 +2163,7 @@ public class EventService {
         GganbuMemBadgeSelVo gganbuMemBadgeSelVo = event.gganbuMemBadgeSel(gganbuMemBadgeUpdVo);
         result.put("badgeCnt", gganbuMemBadgeSelVo);
 
-        if(gganbuState == 1) { // 깐부 있음
+        if (gganbuState == 1) { // 깐부 있음
             // 깐부 정보
             GganbuMemSelVo gganbuInfo = gganbuMemSel(new GganbuMemSelInputVo(gganbuNo, memNo));
             result.put("gganbuInfo", gganbuInfo);
@@ -2179,8 +2180,8 @@ public class EventService {
 
             // 구슬 -> 주머니 교환
             int escape = 0;
-            while(escape < 100) {
-                if(gganbuMarbleExchange(memNo) != 1) {
+            while (escape < 100) {
+                if (gganbuMarbleExchange(memNo) != 1) {
                     break;
                 }
                 escape++;
@@ -2213,16 +2214,16 @@ public class EventService {
         // 베팅수 체크
         GganbuMemBettingChkVo gganbuMemBettingChkVo = new GganbuMemBettingChkVo(gganbuNo, memNo);
         int bettingChk = event.gganbuMemBettingChk(gganbuMemBettingChkVo);
-        if(bettingChk == -1) {
+        if (bettingChk == -1) {
             result.put("bettingYn", "n");
-        }else {
+        } else {
             result.put("bettingYn", "y");
         }
 
         // 구슬 -> 주머니 교환
         int escape = 0;
-        while(escape < 100) {
-            if(gganbuMarbleExchange(memNo) != 1) {
+        while (escape < 100) {
+            if (gganbuMarbleExchange(memNo) != 1) {
                 break;
             }
             escape++;
@@ -2261,15 +2262,15 @@ public class EventService {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuMarblePocketLogList(gganbuMarblePocketOpenInsVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuMarblePocketLogListVo> list = DBUtil.getList(objList, 1, GganbuMarblePocketLogListVo.class);
-        for(GganbuMarblePocketLogListVo vo : list) {
-            if(StringUtils.equals(vo.getIns_slct(), "e")) {
-                vo.setRcvReason("구슬 "+ vo.getExc_marble_cnt() + "개 완성");
-            }else if(StringUtils.equals(vo.getIns_slct(), "u")) {
+        for (GganbuMarblePocketLogListVo vo : list) {
+            if (StringUtils.equals(vo.getIns_slct(), "e")) {
+                vo.setRcvReason("구슬 " + vo.getExc_marble_cnt() + "개 완성");
+            } else if (StringUtils.equals(vo.getIns_slct(), "u")) {
                 vo.setRcvReason(vo.getMarble_pocket_cnt() + "만개 선물 하기");
-            }else {
+            } else {
                 vo.setRcvReason("1만개 선물 받기");
             }
         }
@@ -2288,10 +2289,10 @@ public class EventService {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuRankList(gganbuRankListInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuRankListVo> list = DBUtil.getList(objList, 1, GganbuRankListVo.class);
-        for(GganbuRankListVo vo : list) {
+        for (GganbuRankListVo vo : list) {
             int memL = (vo.getMem_level() - 1) / 10;
             vo.setMem_level_color(DalbitUtil.getProperty("level.color." + memL).split(","));
 
@@ -2313,18 +2314,18 @@ public class EventService {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuBettingLogList(bettingLogListInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuBettingLogListVo> list = DBUtil.getList(objList, 1, GganbuBettingLogListVo.class);
         Date time = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String nowDate = dateFormat.format(time);
 
-        for(GganbuBettingLogListVo vo : list) {
+        for (GganbuBettingLogListVo vo : list) {
             String insDate = dateFormat.format(vo.getIns_date());
-            if(nowDate.equals(insDate)) {
+            if (nowDate.equals(insDate)) {
                 vo.setIsNewYn("y");
-            }else {
+            } else {
                 vo.setIsNewYn("n");
             }
 
@@ -2345,7 +2346,7 @@ public class EventService {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuMyBettingLogSel(bettingLogListInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuMyBettingLogSelVo> list = DBUtil.getList(objList, 1, GganbuMyBettingLogSelVo.class);
 
@@ -2368,7 +2369,7 @@ public class EventService {
         double evenProbability = 0;
         String oddWinProbability = "0";
         String evenWinProbability = "0";
-        if(oddAddEven > 0) {
+        if (oddAddEven > 0) {
             oddProbability = (oddBettingCnt / oddAddEven) * 100;
             evenProbability = (evenBettingCnt / oddAddEven) * 100;
             oddWinProbability = String.format("%.1f", oddProbability);
@@ -2388,12 +2389,12 @@ public class EventService {
     }
 
     /**
-     *  깐부 찾기
+     * 깐부 찾기
      */
     public Map<String, Object> gganbuMemberSearch(GganbuMemberSearchInputVo gganbuMemberSearchInputVo) {
         Map<String, Object> result = new HashMap<>();
         String getText = gganbuMemberSearchInputVo.getSearchText();
-        if(StringUtils.isEmpty(getText) || getText.length() < 2) {
+        if (StringUtils.isEmpty(getText) || getText.length() < 2) {
             String[] emptyArr = {};
             result.put("listCnt", 0);
             result.put("list", emptyArr);
@@ -2402,10 +2403,10 @@ public class EventService {
 
         List<Object> objList = event.gganbuMemberSearch(gganbuMemberSearchInputVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuMemberSearchVo> list = DBUtil.getList(objList, 1, GganbuMemberSearchVo.class);
-        for(GganbuMemberSearchVo vo : list) {
+        for (GganbuMemberSearchVo vo : list) {
             vo.setMem_profile(new ImageVo(vo.getImage_profile(), vo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
             vo.setAverage_level((gganbuMemberSearchInputVo.getMyLevel() + vo.getMem_level()) / 2);
         }
@@ -2417,7 +2418,7 @@ public class EventService {
     }
 
     /**
-     *  깐부 구슬 주머니 페이지
+     * 깐부 구슬 주머니 페이지
      */
     public Map<String, Object> gganbuPocketPage(GganbuPocketPageInputVo gganbuPocketPageInputVo) {
         Map<String, Object> result = new HashMap<>();
@@ -2438,16 +2439,16 @@ public class EventService {
     }
 
     /**
-     *  깐부 찾기 (나의 팬)
+     * 깐부 찾기 (나의 팬)
      */
     public Map<String, Object> gganbuFanList(GganbuFanListVo gganbuFanListVo) {
         Map<String, Object> result = new HashMap<>();
         List<Object> objList = event.gganbuFanList(gganbuFanListVo);
         Integer listCnt = DBUtil.getData(objList, 0, Integer.class);
-        if(listCnt == null) return result;
+        if (listCnt == null) return result;
 
         List<GganbuFanListVo> list = DBUtil.getList(objList, 1, GganbuFanListVo.class);
-        for(GganbuFanListVo vo : list) {
+        for (GganbuFanListVo vo : list) {
             vo.setFanMemProfile(new ImageVo(vo.getProfileImage(), vo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
             vo.setAverageLevel((gganbuFanListVo.getMemLevel() + vo.getLevel()) / 2);
         }
@@ -2460,14 +2461,15 @@ public class EventService {
     /* 깐부 이벤트 끝~~~ */
 
 
-    /** 신입 웹컴 이벤트 방송방 조건 체크 프로시저
+    /**
+     * 신입 웹컴 이벤트 방송방 조건 체크 프로시저
+     *
      * @Param :
      * memNo BIGINT		        -- 회원번호
      * ,memSlct BIGINT		    -- 회원[1:dj, 2:청취자]
-     *
      * @Return :
      * s_return		INT		-- -4: 이벤트 보상 모두 달성, -3: 본인인증 조건 미달, -2: 청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상
-     * */
+     */
     // result [-8: Exception, -7: DB result Null, -6: memNo or memSlct이 잘못된 값,
     //-5: 방송방에서 웰컴페이지 이미 들어감 (하루한번), -4: 이벤트 보상 모두 달성, -3: 본인인증 조건 미달, -2: 청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상]
     public HashMap<String, Object> broadcastWelcomeUserEventChk(HashMap<String, Object> param, DeviceVo deviceVo) {
@@ -2478,24 +2480,24 @@ public class EventService {
         int os = deviceVo.getOs();
         String link = "";
 
-        if(!StringUtils.equals(memNo, "") && !StringUtils.equals(memSlct, "")){
+        if (!StringUtils.equals(memNo, "") && !StringUtils.equals(memSlct, "")) {
             try {
                 // result  -3:본인인증 조건 미달, -2:청취자 자격미달, -1: dj자격 미달,  0: 에러, 1:정상
                 result = event.pWelcomeRoomChk(param);
-                if(result == null){
+                if (result == null) {
                     result = -7;
                 }
             } catch (Exception e) {
                 result = -8;
-                    log.error("EventService - broadcastWelcomeUserEventChk => Exception : {}", e);
+                log.error("EventService - broadcastWelcomeUserEventChk => Exception : {}", e);
             }
         }
 
         if (result == 1) {
             resultMap.put("visible", true);
         } else {
-            if(result ==-7 || result == -6 || result == 0)
-            log.error("EventService - broadcastWelcomeUserEventChk => result : {}, memNo : {}, memSlct : {}", result, memNo, memSlct);
+            if (result == -7 || result == -6 || result == 0)
+                log.error("EventService - broadcastWelcomeUserEventChk => result : {}, memNo : {}, memSlct : {}", result, memNo, memSlct);
 
             resultMap.put("visible", false);
         }
