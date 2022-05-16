@@ -287,7 +287,6 @@ public class ContentService {
         ProcedureVo procedureVo = new ProcedureVo(pRoomStoryAddVo);
         contentDao.callInsertStory(procedureVo);
 
-        log.error("asdfdassdf => {}", gsonUtil.toJson(procedureVo));
         HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         int passTime = DalbitUtil.getIntMap(resultMap, "passTime");
         log.info("프로시저 응답 코드: {}", procedureVo.getRet());
