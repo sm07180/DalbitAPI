@@ -95,7 +95,9 @@ public class BadgeService {
         }
 
     }
-
+    public List<FanBadgeVo> getBadgeList(){
+        return this.badgeList;
+    }
     public List<BadgeVo> getCommonBadge(){
         if(DalbitUtil.isEmpty(badgeList)){
             return new ArrayList<>();
@@ -113,8 +115,6 @@ public class BadgeService {
             return new BadgeFrameVo();
         }else{
             BadgeFrameVo badgeFrameVo = new BadgeFrameVo();
-            // #8079 프레임 순서 변경
-            Collections.reverse(badgeList);
             for(FanBadgeVo fanBadgeVo : badgeList){
                 if(!DalbitUtil.isEmpty(fanBadgeVo.getFrameTop()) && !DalbitUtil.isEmpty(fanBadgeVo.getFrameChat())){
                     badgeFrameVo.setFrameTop(fanBadgeVo.getFrameTop());
