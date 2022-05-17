@@ -345,7 +345,7 @@ public class ContentService {
                 socketService.sendStory(pRoomStoryAddVo.getRoom_no(), MemberVo.getMyMemNo(request), socketMap, DalbitUtil.getAuthToken(request), DalbitUtil.isLogin(request), vo);
                 vo.resetData();
             } catch (Exception e) {
-                log.error("Socket Service sendStory Exception {}", e);
+                log.error("ContentService.java / callInsertStory / sendStory => param: {}, Exception {}", gsonUtil.toJson(pRoomStoryAddVo), e);
                 return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.방송방사연등록오류));
             }
 
