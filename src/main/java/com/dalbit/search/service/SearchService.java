@@ -63,7 +63,7 @@ public class SearchService {
         for (int i=0; i<memberSearchVoList.size(); i++){
             Boolean isDuplicat = false;
             for (int j=0; j<getPreList.size(); j++){
-                if (getPreList.get(j).getMem_no() == memberSearchVoList.get(i).getMem_no() ) {
+                if (memberSearchVoList.get(i).getMem_no().equals(getPreList.get(j).getMem_no())) {
                     isDuplicat = true;
                 }
             }
