@@ -287,8 +287,13 @@ public enum EventStatus implements Status {
     선물받기_회원아님("-1", "championship.gift.member.number.error", "요청회원번호 회원 아닐 시"),
     선물받기_이미받음("-2", "championship.gift.already", "이미 받은 경우"),
     선물받기_10점안됨("-3", "championship.gift.10point.limit", "10점 미만인 경우"),
-    선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시");
-
+    선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시"),
+    // 달라그라운드 조회
+    달라그라운드조회_성공("C001", "dallaGround.event.select.success", "달라그라운드 조회 성공 시"),
+    달라그라운드조회_실패("C006", "dallaGround.event.select.fail", "달라그라운드 조회 실패 시"),
+    달라그라운드_내순위_조회_성공("C001", "dallaGround.my.rank.select.success", "달라그라운드 내 순위 조회 성공 시"),
+    달라그라운드_내순위_조회_실패("C006", "dallaGround.my.rank.select.fail", "달라그라운드 내 순위 조회 실패 시"),
+    달라그라운드_내순위_조회_팀번호_없음("C001", "dallaGround.my.rank.select.team.no.fail", "달라그라운드 내 순위 조회 팀번호 조회 실패 시");
 
 
     final private String RESULT_SUCCESS = "success";

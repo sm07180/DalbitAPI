@@ -17,7 +17,6 @@ import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
 import com.dalbit.event.service.EventService;
 import com.dalbit.event.vo.procedure.P_AttendanceCheckVo;
-import com.dalbit.event.vo.request.GganbuMemMarbleInsInputVo;
 import com.dalbit.exception.GlobalException;
 import com.dalbit.member.service.MemberService;
 import com.dalbit.member.service.MypageService;
@@ -118,8 +117,6 @@ public class RoomService {
         }
 
         HashMap returnMap = new HashMap();
-        // 방송 시간에 따른 구슬 추가
-        returnMap.put("getMarbleInfo", new GganbuMemMarbleInsInputVo());
 
         ProcedureVo procedureVo = new ProcedureVo(pRoomExitVo);
         log.error("callBroadcastRoomExit prev data(RoomService => callBroadCastRoomExit1) >>>> {} {} {}", pRoomExitVo.getMemLogin(), pRoomExitVo.getMem_no(), pRoomExitVo.getRoom_no());
