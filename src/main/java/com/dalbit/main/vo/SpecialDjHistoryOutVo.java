@@ -25,6 +25,7 @@ public class SpecialDjHistoryOutVo {
     private String[] levelColor;
     private boolean isNew;
     private String fanYn;
+    private Integer specialdj_badge;
 
     public SpecialDjHistoryOutVo(){}
     public SpecialDjHistoryOutVo(P_SpecialHistoryVo pSpecialHistoryVo){
@@ -44,5 +45,6 @@ public class SpecialDjHistoryOutVo {
         this.roomNo = pSpecialHistoryVo.getRoom_no();
         this.isNew = pSpecialHistoryVo.getIsNew() == 1;
         this.fanYn = pSpecialHistoryVo.getFanYn();
+        this.specialdj_badge = pSpecialHistoryVo.getSpecialdj_badge();
     }
 }
