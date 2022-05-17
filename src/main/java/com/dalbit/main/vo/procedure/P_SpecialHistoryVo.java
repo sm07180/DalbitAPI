@@ -39,4 +39,5 @@ public class P_SpecialHistoryVo extends P_ApiVo {
     private String room_no;
     private int isNew;
     private String fanYn;
+    private Integer specialdj_badge;
 }
