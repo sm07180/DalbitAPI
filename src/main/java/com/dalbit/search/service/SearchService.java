@@ -14,6 +14,7 @@ import com.dalbit.search.vo.RoomSearchOutVo;
 import com.dalbit.search.vo.procedure.P_LiveRoomSearchVo;
 import com.dalbit.search.vo.procedure.P_MemberSearchVo;
 import com.dalbit.search.vo.procedure.P_RoomRecommandListVo;
+import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import com.google.gson.Gson;
@@ -40,19 +41,40 @@ public class SearchService {
      * 회원 닉네임 검색
      */
     public String callMemberNickSearch(P_MemberSearchVo pMemberSearchVo) {
+        List<MemberSearchOutVo> outVoList = new ArrayList<>();
+
+        List<P_MemberSearchVo> getPreList = searchDao.callMemberNickSearchV1(pMemberSearchVo);
+        if (pMemberSearchVo.getPageNo() == 1) {
+            for (int i=0; i<getPreList.size(); i++){
+                outVoList.add(new MemberSearchOutVo(getPreList.get(i)));
+            }
+        }
+
         ProcedureVo procedureVo = new ProcedureVo(pMemberSearchVo);
         List<P_MemberSearchVo> memberSearchVoList = searchDao.callMemberNickSearch(procedureVo);
 
         HashMap memberSearchList = new HashMap();
-        if(DalbitUtil.isEmpty(memberSearchVoList)){
+        if(outVoList.size() == 0 && DalbitUtil.isEmpty(memberSearchVoList)){
             memberSearchList.put("list", new ArrayList<>());
             return gsonUtil.toJson(new JsonOutputVo(MypageStatus.회원닉네임검색_결과없음, memberSearchList));
         }
-
-        List<MemberSearchOutVo> outVoList = new ArrayList<>();
+        
+        // 노출목록
         for (int i=0; i<memberSearchVoList.size(); i++){
-            outVoList.add(new MemberSearchOutVo(memberSearchVoList.get(i)));
+            Boolean isDuplicat = false;
+            for (int j=0; j<getPreList.size(); j++){
+                if (getPreList.get(j).getMem_no() == memberSearchVoList.get(i).getMem_no() ) {
+                    isDuplicat = true;
+                }
+            }
+            if (!isDuplicat) {
+                outVoList.add(new MemberSearchOutVo(memberSearchVoList.get(i)));
+            }
         }
+        if (outVoList.size() > pMemberSearchVo.getPageCnt()) {
+            outVoList = new ArrayList<>(outVoList.subList(0, pMemberSearchVo.getPageCnt()));
+        }
+
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
         memberSearchList.put("list", procedureOutputVo.getOutputBox());

@@ -2,6 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dalbit.search.dao.SearchDao" >
 
+    <select id="callMemberNickSearchV1" statementType="CALLABLE" parameterType="com.dalbit.search.vo.procedure.P_MemberSearchVo" resultType="P_MemberSearchVo">
+        call p_search_con_member_sel(#{mem_no}, #{searchText})
+    </select>
+
     <select id="callMemberNickSearch" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MemberSearchVo">
         call sp_member_search(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
