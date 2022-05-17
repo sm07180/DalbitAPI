@@ -89,7 +89,9 @@ public class RankService {
      **********************************************************************************************/
     public String getStarDjLog(Map map, HttpServletRequest request){
         String memNo = MemberVo.getMyMemNo(request);
-        map.put("memNo", memNo);
+        if (map.get("memNo") == null){
+            map.put("memNo", memNo);
+        }
         List<Object> result = starDjPage.getStarDjLog(map);
         return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, result));
     }
