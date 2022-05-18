@@ -22,6 +22,12 @@ public class P_PayInfoOutVo extends P_ApiVo {
     private int inapp_cnt;
     private int inapp_amt;
     private int inapp_cmt;
+    private int inapp_aos_cnt;
+    private int inapp_aos_amt;
+    private int inapp_aos_cmt;
+    private int inapp_onestore_cnt;
+    private int inapp_onestore_amt;
+    private int inapp_onestore_cmt;
     private int gm_cnt;
     private int gm_amt;
     private int gm_cmt;
@@ -160,6 +166,22 @@ public class P_PayInfoOutVo extends P_ApiVo {
     private int code23_cnt;
     private int code23_amt;
     private int code23_cmt;
+
+    private int code31_cnt;
+    private int code31_amt;
+    private int code31_cmt;
+    private int code32_cnt;
+    private int code32_amt;
+    private int code32_cmt;
+    private int code33_cnt;
+    private int code33_amt;
+    private int code33_cmt;
+    private int code34_cnt;
+    private int code34_amt;
+    private int code34_cmt;
+    private int code35_cnt;
+    private int code35_amt;
+    private int code35_cmt;
 
     private int cancelCnt;
     private int cancelAmt;
