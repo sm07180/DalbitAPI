@@ -401,6 +401,9 @@ public class MypageService {
     public String callMemberNotifyEdit(P_MemberNotifyEditVo pMemberNotifyEditVo){
         P_MemberNotifyVo pMemberNotifyVo = new P_MemberNotifyVo();
         pMemberNotifyVo.setMem_no(pMemberNotifyEditVo.getMem_no());
+        if(pMemberNotifyEditVo.getAlim_slct().length() > 1) {
+            pMemberNotifyEditVo.setAlim_slct(pMemberNotifyEditVo.getAlim_slct().substring(0, 1));
+        }
         ProcedureVo procedureViewVo = new ProcedureVo(pMemberNotifyVo);
         mypageDao.callMemberNotify(procedureViewVo);
 

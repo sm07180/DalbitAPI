@@ -12,6 +12,9 @@ import java.util.List;
 @Repository
 public interface SearchDao {
     @Transactional(readOnly = true)
+    List<P_MemberSearchVo> callMemberNickSearchV1(P_MemberSearchVo pMemberSearchVo);
+
+    @Transactional(readOnly = true)
     List<P_MemberSearchVo> callMemberNickSearch(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
