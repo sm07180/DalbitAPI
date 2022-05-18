@@ -1197,15 +1197,17 @@ public class WowzaService {
     public HashMap getSignatureItems(String bjMemNo, String userMemNo, DeviceVo deviceVo) {
         HashMap map = new HashMap();
         try {
-            if (!StringUtils.equals(bjMemNo, "") && !StringUtils.equals(bjMemNo, null)) {
+            if (!StringUtils.equals(bjMemNo, "") && bjMemNo != null) {
                 HashMap param = new HashMap();
                 param.put("memNo", bjMemNo);
 
                 List<ItemVo> items = broadcast.spSignatureItemSelect(param);
 
-                if (!items.equals(null)) {
+                if (items != null) {
                     ArrayList<ItemCategoryVo> list = new ArrayList();
+                    List<ItemVo> tempItems = new ArrayList<>();
                     ItemCategoryVo itemCategoryVo = new ItemCategoryVo("signature", "시그니처", false);
+                    boolean signitureCategoriesFlag = false;
 
                     if(!DalbitUtil.isEmpty(items)){
                         for(int i = 0; i < items.size(); i++){
@@ -1215,13 +1217,20 @@ public class WowzaService {
                             if(items.get(i).isNew()){
                                 itemCategoryVo.setIsNew(true);
                             }
+                            if (items.get(i).getView_yn().equals(1)) {
+                                tempItems.add(items.get(i));
+                                signitureCategoriesFlag = true;
+                            }
                         }
-                        list.add(itemCategoryVo);
+                        
+                        // view_yn : 1 인 요소가 1개 이상
+                        if(signitureCategoriesFlag) {
+                            list.add(itemCategoryVo);
+                        }
                     }
 
-
                     map.put("itemCategories", list);
-                    map.put("items", items);
+                    map.put("items", tempItems);
                 } else {
                     log.error("WowzaService.java / getSignatureItem() => DB return null, bjMemNo: {}, userMemNo: {}", bjMemNo, userMemNo);
                     map.put("itemCategories", new ArrayList());
