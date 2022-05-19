@@ -1338,7 +1338,7 @@ public class RoomService {
             apiData.setPageNo(1);
             apiData.setPageCnt(1);
 
-            String resultStory = contentService.callGetStory(apiData, request);
+            String resultStory = contentService.callGetStory(apiData, "", request);
             HashMap storyMap = new Gson().fromJson(resultStory, HashMap.class);
             if (storyMap.containsKey("result") && "success".equals(storyMap.get("result").toString()) && storyMap.containsKey("data")) {
                 try {

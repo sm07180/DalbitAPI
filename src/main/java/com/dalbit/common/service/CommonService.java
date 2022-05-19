@@ -141,6 +141,7 @@ public class CommonService {
         String itemCodeDirect = DalbitUtil.getProperty("item.code.direct");
         String mainDirectCode = DalbitUtil.getProperty("item.direct.code.main");
         String itemCodeRocketBoost = DalbitUtil.getProperty("item.code.rocket.boost");
+        String itemCodeStory = DalbitUtil.getProperty("item.code.story");
 
         String platform = "";
         DeviceVo deviceVo = new DeviceVo(request);
@@ -176,17 +177,18 @@ public class CommonService {
 
         if(!DalbitUtil.isEmpty(items)){
             for(int i = 0; i < items.size(); i++){
-                // 시그니처 아이템 제외
-                if (!StringUtils.equals(items.get(i).getCategory(), "signature")) {
-                    if (deviceVo.getOs() == 3) {
-                        items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
-                    }
-                    if (items.get(i).isNew()) {
-                        itemIsNew.put(items.get(i).getCategory(), true);
-                    }
-
-                    newItems.add(items.get(i));
+                // 시그니처 아이템, 사연 아이템 제외
+                if (StringUtils.equals(items.get(i).getCategory(), "signature") || items.get(i).getItemNo().equals(itemCodeStory)) {
+                    continue;
                 }
+                if (deviceVo.getOs() == 3) {
+                    items.get(i).setWebpUrl(StringUtils.replace(items.get(i).getWebpUrl(), "_1X", "_2X"));
+                }
+                if (items.get(i).isNew()) {
+                    itemIsNew.put(items.get(i).getCategory(), true);
+                }
+
+                newItems.add(items.get(i));
             }
         }
         resultMap.put("items", newItems);
@@ -213,12 +215,15 @@ public class CommonService {
         for (int i = 0; i< itemLoveGoodCodeList.length; i++){
             sbf.append("','").append(itemLoveGoodCodeList[i]);
         }
+        // 사연 플러스 아이템 추가
+        sbf.append("','").append(itemCodeStory);
         sbf.append("'");
         List<ItemDetailVo> itemDetailVos = commonDao.selectMulti(sbf.toString());
         log.debug("{}",itemDetailVos);
 
         List boostList = new ArrayList();
         List levelUpList = new ArrayList();
+        List storyList = new ArrayList();
         for(ItemDetailVo temp : itemDetailVos){
             String itemNo = temp.getItemNo();
             if(itemPaticleCode.contains(itemNo)){
@@ -235,12 +240,15 @@ public class CommonService {
                 levelUpList.add(temp);
             }else if("G9998".contains(itemNo)){
                 levelUpList.add(temp);
+            }else if(itemCodeStory.contains(itemNo)){
+                storyList.add(temp);
             }
         }
         resultMap.put("particles", particleList);
         resultMap.put("loveGood", loveGoodList);
         resultMap.put("boost", boostList);
         resultMap.put("levelUp", levelUpList);
+        resultMap.put("story", storyList);
 
         List<HashMap> itemCategories = new ArrayList<>();
         HashMap itemCate1 = new HashMap();

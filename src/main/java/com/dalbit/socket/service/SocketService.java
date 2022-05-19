@@ -3,6 +3,7 @@ package com.dalbit.socket.service;
 import com.dalbit.broadcast.dao.RoomDao;
 import com.dalbit.broadcast.vo.GuestInfoVo;
 import com.dalbit.broadcast.vo.MoonLandCoinDataVO;
+import com.dalbit.broadcast.vo.StorySocketVo;
 import com.dalbit.broadcast.vo.procedure.P_RoomListVo;
 import com.dalbit.broadcast.vo.request.StateEditVo;
 import com.dalbit.common.dao.CommonDao;
@@ -1320,4 +1321,5 @@ public class SocketService {
         log.info("Socket vo to Query String: {}",vo.toQueryString());
         sendSocketApi(authToken == null ? "" : authToken.trim(), roomNo, vo.toQueryString());
     }
+
 }

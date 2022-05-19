@@ -68,7 +68,7 @@ public class MoonLandController {
     @GetMapping("/mission/sel")
     public String getMoonLandMissionData(@RequestParam("roomNo") String roomNo, HttpServletRequest request){
         try {
-            if(!StringUtils.equals(null, roomNo) && MemberVo.getMyMemNo(request) != null) {
+            if(roomNo != null && MemberVo.getMyMemNo(request) != null) {
                 Map<String, Object> result = moonLandService.getMoonLandMissionData(roomNo, request);
                 if(result != null){
                     return gsonUtil.toJson(new JsonOutputVo(EventStatus.달나라_팝업조회_성공, result));

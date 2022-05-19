@@ -140,7 +140,7 @@ public class MoonLandService {
         int sortKey = 0;    //정렬 순서 지정
         for (ItemVo data: itemList) {
             if(idx == 4) break;
-            if(!StringUtils.equals(null, data.getItemNm())) {
+            if(data.getItemNm() != null) {
                 String itemName = data.getItemNm();
                 String completeYn = "n";
                 String itemImg = "";
@@ -544,7 +544,7 @@ public class MoonLandService {
 
             //이벤트 진행중 여부 체크 (null 이면 이벤트 기간 아님)
             if(moonLandRound != null && moonLandRound.size() > 0) {
-                if( !StringUtils.equals(null, boosterVo.getMemNo()) ){
+                if( boosterVo.getMemNo() != null ){
                     int boostCnt = pRoomBoosterVo.getItem_cnt(); // 부스터 갯수
                     int listenerCnt = -1; //청취자 수
                     Long rcvDjMemNo = Long.parseLong(boosterVo.getMemNo());
