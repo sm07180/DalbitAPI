@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GroundListVo {
-    private String ground_no;       // 회차번호
-    private String team_no;         // 팀번호
+    private int ground_no;       // 회차번호
+    private int team_no;         // 팀번호
     private String team_name;       // 팀이름
     private String team_medal_code; // 팀 메달 코드(m000 형식)
     private String team_edge_code;  // 팀 테두리 코드(e000 형식)
@@ -18,8 +18,9 @@ public class GroundListVo {
     private int new_fan_cnt;     // 신규팬수
     private int play_time;       // 방송시간
     private int bonus_play_time; // 방송시간(가선점 시간 방송)
+    private int time_rank_bonus; // 타임랭킹 가산점 (내 랭킹)
     private String ins_date;        // 등록일자
     private String upd_date;        // 수정일자
 
-    private int time_rank_bonus; // 타임랭킹 가산점 (내 랭킹)
+    private int my_rank_no; // 내 순위
 }

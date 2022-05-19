@@ -1,13 +1,11 @@
 package com.dalbit.event.controller;
 
 import com.dalbit.event.service.GroundService;
-import com.dalbit.event.vo.GroundListVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -21,7 +19,7 @@ public class GroundController {
     }
 
     @GetMapping("/ranking/my")
-    public String groundMyRankList(@RequestParam(value = "teamNo", defaultValue = "") String teamNo) {
-        return groundService.groundMyRankList(teamNo);
+    public String groundMyRankList(HttpServletRequest request) {
+        return groundService.groundMyRankList(request);
     }
 }

@@ -263,7 +263,7 @@ public interface Event {
      */
     @ResultMap({"ResultMap.integer", "ResultMap.GroundListVo"})
     @Select("CALL rd_data.p_evt_dalla_team_ground_rank_list(#{groundNo}, #{pageNo}, #{pagePerCnt})")
-    List<Object> teamGroundRankList(Map<String, Object> param);
+    List<Object> teamGroundRankList(GroundInputVo param);
 
     /**
      * ##### 달라그라운드 내 순위내역
@@ -295,6 +295,6 @@ public interface Event {
      *    upd_date 수정일자
      */
     @Select("CALL rd_data.p_evt_dalla_team_ground_rank_my_sel(#{groundNo}, #{teamNo})")
-    List<GroundListVo> teamGroundMyRankList(Map<String, Object> param);
+    GroundListVo teamGroundMyRankList(Map<String, Object> param);
 
 }
