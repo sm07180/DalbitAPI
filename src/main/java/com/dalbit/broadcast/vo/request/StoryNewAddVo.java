@@ -21,13 +21,7 @@ public class StoryNewAddVo {
     @Size(message = "{\"ko_KR\" : \"사연 내용을\"}", max = 500)
     private String contents;
 
-    @NotNull
-    @NotBlank
-    @NotEmpty
-    private String djMemNo;
+    private String djMemNo = "";
 
-    @NotNull
-    @NotBlank
-    @NotEmpty
-    private String plusYn;
+    private String plusYn = "n";
 }

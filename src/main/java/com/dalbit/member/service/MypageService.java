@@ -401,6 +401,9 @@ public class MypageService {
     public String callMemberNotifyEdit(P_MemberNotifyEditVo pMemberNotifyEditVo){
         P_MemberNotifyVo pMemberNotifyVo = new P_MemberNotifyVo();
         pMemberNotifyVo.setMem_no(pMemberNotifyEditVo.getMem_no());
+        if(pMemberNotifyEditVo.getAlim_slct().length() > 1) {
+            pMemberNotifyEditVo.setAlim_slct(pMemberNotifyEditVo.getAlim_slct().substring(0, 1));
+        }
         ProcedureVo procedureViewVo = new ProcedureVo(pMemberNotifyVo);
         mypageDao.callMemberNotify(procedureViewVo);
 
@@ -1322,7 +1325,7 @@ public class MypageService {
         for(MyPageFeedPictureOutVo pictureOutVo : resultVo.getPhotoInfoList()) {
             pictureOutVo.setImgObj(new ImageVo(pictureOutVo.getImg_name(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
         }
-        if (!resultVo.equals(null)) {
+        if (resultVo != null) {
             return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, resultVo));
         }
         return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
@@ -1937,7 +1940,7 @@ public class MypageService {
             photoOutVo.setImgObj(new ImageVo(photoOutVo.getImg_name(), resultVo.getMemSex(), DalbitUtil.getProperty("server.photo.url")));
         }
 
-        if (!resultVo.equals(null)) {
+        if (resultVo != null) {
             return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, resultVo));
         }
         return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
@@ -4102,7 +4105,7 @@ public class MypageService {
             List<Object> list = mypageDao.pBroadcastRoomStoryMemList(map);
 
             /* 결과 없음 */
-            if(list.equals(null)){
+            if(list == null){
                 log.error("ContentService.java / getStoryHistory => DB return null", gsonUtil.toJson(map));
                 return gsonUtil.toJson(new JsonOutputVo(MypageStatus.사연보관함_조회_실패, returnDefault));
             }
