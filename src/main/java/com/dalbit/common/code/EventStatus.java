@@ -287,7 +287,13 @@ public enum EventStatus implements Status {
     선물받기_회원아님("-1", "championship.gift.member.number.error", "요청회원번호 회원 아닐 시"),
     선물받기_이미받음("-2", "championship.gift.already", "이미 받은 경우"),
     선물받기_10점안됨("-3", "championship.gift.10point.limit", "10점 미만인 경우"),
-    선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시");
+    선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시"),
+    //전광판 이벤트
+    전광판_디제이_조회_성공("0", "electric.sign.event.dj.success", "Dj 목록 조회 성공 시"),
+    전광판_디제이_조회_실패("C006", "electric.sign.event.dj.fail", "Dj 목록 조회 실패 시"),
+    전광판_시청자_조회_성공("0", "electric.sign.event.fan.success", "시청자 목록 조회 성공 시"),
+    전광판_시청자_조회_실패("C006", "electric.sign.event.fan.fail", "시청자 목록 조회 실패 시");
+
 
 
 
