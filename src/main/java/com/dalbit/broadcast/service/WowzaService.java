@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -1099,7 +1100,25 @@ public class WowzaService {
             }
         }
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
-        roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+//        roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+        List<FanBadgeVo> badgeList1 = badgeService.getBadgeList();
+        badgeService.setBadgeInfo(target.getBjMemNo(), -1);
+        List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
+        FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
+        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")).findFirst().orElse(null);
+        BadgeFrameVo tmp = new BadgeFrameVo();
+
+        if(badge2 != null){
+            BeanUtils.copyProperties(badge2, tmp);
+        } else if (badge1 != null) {
+            BeanUtils.copyProperties(badge1, tmp);
+        }else{
+            badgeList1.stream().filter(f ->
+                    !DalbitUtil.isEmpty(f.getFrameTop()) && !DalbitUtil.isEmpty(f.getFrameChat())
+            ).findFirst().ifPresent(fanBadgeVo -> BeanUtils.copyProperties(fanBadgeVo, tmp));
+        }
+        roomInfoVo.setBadgeFrame(tmp);
+
         roomInfoVo.setJoinDate(DalbitUtil.getStringMap(resultMap, "joinDate"));
         return roomInfoVo;
     }
@@ -1222,7 +1241,7 @@ public class WowzaService {
                                 signitureCategoriesFlag = true;
                             }
                         }
-                        
+
                         // view_yn : 1 인 요소가 1개 이상
                         if(signitureCategoriesFlag) {
                             list.add(itemCategoryVo);

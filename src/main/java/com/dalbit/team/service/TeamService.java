@@ -707,6 +707,9 @@ public class TeamService {
         return teamNo;
     }
 
+    public Integer getTeamMemInsChkV2(String memNo){
+        return teamProc.pDallaTeamMemInsChkV2(memNo);
+    }
 
 
 
