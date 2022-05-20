@@ -294,8 +294,7 @@ public enum EventStatus implements Status {
     // 달라그라운드 내순위 조회
     달라그라운드_내순위_조회_성공("1", "dallaGround.my.rank.select.success", "달라그라운드 내 순위 조회 성공 시"),
     달라그라운드_내순위_조회_실패("-1", "dallaGround.my.rank.select.fail", "달라그라운드 내 순위 조회 실패 시"),
-    달라그라운드_내순위_조회_팀없음("-2", "dallaGround.my.rank.select.team.no.fail", "달라그라운드 내 순위 조회 팀번호 조회 실패 시");
-    선물받기_실패("C006", "championship.gift.fail", "선물받기 실패 시"),
+    달라그라운드_내순위_조회_팀없음("-2", "dallaGround.my.rank.select.team.no.fail", "달라그라운드 내 순위 조회 팀번호 조회 실패 시"),
     //전광판 이벤트
     전광판_디제이_조회_성공("0", "electric.sign.event.dj.success", "Dj 목록 조회 성공 시"),
     전광판_디제이_조회_실패("C006", "electric.sign.event.dj.fail", "Dj 목록 조회 실패 시"),
