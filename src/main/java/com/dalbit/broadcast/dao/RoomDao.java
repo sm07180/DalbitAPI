@@ -17,7 +17,7 @@ public interface RoomDao {
 
     P_RoomEditOutVo callBroadCastRoomEdit(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_RoomListVo> callBroadCastRoomList(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
