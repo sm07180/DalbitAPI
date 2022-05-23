@@ -3,6 +3,7 @@ package com.dalbit.clip.dao;
 import com.dalbit.clip.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface ClipDao {
 
     ProcedureVo callClipEdit(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_ClipListVo> callClipList(ProcedureVo procedureVo);
 
     ProcedureVo callClipPlay(ProcedureVo procedureVo);
@@ -47,7 +48,7 @@ public interface ClipDao {
     // @Transactional(readOnly = true)
     List<P_ClipUploadListVo> callClipUploadList(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_ClipListenListVo> callClipListenList(ProcedureVo procedureVo);
 
     ProcedureVo callClipPlayListEdit(ProcedureVo procedureVo);
@@ -76,7 +77,7 @@ public interface ClipDao {
     // @Transactional(readOnly = true)
     List<P_ClipRecommendLeaderListVo> callClipRecommendLeaderList(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_ClipRankListVo> callClipRank(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
