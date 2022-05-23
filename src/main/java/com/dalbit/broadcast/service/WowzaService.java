@@ -1105,7 +1105,7 @@ public class WowzaService {
         badgeService.setBadgeInfo(target.getBjMemNo(), -1);
         List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
         FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
-        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")).findFirst().orElse(null);
+        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")).findFirst().orElse(null);
         BadgeFrameVo tmp = new BadgeFrameVo();
 
         if(badge2 != null){
