@@ -455,7 +455,25 @@ public class WowzaService {
             }
 
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
-            roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+            List<FanBadgeVo> badgeList1 = badgeService.getBadgeList();
+            badgeService.setBadgeInfo(target.getBjMemNo(), -1);
+            List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
+            FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
+            FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")).findFirst().orElse(null);
+            BadgeFrameVo tmp = new BadgeFrameVo();
+
+            if(badge2 != null){
+                BeanUtils.copyProperties(badge2, tmp);
+            } else if (badge1 != null) {
+                BeanUtils.copyProperties(badge1, tmp);
+            }else{
+                badgeList1.stream().filter(f ->
+                        !DalbitUtil.isEmpty(f.getFrameTop()) && !DalbitUtil.isEmpty(f.getFrameChat())
+                ).findFirst().ifPresent(fanBadgeVo -> BeanUtils.copyProperties(fanBadgeVo, tmp));
+            }
+            roomInfoVo.setBadgeFrame(tmp);
+
+//            roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             //네이티브에서 사용하는 방생성시 DJ의 설정
             roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
             roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
