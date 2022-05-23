@@ -59,7 +59,7 @@ public interface ClipDao {
     // @Transactional(readOnly = true)
     List<P_ClipMainLatestListVo> callClipMainLatestList(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_ClipMainSubjectTop3ListVo> callClipMainSubjectTop3List(ProcedureVo procedureVo);
 
     ProcedureVo callClipDeclar(ProcedureVo procedureVo);
