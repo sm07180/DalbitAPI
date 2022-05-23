@@ -544,6 +544,9 @@ public interface TeamProc {
     @Select("CALL rd_data.p_dalla_team_mem_ins_chk (#{memNo})")
     Integer pDallaTeamMemInsChk(TeamParamVo param);
 
+    @Select("CALL rd_data.p_dalla_team_mem_ins_chk(#{memNo})")
+    Integer pDallaTeamMemInsChkV2(String memNo);
+
     /**********************************************************************************************
      * @Method    : 팀 가입신청/초대 체크
      * @Date      : 2022-03-30
