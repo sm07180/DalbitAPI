@@ -7,6 +7,7 @@ import com.dalbit.member.vo.procedure.*;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -189,7 +190,7 @@ public interface MypageDao {
     // @Transactional(readOnly = true)
     List<EmoticonCategoryListVo> selectEmoticonCategory();
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     HashMap selectMyPageNew(HashMap params);
 
     // @Transactional(readOnly = true)
