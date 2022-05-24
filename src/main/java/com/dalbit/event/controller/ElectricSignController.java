@@ -4,10 +4,10 @@ import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.PagingVo;
 import com.dalbit.event.service.ElectricSignService;
-import com.dalbit.event.vo.ElectricSignDJListOutVo;
 import com.dalbit.event.vo.ElectricSignDJListVo;
 import com.dalbit.event.vo.ElectricSignFanListVo;
 import com.dalbit.exception.GlobalException;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -55,12 +54,12 @@ public class ElectricSignController {
      * 전광판 이벤트 Dj 회원 정보
      */
     @GetMapping("/djSel")
-    public Object getElectricSignDjSel(@Valid ElectricSignDJListVo electricSignDJListVo, BindingResult bindingResult) throws GlobalException {
+    public Object getElectricSignDjSel(@Valid ElectricSignDJListVo electricSignDJListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
-            return electricSignService.getElectricSignDjSel(electricSignDJListVo);
+            return electricSignService.getElectricSignDjSel(electricSignDJListVo, request);
         } catch (Exception e) {
-            log.error("ElectricSignController.java / getElectricSignDjSel() => error: {}, memNo: {}", e, electricSignDJListVo.getMemNo());
+            log.error("ElectricSignController.java / getElectricSignDjSel() => error: {}, memNo: {}", e, MemberVo.getMyMemNo(request));
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_실패));
         }
     }
@@ -86,12 +85,12 @@ public class ElectricSignController {
      * 전광판 이벤트 시청자 회원 정보
      */
     @GetMapping("/fanSel")
-    public Object getElectricSignFanSel(@Valid ElectricSignFanListVo electricSignFanListVo, BindingResult bindingResult) throws GlobalException {
+    public Object getElectricSignFanSel(@Valid ElectricSignFanListVo electricSignFanListVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         try {
-            return electricSignService.getElectricSignFanSel(electricSignFanListVo);
+            return electricSignService.getElectricSignFanSel(electricSignFanListVo, request);
         } catch (Exception e) {
-            log.error("ElectricSignController.java / getElectricSignFanSel() => error: {}, memNo", e, electricSignFanListVo.getMemNo());
+            log.error("ElectricSignController.java / getElectricSignFanSel() => error: {}, memNo", e, MemberVo.getMyMemNo(request));
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_시청자_조회_실패));
         }
     }

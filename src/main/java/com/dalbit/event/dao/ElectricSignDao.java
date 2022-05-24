@@ -65,7 +65,6 @@ public interface ElectricSignDao {
 
     /**
      * 전광판 이벤트 시청자 리스트
-     *
      * @param param
      * pageNo           INT         --페이지 번호
      * pagePerCnt       INT         --페이지 당 노출 건수(Limit)
@@ -83,10 +82,10 @@ public interface ElectricSignDao {
      * mem_sex          CHAR        --회원성별
      * image_profile    VARCHAR     --프로필
      * mem_level        BIGINT      --레벨
-     * mem_state        BIGINT      --회원상태(1:정상, 3:블럭, 4:탈퇴, 5:영구정지)
+     * mem_state        BIGINT      --회원상태(1: 정상, 3: 블럭, 4: 탈퇴, 5: 영구정지)
      * ins_date         DATETIME    --등록일자
      * upd_date         DATETIME    --수정일자
-     */
+    */
     @ResultMap({"ResultMap.integer", "ResultMap.ElectricSignFanListOutVo"})
     @Select("CALL p_evt_sign_board_mem_rank_list(#{pageNo}, #{pagePerCnt})")
     List<Object> pElectricSignFanList(Map<Object, String> param);

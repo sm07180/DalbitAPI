@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 public class ElectricSignDJListOutVo {
-    private Long rankNo;
+    private Integer rankNo;
     private String mem_no;
     private Integer tot_score_cnt;
     private String mem_id;

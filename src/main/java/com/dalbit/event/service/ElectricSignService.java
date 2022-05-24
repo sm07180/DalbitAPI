@@ -9,6 +9,7 @@ import com.dalbit.event.vo.ElectricSignDJListOutVo;
 import com.dalbit.event.vo.ElectricSignDJListVo;
 import com.dalbit.event.vo.ElectricSignFanListOutVo;
 import com.dalbit.event.vo.ElectricSignFanListVo;
+import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.DalbitUtil;
 import com.dalbit.util.GsonUtil;
@@ -47,6 +48,7 @@ public class ElectricSignService {
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(electricSignMultiRow) || list.size() == 0) {
+            resultMap.put("cnt", 0);
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_실패, resultMap));
@@ -56,6 +58,7 @@ public class ElectricSignService {
             list.get(i).setProfImg(new ImageVo(list.get(i).getImage_profile(), list.get(i).getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
         }
 
+        resultMap.put("cnt", cnt);
         resultMap.put("list", list);
         resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
 
@@ -65,22 +68,22 @@ public class ElectricSignService {
     /**
      * 전광판 이벤트 Dj 회원 정보
      */
-    public String getElectricSignDjSel(ElectricSignDJListVo param) {
+    public String getElectricSignDjSel(ElectricSignDJListVo param, HttpServletRequest request) {
         HashMap paramMap = new HashMap();
-        Long memNo = Long.parseLong(param.getMemNo());
+        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
 
         paramMap.put("memNo", memNo);
         ElectricSignDJListOutVo resultVo = electricSignDao.pElectricSignDjSel(paramMap);
 
         if(resultVo == null) {
-            return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_실패, resultVo));
         }
         resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
 
         if(resultVo != null) {
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_성공, resultVo));
         }
-        return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_실패));
+        return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_디제이_조회_실패, resultVo));
     }
 
     /**
@@ -101,6 +104,7 @@ public class ElectricSignService {
 
         HashMap resultMap = new HashMap();
         if(DalbitUtil.isEmpty(electricSignFanRow) || list.size() == 0) {
+            resultMap.put("cnt", 0);
             resultMap.put("list", new ArrayList());
             resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
             return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_시청자_조회_실패, resultMap));
@@ -110,6 +114,7 @@ public class ElectricSignService {
             list.get(i).setProfImg(new ImageVo(list.get(i).getImage_profile(), list.get(i).getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
         }
 
+        resultMap.put("cnt", cnt);
         resultMap.put("list", list);
         resultMap.put("paging", new PagingVo(cnt, DalbitUtil.getIntMap(paramMap, "pageNo"), DalbitUtil.getIntMap(paramMap, "pageCnt")));
 
@@ -119,15 +124,15 @@ public class ElectricSignService {
     /**
      * 전광판 이벤트 시청자 회원 정보
      */
-    public String getElectricSignFanSel(ElectricSignFanListVo param) {
+    public String getElectricSignFanSel(ElectricSignFanListVo param, HttpServletRequest request) {
         HashMap paramMap = new HashMap();
-        Long memNo = Long.parseLong(param.getMemNo());
+        Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
 
         paramMap.put("memNo", memNo);
         ElectricSignFanListOutVo resultVo = electricSignDao.pElectricSignFanSel(paramMap);
 
         if(resultVo == null) {
-            return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_시청자_조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(EventStatus.전광판_시청자_조회_실패, resultVo));
         }
         resultVo.setProfImg(new ImageVo(resultVo.getImage_profile(), resultVo.getMem_sex(), DalbitUtil.getProperty("server.photo.url")));
 
