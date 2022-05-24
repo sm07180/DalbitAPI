@@ -31,4 +31,5 @@ public class ItemVo {
     private int sortNo;
 
     private String ttsUseYn;
+    private Integer view_yn;    // [0, 1]
 }

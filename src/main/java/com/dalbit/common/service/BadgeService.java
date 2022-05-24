@@ -95,7 +95,9 @@ public class BadgeService {
         }
 
     }
-
+    public List<FanBadgeVo> getBadgeList(){
+        return this.badgeList;
+    }
     public List<BadgeVo> getCommonBadge(){
         if(DalbitUtil.isEmpty(badgeList)){
             return new ArrayList<>();

@@ -34,6 +34,7 @@ import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import lombok.var;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -454,7 +455,25 @@ public class WowzaService {
             }
 
             roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
-            roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+            List<FanBadgeVo> badgeList1 = badgeService.getBadgeList();
+            badgeService.setBadgeInfo(target.getBjMemNo(), -1);
+            List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
+            FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
+            FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")).findFirst().orElse(null);
+            BadgeFrameVo tmp = new BadgeFrameVo();
+
+            if(badge2 != null){
+                BeanUtils.copyProperties(badge2, tmp);
+            } else if (badge1 != null) {
+                BeanUtils.copyProperties(badge1, tmp);
+            }else{
+                badgeList1.stream().filter(f ->
+                        !DalbitUtil.isEmpty(f.getFrameTop()) && !DalbitUtil.isEmpty(f.getFrameChat())
+                ).findFirst().ifPresent(fanBadgeVo -> BeanUtils.copyProperties(fanBadgeVo, tmp));
+            }
+            roomInfoVo.setBadgeFrame(tmp);
+
+//            roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
             //네이티브에서 사용하는 방생성시 DJ의 설정
             roomInfoVo.setDjTtsSound(DalbitUtil.getBooleanMap(settingMap, "djTtsSound"));
             roomInfoVo.setDjNormalSound(DalbitUtil.getBooleanMap(settingMap, "djNormalSound"));
@@ -1099,7 +1118,25 @@ public class WowzaService {
             }
         }
         roomInfoVo.setCommonBadgeList(badgeService.getCommonBadge());
-        roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+//        roomInfoVo.setBadgeFrame(badgeService.getBadgeFrame());
+        List<FanBadgeVo> badgeList1 = badgeService.getBadgeList();
+        badgeService.setBadgeInfo(target.getBjMemNo(), -1);
+        List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
+        FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
+        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")).findFirst().orElse(null);
+        BadgeFrameVo tmp = new BadgeFrameVo();
+
+        if(badge2 != null){
+            BeanUtils.copyProperties(badge2, tmp);
+        } else if (badge1 != null) {
+            BeanUtils.copyProperties(badge1, tmp);
+        }else{
+            badgeList1.stream().filter(f ->
+                    !DalbitUtil.isEmpty(f.getFrameTop()) && !DalbitUtil.isEmpty(f.getFrameChat())
+            ).findFirst().ifPresent(fanBadgeVo -> BeanUtils.copyProperties(fanBadgeVo, tmp));
+        }
+        roomInfoVo.setBadgeFrame(tmp);
+
         roomInfoVo.setJoinDate(DalbitUtil.getStringMap(resultMap, "joinDate"));
         return roomInfoVo;
     }
@@ -1197,7 +1234,7 @@ public class WowzaService {
     public HashMap getSignatureItems(String bjMemNo, String userMemNo, DeviceVo deviceVo) {
         HashMap map = new HashMap();
         try {
-            if (!StringUtils.equals(bjMemNo, "") && !StringUtils.equals(bjMemNo, null)) {
+            if (!StringUtils.equals(bjMemNo, "") && bjMemNo != null) {
                 HashMap param = new HashMap();
                 param.put("memNo", bjMemNo);
 
@@ -1205,7 +1242,9 @@ public class WowzaService {
 
                 if (items != null) {
                     ArrayList<ItemCategoryVo> list = new ArrayList();
+                    List<ItemVo> tempItems = new ArrayList<>();
                     ItemCategoryVo itemCategoryVo = new ItemCategoryVo("signature", "시그니처", false);
+                    boolean signitureCategoriesFlag = false;
 
                     if(!DalbitUtil.isEmpty(items)){
                         for(int i = 0; i < items.size(); i++){
@@ -1215,13 +1254,20 @@ public class WowzaService {
                             if(items.get(i).isNew()){
                                 itemCategoryVo.setIsNew(true);
                             }
+                            if (items.get(i).getView_yn().equals(1)) {
+                                tempItems.add(items.get(i));
+                                signitureCategoriesFlag = true;
+                            }
                         }
-                        list.add(itemCategoryVo);
+
+                        // view_yn : 1 인 요소가 1개 이상
+                        if(signitureCategoriesFlag) {
+                            list.add(itemCategoryVo);
+                        }
                     }
 
-
                     map.put("itemCategories", list);
-                    map.put("items", items);
+                    map.put("items", tempItems);
                 } else {
                     log.error("WowzaService.java / getSignatureItem() => DB return null, bjMemNo: {}, userMemNo: {}", bjMemNo, userMemNo);
                     map.put("itemCategories", new ArrayList());

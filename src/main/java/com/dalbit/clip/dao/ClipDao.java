@@ -25,18 +25,18 @@ public interface ClipDao {
 
     ProcedureVo callClipGood(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipGiftRankTop3Vo> callClipGiftRankTop3List(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipGiftRankListVo> callClipGiftRankList(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipGiftListVo> callClipGiftList(ProcedureVo procedureVo);
 
     ProcedureVo callClipDelete(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipReplyListVo> callClipReplyList(ProcedureVo procedureVo);
 
     ProcedureVo callClipReplyAdd(ProcedureVo procedureVo);
@@ -45,7 +45,7 @@ public interface ClipDao {
 
     ProcedureVo callClipReplyDelete(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipUploadListVo> callClipUploadList(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
@@ -53,10 +53,10 @@ public interface ClipDao {
 
     ProcedureVo callClipPlayListEdit(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipMainPopListVo> callClipMainPopList(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_ClipMainLatestListVo> callClipMainLatestList(ProcedureVo procedureVo);
 
     @Transactional(readOnly = true)
@@ -64,21 +64,23 @@ public interface ClipDao {
 
     ProcedureVo callClipDeclar(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     HashMap callClipShare(String cast_no);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     ProcedureVo callMyClip(ProcedureVo procedureVo);
 
     ProcedureVo callPlayConfirm(ProcedureVo procedureVo);
 
     List<P_ClipRecommendListOutputVo> callClipRecommendList(ProcedureVo procedureVo);
-    @Transactional(readOnly = true)
+
+    // @Transactional(readOnly = true)
     List<P_ClipRecommendLeaderListVo> callClipRecommendLeaderList(ProcedureVo procedureVo);
+
     @Transactional(readOnly = true)
     List<P_ClipRankListVo> callClipRank(ProcedureVo procedureVo);
 
-    @Transactional(readOnly = true)
+    // @Transactional(readOnly = true)
     List<P_MyClipDetailListVo> callMyClipDetail(ProcedureVo procedureVo);
 
     ProcedureVo callMyClipDetailEdit(ProcedureVo procedureVo);

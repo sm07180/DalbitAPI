@@ -437,66 +437,73 @@ public class MainServiceV2 {
      6. 6번까지 하나도 없을 시 실시간 라이브 순위 높은순으로 2개 (최소 조건)
      ****************************************************************************/
     public ArrayList<MainSwiperVO> getMainSwiper(HttpServletRequest request){
-        String memNo = MemberVo.getMyMemNo(request);
+        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>();
+        try {
+            String memNo = MemberVo.getMyMemNo(request);
 
-        String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
+            String photoSvrUrl = DalbitUtil.getProperty("server.photo.url");
 
-        Map resultMap = new HashMap();
+            Map resultMap = new HashMap();
 
-        resultMap.put("photoSvrUrl", photoSvrUrl);
+            resultMap.put("photoSvrUrl", photoSvrUrl);
 
-        Map bannerMap = new HashMap();
-        bannerMap.put("memNo", memNo);
-        bannerMap.put("device", "3");
-        bannerMap.put("platform", "1__");
-        bannerMap.put("position", 1);
+            Map bannerMap = new HashMap();
+            bannerMap.put("memNo", memNo);
+            bannerMap.put("device", "3");
+            bannerMap.put("platform", "1__");
+            bannerMap.put("position", 1);
 
-        int cnt = 0;
+            int cnt = 0;
 
-        List<MainSwiperVO> swiperList = new ArrayList<>();
+            List<MainSwiperVO> swiperList = new ArrayList<>();
 
-        // 관리자 배너
-        List<MainSwiperVO> adminBanner = mainPage.getAdminBanner(bannerMap);
-        for (MainSwiperVO vo: adminBanner) {
-            vo.setImage_profile(vo.getBannerUrl());
-        }
-        swiperList.addAll(adminBanner);
+            // 관리자 배너
+            List<MainSwiperVO> adminBanner = mainPage.getAdminBanner(bannerMap);
+            for (MainSwiperVO vo: adminBanner) {
+                vo.setImage_profile(vo.getBannerUrl());
+            }
+            swiperList.addAll(adminBanner);
 
-        // 스타 DJ 라이브 방송
-        swiperList.addAll(mainPage.getMainStarList(bannerMap));
-        cnt = swiperList.size();
-
-        // DJ 랭킹 일간 1등~10등 (순차적으로)
-        if (cnt < 10){
-            swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
+            // 스타 DJ 라이브 방송
+            swiperList.addAll(mainPage.getMainStarList(bannerMap));
             cnt = swiperList.size();
-        }
 
-        // 동시 시청자 15명 이상 시 (높은 순으로)
-        if (cnt < 10){
-            swiperList.addAll(mainPage.getTopViewList(bannerMap));
-            cnt = swiperList.size();
-        }
+            // DJ 랭킹 일간 1등~10등 (순차적으로)
+            if (cnt < 10){
+                swiperList.addAll(mainPage.getDayRankDjList(bannerMap));
+                cnt = swiperList.size();
+            }
 
-        // 좋아요점수(부스트 포함) 100점 이상 시 (높은순으로)
-        if (cnt < 10){
-            swiperList.addAll(mainPage.getTopLikeList(bannerMap));
-            cnt = swiperList.size();
-        }
+            // 동시 시청자 15명 이상 시 (높은 순으로)
+            if (cnt < 10){
+                swiperList.addAll(mainPage.getTopViewList(bannerMap));
+                cnt = swiperList.size();
+            }
 
-        // 하나도 없을 시 실시간 라이브 순위 높은순으로 2개
-        if (cnt < 3){
-            swiperList.addAll(mainPage.getTopLiveList(bannerMap));
-        }
+            // 좋아요점수(부스트 포함) 100점 이상 시 (높은순으로)
+            if (cnt < 10){
+                swiperList.addAll(mainPage.getTopLikeList(bannerMap));
+                cnt = swiperList.size();
+            }
 
-        if (cnt > 10){
-            swiperList = swiperList.subList(0, 10);
-        }
+            // 하나도 없을 시 실시간 라이브 순위 높은순으로 2개
+            if (cnt < 3){
+                swiperList.addAll(mainPage.getTopLiveList(bannerMap));
+            }
 
-        ArrayList<MainSwiperVO> swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
+            swiperList2 = new ArrayList<>(swiperList.stream().filter(distinctByKey(o-> o.getMem_no())).collect(Collectors.toList()));
 
-        for(MainSwiperVO vo : swiperList2) {
-            vo.setImageProfile(new ImageVo(vo.getImage_profile(), DalbitUtil.getProperty("server.photo.url")));
+            if(swiperList2.size() > 10) {
+                swiperList2 = new ArrayList<>(swiperList2.subList(0, 10));
+            }
+
+            for(MainSwiperVO vo : swiperList2) {
+                vo.setImageProfile(new ImageVo(vo.getImage_profile(), DalbitUtil.getProperty("server.photo.url")));
+            }
+
+            return swiperList2;
+        } catch (Exception e) {
+            log.error("getMainSwiper => ", e);
         }
 
         return swiperList2;
