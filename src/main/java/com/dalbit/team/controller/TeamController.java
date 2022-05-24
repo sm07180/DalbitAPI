@@ -371,25 +371,6 @@ public class TeamController {
     }
 
     /**********************************************************************************************
-     * @Method 설명 :팀 랭킹 리스트
-     * @작성일   : 2022-03-31
-     * @작성자   : 이승재
-     * @변경이력  :
-     **********************************************************************************************/
-    @PostMapping("/teamRankWeekList")
-    public ResVO getTeamRankWeekList(@RequestBody TeamParamVo vo){
-        ResVO result = new ResVO();
-        try {
-            result = teamService.getTeamRankWeekList(vo);
-        } catch (Exception e) {
-            log.error("TeamController / getTeamRankWeekList => {}", e);
-            result.setFailResVO();
-        }
-        return  result;
-    }
-
-
-    /**********************************************************************************************
      * @Method 설명 : 팀 심볼 리스트
      * @작성일   : 2022-03-31
      * @작성자   : 이승재

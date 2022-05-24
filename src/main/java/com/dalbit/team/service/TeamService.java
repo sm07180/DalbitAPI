@@ -584,29 +584,6 @@ public class TeamService {
     }
 
     /**********************************************************************************************
-     * @Method 설명 : 팀 랭킹 리스트
-     * @작성일   : 2022-03-31
-     * @작성자   : 이승재
-     * @변경이력  :
-     **********************************************************************************************/
-    public ResVO getTeamRankWeekList(TeamParamVo vo){
-        ResVO resVO = new ResVO();
-        try {
-            List<Object> object = teamProc.pDallaTeamRankWeekList(vo);
-            Integer listCnt = DBUtil.getData(object, 0, Integer.class);
-            List<TeamRankVo> list = DBUtil.getList(object, 1, TeamRankVo.class);
-            HashMap<String, Object> resultMap = new HashMap<>();
-            resultMap.put("listCnt", listCnt);
-            resultMap.put("list", list);
-            resVO.setResVO(ResMessage.C00000.getCode(), ResMessage.C00000.getCodeNM(), resultMap);
-        } catch (Exception e) {
-            log.error("getTeamRankWeekList error ===> {}", e);
-            resVO.setResVO(ResMessage.C99999.getCode(), ResMessage.C99999.getCodeNM(), null);
-        }
-        return resVO;
-    }
-
-    /**********************************************************************************************
      * @Method 설명 : 팀 심볼 리스트
      * @작성일   : 2022-03-31
      * @작성자   : 이승재
