@@ -89,7 +89,9 @@ public class RoomOutVo {
     private boolean isConDj;
     private boolean isVote;
     private int badge_partner;
-
+    private String teamMedalCode;
+    private String teamEdgeCode;
+    private String teamBgCode;
     public RoomOutVo(P_RoomListVo target) {
         setRoomOutVo(target, null);
     }
@@ -99,7 +101,6 @@ public class RoomOutVo {
     }
 
     public void setRoomOutVo(P_RoomListVo target, DeviceVo deviceVo) {
-
         this.roomNo = target.getRoomNo();
         this.roomType = target.getSubject_type();
         this.title = target.getTitle();
@@ -178,6 +179,10 @@ public class RoomOutVo {
         this.isGoodMem = (target.getGoodMem() + target.getGoodMem2() + target.getGoodMem3()) > 0;
         this.isShining = target.isShining();
         this.newFanCnt = target.getCount_fan();
+
+        this.teamBgCode=target.getTeam_bg_code();
+        this.teamEdgeCode=target.getTeam_edge_code();
+        this.teamMedalCode=target.getTeam_medal_code();
     }
 
     public RoomOutVo(P_RoomInfoViewVo target, HashMap attendanceCheckMap, HashMap moonCheckMap, boolean isMiniGame) {
@@ -259,6 +264,10 @@ public class RoomOutVo {
         this.isVideo = target.getVideo_state() == 1;
         this.isMinigame = isMiniGame;
         this.newFanCnt = target.getCount_fan();
+
+        this.teamBgCode=target.getTeam_bg_code();
+        this.teamEdgeCode=target.getTeam_edge_code();
+        this.teamMedalCode=target.getTeam_medal_code();
     }
 
     public void setIsVote(boolean isVote){
