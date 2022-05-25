@@ -92,7 +92,7 @@ public interface MypageDao {
 
     ProcedureVo callMypageInsertBanWord(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_SearchUserVo> callMypageSearchUser(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
