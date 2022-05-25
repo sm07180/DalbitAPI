@@ -2,19 +2,16 @@ package com.dalbit.rank.controller;
 
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.exception.GlobalException;
-import com.dalbit.main.vo.procedure.P_MainRankingPageVo;
-import com.dalbit.main.vo.procedure.P_MainTimeRankingPageVo;
-import com.dalbit.main.vo.request.MainRankingPageVo;
-import com.dalbit.main.vo.request.MainTimeRankingPageVo;
 import com.dalbit.member.vo.MemberVo;
-import com.dalbit.member.vo.procedure.P_MemberRankSettingVo;
-import com.dalbit.member.vo.request.MemberRankSettingVo;
 import com.dalbit.rank.service.RankService;
-import com.dalbit.team.vo.TeamParamVo;
+import com.dalbit.rank.vo.RankListDTO;
+import com.dalbit.rank.vo.RankSettingVO;
+import com.dalbit.rank.vo.TimeRankListDTO;
+import com.dalbit.rank.vo.procedure.P_MemberRankSettingVo;
+import com.dalbit.rank.vo.procedure.P_TimeRankListVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,27 +32,19 @@ public class RankController {
         return rankService.getMyRank(request);
     }
 
-//    //타임랭킹
-//    @GetMapping("/rank/list/time")
-//    public String mainTimeRankingPage(@Valid MainTimeRankingPageVo mainTimeRankingPageVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-//        P_MainTimeRankingPageVo apiData = new P_MainTimeRankingPageVo(mainTimeRankingPageVo, request);
-//
-//        String result = mainService.mainTimeRankingPage(request, apiData);
-//
-//        return result;
-//    }
-//
-//    //랭킹 [DJ, FAN, CUPID, 일간, 주간, 월간, 연간]
-//    @GetMapping("/rank/list")
-//    public String mainRankingPage(@Valid MainRankingPageVo mainRankingPageVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
-//        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-//        P_MainRankingPageVo apiData = new P_MainRankingPageVo(mainRankingPageVo, request);
-//
-//        String result = mainService.mainRankingPage(request, apiData);
-//
-//        return result;
-//    }
+    //타임랭킹
+    @GetMapping("/rank/list/time")
+    public String getTimeRankList(@Valid TimeRankListDTO timeRankListDTO, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return rankService.timeRankList(timeRankListDTO, request);
+    }
+
+    //랭킹 [DJ, FAN, CUPID, 일간, 주간, 월간, 연간]
+    @GetMapping("/rank/list")
+    public String gerRankList(@Valid RankListDTO rankListDTO, BindingResult bindingResult, HttpServletRequest request) throws GlobalException {
+        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
+        return rankService.rankList(rankListDTO, request);
+    }
 
     //팀랭킹(이번주랭킹, 저번주1,2,3위)
     @GetMapping("/rank/list/team")
@@ -67,17 +56,18 @@ public class RankController {
             log.error("RankController / getTeamRankWeekList => {}", e.getMessage());
             result.setFailResVO();
         }
-        return  result;
+        return result;
     }
 
-    //랭킹데이터 반영 ON/OFF
+    // 팬 랭킹 참여 ON/OFF
     @PostMapping("/rank/setting")
-    public String rankSetting(@Valid MemberRankSettingVo memberRankSettingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
+    public String rankSetting(@Valid RankSettingVO rankSettingVO, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MemberRankSettingVo apiData = new P_MemberRankSettingVo(memberRankSettingVo, request);
+        P_MemberRankSettingVo apiData = new P_MemberRankSettingVo(rankSettingVO, request);
         return rankService.callRankSetting(apiData);
     }
 
+    // 팬 랭킹 참여/비참여 여부
     @GetMapping("/rank/apply")
     public String rankApply(HttpServletRequest request){
         String memNo = MemberVo.getMyMemNo(request);

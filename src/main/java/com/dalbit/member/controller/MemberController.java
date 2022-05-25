@@ -418,18 +418,6 @@ public class MemberController {
 
 
     /**
-     * 랭킹데이터 반영 ON/OFF
-     */
-    @PostMapping("/member/rank/setting")
-    public String rankSetting(@Valid MemberRankSettingVo memberRankSettingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MemberRankSettingVo apiData = new P_MemberRankSettingVo(memberRankSettingVo, request);
-        String result = memberService.callRankSetting(apiData);
-        return result;
-    }
-
-
-    /**
      * 회원 알림받기 등록/해제
      */
     @PostMapping("/member/recv")

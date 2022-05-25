@@ -691,35 +691,6 @@ public class MemberService {
         return result;
     }
 
-
-    /**
-     * 랭킹데이터 반영 ON/OFF
-     */
-    public String callRankSetting(P_MemberRankSettingVo pMemberRankSettingVo) {
-        ProcedureVo procedureVo = new ProcedureVo(pMemberRankSettingVo);
-        memberDao.callRankSetting(procedureVo);
-
-        String result;
-        if(procedureVo.getRet().equals(CommonStatus.랭킹반영.getMessageCode())) {
-            HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
-            Status status = null;
-            if(pMemberRankSettingVo.getApply_ranking() == 1){
-                status = CommonStatus.랭킹반영;
-            }else{
-                status = CommonStatus.랭킹미반영;
-            }
-            HashMap returnMap = new HashMap();
-            returnMap.put("isRankData", DalbitUtil.getIntMap(resultMap, "apply_ranking") == 1);
-            result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
-        } else if(procedureVo.getRet().equals(CommonStatus.랭킹반영설정_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.랭킹반영설정_회원아님));
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.랭킹반영설정_실패));
-        }
-        return result;
-    }
-
-
     /**
      * 회원 알림받기 등록/해제
      */

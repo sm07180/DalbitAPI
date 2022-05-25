@@ -45,7 +45,7 @@ public interface Rank {
      * new_fan_cntBIGINT-- 신규팬수
      * play_timeBIGINT-- 총방송시간
      **********************************************************************************************/
-    @ResultMap({"ResultMap.integer", "ResultMap.TeamRankVo"})
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamRankVO"})
     @Select("CALL rd_data.p_dalla_team_rank_week_list(#{tDate}, #{memNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getTeamRankProc(String tDate, String memNo, Integer pageNo, Integer pagePerCnt);
 

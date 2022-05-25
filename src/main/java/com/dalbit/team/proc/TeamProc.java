@@ -406,6 +406,36 @@ public interface TeamProc {
     Integer pDallaTeamMemReqUpd(TeamParamVo param);
 
     /**********************************************************************************************
+     * @Method    : 팀 랭킹 리스트
+     * @Date      : 2022-03-30
+     * @Author    : 이승재
+     * @param     :
+     * teamNo BIGINT			-- 팀번호
+     * @return    :
+     *# RETURN [Multi Rows]
+     * #1
+     * cnt			INT		-- 총건수
+     *
+     * #2
+     * the_week_date		DATE		-- 집계일자
+     * team_no			BIGINT		-- 팀번호
+     * team_name		VARCHAR(15)	-- 팀이름
+     * team_conts		VARCHAR(200)	-- 팀소개
+     * team_medal_code		CHAR(4)		-- 팀메달코드
+     * team_edge_code		CHAR(4)		-- 팀 테두리코드
+     * team_bg_code		CHAR(4)		-- 팀 배경코드
+     * rank_pt			INT		-- 랭킹점수
+     * send_dal_cnt		BIGINT		-- 보낸달수
+     * rcv_byeol_cnt		BIGINT		-- 받은별수
+     * new_fan_cnt		BIGINT		-- 신규팬수
+     * play_time			BIGINT		-- 총방송시간
+     * @변경이력   :
+     **********************************************************************************************/
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamRankMainVo"})
+    @Select("CALL rd_data.p_dalla_team_rank_week_list(#{tDate},#{memNo},#{pageNo},#{pagePerCnt})")
+    List<Object> pDallaTeamRankWeekList(TeamParamVo param);
+
+    /**********************************************************************************************
      * @Method    : 팀 심볼 리스트
      * @Date      : 2022-03-30
      * @Author    : 이승재
