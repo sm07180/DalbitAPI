@@ -10,7 +10,7 @@ import java.util.List;
 
 @Repository
 public interface MainDao {
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<?> callMainAll(P_BannerVo pBannerVo);
 
     // @Transactional(readOnly = true)
@@ -28,7 +28,7 @@ public interface MainDao {
     // @Transactional(readOnly = true)
     List<P_MainStarVo> callMainStarList(String memNo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<BannerVo> selectBanner(P_BannerVo pBannerVo);
 
     // @Transactional(readOnly = true)
@@ -55,6 +55,6 @@ public interface MainDao {
 
     P_MarketingVo callMarketingDetail(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_MainTimeRankingPageVo> callMainTimeRankingPage(ProcedureVo procedureVo);
 }
