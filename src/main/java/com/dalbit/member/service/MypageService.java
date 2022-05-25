@@ -3116,8 +3116,9 @@ public class MypageService {
             String qna = request.getParameter("qna");
             if(!DalbitUtil.isEmpty(notice)){
                 List<String> newList = Arrays.stream(notice.split(","))
-                        .filter(StringUtils::isNotEmpty)
-                        .distinct()
+                        .filter(StringUtils::isNotEmpty) // 빈값 체크
+                        .filter(f->f.matches("^\\d+$")) // 숫자 체크
+                        .distinct() // 중복 제거
                         .collect(Collectors.toList());
                 List<Long> tmp = new ArrayList<>();
 
