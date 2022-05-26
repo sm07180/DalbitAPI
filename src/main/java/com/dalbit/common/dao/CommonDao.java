@@ -25,8 +25,6 @@ public interface CommonDao {
     // @Transactional(readOnly = true)
     ProcedureVo getCertificationChk(ProcedureVo procedureVo);
 
-    ProcedureVo saveErrorLog(ProcedureVo procedureVo);
-
     ProcedureVo callPushAdd(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
