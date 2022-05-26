@@ -7,10 +7,13 @@ import com.dalbit.member.vo.MemberVo;
 import com.dalbit.util.DalbitUtil;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.servlet.http.HttpServletRequest;
 
-@Getter @Setter
+@Getter
+@Setter
+@ToString
 public class P_ErrorLogVo extends P_ApiVo {
 
     public P_ErrorLogVo(){}

@@ -774,7 +774,7 @@ public class CommonService {
         if(StringUtils.equals(value, "y") || StringUtils.equals(value, "n")){
             return value;
         }
-        
+
         return "n";
     }
 
@@ -821,36 +821,20 @@ public class CommonService {
         return result;
     }
 
-
-    /**
-     * 에러 로그 저장
-     */
-
-    public String saveErrorLog(P_ErrorLogVo pErrorLogVo){
-        return saveErrorLog(pErrorLogVo, null);
-    }
-
     public String saveErrorLog(P_ErrorLogVo pErrorLogVo, HttpServletRequest request){
-        if(request != null && request instanceof HttpServletRequest){
-            String desc = "Server : " + getServerInstance(request) + "\n";
-            DeviceVo deviceVo  = new DeviceVo(request);
-            desc += "AuthToken : " + request.getHeader(SSO_HEADER_COOKIE_NAME) + "\n";
-            desc += (new Gson().toJson(deviceVo)) + "\n";
-            desc += pErrorLogVo.getDesc();
-            pErrorLogVo.setDesc(desc);
+        if(pErrorLogVo == null || request == null){
+            return gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_실패));
         }
-        ProcedureVo procedureVo = new ProcedureVo(pErrorLogVo);
-        commonDao.saveErrorLog(procedureVo);
+        String desc = "Server : " + getServerInstance(request) + "\t";
+        DeviceVo deviceVo = new DeviceVo(request);
+        desc += "AuthToken : " + request.getHeader(SSO_HEADER_COOKIE_NAME) + "\t";
+        desc += new Gson().toJson(deviceVo) + "\t";
+        desc += pErrorLogVo.getDesc();
+        pErrorLogVo.setDesc(desc);
+        log.error("[Error Log] {}", pErrorLogVo);
 
-        String result;
-        if(procedureVo.getRet().equals(CommonStatus.에러로그저장_성공.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_성공));
-        } else {
-            result = gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_실패));
-        }
-        return result;
+        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_성공));
     }
-
 
     /**
      * PUSH 발송 추가

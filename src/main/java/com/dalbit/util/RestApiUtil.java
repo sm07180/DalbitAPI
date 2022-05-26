@@ -170,7 +170,7 @@ public class RestApiUtil {
                 desc += "Exception : \n" + sw.toString();
             }
             apiData.setDesc(desc);
-            commonService.saveErrorLog(apiData);
+            log.error("[Error log] {}", apiData);
         } catch (Exception e){
             result.append(e.toString());
             e.getStackTrace();
