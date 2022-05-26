@@ -1,15 +1,12 @@
 package com.dalbit.rank.service;
 
 import com.dalbit.common.code.CommonStatus;
-import com.dalbit.common.code.MainStatus;
 import com.dalbit.common.code.MemberStatus;
 import com.dalbit.common.code.Status;
 import com.dalbit.common.vo.JsonOutputVo;
 import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
-import com.dalbit.main.vo.MainTimeRankingPageOutVo;
-import com.dalbit.main.vo.procedure.P_MainTimeRankingPageVo;
 import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.MemberVo;
 import com.dalbit.rank.dao.RankDao;
