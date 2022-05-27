@@ -3,6 +3,7 @@ package com.dalbit.broadcast.dao;
 import com.dalbit.broadcast.vo.procedure.*;
 import com.dalbit.common.vo.ProcedureVo;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface RoomDao {
 
     P_RoomEditOutVo callBroadCastRoomEdit(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_RoomListVo> callBroadCastRoomList(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)

@@ -1467,7 +1467,7 @@ public class DalbitUtil {
                 errorLogVo.setDtype("banWord");
                 errorLogVo.setCtype("금지어 체크 오류");
                 errorLogVo.setDesc(param);
-                commonService.saveErrorLog(errorLogVo);
+                log.error("[Error log] {}", errorLogVo);
             } catch (Exception e1){}
 
             return isMatch = true;
@@ -1536,7 +1536,7 @@ public class DalbitUtil {
                 errorLogVo.setDtype("banWord");
                 errorLogVo.setCtype("금지어 변환 오류");
                 errorLogVo.setDesc(param);
-                commonService.saveErrorLog(errorLogVo);
+                log.error("[Error log] {}", errorLogVo);
             } catch (Exception e1){
             }
 

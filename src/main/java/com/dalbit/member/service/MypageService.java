@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -1648,7 +1649,7 @@ public class MypageService {
 //          if(vo.getTopFix() == 1) fixedList.add(vo);
             //고정 안된 글 리스트에 추가
             if(vo.getTopFix() == 0) unfixedList.add(vo);
-            
+
             // 고정, 비고정 글 모두 list에 담기
 //            unfixedList.add(vo);
         }
@@ -1807,7 +1808,7 @@ public class MypageService {
                     log.error("MypageService.java - feed Upd PhotoServer request Fail :{}", e);
                     return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지이미지_경로변경_실패));
                 }
-                
+
                 return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지수정_성공));
             } else {
                 Integer r = feedPhotoDelete(new ProfileFeedDelVo(vo.getNoticeNo(), "server"), photoList);
@@ -3114,10 +3115,14 @@ public class MypageService {
             String notice = request.getParameter("notice");
             String qna = request.getParameter("qna");
             if(!DalbitUtil.isEmpty(notice)){
-                String[] nos = notice.split(",");
+                List<String> newList = Arrays.stream(notice.split(","))
+                        .filter(StringUtils::isNotEmpty) // 빈값 체크
+                        .filter(f->f.matches("^\\d+$")) // 숫자 체크
+                        .distinct() // 중복 제거
+                        .collect(Collectors.toList());
                 List<Long> tmp = new ArrayList<>();
 
-                for(String n : nos){
+                for(String n : newList){
                     if(!tmp.contains(Long.valueOf(n))){
                         tmp.add(Long.valueOf(n));
                     }
@@ -4060,7 +4065,7 @@ public class MypageService {
      * ##### 회원 방송방에서 받은 사연 리스트
      *
      * @param
-     * memNo 		BIGINT			-- 회원번호
+     * vo 		BIGINT			-- 회원번호
      * ,pageNo 		INT UNSIGNED	-- 페이지 번호
      * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
      *

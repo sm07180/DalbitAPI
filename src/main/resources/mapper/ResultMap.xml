@@ -65,8 +65,11 @@
     <resultMap id="TeamSymbolVo" type="com.dalbit.team.vo.TeamSymbolVo"/>
     <resultMap id="TeamMemVo" type="com.dalbit.team.vo.TeamMemVo"/>
     <resultMap id="TeamInfoVo" type="com.dalbit.team.vo.TeamInfoVo"/>
-    <resultMap id="TeamRankVo" type="com.dalbit.team.vo.TeamRankVo"/>
+    <resultMap id="TeamRankMainVo" type="com.dalbit.team.vo.TeamRankMainVo"/>
     <resultMap id="TeamFanStarVo" type="com.dalbit.team.vo.TeamFanStarVo"/>
+
+    <!-- 랭킹 -->
+    <resultMap id="TeamRankVO" type="com.dalbit.rank.vo.TeamRankVO"/>
 
     <!-- 달라그라운드 이벤트 -->
     <resultMap id="GroundListVo" type="com.dalbit.event.vo.GroundListVo"/>

@@ -52,6 +52,7 @@ public interface MainPage {
      * @return              :
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @Select("CALL rd_data.p_main_banner_select(#{memNo}, #{device}, #{platform}, #{position})")
     List<MainSwiperVO> getAdminBanner(Map map);
 
@@ -92,6 +93,7 @@ public interface MainPage {
      * is_wowza		TINYINT		-- 와우자여부
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @Select("CALL rd_data.p_main_star_dj_live_list(#{memNo})")
     List<MainSwiperVO> getMainStarList(Map map);
 
@@ -110,6 +112,7 @@ public interface MainPage {
      * image_background	VARCHAR	-- 배경이미지
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @Select("CALL rd_data.p_main_rank_dj_list(#{memNo})")
     List<MainSwiperVO> getDayRankDjList(Map map);
 
@@ -130,6 +133,7 @@ public interface MainPage {
      * is_wowza		TINYINT		-- 와우자여부
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @Select("CALL rd_data.p_main_top_view_room_list(#{memNo})")
     List<MainSwiperVO> getTopViewList(Map map);
 
@@ -150,6 +154,7 @@ public interface MainPage {
      * is_wowza		TINYINT		-- 와우자여부
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @Select("CALL rd_data.p_main_top_like_room_list(#{memNo})")
     List<MainSwiperVO> getTopLikeList(Map map);
 
@@ -161,6 +166,7 @@ public interface MainPage {
      * @return              :
      **********************************************************************************************
      */
+    @Transactional(readOnly = true)
     @Select("CALL rd_data.p_main_top_live_list(#{memNo})")
     List<MainSwiperVO> getTopLiveList(Map map);
 
