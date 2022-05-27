@@ -39,6 +39,7 @@ public class ElectricSignService {
         List<ElectricSignDJListOutVo> list = null;
         int cnt = 0;
 
+        paramMap.put("seqNo", param.getSeqNo());
         paramMap.put("pageNo", param.getPageNo());
         paramMap.put("pagePerCnt", param.getPagePerCnt());
 
@@ -72,6 +73,7 @@ public class ElectricSignService {
         HashMap paramMap = new HashMap();
         Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
 
+        paramMap.put("seqNo", param.getSeqNo());
         paramMap.put("memNo", memNo);
         ElectricSignDJListOutVo resultVo = electricSignDao.pElectricSignDjSel(paramMap);
 
@@ -95,6 +97,7 @@ public class ElectricSignService {
         List<ElectricSignFanListOutVo> list = null;
         int cnt = 0;
 
+        paramMap.put("seqNo", param.getSeqNo());
         paramMap.put("pageNo", param.getPageNo());
         paramMap.put("pagePerCnt", param.getPagePerCnt());
 
@@ -128,6 +131,7 @@ public class ElectricSignService {
         HashMap paramMap = new HashMap();
         Long memNo = Long.parseLong(MemberVo.getMyMemNo(request));
 
+        paramMap.put("seqNo", param.getSeqNo());
         paramMap.put("memNo", memNo);
         ElectricSignFanListOutVo resultVo = electricSignDao.pElectricSignFanSel(paramMap);
 

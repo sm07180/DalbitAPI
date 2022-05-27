@@ -36,7 +36,7 @@ public interface ElectricSignDao {
      * upd_date         DATETIME    --수정일자
      */
     @ResultMap({"ResultMap.integer", "ResultMap.ElectricSignDJListOutVo"})
-    @Select("CALL p_evt_sign_board_dj_rank_list(#{pageNo}, #{pagePerCnt})")
+    @Select("CALL p_evt_sign_board_dj_rank_list(#{seqNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> pElectricSignDjList(Map<Object, String> param);
 
     /**
@@ -60,7 +60,7 @@ public interface ElectricSignDao {
      * ins_date         DATETIME    --등록일자
      * upd_date         DATETIME    --수정일자
      */
-    @Select("CALL p_evt_sign_board_dj_rank_sel(#{memNo})")
+    @Select("CALL p_evt_sign_board_dj_rank_sel(#{seqNo}, #{memNo})")
     ElectricSignDJListOutVo pElectricSignDjSel(Map<Object, String> param);
 
     /**
@@ -87,7 +87,7 @@ public interface ElectricSignDao {
      * upd_date         DATETIME    --수정일자
     */
     @ResultMap({"ResultMap.integer", "ResultMap.ElectricSignFanListOutVo"})
-    @Select("CALL p_evt_sign_board_mem_rank_list(#{pageNo}, #{pagePerCnt})")
+    @Select("CALL p_evt_sign_board_mem_rank_list(#{seqNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> pElectricSignFanList(Map<Object, String> param);
 
     /**
@@ -111,7 +111,7 @@ public interface ElectricSignDao {
      * ins_date         DATETIME    --등록일자
      * upd_date         DATETIME    --수정일자
      */
-    @Select("CALL p_evt_sign_board_mem_rank_sel(#{memNo})")
+    @Select("CALL p_evt_sign_board_mem_rank_sel(#{seqNo}, #{memNo})")
     ElectricSignFanListOutVo pElectricSignFanSel(Map<Object, String> param);
 
 }

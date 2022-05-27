@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Getter @Setter
 public class ElectricSignFanListOutVo {
+    private Integer seqNo;
     private Integer rankNo;
     private String mem_no;
     private Integer tot_score_cnt;

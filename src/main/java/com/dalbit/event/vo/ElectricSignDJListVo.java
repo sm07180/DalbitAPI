@@ -6,6 +6,7 @@ import lombok.Setter;
 
 @Getter @Setter
 public class ElectricSignDJListVo {
+    private Integer seqNo;
     private Integer pageNo;
     private String memNo;
     private Integer pagePerCnt;
