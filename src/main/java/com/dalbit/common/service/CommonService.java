@@ -252,18 +252,22 @@ public class CommonService {
 
         List<HashMap> itemCategories = new ArrayList<>();
         HashMap itemCate1 = new HashMap();
+        itemCate1.put("index", 0); // AOS 요청
         itemCate1.put("code", "normal");
         itemCate1.put("value", "일반");
         itemCate1.put("isNew", itemIsNew.get("normal"));
         HashMap itemCate2 = new HashMap();
+        itemCate2.put("index", 1);
         itemCate2.put("code", "combo");
         itemCate2.put("value", "콤보");
         itemCate2.put("isNew", itemIsNew.get("combo"));
         HashMap itemCate3 = new HashMap();
+        itemCate3.put("index", 2);
         itemCate3.put("code", "emotion");
         itemCate3.put("value", "감정");
         itemCate3.put("isNew", itemIsNew.get("emotion"));
         HashMap itemCate4 = new HashMap();
+        itemCate4.put("index", 3);
         itemCate4.put("code", "text");
         itemCate4.put("value", "문자");
         itemCate4.put("isNew", itemIsNew.get("text"));
