@@ -1,10 +1,7 @@
 package com.dalbit.team.service;
 
-import com.dalbit.common.code.Status;
 import com.dalbit.common.dao.PushDao;
 import com.dalbit.common.service.PushService;
-import com.dalbit.common.vo.JsonOutputVo;
-import com.dalbit.common.vo.ProcedureVo;
 import com.dalbit.common.vo.ResMessage;
 import com.dalbit.common.vo.ResVO;
 import com.dalbit.team.proc.TeamProc;
@@ -594,7 +591,7 @@ public class TeamService {
         try {
             List<Object> object = teamProc.pDallaTeamRankWeekList(vo);
             Integer listCnt = DBUtil.getData(object, 0, Integer.class);
-            List<TeamRankVo> list = DBUtil.getList(object, 1, TeamRankVo.class);
+            List<TeamRankMainVo> list = DBUtil.getList(object, 1, TeamRankMainVo.class);
             HashMap<String, Object> resultMap = new HashMap<>();
             resultMap.put("listCnt", listCnt);
             resultMap.put("list", list);

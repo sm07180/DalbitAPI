@@ -7,7 +7,7 @@ import lombok.Setter;
 import java.util.Date;
 
 @Getter @Setter
-public class TeamRankVo {
+public class TeamRankMainVo {
   private String the_week_date;	//DATE		-- 집계일자
   private Integer team_no;			//BIGINT		-- 팀번호
   private String team_name;		//VARCHAR(15)	-- 팀이름

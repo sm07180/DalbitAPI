@@ -214,13 +214,5 @@ public class MainController {
         }
     }
 
-    @GetMapping("/rank/myRank")
-    public String getMyRank(HttpServletRequest request){
-        return mainService.getMyRank(request);
-    }
 
-    @GetMapping("/rank/getRankingApply")
-    public String getRankingApply(HttpServletRequest request){
-        return mainService.getRankingApply(request);
-    }
 }

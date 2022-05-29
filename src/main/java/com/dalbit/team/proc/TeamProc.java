@@ -431,7 +431,7 @@ public interface TeamProc {
      * play_time			BIGINT		-- 총방송시간
      * @변경이력   :
      **********************************************************************************************/
-    @ResultMap({"ResultMap.integer", "ResultMap.TeamRankVo"})
+    @ResultMap({"ResultMap.integer", "ResultMap.TeamRankMainVo"})
     @Select("CALL rd_data.p_dalla_team_rank_week_list(#{tDate},#{memNo},#{pageNo},#{pagePerCnt})")
     List<Object> pDallaTeamRankWeekList(TeamParamVo param);
 
