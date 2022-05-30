@@ -73,6 +73,9 @@
 
     <!-- 달라그라운드 이벤트 -->
     <resultMap id="GroundListVo" type="com.dalbit.event.vo.GroundListVo"/>
+    <!-- 전광판 광고 -->
+    <resultMap id="ElectricSignDJListOutVo" type="com.dalbit.event.vo.ElectricSignDJListOutVo" />
+    <resultMap id="ElectricSignFanListOutVo" type="com.dalbit.event.vo.ElectricSignFanListOutVo" />
 
     <!-- 마이페이지 사연내역 -->
     <resultMap id="StoryResultVo" type="com.dalbit.broadcast.vo.StoryResultVo"/>
