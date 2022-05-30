@@ -835,7 +835,7 @@ public class CommonService {
         desc += new Gson().toJson(deviceVo) + "\t";
         desc += pErrorLogVo.getDesc();
         pErrorLogVo.setDesc(desc);
-        log.error("[Error Log] {}", pErrorLogVo);
+//        log.error("[Error Log] {}", pErrorLogVo);
 
         return gsonUtil.toJson(new JsonOutputVo(CommonStatus.에러로그저장_성공));
     }
