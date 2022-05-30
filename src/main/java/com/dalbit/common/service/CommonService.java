@@ -252,18 +252,22 @@ public class CommonService {
 
         List<HashMap> itemCategories = new ArrayList<>();
         HashMap itemCate1 = new HashMap();
+        itemCate1.put("index", 0); // AOS 요청
         itemCate1.put("code", "normal");
         itemCate1.put("value", "일반");
         itemCate1.put("isNew", itemIsNew.get("normal"));
         HashMap itemCate2 = new HashMap();
+        itemCate2.put("index", 1);
         itemCate2.put("code", "combo");
         itemCate2.put("value", "콤보");
         itemCate2.put("isNew", itemIsNew.get("combo"));
         HashMap itemCate3 = new HashMap();
+        itemCate3.put("index", 2);
         itemCate3.put("code", "emotion");
         itemCate3.put("value", "감정");
         itemCate3.put("isNew", itemIsNew.get("emotion"));
         HashMap itemCate4 = new HashMap();
+        itemCate4.put("index", 3);
         itemCate4.put("code", "text");
         itemCate4.put("value", "문자");
         itemCate4.put("isNew", itemIsNew.get("text"));
@@ -1286,7 +1290,7 @@ public class CommonService {
 
         HashMap returnMap  = new HashMap<>();
         String result;
-        if(ClipStatus.클립등록_성공.getMessageCode().equals(procedureVo.getRet())) {
+        if(MemberStatus.휴면탈퇴_일자조회_성공.getMessageCode().equals(procedureVo.getRet())) {
             HashMap resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
             returnMap.put("memNo", DalbitUtil.getStringMap(resultMap, "mem_no"));
             returnMap.put("type", DalbitUtil.getIntMap(resultMap, "type"));
@@ -1300,7 +1304,7 @@ public class CommonService {
                 returnMap.put("longTermDate", "");
             }
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_성공, returnMap));
-        }else if(ClipStatus.클립등록_성공.getMessageCode().equals(procedureVo.getRet())){
+        }else if(MemberStatus.휴면탈퇴_일자조회_회원아님.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_회원아님));
         }else{
             result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.휴면탈퇴_일자조회_실패));
@@ -1412,7 +1416,7 @@ public class CommonService {
         StringBuffer mailContent = new StringBuffer();
         BufferedReader in = null;
         try{
-            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/agreeInfo.txt");
+            URL url = new URL("http://image.dallalive.com/resource/mailForm/agreeInfo.txt");
             URLConnection urlconn = url.openConnection();
             in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 
@@ -1612,7 +1616,7 @@ public class CommonService {
         StringBuffer mailContent = new StringBuffer();
         BufferedReader in = null;
         try{
-            URL url = new URL("http://image.dalbitlive.com/resource/mailForm/payInfo.txt");
+            URL url = new URL("http://image.dallalive.com/resource/mailForm/payInfo.txt");
             URLConnection urlconn = url.openConnection();
             in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 

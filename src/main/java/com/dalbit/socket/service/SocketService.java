@@ -751,7 +751,7 @@ public class SocketService {
             HashMap memInfo = getUserInfo(roomNo, memNo, isLogin);
             return new SocketVo(memNo, memInfo, isLogin);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("getSocketVo : {}",e);
         }
         return null;
     }
@@ -773,7 +773,7 @@ public class SocketService {
             socketDao.callBroadcastMemberInfo(procedureVo);
             return new Gson().fromJson(procedureVo.getExt(), HashMap.class);
         }catch(Exception e){
-            e.printStackTrace();
+            log.error("getUserInfo : {}",e);
         }
         return null;
     }

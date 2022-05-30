@@ -235,7 +235,7 @@ public class ContentService {
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_해당방이없음));
         } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_방참가자가아님.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_방참가자가아님));
-        } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_공지삭제권한없음)) {
+        } else if (procedureVo.getRet().equals(BroadcastStatus.공지삭제하기실패_공지삭제권한없음.getMessageCode())) {
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_공지삭제권한없음));
         } else {
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.공지삭제하기실패_삭제에러));

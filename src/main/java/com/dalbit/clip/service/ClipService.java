@@ -1030,11 +1030,7 @@ public class ClipService {
         ProcedureOutputVo procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
         clipGiftRankTop3List.put("list", procedureOutputVo.getOutputBox());
 
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            return clipGiftRankTop3List;
-        }else{
-            return clipGiftRankTop3List;
-        }
+        return clipGiftRankTop3List;
     }
 
 

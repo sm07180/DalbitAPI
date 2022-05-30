@@ -125,8 +125,8 @@ public class MypageService {
 
             } else if (procedureVo.getRet().equals(MemberStatus.프로필편집실패_닉네임중복.getMessageCode())) {
                 result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집실패_닉네임중복));
-            } else if (procedureVo.getRet().equals(MemberStatus.프로필편집실패_닉네임중복.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집실패_닉네임중복));
+            } else if (procedureVo.getRet().equals(MemberStatus.프로필편집실패_닉네임짦음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집실패_닉네임짦음));
             } else{
                 result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집오류));
             }
@@ -807,35 +807,33 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypagNoticeSelectVo);
         List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(mypageNoticeListVo)){
-            procedureOutputVo = null;
-        }else{
+        ProcedureOutputVo procedureOutputVo = null;
+        if(!DalbitUtil.isEmpty(mypageNoticeListVo)){
             List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
             for (int i=0; i<mypageNoticeListVo.size(); i++){
                 outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
 
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap mypageNoticeList = new HashMap();
-        mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
-        mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            HashMap mypageNoticeList = new HashMap();
+            mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
+            mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, mypageNoticeList));
-        } else if (procedureVo.getRet().equals(MypageStatus.공지조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음));
-        } else if (procedureVo.getRet().equals(MypageStatus.공지조회_요청회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_요청회원번호_회원아님));
-        } else if (procedureVo.getRet().equals(MypageStatus.공지조회_대상회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_대상회원번호_회원아님));
+            if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, mypageNoticeList));
+            } else if (procedureVo.getRet().equals(MypageStatus.공지조회_없음.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음));
+            } else if (procedureVo.getRet().equals(MypageStatus.공지조회_요청회원번호_회원아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_요청회원번호_회원아님));
+            } else if (procedureVo.getRet().equals(MypageStatus.공지조회_대상회원번호_회원아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_대상회원번호_회원아님));
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
+            }
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
         }
-        return result;
     }
 
 
