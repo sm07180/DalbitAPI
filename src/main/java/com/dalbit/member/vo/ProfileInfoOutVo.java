@@ -50,6 +50,7 @@ public class ProfileInfoOutVo extends BaseVo {
     private int badgeSpecial;
     private int badgePartner;
     private String playMakerYn;
+    private int playMakerPercent;
     private String roomNo;
     private long broadTotTime;
     private long listenTotTime;
@@ -139,6 +140,7 @@ public class ProfileInfoOutVo extends BaseVo {
         this.badgeSpecial = (target.getBadge_specialdj());
         this.badgePartner = (target.getBadge_partnerdj());
         this.playMakerYn = (target.getPlayMakerYn());
+        this.playMakerPercent = (target.getPlayMakerPercent());
         this.broadTotTime = target.getBroadcastingTime();
         this.listenTotTime = target.getListeningTime();
         this.likeTotCnt = target.getReceivedGoodTotal();
