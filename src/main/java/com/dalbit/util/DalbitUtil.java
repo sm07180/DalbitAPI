@@ -63,6 +63,15 @@ public class DalbitUtil {
         jwtUtil = this.getJwtUtil;
         commonService = this.getCommonService;
     }
+    public static String fmt(double d)
+    {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
+    }
+
+
 
     public static String randomValue(String type, int cnt) {
         type = type.toLowerCase();
