@@ -63,6 +63,15 @@ public class DalbitUtil {
         jwtUtil = this.getJwtUtil;
         commonService = this.getCommonService;
     }
+    public static String fmt(double d)
+    {
+        if(d == (long) d)
+            return String.format("%d",(long)d);
+        else
+            return String.format("%s",d);
+    }
+
+
 
     public static String randomValue(String type, int cnt) {
         type = type.toLowerCase();
@@ -1467,7 +1476,7 @@ public class DalbitUtil {
                 errorLogVo.setDtype("banWord");
                 errorLogVo.setCtype("금지어 체크 오류");
                 errorLogVo.setDesc(param);
-                commonService.saveErrorLog(errorLogVo);
+                log.error("[Error log] {}", errorLogVo);
             } catch (Exception e1){}
 
             return isMatch = true;
@@ -1536,7 +1545,7 @@ public class DalbitUtil {
                 errorLogVo.setDtype("banWord");
                 errorLogVo.setCtype("금지어 변환 오류");
                 errorLogVo.setDesc(param);
-                commonService.saveErrorLog(errorLogVo);
+                log.error("[Error log] {}", errorLogVo);
             } catch (Exception e1){
             }
 

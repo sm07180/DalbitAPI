@@ -29,7 +29,7 @@ public class TTSService {
     @Value("${tts.account.pw}") private String TTS_ACCOUNT_PW;
     @Value("${tts.account.token}") private String TTS_ACCOUNT_TOKEN;
     @Value("${tts.api.host}") private String TTS_API_HOST;
-    String callbackUrl = "http://devm-parksm.dalbitlive.com:8080/broad/tts/callback";
+    String callbackUrl = "http://devm-parksm.dallalive.com:8080/broad/tts/callback";
 
     public void ttsConnection(TTSSpeakVo ttsVo) {
 //        JsonElement ttsInfo = getTTSInfo();

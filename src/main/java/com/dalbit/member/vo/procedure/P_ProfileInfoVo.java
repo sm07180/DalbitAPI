@@ -59,6 +59,7 @@ public class P_ProfileInfoVo extends P_ApiVo {
     private int badge_specialdj;
     private int badge_partnerdj;
     private String playMakerYn;                //플레이메이커
+    private int playMakerPercent;           //플레이메이커 환전 비율
     private String fanBadgeText;
     private String fanBadgeIcon;
     private String fanBadgeStartColor;

@@ -7,6 +7,7 @@ import com.dalbit.member.vo.procedure.*;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +40,8 @@ public interface MypageDao {
     ProcedureVo callMemberNotifyEdit(ProcedureVo procedureVo);
 
     List<P_MemberShortCutVo> callMemberShortCut(ProcedureVo procedureVo);
+
+    List<Map<String, Object>> callMemberShortCut2(ProcedureVo procedureVo);
 
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
 
@@ -91,7 +94,7 @@ public interface MypageDao {
 
     ProcedureVo callMypageInsertBanWord(ProcedureVo procedureVo);
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     List<P_SearchUserVo> callMypageSearchUser(ProcedureVo procedureVo);
 
     // @Transactional(readOnly = true)
@@ -189,7 +192,7 @@ public interface MypageDao {
     // @Transactional(readOnly = true)
     List<EmoticonCategoryListVo> selectEmoticonCategory();
 
-    // @Transactional(readOnly = true)
+    @Transactional(readOnly = true)
     HashMap selectMyPageNew(HashMap params);
 
     // @Transactional(readOnly = true)

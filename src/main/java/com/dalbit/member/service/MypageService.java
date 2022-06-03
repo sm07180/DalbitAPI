@@ -15,6 +15,8 @@ import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.GoodListVo;
+import com.dalbit.member.vo.request.NativeShortCutParamVO;
+import com.dalbit.member.vo.request.NativeShortCutVO;
 import com.dalbit.member.vo.request.StoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -31,6 +33,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -124,8 +127,8 @@ public class MypageService {
 
             } else if (procedureVo.getRet().equals(MemberStatus.프로필편집실패_닉네임중복.getMessageCode())) {
                 result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집실패_닉네임중복));
-            } else if (procedureVo.getRet().equals(MemberStatus.프로필편집실패_닉네임중복.getMessageCode())) {
-                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집실패_닉네임중복));
+            } else if (procedureVo.getRet().equals(MemberStatus.프로필편집실패_닉네임짦음.getMessageCode())) {
+                result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집실패_닉네임짦음));
             } else{
                 result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.프로필편집오류));
             }
@@ -559,6 +562,121 @@ public class MypageService {
         return result;
     }
 
+    public String nativeProfile(String memNo, HttpServletRequest request) {
+        if ( StringUtils.isEmpty(memNo) ) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_파라미터_실패));
+        }
+        Map<String, Object> returnMap = new HashMap<>();
+        try {
+            P_MemberInfoVo vo = new P_MemberInfoVo();
+            vo.setMem_no(memNo);
+            ProcedureVo procedureVo = new ProcedureVo(vo);
+            mypageDao.callMemberInfo(procedureVo);
+            if(procedureVo.getRet().equals(MemberStatus.회원정보보기_성공.getMessageCode())) {
+                HashMap<String, Object> resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                String age = DalbitUtil.getStringMap(resultMap, "age");
+                returnMap.put("memNo", memNo);
+                returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
+                returnMap.put("age", DalbitUtil.fmt(Double.parseDouble(age)));
+                returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "nickName"));
+                returnMap.put("sex", DalbitUtil.getStringMap(resultMap, "memSex"));
+                returnMap.put("thumbnail", DalbitUtil.getProperty("server.photo.url")+DalbitUtil.getStringMap(resultMap, "profileImage"));
+            }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_회원아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_회원아님));
+            }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_대상아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_대상아님));
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_실패));
+            }
+        }catch (Exception e) {
+            log.error("MypageService nativeProfile Error => {}", e.getMessage());
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_실패));
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_성공, returnMap));
+    }
+    /**
+     * 회원 방송방 빠른말 수정하기(네이티브)
+     */
+    public String setShortcut(NativeShortCutParamVO nativeShortCutParamVO, HttpServletRequest request) {
+        if ( nativeShortCutParamVO.getShortCutList() == null || nativeShortCutParamVO.getShortCutList().isEmpty() ) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.빠른말수정_파라미터_오류));
+        }
+        if (StringUtils.isEmpty(MemberVo.getMyMemNo(request))){
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정_회원아님));
+        }
+
+        Map<String, Object> returnMap = new HashMap<>();
+        try {
+            // 파라미터 유효성 검사
+            List<NativeShortCutVO> validation = nativeShortCutParamVO.getShortCutList().stream()
+                    .filter(f->
+                        f.getOrderNo() < 0
+                        || StringUtils.isEmpty(f.getOrder())
+                        || StringUtils.isEmpty(f.getText())
+                        || StringUtils.isEmpty(f.getIsOn())
+                    ).collect(Collectors.toList());
+            if(!validation.isEmpty()){
+                log.error("MypageService setShortcut param validation => {}", nativeShortCutParamVO);
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.빠른말수정_파라미터_오류));
+            }
+
+            P_MemberShortCutVo vo = new P_MemberShortCutVo();
+            vo.setMem_no(MemberVo.getMyMemNo(request));
+            ProcedureVo procedureVo = new ProcedureVo(vo);
+            List<P_MemberShortCutVo> callMemberShortCut = mypageDao.callMemberShortCut(procedureVo);
+            if(callMemberShortCut == null || callMemberShortCut.isEmpty()){
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정오류));
+            }
+
+            if(nativeShortCutParamVO.getShortCutList().size() > callMemberShortCut.size()){
+                log.error("MypageService setShortcut param validation => {}", nativeShortCutParamVO);
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.빠른말수정_파라미터_오류));
+            }
+
+            for (P_MemberShortCutVo sel: callMemberShortCut) {
+                for (NativeShortCutVO param: nativeShortCutParamVO.getShortCutList()) {
+                    if(param.getOrderNo() != sel.getOrderNo()){
+                        continue;
+                    }
+                    // 값이 동일한 경우
+                    if(param.getOrder().equals(sel.getOrder()) && param.getText().equals(sel.getText())){
+                        continue;
+                    }
+
+                    P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
+                    apiData.setMem_no(MemberVo.getMyMemNo(request));
+                    apiData.setOrderNo(param.getOrderNo());
+                    apiData.setOrder(param.getOrder());
+                    apiData.setText(param.getText());
+                    apiData.setOnOff(
+                            "true".equalsIgnoreCase(param.getIsOn()) ||
+                                    "1".equalsIgnoreCase(param.getIsOn())
+                                    ? "on" : "off"
+                    );
+
+                    ProcedureVo editProcedureVo = new ProcedureVo(apiData);
+                    mypageDao.callMemberShortCutEdit(editProcedureVo);
+                    Thread.sleep(200);
+                }
+            }
+            Map<String, Object> testMap = new HashMap<>();
+            testMap.put("test", "test");
+            List<Map<String, Object>> reSel = mypageDao.callMemberShortCut2(procedureVo);
+            returnMap.put("shortCutList",
+                    reSel.stream()
+                            .peek(m-> {
+                                m.put("isOn", m.get("onOff").equals("on"));
+                                m.remove("onOff");
+                            })
+                            .collect(Collectors.toList())
+            );
+        } catch (Exception e) {
+            log.error("MypageService setShortcut Error => {}", e.getMessage());
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정오류, returnMap));
+        }
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정_성공, returnMap));
+    }
 
     /**
      * 회원 방송방 빠른말 수정하기
@@ -806,35 +924,33 @@ public class MypageService {
         ProcedureVo procedureVo = new ProcedureVo(pMypagNoticeSelectVo);
         List<P_MypageNoticeSelectVo> mypageNoticeListVo = mypageDao.callMypageNoticeSelect(procedureVo);
 
-        ProcedureOutputVo procedureOutputVo;
-        if(DalbitUtil.isEmpty(mypageNoticeListVo)){
-            procedureOutputVo = null;
-        }else{
+        ProcedureOutputVo procedureOutputVo = null;
+        if(!DalbitUtil.isEmpty(mypageNoticeListVo)){
             List<MypageNoticeListOutVo> outVoList = new ArrayList<>();
             for (int i=0; i<mypageNoticeListVo.size(); i++){
                 outVoList.add(new MypageNoticeListOutVo(mypageNoticeListVo.get(i)));
             }
             procedureOutputVo = new ProcedureOutputVo(procedureVo, outVoList);
-        }
 
-        HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
-        HashMap mypageNoticeList = new HashMap();
-        mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
-        mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
+            HashMap resultMap = new Gson().fromJson(procedureOutputVo.getExt(), HashMap.class);
+            HashMap mypageNoticeList = new HashMap();
+            mypageNoticeList.put("list", procedureOutputVo.getOutputBox());
+            mypageNoticeList.put("paging", new PagingVo(DalbitUtil.getIntMap(resultMap, "totalCnt"), DalbitUtil.getIntMap(resultMap, "pageNo"), DalbitUtil.getIntMap(resultMap, "pageCnt")));
 
-        String result ="";
-        if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, mypageNoticeList));
-        } else if (procedureVo.getRet().equals(MypageStatus.공지조회_없음.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음));
-        } else if (procedureVo.getRet().equals(MypageStatus.공지조회_요청회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_요청회원번호_회원아님));
-        } else if (procedureVo.getRet().equals(MypageStatus.공지조회_대상회원번호_회원아님.getMessageCode())) {
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_대상회원번호_회원아님));
+            if(Integer.parseInt(procedureOutputVo.getRet()) > 0) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_성공, mypageNoticeList));
+            } else if (procedureVo.getRet().equals(MypageStatus.공지조회_없음.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_없음));
+            } else if (procedureVo.getRet().equals(MypageStatus.공지조회_요청회원번호_회원아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_요청회원번호_회원아님));
+            } else if (procedureVo.getRet().equals(MypageStatus.공지조회_대상회원번호_회원아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_대상회원번호_회원아님));
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
+            }
         }else{
-            result = gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
+            return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지조회_실패));
         }
-        return result;
     }
 
 
@@ -1648,7 +1764,7 @@ public class MypageService {
 //          if(vo.getTopFix() == 1) fixedList.add(vo);
             //고정 안된 글 리스트에 추가
             if(vo.getTopFix() == 0) unfixedList.add(vo);
-            
+
             // 고정, 비고정 글 모두 list에 담기
 //            unfixedList.add(vo);
         }
@@ -1807,7 +1923,7 @@ public class MypageService {
                     log.error("MypageService.java - feed Upd PhotoServer request Fail :{}", e);
                     return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지이미지_경로변경_실패));
                 }
-                
+
                 return gsonUtil.toJson(new JsonOutputVo(MypageStatus.공지수정_성공));
             } else {
                 Integer r = feedPhotoDelete(new ProfileFeedDelVo(vo.getNoticeNo(), "server"), photoList);
@@ -3114,10 +3230,14 @@ public class MypageService {
             String notice = request.getParameter("notice");
             String qna = request.getParameter("qna");
             if(!DalbitUtil.isEmpty(notice)){
-                String[] nos = notice.split(",");
+                List<String> newList = Arrays.stream(notice.split(","))
+                        .filter(StringUtils::isNotEmpty) // 빈값 체크
+                        .filter(f->f.matches("^\\d+$")) // 숫자 체크
+                        .distinct() // 중복 제거
+                        .collect(Collectors.toList());
                 List<Long> tmp = new ArrayList<>();
 
-                for(String n : nos){
+                for(String n : newList){
                     if(!tmp.contains(Long.valueOf(n))){
                         tmp.add(Long.valueOf(n));
                     }
@@ -4060,7 +4180,7 @@ public class MypageService {
      * ##### 회원 방송방에서 받은 사연 리스트
      *
      * @param
-     * memNo 		BIGINT			-- 회원번호
+     * vo 		BIGINT			-- 회원번호
      * ,pageNo 		INT UNSIGNED	-- 페이지 번호
      * ,pagePerCnt 	INT UNSIGNED	-- 페이지 당 노출 건수 (Limit)
      *

@@ -435,9 +435,7 @@ public class CommonController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_ErrorLogVo apiData = new P_ErrorLogVo(errorLogVo, request);
 
-        String result = commonService.saveErrorLog(apiData, request);
-
-        return result;
+        return commonService.saveErrorLog(apiData, request);
     }
 
     /**

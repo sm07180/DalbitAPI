@@ -624,11 +624,9 @@ public class AdminService {
             // 신고자
             declarationVo.setMem_no(myInfo.getMem_no());
             declarationVo.setMem_userid(myInfo.getMem_userid());
-            if(!StringUtils.isEmpty(myInfo.getMem_nick())) {
-                declarationVo.setMem_nick(myInfo.getMem_nick());
-            }else {
-                declarationVo.setMem_nick(myInfo.getNickName());
-            }
+
+            declarationVo.setMem_nick(myInfo.getDeclarationMemNick());
+
             // 신고 대상자
             declarationVo.setReported_mem_no(reportedInfo.getMem_no());
             declarationVo.setReported_userid(reportedInfo.getMem_userid());
@@ -636,13 +634,9 @@ public class AdminService {
             declarationVo.setReported_level(reportedInfo.getLevel());
             declarationVo.setReported_grade(reportedInfo.getGrade());
             declarationVo.setStatus(1);
-            if(!StringUtils.isEmpty(reportedInfo.getMem_nick())) {
-                declarationVo.setReported_nick(reportedInfo.getMem_nick());
-            }else {
-                declarationVo.setReported_nick(reportedInfo.getNickName());
-            }
+            declarationVo.setMem_nick(reportedInfo.getDeclarationMemNick());
 
-            if(0 < declarationVo.getReportIdx()){
+            if(declarationVo.getReportIdx() > 0){
                 adminDao.declarationResponseOperate(declarationVo);
             }else{
                 adminDao.declarationOperate(declarationVo);
@@ -655,25 +649,32 @@ public class AdminService {
             memberDeclarationVo.setOpCode(declarationVo.getOpCode());
             memberDeclarationVo.setBlock_type(0);
 
-            if(!DalbitUtil.isEmpty(memberDeclarationVo.getOpCode())){
-                int opCode = memberDeclarationVo.getOpCode();
-                if(opCode == 2) {
+            int opCode = memberDeclarationVo.getOpCode();
+            switch (opCode){
+                case 2 :
                     memberDeclarationVo.setState(2);
-                } else if(opCode == 3 || opCode == 4 || opCode == 5) {
+                    break;
+                case 3 :
                     memberDeclarationVo.setState(3);
-                    if(opCode == 3) {
-                        memberDeclarationVo.setBlockDay(1);
-                    } else if(opCode == 4) {
-                        memberDeclarationVo.setBlockDay(3);
-                    } else if(opCode == 5) {
-                        memberDeclarationVo.setBlockDay(7);
-                    }
-                } else if(opCode == 6) {
+                    memberDeclarationVo.setBlockDay(1);
+                    break;
+                case 4 :
+                    memberDeclarationVo.setState(3);
+                    memberDeclarationVo.setBlockDay(3);
+                    break;
+                case 5 :
+                    memberDeclarationVo.setState(3);
+                    memberDeclarationVo.setBlockDay(7);
+                    break;
+                case 6 :
                     memberDeclarationVo.setState(5);
-                }else if(opCode == 8) {
+                    break;
+                case 8 :
                     memberDeclarationVo.setState(5);
                     memberDeclarationVo.setBlock_type(1);
-                }
+                    break;
+                default:
+                    break;
             }
             adminDao.updateState(memberDeclarationVo);
 
@@ -1228,7 +1229,7 @@ public class AdminService {
             StringBuffer mailContent = new StringBuffer();
             BufferedReader in = null;
             try{
-                URL url = new URL("http://image.dalbitlive.com/resource/mailForm/mailing.txt");
+                URL url = new URL("http://image.dallalive.com/resource/mailForm/mailing.txt");
                 URLConnection urlconn = url.openConnection();
                 in = new BufferedReader(new InputStreamReader(urlconn.getInputStream(),"utf-8"));
 
@@ -1268,7 +1269,7 @@ public class AdminService {
                 emailService.sendEmail(emailVo);
             }
             catch(Exception e){
-                e.printStackTrace();
+                log.error("callServiceCenterQnaOperate : {}",e);
             }
         }
 

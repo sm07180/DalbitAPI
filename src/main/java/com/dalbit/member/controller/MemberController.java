@@ -1,9 +1,6 @@
 package com.dalbit.member.controller;
 
-import com.dalbit.common.code.Code;
-import com.dalbit.common.code.CommonStatus;
-import com.dalbit.common.code.MemberStatus;
-import com.dalbit.common.code.Status;
+import com.dalbit.common.code.*;
 import com.dalbit.common.service.AdbrixService;
 import com.dalbit.common.service.CommonService;
 import com.dalbit.common.vo.*;
@@ -106,7 +103,13 @@ public class MemberController {
 
     @GetMapping("/token/short")
     public String tokenShort(HttpServletRequest request) throws GlobalException{
-        return gsonUtil.toJson(new JsonOutputVo(CommonStatus.조회, jwtUtil.getTokenVoFromJwt(jwtUtil.generateToken(MemberVo.getMyMemNo(request), DalbitUtil.isLogin(request), 1000 * 60 * 5))));
+        log.error("{}", TestStatus.플레이리스트_수정_실패);
+        boolean login = DalbitUtil.isLogin(request);
+        String myMemNo = MemberVo.getMyMemNo(request);
+        String jwt = jwtUtil.generateToken(myMemNo, login, 1000L * 60L * 5L);
+        TokenVo tokenVoFromJwt = jwtUtil.getTokenVoFromJwt(jwt);
+        JsonOutputVo jsonOutputVo = new JsonOutputVo(CommonStatus.조회, tokenVoFromJwt);
+        return gsonUtil.toJson(jsonOutputVo);
     }
 
     /**
@@ -413,18 +416,6 @@ public class MemberController {
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
         P_SpecialPointListVo apiData = new P_SpecialPointListVo(specialPointListVo);
         String result = memberService.getSpecialPointList(apiData);
-        return result;
-    }
-
-
-    /**
-     * 랭킹데이터 반영 ON/OFF
-     */
-    @PostMapping("/member/rank/setting")
-    public String rankSetting(@Valid MemberRankSettingVo memberRankSettingVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
-        DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
-        P_MemberRankSettingVo apiData = new P_MemberRankSettingVo(memberRankSettingVo, request);
-        String result = memberService.callRankSetting(apiData);
         return result;
     }
 
