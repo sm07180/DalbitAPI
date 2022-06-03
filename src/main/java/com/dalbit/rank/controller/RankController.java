@@ -44,8 +44,8 @@ public class RankController {
      * @작성자 : 강알찬
      * @변경이력 :
      **********************************************************************************************/
-    @RequestMapping("/starDjIns")
-    public String starDjIns(Map map, HttpServletRequest request){
+    @PostMapping("/starDjIns")
+    public String starDjIns(@RequestBody Map map, HttpServletRequest request){
         return rankService.starDjIns(map, request);
     }
 

@@ -65,7 +65,7 @@ public class RankService {
         try{
             HashMap starMap = mypageDao.selectExistsSpecialReq(memNo);
             if (starMap.get("is_already") != null){
-                if (Integer.parseInt(starMap.get("is_already").toString()) < 1){
+                if (Integer.parseInt(starMap.get("is_already").toString()) < 1 && starDjPage.starDjInsChk(map) == 1){
                     starDjPage.starDjIns(map);
                     result = gsonUtil.toJson(new JsonOutputVo(MemberStatus.스페셜DJ_신청성공));
                 } else {
