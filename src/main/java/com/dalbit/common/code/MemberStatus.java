@@ -119,6 +119,7 @@ public enum MemberStatus implements Status {
     회원정보보기_대상아님("-2", "member.this.no", "대상회원번호 회원 아닐 시"),
     회원정보보기_차단회원불가("-5", "member.black.list.no", "차단회원 불가 시"),
     회원정보보기_실패("C006", "member.info.view.fail", "회원정보보기 실패 시"),
+    회원정보보기_파라미터_실패("C007", "member.info.parameter.fail", "memNo 없음"),
 
     //회원 방송방 기본설정 조회
     방송방기본설정조회_성공("0", "mypage.broad.basic.success", "방송방 기본설정 조회 성공 시"),
@@ -204,6 +205,7 @@ public enum MemberStatus implements Status {
     회원방송방빠른말수정_사용기간만료("-3", "mypage.member.shorucut.edit.use.date.limit", "사용기간 만료 시"),
     회원방송방빠른말수정오류("C006", "mypage.member.shorucut.edit.error", "회원 방송방 빠른말 수정 오류 시"),
     회원방송방빠른말수정_텍스트오류("C007", "mypage.member.shorucut.text.error", "회원 방송방 빠른말 수정 텍스트 자리수 "),
+    빠른말수정_파라미터_오류("C008", "mypage.member.shortcut.param.error", "빠른말수정_파라미터_오류"),
 
     //회원방송방 빠른말 추가
     회원방송방빠른말추가_성공("0", "mypage.member.shorucut.add.success", "회원 방송방 빠른말 추가 성공 시"),

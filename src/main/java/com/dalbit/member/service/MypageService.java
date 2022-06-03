@@ -15,6 +15,8 @@ import com.dalbit.member.dao.MypageDao;
 import com.dalbit.member.vo.*;
 import com.dalbit.member.vo.procedure.*;
 import com.dalbit.member.vo.request.GoodListVo;
+import com.dalbit.member.vo.request.NativeShortCutParamVO;
+import com.dalbit.member.vo.request.NativeShortCutVO;
 import com.dalbit.member.vo.request.StoryVo;
 import com.dalbit.rest.service.RestService;
 import com.dalbit.socket.service.SocketService;
@@ -560,6 +562,121 @@ public class MypageService {
         return result;
     }
 
+    public String nativeProfile(String memNo, HttpServletRequest request) {
+        if ( StringUtils.isEmpty(memNo) ) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_파라미터_실패));
+        }
+        Map<String, Object> returnMap = new HashMap<>();
+        try {
+            P_MemberInfoVo vo = new P_MemberInfoVo();
+            vo.setMem_no(memNo);
+            ProcedureVo procedureVo = new ProcedureVo(vo);
+            mypageDao.callMemberInfo(procedureVo);
+            if(procedureVo.getRet().equals(MemberStatus.회원정보보기_성공.getMessageCode())) {
+                HashMap<String, Object> resultMap = new Gson().fromJson(procedureVo.getExt(), HashMap.class);
+                String age = DalbitUtil.getStringMap(resultMap, "age");
+                returnMap.put("memNo", memNo);
+                returnMap.put("memId", DalbitUtil.getStringMap(resultMap, "memId"));
+                returnMap.put("age", DalbitUtil.fmt(Double.parseDouble(age)));
+                returnMap.put("nickName", DalbitUtil.getStringMap(resultMap, "nickName"));
+                returnMap.put("sex", DalbitUtil.getStringMap(resultMap, "memSex"));
+                returnMap.put("thumbnail", DalbitUtil.getProperty("server.photo.url")+DalbitUtil.getStringMap(resultMap, "profileImage"));
+            }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_회원아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_회원아님));
+            }else if(procedureVo.getRet().equals(MemberStatus.회원정보보기_대상아님.getMessageCode())) {
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_대상아님));
+            }else{
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_실패));
+            }
+        }catch (Exception e) {
+            log.error("MypageService nativeProfile Error => {}", e.getMessage());
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_실패));
+        }
+
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원정보보기_성공, returnMap));
+    }
+    /**
+     * 회원 방송방 빠른말 수정하기(네이티브)
+     */
+    public String setShortcut(NativeShortCutParamVO nativeShortCutParamVO, HttpServletRequest request) {
+        if ( nativeShortCutParamVO.getShortCutList() == null || nativeShortCutParamVO.getShortCutList().isEmpty() ) {
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.빠른말수정_파라미터_오류));
+        }
+        if (StringUtils.isEmpty(MemberVo.getMyMemNo(request))){
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정_회원아님));
+        }
+
+        Map<String, Object> returnMap = new HashMap<>();
+        try {
+            // 파라미터 유효성 검사
+            List<NativeShortCutVO> validation = nativeShortCutParamVO.getShortCutList().stream()
+                    .filter(f->
+                        f.getOrderNo() < 0
+                        || StringUtils.isEmpty(f.getOrder())
+                        || StringUtils.isEmpty(f.getText())
+                        || StringUtils.isEmpty(f.getIsOn())
+                    ).collect(Collectors.toList());
+            if(!validation.isEmpty()){
+                log.error("MypageService setShortcut param validation => {}", nativeShortCutParamVO);
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.빠른말수정_파라미터_오류));
+            }
+
+            P_MemberShortCutVo vo = new P_MemberShortCutVo();
+            vo.setMem_no(MemberVo.getMyMemNo(request));
+            ProcedureVo procedureVo = new ProcedureVo(vo);
+            List<P_MemberShortCutVo> callMemberShortCut = mypageDao.callMemberShortCut(procedureVo);
+            if(callMemberShortCut == null || callMemberShortCut.isEmpty()){
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정오류));
+            }
+
+            if(nativeShortCutParamVO.getShortCutList().size() > callMemberShortCut.size()){
+                log.error("MypageService setShortcut param validation => {}", nativeShortCutParamVO);
+                return gsonUtil.toJson(new JsonOutputVo(MemberStatus.빠른말수정_파라미터_오류));
+            }
+
+            for (P_MemberShortCutVo sel: callMemberShortCut) {
+                for (NativeShortCutVO param: nativeShortCutParamVO.getShortCutList()) {
+                    if(param.getOrderNo() != sel.getOrderNo()){
+                        continue;
+                    }
+                    // 값이 동일한 경우
+                    if(param.getOrder().equals(sel.getOrder()) && param.getText().equals(sel.getText())){
+                        continue;
+                    }
+
+                    P_MemberShortCutEditVo apiData = new P_MemberShortCutEditVo();
+                    apiData.setMem_no(MemberVo.getMyMemNo(request));
+                    apiData.setOrderNo(param.getOrderNo());
+                    apiData.setOrder(param.getOrder());
+                    apiData.setText(param.getText());
+                    apiData.setOnOff(
+                            "true".equalsIgnoreCase(param.getIsOn()) ||
+                                    "1".equalsIgnoreCase(param.getIsOn())
+                                    ? "on" : "off"
+                    );
+
+                    ProcedureVo editProcedureVo = new ProcedureVo(apiData);
+                    mypageDao.callMemberShortCutEdit(editProcedureVo);
+                    Thread.sleep(200);
+                }
+            }
+            Map<String, Object> testMap = new HashMap<>();
+            testMap.put("test", "test");
+            List<Map<String, Object>> reSel = mypageDao.callMemberShortCut2(procedureVo);
+            returnMap.put("shortCutList",
+                    reSel.stream()
+                            .peek(m-> {
+                                m.put("isOn", m.get("onOff").equals("on"));
+                                m.remove("onOff");
+                            })
+                            .collect(Collectors.toList())
+            );
+        } catch (Exception e) {
+            log.error("MypageService setShortcut Error => {}", e.getMessage());
+            return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정오류, returnMap));
+        }
+        return gsonUtil.toJson(new JsonOutputVo(MemberStatus.회원방송방빠른말수정_성공, returnMap));
+    }
 
     /**
      * 회원 방송방 빠른말 수정하기
