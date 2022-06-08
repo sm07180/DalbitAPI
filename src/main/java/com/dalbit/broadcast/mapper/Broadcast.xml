@@ -3,7 +3,7 @@
 <mapper namespace="com.dalbit.broadcast.proc.Broadcast" >
     <!-- 방송방 정보 -->
     <resultMap id="DallaRoomSelResultVO" type="com.dalbit.broadcast.vo.DallaRoomSelResultVO">
-        <result property="liveDjRank" column="liveDjRank"/>
+        <result property="rank" column="RANK"/>
         <result property="imageBackground" column="image_background"/>
         <result property="bjNickName" column="bj_nickName"/>
         <result property="title" column="title"/>

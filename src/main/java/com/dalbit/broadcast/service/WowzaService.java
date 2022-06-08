@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1307,9 +1308,14 @@ public class WowzaService {
             List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
             result.setTotalCnt(
                     roomVoList != null && !roomVoList.isEmpty() ? roomVoList.size()
-                            : result.getLiveDjRank()
+                            : result.getRank()
             );
-
+            if(result.getStartDate() != null){
+                result.setStartDateStr(result.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            }
+//            if(StringUtils.isNotEmpty(result.getStartDate())){
+//                LocalDateTime
+//            }
             if(StringUtils.isNotEmpty(result.getImageBackground())){
                 result.setImageBackground(DalbitUtil.getProperty("server.photo.url")+result.getImageBackground());
             }
