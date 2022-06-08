@@ -49,6 +49,9 @@
     <select id="callMemberShortCut" statementType="CALLABLE" parameterType="ProcedureVo" resultType="P_MemberShortCutVo">
         call sp_member_broadcast_shortcut_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
     </select>
+    <select id="callMemberShortCut2" statementType="CALLABLE" parameterType="ProcedureVo" resultType="Map">
+        call sp_member_broadcast_shortcut_select(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
+    </select>
 
     <select id="callMemberShortCutEdit" statementType="CALLABLE" parameterType="ProcedureVo" resultType="ProcedureVo">
         call sp_member_broadcast_shortcut_edit(#{data, mode=IN, jdbcType=VARCHAR}, #{ret, mode=OUT, jdbcType=INTEGER}, #{ext, mode=OUT, jdbcType=VARCHAR})
