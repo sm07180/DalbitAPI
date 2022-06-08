@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dalbit.broadcast.proc.Broadcast" >
+    <!-- 방송방 정보 -->
+    <resultMap id="DallaRoomSelResultVO" type="com.dalbit.broadcast.vo.DallaRoomSelResultVO">
+        <result property="liveDjRank" column="liveDjRank"/>
+        <result property="imageBackground" column="image_background"/>
+        <result property="bjNickName" column="bj_nickName"/>
+        <result property="title" column="title"/>
+        <result property="countGood" column="count_good"/>
+        <result property="startDate" column="start_date"/>
+        <result property="totalCnt" column="totalCnt"/>
+    </resultMap>
+    <resultMap id="integer" type="Integer" />
+
+
+    <select id="pDallaRoomSel" statementType="CALLABLE" parameterType="Map" resultMap="DallaRoomSelResultVO">
+        { CALL rd_data.p_dalla_room_sel(#{roomNo}, #{memNo}) }
+    </select>
+
+</mapper>

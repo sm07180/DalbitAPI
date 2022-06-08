@@ -1,5 +1,6 @@
 package com.dalbit.broadcast.proc;
 
+import com.dalbit.broadcast.vo.DallaRoomSelResultVO;
 import com.dalbit.broadcast.vo.TtsLogVo;
 import com.dalbit.common.vo.ItemVo;
 import org.apache.ibatis.annotations.Select;
@@ -33,5 +34,10 @@ public interface Broadcast {
      * */
     @Select("CALL rd_data.sp_signature_item_select(#{memNo}, '')")
     List<ItemVo> spSignatureItemSelect(Map<String, Object> param);
+
+    /**
+     * 방정보(Native API)
+     * */
+    DallaRoomSelResultVO pDallaRoomSel(Map<String, Object> param);
 
 }

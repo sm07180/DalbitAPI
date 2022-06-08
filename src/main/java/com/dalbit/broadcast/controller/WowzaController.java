@@ -14,13 +14,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -79,4 +78,10 @@ public class WowzaController {
         HashMap result = wowzaService.doUpdateStateNormalize(request);
         return gsonUtil.toJson(new JsonOutputVo((Status)result.get("status"), result.get("data")));
     }
+
+    @PostMapping("/native/roomInfo")
+    public Object getNativeRoomInfo(@RequestBody Map<String, Object> param, HttpServletRequest request){
+        return wowzaService.getNativeRoomInfo(param);
+    }
+
 }

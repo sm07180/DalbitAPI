@@ -1284,4 +1284,39 @@ public class WowzaService {
 
         return map;
     }
+
+    public String getNativeRoomInfo(Map<String, Object> param) {
+        if (param == null || param.isEmpty()) {
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_파라미터));
+        }
+        if (param.get("memNo") == null || param.get("roomNo") == null) {
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_파라미터, param));
+        }
+        DallaRoomSelResultVO result = null;
+        try {
+            result = broadcast.pDallaRoomSel(param);
+            if(result == null) {
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_실패, param));
+            }
+
+            P_RoomListVo pRoomListVo = new P_RoomListVo();
+            pRoomListVo.setMem_no("10000000000000");
+            pRoomListVo.setPageNo(1);
+            pRoomListVo.setPageCnt(100);
+            ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
+            List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+            result.setTotalCnt(
+                    roomVoList != null && !roomVoList.isEmpty() ? roomVoList.size()
+                            : result.getLiveDjRank()
+            );
+
+            if(StringUtils.isNotEmpty(result.getImageBackground())){
+                result.setImageBackground(DalbitUtil.getProperty("server.photo.url")+result.getImageBackground());
+            }
+        } catch (Exception e) {
+            log.error("WowzaService getNativeRoomInfo Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_성공, result));
+    }
+
 }
