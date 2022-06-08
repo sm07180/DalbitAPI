@@ -253,17 +253,6 @@ public enum EventStatus implements Status {
     달지급처리및로그기록_실패("C006", "one.year.event.ins.dal.log.fail", "1주년 이벤트 달 지급 처리 및 로그기록 실패 시"),
     //스톤 모으기
     달라_이벤트_조각부족("C001", "dalla.event.bbobgi.ins.fail", "달라 조각 부족"),
-    // 공유 이벤트
-    공유이벤트_댓글목록_조회_성공("0", "share.event.tail.list.success", "공유 이벤트 댓글 목록 조회 성공 시"),
-    공유이벤트_댓글목록_조회_실패("-1", "share.event.tail.list.fail", "공유 이벤트 댓글 목록 조회 실패 시"),
-    공유이벤트_댓글목록_삭제_성공("0", "share.event.tail.del.success", "공유 이벤트 댓글 목록 삭제 성공 시"),
-    공유이벤트_댓글목록_삭제_실패("-1", "share.event.tail.del.fail", "공유 이벤트 댓글 목록 삭제 실패 시"),
-    공유이벤트_댓글목록_등록_성공("0", "share.event.tail.ins.success", "공유 이벤트 댓글 목록 등록 성공 시"),
-    공유이벤트_댓글목록_등록_실패("-1", "share.event.tail.ins.fail", "공유 이벤트 댓글 목록 등록 실패 시"),
-    공유이벤트_댓글목록_수정_성공("0", "share.event.tail.upd.success", "공유 이벤트 댓글 목록 수정 성공 시"),
-    공유이벤트_댓글목록_수정_실패("-1", "share.event.tail.upd.fail", "공유 이벤트 댓글 목록 수정 실패 시"),
-    공유이벤트_댓글여부_체크_성공("0", "share.event.tail.chk.success", "공유 이벤트 댓글 체크 성공 시"),
-    공유이벤트_댓글여부_체크_실패("-2", "share.event.tail.chk.fail", "공유 이벤트 댓글 체크 실패 시"),
     //오픈이벤트
     오픈이벤트조회_성공("C001", "open.event.select.success", "오픈이벤트 조회 성공 시"),
     오픈이벤트조회_실패("C006", "open.event.select.fail", "오픈이벤트 조회 실패 시"),

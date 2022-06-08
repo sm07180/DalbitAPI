@@ -34,8 +34,6 @@
     <!-- 투표 -->
     <resultMap id="VoteResultVo" type="com.dalbit.broadcast.vo.VoteResultVo" />
 
-    <!-- 공유 이벤트 -->
-    <resultMap id="ShareEventVo" type="com.dalbit.event.vo.ShareEventVo"/>
     <!-- 달라져스 조각 모으기 이벤트 -->
 
     <resultMap id="DallagersEventMySelVo" type="com.dalbit.event.vo.DallagersEventMySelVo"/>
