@@ -385,7 +385,11 @@ public enum BroadcastStatus implements Status {
     //방송방 배지 교체 체크
     배지교체대상체크_없음("0", "broadcast.badge.change.checnk.no.success", "배지 교체 체크대상 없을 시"),
     배지교체대상체크_성공("C001", "broadcast.badge.change.check.success", "배지 교체대상 체크 성공 시"),
-    배지교체대상체크_실패("C006", "broadcast.badge.change.check.fail", "배지 교체대상 체크 실패 시");
+    배지교체대상체크_실패("C006", "broadcast.badge.change.check.fail", "배지 교체대상 체크 실패 시"),
+    
+    네이티브_방정보_조회_파라미터("P001", "broadcast.native.room.info.param.fail", "네이티브 방 정보 파라미터"),
+    네이티브_방정보_조회_성공("C001", "broadcast.native.room.info.success", "네이티브 방 정보 조회 성공"),
+    네이티브_방정보_조회_실패("E001", "broadcast.native.room.info.fail", "네이티브 방 정보 조회 실패");
 
 
 

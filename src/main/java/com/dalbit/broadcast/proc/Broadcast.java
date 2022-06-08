@@ -1,6 +1,7 @@
 package com.dalbit.broadcast.proc;
 
 import com.dalbit.broadcast.vo.BoosterInfoVO;
+import com.dalbit.broadcast.vo.DallaRoomSelResultVO;
 import com.dalbit.broadcast.vo.TtsLogVo;
 import com.dalbit.common.vo.ItemVo;
 import org.apache.ibatis.annotations.Param;
@@ -60,4 +61,9 @@ public interface Broadcast {
      **********************************************************************************************/
     @Select("CALL rd_data.p_dalla_room_score_upd(#{roomNo}, #{updSlct}, #{updCnt}, #{updScore})")
     Integer updRoomScoreUpd(Map<String, Object> param);
+    /**
+     * 방정보(Native API)
+     * */
+    DallaRoomSelResultVO pDallaRoomSel(Map<String, Object> param);
+
 }
