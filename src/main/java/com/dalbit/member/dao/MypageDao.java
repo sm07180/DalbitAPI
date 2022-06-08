@@ -41,6 +41,8 @@ public interface MypageDao {
 
     List<P_MemberShortCutVo> callMemberShortCut(ProcedureVo procedureVo);
 
+    List<Map<String, Object>> callMemberShortCut2(ProcedureVo procedureVo);
+
     ProcedureVo callMemberShortCutEdit(ProcedureVo procedureVo);
 
     ProcedureVo callMemberGiftRuby(ProcedureVo procedureVo);

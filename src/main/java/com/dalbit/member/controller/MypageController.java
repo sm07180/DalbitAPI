@@ -257,9 +257,16 @@ public class MypageController {
         return result;
     }
 
-    /**
-     * 회원 방송방 빠른말 수정하기
-     */
+    @PostMapping("/native/setShortcut")
+    public Object setShortcut(@RequestBody NativeShortCutParamVO nativeShortCutParamVO, HttpServletRequest request){
+        return mypageService.setShortcut(nativeShortCutParamVO, request);
+    }
+
+    @GetMapping("/native/profile/{memNo}")
+    public Object nativeProfile(@PathVariable("memNo") String memNo, HttpServletRequest request){
+        return mypageService.nativeProfile(memNo, request);
+    }
+
     @PostMapping("/shortcut")
     public String memberShortCutEdit(@Valid ShortCutEditVo shortCutEditVo, BindingResult bindingResult, HttpServletRequest request) throws GlobalException{
         if(bindingResult.hasErrors()){
@@ -271,7 +278,6 @@ public class MypageController {
                 }
             }
         }
-
         DalbitUtil.throwValidaionException(bindingResult, Thread.currentThread().getStackTrace()[1].getMethodName());
 
         String isOn = (shortCutEditVo.getIsOn().toUpperCase().equals("1") || shortCutEditVo.getIsOn().toUpperCase().equals("TRUE")) ? "on" : "off";

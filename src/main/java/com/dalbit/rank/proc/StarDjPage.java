@@ -81,5 +81,14 @@ public interface StarDjPage {
     @ResultMap({"ResultMap.integer", "ResultMap.StarDjLogVO"})
     @Select("CALL rd_data.p_star_dj_mem_log_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
     List<Object> getStarDjLog(Map map);
+    
+    /**********************************************************************************************
+     * @Method 설명 : 스타DJ 조건 chk
+     * @작성일 : 2022-06-03
+     * @작성자 : 강알찬
+     * @변경이력 :
+     **********************************************************************************************/
+    @Select("CALL p_period_star_dj_score_chk(#{memNo}, #{tYear}, #{tMonth })")
+    int starDjInsChk(Map map);
 
 }
