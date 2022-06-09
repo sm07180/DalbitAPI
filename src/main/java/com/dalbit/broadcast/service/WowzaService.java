@@ -1124,9 +1124,15 @@ public class WowzaService {
         badgeService.setBadgeInfo(target.getBjMemNo(), -1);
         List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
         FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
-        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")).findFirst().orElse(null);
+        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")||!f.getText().contains("팬")).findFirst().orElse(null);
         BadgeFrameVo tmp = new BadgeFrameVo();
 
+        // 달라 그라운드 프레임 최상단으로 해달라고함 (지급 기간 지나면 지워야됨)
+        for(FanBadgeVo vo : badgeList1) {
+            if(StringUtils.contains(vo.getTipMsg(), "달라그라운드 프레임")) {
+                badge2 = vo;
+            }
+        }
         if(badge2 != null){
             BeanUtils.copyProperties(badge2, tmp);
         } else if (badge1 != null) {
