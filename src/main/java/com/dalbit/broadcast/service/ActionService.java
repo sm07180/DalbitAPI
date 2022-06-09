@@ -31,6 +31,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 
 @Slf4j
@@ -149,6 +151,18 @@ public class ActionService {
             String resultCode = moonCheckSocket(pRoomGoodVo.getRoom_no(), request, "good");
             if("error".equals(resultCode)){
                 log.error("보름달 체크 오류");
+            }
+            
+            // 좋아요 점수 집계
+            try {
+                Map<String, Object> updScoreParam = new HashMap<>();
+                updScoreParam.put("roomNo", pRoomGoodVo.getRoom_no());
+                updScoreParam.put("updSlct", "l");
+                updScoreParam.put("updCnt", 1);
+                updScoreParam.put("updScore", 2);
+                broadcast.updRoomScoreUpd(updScoreParam);
+            } catch (Exception e) {
+                log.error("callBroadCastRoomGood =>  updRoomScoreUpd error : {}", e.toString());
             }
 
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.좋아요, procedureVo.getData()));
@@ -281,7 +295,7 @@ public class ActionService {
         String ttsText = pRoomGiftVo.getTtsText();
         String actorId = pRoomGiftVo.getActorId();
         String sendItemSuccessMsg = "님에게 선물을 보냈습니다."; // 일반 || tts
-
+        ItemDetailVo item = new ItemDetailVo();
         if(ttsText != null) ttsText = ttsText.trim();
 
         // tts 아이템
@@ -358,7 +372,7 @@ public class ActionService {
                 itemMap.put("itemMoveNo", pRoomGiftVo.getItem_code());
                 SocketVo vo1 = socketService.getSocketVo(pRoomGiftVo.getRoom_no(), pRoomGiftVo.getGifted_mem_no(), DalbitUtil.isLogin(request));
 
-                ItemDetailVo item = commonDao.selectItem(item_code);
+                item = commonDao.selectItem(item_code);
                 String itemNm = item.getItemNm();
                 String itemThumbs = item.getThumbs();
                 itemMap.put("itemNm", itemNm);
@@ -467,6 +481,18 @@ public class ActionService {
             }else {
                 status = pRoomGiftVo.getGifted_mem_no().equals(djMemNo) ? BroadcastStatus.DJ_선물하기성공 : BroadcastStatus.게스트_선물하기성공;
             }
+            
+            // 선물하기 점수 집계
+            try {
+                Map<String, Object> updScoreParam = new HashMap<>();
+                updScoreParam.put("roomNo", pRoomGiftVo.getRoom_no());
+                updScoreParam.put("updSlct", "s");
+                updScoreParam.put("updCnt", pRoomGiftVo.getItem_cnt());
+                updScoreParam.put("updScore", item.getByeol() * pRoomGiftVo.getItem_cnt());
+                broadcast.updRoomScoreUpd(updScoreParam);
+            } catch (Exception e) {
+                log.error("callBroadCastRoomGift =>  updRoomScoreUpd error : {}", e.toString());
+            }
             result = gsonUtil.toJson(new JsonOutputVo(status, returnMap));
         }else if(BroadcastStatus.선물하기_요청회원_번호비정상.getMessageCode().equals(procedureVo.getRet())){
             result = gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.선물하기_요청회원_번호비정상));
@@ -516,6 +542,34 @@ public class ActionService {
             returnMap.put("boostCnt", DalbitUtil.getIntMap(resultMap, "usedItemCnt"));
             returnMap.put("boostTime", DalbitUtil.getIntMap(resultMap, "remainTime"));
             returnMap.put("isLevelUp", DalbitUtil.getIntMap(resultMap, "levelUp") == 1);
+
+            // 부스터 점수 집계(추후 로직 수정 필요)
+            try {
+                List<BoosterInfoVO> listInfo = broadcast.getBoosterList(pRoomBoosterVo.getRoom_no());
+                Integer updateInfo = 0; // 활성화된 부스터 개수
+                for (BoosterInfoVO target : listInfo) {
+                    LocalDateTime targetTime = target.getEnd_date()
+                            .toInstant()
+                            .atZone(ZoneId.systemDefault())
+                            .toLocalDateTime();
+
+                    if (targetTime.isAfter(LocalDateTime.now())) {
+                        updateInfo += target.getItem_cnt();
+                    }
+                }
+
+                if (updateInfo > 0) {
+                    Map<String, Object> updScoreParam = new HashMap<>();
+                    updScoreParam.put("roomNo", pRoomBoosterVo.getRoom_no());
+                    updScoreParam.put("updSlct", "b");
+                    updScoreParam.put("updCnt", updateInfo);
+                    updScoreParam.put("updScore", updateInfo * 50);
+                    broadcast.updRoomScoreUpd(updScoreParam);
+                }
+            } catch (Exception e) {
+                log.error("ActionService =>  callBroadCastRoomBooster error : {}", e.toString());
+            }
+
 
             log.info("프로시저 응답 코드: {}", procedureVo.getRet());
             log.info("프로시저 응답 데이타: {}", procedureVo.getExt());

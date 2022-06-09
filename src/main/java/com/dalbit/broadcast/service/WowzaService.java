@@ -44,6 +44,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -1123,9 +1124,15 @@ public class WowzaService {
         badgeService.setBadgeInfo(target.getBjMemNo(), -1);
         List<FanBadgeVo> badgeList2 = badgeService.getBadgeList();
         FanBadgeVo badge1 = badgeList1.stream().filter(f->f.getText().contains("스타")||f.getText().contains("Star")).findFirst().orElse(null);
-        FanBadgeVo badge2 = badgeList2.stream().filter(f->f.getText().contains("일간")||f.getText().contains("주간")).findFirst().orElse(null);
+        FanBadgeVo badge2 = badgeList2.stream().filter(f->(f.getText().contains("일간")||f.getText().contains("주간")) && !f.getText().contains("팬")).findFirst().orElse(null);
         BadgeFrameVo tmp = new BadgeFrameVo();
 
+        // 달라 그라운드 프레임 최상단으로 해달라고함 (지급 기간 지나면 지워야됨)
+        for(FanBadgeVo vo : badgeList1) {
+            if(StringUtils.contains(vo.getTipMsg(), "달라그라운드 프레임")) {
+                badge2 = vo;
+            }
+        }
         if(badge2 != null){
             BeanUtils.copyProperties(badge2, tmp);
         } else if (badge1 != null) {
@@ -1284,4 +1291,44 @@ public class WowzaService {
 
         return map;
     }
+
+    public String getNativeRoomInfo(Map<String, Object> param) {
+        if (param == null || param.isEmpty()) {
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_파라미터));
+        }
+        if (param.get("memNo") == null || param.get("roomNo") == null) {
+            return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_파라미터, param));
+        }
+        DallaRoomSelResultVO result = null;
+        try {
+            result = broadcast.pDallaRoomSel(param);
+            if(result == null) {
+                return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_실패, param));
+            }
+
+            P_RoomListVo pRoomListVo = new P_RoomListVo();
+            pRoomListVo.setMem_no("10000000000000");
+            pRoomListVo.setPageNo(1);
+            pRoomListVo.setPageCnt(100);
+            ProcedureVo procedureVo = new ProcedureVo(pRoomListVo);
+            List<P_RoomListVo> roomVoList = roomDao.callBroadCastRoomList(procedureVo);
+            result.setTotalCnt(
+                    roomVoList != null && !roomVoList.isEmpty() ? roomVoList.size()
+                            : result.getRank()
+            );
+            if(result.getStartDate() != null){
+                result.setStartDateStr(result.getStartDate().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+            }
+//            if(StringUtils.isNotEmpty(result.getStartDate())){
+//                LocalDateTime
+//            }
+            if(StringUtils.isNotEmpty(result.getImageBackground())){
+                result.setImageBackground(DalbitUtil.getProperty("server.photo.url")+result.getImageBackground());
+            }
+        } catch (Exception e) {
+            log.error("WowzaService getNativeRoomInfo Error => {}", e.getMessage());
+        }
+        return gsonUtil.toJson(new JsonOutputVo(BroadcastStatus.네이티브_방정보_조회_성공, result));
+    }
+
 }

@@ -1,7 +1,10 @@
 package com.dalbit.broadcast.proc;
 
+import com.dalbit.broadcast.vo.BoosterInfoVO;
+import com.dalbit.broadcast.vo.DallaRoomSelResultVO;
 import com.dalbit.broadcast.vo.TtsLogVo;
 import com.dalbit.common.vo.ItemVo;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -33,5 +36,34 @@ public interface Broadcast {
      * */
     @Select("CALL rd_data.sp_signature_item_select(#{memNo}, '')")
     List<ItemVo> spSignatureItemSelect(Map<String, Object> param);
+
+    /**********************************************************************************************
+     * @Method 설명 : 방송중인 방의 부스터 리스트
+     * @작성일 : 2022-06-03
+     * @작성자 : 이정혁
+     * @변경이력 :
+     * @Parameter : roomNo - 방고유번호 (0 입력시 전체 방에 대한 리스트 가져옴)
+     * @Return :
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_room_booster_list(#{roomNo})")
+    List<BoosterInfoVO> getBoosterList(@Param(value = "roomNo") String roomNo);
+
+    /**********************************************************************************************
+     * @Method 설명 : 방송점수 업데이트
+     * @작성일 : 2022-05-26
+     * @작성자 : 이정혁
+     * @변경이력 :
+     * @Parameter : roomNo BIGINT		-- 방송방 고유번호
+     *              updSlct CHAR(1)	-- 점수 구분 [b:부스터, l:좋아요, v:시청자, s:받은별]
+     *              updCnt	INT		-- 점수 건수
+     *              updScore INT		-- 수정점수
+     * @Return : s_return	INT	-- -1: 방없음, 0: 에러, 1:정상
+     **********************************************************************************************/
+    @Select("CALL rd_data.p_dalla_room_score_upd(#{roomNo}, #{updSlct}, #{updCnt}, #{updScore})")
+    Integer updRoomScoreUpd(Map<String, Object> param);
+    /**
+     * 방정보(Native API)
+     * */
+    DallaRoomSelResultVO pDallaRoomSel(Map<String, Object> param);
 
 }
