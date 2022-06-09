@@ -288,8 +288,24 @@ public enum EventStatus implements Status {
     전광판_디제이_조회_성공("0", "electric.sign.event.dj.success", "Dj 목록 조회 성공 시"),
     전광판_디제이_조회_실패("C006", "electric.sign.event.dj.fail", "Dj 목록 조회 실패 시"),
     전광판_시청자_조회_성공("0", "electric.sign.event.fan.success", "시청자 목록 조회 성공 시"),
-    전광판_시청자_조회_실패("C006", "electric.sign.event.fan.fail", "시청자 목록 조회 실패 시");
-
+    전광판_시청자_조회_실패("C006", "electric.sign.event.fan.fail", "시청자 목록 조회 실패 시"),
+    // 2주년 이벤트
+    이주년_선물_지급_성공("0", "second.anniversary.event.present.ins.success", "선물 지급 성공"),
+    이주년_선물_지급_실패("C006", "second.anniversary.event.present.ins.fail", "선물 지급 실패"),
+    이주년_선물_회원_없음("-1", "second.anniversary.event.no.member.fail", "회원 조회 실패"),
+    이주년_선물_이미_받음("-2", "second.anniversary.event.present.already.ins.fail", "선물 이미 받음"),
+    이주년_선물_본인인증_미인증("-3", "second.anniversary.event.auth.fail", "본인인증 미인증"),
+    이주년_선물_지급_여부_확인_성공("0", "second.anniversary.event.present.check.success", "선물 지급 여부 확인 성공"),
+    이주년_선물_지급_여부_확인_실패("C006", "second.anniversary.event.present.check.fail", "선물 지급 여부 확인 실패"),
+    이주년_사연_조회_성공("0", "second.anniversary.event.story.select.success", "사연 리스트 조회 성공"),
+    이주년_사연_등록_성공("0", "second.anniversary.event.story.ins.success", "사연 등록 성공"),
+    이주년_사연_등록_실패("C006", "second.anniversary.event.story.ins.fail", "사연 등록 실패"),
+    이주년_사연_수정_성공("0", "second.anniversary.event.story.upd.success", "사연 수정 성공"),
+    이주년_사연_수정_실패("C006", "second.anniversary.event.story.upd.fail", "사연 수정 실패"),
+    이주년_사연_삭제_성공("0", "second.anniversary.event.story.del.success", "사연 삭제 성공"),
+    이주년_사연_삭제_실패("C006", "second.anniversary.event.story.del.fail", "사연 삭제 실패"),
+    이주년_그라운드_DJ_리스트_조회_성공("0", "second.anniversary.event.ground_dj_sel_success", "그라운드 DJ 데이터 조회 성공"),
+    이주년_그라운드_시청자_리스트_조회_성공("0", "second.anniversary.event.ground_viewer_sel_success", "그라운드 시청자 데이터 조회 성공");
 
 
 

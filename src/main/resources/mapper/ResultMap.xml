@@ -77,4 +77,11 @@
 
     <!-- 마이페이지 사연내역 -->
     <resultMap id="StoryResultVo" type="com.dalbit.broadcast.vo.StoryResultVo"/>
+
+    <!-- 2주년 페스티벌~ -->
+    <resultMap id="FestivalStoryVo" type="com.dalbit.event.vo.FestivalStoryVo"/>
+    <resultMap id="FestivalGroundDjListVo" type="com.dalbit.event.vo.FestivalGroundDjListVo"/>
+    <resultMap id="FestivalGroundDjInfoVo" type="com.dalbit.event.vo.FestivalGroundDjInfoVo"/>
+    <resultMap id="FestivalGroundViewerListVo" type="com.dalbit.event.vo.FestivalGroundViewerListVo"/>
+    <resultMap id="FestivalGroundViewerInfoVo" type="com.dalbit.event.vo.FestivalGroundViewerInfoVo"/>
 </mapper>
