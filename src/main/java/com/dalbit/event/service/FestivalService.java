@@ -2,11 +2,13 @@ package com.dalbit.event.service;
 
 import com.dalbit.common.code.EventStatus;
 import com.dalbit.common.vo.JsonOutputVo;
+import com.dalbit.common.vo.PagingVo;
 import com.dalbit.event.proc.FestivalEvent;
 import com.dalbit.event.vo.*;
 import com.dalbit.util.DBUtil;
 import com.dalbit.util.GsonUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,8 +27,8 @@ public class FestivalService {
     public String twoYearGiftBoxIns(String memNo, String memPhone) {
         String result = "";
         try {
-            Integer giftBoxInsResult = festivalEvent.twoYearGiftBoxIns(memNo, memPhone);
-            switch (giftBoxInsResult) {
+            FestivalFreeGiftVo giftBoxInsResult = festivalEvent.twoYearGiftBoxIns(memNo, memPhone);
+            switch (giftBoxInsResult.getS_return()) {
                 case 1:
                     result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_선물_지급_성공, giftBoxInsResult));
                     break;
@@ -56,9 +58,9 @@ public class FestivalService {
         String result = "";
         try {
             Integer giftBoxCheckResult = festivalEvent.twoYearGiftBoxCheck(memNo);
-            if(giftBoxCheckResult == 1 || giftBoxCheckResult == -1) {
+            if(giftBoxCheckResult == 1) {
                 result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_선물_지급_여부_확인_성공, giftBoxCheckResult));
-            }else {
+            }else if(giftBoxCheckResult == -1) {
                 result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_선물_지급_여부_확인_실패, giftBoxCheckResult));
             }
         } catch (Exception e) {
@@ -71,15 +73,15 @@ public class FestivalService {
     /**
      *  2주년 이벤트 사연 리스트
      */
-    public String twoYearStorySelect(String memNo, String pageNo, String pagePerCnt) {
+    public String twoYearStorySelect(String memNo, int pageNo, int pagePerCnt) {
         String result = "";
         try {
             HashMap<String, Object> storyDataMap = new HashMap<>();
             List<Object> storyListObj = festivalEvent.twoYearStorySelect(memNo, pageNo, pagePerCnt);
             Integer storyListCnt = DBUtil.getData(storyListObj, 0, Integer.class);
             List<FestivalStoryVo> storyList = DBUtil.getList(storyListObj, 1, FestivalStoryVo.class);
-            storyDataMap.put("storyListCnt", storyListCnt);
             storyDataMap.put("storyList", storyList);
+            storyDataMap.put("paging", storyListCnt != null ? new PagingVo(storyListCnt, pageNo, pagePerCnt) : null);
 
             result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_조회_성공, storyDataMap));
         } catch (Exception e) {
@@ -96,7 +98,7 @@ public class FestivalService {
         String result = "";
         try {
             Integer storyInsResult = festivalEvent.twoYearStoryIns(memNo, storyConts);
-            if(storyInsResult == 0) {
+            if(storyInsResult == 1) {
                 result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_등록_성공, storyInsResult));
             }else {
                 result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_등록_실패, storyInsResult));
@@ -136,9 +138,9 @@ public class FestivalService {
         try {
             Integer storyDelResult = festivalEvent.twoYearStoryDel(storyNo, delChrgrName);
             if(storyDelResult == 1) {
-                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_등록_실패, storyDelResult));
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_삭제_성공, storyDelResult));
             }else {
-                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_등록_실패, storyDelResult));
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_사연_삭제_실패, storyDelResult));
             }
         } catch (Exception e) {
             log.error("FestivalService twoYearStoryDel error => ", e);
@@ -152,6 +154,13 @@ public class FestivalService {
      */
     public String twoYearGroundDj(FestivalGroundInputVo festivalGroundInputVo) {
         HashMap<String, Object> groundDataMap = new HashMap<>();
+        FestivalGroundScheduleVo scheduleVo;
+        try {
+            scheduleVo = festivalEvent.twoYearGroundScheduleSel();
+            festivalGroundInputVo.setSeqNo(scheduleVo.getSeq_no());
+        } catch (Exception e) {
+            log.error("FestivalService twoYearGroundScheduleSel error => ", e);
+        }
 
         // 랭킹 리스트
         try {
@@ -165,11 +174,13 @@ public class FestivalService {
         }
 
         // 내 정보
-        try {
-            FestivalGroundDjInfoVo djTabMyInfo = festivalEvent.twoYearGroundDjInfoSel(festivalGroundInputVo);
-            groundDataMap.put("myInfo", djTabMyInfo);
-        } catch (Exception e) {
-            log.error("FestivalService twoYearGroundDjInfoSel error => ", e);
+        if(!StringUtils.equals(festivalGroundInputVo.getMemNo(), "0")) {
+            try {
+                FestivalGroundDjInfoVo djTabMyInfo = festivalEvent.twoYearGroundDjInfoSel(festivalGroundInputVo);
+                groundDataMap.put("myInfo", djTabMyInfo);
+            } catch (Exception e) {
+                log.error("FestivalService twoYearGroundDjInfoSel error => ", e);
+            }
         }
 
         return gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_그라운드_DJ_리스트_조회_성공, groundDataMap));
@@ -180,6 +191,13 @@ public class FestivalService {
      */
     public String twoYearGroundViewer(FestivalGroundInputVo festivalGroundInputVo) {
         HashMap<String, Object> groundDataMap = new HashMap<>();
+        FestivalGroundScheduleVo scheduleVo;
+        try {
+            scheduleVo = festivalEvent.twoYearGroundScheduleSel();
+            festivalGroundInputVo.setSeqNo(scheduleVo.getSeq_no());
+        } catch (Exception e) {
+            log.error("FestivalService twoYearGroundViewer error => ", e);
+        }
 
         // 랭킹 리스트
         try {
@@ -195,11 +213,30 @@ public class FestivalService {
         // 내 정보
         try {
             FestivalGroundViewerInfoVo viewerMyInfo = festivalEvent.twoYearGroundViewerInfoSel(festivalGroundInputVo);
-            groundDataMap.put("", viewerMyInfo);
+            groundDataMap.put("myInfo", viewerMyInfo);
         } catch (Exception e) {
             log.error("FestivalService twoYearGroundViewerInfoSel error => ", e);
         }
 
         return gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_그라운드_시청자_리스트_조회_성공, groundDataMap));
+    }
+
+    /**
+     *  2주년 이벤트 선물박스 지급 회원 체크  프로시저
+     */
+    public String twoYearPromotionMemCheck(String memNo) {
+        String result = "";
+        try {
+            Integer apiCallResult = festivalEvent.twoYearPromotionMemCheck(memNo);
+            if(apiCallResult == 1) {
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_프로모션_구매_가능, apiCallResult));
+            }else if(apiCallResult == -1) {
+                result = gsonUtil.toJson(new JsonOutputVo(EventStatus.이주년_프로모션_구매_불가, apiCallResult));
+            }
+        } catch (Exception e) {
+            log.error("FestivalService twoYearPromotionMemCheck error => ", e);
+        }
+
+        return result;
     }
 }

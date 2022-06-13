@@ -4,6 +4,7 @@ import com.dalbit.event.service.FestivalService;
 import com.dalbit.event.vo.FestivalGroundInputVo;
 import com.dalbit.member.vo.MemberVo;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,7 +44,7 @@ public class FestivalController {
         @RequestParam(value = "pageNo", defaultValue = "1") String pageNo,
         @RequestParam(value = "pagePerCnt", defaultValue = "50") String pagePerCnt
     ) {
-        return festivalService.twoYearStorySelect(memNo, pageNo, pagePerCnt);
+        return festivalService.twoYearStorySelect(memNo, Integer.parseInt(pageNo), Integer.parseInt(pagePerCnt));
     }
 
     /**
@@ -81,7 +82,13 @@ public class FestivalController {
      *  2주년 이벤트 그라운드 DJ탭
      */
     @GetMapping("/ground/dj")
-    public String twoYearGroundDj(@RequestBody FestivalGroundInputVo festivalGroundInputVo) {
+    public String twoYearGroundDj(@RequestParam(value = "memNo", defaultValue = "0") String memNo, HttpServletRequest request) {
+        FestivalGroundInputVo festivalGroundInputVo = new FestivalGroundInputVo();
+        if(!StringUtils.equals(memNo, "0")) {
+            festivalGroundInputVo.setMemNo(MemberVo.getMyMemNo(request));
+        }else {
+            festivalGroundInputVo.setMemNo(memNo);
+        }
         return festivalService.twoYearGroundDj(festivalGroundInputVo);
     }
 
@@ -89,7 +96,22 @@ public class FestivalController {
      *  2주년 이벤트 그라운드 시청자 탭
      */
     @GetMapping("/ground/viewer/list")
-    public String twoYearGroundViewer(@RequestBody FestivalGroundInputVo festivalGroundInputVo) {
+    public String twoYearGroundViewer(@RequestParam(value = "memNo", defaultValue = "0") String memNo, HttpServletRequest request) {
+        FestivalGroundInputVo festivalGroundInputVo = new FestivalGroundInputVo();
+        if(!StringUtils.equals(memNo, "0")) {
+            festivalGroundInputVo.setMemNo(MemberVo.getMyMemNo(request));
+        }else {
+            festivalGroundInputVo.setMemNo(memNo);
+        }
         return festivalService.twoYearGroundViewer(festivalGroundInputVo);
+    }
+
+    /**
+     *  2주년 이벤트 선물박스 지급 회원 체크  프로시저
+     */
+    @GetMapping("/promotion/check")
+    public String twoYearPromotionMemCheck(HttpServletRequest request) {
+        String memNo = MemberVo.getMyMemNo(request);
+        return festivalService.twoYearPromotionMemCheck(memNo);
     }
 }

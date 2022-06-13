@@ -295,8 +295,8 @@ public enum EventStatus implements Status {
     이주년_선물_회원_없음("-1", "second.anniversary.event.no.member.fail", "회원 조회 실패"),
     이주년_선물_이미_받음("-2", "second.anniversary.event.present.already.ins.fail", "선물 이미 받음"),
     이주년_선물_본인인증_미인증("-3", "second.anniversary.event.auth.fail", "본인인증 미인증"),
-    이주년_선물_지급_여부_확인_성공("0", "second.anniversary.event.present.check.success", "선물 지급 여부 확인 성공"),
-    이주년_선물_지급_여부_확인_실패("C006", "second.anniversary.event.present.check.fail", "선물 지급 여부 확인 실패"),
+    이주년_선물_지급_여부_확인_성공("0", "second.anniversary.event.present.check.success", "선물 지급 가능"),
+    이주년_선물_지급_여부_확인_실패("C006", "second.anniversary.event.present.check.fail", "선물 지급 완료"),
     이주년_사연_조회_성공("0", "second.anniversary.event.story.select.success", "사연 리스트 조회 성공"),
     이주년_사연_등록_성공("0", "second.anniversary.event.story.ins.success", "사연 등록 성공"),
     이주년_사연_등록_실패("C006", "second.anniversary.event.story.ins.fail", "사연 등록 실패"),
@@ -305,7 +305,9 @@ public enum EventStatus implements Status {
     이주년_사연_삭제_성공("0", "second.anniversary.event.story.del.success", "사연 삭제 성공"),
     이주년_사연_삭제_실패("C006", "second.anniversary.event.story.del.fail", "사연 삭제 실패"),
     이주년_그라운드_DJ_리스트_조회_성공("0", "second.anniversary.event.ground_dj_sel_success", "그라운드 DJ 데이터 조회 성공"),
-    이주년_그라운드_시청자_리스트_조회_성공("0", "second.anniversary.event.ground_viewer_sel_success", "그라운드 시청자 데이터 조회 성공");
+    이주년_그라운드_시청자_리스트_조회_성공("0", "second.anniversary.event.ground_viewer_sel_success", "그라운드 시청자 데이터 조회 성공"),
+    이주년_프로모션_구매_가능("0", "second.anniversary.event.promotion.item.buy.ok.success", "프로모션 지급 대상"),
+    이주년_프로모션_구매_불가("-1", "second.anniversary.event.promotion.item.buy.no", "프로모션 지급 대상 아님");
 
 
 

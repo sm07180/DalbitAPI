@@ -1,8 +1,6 @@
 package com.dalbit.event.proc;
 
-import com.dalbit.event.vo.FestivalGroundDjInfoVo;
-import com.dalbit.event.vo.FestivalGroundInputVo;
-import com.dalbit.event.vo.FestivalGroundViewerInfoVo;
+import com.dalbit.event.vo.*;
 import org.apache.ibatis.annotations.ResultMap;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Component;
@@ -18,10 +16,11 @@ public interface FestivalEvent {
     * @작성일   : 2022-06-08
     * @작성자   : 박성민
     * @param   : memNo, memPhone
-    * @return  : -3:본인 미인증  -2:다른 계정으로 선물 받음, -1: 회원 없음,  0: 에러, 1:정상
+    * @return  : 	# -3:본인 미인증  -2:다른 계정으로 선물 받음, -1: 회원 없음,  0: 에러, 1:정상
+     * 	SELECT  s_return,s_dalCnt,s_boosterCnt;
     **********************************************************************************************/
     @Select("CALL p_two_year_evt_gift_box_ins(#{memNo}, #{memPhone})")
-    Integer twoYearGiftBoxIns(String memNo, String memPhone);
+    FestivalFreeGiftVo twoYearGiftBoxIns(String memNo, String memPhone);
 
     /**********************************************************************************************
      * @Method 설명 : ##### 이주년 이벤트 선물박스 지급 회원 체크
@@ -56,7 +55,7 @@ public interface FestivalEvent {
      **********************************************************************************************/
     @ResultMap({"ResultMap.integer", "ResultMap.FestivalStoryVo"})
     @Select("CALL p_two_year_evt_mem_story_list(#{memNo}, #{pageNo}, #{pagePerCnt})")
-    List<Object> twoYearStorySelect(String memNo, String pageNo, String pagePerCnt);
+    List<Object> twoYearStorySelect(String memNo, int pageNo, int pagePerCnt);
 
     /**********************************************************************************************
      * @Method 설명 : ##### 이주년 이벤트 사연 등록
@@ -125,4 +124,27 @@ public interface FestivalEvent {
      **********************************************************************************************/
     @Select("CALL p_two_year_evt_dalla_ground_mem_sel(#{seqNo}, #{memNo})")
     FestivalGroundViewerInfoVo twoYearGroundViewerInfoSel(FestivalGroundInputVo param);
+
+    /**********************************************************************************************
+     * @Method 설명 : ##### 이주년 이벤트 선물박스 지급 회원 체크  프로시저
+     * @작성일   : 2022-06-10
+     * @작성자   : 박성민
+     * @param   : memNo
+     * @return  : -1: 선물 받음,  0: 에러, 1:지급 대상 회원
+     **********************************************************************************************/
+    @Select("CALL p_two_year_evt_promotion_mem_chk(#{memNo})")
+    Integer twoYearPromotionMemCheck(String memNo);
+
+    /**********************************************************************************************
+     * @Method 설명 : ##### 이주년 달라이벤트 스케줄
+     * @작성일   : 2022-06-13
+     * @작성자   : 박성민
+     * @return  :
+     * cnt		BIGINT		-- 랭킹
+     * seq_no		BIGINT		-- 회차 번호
+     * start_date	DATETIME	-- 시작일자
+     * end_date		DATETIME	-- 종료일자
+     **********************************************************************************************/
+    @Select("CALL p_two_year_evt_dalla_ground_schedule_sel()")
+    FestivalGroundScheduleVo twoYearGroundScheduleSel();
 }
